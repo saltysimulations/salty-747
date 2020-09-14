@@ -16,7 +16,7 @@ To install, simply clone the master branch, and copy the "salty-747" folder to y
 * ### IRS
   * Fully realistic IRS aligement (including display behavior)
 * ### EICAS
-  * STAT Eicas Synoptic Page
+  * STAT EICAS Synoptic Page
   * DRS EICAS Synoptic Page
   * FCTL EICAS Synoptic Page
 * ### Miscellanous
