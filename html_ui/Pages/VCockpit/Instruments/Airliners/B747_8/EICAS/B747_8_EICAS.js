@@ -11,6 +11,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     createLowerScreenPages() {
         this.createLowerScreenPage("FUEL", "BottomScreen", "b747-8-lower-eicas-fuel");
         this.createLowerScreenPage("ENG", "BottomScreen", "b747-8-lower-eicas-engine");
+        this.createLowerScreenPage("STAT", "BottomScreen", "b747-8-lower-eicas-stat");
     }
     getLowerScreenChangeEventNamePrefix() {
         return "EICAS_CHANGE_PAGE_";

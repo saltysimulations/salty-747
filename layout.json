@@ -1,14 +1,39 @@
 {
     "content": [
         {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.html",
+            "size": 3593,
+            "date": 132445021430280672
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js",
+            "size": 3555,
+            "date": 132444592481892334
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_Stat.css",
+            "size": 1026,
+            "date": 132445034240299892
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_Stat.html",
+            "size": 3122,
+            "date": 132445040530138040
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_Stat.js",
+            "size": 878,
+            "date": 132445624330652360
+        },
+        {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
-            "size": 184334,
-            "date": 132442342084843352
+            "size": 184216,
+            "date": 132445622755578976
         },
         {
             "path": "ModelBehaviorDefs/Asobo/Airliner/Boeing.xml",
-            "size": 43110,
-            "date": 132442371312746206
+            "size": 44167,
+            "date": 132445010341397464
         }
     ]
 }

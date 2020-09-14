@@ -517,14 +517,14 @@
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>stat</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_STAT</TOOLTIPID>
-		<GROUP_INDEX>-1</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_STAT</TOOLTIPID>
+		<GROUP_INDEX>1</GROUP_INDEX> <!--Change 1 to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>elec</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_ELEC</TOOLTIPID>
-		<GROUP_INDEX>-2</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_ELEC</TOOLTIPID>
+		<GROUP_INDEX>2</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
@@ -535,38 +535,38 @@
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>ecs</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_ECS</TOOLTIPID>
-		<GROUP_INDEX>-4</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_ECS</TOOLTIPID>
+		<GROUP_INDEX>4</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>fctl</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_FCTL</TOOLTIPID>
-		<GROUP_INDEX>-5</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_FCTL</TOOLTIPID>
+		<GROUP_INDEX>5</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>hyd</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_HYD</TOOLTIPID>
-		<GROUP_INDEX>-6</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_HYD</TOOLTIPID>
+		<GROUP_INDEX>6</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>drs</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_DRS</TOOLTIPID>
-		<GROUP_INDEX>-7</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_DRS</TOOLTIPID>
+		<GROUP_INDEX>7</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>gear</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_GEAR</TOOLTIPID>
-		<GROUP_INDEX>-8</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_GEAR</TOOLTIPID>
+		<GROUP_INDEX>8</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>info</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_INFO</TOOLTIPID>
-		<GROUP_INDEX>-9</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_INFO</TOOLTIPID>
+		<GROUP_INDEX>9</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
