@@ -11,6 +11,8 @@ To install, simply clone the master branch, and copy the "salty-747" folder to y
   * IRS Knobs Functional
 * ### EICAS
   * STAT EICAS Synoptic Page [Semi-functional, mostly visual] WIP
+* ### Miscellaneous
+  * Aircond Knobs Functional
 
 ## Features planned for next stable release
 * ### IRS
@@ -19,8 +21,7 @@ To install, simply clone the master branch, and copy the "salty-747" folder to y
   * STAT EICAS Synoptic Page
   * DRS EICAS Synoptic Page
   * FCTL EICAS Synoptic Page
-* ### Miscellanous
-  * Aircond knobs functional
+* ### Miscellaneous
   * Seatbelt sign / no smoking sign switch functinal
   * Emergency Lights switch functional
   * Other various general fixes
