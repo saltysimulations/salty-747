@@ -1,5 +1,7 @@
 class B747_8_EICAS extends Airliners.BaseEICAS {
-    get templateID() { return "B747_8_EICAS"; }
+    get templateID() {
+        return "B747_8_EICAS";
+    }
     createUpperScreenPage() {
         this.upperTopScreen = new Airliners.EICASScreen("TopScreen", "TopScreen", "b747-8-upper-eicas");
         this.annunciations = new Cabin_Annunciations();
@@ -12,6 +14,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.createLowerScreenPage("FUEL", "BottomScreen", "b747-8-lower-eicas-fuel");
         this.createLowerScreenPage("ENG", "BottomScreen", "b747-8-lower-eicas-engine");
         this.createLowerScreenPage("STAT", "BottomScreen", "b747-8-lower-eicas-stat");
+        this.createLowerScreenPage("FCTL", "BottomScreen", "b747-8-lower-eicas-fctl");
     }
     getLowerScreenChangeEventNamePrefix() {
         return "EICAS_CHANGE_PAGE_";
@@ -44,15 +47,27 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
             if (this.annunciations) {
                 for (let i = this.annunciations.displayWarning.length - 1; i >= 0; i--) {
                     if (!this.annunciations.displayWarning[i].Acknowledged)
-                        infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, this.annunciations.displayWarning[i].Text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.WARNING);
+                        infoPanelManager.addMessage(
+                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
+                            this.annunciations.displayWarning[i].Text,
+                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.WARNING
+                        );
                 }
                 for (let i = this.annunciations.displayCaution.length - 1; i >= 0; i--) {
                     if (!this.annunciations.displayCaution[i].Acknowledged)
-                        infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, this.annunciations.displayCaution[i].Text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.CAUTION);
+                        infoPanelManager.addMessage(
+                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
+                            this.annunciations.displayCaution[i].Text,
+                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.CAUTION
+                        );
                 }
                 for (let i = this.annunciations.displayAdvisory.length - 1; i >= 0; i--) {
                     if (!this.annunciations.displayAdvisory[i].Acknowledged)
-                        infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, this.annunciations.displayAdvisory[i].Text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION);
+                        infoPanelManager.addMessage(
+                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
+                            this.annunciations.displayAdvisory[i].Text,
+                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION
+                        );
                 }
             }
         }
