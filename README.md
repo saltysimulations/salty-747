@@ -10,7 +10,8 @@ To install, simply clone the master branch, and copy the "salty-747" folder to y
 * ### IRS
   * IRS Knobs Functional
 * ### EICAS
-  * FCTL EICAS Synoptic Page [Fully functional and animated]
+  * DRS EICAS Synoptic Page
+  * FCTL EICAS Synoptic Page
   * STAT EICAS Synoptic Page [Semi-functional, mostly visual] WIP
 * ### Miscellaneous
   * Aircond Knobs Functional
