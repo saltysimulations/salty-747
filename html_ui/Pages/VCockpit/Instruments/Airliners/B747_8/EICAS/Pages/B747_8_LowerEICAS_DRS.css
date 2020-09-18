@@ -34,3 +34,7 @@ b747-8-lower-eicas-drs {
   b747-8-lower-eicas-drs #status-l text, b747-8-lower-eicas-drs #status-r text {
     fill: var(--eicasGreen);
     font-size: 17px; }
+  b747-8-lower-eicas-drs #open-rects rect {
+    stroke: var(--eicasOrange);
+    stroke-width: 1.5;
+    visibility: hidden; }
