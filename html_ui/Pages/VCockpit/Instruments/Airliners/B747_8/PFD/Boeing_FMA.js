@@ -7,9 +7,7 @@ var Boeing;
             this.allAnnunciations = new Array();
             this._aircraft = Aircraft.B747_8;
         }
-        get templateID() {
-            return "BoeingFMATemplate";
-        }
+        get templateID() { return "BoeingFMATemplate"; }
         get aircraft() {
             return this._aircraft;
         }
@@ -53,16 +51,16 @@ var Boeing_FMA;
 (function (Boeing_FMA) {
     class ApproachStatus {
         static get isFlareArmed() {
-            return this.flareState == 1;
+            return (this.flareState == 1);
         }
         static get isFlareActive() {
-            return this.flareState == 2;
+            return (this.flareState == 2);
         }
         static get isRolloutArmed() {
-            return this.rolloutState == 1;
+            return (this.rolloutState == 1);
         }
         static get isRolloutActive() {
-            return this.rolloutState == 2;
+            return (this.rolloutState == 2);
         }
         static update(_deltaTime) {
             this.flareState = 0;
@@ -72,13 +70,14 @@ var Boeing_FMA;
                 if (alt <= 1500) {
                     if (alt < 1.5) {
                         this.rolloutDelay += _deltaTime;
-                        this.rolloutState = this.rolloutDelay >= 1000 ? 2 : 1;
-                    } else {
+                        this.rolloutState = (this.rolloutDelay >= 1000) ? 2 : 1;
+                    }
+                    else {
                         this.rolloutDelay = 0;
                         this.rolloutState = 1;
                     }
                     if (!this.isRolloutActive && Simplane.getAutoPilotActive()) {
-                        this.flareState = alt <= 60 ? 2 : 1;
+                        this.flareState = (alt <= 60) ? 2 : 1;
                     }
                 }
             }
@@ -115,7 +114,8 @@ var Boeing_FMA;
         }
         changeMode(_mode) {
             this.currentMode = _mode;
-            if (this.divElement != null) this.divElement.innerHTML = "<span>" + this.getCurrentModeText() + "</span>";
+            if (this.divElement != null)
+                this.divElement.innerHTML = "<span>" + this.getCurrentModeText() + "</span>";
             this.setHighlightVisibility(this.currentMode >= 0);
         }
         setHighlightVisibility(_show) {
@@ -139,7 +139,7 @@ var Boeing_FMA;
             var left = Simplane.getAutoPilotThrottleArmed(1);
             var right = Simplane.getAutoPilotThrottleArmed(2);
             var mode = this.getActiveMode();
-            if (mode != this.currentMode || left != this.leftThrottleArmed || right != this.rightThrottleArmed) {
+            if ((mode != this.currentMode) || (left != this.leftThrottleArmed) || (right != this.rightThrottleArmed)) {
                 this.leftThrottleArmed = left;
                 this.rightThrottleArmed = right;
                 this.changeMode(mode);
@@ -155,11 +155,7 @@ var Boeing_FMA;
                     return -1;
                 }
             }
-            if (
-                Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA ||
-                (Simplane.getIndicatedSpeed() < 80 && Simplane.getIndicatedSpeed() >= 70) ||
-                Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB
-            ) {
+            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA) {
                 return 4;
             }
             if (Simplane.getIndicatedSpeed() < 65) {
@@ -183,9 +179,9 @@ var Boeing_FMA;
             if (SimVar.GetSimVarValue("L:AP_SPD_ACTIVE", "number") === 1) {
                 return 2;
             }
-            // if (Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
-            //     return 4;
-            // }
+            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
+                return 4;
+            }
             if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") === 1) {
                 return 2;
             }
@@ -197,7 +193,8 @@ var Boeing_FMA;
         getCurrentModeText() {
             var modeText = "";
             if (this.leftThrottleArmed && !this.rightThrottleArmed) {
-            } else if (!this.leftThrottleArmed && this.rightThrottleArmed) {
+            }
+            else if (!this.leftThrottleArmed && this.rightThrottleArmed) {
             }
             switch (this.currentMode) {
                 case 0:
@@ -215,8 +212,7 @@ var Boeing_FMA;
                 case 4:
                     modeText += "THR REF";
                     break;
-                default:
-                    return "";
+                default: return "";
             }
             return modeText;
         }
@@ -227,7 +223,8 @@ var Boeing_FMA;
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRActive()) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 1;
-                } else {
+                }
+                else {
                     return 6;
                 }
             }
@@ -249,7 +246,8 @@ var Boeing_FMA;
             if (Simplane.getAutoPilotHeadingLockActive()) {
                 if (SimVar.GetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number") === 1) {
                     return 2;
-                } else {
+                }
+                else {
                     return 3;
                 }
             }
@@ -257,14 +255,17 @@ var Boeing_FMA;
                 if (Simplane.getAutoPilotHeadingLockActive()) {
                     if (this.fma.aircraft == Aircraft.B747_8) {
                         return 3;
-                    } else {
-                        return Simplane.getAutoPilotTRKModeActive() ? 10 : 3;
                     }
-                } else {
+                    else {
+                        return (Simplane.getAutoPilotTRKModeActive() ? 10 : 3);
+                    }
+                }
+                else {
                     if (this.fma.aircraft == Aircraft.B747_8) {
                         return 2;
-                    } else {
-                        return Simplane.getAutoPilotTRKModeActive() ? 9 : 2;
+                    }
+                    else {
+                        return (Simplane.getAutoPilotTRKModeActive() ? 9 : 2);
                     }
                 }
             }
@@ -276,32 +277,19 @@ var Boeing_FMA;
         }
         getCurrentModeText() {
             switch (this.currentMode) {
-                case 0:
-                    return "B/CRS";
-                case 1:
-                    return "FAC";
-                case 2:
-                    return "HDG HOLD";
-                case 3:
-                    return "HDG SEL";
-                case 4:
-                    return "HUD TO/GA";
-                case 5:
-                    return "LNAV";
-                case 6:
-                    return "LOC";
-                case 7:
-                    return "ROLLOUT";
-                case 8:
-                    return "TO/GA";
-                case 9:
-                    return "TRK HOLD";
-                case 10:
-                    return "TRK SEL";
-                case 11:
-                    return "ATT";
-                default:
-                    return "";
+                case 0: return "B/CRS";
+                case 1: return "FAC";
+                case 2: return "HDG HOLD";
+                case 3: return "HDG SEL";
+                case 4: return "HUD TO/GA";
+                case 5: return "LNAV";
+                case 6: return "LOC";
+                case 7: return "ROLLOUT";
+                case 8: return "TO/GA";
+                case 9: return "TRK HOLD";
+                case 10: return "TRK SEL";
+                case 11: return "ATT";
+                default: return "";
             }
         }
     }
@@ -311,7 +299,8 @@ var Boeing_FMA;
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRArm()) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 1;
-                } else {
+                }
+                else {
                     return 3;
                 }
             }
@@ -325,18 +314,12 @@ var Boeing_FMA;
         }
         getCurrentModeText() {
             switch (this.currentMode) {
-                case 0:
-                    return "B/CRS";
-                case 1:
-                    return "FAC";
-                case 2:
-                    return "LNAV";
-                case 3:
-                    return "LOC";
-                case 4:
-                    return "ROLLOUT";
-                default:
-                    return "";
+                case 0: return "B/CRS";
+                case 1: return "FAC";
+                case 2: return "LNAV";
+                case 3: return "LOC";
+                case 4: return "ROLLOUT";
+                default: return "";
             }
         }
     }
@@ -357,31 +340,26 @@ var Boeing_FMA;
                 this.divElement.className = className;
             }
             if (this.arrowsElement != null) {
-                this.arrowsElement.style.display = _mode == 3 ? "block" : "none";
+                this.arrowsElement.style.display = (_mode == 3) ? "block" : "none";
             }
         }
         getActiveMode() {
             if (Simplane.getAutoPilotActive()) {
                 return 0;
-            } else if (Simplane.getAutoPilotFlightDirectorActive(1)) {
+            }
+            else if (Simplane.getAutoPilotFlightDirectorActive(1)) {
                 return 1;
             }
             return -1;
         }
         getCurrentModeText() {
             switch (this.currentMode) {
-                case 0:
-                    return this.fma.aircraft == Aircraft.B747_8 ? "CMD" : "A/P";
-                case 1:
-                    return this.fma.aircraft == Aircraft.B747_8 ? "FD" : "FLT DIR";
-                case 2:
-                    return "LAND 3";
-                case 3:
-                    return "LAND 2";
-                case 4:
-                    return "NO AUTOLAND";
-                default:
-                    return "";
+                case 0: return ((this.fma.aircraft == Aircraft.B747_8) ? "CMD" : "A/P");
+                case 1: return ((this.fma.aircraft == Aircraft.B747_8) ? "FD" : "FLT DIR");
+                case 2: return "LAND 3";
+                case 3: return "LAND 2";
+                case 4: return "NO AUTOLAND";
+                default: return "";
             }
         }
     }
@@ -391,7 +369,8 @@ var Boeing_FMA;
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive()) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 5;
-                } else {
+                }
+                else {
                     return 4;
                 }
             }
@@ -426,11 +405,13 @@ var Boeing_FMA;
             if (Simplane.getAutoPilotActive()) {
                 if (Simplane.getAutoPilotAltitudeLockActive()) {
                     return 0;
-                } else if (Simplane.getAutoPilotVerticalSpeedHoldActive()) {
+                }
+                else if (Simplane.getAutoPilotVerticalSpeedHoldActive()) {
                     if (this.fma.aircraft == Aircraft.B747_8) {
                         return 10;
-                    } else {
-                        return Simplane.getAutoPilotFPAModeActive() ? 3 : 10;
+                    }
+                    else {
+                        return (Simplane.getAutoPilotFPAModeActive() ? 3 : 10);
                     }
                 }
             }
@@ -438,30 +419,18 @@ var Boeing_FMA;
         }
         getCurrentModeText() {
             switch (this.currentMode) {
-                case 0:
-                    return "ALT";
-                case 1:
-                    return "FLARE";
-                case 2:
-                    return "FLCH SPD";
-                case 3:
-                    return "FPA";
-                case 4:
-                    return "G/S";
-                case 5:
-                    return "G/P";
-                case 6:
-                    return "TO/GA";
-                case 7:
-                    return "VNAV PTH";
-                case 8:
-                    return "VNAV SPD";
-                case 9:
-                    return "VNAV ALT";
-                case 10:
-                    return "V/S";
-                default:
-                    return "";
+                case 0: return "ALT";
+                case 1: return "FLARE";
+                case 2: return "FLCH SPD";
+                case 3: return "FPA";
+                case 4: return "G/S";
+                case 5: return "G/P";
+                case 6: return "TO/GA";
+                case 7: return "VNAV PTH";
+                case 8: return "VNAV SPD";
+                case 9: return "VNAV ALT";
+                case 10: return "V/S";
+                default: return "";
             }
         }
     }
@@ -471,7 +440,8 @@ var Boeing_FMA;
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && !(Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive())) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 1;
-                } else {
+                }
+                else {
                     return 2;
                 }
             }
@@ -485,16 +455,11 @@ var Boeing_FMA;
         }
         getCurrentModeText() {
             switch (this.currentMode) {
-                case 0:
-                    return "FLARE";
-                case 1:
-                    return "G/P";
-                case 2:
-                    return "G/S";
-                case 3:
-                    return "VNAV";
-                default:
-                    return "";
+                case 0: return "FLARE";
+                case 1: return "G/P";
+                case 2: return "G/S";
+                case 3: return "VNAV";
+                default: return "";
             }
         }
     }

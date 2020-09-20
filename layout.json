@@ -56,6 +56,36 @@
             "date": 132447895842531932
         },
         {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.css",
+            "size": 3364,
+            "date": 132450864544708902
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.html",
+            "size": 3779,
+            "date": 132450862205250756
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.js",
+            "size": 6786,
+            "date": 132450864583033770
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.css",
+            "size": 3307,
+            "date": 132450861899682754
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.html",
+            "size": 1179,
+            "date": 132450861673196778
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.js",
+            "size": 18360,
+            "date": 132450861968225112
+        },
+        {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
             "size": 184102,
             "date": 132449240101666204
