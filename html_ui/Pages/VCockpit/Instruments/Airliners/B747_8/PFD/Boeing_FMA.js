@@ -155,7 +155,7 @@ var Boeing_FMA;
                     return -1;
                 }
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA) {
+            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (Simplane.getIndicatedSpeed() < 80 && Simplane.getIndicatedSpeed() >= 70) || Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
                 return 4;
             }
             if (Simplane.getIndicatedSpeed() < 65) {
@@ -179,9 +179,9 @@ var Boeing_FMA;
             if (SimVar.GetSimVarValue("L:AP_SPD_ACTIVE", "number") === 1) {
                 return 2;
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
-                return 4;
-            }
+            // if (Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
+            //     return 4;
+            // }
             if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") === 1) {
                 return 2;
             }
