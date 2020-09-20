@@ -88,6 +88,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.onRad = () => { B747_8_FMC_NavRadioPage.ShowPage(this); };
         this.onVNAV = () => { B747_8_FMC_VNAVPage.ShowPage1(this); };
         FMCIdentPage.ShowPage1(this);
+
+        this.saltyBase = new SaltyBase();
+        this.saltyBase.init();
     }
     onPowerOn() {
         super.onPowerOn();
@@ -103,6 +106,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.refreshPageCallback();
         }
         this.updateAutopilot();
+        this.saltyBase.update();
     }
     onInputAircraftSpecific(input) {
         console.log("B747_8_FMC_MainDisplay.onInputAircraftSpecific input = '" + input + "'");
