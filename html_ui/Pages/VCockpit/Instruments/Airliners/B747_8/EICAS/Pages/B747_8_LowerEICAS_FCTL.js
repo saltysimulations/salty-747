@@ -128,6 +128,14 @@ var B747_8_LowerEICAS_FCTL;
             this.rightpoilersOutbd_3.setAttribute("d", "M0 " + (56 - rightFinalOutdb) + "L16 " + (56 - rightFinalOutdb) + "L16 56L0 56L0 " + (56 - rightFinalOutdb) + "Z");
             this.rightpoilersOutbd_4.setAttribute("d", "M0 " + (56 - rightFinalOutdb) + "L16 " + (56 - rightFinalOutdb) + "L16 56L0 56L0 " + (56 - rightFinalOutdb) + "Z");
 
+            if (SimVar.GetSimVarValue("SIM ON GROUND", "bool")) {
+                this.querySelector("#trim").style.stroke = "Green";
+                this.querySelector(".value").style.fill = "Green";
+            } else {
+                this.querySelector("#trim").style.stroke = "White";
+                this.querySelector(".value").style.fill = "White";
+            }
+
             if (this.stab != null) {
                 this.stab.update(_deltaTime);
             }

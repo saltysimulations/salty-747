@@ -40,11 +40,7 @@ b747-8-lower-eicas-fctl #cursor {
     fill: var(--eicasWhite);
 }
 b747-8-lower-eicas-fctl #trim {
-    stroke: var(--eicasGreen);
     stroke-width: 4px;
-}
-b747-8-lower-eicas-fctl .value {
-    fill: var(--eicasGreen);
 }
 b747-8-lower-eicas-fctl .Gauge {
     fill: var(--eicasWhite);
