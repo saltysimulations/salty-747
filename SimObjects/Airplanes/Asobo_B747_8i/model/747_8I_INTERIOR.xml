@@ -2235,6 +2235,20 @@
 						<SEQ1_NODE_ID>btn_autopilot_canc_l_text</SEQ1_NODE_ID>
 					</UseTemplate>
 				</Component>
+
+			<!-- Turn off the connection to the lights when the landing gear is retracted-->
+			<UseTemplate Name="ASOBO_GT_Update">
+				<FREQUENCY>5</FREQUENCY>
+				<UPDATE_CODE>
+					(A:GEAR HANDLE POSITION, Bool) (A:GEAR POSITION, percent) 99.9 &gt; and (&gt;O:_ShouldBeConnectedToPowerGrid)
+					(O:_ShouldBeConnectedToPowerGrid) sp0
+					1 (&gt;A:BUS LOOKUP INDEX, Number)
+					(A:CIRCUIT CONNECTION ON:86, Bool) l0 != if{ 86 1 (&gt;K:2:ELECTRICAL_BUS_TO_CIRCUIT_CONNECTION_TOGGLE) }
+					(A:CIRCUIT CONNECTION ON:87, Bool) l0 != if{ 87 1 (&gt;K:2:ELECTRICAL_BUS_TO_CIRCUIT_CONNECTION_TOGGLE) }
+					(A:CIRCUIT CONNECTION ON:88, Bool) l0 != if{ 88 1 (&gt;K:2:ELECTRICAL_BUS_TO_CIRCUIT_CONNECTION_TOGGLE) }
+				</UPDATE_CODE>
+			</UseTemplate>
+
 				<Component ID="Right">
 					<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 						<NODE_ID>btn_autopilot_acpt_r</NODE_ID>
@@ -3372,18 +3386,7 @@
 				<POTENTIOMETER/>
 				<USE_INTEGRATED_POWER_SETTING>False</USE_INTEGRATED_POWER_SETTING>
 			</OverrideTemplateParameters>
-			<!-- Turn off the conenction to the lights when the landing gear is retracted-->
-			<UseTemplate Name="ASOBO_GT_Update">
-				<FREQUENCY>5</FREQUENCY>
-				<UPDATE_CODE>
-					(A:GEAR HANDLE POSITION, Bool) (A:GEAR POSITION, percent) 99.9 &gt; and (&gt;O:_ShouldBeConnectedToPowerGrid)
-					(O:_ShouldBeConnectedToPowerGrid) sp0
-					1 (&gt;A:BUS LOOKUP INDEX, Number)
-					(A:CIRCUIT CONNECTION ON:86, Bool) l0 != if{ 86 1 (&gt;K:2:ELECTRICAL_BUS_TO_CIRCUIT_CONNECTION_TOGGLE) }
-					(A:CIRCUIT CONNECTION ON:87, Bool) l0 != if{ 87 1 (&gt;K:2:ELECTRICAL_BUS_TO_CIRCUIT_CONNECTION_TOGGLE) }
-					(A:CIRCUIT CONNECTION ON:92, Bool) l0 != if{ 92 1 (&gt;K:2:ELECTRICAL_BUS_TO_CIRCUIT_CONNECTION_TOGGLE) }
-				</UPDATE_CODE>
-			</UseTemplate>
+			
 			<UseTemplate Name="ASOBO_AIRLINER_Update_Set_Potentiometer_On_Takeoff">
 				<POTENTIOMETER>21</POTENTIOMETER>
 			</UseTemplate>
