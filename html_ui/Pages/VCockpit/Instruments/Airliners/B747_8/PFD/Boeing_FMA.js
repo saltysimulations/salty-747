@@ -155,7 +155,10 @@ var Boeing_FMA;
                     return -1;
                 }
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (Simplane.getIndicatedSpeed() < 80 && Simplane.getIndicatedSpeed() >= 70) || Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
+            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
+                return -1;
+            }
+            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (Simplane.getIndicatedSpeed() < 80 && Simplane.getIndicatedSpeed() >= 30) || Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
                 return 4;
             }
             if (Simplane.getIndicatedSpeed() < 65) {
@@ -220,6 +223,9 @@ var Boeing_FMA;
     Boeing_FMA.Column1Top = Column1Top;
     class Column2Top extends Annunciation {
         getActiveMode() {
+            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
+                return -1;
+            }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRActive()) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 1;
@@ -296,6 +302,9 @@ var Boeing_FMA;
     Boeing_FMA.Column2Top = Column2Top;
     class Column2Middle extends Annunciation {
         getActiveMode() {
+            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
+                return -1;
+            }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRArm()) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 1;
@@ -366,6 +375,9 @@ var Boeing_FMA;
     Boeing_FMA.Column2Bottom = Column2Bottom;
     class Column3Top extends Annunciation {
         getActiveMode() {
+            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
+                return -1;
+            }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive()) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 5;
@@ -437,6 +449,9 @@ var Boeing_FMA;
     Boeing_FMA.Column3Top = Column3Top;
     class Column3Middle extends Annunciation {
         getActiveMode() {
+            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
+                return -1;
+            }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && !(Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive())) {
                 if (Simplane.getAutoPilotApproachType() == 10) {
                     return 1;
