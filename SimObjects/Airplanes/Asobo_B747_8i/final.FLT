@@ -183,6 +183,12 @@ FoldingWingsHandle=False
 FoldingWingsState=0, 0
 AuxPowerUnitSwitch=False
 
+[LocalVars.0]
+SALTY_IRS_STATE=2
+747_IRS_KNOB_1=2
+747_IRS_KNOB_2=2
+747_IRS_KNOB_3=2
+
 [Electrical.0]
 alternator.5=False
 alternator.6=False
