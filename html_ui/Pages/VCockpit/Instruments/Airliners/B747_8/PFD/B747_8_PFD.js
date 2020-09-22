@@ -48,6 +48,42 @@ class B747_8_PFD_MainPage extends NavSystemPage {
     }
     init() {
         super.init();
+
+        // IRS
+        this.attBox = document.querySelector("#att-box");
+        /* The att-box div has to be displayed at all times when irssate is 0 or 1, because it removes the colors of the AH while retaining the cursors.
+        Therefore, there are 2 seperate variables for the text and the rect. */
+        this.attBoxText = document.querySelector("#att-box svg text");
+        this.attBoxRect = document.querySelector("#att-rect");
+        this.noVspd = document.querySelector("#no-vspd");
+        this.vertBox = document.querySelector("#vert-box");
+        this.vSpeedIndicator = document.querySelector("jet-pfd-vspeed-indicator");
+    }
+    onUpdate(_deltaTime) {
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+
+        if (IRSState == 0) {
+            this.attBox.setAttribute("style", "");
+            this.attBoxText.style.display = "";
+            this.attBoxRect.style.display = "";
+            this.vertBox.setAttribute("style", "");
+            this.noVspd.setAttribute("style", "");
+            this.vSpeedIndicator.setAttribute("style", "display:none")
+        }
+        if (IRSState == 1) {
+            this.attBox.setAttribute("style", "");
+            this.attBoxText.style.display = "none";
+            this.attBoxRect.style.display = "none";
+            this.vertBox.setAttribute("style", "display:none");
+            this.noVspd.setAttribute("style", "");
+            this.vSpeedIndicator.setAttribute("style", "display:none")
+        }
+        if (IRSState == 2) {
+            this.attBox.setAttribute("style", "display:none");
+            this.vertBox.setAttribute("style", "display:none");
+            this.noVspd.setAttribute("style", "display:none");
+            this.vSpeedIndicator.setAttribute("style", "")
+        }
     }
     onEvent(_event) {
         super.onEvent(_event);

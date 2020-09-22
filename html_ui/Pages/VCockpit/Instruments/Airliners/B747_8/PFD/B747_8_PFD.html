@@ -6,11 +6,36 @@
         <div id="Electricity" state="off">
             <div id="HorizonContainer">
                 <jet-pfd-attitude-indicator id="Horizon" background="true"></jet-pfd-attitude-indicator>
+                <div id="att-box">
+                    <svg viewBox="0 0 600 600">
+                        <rect fill="black" x="0" y="0" width="100%" height="100%"></rect>
+                        <rect fill="transpartent" x="258" y="265" width="35px" height="20px" stroke="#db8e00" stroke-width="2" id="att-rect"></rect>
+                        <text x="275" y="280" style="text-anchor:middle;fill:#db8e00;font-size:17px;">ATT</text>     
+                    </svg>
+                </div>
             </div>
 
             <div id="InstrumentsContainer">
                 <jet-pfd-airspeed-indicator id="Airspeed"></jet-pfd-airspeed-indicator>
-                <jet-pfd-vspeed-indicator id="VSpeed"></jet-pfd-vspeed-indicator>
+                <div style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;" id="no-vspd">
+                    <svg viewBox="0 0 600 600" style="position:absolute; top:0%; left: 0%; width: 100%; height:100%">
+                        <text x="110" y="200" style="text-anchor:middle;fill:#db8e00;font-size:17px;">NO</text>
+                        <text x="110" y="220" style="text-anchor:middle;fill:#db8e00;font-size:17px;">V</text>
+                        <text x="110" y="240" style="text-anchor:middle;fill:#db8e00;font-size:17px;">S</text>
+                        <text x="110" y="260" style="text-anchor:middle;fill:#db8e00;font-size:17px;">P</text>
+                        <text x="110" y="280" style="text-anchor:middle;fill:#db8e00;font-size:17px;">D</text>                   
+                    </svg>
+                </div>
+                <jet-pfd-vspeed-indicator style="" id="VSpeed"></jet-pfd-vspeed-indicator>
+                <div style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;" id="vert-box">
+                    <svg viewBox="0 0 600 600" style="position:absolute; top:0%; left: 0%; width: 100%; height:100%;">
+                        <rect fill="transpartent" x="557" y="275" width="20px" height="72px" stroke="#db8e00" stroke-width="2"></rect>
+                        <text x="567" y="291" style="text-anchor:middle;fill:#db8e00;font-size:17px;">V</text>
+                        <text x="567" y="308" style="text-anchor:middle;fill:#db8e00;font-size:17px;">E</text>
+                        <text x="567" y="325" style="text-anchor:middle;fill:#db8e00;font-size:17px;">R</text>
+                        <text x="567" y="342" style="text-anchor:middle;fill:#db8e00;font-size:17px;">T</text>               
+                    </svg>
+                </div>
                 <jet-pfd-altimeter-indicator id="Altimeter"></jet-pfd-altimeter-indicator>
                 <jet-pfd-hs-indicator id="Compass"></jet-pfd-hs-indicator>
                 <boeing-fma id="FMA" class="B747_8_PFD"></boeing-fma>
