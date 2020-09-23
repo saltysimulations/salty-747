@@ -10,13 +10,14 @@ class FMCMainDisplayPages {
             ["", "CTL PNL"],
             ["", "OFF←→ON>"],
             [],
-            [],
+            ["<SALTY"],
             [],
             ["", ""],
             [],
             ["<CMC"]
         ]);
         fmc.onLeftInput[0] = () => { FMCIdentPage.ShowPage1(fmc); };
+        fmc.onLeftInput[3] = () => { FMCSaltyOptions.ShowPage1(fmc); };
     }
     static PerfInitPage(fmc) {
     }
