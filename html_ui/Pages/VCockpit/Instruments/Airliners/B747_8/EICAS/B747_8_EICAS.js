@@ -16,6 +16,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.createLowerScreenPage("STAT", "BottomScreen", "b747-8-lower-eicas-stat");
         this.createLowerScreenPage("FCTL", "BottomScreen", "b747-8-lower-eicas-fctl");
         this.createLowerScreenPage("DRS", "BottomScreen", "b747-8-lower-eicas-drs");
+        this.createLowerScreenPage("ELEC", "BottomScreen", "b747-8-lower-eicas-elec");
     }
     getLowerScreenChangeEventNamePrefix() {
         return "EICAS_CHANGE_PAGE_";
