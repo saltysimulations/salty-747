@@ -25,7 +25,7 @@ class SaltyIRS {
         if (isIRSOn && IRSState == 0) {
             SimVar.SetSimVarValue("L:SALTY_IRS_STATE", "Enum", 1);
             IRSState = 1;
-            this.irsTimer = 20;
+            this.irsTimer = 420;
         }
 
         if (IRSState == 1) {
