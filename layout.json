@@ -77,23 +77,33 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
-            "size": 9445,
-            "date": 132452581772875690
+            "size": 10418,
+            "date": 132453351222130976
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
-            "size": 17772,
-            "date": 132452581772875690
+            "size": 18568,
+            "date": 132453346974211360
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_BaseNDCompass.js",
+            "size": 36530,
+            "date": 132453350702973402
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_NDCompass.js",
+            "size": 48469,
+            "date": 132453354065752926
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.html",
-            "size": 3779,
-            "date": 132452581772885692
+            "size": 6056,
+            "date": 132452644130561266
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.js",
-            "size": 6786,
-            "date": 132450902078727756
+            "size": 8603,
+            "date": 132452650681405348
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/approach.FLT",

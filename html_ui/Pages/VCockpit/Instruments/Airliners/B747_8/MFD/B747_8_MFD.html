@@ -5,10 +5,21 @@
     <div id="Mainframe">
         <div id="Electricity" state="off">
             <div id="Map">
-                <map-instrument id="MapInstrument" map-mode="plan" bing-id="MFD" show-overlay="false" show-roads="false" config-path="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/"></map-instrument>
+                <map-instrument style="display:none" id="MapInstrument" map-mode="plan" bing-id="MFD" show-overlay="false" show-roads="false" config-path="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/"></map-instrument>
             </div>
-
+            <div id="map-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <rect fill="transpartent" x="283" y="317" width="35px" height="20px" stroke="#db8e00" stroke-width="2" id="map-rect"></rect>
+                    <text x="300" y="334" style="text-anchor:middle;fill:#db8e00;font-size:17px;">MAP</text>     
+                </svg>
+            </div>
             <jet-mfd-nd-compass id="Compass"></jet-mfd-nd-compass>
+            <div id="trk-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <rect fill="transpartent" x="283" y="37" width="35px" height="20px" stroke="#db8e00" stroke-width="2" id="trk-rect"></rect>
+                    <text x="300" y="54" style="text-anchor:middle;fill:#db8e00;font-size:17px;">TRK</text>     
+                </svg>
+            </div>
             <div id="ModeChangeMask"></div>
             <jet-mfd-nd-info id="NDInfo">
                 <div id="TopBox">
@@ -119,9 +130,9 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/GaugeElement.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/BaseAirliners.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/BaseNDCompass.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_BaseNDCompass.js"></script>
 
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/MFD/NDCompass.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_NDCompass.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/MFD/NDInfo.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js"></script>

@@ -80,11 +80,31 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.map.instrument.medAirportMaxRange = Infinity;
         this.map.instrument.largeAirportMaxRange = Infinity;
         SimVar.SetSimVarValue("L:B747_8_MFD_NAV_MODE", "number", 2);
+
+        this.trkBox = document.querySelector("#trk-box");
+        this.mapBox = document.querySelector("#map-box");
+        this.mapInstrument = document.querySelector("map-instrument");
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
         this.updateMap(_deltaTime);
         this.updateNDInfo(_deltaTime);
+
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        if (IRSState == 0) {
+            this.mapBox.style.display = "";
+            this.trkBox.style.display = "";
+            this.mapInstrument.style.display = "none";
+        }
+        if (IRSState == 1) {
+            this.trkBox.style.display = "none";
+            this.mapInstrument.style.display = "none";
+        }
+        if (IRSState == 2) {
+            this.mapBox.style.display = "none";
+            this.trkBox.style.display = "none";
+            this.mapInstrument.style.display = "";
+        }
     }
     onEvent(_event) {
         switch (_event) {
