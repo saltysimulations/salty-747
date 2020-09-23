@@ -76,6 +76,11 @@
             "date": 132453369330086470
         },
         {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayPages.js",
+            "size": 1720,
+            "date": 132442371667501638
+        },
+        {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
             "size": 10418,
             "date": 132453369330266502
@@ -107,8 +112,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.js",
-            "size": 8603,
-            "date": 132453371293426272
+            "size": 8883,
+            "date": 132453348549022868
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.css",
