@@ -13,12 +13,12 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.html",
             "size": 4277,
-            "date": 132453645953077828
+            "date": 132454224920545464
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js",
             "size": 4175,
-            "date": 132453645456006116
+            "date": 132454224920545464
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.css",
@@ -37,18 +37,18 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.css",
-            "size": 1814,
-            "date": 132453458401411294
+            "size": 1883,
+            "date": 132454224920555466
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.html",
-            "size": 13822,
-            "date": 132453448380503762
+            "size": 14074,
+            "date": 132454224920555466
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.js",
-            "size": 21967,
-            "date": 132453641217655630
+            "size": 22325,
+            "date": 132454224920565466
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_FCTL.css",
@@ -88,7 +88,7 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
             "size": 35668,
-            "date": 132453483938261864
+            "date": 132454151176229758
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayPages.js",
@@ -204,6 +204,16 @@
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
             "size": 184111,
             "date": 132453483938171846
+        },
+        {
+            "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.cfg",
+            "size": 2508,
+            "date": 132377292000000000
+        },
+        {
+            "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.xml",
+            "size": 22032,
+            "date": 132454404416666874
         },
         {
             "path": "ModelBehaviorDefs/Asobo/Airliner/Boeing.xml",
