@@ -669,9 +669,9 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.speedNotSetSVG = document.createElementNS(Avionics.SVG.NS, "g");
             this.speedNotSetSVG.setAttribute("id", "speedNotSet");
             {
-                let textPosX = _left + _width * 1.25;
-                let textPosY = _top + _height * 0.325;
-                let textSpace = 25;
+                let textPosX = _left + _width * 1.2;
+                let textPosY = _top + _height * 0.225;
+                let textSpace = 30;
                 let text = document.createElementNS(Avionics.SVG.NS, "text");
                 text.textContent = "NO";
                 text.setAttribute("x", textPosX.toString());
