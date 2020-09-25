@@ -443,6 +443,40 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         if (this.ndInfo != null) {
             this.ndInfo.update(_deltaTime);
         }
+
+        var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        var showData; 
+        var groundSpeed = Math.round(Simplane.getGroundSpeed());
+        var gs = this.ndInfo.querySelector("#GS_Value");
+        const tas_text = this.ndInfo.querySelector("#TAS_Text");
+        var tas_val = this.ndInfo.querySelector("#TAS_Value");
+
+        var wd = this.ndInfo.querySelector("#Wind_Direction");
+        var ws = this.ndInfo.querySelector("#Wind_Strength");
+        var wa = this.ndInfo.querySelector("#Wind_Arrow");
+        const sep = this.ndInfo.querySelector("#Wind_Separator");
+
+        if(IRSState != 2 || groundSpeed < 100) {
+            showData = false; 
+       }
+       else {
+           showData = true;
+       }
+
+       tas_text.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       tas_val.setAttribute("visibility", (showData) ? "visible" : "hidden");
+
+       sep.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       wd.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       ws.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       wa.setAttribute("visibility", (showData) ? "visible" : "hidden");
+
+       if(IRSState != 2) {
+           gs.textContent = "---";
+       }
+       else {
+           gs.textContent = groundSpeed.toString().padStart(3); 
+       }
     }
     onExit() {
     }
