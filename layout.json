@@ -88,7 +88,7 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
             "size": 35967,
-            "date": 132455056096339180
+            "date": 132455100561712710
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayPages.js",
@@ -107,13 +107,13 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
-            "size": 10418,
-            "date": 132453436207380018
+            "size": 10436,
+            "date": 132455133446368690
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
-            "size": 18568,
-            "date": 132453436207390030
+            "size": 19955,
+            "date": 132455133446378704
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_BaseNDCompass.js",
@@ -122,13 +122,18 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_NDCompass.js",
-            "size": 48469,
-            "date": 132453436207410048
+            "size": 48727,
+            "date": 132455233584055452
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AirspeedIndicator.js",
             "size": 64181,
             "date": 132455060648234470
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AttitudeIndicator.js",
+            "size": 102033,
+            "date": 132455300166486252
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.css",
@@ -157,8 +162,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.js",
-            "size": 18909,
-            "date": 132453568133476756
+            "size": 18962,
+            "date": 132455300861650652
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/approach.FLT",
