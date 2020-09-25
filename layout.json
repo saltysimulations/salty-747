@@ -87,8 +87,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
-            "size": 36082,
-            "date": 132454120512976618
+            "size": 35967,
+            "date": 132454142577748056
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayPages.js",
@@ -126,19 +126,24 @@
             "date": 132453436207410048
         },
         {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AirspeedIndicator.js",
+            "size": 132258,
+            "date": 132455043634142684
+        },
+        {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.css",
             "size": 3504,
             "date": 132453147645321792
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.html",
-            "size": 6072,
-            "date": 132453436207410048
+            "size": 6081,
+            "date": 132455039814695104
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.js",
-            "size": 8883,
-            "date": 132453436207420056
+            "size": 8895,
+            "date": 132455040129789440
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.css",
