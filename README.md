@@ -12,6 +12,7 @@ To install, simply clone the master branch, and copy the "salty-747-master" fold
 * ### EICAS
   * DRS EICAS Synoptic Page
   * FCTL EICAS Synoptic Page
+  * ELEC EICAS Synoptic Page
   * STAT EICAS Synoptic Page [Semi-functional, mostly visual] WIP
 * ### FMC
   * "Salty Options" page under MENU in FMC
