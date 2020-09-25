@@ -55,7 +55,7 @@ class B747_8_PFD_MainPage extends NavSystemPage {
         Therefore, there are 2 seperate variables for the text and the rect. */
         this.attBoxText = document.querySelector("#att-box svg text");
         this.attBoxRect = document.querySelector("#att-rect");
-        this.noVspd = document.querySelector("#no-vspd");
+        // this.noVspd = document.querySelector("#no-vspd");
         this.vertBox = document.querySelector("#vert-box");
         this.vSpeedIndicator = document.querySelector("jet-pfd-vspeed-indicator");
         this.compassElement = document.querySelector("jet-pfd-hs-indicator");
@@ -68,7 +68,7 @@ class B747_8_PFD_MainPage extends NavSystemPage {
             this.attBoxText.style.display = "";
             this.attBoxRect.style.display = "";
             this.vertBox.setAttribute("style", "");
-            this.noVspd.setAttribute("style", "");
+            // this.noVspd.setAttribute("style", "");
             this.vSpeedIndicator.setAttribute("style", "display:none")
             this.compassElement.setAttribute("style", "display:none")
         }
@@ -77,14 +77,14 @@ class B747_8_PFD_MainPage extends NavSystemPage {
             this.attBoxText.style.display = "none";
             this.attBoxRect.style.display = "none";
             this.vertBox.setAttribute("style", "display:none");
-            this.noVspd.setAttribute("style", "");
+            // this.noVspd.setAttribute("style", "");
             this.vSpeedIndicator.setAttribute("style", "display:none")
             this.compassElement.setAttribute("style", "display:none")
         }
         if (IRSState == 2) {
             this.attBox.setAttribute("style", "display:none");
             this.vertBox.setAttribute("style", "display:none");
-            this.noVspd.setAttribute("style", "display:none");
+            // this.noVspd.setAttribute("style", "display:none");
             this.vSpeedIndicator.setAttribute("style", "")
             this.compassElement.setAttribute("style", "")
         }
