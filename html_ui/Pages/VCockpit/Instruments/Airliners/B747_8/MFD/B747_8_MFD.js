@@ -84,6 +84,10 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.trkBox = document.querySelector("#trk-box");
         this.mapBox = document.querySelector("#map-box");
         this.mapInstrument = document.querySelector("map-instrument");
+        this.irsTimes = document.querySelector("#irs-times");
+        this.leftIRSValue = document.querySelector("#l-irs-value");
+        this.centerIRSValue = document.querySelector("#c-irs-value");
+        this.rightIRSValue = document.querySelector("#r-irs-value");
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
@@ -91,19 +95,27 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.updateNDInfo(_deltaTime);
 
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        const IRSMinutesLeft = Math.floor(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60);
+
         if (IRSState == 0) {
             this.mapBox.style.display = "";
             this.trkBox.style.display = "";
+            this.irsTimes.style.display = "none";
             this.mapInstrument.style.display = "none";
         }
         if (IRSState == 1) {
             this.trkBox.style.display = "none";
             this.mapInstrument.style.display = "none";
+            this.irsTimes.style.display = "";
+            this.leftIRSValue.textContent = IRSMinutesLeft;
+            this.centerIRSValue.textContent = IRSMinutesLeft;
+            this.rightIRSValue.textContent = IRSMinutesLeft;
         }
         if (IRSState == 2) {
             this.mapBox.style.display = "none";
             this.trkBox.style.display = "none";
             this.mapInstrument.style.display = "";
+            this.irsTimes.style.display = "none";
         }
     }
     onEvent(_event) {
