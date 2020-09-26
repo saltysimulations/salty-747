@@ -623,9 +623,13 @@ var Jet_PFD_FlightDirector;
                 if (this._pitchIsNotReadyYet) {
                     currentFDPitch = currentPlanePitch;
                 }
-                this._fdPitch += (currentFDPitch - this._fdPitch) * Math.min(1.0, _deltaTime * 0.001);
-                var lineY = this.calculatePosYFromPitch(currentPlanePitch, this._fdPitch);
-                this.pitchLine.setAttribute("transform", "translate(0, " + lineY + ")");
+                if(Simplane.getV2Airspeed() > 100 || Simplane.getCurrentFlightPhase() > FlightPhase.FLIGHT_PHASE_TAKEOFF){
+                    this._fdPitch += (currentFDPitch - this._fdPitch) * Math.min(1.0, _deltaTime * 0.001);
+                    var lineY = this.calculatePosYFromPitch(currentPlanePitch, this._fdPitch);
+                    this.pitchLine.setAttribute("transform", "translate(0, " + lineY + ")");
+                }else{
+                    this.pitchLine.setAttribute("transform", "translate(0, " + 0 + ")");
+                }
             }
         }
         getLineLength() { return 140; }
