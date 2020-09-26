@@ -614,7 +614,7 @@ var Jet_PFD_FlightDirector;
                 let currentFDPitch = Simplane.getFlightDirectorPitch();
                 let altAboveGround = Simplane.getAltitudeAboveGround();
                 let _bForcedFdPitchThisFrame = false;
-                if (altAboveGround > 0 && altAboveGround < 10) {
+                if (altAboveGround > 0 && altAboveGround < 10 && Simplane.getV2Airspeed() > 100 && Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                     currentFDPitch = -8;
                 }
                 if (this._pitchIsNotReadyYet) {

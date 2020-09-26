@@ -132,8 +132,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AttitudeIndicator.js",
-            "size": 102033,
-            "date": 132455300166486252
+            "size": 41319,
+            "date": 132455977887134246
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.css",
@@ -142,13 +142,13 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.html",
-            "size": 6099,
-            "date": 132455044352506570
+            "size": 6117,
+            "date": 132455305007164574
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.js",
             "size": 8895,
-            "date": 132455040129789440
+            "date": 132455976669718788
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.css",
@@ -162,8 +162,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.js",
-            "size": 18962,
-            "date": 132455300861650652
+            "size": 19125,
+            "date": 132455369864111604
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/approach.FLT",
