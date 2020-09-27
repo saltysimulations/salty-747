@@ -488,7 +488,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
 
        if(IRSState != 2) {
            gs.textContent = "---";
-           wpdata.setAttribute("visiblity", "hidden");
+           wpdata.setAttribute("visibility", "hidden");
        }
        else {
            gs.textContent = groundSpeed.toString().padStart(3); 
