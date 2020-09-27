@@ -614,7 +614,7 @@ var Jet_PFD_FlightDirector;
                 let currentFDPitch = Simplane.getFlightDirectorPitch();
                 let altAboveGround = Simplane.getAltitudeAboveGround();
                 let _bForcedFdPitchThisFrame = false;
-                if (altAboveGround > 0 && altAboveGround < 10 && Simplane.getV2Airspeed() > 100 && Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+                if (altAboveGround > 0 && altAboveGround < 10 && Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                     currentFDPitch = -8;
                 }
                 if (this._pitchIsNotReadyYet) {
@@ -623,13 +623,9 @@ var Jet_PFD_FlightDirector;
                 if (this._pitchIsNotReadyYet) {
                     currentFDPitch = currentPlanePitch;
                 }
-                if(Simplane.getV2Airspeed() > 100 || Simplane.getCurrentFlightPhase() > FlightPhase.FLIGHT_PHASE_TAKEOFF){
-                    this._fdPitch += (currentFDPitch - this._fdPitch) * Math.min(1.0, _deltaTime * 0.001);
-                    var lineY = this.calculatePosYFromPitch(currentPlanePitch, this._fdPitch);
-                    this.pitchLine.setAttribute("transform", "translate(0, " + lineY + ")");
-                }else{
-                    this.pitchLine.setAttribute("transform", "translate(0, " + 0 + ")");
-                }
+                this._fdPitch += (currentFDPitch - this._fdPitch) * Math.min(1.0, _deltaTime * 0.001);
+                var lineY = this.calculatePosYFromPitch(currentPlanePitch, this._fdPitch);
+                this.pitchLine.setAttribute("transform", "translate(0, " + lineY + ")");
             }
         }
         getLineLength() { return 140; }
