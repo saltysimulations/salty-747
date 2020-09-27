@@ -468,6 +468,9 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         var wa = this.ndInfo.querySelector("#Wind_Arrow");
         const sep = this.ndInfo.querySelector("#Wind_Separator");
 
+        //get waypoint track, name, dist, etc. 
+        var wpdata = this.ndInfo.querySelector("#WP_Data");
+
         if(IRSState != 2 || groundSpeed < 100) {
             showData = false; 
        }
@@ -485,9 +488,11 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
 
        if(IRSState != 2) {
            gs.textContent = "---";
+           wpdata.setAttribute("visibility", "hidden");
        }
        else {
            gs.textContent = groundSpeed.toString().padStart(3); 
+           wpdata.setAttribute("visibility", "visible"); 
        }
     }
     onExit() {
