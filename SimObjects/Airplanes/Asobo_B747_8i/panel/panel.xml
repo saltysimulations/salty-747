@@ -328,7 +328,7 @@
 
 		<Annunciation>
 		  <Type>Caution</Type>
-		  <Text>>FUEL TANK/ENG</Text>
+		  <Text>FUEL TANK/ENG</Text>
 		  <Condition>
 			<And>
 				<Or>
