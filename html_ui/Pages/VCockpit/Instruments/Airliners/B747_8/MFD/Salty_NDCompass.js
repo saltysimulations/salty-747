@@ -328,21 +328,27 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
             this.currentRefValue.setAttribute("display", "none");
             this.currentRefType.setAttribute("display", "none");
             this.currentRefMode.setAttribute("display", "none");
-            this.rotatingCircle.setAttribute("display", "none");
+            if (this.displayMode === Jet_NDCompass_Display.ARC) {
+                this.rotatingCircle.setAttribute("display", "none");
+            }
         }
         if (IRSState == 1) {
             this.currentRefValue.setAttribute("display", "");
             this.currentRefValue.textContent = "---";
             this.currentRefType.setAttribute("display", "");
             this.currentRefMode.setAttribute("display", "");
-            this.rotatingCircle.setAttribute("display", "");
+            if (this.displayMode === Jet_NDCompass_Display.ARC) {
+                this.rotatingCircle.setAttribute("display", "");
+            }
             this.trackingGroup.setAttribute("display", "none");
         }
         if (IRSState == 2) {
             this.currentRefValue.setAttribute("display", "");
             this.currentRefType.setAttribute("display", "");
             this.currentRefMode.setAttribute("display", "");
-            this.rotatingCircle.setAttribute("display", "");
+            if (this.displayMode === Jet_NDCompass_Display.ARC) {
+                this.rotatingCircle.setAttribute("display", "");
+            }
         }
     }
     constructArc_AS01B() {

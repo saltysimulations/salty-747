@@ -236,7 +236,7 @@ var Boeing_FMA;
             if (ApproachStatus.isRolloutActive) {
                 return 7;
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA) {
+            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (Simplane.getV2Airspeed() > 100 && Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF)) {
                 return 8;
             }
             if (SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 1) {
@@ -382,7 +382,7 @@ var Boeing_FMA;
                     return 4;
                 }
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA) {
+            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (Simplane.getV2Airspeed() > 100 && Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF)) {
                 return 6;
             }
             if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {

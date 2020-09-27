@@ -170,6 +170,17 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             return 18;
         return 19;
     }
+    getTakeOffFLapHandle(){
+        switch(this.getTakeOffFlap()){
+            case 0: return 0;
+            case 1: return 1;
+            case 5: return 2;
+            case 10: return 3;
+            case 20: return 4;
+            case 25: return 5;
+            case 30: return 6;
+        }
+    }
     _computeV1Speed() {
         let runwayCoef = 1.0;
         {
@@ -186,7 +197,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeightCoeff = (this.getWeight(true) - 550) / (1000 - 550);
         dWeightCoeff = Utils.Clamp(dWeightCoeff, 0, 1);
         dWeightCoeff = 0.73 + (1.13 - 0.73) * dWeightCoeff;
-        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
+        let flapsHandleIndex = this.getTakeOffFLapHandle();
         let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let index = this._getIndexFromTemp(temp);
         console.log("Index From Temp = " + index);
@@ -215,7 +226,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeightCoeff = (this.getWeight(true) - 550) / (1000 - 550);
         dWeightCoeff = Utils.Clamp(dWeightCoeff, 0, 1);
         dWeightCoeff = 0.8 + (1.22 - 0.8) * dWeightCoeff;
-        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
+        let flapsHandleIndex = this.getTakeOffFLapHandle();
         let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let index = this._getIndexFromTemp(temp);
         console.log("Index From Temp = " + index);
@@ -244,7 +255,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeightCoeff = (this.getWeight(true) - 550) / (1000 - 550);
         dWeightCoeff = Utils.Clamp(dWeightCoeff, 0, 1);
         dWeightCoeff = 0.93 + (1.26 - 0.93) * dWeightCoeff;
-        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
+        let flapsHandleIndex = this.getTakeOffFLapHandle();
         let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let index = this._getIndexFromTemp(temp);
         console.log("Index From Temp = " + index);

@@ -84,6 +84,10 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.trkBox = document.querySelector("#trk-box");
         this.mapBox = document.querySelector("#map-box");
         this.mapInstrument = document.querySelector("map-instrument");
+        this.irsTimes = document.querySelector("#irs-times");
+        this.leftIRSValue = document.querySelector("#l-irs-value");
+        this.centerIRSValue = document.querySelector("#c-irs-value");
+        this.rightIRSValue = document.querySelector("#r-irs-value");
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
@@ -91,19 +95,27 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.updateNDInfo(_deltaTime);
 
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        const IRSMinutesLeft = Math.floor(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60);
+
         if (IRSState == 0) {
             this.mapBox.style.display = "";
             this.trkBox.style.display = "";
+            this.irsTimes.style.display = "none";
             this.mapInstrument.style.display = "none";
         }
         if (IRSState == 1) {
             this.trkBox.style.display = "none";
             this.mapInstrument.style.display = "none";
+            this.irsTimes.style.display = "";
+            this.leftIRSValue.textContent = IRSMinutesLeft;
+            this.centerIRSValue.textContent = IRSMinutesLeft;
+            this.rightIRSValue.textContent = IRSMinutesLeft;
         }
         if (IRSState == 2) {
             this.mapBox.style.display = "none";
             this.trkBox.style.display = "none";
             this.mapInstrument.style.display = "";
+            this.irsTimes.style.display = "none";
         }
     }
     onEvent(_event) {
@@ -443,6 +455,40 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         if (this.ndInfo != null) {
             this.ndInfo.update(_deltaTime);
         }
+
+        var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        var showData; 
+        var groundSpeed = Math.round(Simplane.getGroundSpeed());
+        var gs = this.ndInfo.querySelector("#GS_Value");
+        const tas_text = this.ndInfo.querySelector("#TAS_Text");
+        var tas_val = this.ndInfo.querySelector("#TAS_Value");
+
+        var wd = this.ndInfo.querySelector("#Wind_Direction");
+        var ws = this.ndInfo.querySelector("#Wind_Strength");
+        var wa = this.ndInfo.querySelector("#Wind_Arrow");
+        const sep = this.ndInfo.querySelector("#Wind_Separator");
+
+        if(IRSState != 2 || groundSpeed < 100) {
+            showData = false; 
+       }
+       else {
+           showData = true;
+       }
+
+       tas_text.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       tas_val.setAttribute("visibility", (showData) ? "visible" : "hidden");
+
+       sep.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       wd.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       ws.setAttribute("visibility", (showData) ? "visible" : "hidden");
+       wa.setAttribute("visibility", (showData) ? "visible" : "hidden");
+
+       if(IRSState != 2) {
+           gs.textContent = "---";
+       }
+       else {
+           gs.textContent = groundSpeed.toString().padStart(3); 
+       }
     }
     onExit() {
     }
