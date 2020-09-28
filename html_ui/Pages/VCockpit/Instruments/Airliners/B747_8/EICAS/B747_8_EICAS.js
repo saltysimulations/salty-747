@@ -1,4 +1,28 @@
 class B747_8_EICAS extends Airliners.BaseEICAS {
+    init(){
+        super.init();
+        this.currentPage = "B747_8_EICAS_fuel";
+    }
+    onEvent(_event) {
+        super.onEvent(_event);
+        if(this.currentPage !== _event){
+            this.currentPage = _event;
+        }else{
+            this.changePage("BLANK");
+            this.currentPage = "blank";
+            return;
+        }
+        var prefix = this.getLowerScreenChangeEventNamePrefix();
+        if (_event.indexOf(prefix) >= 0) {
+            var pageName = _event.replace(prefix, "");
+            this.changePage(pageName);
+        }
+        else {
+            for (let i = 0; i < this.lowerScreenPages.length; i++) {
+                this.lowerScreenPages[i].onEvent(_event);
+            }
+        }
+    }
     get templateID() {
         return "B747_8_EICAS";
     }
@@ -17,6 +41,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.createLowerScreenPage("FCTL", "BottomScreen", "b747-8-lower-eicas-fctl");
         this.createLowerScreenPage("DRS", "BottomScreen", "b747-8-lower-eicas-drs");
         this.createLowerScreenPage("ELEC", "BottomScreen", "b747-8-lower-eicas-elec");
+        this.createLowerScreenPage("BLANK", "BottomScreen", "b747-8-lower-eicas-blank"); // To blank the bottom eicas when selecting same page again
     }
     getLowerScreenChangeEventNamePrefix() {
         return "EICAS_CHANGE_PAGE_";
