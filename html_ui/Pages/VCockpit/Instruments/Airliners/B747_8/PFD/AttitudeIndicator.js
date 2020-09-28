@@ -86,8 +86,8 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
             this.horizon_root.setAttribute("style", "position:absolute; z-index: -3; width: 100%; height:100%;");
             this.horizon_root.setAttribute("transform", "translate(0, 100)");
             this.appendChild(this.horizon_root);
-            this.horizonTopColor = "#135B82";
-            this.horizonBottomColor = "#726B31";
+            this.horizonTopColor = "#1469BC"; // #135B82
+            this.horizonBottomColor = "#764D17"; // #726B31
             this.horizon_top_bg = document.createElementNS(Avionics.SVG.NS, "rect");
             this.horizon_top_bg.setAttribute("fill", (this.horizonVisible) ? this.horizonTopColor : "transparent");
             this.horizon_top_bg.setAttribute("x", "-1000");
