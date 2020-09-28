@@ -17,8 +17,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js",
-            "size": 4175,
-            "date": 132455064194614780
+            "size": 5077,
+            "date": 132457847029957104
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.css",
@@ -108,12 +108,12 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
             "size": 11766,
-            "date": 132457834244764956
+            "date": 132457846996777864
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
             "size": 20898,
-            "date": 132457834244774966
+            "date": 132457846996787860
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_BaseNDCompass.js",
@@ -132,8 +132,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AttitudeIndicator.js",
-            "size": 41588,
-            "date": 132457834136110366
+            "size": 41285,
+            "date": 132457847029957104
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.css",
@@ -162,8 +162,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.js",
-            "size": 19125,
-            "date": 132457834136120370
+            "size": 18979,
+            "date": 132457847029967106
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/approach.FLT",
@@ -198,7 +198,7 @@
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/flight_model.cfg",
             "size": 41126,
-            "date": 132457834183172802
+            "date": 132457846996527798
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/hangar.flt",
@@ -223,12 +223,12 @@
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.cfg",
             "size": 2508,
-            "date": 132457834183182812
+            "date": 132457846996537800
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.xml",
             "size": 22031,
-            "date": 132457834183222808
+            "date": 132457846996547804
         },
         {
             "path": "ModelBehaviorDefs/Asobo/Airliner/Boeing.xml",
