@@ -13,6 +13,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
         this.horizonTopColor = "";
         this.horizonBottomColor = "";
         this.horizonVisible = true;
+        this.isHud = false;
         this._aircraft = Aircraft.A320_NEO;
     }
     static get dynamicAttributes() {
@@ -31,6 +32,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
     static get observedAttributes() {
         return this.dynamicAttributes.concat([
             "background",
+            "hud"
         ]);
     }
     get aircraft() {
@@ -73,7 +75,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
     construct_B747_8() {
         let pitchFactor = -6.5;
         this.pitchAngleFactor = pitchFactor;
-        this.horizonAngleFactor = pitchFactor * 1.2;
+        this.horizonAngleFactor = pitchFactor;
         {
             this.horizon_root = document.createElementNS(Avionics.SVG.NS, "svg");
             this.horizon_root.setAttribute("id", "Background");
@@ -106,7 +108,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.horizon_bottom_bg.setAttribute("height", "3000");
                 this.horizon_bottom.appendChild(this.horizon_bottom_bg);
                 let separator = document.createElementNS(Avionics.SVG.NS, "rect");
-                separator.setAttribute("fill", "#e0e0e0");
+                separator.setAttribute("fill", "white");
                 separator.setAttribute("x", "-1500");
                 separator.setAttribute("y", "-3");
                 separator.setAttribute("width", "3000");
@@ -404,16 +406,6 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
             this.slipSkidTriangle.setAttribute("transform", "rotate(" + this.bankAngle + ", 0, 0)");
         if (this.radioAltitude && this.radioAltitudeRotate)
             this.radioAltitude.setAttribute("transform", "rotate(" + this.bankAngle + ", 0, 0)");
-        if (this.horizon_top_bg) {
-            if (this.horizonVisible) {
-                this.horizon_top_bg.setAttribute("fill", this.horizonTopColor);
-                this.horizon_bottom_bg.setAttribute("fill", this.horizonBottomColor);
-            }
-            else {
-                this.horizon_top_bg.setAttribute("fill", "transparent");
-                this.horizon_bottom_bg.setAttribute("fill", "transparent");
-            }
-        }
         if (this.cj4_FlightDirector != null) {
             if (this.cj4_FlightDirectorActive) {
                 this.cj4_FlightDirector.setAttribute("transform", "rotate(" + (-this.cj4_FlightDirectorBank) + ") translate(0 " + ((this.pitchAngle - this.cj4_FlightDirectorPitch) * this.pitchAngleFactor) + ")");
@@ -440,11 +432,11 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
             case "slip_skid":
                 this.slipSkidValue = parseFloat(newValue);
                 break;
+            case "hud":
+                this.isHud = newValue == "true";
+                break;
             case "background":
-                if (newValue == "false")
-                    this.horizonVisible = false;
-                else
-                    this.horizonVisible = true;
+                this.horizonVisible = newValue == "true";
                 break;
             case "flight_director-active":
                 this.cj4_FlightDirectorActive = newValue == "true";
