@@ -21,6 +21,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         this.nbSecondaryGraduations = 1;
         this.totalGraduations = this.nbPrimaryGraduations + ((this.nbPrimaryGraduations - 1) * this.nbSecondaryGraduations);
         this.hudAPSpeed = 0;
+        this.isHud = false;
         this.altOver20k = false;
         this._aircraft = Aircraft.A320_NEO;
         this._computedIASAcceleration = 0;
@@ -33,6 +34,9 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         this._lastMaxSpeedOverrideTime = 0;
         this._smoothFactor = 0.5;
     }
+    static get observedAttributes() {
+        return ["hud"];
+    }
     get aircraft() {
         return this._aircraft;
     }
@@ -44,6 +48,15 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
     }
     connectedCallback() {
         this.construct();
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue == newValue)
+            return;
+        switch (name) {
+            case "hud":
+                this.isHud = newValue == "true";
+                break;
+        }
     }
     construct() {
         Utils.RemoveAllChildren(this);
