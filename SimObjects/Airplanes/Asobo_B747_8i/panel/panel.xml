@@ -334,11 +334,17 @@
 				<Or>
 					<LowerEqual>
 						<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
-						<Simvar name="FUEL TANK LEFT AUX QUANTITY" unit="gallon"/>
+						<Add>
+							<Simvar name="FUEL TANK LEFT AUX QUANTITY" unit="gallon"/>
+							<Simvar name="FUEL TANK LEFT TIP CAPACITY" unit="gallon"/>
+						</Add>
 			  		</LowerEqual>
 			  		<LowerEqual>
 						<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
-						<Simvar name="FUEL TANK RIGHT AUX QUANTITY" unit="gallon"/>
+						<Add>
+							<Simvar name="FUEL TANK RIGHT AUX QUANTITY" unit="gallon"/>
+							<Simvar name="FUEL TANK RIGHT TIP CAPACITY" unit="gallon"/>
+						</Add>
 			  		</LowerEqual>
 				</Or>
 				<Or>
