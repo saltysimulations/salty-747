@@ -1,3 +1,4 @@
+<ModelBehaviors>
 <Template Name="ASOBO_GT_Knob_Dummy_Boeing">
 	<DefaultTemplateParameters>
 		
@@ -523,9 +524,6 @@
 	
 	<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 		<NODE_ID>#LED_NODE_ID#</NODE_ID>
-		<EMISSIVE_CODE>
-			#GROUP_INDEX# -1 &gt; if{ (L:#CURRENT_BUTTON_VAR_NAME#) #GROUP_INDEX# == } els{ 0 }
-		</EMISSIVE_CODE>
 	</UseTemplate>
 </Template>
 
@@ -912,7 +910,7 @@
 
 <Template Name="ASOBO_BOEING_Push_EICAS_Template">
 	<DefaultTemplateParameters>
-		<NODE_ID>BTN_MAIN_PANEL_H_003</NODE_ID>
+		<NODE_ID>DISPLAY_Push_EICAS</NODE_ID>
 	</DefaultTemplateParameters>
 	<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
 		<SYSTEM_NAME>MFD</SYSTEM_NAME>
@@ -1084,8 +1082,8 @@
 		<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
 		<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
 		<ANIMTIP_2_ON_CURSOR>Hand</ANIMTIP_2_ON_CURSOR>
-		<ANIMTIP_0>ee %((L:XMLVAR_Mins_Selector_Baro, Bool))%{if}TT:COCKPIT.TOOLTIPS.MINSELECTOR_BARO_DEC%{else}TT:COCKPIT.TOOLTIPS.MINSELECTOR_RADIO_DEC%{end}</ANIMTIP_0>
-		<ANIMTIP_1>ee %((L:XMLVAR_Mins_Selector_Baro, Bool))%{if}TT:COCKPIT.TOOLTIPS.MINSELECTOR_BARO_INC%{else}TT:COCKPIT.TOOLTIPS.MINSELECTOR_RADIO_INC%{end}</ANIMTIP_1>
+		<ANIMTIP_0>%((L:XMLVAR_Mins_Selector_Baro, Bool))%{if}TT:COCKPIT.TOOLTIPS.MINSELECTOR_BARO_DEC%{else}TT:COCKPIT.TOOLTIPS.MINSELECTOR_RADIO_DEC%{end}</ANIMTIP_0>
+		<ANIMTIP_1>%((L:XMLVAR_Mins_Selector_Baro, Bool))%{if}TT:COCKPIT.TOOLTIPS.MINSELECTOR_BARO_INC%{else}TT:COCKPIT.TOOLTIPS.MINSELECTOR_RADIO_INC%{end}</ANIMTIP_1>
 		<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.MINSELECTOR_RST</ANIMTIP_2>
 		<WWISE_EVENT>autopilot_mins_knob</WWISE_EVENT>	
 		<Count>36</Count>
@@ -1142,3 +1140,4 @@
 		</UseTemplate>
 	</Component>
 </Template>
+</ModelBehaviors>
