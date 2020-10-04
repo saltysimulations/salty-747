@@ -11,7 +11,7 @@ class FMCPerfInitPage {
         };
         let grossWeightCell = "□□□.□";
         if (isFinite(fmc.getWeight(true))) {
-            grossWeightCell = fmc.getWeight(true).toFixed(0);
+            grossWeightCell = fmc.getWeight(true).toFixed(1);
         }
         fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
@@ -24,7 +24,7 @@ class FMCPerfInitPage {
         };
         let crzAltCell = "□□□□□";
         if (isFinite(fmc.cruiseFlightLevel)) {
-            crzAltCell = fmc.cruiseFlightLevel.toFixed(0);
+            crzAltCell = "FL" + fmc.cruiseFlightLevel.toFixed(0);
         }
         fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
@@ -50,9 +50,9 @@ class FMCPerfInitPage {
         };
         let costIndex = "□□□";
         if (fmc.costIndex) {
-            costIndex = fmc.costIndex + "[color]blue";
+            costIndex = fmc.costIndex + "[color]white";
         }
-        fmc.onLeftInput[4] = () => {
+        fmc.onRightInput[1] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (fmc.tryUpdateCostIndex(value)) {
