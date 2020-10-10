@@ -1,0 +1,12 @@
+<ModelBehaviors>
+	<!-- Generic templates (GT) -->
+
+	<Include RelativeFile="Helpers.xml"/>
+	<Include RelativeFile="Interactions.xml"/>
+	<Include RelativeFile="Updates.xml"/>
+	<Include RelativeFile="Visibility.xml"/>
+	<Include RelativeFile="Emissive.xml"/>
+	<Include RelativeFile="AnimationTriggers.xml"/>
+	<Include RelativeFile="Animations.xml"/>
+	<Include RelativeFile="Complex\\Index.xml"/>
+</ModelBehaviors>

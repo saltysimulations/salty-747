@@ -1,0 +1,10 @@
+<ModelBehaviors>
+	<!-- Generic templates (GT) / Complex templates -->
+
+	<Include RelativeFile="Joystick.xml"/>
+	<Include RelativeFile="Knob.xml"/>
+	<Include RelativeFile="Lever.xml"/>
+	<Include RelativeFile="PushButton.xml"/>
+	<Include RelativeFile="Switch.xml"/>
+	<Include RelativeFile="Misc.xml"/>
+</ModelBehaviors>

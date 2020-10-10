@@ -1,0 +1,38 @@
+﻿<script type="text/html" id="B747_8_SAI">
+    <div id="Mainframe">
+        <div id="Electricity" state="off">
+            <glasscockpit-highlight id="Highlight" style="position:absolute; width: 100%; height:100%;"></glasscockpit-highlight>
+            <b747-8-sai-altimeter-indicator id="Altimeter"></b747-8-sai-altimeter-indicator>
+            <b747-8-sai-airspeed-indicator id="Airspeed"></b747-8-sai-airspeed-indicator>
+            <b747-8-sai-attitude-indicator id="Horizon" background="true"></b747-8-sai-attitude-indicator>
+            <b747-8-sai-compass-background id="CompassBackground"></b747-8-sai-compass-background>
+            <b747-8-sai-hsindicator id="Compass"></b747-8-sai-hsindicator>
+            <b747-8-sai-baro-indicator id="Baro"></b747-8-sai-baro-indicator>
+        </div>
+    </div>
+</script>
+
+<link rel="stylesheet" href="B747_8_SAI.css" />
+
+<script type="text/html" import-script="/JS/SimPlane.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Templates/Highlight/highlight.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlan.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlanManager.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Waypoint.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/NearestWaypoint.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Approach.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Runway.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/GeoCalc.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SelectableElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/NavSystem.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/BaseAirliners.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/PFD/HSIndicator.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/SAI/B747_8_SAI.js"></script>
