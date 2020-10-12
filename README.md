@@ -14,6 +14,8 @@ To install, simply clone the master branch, and copy the "salty-747-master" fold
   * FCTL EICAS Synoptic Page
   * ELEC EICAS Synoptic Page
   * STAT EICAS Synoptic Page [Semi-functional, mostly visual] WIP
+* ### PFD
+  * PFD Colors Adjusted
 * ### FMC
   * "Salty Options" page under MENU in FMC
     * IRS Instant Align Option
@@ -21,6 +23,7 @@ To install, simply clone the master branch, and copy the "salty-747-master" fold
   * Various FMA fixes
 * ### Flight Model and Engines
   * Improved fuel consumption rate
+  * Improved fuel tank logic
 * ### Miscellaneous
   * Aircond Knobs Functional
   
