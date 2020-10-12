@@ -25,13 +25,12 @@ var B747_8_LowerEICAS_GEAR;
             if ((GearDoorsOpen == 1) || (GearAnimClosed == 0)) {
             	this.gearDoorOpenLines.style.visibility = "hidden";
             	this.gearDoorClosedText.style.visibility = "visible";
-       	    } else {
+            } else {
             	this.gearDoorOpenLines.style.visibility = "visible";   
             	this.gearDoorClosedText.style.visibility = "hidden";
             }
-      	}
+        }
     }
-    
     B747_8_LowerEICAS_GEAR.Display = Display;
 })(B747_8_LowerEICAS_GEAR || (B747_8_LowerEICAS_GEAR = {}));
 customElements.define("b747-8-lower-eicas-gear", B747_8_LowerEICAS_GEAR.Display);
