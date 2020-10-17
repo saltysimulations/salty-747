@@ -93,6 +93,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         super.onUpdate(_deltaTime);
         this.updateMap(_deltaTime);
         this.updateNDInfo(_deltaTime);
+        this.updateAltitudeRangeArc(_deltaTime);
 
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
         const IRSMinutesLeft = Math.floor(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60);
@@ -304,6 +305,93 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.info.showSymbol(B747_8_ND_Symbol.STA, this.map.instrument.showNDBs);
         this.info.showSymbol(B747_8_ND_Symbol.WPT, this.map.instrument.showIntersections);
         this.info.showSymbol(B747_8_ND_Symbol.ARPT, this.map.instrument.showAirports);
+    }
+    updateAltitudeRangeArc(_deltaTime) {
+        if ((SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") == 2)) {
+            let arcDeltaAlt = Math.abs(((SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR", "feet")) - (SimVar.GetSimVarValue("PLANE ALTITUDE", "feet"))));
+            let arcVerticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
+            let arcGroundSpeed = (SimVar.GetSimVarValue("GPS GROUND SPEED", "meters per second") * 3.28084);
+            let arcFPA = Math.atan(arcVerticalSpeed / arcGroundSpeed);
+            let distanceToLevelArc = ((arcDeltaAlt / Math.tan(arcFPA)) * 0.000164579);
+            let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
+            switch(mapRange) {
+                case 0:
+                    mapRange = 0.25;
+                    break;
+                case 1:
+                    mapRange = 0.5;
+                    break;
+                case 2:
+                    mapRange = 1;
+                    break;
+                case 3:
+                    mapRange = 2;
+                    break;
+                case 4:
+                    mapRange = 5;
+                    break;
+                case 5:
+                    mapRange = 10;
+                    break;
+                case 6:
+                    mapRange = 20;
+                    break;
+                case 7:
+                    mapRange = 40;
+                    break;
+                case 8:
+                    mapRange = 80;
+                    break;
+                case 9:
+                    mapRange = 160;
+                    break;
+                case 10:
+                    mapRange = 320;
+                    break;
+                case 11:
+                    mapRange = 640;
+                    break;
+            }
+            let arcYcoord = 470 - ((distanceToLevelArc / mapRange) * 470);
+            let arcXscalar = Math.abs(arcYcoord * 0.005);
+            this.greenArc = document.querySelector("#altitudeRangeArc");
+            //this.greenArc.setAttribute("transform", `scale(${arcXscalar}, 1)`);
+            this.greenArc.setAttribute("d", `M ${Math.min(-60, (1 - (arcYcoord / 470)) * -150)} 50, Q 0 0, ${Math.max(60, (1 - (arcYcoord / 470)) * 150)} 50`)
+
+
+
+            this.greenArc.setAttribute("transform", `translate(0, ${arcYcoord})`);
+            //this.greenArc.style.transformOrigin  ="300, 0";            
+
+            //this.greenArc.style.transformOrigin  ="0, 0";  
+
+
+            if((arcYcoord > 470) || (arcYcoord <= 56) || (arcDeltaAlt <= 100)){
+                this.greenArc.style.visibility ="hidden";
+            }
+            else{ 
+                this.greenArc.style.visibility ="visible";
+            }
+
+            this.debug1 = document.querySelector("#debug1");
+            this.debug2 = document.querySelector("#debug2");
+            this.debug3 = document.querySelector("#debug3");
+            this.debug4 = document.querySelector("#debug4");
+            this.debug5 = document.querySelector("#debug5");
+            this.debug6 = document.querySelector("#debug6");
+            this.debug7 = document.querySelector("#debug7");
+            this.debug8 = document.querySelector("#debug8");
+
+            this.debug1.textContent = "DELTA ALT " + arcDeltaAlt;
+            this.debug2.textContent = "VS " + arcVerticalSpeed;
+            this.debug3.textContent = "GS " + arcGroundSpeed;
+            this.debug4.textContent = "FPA " + arcFPA;
+            this.debug5.textContent = "DISTANCE TO GO " + distanceToLevelArc;
+            this.debug6.textContent = "MAP RANGE " + mapRange;
+            this.debug7.textContent = "ARC Y " + arcYcoord;
+            this.debug8.textContent = "ARC X " + arcXscalar;
+
+        }
     }
 }
 class B747_8_MFD_Compass extends NavSystemElement {
