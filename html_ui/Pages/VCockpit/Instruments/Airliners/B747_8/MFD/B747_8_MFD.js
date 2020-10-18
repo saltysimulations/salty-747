@@ -124,6 +124,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             case "KNOB_AUTOPILOT_CTR":
                 if (this.mapMode != Jet_NDCompass_Display.PLAN) {
                     this.mapIsCentered = !this.mapIsCentered;
+                    SimVar.SetSimVarValue("L:BTN_CTR_ACTIVE", "bool", this.mapIsCentered);
                     this.forceMapUpdate = true;
                 }
                 break;
@@ -308,8 +309,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
     }
     updateAltitudeRangeArc(_deltaTime) {
         this.greenArc = document.querySelector("#altitudeRangeArc");
-        if ((SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") == 2)) {   
-
+        if (((SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") == 2)) && (SimVar.GetSimVarValue("RADIO HEIGHT", "feet") >= 100)){   
             //Get SimVars for arc position calculation - speeds in feet per second
             let arcDeltaAlt = Math.abs((Simplane.getAutoPilotDisplayedAltitudeLockValue()) - (Simplane.getAltitude()));
             let arcVerticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
@@ -352,42 +352,25 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 case 11:
                     mapRange = 640;
                     break;
-            }
-                 
+            }              
             //Calculate arc position and generate Y coord
             let arcFPA = Math.atan(arcVerticalSpeed / arcGroundSpeed);
-            let distanceToLevelArc = Math.abs(((arcDeltaAlt / Math.tan(arcFPA)) * 0.000164579));
+            let distanceToLevelArc = Math.abs(((arcDeltaAlt / Math.tan(arcFPA)) * 0.000164579)); //Feet to Nautical Miles
             let arcYcoord = 600 - ((distanceToLevelArc / mapRange) * 600);
-
-            //Transform arc element - Scales X down linearly with Y until minimum width 120px - Translates in Y axis corrected for compass height 414px with 56px offset
-            this.greenArc.setAttribute("d", `M ${Math.min(-60, (1 - (arcYcoord / 414)) * -150)} 50, Q 0 0, ${Math.max(60, (1 - (arcYcoord / 414)) * 150)} 50`);
-            this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 414 / 600) + 56)})`);
-            
+            //Check if map is centred - Translates in Y axis corrected for usable compass height 414/215px with 56/85px offset for uncentred/centred map
+            if ((SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool")) == 0){
+                this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 414 / 600) + 56)})`);
+            }           
+            else{
+                this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 215 / 600) + 85)})`);
+            }           
             //Hides arc if out of compass bounds or aircraft considered at desired level
             if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAlt <= 100)){
                 this.greenArc.style.visibility ="hidden";
             }
             else{ 
-                this.greenArc.style.visibility ="visible";
+            this.greenArc.style.visibility ="visible";
             }
-
-            this.debug1 = document.querySelector("#debug1");
-            this.debug2 = document.querySelector("#debug2");
-            this.debug3 = document.querySelector("#debug3");
-            this.debug4 = document.querySelector("#debug4");
-            this.debug5 = document.querySelector("#debug5");
-            this.debug6 = document.querySelector("#debug6");
-            this.debug7 = document.querySelector("#debug7");
-            this.debug8 = document.querySelector("#debug8");
-
-            /*this.debug1.textContent = "DELTA ALT " + arcDeltaAlt;
-            this.debug2.textContent = "VS " + arcVerticalSpeed;
-            this.debug3.textContent = "GS " + arcGroundSpeed;
-            this.debug4.textContent = "FPA " + arcFPA;
-            this.debug5.textContent = "DISTANCE TO GO " + distanceToLevelArc;
-            this.debug6.textContent = "MAP RANGE " + mapRange;
-            this.debug7.textContent = "ARC Y " + arcYcoord;
-            this.debug8.textContent = "ARC X ";*/
         }
         else{ 
             this.greenArc.style.visibility ="hidden";
