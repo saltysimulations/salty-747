@@ -311,7 +311,8 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.greenArc = document.querySelector("#altitudeRangeArc");
         if (((SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") == 2)) && (SimVar.GetSimVarValue("RADIO HEIGHT", "feet") >= 100)){   
             //Get SimVars for arc position calculation - speeds in feet per second
-            let arcDeltaAlt = Math.abs((Simplane.getAutoPilotDisplayedAltitudeLockValue()) - (Simplane.getAltitude()));
+            let arcDeltaAlt = (Simplane.getAutoPilotDisplayedAltitudeLockValue()) - (Simplane.getAltitude());
+            let arcDeltaAltMagnitude = Math.abs(arcDeltaAlt);
             let arcVerticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
             let arcGroundSpeed = (SimVar.GetSimVarValue("GPS GROUND SPEED", "meters per second") * 3.28084);
             let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
@@ -355,21 +356,21 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             }              
             //Calculate arc position and generate Y coord
             let arcFPA = Math.atan(arcVerticalSpeed / arcGroundSpeed);
-            let distanceToLevelArc = Math.abs(((arcDeltaAlt / Math.tan(arcFPA)) * 0.000164579)); //Feet to Nautical Miles
+            let distanceToLevelArc = Math.abs(((arcDeltaAltMagnitude / Math.tan(arcFPA)) * 0.000164579)); //Feet to Nautical Miles
             let arcYcoord = 600 - ((distanceToLevelArc / mapRange) * 600);
-            //Check if map is centred - Translates in Y axis corrected for usable compass height 414/215px with 56/85px offset for uncentred/centred map
+            //Check if map is centred - Translates arc in Y axis - corrected for usable compass height 414/215px with 56/90px offset for uncentred/centred map
             if ((SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool")) == 0){
                 this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 414 / 600) + 56)})`);
             }           
             else{
-                this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 215 / 600) + 85)})`);
+                this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 210 / 600) + 90)})`);
             }           
-            //Hides arc if out of compass bounds or aircraft considered at desired level
-            if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAlt <= 100)){
+            //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
+            if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 100) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))){
                 this.greenArc.style.visibility ="hidden";
             }
             else{ 
-            this.greenArc.style.visibility ="visible";
+                this.greenArc.style.visibility ="visible";
             }
         }
         else{ 
