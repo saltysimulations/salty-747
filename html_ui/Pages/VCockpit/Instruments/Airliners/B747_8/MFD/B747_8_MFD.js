@@ -307,12 +307,13 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.info.showSymbol(B747_8_ND_Symbol.ARPT, this.map.instrument.showAirports);
     }
     updateAltitudeRangeArc(_deltaTime) {
-        if ((SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") == 2)) {
-            let arcDeltaAlt = Math.abs(((SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR", "feet")) - (SimVar.GetSimVarValue("PLANE ALTITUDE", "feet"))));
+        this.greenArc = document.querySelector("#altitudeRangeArc");
+        if ((SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") == 2)) {   
+
+            //Get SimVars for arc position calculation - speeds in feet per second
+            let arcDeltaAlt = Math.abs((Simplane.getAutoPilotDisplayedAltitudeLockValue()) - (Simplane.getAltitude()));
             let arcVerticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
             let arcGroundSpeed = (SimVar.GetSimVarValue("GPS GROUND SPEED", "meters per second") * 3.28084);
-            let arcFPA = Math.atan(arcVerticalSpeed / arcGroundSpeed);
-            let distanceToLevelArc = ((arcDeltaAlt / Math.tan(arcFPA)) * 0.000164579);
             let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
             switch(mapRange) {
                 case 0:
@@ -352,21 +353,18 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                     mapRange = 640;
                     break;
             }
-            let arcYcoord = 470 - ((distanceToLevelArc / mapRange) * 470);
-            let arcXscalar = Math.abs(arcYcoord * 0.005);
-            this.greenArc = document.querySelector("#altitudeRangeArc");
-            //this.greenArc.setAttribute("transform", `scale(${arcXscalar}, 1)`);
-            this.greenArc.setAttribute("d", `M ${Math.min(-60, (1 - (arcYcoord / 470)) * -150)} 50, Q 0 0, ${Math.max(60, (1 - (arcYcoord / 470)) * 150)} 50`)
+                 
+            //Calculate arc position and generate Y coord
+            let arcFPA = Math.atan(arcVerticalSpeed / arcGroundSpeed);
+            let distanceToLevelArc = Math.abs(((arcDeltaAlt / Math.tan(arcFPA)) * 0.000164579));
+            let arcYcoord = 600 - ((distanceToLevelArc / mapRange) * 600);
 
-
-
-            this.greenArc.setAttribute("transform", `translate(0, ${arcYcoord})`);
-            //this.greenArc.style.transformOrigin  ="300, 0";            
-
-            //this.greenArc.style.transformOrigin  ="0, 0";  
-
-
-            if((arcYcoord > 470) || (arcYcoord <= 56) || (arcDeltaAlt <= 100)){
+            //Transform arc element - Scales X down linearly with Y until minimum width 120px - Translates in Y axis corrected for compass height 414px with 56px offset
+            this.greenArc.setAttribute("d", `M ${Math.min(-60, (1 - (arcYcoord / 414)) * -150)} 50, Q 0 0, ${Math.max(60, (1 - (arcYcoord / 414)) * 150)} 50`);
+            this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 414 / 600) + 56)})`);
+            
+            //Hides arc if out of compass bounds or aircraft considered at desired level
+            if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAlt <= 100)){
                 this.greenArc.style.visibility ="hidden";
             }
             else{ 
@@ -382,15 +380,17 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             this.debug7 = document.querySelector("#debug7");
             this.debug8 = document.querySelector("#debug8");
 
-            this.debug1.textContent = "DELTA ALT " + arcDeltaAlt;
+            /*this.debug1.textContent = "DELTA ALT " + arcDeltaAlt;
             this.debug2.textContent = "VS " + arcVerticalSpeed;
             this.debug3.textContent = "GS " + arcGroundSpeed;
             this.debug4.textContent = "FPA " + arcFPA;
             this.debug5.textContent = "DISTANCE TO GO " + distanceToLevelArc;
             this.debug6.textContent = "MAP RANGE " + mapRange;
             this.debug7.textContent = "ARC Y " + arcYcoord;
-            this.debug8.textContent = "ARC X " + arcXscalar;
-
+            this.debug8.textContent = "ARC X ";*/
+        }
+        else{ 
+            this.greenArc.style.visibility ="hidden";
         }
     }
 }
