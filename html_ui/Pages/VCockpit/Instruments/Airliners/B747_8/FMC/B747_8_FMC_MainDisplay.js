@@ -530,7 +530,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this.doActivateVNAV();
                 }
             }
-            if (currentApMasterStatus && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
+            if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
                 let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
                 let deltaAltitude = Math.abs(targetAltitude - altitude);
@@ -686,6 +686,14 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                             this.flightPlanManager.setActiveWaypointIndex(this.flightPlanManager.getActiveWaypointIndex() + 1);
                         }
                     }
+                }
+            }
+            if (this.getIsVNAVActive()) {
+                let altitude = Simplane.getAltitude();
+                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue("feets");
+                let delta = Math.abs(targetAltitude - altitude);
+                if (delta > 400) {
+                    this.activateAltitudeSel();
                 }
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
