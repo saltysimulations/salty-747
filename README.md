@@ -13,12 +13,16 @@ To install, simply clone the master branch, and copy the "salty-747-master" fold
   * DRS EICAS Synoptic Page
   * FCTL EICAS Synoptic Page
   * ELEC EICAS Synoptic Page
-  * STAT EICAS Synoptic Page [Semi-functional, mostly visual] WIP
+  * Semi-Functional GEAR EICAS Synoptic Page
+  * Semi-Functional STAT EICAS Synoptic Page
+* ### ND
+  * Green arc predicting altitude during climb / descent
 * ### PFD
   * PFD Colors Adjusted
 * ### FMC
   * "Salty Options" page under MENU in FMC
     * IRS Instant Align Option
+  * Some values that couldn't be entered can now be entered (e.g Cost Index)
 * ### FMA
   * Various FMA fixes
 * ### Flight Model and Engines
