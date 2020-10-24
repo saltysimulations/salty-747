@@ -830,11 +830,11 @@
 					<ANIM_CODE>100</ANIM_CODE>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="Salty_Generic_Knob">
 					<NODE_ID>btn_passenger_signs04</NODE_ID>
 					<ANIM_NAME>btn_passenger_signs04</ANIM_NAME>
-					<ANIM_CODE>100</ANIM_CODE>
-					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
+					<KNOB_POSITION_VAR>SALTY_KNOB_SEATBELT</KNOB_POSITION_VAR>
+					<KNOB_NUM_STATE>2</KNOB_NUM_STATE>
 				</UseTemplate>
 			</Component>
 			<CameraTitle>Instruments07</CameraTitle>
@@ -3776,9 +3776,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_passenger_signs00</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_passenger_signs04</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_passenger_signs02</NODE_ID>
