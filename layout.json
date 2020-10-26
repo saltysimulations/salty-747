@@ -103,7 +103,7 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
             "size": 36313,
-            "date": 132477754977940648
+            "date": 132482185937401766
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayPages.js",
@@ -128,7 +128,7 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
             "size": 9919,
-            "date": 132477747887520538
+            "date": 132482186022629500
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
@@ -208,7 +208,7 @@
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/engines.cfg",
             "size": 7130,
-            "date": 132477754977930650
+            "date": 132482185936616578
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/final.FLT",
@@ -218,7 +218,7 @@
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/flight_model.cfg",
             "size": 43949,
-            "date": 132477754978010664
+            "date": 132482185936666588
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/hangar.flt",
@@ -237,8 +237,8 @@
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
-            "size": 187275,
-            "date": 132477754977940648
+            "size": 187151,
+            "date": 132482186024496978
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.cfg",
@@ -251,9 +251,19 @@
             "date": 132477747887490530
         },
         {
+            "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS",
+            "size": 4194432,
+            "date": 132482186022619500
+        },
+        {
+            "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS.json",
+            "size": 102,
+            "date": 132482186022619500
+        },
+        {
             "path": "ModelBehaviorDefs/Asobo/Airliner/Boeing.xml",
-            "size": 45356,
-            "date": 132477731234059358
+            "size": 46397,
+            "date": 132482186022519476
         }
     ]
 }
