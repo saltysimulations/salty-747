@@ -542,13 +542,40 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
 
         //get waypoint track, name, dist, etc. 
         var wpdata = this.ndInfo.querySelector("#WP_Data");
-
+        //get Waypoint ETA in Zulu
+        this.zuluETA = document.querySelector("#WP_ZuluTime");
+        this.zuluETA.textContent = "------Z";
+        var utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
+        if (Simplane.getNextWaypointName() && (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0)){
+            var wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
+            var utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
+            const hours = Math.floor(utcETA / 3600);
+            const minutes = Math.floor((utcETA % 3600) / 60);
+            const tenths = Math.floor((utcETA % 3600) / 600);
+            this.zuluETA.textContent = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}.${tenths.toString().padStart(1, "0")}Z`;
+        }
+        //get Zulu Time
+        this.zuluClock = document.querySelector("#ZuluClock_Time");
+        var seconds = Number.parseInt(utcTime);
+        var time = Utils.SecondsToDisplayTime(seconds, true, true, false);
+        this.zuluClock.textContent = time.toString();
+        //get Distance to Waypoint
+        this.waypointDistance = document.querySelector("#WP_Distance_Value");
+        this.waypointDistance.textContent = "---"
+        if (Simplane.getNextWaypointName()){
+            var nextWaypointDistance = Simplane.getNextWaypointDistance();
+            if(nextWaypointDistance > 100){
+                this.waypointDistance.textContent = nextWaypointDistance.toFixed(0);
+            } else{
+                this.waypointDistance.textContent = nextWaypointDistance.toFixed(1);
+            }
+        }
         if(IRSState != 2 || groundSpeed < 100) {
             showData = false; 
-       }
-       else {
+        }
+        else {
            showData = true;
-       }
+        }
 
        tas_text.setAttribute("visibility", (showData) ? "visible" : "hidden");
        tas_val.setAttribute("visibility", (showData) ? "visible" : "hidden");
