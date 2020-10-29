@@ -227,6 +227,7 @@ class Boeing_FMC extends FMCMainDisplay {
     deactivateVNAV() {
         this._isVNAVArmed = false;
         this._isVNAVActive = false;
+        this._pendingVNAVActivation = false;
         SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
         this.deactivateSpeedIntervention();
@@ -433,13 +434,25 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     activateAltitudeHold() {
         if (this.getIsVNAVActive()) {
-            this._onAltitudeHoldDeactivate = () => { this.activateVNAV(); };
+            this._onAltitudeHoldDeactivate = () => {
+                if (!Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
+                    this.activateVNAV();
+                }
+            };
         }
         if (this.getIsFLCHActive()) {
-            this._onAltitudeHoldDeactivate = () => { this.activateFLCH(); };
+            this._onAltitudeHoldDeactivate = () => {
+                if (!Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
+                    this.activateFLCH();
+                }
+            };
         }
         if (this.getIsVSpeedActive()) {
-            this._onAltitudeHoldDeactivate = () => { this.activateVSpeed(); };
+            this._onAltitudeHoldDeactivate = () => {
+                if (!Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
+                    this.activateVSpeed();
+                }
+            };
         }
         this.deactivateVNAV();
         this.deactivateFLCH();

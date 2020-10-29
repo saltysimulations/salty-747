@@ -332,8 +332,7 @@ class BaseInstrument extends TemplateElement {
                     if (!this._isInitialized)
                         this.Init();
                     this.beforeUpdate();
-                    if (this.CanUpdate())
-                        this.Update();
+                    this.Update();
                     this.afterUpdate();
                 }
             }
