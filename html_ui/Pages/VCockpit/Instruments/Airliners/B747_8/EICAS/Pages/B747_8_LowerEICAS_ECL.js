@@ -11,9 +11,9 @@ var B747_8_LowerEICAS_ECL;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.isInitialised = true;
             this.allChecklists = document.querySelector("#all-checklists");
-            this.allChecklists.style.visibility = "hidden";   
+            this.allChecklists.style.visibility = "hidden";
+            this.isInitialised = true;   
         }
         update(_deltaTime) {
             if (!this.isInitialised) {
@@ -21,32 +21,8 @@ var B747_8_LowerEICAS_ECL;
             }
             var currentChecklist = this.getActiveChecklist();
             this.drawChecklist(currentChecklist);
-            this.updateCursorPosition();    
-        }
-        
-        /*initialiseCurrentChecklist(){
-            let flightPhase = Simplane.getCurrentFlightPhase();
-            if(flightPhase == FlightPhase.FLIGHT_PHASE_PREFLIGHT){
-                let currentChecklist = "preflight-checklist";
-                return currentChecklist;
-            } else if (flightPhase == FlightPhase.FLIGHT_PHASE_TAXI){
-                let currentChecklist = "before-taxi-checklist";
-                return currentChecklist;
-            } else if (flightPhase == FlightPhase.FLIGHT_PHASE_TAKEOFF){
-                let currentChecklist = "before-takeoff-checklist";
-                return currentChecklist;
-            } else if (flightPhase == FlightPhase.FLIGHT_PHASE_CLIMB){
-                let currentChecklist = "after-takeoff-checklist";
-                return currentChecklist;
-            } else if (flightPhase == FlightPhase.FLIGHT_PHASE_CRUISE || FlightPhase.FLIGHT_PHASE_DESCENT){
-                let currentChecklist = "descent-checklist";
-                return currentChecklist;
-            } else if (flightPhase == FlightPhase.FLIGHT_PHASE_APPROACH){
-                let currentChecklist = "landing-checklist";
-                return currentChecklist;
-            } 
-        }*/
-        
+            this.updateCursorPosition(currentChecklist);    
+        }        
         getActiveChecklist(){
             if(SimVar.GetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool") == 0){
                 let currentChecklist = "preflight-checklist";
@@ -80,15 +56,17 @@ var B747_8_LowerEICAS_ECL;
                 return currentChecklist;
             }
         }
-
-
         drawChecklist(checklistToDraw){
             this.currentChecklist = document.querySelector(`#${checklistToDraw}`);
             this.allChecklists.style.visibility = "hidden";   
             this.currentChecklist.style.visibility = "visible";
             return;
         }
-        updateCursorPosition(){
+        updateCursorPosition(checklistToDraw){
+            this.text = document.querySelector("#change");
+            var cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
+            this.currentChecklistCursor = document.querySelector(`#${checklistToDraw}${cursorIndex}`);
+            this.currentChecklistCursor.style.outline = "2px solid magenta";
             return;
         }
     }

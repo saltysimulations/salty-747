@@ -25,3 +25,8 @@ b747-8-lower-eicas-ecl {
     font-size: 17px; }
   b747-8-lower-eicas-ecl rect {
     fill: #53536c; }
+  b747-8-lower-eicas-ecl #preflight-checklist-cursor-rects {
+    stroke: #ff00ff;
+    stroke-width: 2.0;
+    fill-opacity: 0;
+  }
