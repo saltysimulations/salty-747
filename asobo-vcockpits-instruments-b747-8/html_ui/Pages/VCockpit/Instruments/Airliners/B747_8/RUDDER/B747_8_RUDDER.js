@@ -49,8 +49,8 @@ class B747_8_RUDDER extends BaseAirliners {
     disconnectedCallback() {
         super.disconnectedCallback();
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
         if (this.arrow != null) {
             var value = SimVar.GetSimVarValue("RUDDER TRIM", "degrees");
             if (this.currentValue != value) {

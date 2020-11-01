@@ -12,7 +12,11 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
         this.locVisible = false;
         this.gsVisible = false;
         this.infoVisible = false;
+        this.isHud = false;
         this._aircraft = Aircraft.A320_NEO;
+    }
+    static get observedAttributes() {
+        return ["hud"];
     }
     get aircraft() {
         return this._aircraft;
@@ -25,6 +29,15 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
     }
     connectedCallback() {
         this.construct();
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue == newValue)
+            return;
+        switch (name) {
+            case "hud":
+                this.isHud = newValue == "true";
+                break;
+        }
     }
     construct() {
         Utils.RemoveAllChildren(this);
@@ -41,6 +54,9 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
         else {
             this.construct_A320_Neo();
         }
+        this.showGlideslope(this.gsVisible);
+        this.showLocalizer(this.locVisible);
+        this.showNavInfo(this.infoVisible);
     }
     construct_CJ4() {
         var posX = 0;
@@ -409,21 +425,23 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
         this.centerGroup.setAttribute("transform", "translate(100 80) scale(0.6)");
         this.rootSVG.appendChild(this.centerGroup);
         {
-            posX = 405;
-            posY = 52;
+            posX = (this.isHud) ? 500 : 405;
+            posY = (this.isHud) ? 152 : 52;
             width = 35;
             height = 275;
             this.gs_mainGroup = document.createElementNS(Avionics.SVG.NS, "g");
             this.gs_mainGroup.setAttribute("id", "GlideSlopeGroup");
             {
-                let bg = document.createElementNS(Avionics.SVG.NS, "rect");
-                bg.setAttribute("x", posX.toString());
-                bg.setAttribute("y", posY.toString());
-                bg.setAttribute("width", width.toString());
-                bg.setAttribute("height", height.toString());
-                bg.setAttribute("fill", "black");
-                bg.setAttribute("fill-opacity", "0.3");
-                this.gs_mainGroup.appendChild(bg);
+                if (!this.isHud) {
+                    let bg = document.createElementNS(Avionics.SVG.NS, "rect");
+                    bg.setAttribute("x", posX.toString());
+                    bg.setAttribute("y", posY.toString());
+                    bg.setAttribute("width", width.toString());
+                    bg.setAttribute("height", height.toString());
+                    bg.setAttribute("fill", "black");
+                    bg.setAttribute("fill-opacity", "0.3");
+                    this.gs_mainGroup.appendChild(bg);
+                }
                 let rangeFactor = 0.85;
                 let nbCircles = 2;
                 this.gs_cursorMinY = posY + (height * 0.5) + (rangeFactor * height * 0.5);
@@ -437,7 +455,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     circle.setAttribute("cy", y.toString());
                     circle.setAttribute("r", "5");
                     circle.setAttribute("fill", "none");
-                    circle.setAttribute("stroke", "white");
+                    circle.setAttribute("stroke", (this.isHud) ? "lime" : "white");
                     circle.setAttribute("stroke-width", "2");
                     this.gs_mainGroup.appendChild(circle);
                     y = posY + (height * 0.5) - ((rangeFactor * height * 0.5) * (i + 1)) / nbCircles;
@@ -446,7 +464,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     circle.setAttribute("cy", y.toString());
                     circle.setAttribute("r", "5");
                     circle.setAttribute("fill", "none");
-                    circle.setAttribute("stroke", "white");
+                    circle.setAttribute("stroke", (this.isHud) ? "lime" : "white");
                     circle.setAttribute("stroke-width", "2");
                     this.gs_mainGroup.appendChild(circle);
                 }
@@ -458,11 +476,11 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     let x = 12;
                     let y = 20;
                     this.gs_cursorShapeUp = document.createElementNS(Avionics.SVG.NS, "path");
-                    this.gs_cursorShapeUp.setAttribute("fill", "#FF0CE2");
+                    this.gs_cursorShapeUp.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
                     this.gs_cursorShapeUp.setAttribute("d", "M " + (-x) + " 0 L0 " + (-y) + " L" + (x) + " 0 Z");
                     this.gs_cursorGroup.appendChild(this.gs_cursorShapeUp);
                     this.gs_cursorShapeDown = document.createElementNS(Avionics.SVG.NS, "path");
-                    this.gs_cursorShapeDown.setAttribute("fill", "#FF0CE2");
+                    this.gs_cursorShapeDown.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
                     this.gs_cursorShapeDown.setAttribute("d", "M " + (-x) + " 0 L0 " + (y) + " L" + (x) + " 0 Z");
                     this.gs_cursorGroup.appendChild(this.gs_cursorShapeDown);
                 }
@@ -472,7 +490,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                 neutralLine.setAttribute("y1", (posY + height * 0.5).toString());
                 neutralLine.setAttribute("x2", (posX + width - 5).toString());
                 neutralLine.setAttribute("y2", (posY + height * 0.5).toString());
-                neutralLine.setAttribute("stroke", "white");
+                neutralLine.setAttribute("stroke", (this.isHud) ? "lime" : "white");
                 neutralLine.setAttribute("stroke-width", "2");
                 this.gs_mainGroup.appendChild(neutralLine);
             }
@@ -484,14 +502,16 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.loc_mainGroup = document.createElementNS(Avionics.SVG.NS, "g");
             this.loc_mainGroup.setAttribute("id", "LocalizerGroup");
             {
-                let bg = document.createElementNS(Avionics.SVG.NS, "rect");
-                bg.setAttribute("x", posX.toString());
-                bg.setAttribute("y", posY.toString());
-                bg.setAttribute("width", width.toString());
-                bg.setAttribute("height", height.toString());
-                bg.setAttribute("fill", "black");
-                bg.setAttribute("fill-opacity", "0.3");
-                this.gs_mainGroup.appendChild(bg);
+                if (!this.isHud) {
+                    let bg = document.createElementNS(Avionics.SVG.NS, "rect");
+                    bg.setAttribute("x", posX.toString());
+                    bg.setAttribute("y", posY.toString());
+                    bg.setAttribute("width", width.toString());
+                    bg.setAttribute("height", height.toString());
+                    bg.setAttribute("fill", "black");
+                    bg.setAttribute("fill-opacity", "0.3");
+                    this.gs_mainGroup.appendChild(bg);
+                }
                 let rangeFactor = 0.85;
                 let nbCircles = 2;
                 this.loc_cursorMinX = posX + (width * 0.5) - (rangeFactor * width * 0.5);
@@ -505,7 +525,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     circle.setAttribute("cy", this.loc_cursorPosY.toString());
                     circle.setAttribute("r", "5");
                     circle.setAttribute("fill", "none");
-                    circle.setAttribute("stroke", "white");
+                    circle.setAttribute("stroke", (this.isHud) ? "lime" : "white");
                     circle.setAttribute("stroke-width", "2");
                     this.loc_mainGroup.appendChild(circle);
                     x = posX + (width * 0.5) - ((rangeFactor * width * 0.5) * (i + 1)) / nbCircles;
@@ -514,7 +534,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     circle.setAttribute("cy", this.loc_cursorPosY.toString());
                     circle.setAttribute("r", "5");
                     circle.setAttribute("fill", "none");
-                    circle.setAttribute("stroke", "white");
+                    circle.setAttribute("stroke", (this.isHud) ? "lime" : "white");
                     circle.setAttribute("stroke-width", "2");
                     this.loc_mainGroup.appendChild(circle);
                 }
@@ -526,11 +546,11 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     let x = 20;
                     let y = 12;
                     this.loc_cursorShapeRight = document.createElementNS(Avionics.SVG.NS, "path");
-                    this.loc_cursorShapeRight.setAttribute("fill", "#FF0CE2");
+                    this.loc_cursorShapeRight.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
                     this.loc_cursorShapeRight.setAttribute("d", "M 0 " + (-y) + " L" + (-x) + " 0 L0 " + (y) + " Z");
                     this.loc_cursorGroup.appendChild(this.loc_cursorShapeRight);
                     this.loc_cursorShapeLeft = document.createElementNS(Avionics.SVG.NS, "path");
-                    this.loc_cursorShapeLeft.setAttribute("fill", "#FF0CE2");
+                    this.loc_cursorShapeLeft.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
                     this.loc_cursorShapeLeft.setAttribute("d", "M 0 " + (-y) + " L" + (x) + " 0 L0 " + (y) + " Z");
                     this.loc_cursorGroup.appendChild(this.loc_cursorShapeLeft);
                 }
@@ -540,7 +560,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                 neutralLine.setAttribute("y1", (posY + 5).toString());
                 neutralLine.setAttribute("x2", (posX + width * 0.5).toString());
                 neutralLine.setAttribute("y2", (posY + height - 5).toString());
-                neutralLine.setAttribute("stroke", "white");
+                neutralLine.setAttribute("stroke", (this.isHud) ? "lime" : "white");
                 neutralLine.setAttribute("stroke-width", "2");
                 this.loc_mainGroup.appendChild(neutralLine);
             }
@@ -555,7 +575,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.ILSIdent.textContent = "ILS";
             this.ILSIdent.setAttribute("x", "0");
             this.ILSIdent.setAttribute("y", "0");
-            this.ILSIdent.setAttribute("fill", "white");
+            this.ILSIdent.setAttribute("fill", (this.isHud) ? "lime" : "white");
             this.ILSIdent.setAttribute("font-size", "10");
             this.ILSIdent.setAttribute("font-family", "Roboto-Bold");
             this.ILSIdent.setAttribute("text-anchor", "start");
@@ -565,7 +585,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.ILSFreq.textContent = "109.50";
             this.ILSFreq.setAttribute("x", "0");
             this.ILSFreq.setAttribute("y", "10");
-            this.ILSFreq.setAttribute("fill", "white");
+            this.ILSFreq.setAttribute("fill", (this.isHud) ? "lime" : "white");
             this.ILSFreq.setAttribute("font-size", "10");
             this.ILSFreq.setAttribute("font-family", "Roboto-Bold");
             this.ILSFreq.setAttribute("text-anchor", "start");
@@ -575,7 +595,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.ILSDist.textContent = "109 NM";
             this.ILSDist.setAttribute("x", "0");
             this.ILSDist.setAttribute("y", "20");
-            this.ILSDist.setAttribute("fill", "white");
+            this.ILSDist.setAttribute("fill", (this.isHud) ? "lime" : "white");
             this.ILSDist.setAttribute("font-size", "10");
             this.ILSDist.setAttribute("font-family", "Roboto-Bold");
             this.ILSDist.setAttribute("text-anchor", "start");
@@ -585,7 +605,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.ILSOrigin.textContent = "ILS/FMC";
             this.ILSOrigin.setAttribute("x", "0");
             this.ILSOrigin.setAttribute("y", "40");
-            this.ILSOrigin.setAttribute("fill", "white");
+            this.ILSOrigin.setAttribute("fill", (this.isHud) ? "lime" : "white");
             this.ILSOrigin.setAttribute("font-size", "13");
             this.ILSOrigin.setAttribute("font-family", "Roboto-Bold");
             this.ILSOrigin.setAttribute("text-anchor", "start");
@@ -864,6 +884,10 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                 else {
                     this.loc_cursorShapeLeft.setAttribute("visibility", "hidden");
                     this.loc_cursorShapeRight.setAttribute("visibility", "hidden");
+                }
+                if (this.isHud) {
+                    let ySlide = B787_10_HUD_ILS.getYSlide();
+                    this.loc_mainGroup.setAttribute("transform", "translate(0, " + ySlide + ")");
                 }
             }
             if (this.InfoGroup && this.infoVisible) {

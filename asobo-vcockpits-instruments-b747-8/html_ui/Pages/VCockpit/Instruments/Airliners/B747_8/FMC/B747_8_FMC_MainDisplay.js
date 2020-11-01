@@ -95,8 +95,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.deactivateVNAV();
         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
         if (this.refreshPageCallback && this._lastActiveWP != this.currFlightPlanManager.getActiveWaypointIndex() || this._wasApproachActive != this.currFlightPlanManager.isActiveApproach()) {
             this._lastActiveWP = this.currFlightPlanManager.getActiveWaypointIndex();
             this._wasApproachActive = this.currFlightPlanManager.isActiveApproach();
@@ -268,7 +268,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     getClbManagedSpeed() {
         let dCI = this.costIndex / 999;
         let speed = 310 * (1 - dCI) + 330 * dCI;
-        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feets") < 10000) {
+        if (Simplane.getAltitude() < 10000) {
             speed = Math.min(speed, 250);
         }
         return speed;
@@ -277,7 +277,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dCI = this.costIndex / 999;
         dCI = dCI * dCI;
         let speed = 310 * (1 - dCI) + 330 * dCI;
-        if (!highAltitude && SimVar.GetSimVarValue("PLANE ALTITUDE", "feets") < 10000) {
+        if (!highAltitude && Simplane.getAltitude() < 10000) {
             speed = Math.min(speed, 250);
         }
         return speed;
@@ -285,7 +285,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     getDesManagedSpeed() {
         let dCI = this.costIndex / 999;
         let speed = 240 * (1 - dCI) + 260 * dCI;
-        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feets") < 10000) {
+        if (Simplane.getAltitude() < 10000) {
             speed = Math.min(speed, 250);
         }
         return speed;
@@ -525,11 +525,11 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                 }
             }
-            if (this.getIsFLCHActive()) {
+            if (this.getIsFLCHActive() && !Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
                 let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
                 let deltaAltitude = Math.abs(targetAltitude - altitude);
-                if (deltaAltitude < 40) {
+                if (deltaAltitude < 150) {
                     this.activateAltitudeHold();
                 }
             }
@@ -537,7 +537,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
                 let deltaAltitude = Math.abs(targetAltitude - altitude);
-                if (deltaAltitude < 40) {
+                if (deltaAltitude < 150) {
                     this.activateAltitudeHold();
                 }
             }

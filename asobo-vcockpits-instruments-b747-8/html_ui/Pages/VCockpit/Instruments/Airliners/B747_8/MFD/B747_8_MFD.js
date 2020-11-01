@@ -27,8 +27,8 @@ class B747_8_MFD extends BaseAirliners {
                 break;
         }
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
     }
 }
 class B747_8_MFD_MainElement extends NavSystemElement {

@@ -100,9 +100,6 @@ class MapInstrument extends ISvgMapRootElement {
         this.isBushTrip = false;
     }
     get flightPlanManager() {
-        if (this.gps) {
-            return this.gps.currFlightPlanManager;
-        }
         return this._flightPlanManager;
     }
     setNPCAirplaneManagerTCASMode(mode) {
@@ -332,9 +329,6 @@ class MapInstrument extends ISvgMapRootElement {
             if (arg instanceof BaseInstrument) {
                 this.instrument = arg;
                 this.selfManagedInstrument = false;
-                if (this.instrument instanceof NavSystem) {
-                    this.gps = this.instrument;
-                }
             }
             else {
                 this.instrument = document.createElement("base-instrument");
@@ -346,22 +340,16 @@ class MapInstrument extends ISvgMapRootElement {
         }
         else {
         }
-        if (this.gps) {
-            if (!this.gps.currFlightPlanManager) {
-                this.gps.currFlightPlanManager = new FlightPlanManager(this.instrument);
-                this.gps.currFlightPlanManager.registerListener();
-            }
-            this.gps.addEventListener("FlightStart", this.onFlightStart.bind(this));
+        this._flightPlanManager = this.instrument.flightPlanManager;
+        if (this._flightPlanManager) {
+            this.instrument.addEventListener("FlightStart", this.onFlightStart.bind(this));
         }
         else {
-            if (!this._flightPlanManager) {
-                this._flightPlanManager = new FlightPlanManager(this.instrument);
-                this._flightPlanManager.registerListener();
-            }
+            this._flightPlanManager = new FlightPlanManager(this.instrument);
         }
         let bingMapId = this.bingId;
-        if (this.gps && this.gps.urlConfig.index)
-            bingMapId += "_GPS" + this.gps.urlConfig.index;
+        if (this.instrument.urlConfig.index)
+            bingMapId += "_GPS" + this.instrument.urlConfig.index;
         this.bingMap = this.getElementsByTagName("bing-map")[0];
         this.bingMap.setMode(this.eBingMode);
         this.bingMap.setReference(this.eBingRef);
@@ -870,9 +858,9 @@ class MapInstrument extends ISvgMapRootElement {
             let setConfig = () => {
                 if (this.navMap.configLoaded) {
                     for (let i = 0; i < 3; i++) {
-                        let bingConfig = new BingMapsConfig();
-                        if (bingConfig.load(this.navMap.config, i))
-                            this.bingMap.addConfig(bingConfig);
+                        let conf = this.navMap.config.generateBing(i);
+                        if (conf)
+                            this.bingMap.addConfig(conf);
                     }
                     this.bingMap.setConfig(this.bingMapConfigId);
                 }
@@ -898,12 +886,12 @@ class MapInstrument extends ISvgMapRootElement {
             };
             loadSVGConfig();
             let setBingConfig = () => {
-                if (svgConfigLoaded && (!this.gps || this.gps.isComputingAspectRatio())) {
+                if (svgConfigLoaded && this.instrument.isComputingAspectRatio()) {
                     for (let i = 0; i < 3; i++) {
-                        let bingConfig = new BingMapsConfig();
-                        if (bingConfig.load(svgConfig, i)) {
-                            bingConfig.aspectRatio = (this.gps && this.gps.isAspectRatioForced()) ? this.gps.getForcedScreenRatio() : 1.0;
-                            this.bingMap.addConfig(bingConfig);
+                        let conf = svgConfig.generateBing(i);
+                        if (conf) {
+                            conf.aspectRatio = (this.instrument.isAspectRatioForced()) ? this.instrument.getForcedScreenRatio() : 1.0;
+                            this.bingMap.addConfig(conf);
                         }
                     }
                     this.bingMap.setConfig(this.bingMapConfigId);
@@ -915,11 +903,12 @@ class MapInstrument extends ISvgMapRootElement {
             setBingConfig();
         }
     }
-    update() {
+    update(_deltaTime) {
         this.updateVisibility();
         this.updateSize(true);
         if (this.selfManagedInstrument) {
             this.instrument.doUpdate();
+            this.flightPlanManager.update(_deltaTime);
         }
         if (this.wpt) {
             var wpId = SimVar.GetSimVarValue("GPS WP NEXT ID", "string");

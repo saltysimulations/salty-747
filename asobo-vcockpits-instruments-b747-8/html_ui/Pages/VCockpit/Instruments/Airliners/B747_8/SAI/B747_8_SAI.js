@@ -8,8 +8,8 @@ class B747_8_SAI extends BaseAirliners {
         this.addIndependentElementContainer(new NavSystemElementContainer("Compass", "Compass", new B747_8_SAI_Compass()));
         this.addIndependentElementContainer(new NavSystemElementContainer("Baro", "Baro", new B747_8_SAI_Baro()));
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
     }
 }
 class B747_8_SAI_Baro extends NavSystemElement {

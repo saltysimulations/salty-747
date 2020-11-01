@@ -231,7 +231,7 @@ class GPS_DefaultNav extends NavSystemElement {
         this.currBranchFrom.textContent = SimVar.GetSimVarValue("GPS WP PREV ID", "string");
         if (this.gps.currFlightPlanManager.getIsDirectTo()) {
             if (this.legSymbol != 1) {
-                this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/direct_to.bmp" class="imgSizeM"/>';
+                this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/direct_to.png" class="imgSizeM"/>';
                 this.legSymbol = 1;
             }
         }
@@ -245,49 +245,49 @@ class GPS_DefaultNav extends NavSystemElement {
                     case 9:
                     case 10:
                         if (this.legSymbol != 2) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/course_to.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/course_to.png" class="imgSizeM"/>';
                             this.legSymbol = 2;
                         }
                         break;
                     case 2:
                         if (this.legSymbol != 3) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/left_turn.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/left_turn.png" class="imgSizeM"/>';
                             this.legSymbol = 3;
                         }
                         break;
                     case 3:
                         if (this.legSymbol != 4) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/right_turn.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/right_turn.png" class="imgSizeM"/>';
                             this.legSymbol = 4;
                         }
                         break;
                     case 4:
                         if (this.legSymbol != 5) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/arc_left.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/arc_left.png" class="imgSizeM"/>';
                             this.legSymbol = 5;
                         }
                         break;
                     case 5:
                         if (this.legSymbol != 6) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/arc_right.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/arc_right.png" class="imgSizeM"/>';
                             this.legSymbol = 6;
                         }
                         break;
                     case 6:
                         if (this.legSymbol != 7) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/left_hand.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/left_hand.png" class="imgSizeM"/>';
                             this.legSymbol = 7;
                         }
                         break;
                     case 7:
                         if (this.legSymbol != 8) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/right_hand.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/right_hand.png" class="imgSizeM"/>';
                             this.legSymbol = 8;
                         }
                         break;
                     case 11:
                         if (this.legSymbol != 9) {
-                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/vectors_to_final.bmp" class="imgSizeM"/>';
+                            this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/vectors_to_final.png" class="imgSizeM"/>';
                             this.legSymbol = 9;
                         }
                         break;
@@ -295,7 +295,7 @@ class GPS_DefaultNav extends NavSystemElement {
             }
             else {
                 if (this.legSymbol != 2) {
-                    this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/course_to.bmp" class="imgSizeM"/>';
+                    this.currBranchArrow.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/course_to.png" class="imgSizeM"/>';
                     this.legSymbol = 2;
                 }
             }
@@ -1394,30 +1394,30 @@ class GPS_NearestAirports extends NavSystemElement {
             var secondLine = "";
             var logo = "";
             if (this.nearestAirportList.airports[i].airportClass == 2 || this.nearestAirportList.airports[i].airportClass == 3) {
-                logo = "Airport_Soft.bmp";
+                logo = "Airport_Soft.png";
             }
             else if (this.nearestAirportList.airports[i].airportClass == 1) {
                 switch (Math.round((this.nearestAirportList.airports[i].longestRunwayDirection % 180) / 45.0)) {
                     case 0:
                     case 4:
-                        logo = "Airport_Hard_NS.bmp";
+                        logo = "Airport_Hard_NS.png";
                         break;
                     case 1:
-                        logo = "Airport_Hard_NE_SW.bmp";
+                        logo = "Airport_Hard_NE_SW.png";
                         break;
                     case 2:
-                        logo = "Airport_Hard_EW.bmp";
+                        logo = "Airport_Hard_EW.png";
                         break;
                     case 3:
-                        logo = "Airport_Hard_NW_SE.bmp";
+                        logo = "Airport_Hard_NW_SE.png";
                         break;
                 }
             }
             else if (this.nearestAirportList.airports[i].airportClass == 4) {
-                logo = "Helipad.bmp";
+                logo = "Helipad.png";
             }
             else if (this.nearestAirportList.airports[i].airportClass == 5) {
-                logo = "Private_Airfield.bmp";
+                logo = "Private_Airfield.png";
             }
             firstLine += '<td class="SelectableElement">' + this.nearestAirportList.airports[i].ident + '</td>';
             firstLine += '<td><img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/GPS/' + logo + '" class="imgSizeS"/> </td>';

@@ -1094,7 +1094,7 @@ var Airbus_FMA;
                 }
             }
             if (Simplane.getAutoPilotFLCActive()) {
-                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue("feets");
+                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue("feet");
                 let altitude = Simplane.getAltitude();
                 if (altitude < targetAltitude - 100) {
                     return Airbus_FMA.MODE_STATE.ENGAGED;
@@ -1109,7 +1109,7 @@ var Airbus_FMA;
                 }
             }
             if (Simplane.getAutoPilotFLCActive()) {
-                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue("feets");
+                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue("feet");
                 let altitude = Simplane.getAltitude();
                 if (altitude > targetAltitude + 100) {
                     return true;

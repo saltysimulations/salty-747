@@ -175,8 +175,8 @@ class AS3X_Touch extends NavSystemTouch {
     disconnectedCallback() {
         super.disconnectedCallback();
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
         if (this.handleReversionaryMode && this.displayMode == "PFD") {
             let reversionary = false;
             if (document.body.hasAttribute("reversionary")) {

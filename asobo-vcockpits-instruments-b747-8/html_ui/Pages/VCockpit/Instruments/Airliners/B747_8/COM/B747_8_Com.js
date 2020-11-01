@@ -209,8 +209,8 @@ class B747_8_Com extends BaseAirliners {
     disconnectedCallback() {
         super.disconnectedCallback();
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
         if (this.currentFrequencyHandler != null) {
             if (this.currentFrequencyHandler.isDifferentFromSimVarValues()) {
                 this.currentFrequencyHandler.cancelEdit(null);

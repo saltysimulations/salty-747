@@ -13,12 +13,10 @@ var Boeing_FCU;
         disconnectedCallback() {
             super.disconnectedCallback();
         }
-        Update() {
-            super.Update();
-            if (this.CanUpdate()) {
-                if (this.valueElement != null) {
-                    this.valueElement.refresh();
-                }
+        onUpdate(_deltaTime) {
+            super.onUpdate(_deltaTime);
+            if (this.valueElement != null) {
+                this.valueElement.refresh();
             }
         }
         createValueElement() {
@@ -48,8 +46,8 @@ var Boeing_FCU;
                 this.valueElement.isVisible = false;
             }
         }
-        Update() {
-            super.Update();
+        onUpdate(_deltaTime) {
+            super.onUpdate(_deltaTime);
             let machChanged = this.updateMachTransition();
             var visible = this.shouldBeVisible();
             if ((visible != this.m_isVisible) || machChanged) {
@@ -114,8 +112,8 @@ var Boeing_FCU;
             var simHeading = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degree");
             Coherent.call("HEADING_BUG_SET", 1, Math.round(simHeading));
         }
-        Update() {
-            super.Update();
+        onUpdate(_deltaTime) {
+            super.onUpdate(_deltaTime);
             var visible = this.shouldBeVisible();
             var trkMode = Simplane.getAutoPilotTRKModeActive();
             if ((visible != this.m_isVisible) || (trkMode != this.isTRKMode)) {
@@ -165,8 +163,8 @@ var Boeing_FCU;
                 this.valueElement.isVisible = false;
             }
         }
-        Update() {
-            super.Update();
+        onUpdate(_deltaTime) {
+            super.onUpdate(_deltaTime);
             var visible = this.shouldBeVisible();
             var fpaMode = Simplane.getAutoPilotFPAModeActive();
             if ((visible != this.m_isVisible) || (fpaMode != this.isFPAMode)) {
@@ -212,8 +210,8 @@ var Boeing_FCU;
                 this.valueElement.isVisible = false;
             }
         }
-        Update() {
-            super.Update();
+        onUpdate(_deltaTime) {
+            super.onUpdate(_deltaTime);
             var visible = this.shouldBeVisible();
             if (visible != this.m_isVisible) {
                 this.m_isVisible = visible;

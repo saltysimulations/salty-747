@@ -21,8 +21,8 @@ class AS3000_PFD extends NavSystem {
     disconnectedCallback() {
         super.disconnectedCallback();
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
     }
 }
 class AS3000_PFD_SoftKeyElement extends SoftKeyElement {

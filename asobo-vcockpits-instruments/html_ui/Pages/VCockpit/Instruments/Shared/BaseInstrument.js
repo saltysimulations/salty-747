@@ -23,6 +23,7 @@ class BaseInstrument extends TemplateElement {
     get IsGlassCockpit() { return false; }
     get isPrimary() { return (this.urlConfig.index == null || this.urlConfig.index == 1); }
     get deltaTime() { return this._deltaTime; }
+    get flightPlanManager() { return null; }
     get facilityLoader() {
         if (!this._facilityLoader)
             this._facilityLoader = new FacilityLoader(this);
@@ -173,6 +174,8 @@ class BaseInstrument extends TemplateElement {
     }
     reboot() {
         console.log("Rebooting Instrument...");
+        this.startTime = Date.now();
+        this.frameCount = 0;
         this.initTransponder();
     }
     onFlightStart() {
@@ -259,6 +262,8 @@ class BaseInstrument extends TemplateElement {
     }
     afterUpdate() {
         this.frameCount++;
+        if (this.frameCount >= Number.MAX_SAFE_INTEGER)
+            this.frameCount = 0;
     }
     doUpdate() {
         this.beforeUpdate();
@@ -408,6 +413,10 @@ class BaseInstrument extends TemplateElement {
         }
         return 1.0;
     }
+    isComputingAspectRatio() { return false; }
+    isAspectRatioForced() { return false; }
+    getForcedScreenRatio() { return 1.0; }
+    getForcedAspectRatio() { return 1.0; }
     updateHighlight() {
     }
     highlightGetState(_valueMin, _valueMax, _period) {

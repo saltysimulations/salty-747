@@ -1,9 +1,9 @@
 class FlightPlan {
-    constructor(_instrument) {
+    constructor(_instrument, _manager) {
         this.wayPoints = [];
         this.instrument = _instrument;
+        this.manager = _manager;
         this.beginGeoCalc = new GeoCalcInfo(_instrument);
-        this.manager = new FlightPlanManager(_instrument);
         this.waypointsBatch = new SimVar.SimVarBatch("C:fs9gps:FlightPlanWaypointsNumber", "C:fs9gps:FlightPlanWaypointIndex");
         this.waypointsBatch.add("C:fs9gps:FlightPlanWaypointICAO", "string", "string");
         this.waypointsBatch.add("C:fs9gps:FlightPlanWaypointIdent", "string", "string");

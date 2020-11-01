@@ -59,8 +59,8 @@ class AS1000_PFD extends BaseAS1000 {
     disconnectedCallback() {
         super.disconnectedCallback();
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
         if (this.handleReversionaryMode) {
             this.reversionaryMode = false;
             if (document.body.hasAttribute("reversionary")) {

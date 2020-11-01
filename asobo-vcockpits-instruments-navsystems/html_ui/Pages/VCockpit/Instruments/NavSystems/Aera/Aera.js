@@ -74,8 +74,8 @@ class Aera extends NavSystemTouch {
     getFullKeyboard() {
         return this.fullKeyboard;
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
         if (this.lastPageIndex != this.getCurrentPageGroup().pageIndex || this.getCurrentPageGroup().name != this.lastPageGroup) {
             this.lastPageIndex = this.getCurrentPageGroup().pageIndex;
             this.lastPageGroup = this.getCurrentPageGroup().name;

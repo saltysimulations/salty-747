@@ -385,7 +385,7 @@ class SvgFlightPlanElement extends SvgMapElement {
                 this._outlinePath.setAttribute("d", path);
             }
         }
-        if (this._transitionPath.getAttribute("d") !== path) {
+        if (this._transitionPath.getAttribute("d") !== transitionPath) {
             if (this._transitionPath) {
                 this._transitionPath.setAttribute("d", transitionPath);
             }

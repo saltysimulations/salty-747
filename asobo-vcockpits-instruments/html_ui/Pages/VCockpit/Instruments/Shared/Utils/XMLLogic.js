@@ -683,8 +683,8 @@ class DistanceFromOriginXMLElement extends LogicXMLElement {
     }
     getValue(_context) {
         let origin = null;
-        if (this.gps instanceof NavSystem) {
-            origin = this.gps.currFlightPlanManager.getOrigin();
+        if (this.gps.flightPlanManager) {
+            origin = this.gps.flightPlanManager.getOrigin();
         }
         let position = new LatLong();
         position.lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
@@ -717,8 +717,8 @@ class DistanceToDestinationXMLElement extends LogicXMLElement {
     }
     getValue(_context) {
         let destination = null;
-        if (this.gps instanceof NavSystem) {
-            destination = this.gps.currFlightPlanManager.getDestination();
+        if (this.gps.flightPlanManager) {
+            destination = this.gps.flightPlanManager.getDestination();
         }
         let position = new LatLong();
         this.destinationPosition.lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");

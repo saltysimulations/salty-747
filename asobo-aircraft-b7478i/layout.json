@@ -38,17 +38,17 @@
     {
       "path": "RTC/Asobo_B747_8i/CameraShot_Events.spb",
       "size": 1861,
-      "date": 132451840798830606
+      "date": 132476861607070208
     },
     {
       "path": "RTC/Asobo_B747_8i/RTC_Hangar.spb",
       "size": 2717,
-      "date": 132451840798876341
+      "date": 132476861607110207
     },
     {
       "path": "RTC/Asobo_B747_8i/RTC_Missions.spb",
       "size": 2788,
-      "date": 132451840798926340
+      "date": 132476861607160207
     },
     {
       "path": "ru-RU.locPak",
@@ -57,8 +57,8 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/ai.cfg",
-      "size": 758,
-      "date": 132404031910000000
+      "size": 747,
+      "date": 132482059000000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/aircraft.cfg",
@@ -112,8 +112,8 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/engines.cfg",
-      "size": 7132,
-      "date": 132412033830000000
+      "size": 7133,
+      "date": 132472497530000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/final.FLT",
@@ -122,8 +122,8 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/flight_model.cfg",
-      "size": 41933,
-      "date": 132418046230000000
+      "size": 41982,
+      "date": 132452507620000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/gameplay.cfg",
@@ -137,13 +137,13 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I.xml",
-      "size": 11529,
-      "date": 132441156290000000
+      "size": 15093,
+      "date": 132469801630000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
-      "size": 186311,
-      "date": 132441156290000000
+      "size": 187555,
+      "date": 132464639430000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD00.bin",

@@ -5,12 +5,13 @@ class FMCIdentPage {
         if (!model) {
             model = "unkn.";
         }
+        let date = fmc.getNavDataDateRange();
         fmc.setTemplate([
             ["IDENT"],
             ["MODEL", "ENGINES"],
             ["747-8i", "GEnx-2B67B"],
             ["NAV DATA", "ACTIVE"],
-            ["N4VD4T4-42", "MAY4JUL4/20"],
+            ["AIRAC", date.toString()],
             ["DRAG/FF"],
             [""],
             ["OP PROGRAM", "CO DATA"],

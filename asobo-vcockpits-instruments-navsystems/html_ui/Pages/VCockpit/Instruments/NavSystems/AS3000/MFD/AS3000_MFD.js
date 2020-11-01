@@ -26,8 +26,8 @@ class AS3000_MFD extends NavSystem {
             this.acknowledgeInit();
         }
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
     }
 }
 class AS3000_MFD_MapElement extends MapInstrumentElement {

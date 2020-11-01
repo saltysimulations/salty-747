@@ -274,6 +274,9 @@ class FMCMainDisplay extends BaseAirliners {
         }
         SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
     }
+    getNavDataDateRange() {
+        return SimVar.GetGameVarValue("FLIGHT NAVDATA DATE RANGE", "string");
+    }
     get cruiseFlightLevel() {
         return this._cruiseFlightLevel;
     }
@@ -427,6 +430,7 @@ class FMCMainDisplay extends BaseAirliners {
                                     this.tmpOrigin = airportFrom.ident;
                                     this.flightPlanManager.setDestination(airportTo.icao, () => {
                                         this.tmpOrigin = airportTo.ident;
+                                        this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
                                         callback(true);
                                     });
                                 });
@@ -1001,7 +1005,7 @@ class FMCMainDisplay extends BaseAirliners {
             return this.getFlapSpeed();
         }
         let speed = 220 * (1 - dCI) + 280 * dCI;
-        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feets") < 10000) {
+        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feet") < 10000) {
             speed = Math.min(speed, 250);
         }
         return speed;
@@ -1014,7 +1018,7 @@ class FMCMainDisplay extends BaseAirliners {
             return this.getFlapSpeed();
         }
         let speed = 285 * (1 - dCI) + 310 * dCI;
-        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feets") < 10000) {
+        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feet") < 10000) {
             speed = Math.min(speed, 250);
         }
         return speed;
@@ -1026,7 +1030,7 @@ class FMCMainDisplay extends BaseAirliners {
             return this.getFlapSpeed();
         }
         let speed = 240 * (1 - dCI) + 260 * dCI;
-        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feets") < 10000) {
+        if (SimVar.GetSimVarValue("PLANE ALTITUDE", "feet") < 10000) {
             speed = Math.min(speed, 250);
         }
         return speed;
@@ -1539,7 +1543,7 @@ class FMCMainDisplay extends BaseAirliners {
                 }
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
-                let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feets");
+                let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel * 100;
                 if (isFinite(cruiseFlightLevel)) {
                     if (altitude >= 0.96 * cruiseFlightLevel) {
@@ -1549,7 +1553,7 @@ class FMCMainDisplay extends BaseAirliners {
                 }
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
-                let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feets");
+                let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel;
                 if (isFinite(cruiseFlightLevel)) {
                     if (altitude < 0.94 * cruiseFlightLevel) {
@@ -1905,53 +1909,49 @@ class FMCMainDisplay extends BaseAirliners {
                 }
             }
         };
-        this.cruiseFlightLevel = SimVar.GetGameVarValue("AIRCRAFT CRUISE ALTITUDE", "feets");
+        this.cruiseFlightLevel = SimVar.GetGameVarValue("AIRCRAFT CRUISE ALTITUDE", "feet");
         this.cruiseFlightLevel /= 100;
-        if (!this.flightPlanManager) {
-            this.flightPlanManager = new FlightPlanManager(this);
-            SimVar.SetSimVarValue("L:FLIGHTPLAN_USE_DECEL_WAYPOINT", "number", 1);
-            this.flightPlanManager.registerListener();
-            this.flightPlanManager.onCurrentGameFlightLoaded = () => {
-                this.flightPlanManager.updateFlightPlan(() => {
-                    this.flightPlanManager.updateCurrentApproach(() => {
-                        let frequency = this.flightPlanManager.getApproachNavFrequency();
-                        if (isFinite(frequency)) {
-                            let freq = Math.round(frequency * 100) / 100;
-                            if (this.connectIlsFrequency(freq)) {
-                                SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_ILS", "number", freq);
-                                let approach = this.flightPlanManager.getApproach();
-                                if (approach && approach.name && approach.name.indexOf("ILS") !== -1) {
-                                    let runway = this.flightPlanManager.getApproachRunway();
-                                    if (runway) {
-                                        SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_COURSE", "number", runway.direction);
-                                    }
+        SimVar.SetSimVarValue("L:FLIGHTPLAN_USE_DECEL_WAYPOINT", "number", 1);
+        this.flightPlanManager.onCurrentGameFlightLoaded(() => {
+            this.flightPlanManager.updateFlightPlan(() => {
+                this.flightPlanManager.updateCurrentApproach(() => {
+                    let frequency = this.flightPlanManager.getApproachNavFrequency();
+                    if (isFinite(frequency)) {
+                        let freq = Math.round(frequency * 100) / 100;
+                        if (this.connectIlsFrequency(freq)) {
+                            SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_ILS", "number", freq);
+                            let approach = this.flightPlanManager.getApproach();
+                            if (approach && approach.name && approach.name.indexOf("ILS") !== -1) {
+                                let runway = this.flightPlanManager.getApproachRunway();
+                                if (runway) {
+                                    SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_COURSE", "number", runway.direction);
                                 }
                             }
                         }
-                    });
-                    let callback = () => {
-                        this.flightPlanManager.createNewFlightPlan();
-                        this._computeV1Speed();
-                        this._computeVRSpeed();
-                        this._computeV2Speed();
-                        SimVar.SetSimVarValue("L:AIRLINER_V1_SPEED", "Knots", this.v1Speed);
-                        SimVar.SetSimVarValue("L:AIRLINER_V2_SPEED", "Knots", this.v2Speed);
-                        SimVar.SetSimVarValue("L:AIRLINER_VR_SPEED", "Knots", this.vRSpeed);
-                        let cruiseAlt = Math.floor(this.flightPlanManager.cruisingAltitude / 100);
-                        console.log("FlightPlan Cruise Override. Cruising at FL" + cruiseAlt + " instead of default FL" + this.cruiseFlightLevel);
-                        if (cruiseAlt > 0)
-                            this.cruiseFlightLevel = cruiseAlt;
-                    };
-                    let arrivalIndex = this.flightPlanManager.getArrivalProcIndex();
-                    if (arrivalIndex >= 0) {
-                        this.flightPlanManager.setArrivalProcIndex(arrivalIndex, callback);
-                    }
-                    else {
-                        callback();
                     }
                 });
-            };
-        }
+                let callback = () => {
+                    this.flightPlanManager.createNewFlightPlan();
+                    this._computeV1Speed();
+                    this._computeVRSpeed();
+                    this._computeV2Speed();
+                    SimVar.SetSimVarValue("L:AIRLINER_V1_SPEED", "Knots", this.v1Speed);
+                    SimVar.SetSimVarValue("L:AIRLINER_V2_SPEED", "Knots", this.v2Speed);
+                    SimVar.SetSimVarValue("L:AIRLINER_VR_SPEED", "Knots", this.vRSpeed);
+                    let cruiseAlt = Math.floor(this.flightPlanManager.cruisingAltitude / 100);
+                    console.log("FlightPlan Cruise Override. Cruising at FL" + cruiseAlt + " instead of default FL" + this.cruiseFlightLevel);
+                    if (cruiseAlt > 0)
+                        this.cruiseFlightLevel = cruiseAlt;
+                };
+                let arrivalIndex = this.flightPlanManager.getArrivalProcIndex();
+                if (arrivalIndex >= 0) {
+                    this.flightPlanManager.setArrivalProcIndex(arrivalIndex, callback);
+                }
+                else {
+                    callback();
+                }
+            });
+        });
         this.updateFuelVars();
         this.thrustReductionAltitude = 1500;
         SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", this.thrustReductionAltitude);

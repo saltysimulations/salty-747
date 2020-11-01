@@ -18,7 +18,6 @@
 		<!-- Alternatively we could script the angles for the wingflex -->
 		<!-- Just define some nodes/bones to move for now (this configuration will likely change at some point) -->
 		<!-- 	order	:	node 															-->
-		<!-- 	--------------------------------------------------------------------------- -->
 		<!-- 	0	:	the left wing bone closest to the center 							-->
 		<!-- 	1	:	in between 															-->
 		<!-- 	2	:	in between 															-->
@@ -47,6 +46,7 @@
 	<Behaviors>
 		<Include ModelBehaviorFile="Asobo\Common.xml"/>
 		<Include ModelBehaviorFile="Asobo\Exterior.xml"/>
+		<Include ModelBehaviorFile="Asobo\Generic\FX.xml"/>
 		<Component ID="GEARS">
 			<UseTemplate Name="ASOBO_GEAR_Center_Template">
 				<ANIM_NAME>c_gear</ANIM_NAME>
@@ -239,6 +239,90 @@
 			<UseTemplate Name="ASOBO_FuelHose_InteractivePoint_Template">
 				<ID>15</ID>
 				<NODE_ID>GROUND_GPUPIPE</NODE_ID>
+			</UseTemplate>
+		</Component>
+		<Component ID="FX_CONTRAIL_LEFT_IN" Node="L1_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_LEFT_IN</FX_NAME>
+				<FX_GUID>{904EC2CE-F8DD-4480-99E7-B33F7CF6E114}</FX_GUID>
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+			</UseTemplate>
+		</Component> -->
+		<Component ID="FX_CONTRAIL_LEFT_OUT" Node="L2_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_LEFT_OUT</FX_NAME>
+				<FX_GUID>{904EC2CE-F8DD-4480-99E7-B33F7CF6E114}</FX_GUID>
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+			</UseTemplate>
+		</Component>
+		<Component ID="FX_CONTRAIL_RIGHT_IN" Node="R1_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_RIGHT_IN</FX_NAME>
+				<FX_GUID>{904EC2CE-F8DD-4480-99E7-B33F7CF6E114}</FX_GUID>
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+			</UseTemplate>
+		</Component> -->
+		<Component ID="FX_CONTRAIL_RIGHT_OUT" Node="R2_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_RIGHT_OUT</FX_NAME>
+				<FX_GUID>{904EC2CE-F8DD-4480-99E7-B33F7CF6E114}</FX_GUID>
+				<!-- <FX_CODE>(A:GEAR ANIMATION POSITION, Keyframe) 100 &gt; s0 (O:LastGearOnGround) ! and (A:GROUND VELOCITY, Knots) 10 &gt; and l0 (&gt;O:LastGearOnGround)</FX_CODE>
+				<FX_CODE>(A:GEAR ANIMATION POSITION:0, keyframe) 100 &gt;</FX_CODE>  -->
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+			</UseTemplate>
+		</Component>
+		<Component ID="FX_CONTRAIL_NEAR_LEFT_IN" Node="L1_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_NEAR_LEFT_IN</FX_NAME>
+				<FX_GUID>{F42CE638-11EB-4FC8-B9B0-111A220D681F}</FX_GUID>
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+			</UseTemplate>
+		</Component> -->
+		<Component ID="FX_CONTRAIL_NEAR_LEFT_OUT" Node="L2_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_NEAR_LEFT_OUT</FX_NAME>
+				<FX_GUID>{F42CE638-11EB-4FC8-B9B0-111A220D681F}</FX_GUID>
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+			</UseTemplate>
+		</Component>
+		<Component ID="FX_CONTRAIL_NEAR_RIGHT_IN" Node="R1_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_NEAR_RIGHT_IN</FX_NAME>
+				<FX_GUID>{F42CE638-11EB-4FC8-B9B0-111A220D681F}</FX_GUID>
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+			</UseTemplate>
+		</Component> -->
+		<Component ID="FX_CONTRAIL_NEAR_RIGHT_OUT" Node="R2_EngineFX">
+			<UseTemplate Name="ASOBO_GT_FX">
+				<FX_NAME>FX_CONTRAIL_NEAR_RIGHT_OUT</FX_NAME>
+				<FX_GUID>{F42CE638-11EB-4FC8-B9B0-111A220D681F}</FX_GUID>
+				<!-- <FX_CODE>(A:GEAR ANIMATION POSITION, Keyframe) 100 &gt; s0 (O:LastGearOnGround) ! and (A:GROUND VELOCITY, Knots) 10 &gt; and l0 (&gt;O:LastGearOnGround)</FX_CODE>
+				<FX_CODE>(A:GEAR ANIMATION POSITION:0, keyframe) 100 &gt;</FX_CODE>  -->
+				<FX_CODE>101 100 &gt;</FX_CODE> 
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
 			</UseTemplate>
 		</Component>
 	</Behaviors>

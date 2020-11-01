@@ -219,35 +219,8 @@ class NearestAirportList {
                 html += "<td></td><td></td><td></td><td></td><td></td>";
             }
             else {
-                var logo = "";
-                if (this.airports[index].airportClass == 2 || this.airports[index].airportClass == 3) {
-                    logo = "GPS/Airport_Soft.bmp";
-                }
-                else if (this.airports[index].airportClass == 1) {
-                    switch (Math.round((this.airports[index].longestRunwayDirection % 180) / 45.0)) {
-                        case 0:
-                        case 4:
-                            logo = "GPS/Airport_Hard_NS.bmp";
-                            break;
-                        case 1:
-                            logo = "GPS/Airport_Hard_NE_SW.bmp";
-                            break;
-                        case 2:
-                            logo = "GPS/Airport_Hard_EW.bmp";
-                            break;
-                        case 3:
-                            logo = "GPS/Airport_Hard_NW_SE.bmp";
-                            break;
-                    }
-                }
-                else if (this.airports[index].airportClass == 4) {
-                    logo = "GPS/Helipad.bmp";
-                }
-                else if (this.airports[index].airportClass == 5) {
-                    logo = "GPS/Private_Airfield.bmp";
-                }
                 html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.airports[index].ident + '</td>';
-                html += '<td><img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/' + logo + '" class="imgSizeS"/> </td>';
+                html += '<td><img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.airports[index].imageFileName() + '" class="imgSizeS"/> </td>';
                 html += '<td>' + fastToFixed(this.airports[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
                 html += '<td>' + fastToFixed(this.airports[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
                 html += '<td>' + this.airports[index].bestApproach + '</td>';
@@ -379,7 +352,7 @@ class NearestIntersectionList {
             }
             else {
                 html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.intersections[index].ident + '</td>';
-                html += '<td><img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/' + this.intersections[index].imageFileName() + '"/></td>';
+                html += '<td><img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.intersections[index].imageFileName() + '"/></td>';
                 html += '<td>' + fastToFixed(this.intersections[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
                 html += '<td>' + fastToFixed(this.intersections[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
             }
@@ -482,7 +455,7 @@ class NearestNDBList {
             }
             else {
                 html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.ndbs[index].ident + '</td>';
-                html += '<td><img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/' + this.ndbs[index].imageFileName() + '"/></td>';
+                html += '<td><img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.ndbs[index].imageFileName() + '"/></td>';
                 html += '<td>' + fastToFixed(this.ndbs[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
                 html += '<td>' + fastToFixed(this.ndbs[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
                 html += '<td>' + fastToFixed(this.ndbs[index].frequencyMHz, 1) + '</td>';
@@ -606,8 +579,7 @@ class NearestVORList {
             }
             else {
                 html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.vors[index].ident + '</td>';
-                var image = this.vors[index].imageFileName();
-                html += '<td> <img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/' + image + '"></td>';
+                html += '<td> <img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.vors[index].imageFileName() + '"></td>';
                 html += '<td>' + fastToFixed(this.vors[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
                 html += '<td>' + fastToFixed(this.vors[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
                 html += '<td class="SelectableElement" id="' + _prefix + '_Freq_' + i + '">' + fastToFixed(this.vors[index].frequencyMHz, 2) + '</td>';

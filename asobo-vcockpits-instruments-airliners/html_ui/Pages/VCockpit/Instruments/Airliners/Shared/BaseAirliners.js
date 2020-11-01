@@ -324,8 +324,8 @@ var Airliners;
             super.Init();
             console.log("ATC Init");
         }
-        Update() {
-            super.Update();
+        onUpdate(_deltaTime) {
+            super.onUpdate(_deltaTime);
             let code = SimVar.GetSimVarValue("TRANSPONDER CODE:1", "number");
             if (code != this.currentCode) {
                 this.currentCode = code;
