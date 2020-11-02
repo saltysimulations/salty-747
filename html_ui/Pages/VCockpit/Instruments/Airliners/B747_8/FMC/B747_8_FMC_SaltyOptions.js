@@ -13,15 +13,32 @@ class FMCSaltyOptions {
             [],
             ["", "UPDATE IRS STATUS>"],
             [],
+            ["<ECL BACK", "ECL FWD>"],
+            [],
+            ["<ECL SELECT"],
             [],
             [],
             [],
-            [],
-            [],
-            [],
-            ["<IRS INSTANT ALIGN", ""]
+            ["<IRS INSTANT ALIGN", ""],
         ]);
         fmc.onRightInput[1] = () => { FMCSaltyOptions.ShowPage1(fmc); };
+        
+        
+        fmc.onRightInput[2] = () => { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
+                                        cursorIndex++;
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 1);
+                                    };
+        
+        
+        fmc.onLeftInput[2] = () =>  { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
+                                        cursorIndex--;
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 1);
+                                    };
+        
+        
+        
         fmc.onLeftInput[5] = () => {
            if (SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum") == 1) {
                SimVar.SetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum", -1);
