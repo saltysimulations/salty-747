@@ -563,6 +563,46 @@ var B747_8_LowerEICAS_ECL;
             }
             return;
         }
+        approachChecklist(masterCursorIndex){
+            this.altimetersTick = this.querySelector("#approach-checklist-tick1");
+            this.altimetersText = this.querySelector("#approach-checklist4");
+            this.approachSeatBeltsTick = this.querySelector("#approach-checklist-tick2");
+            this.approachSeatBeltsText = this.querySelector("#approach-checklist5");  
+            if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
+                switch(masterCursorIndex) {
+                    case 4:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                            this.altimetersTick.style.visibility = "visible";
+                            this.altimetersText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool", 1)
+                        } else {
+                            this.altimetersTick.style.visibility = "hidden";
+                            this.altimetersText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool", 0)
+                        }    
+                    break;             
+                }           
+            }
+            SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 0);
+            if(SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT","bool")){
+                this.approachSeatBeltsText.style.fill = "lime";
+                this.approachSeatBeltsTick.style.visibility = "visible";
+            }else{
+                this.approachSeatBeltsText.style.fill = "white";
+                this.approachSeatBeltsTick.style.visibility = "hidden";
+            }
+            if((SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT","bool"))){
+                this.globalItems.style.visibility = "visible";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
+                SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
+            }else{
+                this.globalItems.style.visibility = "hidden";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;
+        }
     }
     B747_8_LowerEICAS_ECL.Display = Display;
 })(B747_8_LowerEICAS_ECL || (B747_8_LowerEICAS_ECL = {}));
