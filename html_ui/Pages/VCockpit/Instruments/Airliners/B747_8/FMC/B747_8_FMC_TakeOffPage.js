@@ -79,6 +79,7 @@ class FMCTakeOffPage {
         let flapsAngle = fmc.getTakeOffFlap();
         if (isFinite(flapsAngle) && flapsAngle >= 0) {
             flapsCell = flapsAngle.toFixed(0) + "°";
+            SimVar.SetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number", flapsAngle);
         }
         else {
             flapsCell = "□□°";
@@ -90,7 +91,7 @@ class FMCTakeOffPage {
             v2 = "---[color]blue";
         }
         fmc.onLeftInput[0] = () => {
-            let value = fmc.inOut;
+            let value = fmc.inOut; 
             fmc.clearUserInput();
             if (fmc.setTakeOffFlap(value)) {
                 if (Simplane.getIsGrounded() && Simplane.getV1Airspeed() <= 0 && Simplane.getVRAirspeed() <= 0 && Simplane.getV2Airspeed() <= 0) {

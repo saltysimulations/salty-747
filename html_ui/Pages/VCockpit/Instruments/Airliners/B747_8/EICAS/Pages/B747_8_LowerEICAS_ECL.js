@@ -14,6 +14,7 @@ var B747_8_LowerEICAS_ECL;
             this.allChecklists = document.querySelector("#all-checklists");
             this.globalItems = document.querySelector("#global-items");
             this.isInitialised = true; 
+            this.allChecklists.style.visibility = "hidden";
         }
         onEvent(_event) {
             super.onEvent(_event);
@@ -62,7 +63,7 @@ var B747_8_LowerEICAS_ECL;
                 return checklistParams;
             } else if (SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool") == 0){
                 let currentChecklist = "descent-checklist";
-                let maxCursorIndex = 8;
+                let maxCursorIndex = 7;
                 let checklistParams = [currentChecklist, maxCursorIndex];
                 return checklistParams;
             } else if (SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool") == 0){
@@ -146,6 +147,8 @@ var B747_8_LowerEICAS_ECL;
                 this.beforeTaxiChecklist(masterCursorIndex); 
             }else if(currentChecklist == "before-takeoff-checklist"){
                 this.beforeTakeoffChecklist(masterCursorIndex);
+            }else if(currentChecklist == "after-takeoff-checklist"){
+                this.afterTakeoffChecklist(masterCursorIndex);
             }else if(currentChecklist == "descent-checklist"){
                 this.descentChecklist(masterCursorIndex);
             }else if(currentChecklist == "approach-checklist"){
@@ -422,6 +425,138 @@ var B747_8_LowerEICAS_ECL;
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
                 SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool", 1);
+            }else{
+                this.globalItems.style.visibility = "hidden";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;
+        }
+        beforeTakeoffChecklist(masterCursorIndex){
+            let fmcTakeOffFlap = SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number").toFixed(0);
+            this.flapsTick = this.querySelector("#before-takeoff-checklist-tick1");
+            this.flapsText = this.querySelector("#before-takeoff-checklist4");
+            this.flapsText.textContent = `Flaps........................................${fmcTakeOffFlap}`
+            let flapsSet = 0;
+            if(((SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 10) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.175))
+                || (SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 20) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.349)){
+                this.flapsText.style.fill = "lime";
+                this.flapsTick.style.visibility = "visible";
+                flapsSet = 1;
+            }else{
+                this.flapsText.style.fill = "white";
+                this.flapsTick.style.visibility = "hidden";
+                flapsSet = 0;
+            }
+            if(flapsSet){
+                this.globalItems.style.visibility = "visible";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
+                SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool", 1);
+            }else{
+                this.globalItems.style.visibility = "hidden";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;
+        }
+        afterTakeoffChecklist(masterCursorIndex){
+            this.gearUpTick = this.querySelector("#after-takeoff-checklist-tick1");
+            this.gearUpText = this.querySelector("#after-takeoff-checklist4");
+            this.flapsUpTick = this.querySelector("#after-takeoff-checklist-tick2");
+            this.flapsUpText = this.querySelector("#after-takeoff-checklist5");
+            if(SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0){
+                this.gearUpText.style.fill = "lime";
+                this.gearUpTick.style.visibility = "visible";
+            }else{
+                this.gearUpText.style.fill = "white";
+                this.gearUpTick.style.visibility = "hidden";
+            }
+            if(SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000){
+                this.flapsUpText.style.fill = "lime";
+                this.flapsUpTick.style.visibility = "visible";
+            }else{
+                this.flapsUpText.style.fill = "white";
+                this.flapsUpTick.style.visibility = "hidden";
+            }
+            if((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && (SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0)){
+                this.globalItems.style.visibility = "visible";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
+                SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 1);
+            }else{
+                this.globalItems.style.visibility = "hidden";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;
+        }
+        descentChecklist(masterCursorIndex){
+            this.descentRecallTick = this.querySelector("#descent-checklist-tick1");
+            this.descentRecallText = this.querySelector("#descent-checklist4");
+            this.descentAutobrakeTick = this.querySelector("#descent-checklist-tick2");
+            this.descentAutobrakeText = this.querySelector("#descent-checklist5");
+            this.landingDataTick = this.querySelector("#descent-checklist-tick3");
+            this.landingDataText = this.querySelector("#descent-checklist6");
+            this.approachBriefingTick = this.querySelector("#descent-checklist-tick4");
+            this.approachBriefingText = this.querySelector("#descent-checklist7");    
+            if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
+                switch(masterCursorIndex) {
+                    case 4:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                            this.descentRecallTick.style.visibility = "visible";
+                            this.descentRecallText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_RECALL_CHK", "bool", 1)
+                        } else {
+                            this.descentRecallTick.style.visibility = "hidden";
+                            this.descentRecallText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_RECALL_CHK", "bool", 0)
+                        }    
+                    break;
+                    case 5:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_5", "bool")){
+                            this.descentAutobrakeTick.style.visibility = "visible";
+                            this.descentAutobrakeText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_BRAKE_CHK", "bool", 1)
+                        } else {
+                            this.descentAutobrakeTick.style.visibility = "hidden";
+                            this.descentAutobrakeText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_BRAKE_CHK", "bool", 0)
+                        }    
+                    break;
+                    case 6:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_6", "bool")){
+                            this.landingDataTick.style.visibility = "visible";
+                            this.landingDataText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK", "bool", 1)
+                        } else {
+                            this.landingDataTick.style.visibility = "hidden";
+                            this.landingDataText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK", "bool", 0)
+                        }    
+                    break;
+                    case 7:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_7", "bool")){
+                            this.approachBriefingTick.style.visibility = "visible";
+                            this.approachBriefingText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK", "bool", 1)
+                        } else {
+                            this.approachBriefingTick.style.visibility = "hidden";
+                            this.approachBriefingText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK", "bool", 0)
+                        }    
+                    break;                
+                }           
+            }
+            SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 0);
+            if((SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_RECALL_CHK", "bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_BRAKE_CHK", "bool")) 
+                && (SimVar.GetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK","bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK","bool"))){
+                this.globalItems.style.visibility = "visible";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
+                SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
