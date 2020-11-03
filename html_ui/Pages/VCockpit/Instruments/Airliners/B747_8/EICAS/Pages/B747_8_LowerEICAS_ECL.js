@@ -164,15 +164,15 @@ var B747_8_LowerEICAS_ECL;
         }
         preflightChecklist(masterCursorIndex){
             let fuelSwitchStatus;
-            this.oxygenTick = this.querySelector("#preflight-checklist-tick1");
-            this.oxygenText = this.querySelector("#preflight-checklist4");
-            this.instrumentsTick = this.querySelector("#preflight-checklist-tick2");
-            this.instrumentsText1 = this.querySelector("#preflight-checklist5");
-            this.instrumentsText2 = this.querySelector("#preflight-checklist6");
-            this.parkBrakeTick = this.querySelector("#preflight-checklist-tick3");
-            this.parkBrakeText = this.querySelector("#preflight-checklist7");
-            this.fuelControlSwitchTick = this.querySelector("#preflight-checklist-tick4");
-            this.fuelControlSwitchText = this.querySelector("#preflight-checklist8"); 
+            this.oxygenTick = document.querySelector("#preflight-checklist-tick1");
+            this.oxygenText = document.querySelector("#preflight-checklist4");
+            this.instrumentsTick = document.querySelector("#preflight-checklist-tick2");
+            this.instrumentsText1 = document.querySelector("#preflight-checklist5");
+            this.instrumentsText2 = document.querySelector("#preflight-checklist6");
+            this.parkBrakeTick = document.querySelector("#preflight-checklist-tick3");
+            this.parkBrakeText = document.querySelector("#preflight-checklist7");
+            this.fuelControlSwitchTick = document.querySelector("#preflight-checklist-tick4");
+            this.fuelControlSwitchText = document.querySelector("#preflight-checklist8"); 
             if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch(masterCursorIndex) {
                     case 4:
@@ -234,20 +234,20 @@ var B747_8_LowerEICAS_ECL;
             return;
         }
         beforeStartChecklist(masterCursorIndex){
-            this.gearPinsTick = this.querySelector("#before-start-checklist-tick1");
-            this.gearPinsText = this.querySelector("#before-start-checklist4");
-            this.seatBeltsTick = this.querySelector("#before-start-checklist-tick2");
-            this.seatBeltsText = this.querySelector("#before-start-checklist5");
-            this.mcpTick = this.querySelector("#before-start-checklist-tick3");
-            this.mcpText = this.querySelector("#before-start-checklist6");
-            this.cduTick = this.querySelector("#before-start-checklist-tick4");
-            this.cduText = this.querySelector("#before-start-checklist7");
-            this.trimTick = this.querySelector("#before-start-checklist-tick5");
-            this.trimText = this.querySelector("#before-start-checklist8");
-            this.takeoffBriefingTick = this.querySelector("#before-start-checklist-tick6");
-            this.takeoffBriefingText = this.querySelector("#before-start-checklist9");
-            this.beaconTick = this.querySelector("#before-start-checklist-tick7");
-            this.beaconText = this.querySelector("#before-start-checklist10");        
+            this.gearPinsTick = document.querySelector("#before-start-checklist-tick1");
+            this.gearPinsText = document.querySelector("#before-start-checklist4");
+            this.seatBeltsTick = document.querySelector("#before-start-checklist-tick2");
+            this.seatBeltsText = document.querySelector("#before-start-checklist5");
+            this.mcpTick = document.querySelector("#before-start-checklist-tick3");
+            this.mcpText = document.querySelector("#before-start-checklist6");
+            this.cduTick = document.querySelector("#before-start-checklist-tick4");
+            this.cduText = document.querySelector("#before-start-checklist7");
+            this.trimTick = document.querySelector("#before-start-checklist-tick5");
+            this.trimText = document.querySelector("#before-start-checklist8");
+            this.takeoffBriefingTick = document.querySelector("#before-start-checklist-tick6");
+            this.takeoffBriefingText = document.querySelector("#before-start-checklist9");
+            this.beaconTick = document.querySelector("#before-start-checklist-tick7");
+            this.beaconText = document.querySelector("#before-start-checklist10");        
             if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch(masterCursorIndex) {
                     case 4:
@@ -345,16 +345,16 @@ var B747_8_LowerEICAS_ECL;
             return;
         }
         beforeTaxiChecklist(masterCursorIndex){
-            this.antiIceTick = this.querySelector("#before-taxi-checklist-tick1");
-            this.antiIceText = this.querySelector("#before-taxi-checklist4");
-            this.recallTick = this.querySelector("#before-taxi-checklist-tick2");
-            this.recallText = this.querySelector("#before-taxi-checklist5");
-            this.autobrakeTick = this.querySelector("#before-taxi-checklist-tick3");
-            this.autobrakeText = this.querySelector("#before-taxi-checklist6");
-            this.flightControlsTick = this.querySelector("#before-taxi-checklist-tick4");
-            this.flightControlsText = this.querySelector("#before-taxi-checklist7");
-            this.groundEquipmentTick = this.querySelector("#before-taxi-checklist-tick5");
-            this.groundEquipmentText = this.querySelector("#before-taxi-checklist8");      
+            this.antiIceTick = document.querySelector("#before-taxi-checklist-tick1");
+            this.antiIceText = document.querySelector("#before-taxi-checklist4");
+            this.recallTick = document.querySelector("#before-taxi-checklist-tick2");
+            this.recallText = document.querySelector("#before-taxi-checklist5");
+            this.autobrakeTick = document.querySelector("#before-taxi-checklist-tick3");
+            this.autobrakeText = document.querySelector("#before-taxi-checklist6");
+            this.flightControlsTick = document.querySelector("#before-taxi-checklist-tick4");
+            this.flightControlsText = document.querySelector("#before-taxi-checklist7");
+            this.groundEquipmentTick = document.querySelector("#before-taxi-checklist-tick5");
+            this.groundEquipmentText = document.querySelector("#before-taxi-checklist8");      
             if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch(masterCursorIndex) {
                     case 4:
@@ -433,8 +433,8 @@ var B747_8_LowerEICAS_ECL;
         }
         beforeTakeoffChecklist(masterCursorIndex){
             let fmcTakeOffFlap = SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number").toFixed(0);
-            this.flapsTick = this.querySelector("#before-takeoff-checklist-tick1");
-            this.flapsText = this.querySelector("#before-takeoff-checklist4");
+            this.flapsTick = document.querySelector("#before-takeoff-checklist-tick1");
+            this.flapsText = document.querySelector("#before-takeoff-checklist4");
             this.flapsText.textContent = `Flaps........................................${fmcTakeOffFlap}`
             let flapsSet = 0;
             if(((SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 10) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.175))
@@ -458,10 +458,10 @@ var B747_8_LowerEICAS_ECL;
             return;
         }
         afterTakeoffChecklist(masterCursorIndex){
-            this.gearUpTick = this.querySelector("#after-takeoff-checklist-tick1");
-            this.gearUpText = this.querySelector("#after-takeoff-checklist4");
-            this.flapsUpTick = this.querySelector("#after-takeoff-checklist-tick2");
-            this.flapsUpText = this.querySelector("#after-takeoff-checklist5");
+            this.gearUpTick = document.querySelector("#after-takeoff-checklist-tick1");
+            this.gearUpText = document.querySelector("#after-takeoff-checklist4");
+            this.flapsUpTick = document.querySelector("#after-takeoff-checklist-tick2");
+            this.flapsUpText = document.querySelector("#after-takeoff-checklist5");
             if(SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0){
                 this.gearUpText.style.fill = "lime";
                 this.gearUpTick.style.visibility = "visible";
@@ -487,14 +487,14 @@ var B747_8_LowerEICAS_ECL;
             return;
         }
         descentChecklist(masterCursorIndex){
-            this.descentRecallTick = this.querySelector("#descent-checklist-tick1");
-            this.descentRecallText = this.querySelector("#descent-checklist4");
-            this.descentAutobrakeTick = this.querySelector("#descent-checklist-tick2");
-            this.descentAutobrakeText = this.querySelector("#descent-checklist5");
-            this.landingDataTick = this.querySelector("#descent-checklist-tick3");
-            this.landingDataText = this.querySelector("#descent-checklist6");
-            this.approachBriefingTick = this.querySelector("#descent-checklist-tick4");
-            this.approachBriefingText = this.querySelector("#descent-checklist7");    
+            this.descentRecallTick = document.querySelector("#descent-checklist-tick1");
+            this.descentRecallText = document.querySelector("#descent-checklist4");
+            this.descentAutobrakeTick = document.querySelector("#descent-checklist-tick2");
+            this.descentAutobrakeText = document.querySelector("#descent-checklist5");
+            this.landingDataTick = document.querySelector("#descent-checklist-tick3");
+            this.landingDataText = document.querySelector("#descent-checklist6");
+            this.approachBriefingTick = document.querySelector("#descent-checklist-tick4");
+            this.approachBriefingText = document.querySelector("#descent-checklist7");    
             if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch(masterCursorIndex) {
                     case 4:
@@ -564,10 +564,10 @@ var B747_8_LowerEICAS_ECL;
             return;
         }
         approachChecklist(masterCursorIndex){
-            this.altimetersTick = this.querySelector("#approach-checklist-tick1");
-            this.altimetersText = this.querySelector("#approach-checklist4");
-            this.approachSeatBeltsTick = this.querySelector("#approach-checklist-tick2");
-            this.approachSeatBeltsText = this.querySelector("#approach-checklist5");  
+            this.altimetersTick = document.querySelector("#approach-checklist-tick1");
+            this.altimetersText = document.querySelector("#approach-checklist4");
+            this.approachSeatBeltsTick = document.querySelector("#approach-checklist-tick2");
+            this.approachSeatBeltsText = document.querySelector("#approach-checklist5");  
             if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch(masterCursorIndex) {
                     case 4:
@@ -605,14 +605,14 @@ var B747_8_LowerEICAS_ECL;
         }
         landingChecklist(masterCursorIndex){
             let fmcLandingFlap = SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number").toFixed(0);
-            this.speedbrakeTick = this.querySelector("#landing-checklist-tick1");
-            this.speedbrakeText = this.querySelector("#landing-checklist4");
-            this.landingGearTick = this.querySelector("#landing-checklist-tick2");
-            this.landingGearText = this.querySelector("#landing-checklist5");
-            this.landingFlapsTick = this.querySelector("#landing-checklist-tick3");
-            this.landingFlapsText = this.querySelector("#landing-checklist6");
-            this.landingFlapsText.textContent = `Flaps........................................${fmcLandingFlap}`   
-
+            this.speedbrakeTick = document.querySelector("#landing-checklist-tick1");
+            this.speedbrakeText = document.querySelector("#landing-checklist4");
+            this.landingGearTick = document.querySelector("#landing-checklist-tick2");
+            this.landingGearText = document.querySelector("#landing-checklist5");
+            this.landingFlapsTick = document.querySelector("#landing-checklist-tick3");
+            this.landingFlapsText = document.querySelector("#landing-checklist6");
+            this.landingFlapsText.textContent = `Flaps........................................${fmcLandingFlap}`
+            let landingFlapSet = 0;   
             if(SimVar.GetSimVarValue("SPOILERS ARMED","bool")){
                 this.speedbrakeText.style.fill = "lime";
                 this.speedbrakeTick.style.visibility = "visible";
@@ -631,11 +631,174 @@ var B747_8_LowerEICAS_ECL;
                 || ((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 30 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.524))))){
                 this.landingFlapsText.style.fill = "lime";
                 this.landingFlapsTick.style.visibility = "visible";
+                landingFlapSet = 1;
             }else{
                 this.landingFlapsText.style.fill = "white";
                 this.landingFlapsTick.style.visibility = "hidden";
+                landingFlapSet = 0;
             }
-            if((SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT","bool"))){
+            if(landingFlapSet && SimVar.GetSimVarValue("SPOILERS ARMED","bool") && SimVar.GetSimVarValue("GEAR POSITION","bool")){
+                this.globalItems.style.visibility = "visible";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
+                SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool", 1);
+            }else{
+                this.globalItems.style.visibility = "hidden";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;
+        }
+        shutdownChecklist(masterCursorIndex){
+            this.hydraulicTick = document.querySelector("#shutdown-checklist-tick1");
+            this.hydraulicText = document.querySelector("#shutdown-checklist4");
+            this.fuelPumpsTick = document.querySelector("#shutdown-checklist-tick2");
+            this.fuelPumpsText = document.querySelector("#shutdown-checklist5");
+            this.shutdownFlapsTick = document.querySelector("#shutdown-checklist-tick3");
+            this.shutdownFlapsText = document.querySelector("#shutdown-checklist6");
+            this.shutdownBrakeTick = document.querySelector("#shutdown-checklist-tick4");
+            this.shutdownBrakeText = document.querySelector("#shutdown-checklist7");
+            this.shutdownCutoffTick = document.querySelector("#shutdown-checklist-tick5");
+            this.shutdownCutoffText = document.querySelector("#shutdown-checklist8");    
+            this.wxrTick = document.querySelector("#shutdown-checklist-tick6");
+            this.wxrText = document.querySelector("#shutdown-checklist9");        
+            if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
+                switch(masterCursorIndex) {
+                    case 4:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                            this.hydraulicTick.style.visibility = "visible";
+                            this.hydraulicText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool", 1)
+                        } else {
+                            this.hydraulicTick.style.visibility = "hidden";
+                            this.hydraulicText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool", 0)
+                        }    
+                    break;
+                    case 7:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_7", "bool")){
+                            this.shutdownBrakeTick.style.visibility = "visible";
+                            this.shutdownBrakeText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK", "bool", 1)
+                        } else {
+                            this.shutdownBrakeTick.style.visibility = "hidden";
+                            this.shutdownBrakeText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK", "bool", 0)
+                        }    
+                    break;               
+                }
+            }
+            SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 0);           
+            let loopCounter = 1;
+            let activePumpCounter = 0;
+            let fuelPumpsOff = 0;
+            do {
+                if(SimVar.GetSimVarValue(`FUELSYSTEM PUMP ACTIVE:${loopCounter}`, "bool")){
+                    activePumpCounter++;
+                }
+                loopCounter++;
+            }
+            while (loopCounter < 17);
+            if(activePumpCounter){
+                this.fuelPumpsText.style.fill = "white";
+                this.fuelPumpsTick.style.visibility = "hidden";
+                fuelPumpsOff = 0;
+
+            }else{
+                this.fuelPumpsText.style.fill = "lime";
+                this.fuelPumpsTick.style.visibility = "visible";
+                fuelPumpsOff = 1;
+            }
+            if(SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000){
+                this.shutdownFlapsText.style.fill = "lime";
+                this.shutdownFlapsTick.style.visibility = "visible";
+            }else{
+                this.shutdownFlapsText.style.fill = "white";
+                this.shutdownFlapsTick.style.visibility = "hidden";
+            }
+            let fuelSwitchCutoff = 0;
+            if((SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:5","bool") || SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:6","bool") 
+                || SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:7","bool") || SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:8","bool"))){
+                this.shutdownCutoffText.style.fill = "white";
+                this.shutdownCutoffTick.style.visibility = "hidden";
+                fuelSwitchCutoff = 0;
+            }else{
+                this.shutdownCutoffText.style.fill = "lime";
+                this.shutdownCutoffTick.style.visibility = "visible";
+                fuelSwitchCutoff = 1;
+            }    
+            if(!SimVar.GetSimVarValue("L:BTN_WX_ACTIVE","bool")){
+                this.wxrText.style.fill = "lime";
+                this.wxrTick.style.visibility = "visible";
+            }else{
+                this.wxrText.style.fill = "white";
+                this.wxrTick.style.visibility = "hidden";
+            }
+            if((SimVar.GetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK","bool") && (fuelPumpsOff)
+                && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && !SimVar.GetSimVarValue("L:BTN_WX_ACTIVE","bool") && (fuelSwitchCutoff))){
+                this.globalItems.style.visibility = "visible";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
+                SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool", 1);
+            }else{
+                this.globalItems.style.visibility = "hidden";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;           
+        }
+        secureChecklist(masterCursorIndex){
+            this.irsTick = document.querySelector("#secure-checklist-tick1");
+            this.irsText = document.querySelector("#secure-checklist4");
+            this.emerLightsTick = document.querySelector("#secure-checklist-tick2");
+            this.emerLightsText = document.querySelector("#secure-checklist5"); 
+            this.packsTick = document.querySelector("#secure-checklist-tick3");
+            this.packsText = document.querySelector("#secure-checklist6");  
+            if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
+                switch(masterCursorIndex) {
+                    case 4:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                            this.irsTick.style.visibility = "visible";
+                            this.irsText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool", 1)
+                        } else {
+                            this.irsTick.style.visibility = "hidden";
+                            this.irsText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool", 0)
+                        }    
+                    break;  
+                    case 5:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_5", "bool")){
+                            this.emerLightsTick.style.visibility = "visible";
+                            this.emerLightsText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK", "bool", 1)
+                        } else {
+                            this.emerLightsTick.style.visibility = "hidden";
+                            this.emerLightsText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK", "bool", 0)
+                        }    
+                    break;
+                    case 6:
+                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_6", "bool")){
+                            this.packsTick.style.visibility = "visible";
+                            this.packsText.style.fill = "lime";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 0)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool", 1)
+                        } else {
+                            this.packsTick.style.visibility = "hidden";
+                            this.packsText.style.fill = "white";
+                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 1)
+                            SimVar.SetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool", 0)
+                        }    
+                    break;              
+                }           
+            }
+            SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 0);
+            if(SimVar.GetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK","bool") && SimVar.GetSimVarValue("L:SALTY_ECL_PACKS_CHK","bool")){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
                 SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
@@ -645,8 +808,7 @@ var B747_8_LowerEICAS_ECL;
             }
             return;
         }
-    }
-    B747_8_LowerEICAS_ECL.Display = Display;
+    }B747_8_LowerEICAS_ECL.Display = Display;
 })(B747_8_LowerEICAS_ECL || (B747_8_LowerEICAS_ECL = {}));
 customElements.define("b747-8-lower-eicas-ecl", B747_8_LowerEICAS_ECL.Display);
 //# sourceMappingURL=B747_8_LowerEICAS_ECL.js.map
