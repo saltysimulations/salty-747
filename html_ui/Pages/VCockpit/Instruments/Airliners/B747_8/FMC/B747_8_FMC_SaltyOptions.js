@@ -23,21 +23,19 @@ class FMCSaltyOptions {
         ]);
         fmc.onRightInput[1] = () => { FMCSaltyOptions.ShowPage1(fmc); };
         
-        
         fmc.onRightInput[2] = () => { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
                                         cursorIndex++;
                                         SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
                                         SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 1);
                                     };
-        
-        
+           
         fmc.onLeftInput[2] = () =>  { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
                                         cursorIndex--;
                                         SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
                                         SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 1);
                                     };
-        
-        
+
+        fmc.onLeftInput[3] = () => { SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 1); };
         
         fmc.onLeftInput[5] = () => {
            if (SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum") == 1) {

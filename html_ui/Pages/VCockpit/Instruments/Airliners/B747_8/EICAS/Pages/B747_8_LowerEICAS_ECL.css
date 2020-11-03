@@ -27,4 +27,8 @@ b747-8-lower-eicas-ecl {
     fill: #53536c; }
   b747-8-lower-eicas-ecl path {
     stroke: lime;
-    fill: lime; }
+    fill: lime; 
+    visibility: hidden;}
+    b747-8-lower-eicas-ecl #checklist-complete-rect {
+      fill: lime;
+    }
