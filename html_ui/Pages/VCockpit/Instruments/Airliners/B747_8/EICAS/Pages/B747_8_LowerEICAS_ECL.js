@@ -30,9 +30,9 @@ var B747_8_LowerEICAS_ECL;
             var checklistParams = this.getActiveChecklist();
             this.cursorBoundsHandler(checklistParams[1]);
             this.clearLastChecklist();
-            this.drawChecklist(checklistParams[0]);
             this.updateCursorPosition(checklistParams[0],checklistParams[1],masterCursorIndex);
             this.clearCursors(checklistParams[0],checklistParams[1],masterCursorIndex);
+            this.drawChecklist(checklistParams[0]);
             this.runChecklist(checklistParams[0],masterCursorIndex);
         }        
         getActiveChecklist(){
@@ -592,6 +592,48 @@ var B747_8_LowerEICAS_ECL;
             }else{
                 this.approachSeatBeltsText.style.fill = "white";
                 this.approachSeatBeltsTick.style.visibility = "hidden";
+            }
+            if((SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT","bool"))){
+                this.globalItems.style.visibility = "visible";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
+                SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
+            }else{
+                this.globalItems.style.visibility = "hidden";
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;
+        }
+        landingChecklist(masterCursorIndex){
+            let fmcLandingFlap = SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number").toFixed(0);
+            this.speedbrakeTick = this.querySelector("#landing-checklist-tick1");
+            this.speedbrakeText = this.querySelector("#landing-checklist4");
+            this.landingGearTick = this.querySelector("#landing-checklist-tick2");
+            this.landingGearText = this.querySelector("#landing-checklist5");
+            this.landingFlapsTick = this.querySelector("#landing-checklist-tick3");
+            this.landingFlapsText = this.querySelector("#landing-checklist6");
+            this.landingFlapsText.textContent = `Flaps........................................${fmcLandingFlap}`   
+
+            if(SimVar.GetSimVarValue("SPOILERS ARMED","bool")){
+                this.speedbrakeText.style.fill = "lime";
+                this.speedbrakeTick.style.visibility = "visible";
+            }else{
+                this.speedbrakeText.style.fill = "white";
+                this.speedbrakeTick.style.visibility = "hidden";
+            }
+            if(SimVar.GetSimVarValue("GEAR POSITION","bool")){
+                this.landingGearText.style.fill = "lime";
+                this.landingGearTick.style.visibility = "visible";
+            }else{
+                this.landingGearText.style.fill = "white";
+                this.landingGearTick.style.visibility = "hidden";
+            }
+            if(((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 25 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.436))
+                || ((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 30 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.524))))){
+                this.landingFlapsText.style.fill = "lime";
+                this.landingFlapsTick.style.visibility = "visible";
+            }else{
+                this.landingFlapsText.style.fill = "white";
+                this.landingFlapsTick.style.visibility = "hidden";
             }
             if((SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT","bool"))){
                 this.globalItems.style.visibility = "visible";
