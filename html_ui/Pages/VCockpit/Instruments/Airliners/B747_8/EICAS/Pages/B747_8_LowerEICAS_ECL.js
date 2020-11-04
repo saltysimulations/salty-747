@@ -16,12 +16,10 @@ var B747_8_LowerEICAS_ECL;
             this.isInitialised = true; 
             this.allChecklists.style.visibility = "hidden";
         }
-        //On button press calls sequencer then checks for current checklist to draw to screen. INCOMPLETE! Requires two or three pushes to draw correctly??
+        //On button press calls sequencer for next checklist. INCOMPLETE! Requires two or three pushes to draw correctly??
         onEvent() {
             super.onEvent();
             this.sequenceChecklist();
-            var checklistParams = this.getActiveChecklist();
-            this.drawChecklist(checklistParams[0]);
         }
         //Main loop
         update(_deltaTime) {
@@ -30,11 +28,13 @@ var B747_8_LowerEICAS_ECL;
             }
             var masterCursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
             var checklistParams = this.getActiveChecklist();
+            if(!SimVar.GetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool")){
+                this.runChecklist(checklistParams[0],masterCursorIndex);
+                this.drawChecklist(checklistParams[0]);
+            }
             this.cursorBoundsHandler(checklistParams[1]);
-            this.runChecklist(checklistParams[0],masterCursorIndex);
             this.updateCursorPosition(checklistParams[0],checklistParams[1],masterCursorIndex);
             this.clearCursors(checklistParams[0],checklistParams[1],masterCursorIndex);
-            this.runChecklist(checklistParams[0],masterCursorIndex);
         }
         //If current checklist is flagged as completed, sequence next one to be drawn and reset flag.
         sequenceChecklist() {
