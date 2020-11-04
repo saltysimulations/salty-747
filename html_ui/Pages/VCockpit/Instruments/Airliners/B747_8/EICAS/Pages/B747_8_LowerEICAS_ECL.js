@@ -16,12 +16,14 @@ var B747_8_LowerEICAS_ECL;
             this.isInitialised = true; 
             this.allChecklists.style.visibility = "hidden";
         }
-        onEvent(_event) {
-            super.onEvent(_event);
-            if(SimVar.GetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool")){
-                SimVar.SetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool", 1);
-            }
+        //On button press calls sequencer then checks for current checklist to draw to screen. INCOMPLETE! Requires two or three pushes to draw correctly??
+        onEvent() {
+            super.onEvent();
+            this.sequenceChecklist();
+            var checklistParams = this.getActiveChecklist();
+            this.drawChecklist(checklistParams[0]);
         }
+        //Main loop
         update(_deltaTime) {
             if (!this.isInitialised) {
                 return;
@@ -29,12 +31,38 @@ var B747_8_LowerEICAS_ECL;
             var masterCursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
             var checklistParams = this.getActiveChecklist();
             this.cursorBoundsHandler(checklistParams[1]);
-            this.clearLastChecklist();
+            this.runChecklist(checklistParams[0],masterCursorIndex);
             this.updateCursorPosition(checklistParams[0],checklistParams[1],masterCursorIndex);
             this.clearCursors(checklistParams[0],checklistParams[1],masterCursorIndex);
-            this.drawChecklist(checklistParams[0]);
             this.runChecklist(checklistParams[0],masterCursorIndex);
-        }        
+        }
+        //If current checklist is flagged as completed, sequence next one to be drawn and reset flag.
+        sequenceChecklist() {
+            if(SimVar.GetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool")){
+                if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool", 1);
+                } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SECURE_COMPLETE", "bool") == 0){
+                    SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool", 1);
+                }
+                SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+            }
+            return;
+        }
+        //Uses pre-initialised SimVars to determine current active checklist and also returns associated maximum cursor position.        
         getActiveChecklist(){
             if(SimVar.GetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool") == 0){
                 let currentChecklist = "preflight-checklist";
@@ -88,22 +116,15 @@ var B747_8_LowerEICAS_ECL;
                 return checklistParams;
             }
         }
+        //Hides all html elements then sets current checklist to visible.
         drawChecklist(checklistToDraw){
             this.currentChecklist = document.querySelector(`#${checklistToDraw}`);
-            this.allChecklists.style.visibility = "hidden";   
+            this.hideAll = document.querySelector("#all-checklists");
+            this.hideAll.style.visibility = "hidden";   
             this.currentChecklist.style.visibility = "visible";
             return;
         }
-        clearLastChecklist(){
-            this.lastChecklist = document.querySelector("#preflight-checklist");
-            this.lastChecklist.style.visibility = "hidden";
-            return;
-        }
-        clearLastCursors(){
-            this.lastCursors = document.querySelector("#preflight-checklist-cursor-positions");
-            this.lastCursors.style.visibility = "hidden";
-            return;
-        }
+        //Get if cursor index has increased or decreased in order to select last cursor for deletion.
         clearCursors(checklistToDraw, maxCursorIndex, masterCursorIndex){
             if(SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool")){
                 if(masterCursorIndex >= 1){
@@ -122,6 +143,7 @@ var B747_8_LowerEICAS_ECL;
             }
             return;
         }
+        //Draw new cursor based on current index.
         updateCursorPosition(checklistToDraw, maxCursorIndex, masterCursorIndex){
             let cursorIndex = Math.min(maxCursorIndex, masterCursorIndex);
             cursorIndex = Math.max(cursorIndex, 1);
@@ -129,6 +151,7 @@ var B747_8_LowerEICAS_ECL;
             this.currentChecklistCursor.style.visibility = "visible";
             return;
         }
+        //Prevent cursor index being moved to invalid position.
         cursorBoundsHandler(maxCursorIndex){
             if (SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum") < 1 ){
                 SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", 1);
@@ -138,6 +161,7 @@ var B747_8_LowerEICAS_ECL;
             }
             return;
         }
+        //Selects and calls for Checklist main logic.
         runChecklist(currentChecklist, masterCursorIndex){
             if(currentChecklist == "preflight-checklist"){
                 this.preflightChecklist(masterCursorIndex);
@@ -162,6 +186,7 @@ var B747_8_LowerEICAS_ECL;
             }
             return;
         }
+        //Preflight logic - Oxygen/Instruments manually set - Park Brake/Fuel Switches automatically sensed by checklist.
         preflightChecklist(masterCursorIndex){
             let fuelSwitchStatus;
             this.oxygenTick = document.querySelector("#preflight-checklist-tick1");
@@ -173,6 +198,7 @@ var B747_8_LowerEICAS_ECL;
             this.parkBrakeText = document.querySelector("#preflight-checklist7");
             this.fuelControlSwitchTick = document.querySelector("#preflight-checklist-tick4");
             this.fuelControlSwitchText = document.querySelector("#preflight-checklist8"); 
+            //Manually set items - Captures input from L:SALTY_ECL_BTN to toggle checklist state at current Cursor Index.
             if(SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch(masterCursorIndex) {
                     case 4:
@@ -205,7 +231,9 @@ var B747_8_LowerEICAS_ECL;
                     break;
                 }           
             }
+            //Reset input.
             SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 0);
+            //Automatically sensed items Brake and Fuel Switches through SimVars.
             if(SimVar.GetSimVarValue("BRAKE PARKING INDICATOR","bool")){
                 this.parkBrakeText.style.fill = "lime";
                 this.parkBrakeTick.style.visibility = "visible";
@@ -221,18 +249,19 @@ var B747_8_LowerEICAS_ECL;
                 this.fuelControlSwitchText.style.fill = "lime";
                 this.fuelControlSwitchTick.style.visibility = "visible";
                 fuelSwitchStatus = 1;
-            }   
+            }
+            //Check if all checklist conditions have been met, then display CHECKLIST COMPLETE globalItem. Also set L:SALTY_ECL_CHECKLIST_COMPLETE flag for use by sequenceChecklist().
             if((SimVar.GetSimVarValue("L:SALTY_ECL_OXYGEN_CHK", "bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_INSTRUMENTS_CHK", "bool")) 
                 && (SimVar.GetSimVarValue("BRAKE PARKING INDICATOR","bool")) && (fuelSwitchStatus)){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //Before Start logic.
         beforeStartChecklist(masterCursorIndex){
             this.gearPinsTick = document.querySelector("#before-start-checklist-tick1");
             this.gearPinsText = document.querySelector("#before-start-checklist4");
@@ -337,13 +366,13 @@ var B747_8_LowerEICAS_ECL;
                 && (SimVar.GetSimVarValue("L:SALTY_ECL_TRIM_CHK","bool")) && (SimVar.GetSimVarValue("LIGHT BEACON ON","bool")))){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //Before Taxi logic.
         beforeTaxiChecklist(masterCursorIndex){
             this.antiIceTick = document.querySelector("#before-taxi-checklist-tick1");
             this.antiIceText = document.querySelector("#before-taxi-checklist4");
@@ -424,19 +453,22 @@ var B747_8_LowerEICAS_ECL;
                 && (SimVar.GetSimVarValue("AUTO BRAKE SWITCH CB", "Enum") == 0))){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //Before Takeoff logic. 
         beforeTakeoffChecklist(masterCursorIndex){
+            //Get Takeoff Flap setting from L:SALTY_TAKEOFF_FLAP_VALUE which is set in FMC Takeoff page. 
             let fmcTakeOffFlap = SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number").toFixed(0);
             this.flapsTick = document.querySelector("#before-takeoff-checklist-tick1");
             this.flapsText = document.querySelector("#before-takeoff-checklist4");
+            //Display on ECL selected takeoff Flap setting.
             this.flapsText.textContent = `Flaps........................................${fmcTakeOffFlap}`
             let flapsSet = 0;
+            //Check if Flap Angle matches selected Takeoff Flap. 10 and 20 are valid settings.
             if(((SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 10) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.175))
                 || (SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 20) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.349)){
                 this.flapsText.style.fill = "lime";
@@ -450,13 +482,13 @@ var B747_8_LowerEICAS_ECL;
             if(flapsSet){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //After Takeoff logic.
         afterTakeoffChecklist(masterCursorIndex){
             this.gearUpTick = document.querySelector("#after-takeoff-checklist-tick1");
             this.gearUpText = document.querySelector("#after-takeoff-checklist4");
@@ -479,13 +511,13 @@ var B747_8_LowerEICAS_ECL;
             if((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && (SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0)){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //Descent logic.
         descentChecklist(masterCursorIndex){
             this.descentRecallTick = document.querySelector("#descent-checklist-tick1");
             this.descentRecallText = document.querySelector("#descent-checklist4");
@@ -556,13 +588,13 @@ var B747_8_LowerEICAS_ECL;
                 && (SimVar.GetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK","bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK","bool"))){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //Approach logic.
         approachChecklist(masterCursorIndex){
             this.altimetersTick = document.querySelector("#approach-checklist-tick1");
             this.altimetersText = document.querySelector("#approach-checklist4");
@@ -596,14 +628,15 @@ var B747_8_LowerEICAS_ECL;
             if((SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT","bool"))){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //Landing logic.
         landingChecklist(masterCursorIndex){
+            //Get selected landing flap value from L:SALTY_SELECTED_APPROACH_FLAP which is set in FMC Approach page.
             let fmcLandingFlap = SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number").toFixed(0);
             this.speedbrakeTick = document.querySelector("#landing-checklist-tick1");
             this.speedbrakeText = document.querySelector("#landing-checklist4");
@@ -611,8 +644,10 @@ var B747_8_LowerEICAS_ECL;
             this.landingGearText = document.querySelector("#landing-checklist5");
             this.landingFlapsTick = document.querySelector("#landing-checklist-tick3");
             this.landingFlapsText = document.querySelector("#landing-checklist6");
+            //Display landing flap value on ECL.
             this.landingFlapsText.textContent = `Flaps........................................${fmcLandingFlap}`
-            let landingFlapSet = 0;   
+            let landingFlapSet = 0;
+            //Spoilers modelled and SimVar set incorrectly by Asobo. Should be armed when lever is pulled slightly out.
             if(SimVar.GetSimVarValue("SPOILERS ARMED","bool")){
                 this.speedbrakeText.style.fill = "lime";
                 this.speedbrakeTick.style.visibility = "visible";
@@ -627,6 +662,7 @@ var B747_8_LowerEICAS_ECL;
                 this.landingGearText.style.fill = "white";
                 this.landingGearTick.style.visibility = "hidden";
             }
+            //Compares FMC approach flap value with actual flap position. Flaps 25 and 30 are valid landing flaps.
             if(((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 25 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.436))
                 || ((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 30 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.524))))){
                 this.landingFlapsText.style.fill = "lime";
@@ -640,13 +676,13 @@ var B747_8_LowerEICAS_ECL;
             if(landingFlapSet && SimVar.GetSimVarValue("SPOILERS ARMED","bool") && SimVar.GetSimVarValue("GEAR POSITION","bool")){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;
         }
+        //Shutdown logic
         shutdownChecklist(masterCursorIndex){
             this.hydraulicTick = document.querySelector("#shutdown-checklist-tick1");
             this.hydraulicText = document.querySelector("#shutdown-checklist4");
@@ -691,6 +727,7 @@ var B747_8_LowerEICAS_ECL;
                 }
             }
             SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 0);           
+            //For FUEL PUMPS -- OFF condition. Loops to count number of main fuel pumps running by SimVar index(16 total).
             let loopCounter = 1;
             let activePumpCounter = 0;
             let fuelPumpsOff = 0;
@@ -701,6 +738,7 @@ var B747_8_LowerEICAS_ECL;
                 loopCounter++;
             }
             while (loopCounter < 17);
+            //Condition met if no pumps are counted as on.
             if(activePumpCounter){
                 this.fuelPumpsText.style.fill = "white";
                 this.fuelPumpsTick.style.visibility = "hidden";
@@ -740,13 +778,13 @@ var B747_8_LowerEICAS_ECL;
                 && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && !SimVar.GetSimVarValue("L:BTN_WX_ACTIVE","bool") && (fuelSwitchCutoff))){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
             }
             return;           
         }
+        //Secure logic.
         secureChecklist(masterCursorIndex){
             this.irsTick = document.querySelector("#secure-checklist-tick1");
             this.irsText = document.querySelector("#secure-checklist4");
@@ -801,7 +839,6 @@ var B747_8_LowerEICAS_ECL;
             if(SimVar.GetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK","bool") && SimVar.GetSimVarValue("L:SALTY_ECL_PACKS_CHK","bool")){
                 this.globalItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 1);
-                SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
             }else{
                 this.globalItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
