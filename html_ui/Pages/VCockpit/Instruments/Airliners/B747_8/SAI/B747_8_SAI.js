@@ -26,6 +26,15 @@ class B747_8_SAI_Baro extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         this.baroElement.update(_deltaTime);
+
+        const isInitDone = SimVar.GetSimVarValue("L:SALTY_ISFD_INIT_DONE", "Bool");
+
+        // Hide baro if init is not done
+        if (isInitDone) {
+            this.baroElement.style.display = "";
+        } else {
+            this.baroElement.style.display = "none";
+        }
     }
     onExit() {
     }
@@ -222,6 +231,7 @@ class B747_8_SAI_HSIndicator extends HTMLElement {
                             line.setAttribute("height", length.toString());
                             line.setAttribute("transform", "rotate(" + ((-angle / Math.PI) * 180 + 180) + " 180 180)");
                             line.setAttribute("fill", "white");
+                            line.setAttribute("class", "lines");
                             angle += (2 * Math.PI) / 72;
                             this.compassCircle.appendChild(line);
                         }
@@ -267,6 +277,8 @@ class B747_8_SAI_HSIndicator extends HTMLElement {
             this.rootGroup.appendChild(this.centerSVG);
             this.rootSVG.appendChild(this.rootGroup);
             this.appendChild(this.rootSVG);
+
+            this.hdgBox = document.querySelector("#hdg-box");
         };
     }
     connectedCallback() {
@@ -285,6 +297,28 @@ class B747_8_SAI_HSIndicator extends HTMLElement {
             }
             else {
                 text.setAttribute('font-size', "20");
+            }
+            
+            const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+
+            // Compass visible / not visible depending on IRS
+            if (IRSState <= 1) {
+                text.style.display = "none";
+                cursor.style.display = "none";
+                let lines = document.getElementsByClassName("lines");
+                for (let i = 0; i < lines.length; i++) {
+                    lines[i].style.display = "none";
+                }
+                this.hdgBox.style.display = "";
+            }
+            if (IRSState == 2) {
+                text.style.display = "";
+                cursor.style.display = "";
+                let lines = document.getElementsByClassName("lines");
+                for (let i = 0; i < lines.length; i++) {
+                    lines[i].style.display = "";
+                }
+                this.hdgBox.style.display = "none";
             }
         });
     }
@@ -514,6 +548,17 @@ class B747_8_SAI_AirspeedIndicator extends HTMLElement {
         this.updateArcScrolling(indicatedSpeed);
         this.updateGraduationScrolling(indicatedSpeed);
         this.updateCursorScrolling(indicatedSpeed);
+
+        let graduations = document.querySelector("#Graduations");
+        const isInitDone = SimVar.GetSimVarValue("L:SALTY_ISFD_INIT_DONE", "Bool");
+        const initSequenceTimerValue = SimVar.GetSimVarValue("L:SALTY_ISFD_INIT_TIMER", "Enum");
+
+        // Show "lines" and numbers on the IAS indicator a while into the init sequence
+        if (initSequenceTimerValue > 75 && !isInitDone) {
+            graduations.style.display = "none";
+        } else {
+            graduations.style.display = "";
+        }
     }
     arcToSVG(_value) {
         var pixels = (_value * this.graduationSpacing * (this.nbSecondaryGraduations + 1)) / 10;
@@ -763,6 +808,18 @@ class B747_8_SAI_AltimeterIndicator extends HTMLElement {
         this.updateGraduationScrolling(altitude);
         this.updateCursorScrolling(altitude);
         this.updateBaroPressure();
+
+        let graduations = document.querySelector("#graduationGroup");
+        const isInitDone = SimVar.GetSimVarValue("L:SALTY_ISFD_INIT_DONE", "Bool");
+        const initSequenceTimerValue = SimVar.GetSimVarValue("L:SALTY_ISFD_INIT_TIMER", "Enum");
+        
+        // Show "lines" and numbers on altitude indicator a while into the init sequence
+        if (initSequenceTimerValue > 75 && !isInitDone) {
+            graduations.style.display = "none";
+        } else {
+            graduations.style.display = "";
+        }
+        
     }
     updateBaroPressure() {
         if (this.pressureSVG) {
@@ -819,6 +876,15 @@ class B747_8_SAI_Attitude extends NavSystemElement {
             var aspectRatio = this.gps.getAspectRatio();
             this.attitudeElement.setAttribute("aspect-ratio", aspectRatio.toString());
         }
+
+        // INIT SEQUENCE
+        this.initSequenceTimer = -1;
+        this.initSequenceStarted = false;
+        this.initBox = document.querySelector("#init-box");
+        this.initSeconds = document.querySelector("#init-seconds");
+        this.spdBox = document.querySelector("#spd-box");
+        this.altBox = document.querySelector("#alt-box");
+        this.attBox = document.querySelector("#att-box");
     }
     onEnter() {
     }
@@ -829,6 +895,55 @@ class B747_8_SAI_Attitude extends NavSystemElement {
             this.attitudeElement.setAttribute("bank", (xyz.bank / Math.PI * 180).toString());
             this.attitudeElement.setAttribute("slip_skid", Simplane.getInclinometer().toString());
         }
+
+        const isISFDOn = SimVar.GetSimVarValue("L:B747_8_SAI_State", "Bool");
+        const isInitDone = SimVar.GetSimVarValue("L:SALTY_ISFD_INIT_DONE", "Bool");
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+
+        /* _deltaTime provides the wrong value if the screen refresh rate is set to low or medium in the settings - 
+        therefore, this method of getting the deltatime is being used here. In the future, this could be moved to Salty Core or Utils.*/ 
+        var timeNow = Date.now();
+        if (this.lastTime == null) this.lastTime = timeNow;
+        var deltaTime = timeNow - this.lastTime;
+        this.lastTime = timeNow;
+
+        if (IRSState == 2) SimVar.SetSimVarValue("L:SALTY_ISFD_INIT_DONE", "Bool", 1);
+
+        if (!this.initSequenceStarted && isISFDOn && !SimVar.GetSimVarValue("L:SALTY_ISFD_INIT_DONE", "Bool")) {
+            this.initBox.style.display = "block";
+            this.initSequenceTimer = 90;
+            this.initSequenceStarted = true;
+        }
+
+        // Init sequence timer
+        if (this.initSequenceTimer >= 0) {
+            this.initSeconds.innerHTML = Math.round(this.initSequenceTimer) + " S"
+            this.initSequenceTimer -= deltaTime / 1000;
+            if (this.initSequenceTimer <= 0) {
+                this.initBox.style.display = "none";
+                SimVar.SetSimVarValue("L:SALTY_ISFD_INIT_DONE", "Bool", 1);
+            }
+            SimVar.SetSimVarValue("L:SALTY_ISFD_INIT_TIMER", "Enum", Math.round(this.initSequenceTimer));
+        }
+
+        // Remove SPD and ALT boxes 15 seconds into INIT sequence, also remove ATT if it is done
+        if (!isInitDone) {
+            this.attitudeElement.style.display = "none";
+            if (Math.round(this.initSequenceTimer) <= 75) {
+                this.spdBox.style.display = "none";
+                this.altBox.style.display = "none";
+            } else {
+                this.spdBox.style.display = "";
+                this.altBox.style.display = "";
+            } 
+        } else {
+            this.spdBox.style.display = "none";
+            this.altBox.style.display = "none";
+            this.attBox.style.display = "none";
+            this.attitudeElement.style.display = "";
+        }
+        
+        
     }
     onExit() {
     }
