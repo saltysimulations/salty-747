@@ -795,90 +795,95 @@ class GPS_AirportWaypointRunways extends NavSystemElement {
                     this.privateElement.textContent = "Private";
                     break;
             }
-            this.nameElement.textContent = infos.runways[this.selectedRunway].designation;
-            this.lengthElement.textContent = fastToFixed(infos.runways[this.selectedRunway].length, 0);
-            this.widthElement.textContent = fastToFixed(infos.runways[this.selectedRunway].width, 0);
-            switch (infos.runways[this.selectedRunway].surface) {
-                case 0:
-                    this.surfaceElement.textContent = "Unknown";
-                    break;
-                case 1:
-                    this.surfaceElement.textContent = "Concrete";
-                    break;
-                case 2:
-                    this.surfaceElement.textContent = "Asphalt";
-                    break;
-                case 101:
-                    this.surfaceElement.textContent = "Grass";
-                    break;
-                case 102:
-                    this.surfaceElement.textContent = "Turf";
-                    break;
-                case 103:
-                    this.surfaceElement.textContent = "Dirt";
-                    break;
-                case 104:
-                    this.surfaceElement.textContent = "Coral";
-                    break;
-                case 105:
-                    this.surfaceElement.textContent = "Gravel";
-                    break;
-                case 106:
-                    this.surfaceElement.textContent = "Oil Treated";
-                    break;
-                case 107:
-                    this.surfaceElement.textContent = "Steel";
-                    break;
-                case 108:
-                    this.surfaceElement.textContent = "Bituminus";
-                    break;
-                case 109:
-                    this.surfaceElement.textContent = "Brick";
-                    break;
-                case 110:
-                    this.surfaceElement.textContent = "Macadam";
-                    break;
-                case 111:
-                    this.surfaceElement.textContent = "Planks";
-                    break;
-                case 112:
-                    this.surfaceElement.textContent = "Sand";
-                    break;
-                case 113:
-                    this.surfaceElement.textContent = "Shale";
-                    break;
-                case 114:
-                    this.surfaceElement.textContent = "Tarmac";
-                    break;
-                case 115:
-                    this.surfaceElement.textContent = "Snow";
-                    break;
-                case 116:
-                    this.surfaceElement.textContent = "Ice";
-                    break;
-                case 201:
-                    this.surfaceElement.textContent = "Water";
-                    break;
-                default:
-                    this.surfaceElement.textContent = "Unknown";
-                    break;
-            }
-            switch (infos.runways[this.selectedRunway].lighting) {
-                case 0:
-                    this.lightingElement.textContent = "Unknown";
-                    break;
-                case 1:
-                    this.lightingElement.textContent = "None";
-                    break;
-                case 2:
-                    this.lightingElement.textContent = "Part Time";
-                    break;
-                case 3:
-                    this.lightingElement.textContent = "Full Time";
-                    break;
-                case 4:
-                    this.lightingElement.textContent = "Frequency";
-                    break;
+            if (infos.runways && this.selectedRunway >= 0 && this.selectedRunway < infos.runways.length) {
+                let runway = infos.runways[this.selectedRunway];
+                if (runway) {
+                    this.nameElement.textContent = runway.designation;
+                    this.lengthElement.textContent = fastToFixed(runway.length, 0);
+                    this.widthElement.textContent = fastToFixed(runway.width, 0);
+                    switch (runway.surface) {
+                        case 0:
+                            this.surfaceElement.textContent = "Unknown";
+                            break;
+                        case 1:
+                            this.surfaceElement.textContent = "Concrete";
+                            break;
+                        case 2:
+                            this.surfaceElement.textContent = "Asphalt";
+                            break;
+                        case 101:
+                            this.surfaceElement.textContent = "Grass";
+                            break;
+                        case 102:
+                            this.surfaceElement.textContent = "Turf";
+                            break;
+                        case 103:
+                            this.surfaceElement.textContent = "Dirt";
+                            break;
+                        case 104:
+                            this.surfaceElement.textContent = "Coral";
+                            break;
+                        case 105:
+                            this.surfaceElement.textContent = "Gravel";
+                            break;
+                        case 106:
+                            this.surfaceElement.textContent = "Oil Treated";
+                            break;
+                        case 107:
+                            this.surfaceElement.textContent = "Steel";
+                            break;
+                        case 108:
+                            this.surfaceElement.textContent = "Bituminus";
+                            break;
+                        case 109:
+                            this.surfaceElement.textContent = "Brick";
+                            break;
+                        case 110:
+                            this.surfaceElement.textContent = "Macadam";
+                            break;
+                        case 111:
+                            this.surfaceElement.textContent = "Planks";
+                            break;
+                        case 112:
+                            this.surfaceElement.textContent = "Sand";
+                            break;
+                        case 113:
+                            this.surfaceElement.textContent = "Shale";
+                            break;
+                        case 114:
+                            this.surfaceElement.textContent = "Tarmac";
+                            break;
+                        case 115:
+                            this.surfaceElement.textContent = "Snow";
+                            break;
+                        case 116:
+                            this.surfaceElement.textContent = "Ice";
+                            break;
+                        case 201:
+                            this.surfaceElement.textContent = "Water";
+                            break;
+                        default:
+                            this.surfaceElement.textContent = "Unknown";
+                            break;
+                    }
+                    switch (runway.lighting) {
+                        case 0:
+                            this.lightingElement.textContent = "Unknown";
+                            break;
+                        case 1:
+                            this.lightingElement.textContent = "None";
+                            break;
+                        case 2:
+                            this.lightingElement.textContent = "Part Time";
+                            break;
+                        case 3:
+                            this.lightingElement.textContent = "Full Time";
+                            break;
+                        case 4:
+                            this.lightingElement.textContent = "Frequency";
+                            break;
+                    }
+                }
             }
         }
         else {
@@ -1050,6 +1055,12 @@ class GPS_AirportWaypointApproaches extends NavSystemElement {
         }
         this.icaoSearchField.getWaypoint().UpdateApproaches();
     }
+    getSelectedApproach(airport) {
+        if (airport && airport.approaches && this.selectedApproach >= 0 && this.selectedApproach < airport.approaches.length) {
+            return airport.approaches[this.selectedApproach];
+        }
+        return null;
+    }
     onUpdate(_deltaTime) {
         this.icaoSearchField.Update();
         var infos = this.icaoSearchField.getUpdatedInfos();
@@ -1072,8 +1083,20 @@ class GPS_AirportWaypointApproaches extends NavSystemElement {
                     this.privateElement.textContent = "Private";
                     break;
             }
-            this.approachElement.textContent = infos.approaches.length > this.selectedApproach ? infos.approaches[this.selectedApproach].name : "";
-            this.transitionElement.textContent = infos.approaches.length > this.selectedApproach && infos.approaches[this.selectedApproach].transitions.length > this.selectedTransition ? infos.approaches[this.selectedApproach].transitions[this.selectedTransition].name : "";
+            let approach = this.getSelectedApproach(infos);
+            if (approach) {
+                this.approachElement.textContent = approach.name;
+                if (approach.transitions && this.selectedTransition >= 0 && approach.transitions.length > this.selectedTransition) {
+                    this.transitionElement.textContent = approach.transitions[this.selectedTransition].name;
+                }
+                else {
+                    this.transitionElement.textContent = "";
+                }
+            }
+            else {
+                this.approachElement.textContent = "";
+                this.transitionElement.textContent = "";
+            }
         }
         else {
             this.identElement.textContent = "_____";
@@ -1144,8 +1167,11 @@ class GPS_AirportWaypointApproaches extends NavSystemElement {
                     this.selectedTransition = _index;
                     this.gps.SwitchToInteractionState(0);
                 };
-                for (var i = 0; i < infos.approaches[this.selectedApproach].transitions.length; i++) {
-                    menu.elements.push(new ContextualMenuElement(infos.approaches[this.selectedApproach].transitions[i].name, callback.bind(this, i)));
+                let approach = this.getSelectedApproach(infos);
+                if (approach) {
+                    for (var i = 0; i < approach.transitions.length; i++) {
+                        menu.elements.push(new ContextualMenuElement(approach.transitions[i].name, callback.bind(this, i)));
+                    }
                 }
                 this.gps.ShowContextualMenu(menu);
             }
@@ -2134,13 +2160,22 @@ class GPS_ApproachSelection extends MFD_ApproachSelection {
             }
         }
     }
+    getSelectedApproach(airport) {
+        if (airport && airport.approaches && this.selectedApproach >= 0 && this.selectedApproach < airport.approaches.length) {
+            return airport.approaches[this.selectedApproach];
+        }
+        return null;
+    }
     openTransitionList(_event) {
         if (_event == "ENT_Push" || _event == "NavigationSmallInc" || _event == "NavigationSmallDec") {
             let infos = this.icaoSearchField.getUpdatedInfos();
             if (infos && infos.icao) {
                 let elems = new Array();
-                for (let i = 0; i < infos.approaches[this.selectedApproach].transitions.length; i++) {
-                    elems.push(infos.approaches[this.selectedApproach].transitions[i].name);
+                let approach = this.getSelectedApproach(infos);
+                if (approach) {
+                    for (let i = 0; i < approach.transitions.length; i++) {
+                        elems.push(approach.transitions[i].name);
+                    }
                 }
                 this.transitionSelectionGroup.setStringElements(elems);
                 if (elems.length > 0) {
@@ -2235,13 +2270,22 @@ class GPS_ArrivalSelection extends MFD_ArrivalSelection {
             }
         }
     }
+    getSelectedArrival(airport) {
+        if (airport && airport.arrivals && this.selectedArrival >= 0 && this.selectedArrival < airport.arrivals.length) {
+            return airport.arrivals[this.selectedArrival];
+        }
+        return null;
+    }
     openRunwaysList(_event) {
         if (_event == "ENT_Push" || _event == "NavigationSmallInc" || _event == "NavigationSmallDec") {
             let infos = this.icaoSearchField.getUpdatedInfos();
             if (infos && infos.icao) {
                 let elems = new Array();
-                for (let i = 0; i < infos.arrivals[this.selectedArrival].runwayTransitions.length; i++) {
-                    elems.push(infos.arrivals[this.selectedArrival].runwayTransitions[i].name);
+                let arrival = this.getSelectedArrival(infos);
+                if (arrival) {
+                    for (let i = 0; i < arrival.runwayTransitions.length; i++) {
+                        elems.push(arrival.runwayTransitions[i].name);
+                    }
                 }
                 this.runwaySelectionGroup.setStringElements(elems);
                 if (elems.length > 0) {
@@ -2256,8 +2300,11 @@ class GPS_ArrivalSelection extends MFD_ArrivalSelection {
             let infos = this.icaoSearchField.getUpdatedInfos();
             if (infos && infos.icao) {
                 let elems = new Array();
-                for (let i = 0; i < infos.arrivals[this.selectedArrival].enRouteTransitions.length; i++) {
-                    elems.push(infos.arrivals[this.selectedArrival].enRouteTransitions[i].name);
+                let arrival = this.getSelectedArrival(infos);
+                if (arrival) {
+                    for (let i = 0; i < arrival.enRouteTransitions.length; i++) {
+                        elems.push(arrival.enRouteTransitions[i].name);
+                    }
                 }
                 this.transitionSelectionGroup.setStringElements(elems);
                 if (elems.length > 0) {
@@ -2347,13 +2394,22 @@ class GPS_DepartureSelection extends MFD_DepartureSelection {
             }
         }
     }
+    getSelectedDeparture(airport) {
+        if (airport && airport.departures && this.selectedDeparture >= 0 && this.selectedDeparture < airport.departures.length) {
+            return airport.departures[this.selectedDeparture];
+        }
+        return null;
+    }
     openRunwaysList(_event) {
         if (_event == "ENT_Push" || _event == "NavigationSmallInc" || _event == "NavigationSmallDec") {
             let infos = this.icaoSearchField.getUpdatedInfos();
             if (infos && infos.icao) {
                 let elems = new Array();
-                for (let i = 0; i < infos.departures[this.selectedDeparture].runwayTransitions.length; i++) {
-                    elems.push(infos.departures[this.selectedDeparture].runwayTransitions[i].name);
+                let departure = this.getSelectedDeparture(infos);
+                if (departure) {
+                    for (let i = 0; i < departure.runwayTransitions.length; i++) {
+                        elems.push(departure.runwayTransitions[i].name);
+                    }
                 }
                 this.runwaySelectionGroup.setStringElements(elems);
                 if (elems.length > 0) {
@@ -2368,8 +2424,11 @@ class GPS_DepartureSelection extends MFD_DepartureSelection {
             let infos = this.icaoSearchField.getUpdatedInfos();
             if (infos && infos.icao) {
                 let elems = new Array();
-                for (let i = 0; i < infos.departures[this.selectedDeparture].enRouteTransitions.length; i++) {
-                    elems.push(infos.departures[this.selectedDeparture].enRouteTransitions[i].name);
+                let departure = this.getSelectedDeparture(infos);
+                if (departure) {
+                    for (let i = 0; i < departure.enRouteTransitions.length; i++) {
+                        elems.push(departure.enRouteTransitions[i].name);
+                    }
                 }
                 this.transitionSelectionGroup.setStringElements(elems);
                 if (elems.length > 0) {

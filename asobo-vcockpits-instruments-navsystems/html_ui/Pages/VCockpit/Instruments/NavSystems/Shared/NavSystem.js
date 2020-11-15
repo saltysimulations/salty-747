@@ -47,6 +47,9 @@ class NavSystem extends BaseInstrument {
         this.menuSliderCursor = this.getChildById("SliderMenuCursor");
         this.currFlightPlanManager = new FlightPlanManager(this);
         this.currFlightPlan = new FlightPlan(this, this.currFlightPlanManager);
+        Include.addScript("/JS/debug.js", function () {
+            g_modDebugMgr.AddConsole(null);
+        });
     }
     disconnectedCallback() {
         super.disconnectedCallback();

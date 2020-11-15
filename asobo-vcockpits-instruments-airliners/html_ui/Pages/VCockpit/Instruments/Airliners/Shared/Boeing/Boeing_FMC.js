@@ -90,12 +90,22 @@ class Boeing_FMC extends FMCMainDisplay {
             this.activateHeadingSel();
         }
         else if (_event.indexOf("AP_SPD") != -1) {
-            if ((!this.getIsVNAVActive() && !this.getIsVNAVArmed()) || this.aircraftType == Aircraft.AS01B) {
-                if (this.getIsSPDActive()) {
-                    this.deactivateSPD();
+            if (this.aircraftType === Aircraft.AS01B) {
+                if (SimVar.GetSimVarValue("AUTOPILOT THROTTLE ARM", "Bool")) {
+                    this.activateSPD();
                 }
                 else {
-                    this.activateSPD();
+                    this.deactivateSPD();
+                }
+            }
+            else {
+                if ((!this.getIsVNAVActive() && !this.getIsVNAVArmed())) {
+                    if (this.getIsSPDActive()) {
+                        this.deactivateSPD();
+                    }
+                    else {
+                        this.activateSPD();
+                    }
                 }
             }
         }
