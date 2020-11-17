@@ -157,6 +157,7 @@
 						} 
 						l0
 					</OVERRIDE_NEW_POSITION>
+					<INVERT_IM_DRAG_INPUT_SCALAR>True</INVERT_IM_DRAG_INPUT_SCALAR>
 				</UseTemplate>
 			</Component>
 			<UseTemplate Name="ASOBO_ENGINE_Lever_Throttle_Template">
@@ -168,6 +169,7 @@
 				<DRAG_SPEED>0.5</DRAG_SPEED>
 				<LEVER_TYPE>BOEING</LEVER_TYPE>
 				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.ENG1_THROTTLE_CONTROL</TOOLTIPID>
+				<INVERT_IM_DRAG_INPUT_SCALAR>True</INVERT_IM_DRAG_INPUT_SCALAR>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_ENGINE_Lever_Throttle_Template">
 				<ID>2</ID>
@@ -178,6 +180,7 @@
 				<DRAG_SPEED>0.5</DRAG_SPEED>
 				<LEVER_TYPE>BOEING</LEVER_TYPE>
 				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.ENG2_THROTTLE_CONTROL</TOOLTIPID>
+				<INVERT_IM_DRAG_INPUT_SCALAR>True</INVERT_IM_DRAG_INPUT_SCALAR>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_ENGINE_Lever_Throttle_Template">
 				<ID>3</ID>
@@ -188,6 +191,7 @@
 				<DRAG_SPEED>0.5</DRAG_SPEED>
 				<LEVER_TYPE>BOEING</LEVER_TYPE>
 				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.ENG3_THROTTLE_CONTROL</TOOLTIPID>
+				<INVERT_IM_DRAG_INPUT_SCALAR>True</INVERT_IM_DRAG_INPUT_SCALAR>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_ENGINE_Lever_Throttle_Template">
 				<ID>4</ID>
@@ -198,6 +202,7 @@
 				<DRAG_SPEED>0.5</DRAG_SPEED>
 				<LEVER_TYPE>BOEING</LEVER_TYPE>
 				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.ENG4_THROTTLE_CONTROL</TOOLTIPID>
+				<INVERT_IM_DRAG_INPUT_SCALAR>True</INVERT_IM_DRAG_INPUT_SCALAR>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_AUTOPILOT_Push_AutoThrottle_Disengage_Template">
 				<NODE_ID>ENGINE_Switch_ATDisc_1</NODE_ID>
@@ -2059,6 +2064,7 @@
 					<TOGGLEABLE>True</TOGGLEABLE>
 					<RESET_XMLVARS>True</RESET_XMLVARS>
 					<AP_COUNT>3</AP_COUNT>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_FlightLevelChange_Template">
 					<NODE_ID>btn_autopilot_flch</NODE_ID>
@@ -2394,6 +2400,7 @@
 					<ANIM_NAME>gears_lever_landing_gear</ANIM_NAME>
 					<NODE_ID>lever_gears_landing_gear1</NODE_ID>
 					<NO_GEARUP_ON_GROUND/>
+					<ALWAYS_USE_ANIM_LAG>True</ALWAYS_USE_ANIM_LAG>
 				</UseTemplate>
 
 				<Component ID="Dummies">
@@ -2416,6 +2423,8 @@
 						<EMISSIVE_NODE_SIMVAR_POWER_SETTING>LIGHT PANEL POWER SETTING:5</EMISSIVE_NODE_SIMVAR_POWER_SETTING>
 						<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 						<HAS_DISARM/>
+						<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
+						<THRESHOLD_MOUSE>0.05</THRESHOLD_MOUSE>
 					</UseTemplate>
 					
 					<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
@@ -3352,6 +3361,7 @@
 					<SIMVAR_INDEX>1</SIMVAR_INDEX>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_L_OUTBD_OFF</ANIMTIP_0>
 					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_L_OUTBD_ON</ANIMTIP_1>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Landing_Template">
 					<ANIM_NAME>ovhd_landing_switch_inbd_L</ANIM_NAME>
@@ -3360,6 +3370,7 @@
 					<SIMVAR_INDEX>2</SIMVAR_INDEX>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_L_INBD_OFF</ANIMTIP_0>
 					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_L_INBD_ON</ANIMTIP_1>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Landing_Template">
 					<ANIM_NAME>ovhd_landing_switch_inbd_R</ANIM_NAME>
@@ -3368,6 +3379,7 @@
 					<SIMVAR_INDEX>3</SIMVAR_INDEX>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_R_INBD_OFF</ANIMTIP_0>
 					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_R_INBD_ON</ANIMTIP_1>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Landing_Template">
 					<ANIM_NAME>ovhd_landing_switch_outbd_R</ANIM_NAME>
@@ -3376,6 +3388,7 @@
 					<SIMVAR_INDEX>4</SIMVAR_INDEX>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_R_OUTBD_OFF</ANIMTIP_0>
 					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.LANDING_LIGHT_R_OUTBD_ON</ANIMTIP_1>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Taxi_Template">
 					<ANIM_NAME>ovhd_switch_rwy_L</ANIM_NAME>
@@ -3384,6 +3397,7 @@
 					<SIMVAR_INDEX>1</SIMVAR_INDEX>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.RWY_L_TURNOFF_LIGHTS_OFF</ANIMTIP_0>
 					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.RWY_L_TURNOFF_LIGHTS_ON</ANIMTIP_1>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Taxi_Template">
 					<ANIM_NAME>ovhd_switch_turnoff_R</ANIM_NAME>
@@ -3392,6 +3406,7 @@
 					<SIMVAR_INDEX>2</SIMVAR_INDEX>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.RWY_R_TURNOFF_LIGHTS_OFF</ANIMTIP_0>
 					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.RWY_R_TURNOFF_LIGHTS_ON</ANIMTIP_1>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Taxi_Template">
 					<ANIM_NAME>overhead_lights_switch_taxi_light</ANIM_NAME>
@@ -3414,18 +3429,22 @@
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Logo_Template">
 					<ANIM_NAME>ovhd_push_lights_logo</ANIM_NAME>
 					<NODE_ID>btn_lights_logo</NODE_ID>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Navigation_Template">
 					<ANIM_NAME>ovhd_push_lights_nav</ANIM_NAME>
 					<NODE_ID>btn_lights_nav</NODE_ID>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Strobe_Template">
 					<ANIM_NAME>ovhd_push_lights_strobe</ANIM_NAME>
 					<NODE_ID>btn_lights_strobe</NODE_ID>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Wing_Template">
 					<ANIM_NAME>ovhd_push_lights_wing</ANIM_NAME>
 					<NODE_ID>btn_lights_wing</NODE_ID>
+					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
 				<CameraTitle>Instruments08</CameraTitle>
 			</Component>

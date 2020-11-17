@@ -17,8 +17,8 @@ class B747_8_PFD extends BaseAirliners {
     disconnectedCallback() {
         super.disconnectedCallback();
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
     }
 }
 class B747_8_PFD_MainElement extends NavSystemElement {
