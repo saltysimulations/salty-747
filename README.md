@@ -1,12 +1,31 @@
 # Salty Simulations 747-8 Mod
 
-<b><h2>About</h2></b>
-This is an open-source modification for the default Asobo 747-8 included in Microsoft Flight Simulator. To follow development, join our Discord: https://discord.gg/9T57auM
+[![Discord](https://img.shields.io/discord/698720578055700650?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2&style=flat-square)](https://discord.gg/S4PJDwk)
 
-<b><h2>Installation</h2></b>
-To install, simply clone the master branch, and copy the "salty-747-master" folder to your MSFS community folder. Make sure that upon opening "salty-747" you see the "SimObjects" and "ModelBehaviorDefs" folders inside it.
+## About
+The Salty Simulations 747 is an open-source modification for the default Asobo 747-8 included in Microsoft Flight Simulator. We are dedicated to improving the default 747-8 to a level where it is enjoyable and realistic to fly. 
 
-## Features
+## Installation - Step 1
+### Stable release
+[Navigate to this page](https://github.com/saltysimulations/salty-747/releases/latest)
+
+Click on "Source Code (zip)". A changelog is available in the release description.
+
+### Development build
+Make sure you are on the master branch. Click on "Code", then click on "Download ZIP".
+
+Please keep in mind that the development build might be unstable and potentially contain bugs.
+
+## Installation - Step 2
+To install, simply copy the salty-747 folder to your community folder. Depending on the platform you bought MSFS on, the location of your Community folder will be different.
+
+* Microsoft Store - `C:\Users\<USERNAME>\AppData\Local\Packages\Microsoft.FlightSimulator_[]\LocalCache\Packages\Community`
+
+* Steam - `C:\Users\<USERNAME>\AppData\Roaming\Microsoft Flight Simulator\Packages\Community`
+
+* Boxed - `C:\Users\<USERNAME>\AppData\Local\MSFSPackages\Community`
+
+## A BRIEF overview of features
 * ### IRS
   * IRS fully modelled (PFD, MFD, Knobs)
 * ### EICAS
@@ -16,19 +35,20 @@ To install, simply clone the master branch, and copy the "salty-747-master" fold
   * Semi-Functional GEAR EICAS Synoptic Page
   * Semi-Functional STAT EICAS Synoptic Page
 * ### ND
-  * Green arc predicting altitude during climb / descent
+  * Altitude prediction arc
+  * Waypoint information improvements
 * ### PFD
-  * PFD Colors Adjusted
+  * Various PFD improvements
 * ### FMC
-  * "Salty Options" page under MENU in FMC
-    * IRS Instant Align Option
-  * Some values that couldn't be entered can now be entered (e.g Cost Index)
+  * Options page under MENU in FMC, for mod-specific options
+  * Improved VNAV page
+  * Miscellanous FMC features
 * ### FMA
   * Various FMA fixes
 * ### Flight Model and Engines
   * Improved fuel consumption rate
   * Improved fuel tank logic
 * ### Miscellaneous
-  * Aircond Knobs Functional
+  * Removed INOP properties from some knobs and switches
   
-More detailed description of features can be found in the changelog.
+A more detailed description of features can be found in the changelog. This is in no way a full list of features, and is only meant to give you an understanding of the mod's capabilities.
