@@ -7,9 +7,9 @@ The Salty Simulations 747 is an open-source modification for the default Asobo 7
 
 ## Installation - Step 1
 ### Stable release
-[Navigate to this page](https://github.com/saltysimulations/salty-747/releases/latest)
+[Click to download latest stable release](https://github.com/saltysimulations/salty-747/releases/latest/download/salty-747.zip)
 
-Click on "Source Code (zip)". A changelog is available in the release description.
+A changelog for the latest stable release can be found [here](https://github.com/saltysimulations/salty-747/releases/latest)
 
 ### Development build
 Make sure you are on the master branch. Click on "Code", then click on "Download ZIP".
