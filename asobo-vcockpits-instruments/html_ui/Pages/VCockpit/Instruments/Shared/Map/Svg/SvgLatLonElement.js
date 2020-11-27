@@ -59,20 +59,22 @@ class SvgLatLonElement extends SvgMapElement {
             lla.lat = lat;
             lla.long = center.long;
             map.coordinatesToXYToRef(lla, p);
-            if (everyEvenIteration) {
-                pointsLat += "-1000," + fastToFixed(p.y, 0) + " " + fastToFixed((1000 + 1000), 0) + "," + fastToFixed(p.y, 0) + " ";
-            }
-            else {
-                pointsLat += fastToFixed((1000 + 1000), 0) + "," + fastToFixed(p.y, 0) + " " + "-1000," + fastToFixed(p.y, 0) + " ";
-            }
-            everyEvenIteration = !everyEvenIteration;
-            if (labelIndex < SvgLatLonElement.MAXLABELCOUNT) {
-                let latLabel = this.svgElement.children[4 + labelIndex++];
-                latLabel.setAttribute("visibility", "visible");
-                latLabel.textContent = fastToFixed(lla.lat, decimals);
-                latLabel.setAttribute("text-anchor", "start");
-                latLabel.setAttribute("x", "10");
-                latLabel.setAttribute("y", fastToFixed((p.y + map.config.latLonLabelFontSize * 0.3), 0));
+            if (p.y >= -10 && p.y <= 1010) {
+                if (everyEvenIteration) {
+                    pointsLat += "-10," + fastToFixed(p.y, 0) + " 1010," + fastToFixed(p.y, 0) + " ";
+                }
+                else {
+                    pointsLat += "1010," + fastToFixed(p.y, 0) + " " + "-10," + fastToFixed(p.y, 0) + " ";
+                }
+                everyEvenIteration = !everyEvenIteration;
+                if (labelIndex < SvgLatLonElement.MAXLABELCOUNT) {
+                    let latLabel = this.svgElement.children[4 + labelIndex++];
+                    latLabel.setAttribute("visibility", "visible");
+                    latLabel.textContent = fastToFixed(lla.lat, decimals);
+                    latLabel.setAttribute("text-anchor", "start");
+                    latLabel.setAttribute("x", "10");
+                    latLabel.setAttribute("y", fastToFixed((p.y + map.config.latLonLabelFontSize * 0.3), 0));
+                }
             }
         }
         let pointsLong = "";
@@ -80,20 +82,22 @@ class SvgLatLonElement extends SvgMapElement {
             lla.lat = center.lat;
             lla.long = long;
             map.coordinatesToXYToRef(lla, p);
-            if (everyEvenIteration) {
-                pointsLong += fastToFixed(p.x, 0) + ",-1000 " + fastToFixed(p.x, 0) + "," + fastToFixed((1000 + 1000), 0) + " ";
-            }
-            else {
-                pointsLong += fastToFixed(p.x, 0) + "," + fastToFixed((1000 + 1000), 0) + " " + fastToFixed(p.x, 0) + ",-1000 ";
-            }
-            everyEvenIteration = !everyEvenIteration;
-            if (labelIndex < SvgLatLonElement.MAXLABELCOUNT) {
-                let longLabel = this.svgElement.children[2 + labelIndex++];
-                longLabel.setAttribute("visibility", "visible");
-                longLabel.textContent = fastToFixed(lla.long, decimals);
-                longLabel.setAttribute("text-anchor", "middle");
-                longLabel.setAttribute("x", fastToFixed(p.x, 0));
-                longLabel.setAttribute("y", "50");
+            if (p.x >= -10 && p.x <= 1010) {
+                if (everyEvenIteration) {
+                    pointsLong += fastToFixed(p.x, 0) + ",-10 " + fastToFixed(p.x, 0) + ",1010 ";
+                }
+                else {
+                    pointsLong += fastToFixed(p.x, 0) + ",1010 " + fastToFixed(p.x, 0) + ",-10 ";
+                }
+                everyEvenIteration = !everyEvenIteration;
+                if (labelIndex < SvgLatLonElement.MAXLABELCOUNT) {
+                    let longLabel = this.svgElement.children[2 + labelIndex++];
+                    longLabel.setAttribute("visibility", "visible");
+                    longLabel.textContent = fastToFixed(lla.long, decimals);
+                    longLabel.setAttribute("text-anchor", "middle");
+                    longLabel.setAttribute("x", fastToFixed(p.x, 0));
+                    longLabel.setAttribute("y", "50");
+                }
             }
         }
         for (let i = labelIndex; i < SvgLatLonElement.MAXLABELCOUNT; i++) {

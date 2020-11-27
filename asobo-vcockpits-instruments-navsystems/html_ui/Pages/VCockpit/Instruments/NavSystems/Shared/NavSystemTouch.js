@@ -1,5 +1,6 @@
 class NavSystemTouch extends NavSystem {
     get IsGlassCockpit() { return true; }
+    get isInteractive() { return true; }
     connectedCallback() {
         super.connectedCallback();
         this.selectionList = new NavSystemElementContainer("Selection List", "SelectionList", new NavSystemTouch_SelectionList());
@@ -22,7 +23,6 @@ class NavSystemTouch extends NavSystem {
         console.error("getFullKeyboard called but not overrided !");
         return null;
     }
-    get isInteractive() { return true; }
 }
 class NavSystemTouch_Transponder extends NavSystemElement {
     constructor() {

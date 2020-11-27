@@ -6,6 +6,7 @@ class SvgMap {
         this._iterations = 0;
         this.configLoaded = false;
         this.rotateWithPlane = false;
+        this.lineCanvasClipping = new Avionics.Intersect();
         this.mapElements = [];
         this._elementsWithTextBox = [];
         this._previousCenterCoordinates = [];
@@ -19,13 +20,14 @@ class SvgMap {
         this._angularWidth = 0;
         this._angularWidthNorth = 0;
         this._angularWidthSouth = 0;
+        this._frameClipping = new Avionics.Intersect();
         this._bottomLeftCoordinates = new LatLongAlt();
         this._topRightCoordinates = new LatLongAlt();
         this.index = SvgMap.Index;
         console.log("New SvgMap of index " + this.index);
         SvgMap.Index++;
         this.htmlRoot = _root;
-        this.planeXY = new Vec2(0.5, 0.5);
+        this._planeXY = new Vec2(0.5, 0.5);
         let configPath = "./";
         let elementId = "MapSVG";
         if (typeof (arg) === "string") {
@@ -46,6 +48,7 @@ class SvgMap {
             this._svgHtmlElement = _root.querySelector("#" + elementId);
         }
         this.svgHtmlElement.setAttribute("viewBox", "0 0 1000 1000");
+        this._frameClipping.initRect(1000, 1000);
         let loadConfig = () => {
             if (typeof (SvgMapConfig) !== "undefined") {
                 this.config = new SvgMapConfig();
@@ -61,6 +64,15 @@ class SvgMap {
     }
     get svgHtmlElement() {
         return this._svgHtmlElement;
+    }
+    get lineCanvas() {
+        return this._lineCanvas;
+    }
+    set lineCanvas(_canvas) {
+        this._lineCanvas = _canvas;
+        if (_canvas) {
+            this.lineCanvasClipping.initRect(_canvas.width, _canvas.height);
+        }
     }
     get lastCenterCoordinates() {
         if (this._previousCenterCoordinates.length <= 0)
@@ -400,8 +412,11 @@ class SvgMap {
         }
         this.svgHtmlElement.style.top = top;
         this.svgHtmlElement.style.left = left;
-        this.lineCanvas.width = w;
-        this.lineCanvas.height = h;
+        if (this.lineCanvas) {
+            this.lineCanvas.width = w;
+            this.lineCanvas.height = h;
+            this.lineCanvasClipping.initRect(w, h);
+        }
     }
     NMToPixels(distanceInNM) {
         return distanceInNM / this._NMWidth * 1000;
@@ -440,23 +455,8 @@ class SvgMap {
             ll.lat <= this._topRightCoordinates.lat + dLat &&
             ll.long <= this._topRightCoordinates.long + dLong);
     }
-    isSegmentInFrame(s1, s2) {
-        if (isNaN(s1.x) || isNaN(s1.y) || isNaN(s2.x) || isNaN(s2.y)) {
-            return false;
-        }
-        if (Math.min(s1.x, s2.x) > 1000) {
-            return false;
-        }
-        if (Math.max(s1.x, s2.x) < 0) {
-            return false;
-        }
-        if (Math.min(s1.y, s2.y) > 1000) {
-            return false;
-        }
-        if (Math.max(s1.y, s2.y) < 0) {
-            return false;
-        }
-        return true;
+    segmentVsFrame(s1, s2, out1, out2) {
+        return this._frameClipping.segmentVsRect(s1, s2, out1, out2);
     }
     coordinatesToXY(coordinates) {
         let xy = new Vec2();
@@ -533,8 +533,8 @@ class SvgMap {
         return new LatLongAlt(lat, long);
     }
     bearingDistanceToXY(bearing, distance) {
-        let x = 1000 * (this.planeXY.x + Math.sin(bearing * Avionics.Utils.DEG2RAD) * distance / this.NMWidth);
-        let y = 1000 * (this.planeXY.y - Math.cos(bearing * Avionics.Utils.DEG2RAD) * distance / this.NMWidth);
+        let x = 1000 * (this._planeXY.x + Math.sin(bearing * Avionics.Utils.DEG2RAD) * distance / this.NMWidth);
+        let y = 1000 * (this._planeXY.y - Math.cos(bearing * Avionics.Utils.DEG2RAD) * distance / this.NMWidth);
         return { x: x, y: y };
     }
 }

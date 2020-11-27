@@ -3,6 +3,7 @@ class Aera extends NavSystemTouch {
         super();
         this.lastPageIndex = NaN;
         this.lastPageGroup = "";
+        this.isVertical = false;
         this.initDuration = 4000;
     }
     get templateID() { return "Aera"; }
@@ -32,10 +33,12 @@ class Aera extends NavSystemTouch {
         this.fullKeyboard.setGPS(this);
         this.duplicateWaypointSelection = new NavSystemElementContainer("Waypoint Duplicates", "WaypointDuplicateWindow", new Aera_DuplicateWaypointSelection());
         this.duplicateWaypointSelection.setGPS(this);
+        this.pfdElement = new Aera_PFD();
+        this.pfdElement.setVertical(this.isVertical);
         this.pageGroups = [
             new Aera_PageGroup("MFD", this, [
                 new Aera_NavSystemPage("Map", "Map", new Aera_MapContainer("Map"), "Map", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_SMALL_1.png"),
-                new Aera_PFD(),
+                this.pfdElement,
                 new Aera_NavSystemPage("Active FPL", "FPL", new NavSystemElementGroup([
                     new NavSystemTouch_ActiveFPL(),
                     new Aera_MapContainer("Afpl_Map")
@@ -67,6 +70,15 @@ class Aera extends NavSystemTouch {
     }
     parseXMLConfig() {
         super.parseXMLConfig();
+        if (this.instrumentXmlConfig) {
+            let displayModeConfig = this.instrumentXmlConfig.getElementsByTagName("DisplayMode");
+            if (displayModeConfig.length > 0 && displayModeConfig[0].textContent.toLowerCase() == "vertical") {
+                this.setAttribute("state", "vertical");
+                this.isVertical = true;
+                if (this.pfdElement)
+                    this.pfdElement.setVertical(true);
+            }
+        }
     }
     disconnectedCallback() {
         super.disconnectedCallback();
@@ -191,9 +203,10 @@ class Aera_PFD extends Aera_NavSystemPage {
     constructor() {
         super("3D Vision", "PFD", null, "3D Vision", "");
         this.mapInstrument = new MapInstrumentElement();
+        this.airspeed = new PFD_Airspeed();
         this.element = new NavSystemElementGroup([
             new PFD_Altimeter(),
-            new PFD_Airspeed(),
+            this.airspeed,
             new PFD_SimpleCompass(),
             new PFD_CDI(),
             this.mapInstrument,
@@ -203,6 +216,9 @@ class Aera_PFD extends Aera_NavSystemPage {
     }
     init() {
         super.init();
+    }
+    setVertical(_val) {
+        this.airspeed.alwaysDisplaySpeed = _val;
     }
 }
 class Aera_MapContainer extends NavSystemElement {

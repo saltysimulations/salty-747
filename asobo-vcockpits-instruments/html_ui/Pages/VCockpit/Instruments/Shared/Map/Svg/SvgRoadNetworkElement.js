@@ -161,6 +161,7 @@ class SvgRoadNetworkElement extends SvgMapElement {
         this.displayedSize = 1000;
         this.canvasSize = 1000;
         this.canvasOffset = 0;
+        this.canvasClipping = new Avionics.Intersect();
         this.visible = true;
         this.k = 0;
         this.datas = [
@@ -281,6 +282,7 @@ class SvgRoadNetworkElement extends SvgMapElement {
             document.body.appendChild(this._invisibleCanvases[1].canvas);
             this._invisibleCanvases[1].canvas.style.position = "fixed";
             this.translateCanvas(this._invisibleCanvases[1].canvas, 10000, 10000, 0);
+            this.canvasClipping.initRect(this.canvasSize, this.canvasSize);
             resized = true;
         }
         let invisibleContext = this._invisibleCanvases[this._activeInvisibleCanvasIndex].context2D;
@@ -352,11 +354,14 @@ class SvgRoadNetworkElement extends SvgMapElement {
         }
         let t0 = performance.now();
         let lastLinkType = NaN;
+        let s1 = new Vec2();
+        let s2 = new Vec2();
+        let prevWasClipped = false;
         invisibleContext.beginPath();
         while ((performance.now() - t0) < SvgRoadNetworkElement.MAX_STALL_DRAW_ROADS && this._iterator < l) {
             let link = links.get(this._iterator++);
             if (link) {
-                if (lastLinkType !== link.type) {
+                if (lastLinkType !== link.type || prevWasClipped) {
                     if (link.type === 0) {
                         invisibleContext.stroke();
                         invisibleContext.strokeStyle = "gray";
@@ -440,28 +445,31 @@ class SvgRoadNetworkElement extends SvgMapElement {
                 }
                 let n1 = link.start;
                 let n2 = link.end;
-                if (!n1.isPointUpToDate) {
-                    map.latLongToXYToRefForceCenter(n1.lat, n1.long, n1, this._forcedCoords);
-                    n1.isInFrame = map.isVec2InFrame(n1, 1.4);
-                    n1.x *= this.displayedSize / this.svgMapSize;
-                    n1.x += this.canvasOffset;
-                    n1.y *= this.displayedSize / this.svgMapSize;
-                    n1.y += this.canvasOffset;
-                    n1.isPointUpToDate = true;
-                }
-                if (!n2.isPointUpToDate) {
-                    map.latLongToXYToRefForceCenter(n2.lat, n2.long, n2, this._forcedCoords);
-                    n2.isInFrame = map.isVec2InFrame(n2, 1.4);
-                    n2.x *= this.displayedSize / this.svgMapSize;
-                    n2.x += this.canvasOffset;
-                    n2.y *= this.displayedSize / this.svgMapSize;
-                    n2.y += this.canvasOffset;
-                    n2.isPointUpToDate = true;
-                }
                 if (n1 && n2) {
-                    if (n1.isInFrame || n2.isInFrame) {
-                        invisibleContext.moveTo(Math.round(n1.x), Math.round(n1.y));
-                        invisibleContext.lineTo(Math.round(n2.x), Math.round(n2.y));
+                    if (!n1.isPointUpToDate) {
+                        map.latLongToXYToRefForceCenter(n1.lat, n1.long, n1, this._forcedCoords);
+                        n1.x *= this.displayedSize / this.svgMapSize;
+                        n1.x += this.canvasOffset;
+                        n1.y *= this.displayedSize / this.svgMapSize;
+                        n1.y += this.canvasOffset;
+                        n1.isPointUpToDate = true;
+                    }
+                    if (!n2.isPointUpToDate) {
+                        map.latLongToXYToRefForceCenter(n2.lat, n2.long, n2, this._forcedCoords);
+                        n2.isInFrame = map.isVec2InFrame(n2, 1.4);
+                        n2.x *= this.displayedSize / this.svgMapSize;
+                        n2.x += this.canvasOffset;
+                        n2.y *= this.displayedSize / this.svgMapSize;
+                        n2.y += this.canvasOffset;
+                        n2.isPointUpToDate = true;
+                    }
+                    if (this.canvasClipping.segmentVsRect(n1, n2, s1, s2)) {
+                        invisibleContext.moveTo(Math.round(s1.x), Math.round(s1.y));
+                        invisibleContext.lineTo(Math.round(s2.x), Math.round(s2.y));
+                        prevWasClipped = (s2.Equals(n2)) ? false : true;
+                    }
+                    else {
+                        prevWasClipped = true;
                     }
                 }
             }

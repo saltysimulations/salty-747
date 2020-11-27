@@ -274,6 +274,8 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
     constructor() {
         super(...arguments);
         this.altimeterIndex = 0;
+        this.apStatusDisplay = 0;
+        this.yellowFlashBegin = 0;
     }
     init(root) {
         this.AP_LateralActive = this.gps.getChildById("AP_Lateral_Active");
@@ -293,7 +295,38 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
     onEnter() {
     }
     onUpdate(_deltaTime) {
-        Avionics.Utils.diffAndSet(this.AP_Status, SimVar.GetSimVarValue("AUTOPILOT MASTER", "Bool") ? "AP" : "");
+        let apStatus = SimVar.GetSimVarValue("AUTOPILOT MASTER", "Bool");
+        if (apStatus == true) {
+            this.apStatusDisplay = 5;
+        }
+        else {
+            if (this.apStatusDisplay == 5) {
+                this.apStatusDisplay = 1;
+            }
+            if (this.apStatusDisplay == 2 && this.yellowFlashBegin + 5 < SimVar.GetSimVarValue("E:ABSOLUTE TIME", "seconds")) {
+                this.apStatusDisplay = 4;
+            }
+        }
+        Avionics.Utils.diffAndSet(this.AP_Status, this.apStatusDisplay != 0 ? "AP" : "");
+        switch (this.apStatusDisplay) {
+            case 1:
+                Avionics.Utils.diffAndSetAttribute(this.AP_Status, "Display", "RedFlash");
+                break;
+            case 2:
+                Avionics.Utils.diffAndSetAttribute(this.AP_Status, "Display", "YellowFlash");
+                break;
+            case 3:
+                Avionics.Utils.diffAndSetAttribute(this.AP_Status, "Display", "Red");
+                break;
+            case 4:
+                Avionics.Utils.diffAndSetAttribute(this.AP_Status, "Display", "Yellow");
+                break;
+            case 0:
+            case 5:
+            default:
+                Avionics.Utils.diffAndSetAttribute(this.AP_Status, "Display", "");
+                break;
+        }
         if (SimVar.GetSimVarValue("AUTOPILOT PITCH HOLD", "Boolean")) {
             Avionics.Utils.diffAndSet(this.AP_VerticalActive, "PIT");
             Avionics.Utils.diffAndSet(this.AP_ModeReference, "");
@@ -426,6 +459,15 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
     onExit() {
     }
     onEvent(_event) {
+        switch (_event) {
+            case "Autopilot_Manual_Off":
+                this.apStatusDisplay = 2;
+                this.yellowFlashBegin = SimVar.GetSimVarValue("E:ABSOLUTE TIME", "seconds");
+                break;
+            case "Autopilot_Disc":
+                this.apStatusDisplay = 0;
+                break;
+        }
     }
 }
 class AS1000_PFD_WaypointLine extends MFD_WaypointLine {
