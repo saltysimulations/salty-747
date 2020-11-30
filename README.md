@@ -52,3 +52,6 @@ To install, simply copy the salty-747 folder to your community folder. Depending
   * Removed INOP properties from some knobs and switches
   
 A more detailed description of features can be found in the changelog. This is in no way a full list of features, and is only meant to give you an understanding of the mod's capabilities.
+
+## License
+The Salty Simulations 747-8 is distrubuted under the GNU General Public License version 3. See [LICENSE](https://github.com/saltysimulations/salty-747/blob/master/LICENSE).
