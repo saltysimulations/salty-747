@@ -282,8 +282,8 @@
 		</Annunciation>
 
 		<Annunciation>
-		  <Type>Warning</Type>
-		  <Text>PARK BRAKE</Text>
+		  <Type>INFORMATION</Type>
+		  <Text>PARK BRAKE SET</Text>
 		  <Condition>
 			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>
 		  </Condition>

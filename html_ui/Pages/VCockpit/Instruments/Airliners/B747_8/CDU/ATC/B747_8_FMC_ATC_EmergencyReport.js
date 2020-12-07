@@ -32,7 +32,7 @@ class FMC_ATC_EmergencyReport {
 	            ["\xa0DESCEND TO", ""],
 	            [`<${descend}`, ""],
 	            ["", ""],
-	            [`${erase}`, ""],
+	            [`${eraseCell}`, ""],
 	            ["", "", "__FMCSEPARATOR"],
 	            ["<ATC INDEX", "VERIFY>"]
 	        ]);
@@ -144,15 +144,14 @@ class FMC_ATC_EmergencyReport {
 			Push - displays VERIFY EMERGENCY page.
         */
         fmc.onRightInput[4] = () => {
-        	FMC_ATC_VerifyRequest.ShowPage(
-        		fmc,
-        		lines = {
-        			[0] : "EMERGENCY",
-        			[1] : "MAYDAY MAYDAY MAYDAY.",
-        			[2] : "DESCENDING TO" + descend + "FT.",
-        			[3] : fuelTime + " OF FUEL REMAINING",
-        			[4] : "AND" + sob + " SOULS ON BOARD."
-        		});
+			const lines = [
+				"EMERGENCY",
+				"MAYDAY MAYDAY MAYDAY.",
+				"DESCENDING TO" + descend + "FT.",
+				fuelTime + " OF FUEL REMAINING",
+				"AND" + sob + " SOULS ON BOARD."
+			]
+        	FMC_ATC_VerifyRequest.ShowPage(fmc, lines);
         }
     }
 }
