@@ -1,0 +1,41 @@
+{
+    "python.pythonPath": "C:\\Users\\chloe\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "code-runner.executorMap":
+    {
+        "python": "$pythonPath -u $fullFileName"
+    },
+    
+    "eslint.lintTask.enable": true,
+    "eslint.format.enable": true,
+    "eslint.quiet": true,
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": null,
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": true
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": true
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": true
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnSave": true
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.debug": true
+}
