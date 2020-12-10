@@ -1,20 +1,36 @@
-/* class FMC_PosReport {
+class FMC_PosReport {
     static ShowPage(fmc) {
-        fmc.clearDisplay();
+		fmc.clearDisplay();
+		
+		let fltNoCell = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") ? SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") : "XXXX";
+		let posCell = "4730N110W";
+		let altCell = "FL370";
+		let ataCell = "1336Z";
+		let estCell = "GRF";
+		let etaCell = "1335Z";
+		let nextCell = "46N120W";
+		let destEtaCell = "1530Z";
+		let tempCell = `${SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "Celsius")}°C`
+		let spdCell = ".80";
+		let windCell = `${SimVar.GetSimVarValue("AMBIENT WIND DIRECTION", "Degrees").toFixed(0)}°/ ${SimVar.GetSimVarValue("AMBIENT WIND VELOCITY", "Knots").toFixed(0)}KT`;
+		let posFuelCell = "52.3";
+		let companySendCell = "SEND";
+		let atcSendCell = "SEND";
+
 		fmc.setTemplate([
-			["XXXX POS REPORT", "1", "2"],
-			["", ""],
-			["<CONFIRM ALTITUDE", ""],
-			["", ""],
-			["<REPORT PASSING ---", ""],
-			["", ""],
-			["<WHEN CAN WE EXPECT F..", ""],
-			["", ""],
-			["<REPORT REACHING FL---", ""],
-			["", ""],
-			["", ""],
-			["", "", "__FMCSEPARATOR"],
-			["<ATC INDEX", ""]
+			[`${fltNoCell} POS REPORT`],
+			["\xa0POS", "ALT", "ATA"],
+			[`${posCell}`, `${altCell}`, `${ataCell}`],
+			["\xa0EST", "ETA"],
+			[`${estCell}`, `${etaCell}`],
+			["\xa0NEXT", "DEST ETA"],
+			[`${nextCell}`, `${destEtaCell}`],
+			["\xa0TEMP", "SPD", "WIND"],
+			[`${tempCell}`, `${spdCell}`, `${windCell}`],
+			["", "POS FUEL"],
+			["", `${posFuelCell}`],
+			["COMPANY", "ATC", "__FMCSEPARATOR"],
+			[`<${companySendCell}`, `${atcSendCell}>`]
 		]);
 
 		fmc.onLeftInput[0] = () => {
@@ -49,4 +65,4 @@
 			FMC_ATC_Index.ShowPage(fmc);
 		}
     }
-} */
+}

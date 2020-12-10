@@ -56,6 +56,10 @@ class FMC_ATC_Index {
 				}, 3000);
 			}
 
+	        fmc.onRightInput[0] = () => {
+	        	FMC_PosReport.ShowPage(fmc);
+			}
+
 	        fmc.onRightInput[1] = () => {
 	        	FMC_ATC_WhenCanWe.ShowPage(fmc);
 			}
