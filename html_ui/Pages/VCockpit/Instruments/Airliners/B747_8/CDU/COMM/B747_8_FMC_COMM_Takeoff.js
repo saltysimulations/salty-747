@@ -9,13 +9,13 @@ class FMC_COMM_Index {
 				["\xa0UPLINK", ""],
 				["<RTE 1", "POS REPORT>"],
 				["\xa0UPLINK (2)", ""],
-				["<ALTN", "REQUESTS>"],
+				["<ALTN", ""],
 				["", ""],
-				["<PERF", ""],
+				["<PERF", "FREE TEXT>"],
 				["", ""],
-				["<TAKEOFF", ""],
+				["<TAKEOFF", "CLEARANCE>"],
 				["", ""],
-				["<WIND", ""],
+				["<WIND", "VOICE>"],
 				["", "DATA LINK", "__FMCSEPARATOR"],
 				["<DES FORECAST", "READY"]
 			]);
