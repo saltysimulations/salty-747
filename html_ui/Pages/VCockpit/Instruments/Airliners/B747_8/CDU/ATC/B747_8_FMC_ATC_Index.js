@@ -1,5 +1,6 @@
 class FMC_ATC_Index {
     static ShowPage(fmc, store = {"printCell": "PRINT LOG"}) {
+		fmc.activeSystem = "DLNK";
 
 		/** Move to Main Display after testing */
 		const atcConnection = true;

@@ -1,5 +1,6 @@
 class FMC_ATC_Request {
-    static ShowPage(fmc, store = {"altitude": "", "speed": "", "offset": ""}) {
+    static ShowPage(fmc, store = {"altitude": "", "speed": "", "offset": ""}) {		
+		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 		
 		let lines = [];

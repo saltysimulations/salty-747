@@ -1,5 +1,6 @@
 class FMC_PosReport {
     static ShowPage(fmc) {
+		fmc.activeSystem = "FMC";
 		fmc.clearDisplay();
 		
 		let fltNoCell = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") ? SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") : "XXXX";

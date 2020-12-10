@@ -1,5 +1,6 @@
 class FMC_ATC_Log {
     static ShowPage(fmc) {
+		fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
 		fmc.setTemplate([
 			["ATC LOG", "1", "2"],

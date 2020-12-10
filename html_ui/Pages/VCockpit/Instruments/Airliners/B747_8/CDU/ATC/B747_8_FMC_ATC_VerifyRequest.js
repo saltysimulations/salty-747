@@ -1,5 +1,6 @@
 class FMC_ATC_VerifyRequest {
     static ShowPage(fmc, title, lines) {
+		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 		
 		lines.push("\xa0FREE TEXT");

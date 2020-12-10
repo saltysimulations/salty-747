@@ -1,5 +1,6 @@
 class FMC_ATC_Report {
     static ShowPage(fmc) {
+		fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
 		fmc.setTemplate([
 			["ATC REPORT", "1", "2"],

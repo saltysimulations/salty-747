@@ -1,5 +1,6 @@
 class FMC_ATC_LogonStatus {
     static ShowPage(fmc, store = {"logonTo": "", "fltNo": "", "actCtr": "", "nextCtr": "", "maxUlDelay": "", "dlnkStatus": ""}) {
+		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 		/*
 		* Remove after testing

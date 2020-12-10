@@ -1,6 +1,7 @@
 class B747_8_FMC_MainDisplay extends Boeing_FMC {
     constructor() {
         super(...arguments);
+        this.activeSystem = "FMC";
         this._registered = false;
         this._lastActiveWP = 0;
         this._wasApproachActive = false;
@@ -90,7 +91,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.onAtc = () => { 
             FMC_ATC_Index.ShowPage(this);
         };
-        FMCMainDisplayPages.MenuPage(this);
+        FMC_Menu.ShowPage(this);
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
         Include.addScript("/JS/debug.js", function () {

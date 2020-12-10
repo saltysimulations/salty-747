@@ -1,5 +1,6 @@
 class FMC_ATC_WhenCanWe {
     static ShowPage(fmc, store = {crzClbTo: "-----", climbTo: "-----", descendTo: "-----", speed: "---", higherAlt: "HIGHER ALT>[s-text]", lowerAlt: "LOWER ALT>[s-text]", backOnRte: "BACK ON RTE>[s-text]", higherAltActive: 0, lowerAltActive: 0, backOnRteActive: 0}) {
+		fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
 		fmc.setTemplate([
 			["WHEN CAN WE EXPECT"],

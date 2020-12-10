@@ -1,6 +1,8 @@
 class FMC_ATC_EmergencyReport {
+	
     static ShowPage(fmc, store = {"emergType": 0, "divert": "", "sob": "", "offset": "","fuel": "", "fuelTime": "", "descend": "", "erase": 0}) {
-        fmc.clearDisplay();
+		fmc.clearDisplay();
+		fmc.activeSystem = "DLNK";
 
         let maydayCell = "";
         let panCell = "";

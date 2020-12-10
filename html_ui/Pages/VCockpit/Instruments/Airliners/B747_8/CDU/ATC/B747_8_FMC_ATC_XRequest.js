@@ -1,5 +1,6 @@
 class FMC_ATC_XRequest {
     static ShowPage(fmc, store = {"altitude": "", "speed": "", "offset": "", "showRte": 0}) {
+		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 
 		const altPage = () => {
