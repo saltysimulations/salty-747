@@ -1,103 +1,109 @@
 class FMC_ATC_LogonStatus {
-    static ShowPage(fmc) {
-        fmc.clearDisplay();
-        if (atcConnection && noPendingUplink) {
-	        fmc.setTemplate([
-	            ["LOGON STATUS"],
-	            ["", ""],
-	            ["<EMERGENCY", "POS REPORT>"],
-	            ["", ""],
-	            ["<REQUEST", "WHEN CAN WE>"],
-	            ["", ""],
-	            ["<REPORT", "FREE TEXT>"],
-	            ["", ""],
-	            ["<LOG", "CLEARANCE>"],
-	            ["", ""],
-	            ["<LOGON/STATUS", "VOICE>"],
-	            ["", "", "__FMCSEPARATOR"],
-	            ["<PRINT LOG", ""]
-	        ]);
+    static ShowPage(fmc, store = {"logonTo": "", "fltNo": "", "actCtr": "", "nextCtr": "", "maxUlDelay": "", "dlnkStatus": ""}) {
+		fmc.clearDisplay();
+		/*
+		* Remove after testing
+		*/
+		store.logonTo = "PANC";
+		store.actCtr = "KZAK";
+		store.nextCtr = "PANC";
+		store.maxUlDelay = 150;
+		/*"READY, ATN READY, NO COMM, VOICE, or FAIL"*/
+		store.dlnkStatus = "READY";
+		
+		let logonToCell = store.logonTo ? store.logonTo : "--------";
+		let originCell = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "----";
+		let destinationCell = fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "----";
+		let fltNoCell = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") ? SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") : "-------";
+		let regCell = SimVar.GetSimVarValue("ATC ID", "string") ? SimVar.GetSimVarValue("ATC ID", "string") : "-------";
+		let maxUlDelayCell = store.maxUlDelay ? store.maxUlDelay + 'SEC' : "---SEC";
+		let actCtrCell = store.actCtr ? store.actCtr : "----";
+		let nextCtrCell = store.nextCtr ? store.nextCtr : "----";
+		let dlnkStatusCell = store.dlnkStatus ? store.dlnkStatus : "NO COMM";
 
-	        /*
-				Push - displays EMERGENCY REPORT page.
-	        */
-	        fmc.onLeftInput[0] = () => {
-	        	FMC_ATC_EmergencyReport.ShowPage(fmc);
-	        }
+		fmc.setTemplate([
+			["ATC LOGON/STATUS", "1", "2"],
+			["\xa0LOGON TO", ""],
+			[`${logonToCell}`, ""],
+			["\xa0FLT NO", "ORIGIN"],
+			[`${fltNoCell}`, `${originCell}`],
+			["\xa0TAIL NO", "DESTINATION"],
+			[`${regCell}`, `${destinationCell}`],
+			["\xa0MAX U/L DELAY", "ATC CTR"],
+			[`${maxUlDelayCell}`, `${actCtrCell}`],
+			["\xa0ATC COMM", "NEXT CTR"],
+			["<SELECT OFF", `${nextCtrCell}`],
+			["", "DATA LINK", "__FMCSEPARATOR"],
+			["<ATC INDEX", `${dlnkStatusCell}`]
+		]);
+		
+        fmc.onNextPage = () => {
+            FMC_ATC_LogonStatus.ShowPage2(fmc);
+		};
+		
+		fmc.onPrevPage = () => {
+			FMC_ATC_LogonStatus.ShowPage2(fmc);
+		}
 
-	        /*
-				Push - displays ATC REQUEST page.
-	        */
-	        fmc.onLeftInput[1] = () => {
-	        	FMC_ATC_Request.ShowPage(fmc);
-	        }
+		fmc.onLeftInput[0] = () => {
+        	let value = fmc.inOut;
+        	fmc.clearUserInput();
+			store.logonTo = value;
+			FMC_ATC_LogonStatus.ShowPage(fmc, store);
+		}
 
-	        /*
-				Push - displays ATC REPORT page.
-	        */
-	        fmc.onLeftInput[2] = () => {
-	        	FMC_ATC_Report.ShowPage(fmc);
-	        }
+		fmc.onLeftInput[3] = () => {
+        	let value = fmc.inOut;
+        	fmc.clearUserInput();
+			store.maxUlDelay = value;
+			FMC_ATC_LogonStatus.ShowPage(fmc, store);
+		}
 
-	        /*
-				Push - displays ATC LOG page.
-	        */
-	        fmc.onLeftInput[3] = () => {
-	        	FMC_ATC_Log.ShowPage(fmc);
-	        }
+		fmc.onLeftInput[5] = () => {
+			FMC_ATC_Index.ShowPage(fmc);
+		}
 
-	        /*
-				Push - displays ATC LOGON/STATUS page.
-	        */
-	        fmc.onLeftInput[4] = () => {
-	        	FMC_ATC_LogonStatus.ShowPage(fmc);
-	        }
+		fmc.onRightInput[3] = () => {
+        	let value = fmc.inOut;
+        	fmc.clearUserInput();
+			store.nextCtr = value;
+			FMC_ATC_LogonStatus.ShowPage(fmc, store);
+		}
+	}
+	
+	static ShowPage2(fmc, store = {"dlnkStatus": "NO COMM"}) {
+		fmc.clearDisplay();
+		
+		let adsCell = "<OFF ←→ ARM";
+		let adsEmergCell = "<OFF ←→ ON";
+		let dlnkStatusCell = store.dlnkStatus ? store.dlnkStatus : "NO COMM";
 
-	        /*
-				Push - transmits contents of ATC log to printer when <PRINT LOG or <PRINTERROR displayed.The following display descriptions are the same for all PRINT prompts in Section 5.33.Displays <PRINTERROR when the printer has an error.Displays PRINTING when the printer is busy and the print prompt is selected.Displays BUSY when the printer is busy and the printer prompt has not been selected. The title line displays small font PRINT.Displays FAIL when the printer has failed. The title line displays PRINT.
-	        */
-	        fmc.onLeftInput[5] = () => {
-	        	FMC_ATC_PrintLog.ShowPage(fmc);
-	        }
+		fmc.setTemplate([
+			["ATC LOGON/STATUS", "2", "2"],
+			["", ""],
+			["", ""],
+			["\xa0ADS (ACT)", "ADS EMERG"],
+			[`${adsCell}`, `${adsEmergCell}`],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", "DATA LINK", "__FMCSEPARATOR"],
+			["<ATC INDEX", `${dlnkStatusCell}`]
+		]);
+		
+        fmc.onNextPage = () => {
+            FMC_ATC_LogonStatus.ShowPage(fmc);
+		};
+		
+		fmc.onPrevPage = () => {
+			FMC_ATC_LogonStatus.ShowPage(fmc);
+		}
 
-	        /*
-				Push - displays POS REPORT page.
-	        */
-	        fmc.onRightInput[0] = () => {
-	        	FMC_ATC_PosReport.ShowPage(fmc);
-	        }
-
-	        /*
-				Push - displays WHEN CAN WE EXPECT page.
-	        */
-	        fmc.onRightInput[1] = () => {
-	        	FMC_ATC_WhenCanWe.ShowPage(fmc);
-	        }
-
-	        /*
-				Push - displays the VERIFY REPORT page with only the free text message element.
-	        */
-	        fmc.onRightInput[2] = () => {
-	        	FMC_ATC_VerifyReport.ShowPage(fmc);
-	        }
-
-	        /*
-				Push - displays VERIFY REQUEST pages for clearance request.
-	        */
-	        fmc.onRightInput[3] = () => {
-	        	FMC_ATC_VerifyRequest.ShowPage(fmc);
-	        }
-
-	        /*
-				Push - displays VERIFY REQUEST page for voice contact request.
-	        */
-	        fmc.onRightInput[4] = () => {
-	        	FMC_ATC_VerifyRequest.ShowPage(fmc);
-	        }
-	    } else if (atcConnection && !noPendingUplink) {
-	    	FMC_ATC_Log.ShowPage(fmc);
-	    } else if (!atcConnection) {
-	    	FMC_ATC_LogonStatus.ShowPage(fmc);
-	    }
-    }
+		fmc.onLeftInput[5] = () => {
+			FMC_ATC_Index.ShowPage(fmc);
+		}
+	}
 }

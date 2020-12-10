@@ -1,8 +1,8 @@
-class FMC_ATC_Report {
+/* class FMC_PosReport {
     static ShowPage(fmc) {
         fmc.clearDisplay();
 		fmc.setTemplate([
-			["ATC REPORT", "1", "2"],
+			["XXXX POS REPORT", "1", "2"],
 			["", ""],
 			["<CONFIRM ALTITUDE", ""],
 			["", ""],
@@ -49,4 +49,4 @@ class FMC_ATC_Report {
 			FMC_ATC_Index.ShowPage(fmc);
 		}
     }
-}
+} */

@@ -6,7 +6,7 @@ class FMCMainDisplayPages {
             ["", "EFIS CP"],
             ["<FMC", "", "<ACT>"],
             ["", "EICAS CP"],
-            ["<ACARS"],
+            ["<DLNK"],
             ["", "CTL PNL"],
             ["", "OFF←→ON>"],
             [],
@@ -17,6 +17,9 @@ class FMCMainDisplayPages {
             ["<CMC"]
         ]);
         fmc.onLeftInput[0] = () => { FMCIdentPage.ShowPage1(fmc); };
+        fmc.onLeftInput[1] = () => {
+            FMC_ATC_Index.ShowPage(fmc);
+        }
         fmc.onLeftInput[3] = () => { FMCSaltyOptions.ShowPage1(fmc); };
     }
     static PerfInitPage(fmc) {
