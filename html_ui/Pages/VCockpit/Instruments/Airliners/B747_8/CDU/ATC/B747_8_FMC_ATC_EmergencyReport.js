@@ -2,8 +2,8 @@ class FMC_ATC_EmergencyReport {
     static ShowPage(fmc, store = {"emergType": 0, "divert": "", "sob": "", "offset": "","fuel": "", "fuelTime": "", "descend": "", "erase": 0}) {
         fmc.clearDisplay();
 
-        let maydayCell = "MAYDAY";
-        let panCell = "PAN";
+        let maydayCell = "";
+        let panCell = "";
         let divertCell = "----";
         let sobCell = "----";
         let offsetCell = "----";
@@ -11,16 +11,9 @@ class FMC_ATC_EmergencyReport {
         let fuelTimeCell = "HH+MM";
         let descendCell = "----";
 		let eraseCell = "";
-		/**
-		 * Remove after testing
-		*/
-		store.emergType = 1;
-		store.sob = "300";
-		store.fuelTime = "0250";
-		store.fuel = (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY WEIGHT", "lbs") / 1000).toFixed(1);
 
 		if (store.emergType) {
-			if (store.emergType == 0) {			
+			if (store.emergType == 0) {
 				maydayCell = "MAYDAY[s-text]";
 				panCell = "PAN[s-text]";
 			} else if (store.emergType == 1) {
@@ -30,6 +23,9 @@ class FMC_ATC_EmergencyReport {
 				maydayCell = "MAYDAY[s-text]";
 				panCell = "PAN";
 			}
+		} else {			
+			maydayCell = "MAYDAY[s-text]";
+			panCell = "PAN[s-text]";
 		}
 		if (store.divert) {
 			divertCell = store.divert;
@@ -70,7 +66,7 @@ class FMC_ATC_EmergencyReport {
         	fmc.setTemplate([
 	            ["EMERGENCY REPORT"],
 	            ["", ""],
-	            [`${maydayCell}`, `${panCell}`],
+	            [`<${maydayCell}`, `${panCell}>`],
 	            ["\xa0DIVERT TO", "SOB"],
 	            [`<${divertCell}`, `${sobCell}>`],
 	            ["\xa0OFFSET", "FUEL REMAINING"],

@@ -1,8 +1,11 @@
 class FMC_ATC_XRequest {
-    static ShowPage(fmc, store = {"altitude": "", "speed": "", "offset": "", "route": ""}) {
+    static ShowPage(fmc, store = {"altitude": "", "speed": "", "offset": "", "showRte": 0}) {
 		fmc.clearDisplay();
 
 		const altPage = () => {
+
+			store.altitude = store.altitude ? store.altitude : "-----";
+
 			fmc.setTemplate([
 				[`ATC ALT REQUEST`, "1", "4"],
 				["\xa0ALTITUDE", "REQUEST"],
@@ -29,6 +32,9 @@ class FMC_ATC_XRequest {
 		};
 
 		const speedPage = () => {
+
+			store.speed = store.speed ? store.speed : "---";
+
 			fmc.setTemplate([
 				[`ATC SPEED REQUEST`, "2", "4"],
 				["\xa0SPEED", ""],
@@ -54,17 +60,18 @@ class FMC_ATC_XRequest {
 			}
 		};
 
-		const offsetPage = () => {
+		const offsetPage = (store = {offsetAt: "-----" ,offsetWeather: "WEATHER[s-text]", offsetWeatherStatus: 0}) => {
+			store.offset = store.offset ? store.offset : "---";
 			fmc.setTemplate([
 				[`ATC OFFSET REQUEST`, "3", "4"],
 				["\xa0OFFSET", ""],
-				[`<${store.offset}`, ""],
+				[`${store.offset}NM`, ""],
 				["\xa0OFFSET AT", ""],
-				["-----", ""],
+				[`${store.offsetAt}`, ""],
 				["", ""],
 				["", ""],
 				["", "DUE TO"],
-				["", "WEATHER>[s-text]"],
+				["", `${store.offsetWeather}>`],
 				["", ""],
 				["", ""],
 				["", "", "__FMCSEPARATOR"],
@@ -76,23 +83,50 @@ class FMC_ATC_XRequest {
 			};
 			
 			fmc.onPrevPage = () => {
-				offsetPage();
+				speedPage();
+			}
+			
+			fmc.onLeftInput[0] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.offset = value;
+				offsetPage(store);
+			}
+			
+			fmc.onLeftInput[1] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.offsetAt = value;
+				offsetPage(store);
+			}
+			
+			fmc.onRightInput[3] = () => {
+				if (store.offsetWeatherStatus == 1) {
+					store.offsetWeatherStatus = 0;
+					store.offsetWeather = 'WEATHER[s-text]';
+					offsetPage(store);
+				} else {
+					store.offsetWeatherStatus = 1;
+					store.offsetWeather = 'WEATHER';
+					offsetPage(store);
+				}
 			}
 		};
 
-		const rtePage = () => {
+		const rtePage = (store = {dctTo: "-----", hdg: "---", offsetAt: "-----", gndTrk: "---", rte1: "RTE 1[s-text]", rte2: "RTE 2[s-text]", depArr: "LACRE5.VANFS[s-text]",}) => {
+
 			fmc.setTemplate([
 				[`ATC ROUTE REQUEST`, "4", "4"],
 				["\xa0DIRECT TO", "HEADING"],
-				[`<${store.route}`, "---"],
+				[`${store.dctTo}`, `${store.hdg}`],
 				["\xa0OFFSET AT", "GROUND TRACK"],
-				["-----", "---"],
+				[`${store.offsetAt}`, `${store.gndTrk}`],
 				["\xa0REQUEST", "REQUEST"],
-				["<RTE 1[s-text]", "RTE 2>[s-text]"],
-				["", "DUE TO"],
-				["", "WEATHER>[s-text]"],
+				[`<${store.rte1}`, `${store.rte2}>`],
+				["", ""],
+				["", ""],
 				["\xa0REQUEST DEP/ARR", ""],
-				["<LACRE5.VANFS[s-text]", ""],
+				[`<${store.depArr}`, ""],
 				["", "", "__FMCSEPARATOR"],
 				["<REQUEST", "VERIFY>"]
 			])
@@ -104,46 +138,69 @@ class FMC_ATC_XRequest {
 			fmc.onPrevPage = () => {
 				offsetPage();
 			}
+			
+			fmc.onLeftInput[0] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.dctTo = value;
+				rtePage(store);
+			}
+			
+			fmc.onLeftInput[1] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.offsetAt = value;
+				rtePage(store);
+			}
+			
+			fmc.onLeftInput[2] = () => {
+				store.rte1 = 'RTE 1';
+				store.rte2 = 'RTE 2[s-text]';
+				rtePage(store);
+			}
+			
+			fmc.onLeftInput[4] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.depArr = value;
+				rtePage(store);
+			}
+			
+			fmc.onRightInput[0] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.hdg = value;
+				rtePage(store);
+			}
+			
+			fmc.onRightInput[1] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.gndTrk = value;
+				rtePage(store);
+			}
+			
+			fmc.onRightInput[2] = () => {
+				store.rte1 = 'RTE 1[s-text]';
+				store.rte2 = 'RTE 2';
+				rtePage(store);
+			}
 		};
-
-		if (store.altitude != "") {
-			altPage();
-		} else if (store.altitude == "" && store.speed != "") {
-			speedPage();
-		} else if (store.altitude == "" && store.speed == "" && store.offset != "") {
-			offsetPage();
-		}
-
-		fmc.onLeftInput[0] = () => {
-        	let value = fmc.inOut;
-        	fmc.clearUserInput();
-			store.altitude = value;
-			FMC_ATC_Request.ShowPage(fmc, store);
-		}
-
-		fmc.onLeftInput[1] = () => {
-        	let value = fmc.inOut;
-        	fmc.clearUserInput();
-			store.speed = value;
-			FMC_ATC_Request.ShowPage(fmc, store);
-		}
-
-		fmc.onLeftInput[2] = () => {
-        	let value = fmc.inOut;
-        	fmc.clearUserInput();
-			store.offset = value;
-			FMC_ATC_Request.ShowPage(fmc, store);
-		}
-
-		fmc.onLeftInput[4] = () => {
-			store.altitude = "";
-			store.speed = "";
-			store.offset = "";
-			FMC_ATC_Request.ShowPage(fmc, store);
+		
+		if (store.showRte == 1) {
+			rtePage();
+		} else {
+			if (store.altitude != "") {
+				altPage();
+			} else if (store.altitude == "" && store.speed != "") {
+				speedPage();
+			} else if (store.altitude == "" && store.speed == "" && store.offset != "") {
+				offsetPage();
+			}
 		}
 
 		fmc.onLeftInput[5] = () => {
-			FMC_ATC_Index.ShowPage(fmc);
+			FMC_ATC_Request.ShowPage(fmc, store);
 		}
 
 		fmc.onRightInput[5] = () => {

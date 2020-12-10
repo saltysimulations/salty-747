@@ -54,6 +54,14 @@ class FMC_ATC_Request {
 			FMC_ATC_Request.ShowPage(fmc, store);
 		}
 
+		fmc.onLeftInput[3] = () => {
+			let newStore = {
+				showRte: 1
+			};
+			FMC_ATC_XRequest.ShowPage(fmc, newStore);
+		}
+
+
 		fmc.onLeftInput[4] = () => {
 			store.altitude = "";
 			store.speed = "";
