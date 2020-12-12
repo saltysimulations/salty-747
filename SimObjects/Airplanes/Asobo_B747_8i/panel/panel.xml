@@ -282,7 +282,7 @@
 		</Annunciation>
 
 		<Annunciation>
-		  <Type>INFORMATION</Type>
+		  <Type>Advisory</Type>
 		  <Text>PARK BRAKE SET</Text>
 		  <Condition>
 			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>

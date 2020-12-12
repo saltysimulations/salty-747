@@ -22,8 +22,16 @@ class FMC_SAT_Index {
 		}
 		updateView();
 		
-		fmc.onLeftInput[5] = () => {
-			FMC_Menu.ShowPage(fmc);
+		fmc.onNextPage = () => {
+			FMC_SAT_Index.ShowPage2(fmc);
+		};
+		
+		fmc.onPrevPage = () => {
+			FMC_SAT_Index.ShowPage2(fmc);
+		};
+		
+		fmc.onRightInput[1] = () => {
+			FMC_SAT_Directory.ShowPage(fmc);
 		}
 	}
 	
@@ -50,8 +58,16 @@ class FMC_SAT_Index {
 		}
 		updateView();
 		
-		fmc.onLeftInput[5] = () => {
-			FMC_Menu.ShowPage(fmc);
+		fmc.onNextPage = () => {
+			FMC_SAT_Index.ShowPage(fmc);
+		};
+		
+		fmc.onPrevPage = () => {
+			FMC_SAT_Index.ShowPage(fmc);
+		};
+		
+		fmc.onRightInput[1] = () => {
+			FMC_SAT_Directory.ShowPage(fmc);
 		}
     }
 }

@@ -23,11 +23,11 @@ class FMC_SAT_SubDirectory {
 		updateView();
 		
 		fmc.onNextPage = () => {
-			FMC_SAT_SubDirectory.ShowPage2(fmc);
+			FMC_SAT_SubDirectory.ShowPage2(fmc, title);
 		};
 		
-		fmc.onNextPage = () => {
-			FMC_SAT_SubDirectory.ShowPage2(fmc);
+		fmc.onPrevPage = () => {
+			FMC_SAT_SubDirectory.ShowPage2(fmc, title);
 		};
 		
 		fmc.onLeftInput[5] = () => {
@@ -35,7 +35,7 @@ class FMC_SAT_SubDirectory {
 		}
 	}
 	
-    static ShowPage2(fmc) {
+    static ShowPage2(fmc, title) {
 		fmc.activeSystem = "SAT";
 		fmc.clearDisplay();
 		
@@ -59,11 +59,11 @@ class FMC_SAT_SubDirectory {
 		updateView();
 		
 		fmc.onNextPage = () => {
-			FMC_SAT_SubDirectory.ShowPage(fmc);
+			FMC_SAT_SubDirectory.ShowPage(fmc, title);
 		};
 		
-		fmc.onNextPage = () => {
-			FMC_SAT_SubDirectory.ShowPage(fmc);
+		fmc.onPrevPage = () => {
+			FMC_SAT_SubDirectory.ShowPage(fmc, title);
 		};
 		
 		fmc.onLeftInput[5] = () => {

@@ -1,5 +1,5 @@
 class FMC_ATC_VerifyReport {
-    static ShowPage(fmc, lines) {
+    static ShowPage(fmc, lines, returnTo) {
 		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 		
@@ -22,13 +22,21 @@ class FMC_ATC_VerifyReport {
 	            [lines[7] ? lines[7] : "", "REPORT"],
 	            [lines[8] ? lines[8] : "", "SEND>"],
 	            ["", "", "__FMCSEPARATOR"],
-	            [`<REPORT`]
+	            [`<${returnTo}`]
 	        ]);
         }
 		updateView();
 		
         fmc.onLeftInput[5] = () => {
-			FMC_ATC_Report.ShowPage(fmc);
+			if (returnTo == "ATC INDEX") {
+				FMC_ATC_Index.ShowPage(fmc);
+			} else if (returnTo == "REPORT") {
+				FMC_ATC_Report.ShowPage(fmc);
+			}
+		}
+		
+        fmc.onRightInput[4] = () => {
+			Boeing.infoPanelManager.addMessage("*ATC", Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION);
 		}
     }
 }

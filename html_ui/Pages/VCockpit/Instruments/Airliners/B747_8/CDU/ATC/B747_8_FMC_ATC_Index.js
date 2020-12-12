@@ -66,7 +66,7 @@ class FMC_ATC_Index {
 			}
 			
 	        fmc.onRightInput[2] = () => {
-	        	FMC_ATC_VerifyReport.ShowPage(fmc, lines = []);
+	        	FMC_ATC_VerifyReport.ShowPage(fmc, lines = [], "ATC INDEX");
 			}
 			
 	        fmc.onRightInput[3] = () => {

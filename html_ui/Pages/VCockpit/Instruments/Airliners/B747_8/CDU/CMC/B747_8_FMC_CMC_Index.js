@@ -1,4 +1,4 @@
-class FMC_SAT_Index {
+class FMC_CMC_Index {
     static ShowPage(fmc, store = {"printCell": "PRINT LOG"}) {
 		fmc.activeSystem = "SAT";
 		fmc.clearDisplay();

@@ -1,9 +1,17 @@
 class FMC_ATC_XRequest {
-    static ShowPage(fmc, store = {"altitude": "", "speed": "", "offset": "", "showRte": 0}) {
+    static ShowPage(fmc, store = {
+		altitude: "",
+		speed: "",
+		offset: "",
+		showRte: 0,
+		offsetAt: "-----",
+		offsetWeather: "WEATHER[s-text]",
+		offsetWeatherStatus: 0
+	}) {
 		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 
-		const altPage = () => {
+		function altPage() {
 
 			store.altitude = store.altitude ? store.altitude : "-----";
 
@@ -21,20 +29,23 @@ class FMC_ATC_XRequest {
 				["", ""],
 				["", "", "__FMCSEPARATOR"],
 				["<REQUEST", "VERIFY>"]
-			])
-		
+			]);
+
 			fmc.onNextPage = () => {
 				speedPage();
 			};
-			
+
 			fmc.onPrevPage = () => {
 				rtePage();
-			}
-		};
+			};
+		}
 
-		const speedPage = () => {
-
+		function speedPage() {
 			store.speed = store.speed ? store.speed : "---";
+			store.speedPerf = store.speedPerf ? store.speedPerf : "PERFORMANCE>[s-text]";
+			store.speedPerfStatus = store.speedPerfStatus ? store.speedPerfStatus : 0;
+			store.speedWeather = store.speedWeather ? store.speedWeather : "WEATHER>[s-text]";
+			store.speedWeatherStatus = store.speedWeatherStatus ? store.speedWeatherStatus : 0;
 
 			fmc.setTemplate([
 				[`ATC SPEED REQUEST`, "2", "4"],
@@ -43,26 +54,60 @@ class FMC_ATC_XRequest {
 				["", ""],
 				["", ""],
 				["", "DUE TO"],
-				["", "PERFORMANCE>[s-text]"],
+				["", `${store.speedPerf}`],
 				["", "DUE TO"],
-				["", "WEATHER>[s-text]"],
+				["", `${store.speedWeather}`],
 				["", ""],
 				["", ""],
 				["", "", "__FMCSEPARATOR"],
 				["<REQUEST", "VERIFY>"]
-			])
-		
+			]);
+
 			fmc.onNextPage = () => {
 				offsetPage();
 			};
-			
+
 			fmc.onPrevPage = () => {
 				altPage();
-			}
-		};
+			};
 
-		const offsetPage = (store = {offsetAt: "-----" ,offsetWeather: "WEATHER[s-text]", offsetWeatherStatus: 0}) => {
-			store.offset = store.offset ? store.offset : "---";
+			fmc.onLeftInput[0] = () => {
+				let value = fmc.inOut;
+				fmc.clearUserInput();
+				store.speed = value;
+				speedPage(store);
+			};
+
+			fmc.onRightInput[2] = () => {
+				if (store.speedPerfStatus == 1) {
+					store.speedPerfStatus = 0;
+					store.speedPerf = 'PERFORMANCE>[s-text]';
+					speedPage(store);
+				} else {
+					store.speedPerfStatus = 1;
+					store.speedPerf = 'PERFORMANCE';
+					speedPage(store);
+				}
+			};
+
+			fmc.onRightInput[3] = () => {
+				if (store.speedWeatherStatus == 1) {
+					store.speedWeatherStatus = 0;
+					store.speedWeather = 'WEATHER>[s-text]';
+					speedPage(store);
+				} else {
+					store.speedWeatherStatus = 1;
+					store.speedWeather = 'WEATHER';
+					speedPage(store);
+				}
+			};
+		}
+
+		function offsetPage() {
+			store.offset = store.offset ? store.offset : "---";			
+			store.offsetAt = store.offsetAt ? store.offsetAt : "-----";
+			store.offsetWeather = store.offsetWeather ? store.offsetWeather : "WEATHER>[s-text]";
+			store.offsetWeatherStatus = store.offsetWeatherStatus ? store.offsetWeatherStatus : 0;
 			fmc.setTemplate([
 				[`ATC OFFSET REQUEST`, "3", "4"],
 				["\xa0OFFSET", ""],
@@ -72,35 +117,35 @@ class FMC_ATC_XRequest {
 				["", ""],
 				["", ""],
 				["", "DUE TO"],
-				["", `${store.offsetWeather}>`],
+				["", `${store.offsetWeather}`],
 				["", ""],
 				["", ""],
 				["", "", "__FMCSEPARATOR"],
 				["<REQUEST", "VERIFY>"]
-			])
-		
+			]);
+
 			fmc.onNextPage = () => {
 				rtePage();
 			};
-			
+
 			fmc.onPrevPage = () => {
 				speedPage();
-			}
-			
+			};
+
 			fmc.onLeftInput[0] = () => {
 				let value = fmc.inOut;
 				fmc.clearUserInput();
 				store.offset = value;
 				offsetPage(store);
-			}
-			
+			};
+
 			fmc.onLeftInput[1] = () => {
 				let value = fmc.inOut;
 				fmc.clearUserInput();
 				store.offsetAt = value;
 				offsetPage(store);
-			}
-			
+			};
+
 			fmc.onRightInput[3] = () => {
 				if (store.offsetWeatherStatus == 1) {
 					store.offsetWeatherStatus = 0;
@@ -111,8 +156,8 @@ class FMC_ATC_XRequest {
 					store.offsetWeather = 'WEATHER';
 					offsetPage(store);
 				}
-			}
-		};
+			};
+		}
 
 		const rtePage = (store = {dctTo: "-----", hdg: "---", offsetAt: "-----", gndTrk: "---", rte1: "RTE 1[s-text]", rte2: "RTE 2[s-text]", depArr: "LACRE5.VANFS[s-text]",}) => {
 

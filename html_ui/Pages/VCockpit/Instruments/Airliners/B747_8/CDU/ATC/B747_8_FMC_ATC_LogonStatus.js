@@ -2,15 +2,6 @@ class FMC_ATC_LogonStatus {
     static ShowPage(fmc, store = {"logonTo": "", "fltNo": "", "actCtr": "", "nextCtr": "", "maxUlDelay": "", "dlnkStatus": ""}) {
 		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
-		/*
-		* Remove after testing
-		*/
-		store.logonTo = "PANC";
-		store.actCtr = "KZAK";
-		store.nextCtr = "PANC";
-		store.maxUlDelay = 150;
-		/*"READY, ATN READY, NO COMM, VOICE, or FAIL"*/
-		store.dlnkStatus = "READY";
 		
 		let logonToCell = store.logonTo ? store.logonTo : "--------";
 		let originCell = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "----";

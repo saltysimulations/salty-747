@@ -28,21 +28,25 @@ class FMC_Menu {
         fmc.onLeftInput[2] = () => {
             FMC_SAT_Index.ShowPage(fmc);
         };
-
-        fmc.onLeftInput[4] = () => {
-            FMC_ACMS_Index.ShowPage(fmc);
-        };
+		
+        fmc.onLeftInput[3] = () => {
+			fmc.infoPanelsManager.addMessage("*ATC", "InfoIndication");
+		}
 
         fmc.onLeftInput[5] = () => {
             FMC_CMC_Index.ShowPage(fmc);
+        };
+        
+        fmc.onRightInput[3] = () => {
+            FMC_PACI_Index.ShowPage(fmc);
         };
 
         fmc.onRightInput[4] = () => {
             FMCSaltyOptions.ShowPage1(fmc);
         };
         
-        fmc.onRightInput[4] = () => {
-            FMC_MAINT_Index.ShowPage1(fmc);
+        fmc.onRightInput[5] = () => {
+            FMC_MAINT_Index.ShowPage(fmc);
         };
     }
 }

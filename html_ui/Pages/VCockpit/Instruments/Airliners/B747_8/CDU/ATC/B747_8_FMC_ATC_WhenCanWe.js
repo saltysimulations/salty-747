@@ -61,7 +61,7 @@ class FMC_ATC_WhenCanWe {
 				FMC_ATC_WhenCanWe.ShowPage(fmc, store);
 			} else {
 				store.higherAltActive = 1;
-				store.higherAlt = 'HIGHER ALT>';
+				store.higherAlt = 'HIGHER ALT';
 				FMC_ATC_WhenCanWe.ShowPage(fmc, store);
 			}
 		}
@@ -73,7 +73,7 @@ class FMC_ATC_WhenCanWe {
 				FMC_ATC_WhenCanWe.ShowPage(fmc, store);
 			} else {
 				store.lowerAltActive = 1;
-				store.lowerAlt = 'LOWER ALT>';
+				store.lowerAlt = 'LOWER ALT';
 				FMC_ATC_WhenCanWe.ShowPage(fmc, store);
 			}
 		}
@@ -85,7 +85,7 @@ class FMC_ATC_WhenCanWe {
 				FMC_ATC_WhenCanWe.ShowPage(fmc, store);
 			} else {
 				store.backOnRteActive = 1;
-				store.backOnRte = 'BACK ON RTE>';
+				store.backOnRte = 'BACK ON RTE';
 				FMC_ATC_WhenCanWe.ShowPage(fmc, store);
 			}
 		}

@@ -26,7 +26,7 @@ class FMC_SAT_Directory {
 			FMC_SAT_Directory.ShowPage2(fmc);
 		};
 		
-		fmc.onNextPage = () => {
+		fmc.onPrevPage = () => {
 			FMC_SAT_Directory.ShowPage2(fmc);
 		};
 		
@@ -66,7 +66,7 @@ class FMC_SAT_Directory {
 			FMC_SAT_Directory.ShowPage(fmc);
 		};
 		
-		fmc.onNextPage = () => {
+		fmc.onPrevPage = () => {
 			FMC_SAT_Directory.ShowPage(fmc);
 		};
 		

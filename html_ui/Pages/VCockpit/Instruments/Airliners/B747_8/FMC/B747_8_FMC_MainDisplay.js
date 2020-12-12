@@ -82,14 +82,32 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
-        this.onInit = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(this); };
-        this.onLegs = () => { B747_8_FMC_LegsPage.ShowPage1(this); };
-        this.onRte = () => { FMCRoutePage.ShowPage1(this); };
-        this.onDepArr = () => { B747_8_FMC_DepArrIndexPage.ShowPage1(this); };
-        this.onRad = () => { B747_8_FMC_NavRadioPage.ShowPage(this); };
-        this.onVNAV = () => { B747_8_FMC_VNAVPage.ShowPage1(this); };
+        this.onInit = () => {
+            B747_8_FMC_InitRefIndexPage.ShowPage1(this);
+        };
+        this.onLegs = () => {
+            B747_8_FMC_LegsPage.ShowPage1(this);
+        };
+        this.onRte = () => {
+            FMCRoutePage.ShowPage1(this);
+        };
+        this.onDepArr = () => {
+            B747_8_FMC_DepArrIndexPage.ShowPage1(this);
+        };
+        this.onRad = () => {
+            B747_8_FMC_NavRadioPage.ShowPage(this);
+        };
+        this.onVNAV = () => {
+            B747_8_FMC_VNAVPage.ShowPage1(this);
+        };
         this.onAtc = () => { 
             FMC_ATC_Index.ShowPage(this);
+        };
+        this.onFmcComm = () => { 
+            FMC_COMM_Index.ShowPage(this);
+        };
+        this.onMenu = () => { 
+            FMC_Menu.ShowPage(this);
         };
         FMC_Menu.ShowPage(this);
         this.saltyBase = new SaltyBase();
@@ -136,6 +154,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (input === "ATC") {
             if (this.onAtc) {
                 this.onAtc();
+            }
+        }
+        if (input === "FMCCOMM") {
+            if (this.onFmcComm) {
+                this.onFmcComm();
+            }
+        }
+        if (input === "MENU") {
+            if (this.onMenu) {
+                this.onMenu();
             }
         }
         return false;
@@ -756,6 +784,33 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             this.updateAutopilotCooldown = this._apCooldown;
+        }
+    }
+    static stringTohhmm(value) {
+        value = value.padStart(4, "0");
+        const h = parseInt(value.slice(0, 2));
+        const m = parseInt(value.slice(2, 4));
+        return h.toFixed(0).padStart(2, "0") + ":" + m.toFixed(0).padStart(2, "0");
+    }
+    
+    refreshGrossWeight(_force = false) {
+        let gw = 0;
+        let isInMetric = BaseAirliners.unitIsMetric(Aircraft.A320_NEO);
+        if (isInMetric) {
+            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "kg"));
+            if (this.gwUnit)
+                this.gwUnit.textContent = "KG";
+        }
+        else {
+            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs"));
+            if (this.gwUnit)
+                this.gwUnit.textContent = "LBS";
+        }
+        if ((gw != this.currentGW) || _force) {
+            this.currentGW = gw;
+            if (this.gwValue != null) {
+                this.gwValue.textContent = this.currentGW.toString();
+            }
         }
     }
 }
