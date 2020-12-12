@@ -27,8 +27,8 @@ class B747_8_MFD extends BaseAirliners {
                 break;
         }
     }
-    Update() {
-        super.Update();
+    onUpdate(_deltaTime) {
+        super.onUpdate(_deltaTime);
     }
 }
 class B747_8_MFD_MainElement extends NavSystemElement {
@@ -366,7 +366,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 210 / 600) + 90)})`);
             }           
             //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
-            if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 100) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))){
+            if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 200) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))){
                 this.greenArc.style.visibility ="hidden";
             }
             else{ 
@@ -546,7 +546,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         this.zuluETA = document.querySelector("#WP_ZuluTime");
         this.zuluETA.textContent = "------Z";
         var utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
-        if (Simplane.getNextWaypointName() && (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0)){
+        if (Simplane.getNextWaypointName() && (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0)) {
             var wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
             var utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
             const hours = Math.floor(utcETA / 3600);
@@ -562,15 +562,15 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         //get Distance to Waypoint
         this.waypointDistance = document.querySelector("#WP_Distance_Value");
         this.waypointDistance.textContent = "---"
-        if (Simplane.getNextWaypointName()){
+        if (Simplane.getNextWaypointName()) {
             var nextWaypointDistance = Simplane.getNextWaypointDistance();
-            if(nextWaypointDistance > 100){
+            if (nextWaypointDistance > 100) {
                 this.waypointDistance.textContent = nextWaypointDistance.toFixed(0);
-            } else{
+            } else {
                 this.waypointDistance.textContent = nextWaypointDistance.toFixed(1);
             }
         }
-        if(IRSState != 2 || groundSpeed < 100) {
+        if (IRSState != 2 || groundSpeed < 100) {
             showData = false; 
         }
         else {
@@ -585,7 +585,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
        ws.setAttribute("visibility", (showData) ? "visible" : "hidden");
        wa.setAttribute("visibility", (showData) ? "visible" : "hidden");
 
-       if(IRSState != 2) {
+       if (IRSState != 2) {
            gs.textContent = "---";
            wpdata.setAttribute("visibility", "hidden");
        }
