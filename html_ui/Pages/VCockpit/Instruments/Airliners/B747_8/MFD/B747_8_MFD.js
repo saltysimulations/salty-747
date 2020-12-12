@@ -367,14 +367,14 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             }           
             //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
             if ((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 200) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))) {
-                this.greenArc.style.visibility ="hidden";
+                this.greenArc.style.visibility = "hidden";
             }
             else { 
-                this.greenArc.style.visibility ="visible";
+                this.greenArc.style.visibility = "visible";
             }
         }
         else { 
-            this.greenArc.style.visibility ="hidden";
+            this.greenArc.style.visibility = "hidden";
         }
     }
 }
