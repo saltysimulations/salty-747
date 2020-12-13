@@ -75,10 +75,23 @@ var B747_8_LowerEICAS_Stat;
         }
 
         updateApu() {
-            var apuEgt = getAPUEGT();
-            var apuN1 = SimVar.GetSimVarValue("APU PCT RPM", "").toFixed(2);            
-            var apuN2 = (SimVar.GetSimVarValue("APU PCT RPM", "") - 5).toFixed(2);
+            var apuEgt;
+            var apuN1;
+            var n2Raw;
+            var apuN2;
             var apuOilQty = 0.95;
+            if(SimVar.GetSimVarValue("APU PCT RPM", "") > 0) {
+                var apuEgt = this.getAPUEGT();
+                var apuN1 = SimVar.GetSimVarValue("APU PCT RPM", "").toFixed(2);
+                var n2Raw = SimVar.GetSimVarValue("APU PCT RPM", "") - (SimVar.GetSimVarValue("APU PCT RPM", "") * 0.03);
+                var apuN2 = n2Raw.toFixed(2);
+                var apuOilQty = 0.95;
+            } else {
+                apuEgt = "";
+                apuN1 = "";
+                apuN2 = "";
+                apuOilQty = "";
+            }
             this.apuEgt.textContent = apuEgt;
             this.apuN1.textContent = apuN1;
             this.apuN2.textContent = apuN2;
@@ -88,11 +101,11 @@ var B747_8_LowerEICAS_Stat;
         updateElec() {
             var mainBatV = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS VOLTAGE", "volts").toFixed(0);
             var mainBatA = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS AMPS", "amperes").toFixed(0);
-            if (SimVar.GetSimVarValue("APU PCT RPM", "") > 95) {
+            if (SimVar.GetSimVarValue("APU PCT RPM", "") > 0.95) {
                 var apuBatV = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS VOLTAGE", "volts").toFixed(0);
-                var apuBatA = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS AMPS", "volts").toFixed(0);
+                var apuBatA = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS AMPS", "amperes").toFixed(0);
             } else {
-                var apuBatA = 0;
+                var apuBatV = 0;
                 var apuBatA = 0;
             }
             this.mainBatV.textContent = mainBatV;
@@ -134,25 +147,30 @@ var B747_8_LowerEICAS_Stat;
             
         }
 
-        //Calculates the APU EGT Based on the RPM
         getAPUEGTRaw(startup) {
             var n = this.getAPUN();
             if (startup) {
                 if (n < 10) {
                     return 10;
-                } else if (n < 16) {
-                    return (135*n)-1320;
+                } else if(n <14){
+                    reuturn ((90/6*n)- 140);
                 } else if (n < 20) {
-                    return -1262 + (224*n) - (5.8 * (n*n));
+                    return ((215/4*n)-760);
+                } else if(n < 32){
+                    return ((420/11*n)-481.8);
                 } else if (n < 36) {
-                    return ((-5/4)*n) + 925;
-                } else if (n < 42) {
-                    return -2062 + (151.7*n) - (1.94 * (n*n));
+                    return (20/3*n)+525;
+                } else if (n < 43) {
+                    return ((-15/6*n)+888.3);
+                } else if(n < 50){
+                    return ((3*n)+618)
+                } else if(n < 74){
+                    return ((-100/13)*n+1152.3);
                 } else {
-                    return ((-425/58)*n) + (34590/29);
+                    return ((-104/10*n)+1430);
                 }
             } else {
-                return ((18/5)*n)+100;
+                return ((18/5)*n)+35;
             }
         }
 
@@ -160,13 +178,12 @@ var B747_8_LowerEICAS_Stat;
             let ambient = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
 
             var n = this.getAPUN();
-            var egt = (Math.round(this.getAPUEGTRaw(this.lastN <= n)/5)*5);
+            var egt = (Math.round(this.getAPUEGTRaw(this.lastN <= n)));
             this.lastN = n;
             if (this.APUWarm && egt < 100) {
                 return 100;
             } else {
                 if (n > 1) this.APUWarm = false;
-                // range from getAPUEGTRaw is 10~900 C
                 return ambient + (egt - 10);
             }
         }
