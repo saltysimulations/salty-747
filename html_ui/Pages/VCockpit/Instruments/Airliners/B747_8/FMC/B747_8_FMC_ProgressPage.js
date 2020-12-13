@@ -74,14 +74,15 @@ class B747_8_FMC_ProgressPage {
         
         if (fmc.flightPlanManager.getDestination()){
             progressDestination = fmc.flightPlanManager.getDestination();
-            progressDestinationDTG = fmc.flightPlanManager.getDestination().infos.totalDistInFP.toFixed(0);
-
-            progressDestinationETACell = FMCMainDisplay.secondsTohhmm(fmc.flightPlanManager.getDestination().estimatedTimeOfArrivalFP);
-
-
-
-
-            progressDestinationFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((progressActiveWaypointETE /3600) * (currentFuelBurn / 1000)));
+            progressDestinationDTG = fmc.flightPlanManager.getDestination().infos.totalDistInFP - progressActiveWaypoint.infos.totalDistInFP + progressActiveWaypointDTG;
+            if (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0) {
+                let wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds") + (progressDestinationDTG / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600);
+                let utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
+                const hours = Math.floor(utcETA / 3600);
+                const minutes = Math.floor((utcETA % 3600) / 60);
+                progressDestinationETACell = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}Z`;
+                progressDestinationFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((wpETE /3600) * (currentFuelBurn / 1000)));
+            }
         }
             
         
@@ -100,11 +101,11 @@ class B747_8_FMC_ProgressPage {
         fmc.setTemplate([
             [progressTitle],
             ["TO", "FUEL", "DTG\xa0\xa0\xa0\xa0ETA"],  
-            [progressActiveWaypoint.ident, progressActiveWaypointFuel.toFixed(1), progressActiveWaypointDTG.toFixed(0) + "\xa0\xa0\xa0\xa0" + progressActiveWaypointETACell],
+            [progressActiveWaypoint.ident, progressActiveWaypointFuel.toFixed(1), progressActiveWaypointDTG.toFixed(0) + "\xa0\xa0\xa0" +  progressActiveWaypointETACell],
             ["NEXT"],
-            [progressNextWaypoint.ident, progressNextWaypointFuel.toFixed(1), progressNextWaypointDTGCell.toFixed(0) + "\xa0\xa0\xa0\xa0" + progressNextWaypointETACell],
+            [progressNextWaypoint.ident, progressNextWaypointFuel.toFixed(1), progressNextWaypointDTGCell.toFixed(0) + "\xa0\xa0\xa0" +  progressNextWaypointETACell],
             ["DEST"],
-            [progressDestination.ident],
+            [progressDestination.ident, progressDestinationFuel.toFixed(1), progressDestinationDTG.toFixed(0) + "\xa0\xa0\xa0" + progressDestinationETACell],
             ["SEL SPD", "TO T/D"],
             [crzSpeedCell],
             [],
