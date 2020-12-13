@@ -8,7 +8,7 @@ ZVelBodyAxis=0
 SimOnGround=True
 
 [Avionics.0]
-Comm1Active=127.850
+Comm1Active=127.800
 Comm1Standby=124.850
 Comm2Active=124.850
 Comm2Standby=124.850

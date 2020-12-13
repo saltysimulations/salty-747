@@ -23,7 +23,7 @@ b747-8-lower-eicas-stat {
   b747-8-lower-eicas-stat text {
     fill: var(--eicasBlue);
     font-size: 15px; }
-  b747-8-lower-eicas-stat #values-info text, b747-8-lower-eicas-stat #clock-values text {
+  b747-8-lower-eicas-stat #values-info text, b747-8-lower-eicas-stat #clock-values text, b747-8-lower-eicas-stat #status-messages text {
     fill: var(--eicasWhite);
     font-size: 17px; }
   b747-8-lower-eicas-stat #clock-labels {
