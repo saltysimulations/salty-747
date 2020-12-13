@@ -15,6 +15,7 @@ class B747_8_FMC_ProgressPage {
 
         let activeWaypoint = ""
         let activeWaypointDTG = ""
+        let activeWaypointDTGCell = ""
         let activeWaypointETA = ""
         let activeWaypointFuel = ""
         let activeWaypointETACell = ""
@@ -22,6 +23,7 @@ class B747_8_FMC_ProgressPage {
         let progressNextWaypoint = ""
         let progressNextWaypointDistance =""
         let progressNextWaypointETACell = ""
+        let progressNextWaypointDTG = ""
         let progressNextWaypointDTGCell = ""
         let progressNextWaypointFuel = ""
 
@@ -33,27 +35,28 @@ class B747_8_FMC_ProgressPage {
         let crzSpeedCell = ""
         let distanceToTOD = ""
         let todETACell = ""
-        
+
         //Active Waypoint Distance, ETA, Fuel Estimate
         if (fmc.flightPlanManager.getActiveWaypoint()){
             activeWaypoint = fmc.flightPlanManager.getActiveWaypoint();
             activeWaypointDTG = Simplane.getNextWaypointDistance();
-            activeWaypointETA = Simplane.getNextWaypointETA();
-
-            let wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
-            let utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
+            activeWaypointDTGCell = activeWaypointDTG.toFixed(0);
             if (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0) {
+                let wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
+                let utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
                 const hours = Math.floor(utcETA / 3600);
                 const minutes = Math.floor((utcETA % 3600) / 60);
                 activeWaypointETACell = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}z`;
                 activeWaypointFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((wpETE /3600) * (currentFuelBurn / 1000)));
+                activeWaypointFuel = activeWaypointFuel.toFixed(1);
             }
         }
         //Next Waypoint Distance, ETA, Fuel Estimate
         if (fmc.flightPlanManager.getNextActiveWaypoint()){
             progressNextWaypoint = fmc.flightPlanManager.getNextActiveWaypoint();
             progressNextWaypointDistance = Avionics.Utils.computeGreatCircleDistance(activeWaypoint.infos.coordinates, progressNextWaypoint.infos.coordinates);
-            progressNextWaypointDTGCell = activeWaypointDTG + progressNextWaypointDistance;
+            progressNextWaypointDTG = (activeWaypointDTG + progressNextWaypointDistance);
+            progressNextWaypointDTGCell = progressNextWaypointDTG.toFixed(0);
             if (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0) {
                 let wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds") + (progressNextWaypointDistance / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600);
                 let utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
@@ -61,12 +64,14 @@ class B747_8_FMC_ProgressPage {
                 const minutes = Math.floor((utcETA % 3600) / 60);
                 progressNextWaypointETACell = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}z`;
                 progressNextWaypointFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((wpETE /3600) * (currentFuelBurn / 1000)));
+                progressNextWaypointFuel = progressNextWaypointFuel.toFixed(1);
             }        
         }
         //Destination airport, ETA, Fuel Estimate and Top of Descent estimates
         if (fmc.flightPlanManager.getDestination()){
             progressDestination = fmc.flightPlanManager.getDestination();
             progressDestinationDTG = fmc.flightPlanManager.getDestination().infos.totalDistInFP - activeWaypoint.infos.totalDistInFP + activeWaypointDTG;
+            progressDestinationDTG = progressDestinationDTG.toFixed(0);
             if (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0) {
                 let wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds") + (progressDestinationDTG / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600);
                 let utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
@@ -74,18 +79,19 @@ class B747_8_FMC_ProgressPage {
                 const minutes = Math.floor((utcETA % 3600) / 60);
                 progressDestinationETACell = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}z`;
                 progressDestinationFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((wpETE /3600) * (currentFuelBurn / 1000)));
+                progressDestinationFuel = progressDestinationFuel.toFixed(1);
                 //TOD Calculation based on descent from VNAV crz altitude from FMC to airport elevation
                 let crzAlt = fmc.cruiseFlightLevel * 100;
                 let destAlt = progressDestination.infos.coordinates.alt;
                 let descentAlt = crzAlt - destAlt;
                 //TOD Distance based on 3.5NM per 1000 feet + 12NM deceleration still wind as per FCTM
                 let descentDistance = (3.5 * descentAlt / 1000) + 12;
-                distanceToTOD = progressDestinationDTG - descentDistance;
+                distanceToTOD = (progressDestinationDTG - descentDistance).toFixed(0) + "NM";
                 let todETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds") + ((progressDestinationDTG - descentDistance) / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600);
                 let todETA = todETE > 0 ? (utcTime + todETE) % 86400 : 0;
                 const todHours = Math.floor(todETA / 3600);
                 const todMinutes = Math.floor((todETA % 3600) / 60);
-                todETACell = `${todHours.toString().padStart(2, "0")}${todMinutes.toString().padStart(2, "0")}z`;
+                todETACell = `${todHours.toString().padStart(2, "0")}${todMinutes.toString().padStart(2, "0")}z/`;
             }
         }
         //Gets current command speed/mach from FMC    
@@ -101,13 +107,13 @@ class B747_8_FMC_ProgressPage {
         fmc.setTemplate([
             [progressTitle],
             ["TO", "FUEL", "DTG\xa0\xa0\xa0\xa0ETA"],  
-            [activeWaypoint.ident, activeWaypointFuel.toFixed(1), activeWaypointDTG.toFixed(0) + "\xa0\xa0\xa0" +  activeWaypointETACell],
+            [activeWaypoint.ident, activeWaypointFuel, activeWaypointDTGCell + "\xa0\xa0\xa0" +  activeWaypointETACell],
             ["NEXT"],
-            [progressNextWaypoint.ident, progressNextWaypointFuel.toFixed(1), progressNextWaypointDTGCell.toFixed(0) + "\xa0\xa0\xa0" +  progressNextWaypointETACell],
+            [progressNextWaypoint.ident, progressNextWaypointFuel, progressNextWaypointDTGCell + "\xa0\xa0\xa0" +  progressNextWaypointETACell],
             ["DEST"],
-            [progressDestination.ident, progressDestinationFuel.toFixed(1), progressDestinationDTG.toFixed(0) + "\xa0\xa0\xa0" + progressDestinationETACell],
+            [progressDestination.ident, progressDestinationFuel, progressDestinationDTG + "\xa0\xa0\xa0" + progressDestinationETACell],
             ["SEL SPD", "TO T/D"],
-            [crzSpeedCell, todETACell + "/" + distanceToTOD.toFixed(0) + "NM"],
+            [crzSpeedCell, todETACell + distanceToTOD],
             [],
             [],
             ["__FMCSEPARATOR"],
