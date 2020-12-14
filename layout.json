@@ -117,8 +117,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ProgressPage.js",
-            "size": 5734,
-            "date": 132523422342375038
+            "size": 8269,
+            "date": 132524352702859778
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_SaltyOptions.js",
@@ -142,8 +142,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
-            "size": 26066,
-            "date": 132522645991276288
+            "size": 26073,
+            "date": 132524195294720878
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_BaseNDCompass.js",
