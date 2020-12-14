@@ -38,7 +38,7 @@ class B747_8_FMC_ProgressPage {
         let destinationFuelCell = ""
         
         let crzSpeedCell = ""
-        let distanceToTOD = ""
+        let distanceToTODCell = ""
         let todETACell = ""
 
         //Active Waypoint Distance, ETA, Fuel Estimate
@@ -95,12 +95,17 @@ class B747_8_FMC_ProgressPage {
                 let destAlt = destination.infos.coordinates.alt;
                 let descentAlt = crzAlt - destAlt;
                 let descentDistance = (3.5 * descentAlt / 1000) + 12;
-                distanceToTOD = (destinationDTG - descentDistance).toFixed(0) + "NM";
+                let distanceToTOD = destinationDTG - descentDistance;
+                distanceToTODCell = distanceToTOD.toFixed(0) + "NM";
                 let todETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds") + ((destinationDTG - descentDistance) / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600);
                 let todETA = todETE > 0 ? (utcTime + todETE) % 86400 : 0;
                 const todHours = Math.floor(todETA / 3600);
                 const todMinutes = Math.floor((todETA % 3600) / 60);
                 todETACell = `${todHours.toString().padStart(2, "0")}${todMinutes.toString().padStart(2, "0")}z/`;
+                if (distanceToTOD <= 0){
+                    todETACell = "";
+                    distanceToTODCell = "NOW";
+                }
         }
         //Gets current command speed/mach from FMC    
         let machMode = Simplane.getAutoPilotMachModeActive();
@@ -121,7 +126,7 @@ class B747_8_FMC_ProgressPage {
             ["DEST"],
             [destination.ident, destinationFuelCell, destinationDTGCell + "\xa0\xa0\xa0" + destinationETACell],
             ["SEL SPD", "TO T/D"],
-            [crzSpeedCell, todETACell + distanceToTOD],
+            [crzSpeedCell, todETACell + distanceToTODCell],
             [],
             [],
             ["__FMCSEPARATOR"],
