@@ -56,8 +56,8 @@ class B747_8_FMC_ProgressPage {
                 activeWaypointFuelCell = activeWaypointFuel.toFixed(1);
             }
         }
-        //Next Waypoint Distance, ETA, Fuel Estimate - Hides Next Waypoint if same as destination
-        if (fmc.flightPlanManager.getWaypoint(flightPlanIndex + 1, undefined, true) && (nextWaypoint.ident != destination.ident)){
+        //Next Waypoint Distance, ETA, Fuel Estimate
+        if (fmc.flightPlanManager.getWaypoint(flightPlanIndex + 1, undefined, true)){
             nextWaypoint = fmc.flightPlanManager.getWaypoint(flightPlanIndex + 1, undefined, true);
             nextWaypointDistance = Avionics.Utils.computeGreatCircleDistance(activeWaypoint.infos.coordinates, nextWaypoint.infos.coordinates);
             nextWaypointDTG = (activeWaypointDTG + nextWaypointDistance);
@@ -72,10 +72,10 @@ class B747_8_FMC_ProgressPage {
                 nextWaypointFuelCell = nextWaypointFuel.toFixed(1);
             }        
         }
-        //Destination airport, ETA, Fuel Estimate and Top of Descent estimates
+        //Destination airport, ETA, Fuel Estimate
         if (fmc.flightPlanManager.getDestination()){
             destination = fmc.flightPlanManager.getDestination();
-            destinationDTG = fmc.flightPlanManager.getDestination().infos.totalDistInFP - activeWaypoint.infos.totalDistInFP + activeWaypointDTG;
+            destinationDTG = destination.infos.totalDistInFP - activeWaypoint.infos.totalDistInFP + activeWaypointDTG;
             destinationDTGCell = destinationDTG.toFixed(0);
             if (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0) {
                 let wpETE = destinationDTG / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600; 
@@ -88,24 +88,27 @@ class B747_8_FMC_ProgressPage {
             }
         }
         //Shows TOD when within 200 miles of destination and in cruise flight
-        //TOD Calculation based on descent from VNAV crz altitude from FMC to airport elevation
-        //TOD Distance based on 3.5NM per 1000 feet + 12NM deceleration still wind as per FCTM
+        //TOD Calculation based on descent from VNAV crz altitude from FMC to airport elevation - TOD Distance based on 3.5NM per 1000 feet + 12NM deceleration still wind as per FCTM
         if(fmc.flightPlanManager.getDestination() && (destinationDTG <= 200) && (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE)){
-                let crzAlt = fmc.cruiseFlightLevel * 100;
-                let destAlt = destination.infos.coordinates.alt;
-                let descentAlt = crzAlt - destAlt;
-                let descentDistance = (3.5 * descentAlt / 1000) + 12;
-                let distanceToTOD = destinationDTG - descentDistance;
-                distanceToTODCell = distanceToTOD.toFixed(0) + "NM";
-                let todETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds") + ((destinationDTG - descentDistance) / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600);
-                let todETA = todETE > 0 ? (utcTime + todETE) % 86400 : 0;
-                const todHours = Math.floor(todETA / 3600);
-                const todMinutes = Math.floor((todETA % 3600) / 60);
-                todETACell = `${todHours.toString().padStart(2, "0")}${todMinutes.toString().padStart(2, "0")}z/`;
-                if (distanceToTOD <= 0){
-                    todETACell = "";
-                    distanceToTODCell = "NOW";
-                }
+            let crzAlt = fmc.cruiseFlightLevel * 100;
+            let destAlt = destination.infos.coordinates.alt;
+            let descentAlt = crzAlt - destAlt;
+            let descentDistance = (3.5 * descentAlt / 1000) + 12;
+            let distanceToTOD = destinationDTG - descentDistance;
+            distanceToTODCell = distanceToTOD.toFixed(0) + "NM";
+            let todETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds") + ((destinationDTG - descentDistance) / SimVar.GetSimVarValue("GROUND VELOCITY", "knots") * 3600);
+            let todETA = todETE > 0 ? (utcTime + todETE) % 86400 : 0;
+            const todHours = Math.floor(todETA / 3600);
+            const todMinutes = Math.floor((todETA % 3600) / 60);
+            todETACell = `${todHours.toString().padStart(2, "0")}${todMinutes.toString().padStart(2, "0")}z/`;
+            if (distanceToTOD <= 0){
+                todETACell = "";
+                distanceToTODCell = "NOW";
+            }
+            if (((SimVar.GetSimVarValue("INDICATED ALTITUDE", "feet") - 200 ) > crzAlt)){
+                todETACell = "";
+                distanceToTODCell = "";
+            }        
         }
         //Gets current command speed/mach from FMC    
         let machMode = Simplane.getAutoPilotMachModeActive();
