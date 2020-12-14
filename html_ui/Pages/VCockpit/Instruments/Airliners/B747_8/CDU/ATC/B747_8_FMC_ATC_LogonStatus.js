@@ -6,7 +6,7 @@ class FMC_ATC_LogonStatus {
 			"sendStatus": "",
 			"atcCtrLabel": "ATC CTR",
 			"actCtr": "----",
-			"atcCtrLabel": "NEXT CTR",
+			"nextCtrLabel": "NEXT CTR",
 			"nextCtr": "----",
 			"maxUlDelay": "---",
 			"atcCommLabel": "",
@@ -19,18 +19,26 @@ class FMC_ATC_LogonStatus {
 		let originCell = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "----";
 		let destinationCell = fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "----";
 		let regCell = SimVar.GetSimVarValue("ATC ID", "string") ? SimVar.GetSimVarValue("ATC ID", "string") : "-------";
+
+		/* REMOVE AFTER TESTING */
+		/* END REMOVE */
+
 		const updateView = () => {
 			if (SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string")) {
 				store.fltNo = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string");
 			}
-			if (dlnkStatusCell == "NO COMM") {
-				atcCtrLabel = "";
-				actCtrCell = "";
-				nextCtrLabel = "";
-				nextCtrCell = "";
+			if (!fmc.atcComm.estab) {
+				store.atcCtrLabel = "";
+				store.actCtr = "";
+				store.nextCtrLabel = "";
+				store.nextCtr = "";
 			} else {
+				store.actCtr = fmc.atcComm.loggedTo;
+				store.nextCtr = fmc.atcComm.nextCtr != "" ? fmc.atcComm.nextCtr : "----";
 				store.atcCommLabel = "ATC COMM";
-				store.atcCommSelect = "SELECT OFF";
+				store.atcCommSelect = "<SELECT OFF";
+				store.nextCtrLabel = "NEXT CTR";
+				store.dlnkStatus = fmc.atcComm.dlnkStatus;
 			}
 			fmc.setTemplate([
 				["ATC LOGON/STATUS", "1", "2"],
@@ -42,10 +50,10 @@ class FMC_ATC_LogonStatus {
 				[`${regCell}`, `${destinationCell}`],
 				["\xa0MAX U/L DELAY", `${store.atcCtrLabel}`],
 				[`${store.maxUlDelay}SEC`, `${store.actCtr}`],
-				[`\xa0${store.atcCommLabel}`, `${store.nextCtrCell}`],
-				[`<${atcCommSelect}`, `${store.nextCtr}`],
+				[`\xa0${store.atcCommLabel}`, `${store.nextCtrLabel}`],
+				[`${store.atcCommSelect}`, `${store.nextCtr}`],
 				["", "DATA LINK", "__FMCSEPARATOR"],
-				["<ATC INDEX", `${dlnkStatusCell}`]
+				["<ATC INDEX", `${store.dlnkStatus}`]
 			]);
 		}
 		updateView();
@@ -92,20 +100,21 @@ class FMC_ATC_LogonStatus {
 		}
 
 		fmc.onRightInput[0] = () => {
-        	if (store.logonTo != "" && store.fltNo != "") {
-				store.sendLabel = "SENDING";
+        	if (store.logonTo != "" && store.fltNo != "" && store.maxUlDelay != "") {
+				store.sendStatus = "SENDING";
 				store.sendLabel = "SENT";
 				fmc.atcComm.estab = true;
 				fmc.atcComm.loggedTo = store.logonTo;
+				fmc.atcComm.maxUlDelay = store.maxUlDelay;
 				fmc.atcComm.dlnkStatus = "READY";
 				updateView();
 			}
 		}
 
-		fmc.onRightInput[3] = () => {
+		fmc.onRightInput[4] = () => {
         	let value = fmc.inOut;
         	fmc.clearUserInput();
-			store.nextCtr = value;
+			fmc.atcComm.nextCtr = value;
 			updateView();
 		}
 	}

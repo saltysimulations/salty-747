@@ -28,17 +28,17 @@ class FMC_ATC_EmergencyReport {
 			if (store.emergType) {
 				if (store.emergType == 0) {
 					maydayCell = "MAYDAY[s-text]";
-					panCell = "<PAN[s-text]";
+					panCell = "PAN>[s-text]";
 				} else if (store.emergType == 1) {
 					maydayCell = "MAYDAY";
-					panCell = "<PAN[s-text]";
+					panCell = "PAN>[s-text]";
 				} else if (store.emergType == 2) {
 					maydayCell = "<MAYDAY[s-text]";
 					panCell = "PAN";
 				}
 			} else {			
 				maydayCell = "<MAYDAY[s-text]";
-				panCell = "<PAN[s-text]";
+				panCell = "PAN>[s-text]";
 			}
 			if (store.divert) {
 				divertCell = store.divert;
@@ -158,20 +158,18 @@ class FMC_ATC_EmergencyReport {
 			const title = "EMERGENCY";
 			const lines = [];
 			if (store.emergType === 1) {
-				lines.push("MAYDAY MAYDAY MAYDAY");
+				lines.push("\xa0MAYDAY MAYDAY MAYDAY");
 			} else if (store.emergType === 2) {
-				lines.push("PAN PAN PAN");
+				lines.push("\xa0PAN PAN PAN");
 			}
 			if (store.descend != "") {
-				lines.push("DESCENDING TO " + store.descend + "FT");
+				lines.push("\xa0DESCENDING TO " + store.descend + "FT");
 			}
 			if (store.divert != "") {
-				lines.push("DIRECT TO " + store.divert);
+				lines.push("\xa0DIRECT TO " + store.divert + "");
 			}
-			if (store.sob) {
-				lines.push(store.fuelTime + " OF FUEL REMAINING");
-				lines.push("AND " + store.sob + " SOULS ON BOARD.");
-			}
+			lines.push("\xa0" + store.fuelTime + " OF FUEL REMAINING");
+			lines.push("\xa0AND " + store.sob + " SOULS ON BOARD.");
 			FMC_ATC_VerifyRequest.ShowPage(fmc, title, lines);
         }
     }

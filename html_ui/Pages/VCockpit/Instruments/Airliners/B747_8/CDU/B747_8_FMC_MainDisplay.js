@@ -1,7 +1,6 @@
 class B747_8_FMC_MainDisplay extends Boeing_FMC {
     constructor() {
         super(...arguments);
-        this.activeSystem = "FMC";
         this._registered = false;
         this._lastActiveWP = 0;
         this._wasApproachActive = false;
@@ -64,44 +63,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
-        this.atcComm = {            
-            estab: false,
-            loggedTo: "",
-            nextCtr: "",
-            maxUlDelay: "",
-            ads: "",
-            adsEmerg: "",
-            dlnkStatus: "NO COMM",
-            uplinkPeding: false            
-        };
-        this.companyComm = {
-            estab: false,
-            company: "",
-        };
-        this.simbrief = {
-            route: "",
-            cruiseAltitude: "",
-            originIcao: "",
-            destinationIcao: "",
-            blockFuel: "",
-            payload: "",
-            estZfw: "",
-            costIndex: "",
-            navlog: "",
-            icao_airline: "",
-            flight_number: "",
-            alternateIcao: "",
-            avgTropopause: "",
-            ete: "",
-            blockTime: "",
-            outTime: "",
-            onTime: "",
-            inTime: "",
-            offTime: "",
-            taxiFuel: "",
-            tripFuel: "",
-            route_distance: ""
-        }
     }
     get templateID() { return "B747_8_FMC"; }
     connectedCallback() {
@@ -120,40 +81,66 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
-        this.onInit = () => {
-            B747_8_FMC_InitRefIndexPage.ShowPage1(this);
-        };
-        this.onLegs = () => {
-            B747_8_FMC_LegsPage.ShowPage1(this);
-        };
-        this.onRte = () => {
-            FMCRoutePage.ShowPage1(this);
-        };
-        this.onDepArr = () => {
-            B747_8_FMC_DepArrIndexPage.ShowPage1(this);
-        };
-        this.onRad = () => {
-            B747_8_FMC_NavRadioPage.ShowPage(this);
-        };
-        this.onVNAV = () => {
-            B747_8_FMC_VNAVPage.ShowPage1(this);
-        };
-        this.onAtc = () => { 
-            FMC_ATC_Index.ShowPage(this);
-        };
-        this.onFmcComm = () => { 
-            FMC_COMM_Index.ShowPage(this);
-        };
-        this.onMenu = () => { 
-            FMC_Menu.ShowPage(this);
-        };
-        FMC_Menu.ShowPage(this);
-        this.saltyBase = new SaltyBase();
-        this.saltyBase.init();
-        Include.addScript("/JS/debug.js", function () {
-            g_modDebugMgr.AddConsole(null);
-        });
+        this.onInit = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(this); };
+        this.onLegs = () => { B747_8_FMC_LegsPage.ShowPage1(this); };
+        this.onRte = () => { FMCRoutePage.ShowPage1(this); };
+        this.onDepArr = () => { B747_8_FMC_DepArrIndexPage.ShowPage1(this); };
+        this.onRad = () => { B747_8_FMC_NavRadioPage.ShowPage(this); };
+        this.onVNAV = () => { B747_8_FMC_VNAVPage.ShowPage1(this); };
+        FMCIdentPage.ShowPage1(this);
     }
+    /** Remove after testing
+
+    _formatCell(str) {
+        return str
+            .replace(/{small}/g, "<span class='s-text'>")
+            .replace(/{red}/g, "<span class='red'>")
+            .replace(/{green}/g, "<span class='green'>")
+            .replace(/{blue}/g, "<span class='blue'>")
+            .replace(/{white}/g, "<span class='white'>")
+            .replace(/{magenta}/g, "<span class='magenta'>")
+            .replace(/{inop}/g, "<span class='inop'>")
+            .replace(/{sp}/g, "&nbsp;")
+            .replace(/{end}/g, "</span>");
+    }
+    
+    setTemplate(template) {
+        if (template[0]) {
+            this.setTitle(template[0][0]);
+            this.setPageCurrent(template[0][1]);
+            this.setPageCount(template[0][2]);
+        }
+        for (let i = 0; i < 6; i++) {
+            let tIndex = 2 * i + 1;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLabel(template[tIndex][0], i, 0);
+                    this.setLabel(template[tIndex][1], i, 1);
+                    this.setLabel(template[tIndex][2], i, 2);
+                    this.setLabel(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLabel(template[tIndex][0], i, -1);
+                }
+            }
+            tIndex = 2 * i + 2;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLine(template[tIndex][0], i, 0);
+                    this.setLine(template[tIndex][1], i, 1);
+                    this.setLine(template[tIndex][2], i, 2);
+                    this.setLine(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLine(template[tIndex][0], i, -1);
+                }
+            }
+        }
+        if (template[13]) {
+            this.setInOut(template[13][0]);
+        }
+        SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
+    }End Remove */
     onPowerOn() {
         super.onPowerOn();
         this.deactivateLNAV();
@@ -168,10 +155,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.refreshPageCallback();
         }
         this.updateAutopilot();
-        this.saltyBase.update();
     }
     onInputAircraftSpecific(input) {
-        console.log("B747_8_FMC_MainDisplay.onInputAircraftSpecific input = '" + input + "'");
         if (input === "LEGS") {
             if (this.onLegs) {
                 this.onLegs();
@@ -187,21 +172,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (input === "VNAV") {
             if (this.onVNAV) {
                 this.onVNAV();
-            }
-        }
-        if (input === "ATC") {
-            if (this.onAtc) {
-                this.onAtc();
-            }
-        }
-        if (input === "FMCCOMM") {
-            if (this.onFmcComm) {
-                this.onFmcComm();
-            }
-        }
-        if (input === "MENU") {
-            if (this.onMenu) {
-                this.onMenu();
             }
         }
         return false;
@@ -247,17 +217,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             return 18;
         return 19;
     }
-    getTakeOffFLapHandle(){
-        switch(this.getTakeOffFlap()){
-            case 0: return 0;
-            case 1: return 1;
-            case 5: return 2;
-            case 10: return 3;
-            case 20: return 4;
-            case 25: return 5;
-            case 30: return 6;
-        }
-    }
     _computeV1Speed() {
         let runwayCoef = 1.0;
         {
@@ -274,7 +233,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeightCoeff = (this.getWeight(true) - 550) / (1000 - 550);
         dWeightCoeff = Utils.Clamp(dWeightCoeff, 0, 1);
         dWeightCoeff = 0.73 + (1.13 - 0.73) * dWeightCoeff;
-        let flapsHandleIndex = this.getTakeOffFLapHandle();
+        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
         let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let index = this._getIndexFromTemp(temp);
         console.log("Index From Temp = " + index);
@@ -303,7 +262,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeightCoeff = (this.getWeight(true) - 550) / (1000 - 550);
         dWeightCoeff = Utils.Clamp(dWeightCoeff, 0, 1);
         dWeightCoeff = 0.8 + (1.22 - 0.8) * dWeightCoeff;
-        let flapsHandleIndex = this.getTakeOffFLapHandle();
+        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
         let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let index = this._getIndexFromTemp(temp);
         console.log("Index From Temp = " + index);
@@ -332,7 +291,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeightCoeff = (this.getWeight(true) - 550) / (1000 - 550);
         dWeightCoeff = Utils.Clamp(dWeightCoeff, 0, 1);
         dWeightCoeff = 0.93 + (1.26 - 0.93) * dWeightCoeff;
-        let flapsHandleIndex = this.getTakeOffFLapHandle();
+        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
         let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let index = this._getIndexFromTemp(temp);
         console.log("Index From Temp = " + index);
@@ -822,33 +781,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             this.updateAutopilotCooldown = this._apCooldown;
-        }
-    }
-    static stringTohhmm(value) {
-        value = value.padStart(4, "0");
-        const h = parseInt(value.slice(0, 2));
-        const m = parseInt(value.slice(2, 4));
-        return h.toFixed(0).padStart(2, "0") + ":" + m.toFixed(0).padStart(2, "0");
-    }
-    
-    refreshGrossWeight(_force = false) {
-        let gw = 0;
-        let isInMetric = BaseAirliners.unitIsMetric(Aircraft.A320_NEO);
-        if (isInMetric) {
-            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "kg"));
-            if (this.gwUnit)
-                this.gwUnit.textContent = "KG";
-        }
-        else {
-            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs"));
-            if (this.gwUnit)
-                this.gwUnit.textContent = "LBS";
-        }
-        if ((gw != this.currentGW) || _force) {
-            this.currentGW = gw;
-            if (this.gwValue != null) {
-                this.gwValue.textContent = this.currentGW.toString();
-            }
         }
     }
 }

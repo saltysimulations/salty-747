@@ -1,17 +1,16 @@
 class FMC_MAINT_Index {
     static ShowPage(fmc) {
-		fmc.activeSystem = "SAT";
 		fmc.clearDisplay();
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["MAINTENANCE INDEX"],
+				["OPTIONS"],
 				["", ""],
 				["<CROSS LOAD", "SENSORS>"],
 				["", ""],
 				["<AIRLINE POL", "DISCRETES>"],
 				["", ""],
-				["<IRS MONITOR", ""],
+				["<IRS MONITOR", "OPTIONS>"],
 				["", ""],
 				["", ""],
 				["", ""],
@@ -24,6 +23,10 @@ class FMC_MAINT_Index {
 		
 		fmc.onLeftInput[5] = () => {
 			FMC_Menu.ShowPage(fmc);
+		}
+		
+		fmc.onRightInput[2] = () => {
+			FMC_MAINT_Options.ShowPage(fmc);
 		}
     }
 }

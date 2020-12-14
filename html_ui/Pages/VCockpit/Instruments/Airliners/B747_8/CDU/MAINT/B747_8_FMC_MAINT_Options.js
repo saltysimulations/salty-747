@@ -1,17 +1,18 @@
-class FMC_MAINT_AirlinePol {
+class FMC_MAINT_Options {
     static ShowPage(fmc) {
 		fmc.activeSystem = "SAT";
 		fmc.clearDisplay();
+		let simbriefId = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["OPTIONS"],
-				["", ""],
-				["<CROSS LOAD", "SENSORS>"],
+				["COMPANY OPTIONS"],
+				["\xa0SIMBRIEF ID", ""],
+				[`[${simbriefId}]`, ""],
 				["", ""],
 				["<AIRLINE POL", "DISCRETES>"],
 				["", ""],
-				["<IRS MONITOR", "OPTIONS>"],
+				["<IRS MONITOR", ""],
 				["", ""],
 				["", ""],
 				["", ""],
@@ -22,8 +23,15 @@ class FMC_MAINT_AirlinePol {
 		}
 		updateView();
 		
+		fmc.onLeftInput[0] = () => {
+			let value = fmc.inOut;
+			fmc.clearUserInput();
+			SaltyDataStore.set("OPTIONS_SIMBRIEF_ID", value);
+			FMC_MAINT_Options.ShowPage(fmc);
+		}
+		
 		fmc.onLeftInput[5] = () => {
-			FMC_Menu.ShowPage(fmc);
+			FMC_MAINT_Index.ShowPage(fmc);
 		}
     }
 }

@@ -4,7 +4,7 @@ class FMC_ATC_XRequest {
 		speed: "",
 		offset: "",
 		showRte: 0,
-		offsetAt: "-----",
+		offsetAt: "",
 		offsetWeather: "WEATHER[s-text]",
 		offsetWeatherActive: 0
 	}) {
@@ -22,7 +22,7 @@ class FMC_ATC_XRequest {
 			store.altCrzClbActive = store.altCrzClbActive ? store.altCrzClbActive : 0;
 			store.altSep = store.altSep ? store.altSep : "SEPARATION/VMC>[s-text]";
 			store.altSepActive = store.altSepActive ? store.altSepActive : 0;
-			store.altAtPilotDisc = store.altAtPilotDisc ? store.altAtPilotDisc : "AT PILOT DISC>[s-text]";
+			store.altAtPilotDisc = store.altAtPilotDisc ? store.altAtPilotDisc : "<AT PILOT DISC[s-text]";
 			store.altAtPilotDiscActive = store.altAtPilotDiscActive ? store.altAtPilotDiscActive : 0;
 
 			store.altitude = store.altitude ? store.altitude : "-----";
@@ -68,11 +68,11 @@ class FMC_ATC_XRequest {
 			fmc.onLeftInput[3] = () => {
 				if (store.altAtPilotDiscActive == 1) {
 					store.altAtPilotDiscActive = 0;
-					store.altAtPilotDisc = 'AT PILOT DISC>[s-text]';
+					store.altAtPilotDisc = '<AT PILOT DISC[s-text]';
 					altPage(store);
 				} else {
 					store.altAtPilotDiscActive = 1;
-					store.altAtPilotDisc = 'AT PILO TDISC';
+					store.altAtPilotDisc = 'AT PILOT DISC';
 					altPage(store);
 				}
 			};
@@ -127,9 +127,9 @@ class FMC_ATC_XRequest {
 
 			fmc.onRightInput[5] = () => {
 				const title = "";
-				const lines = [];
+				let lines = [];
 				if (store.altitude != "") {
-					if (store.altAtPilotDisc == 1) {
+					if (store.altAtPilotDiscActive == 1) {
 						lines.push("\xa0AT PILOTS DISCRETION");
 						lines.push("");
 					}
@@ -221,7 +221,7 @@ class FMC_ATC_XRequest {
 
 			fmc.onRightInput[5] = () => {
 				const title = "";
-				const lines = [];
+				let lines = [];
 				if (store.speed != "") {
 					lines.push("\xa0REQUEST SPEED ");
 					lines.push(store.speed);
@@ -239,22 +239,25 @@ class FMC_ATC_XRequest {
 		}
 
 		function offsetPage() {
-			store.offset = store.offset ? store.offset : "---";
+
+			let offsetCell = store.offset ? store.offset : "---";
+			let offsetAtCell = "";
 			store.offsetWeather = store.offsetWeather ? store.offsetWeather : "WEATHER>[s-text]";
 			store.offsetWeatherActive = store.offsetWeatherActive ? store.offsetWeatherActive : 0;
 			if (store.offsetWeatherActive == 1) {
 				store.offsetAtLabel = "";
 				store.offsetAt = "";
+				store.offsetAtCell = "";
 			} else {	
 				store.offsetAtLabel = "\xa0OFFSET AT";
-				store.offsetAt = store.offsetAt ? store.offsetAt : "-----";
+				offsetAtCell = store.offsetAt ? store.offsetAt : "-----";
 			}
 			fmc.setTemplate([
 				[`ATC OFFSET REQUEST`, "3", "4"],
 				["\xa0OFFSET", ""],
 				[`${store.offset}NM`, ""],
 				[`${store.offsetAtLabel}`, ""],
-				[`${store.offsetAt}`, ""],
+				[`${offsetAtCell}`, ""],
 				["", ""],
 				["", ""],
 				["", "DUE TO"],
@@ -301,21 +304,22 @@ class FMC_ATC_XRequest {
 
 			fmc.onRightInput[5] = () => {
 				const title = "";
-				const lines = [];
+				let lines = [];
+				console.log(store.offsetAt);
 				if (store.offset != "") {
 					if (store.offsetWeatherActive == 0) {
-						if (store.offsetAt != "") {
+						if (store.offsetAt) {
 							lines.push("\xa0AT");
 							lines.push(store.offsetAt);
 						}
 						lines.push("\xa0REQUEST OFFSET");
-						lines.push(store.offset)
+						lines.push(store.offset + "NM")
 					}
 					if (store.offsetWeatherActive == 1) {
 						lines.push("\xa0REQUEST WEATHER");
 						lines.push("");
 						lines.push("\xa0DEVIATION UP TO");
-						lines.push(store.offset);
+						lines.push(store.offset + "NM");
 					}
 				}
 				FMC_ATC_VerifyRequest.ShowPage(fmc, title, lines);
@@ -397,7 +401,7 @@ class FMC_ATC_XRequest {
 
 			fmc.onRightInput[5] = () => {
 				const title = "";
-				const lines = [];
+				let lines = [];
 				if (store.dcTo != "") {
 					lines.push("\xa0REQUEST DIRECT TO");
 					lines.push(store.dcTo);
@@ -432,10 +436,6 @@ class FMC_ATC_XRequest {
 
 		fmc.onLeftInput[5] = () => {
 			FMC_ATC_Request.ShowPage(fmc, store);
-		}
-
-		fmc.onRightInput[5] = () => {
-			FMC_ATC_VerifyRequest.ShowPage(fmc, title, lines);
 		}
 
     }

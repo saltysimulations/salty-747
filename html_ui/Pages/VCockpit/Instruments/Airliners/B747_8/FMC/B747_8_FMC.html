@@ -7,6 +7,8 @@
     </div>
 </script>
 
+
+
 <script type="text/html" import-script="/JS/SimPlane.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
@@ -22,8 +24,12 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/NavSystem.js"></script>
-
+<!-- API -->
+<script type="text/html" import-script="/Pages/Api/SimbriefApi.js"></script>
+<!-- SALTY -->
 <script type="text/html" import-script="/Pages/Salty/SaltyBase.js"></script>
+<script type="text/html" import-script="/Pages/Salty/SaltyDataStore.js"></script>
+<script type="text/html" import-script="/Pages/Salty/SaltyConnection.js"></script>
 <script type="text/html" import-script="/Pages/Salty/SaltyIRS.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/BaseAirliners.js"></script>
@@ -32,24 +38,24 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/FMC/FMCDataManager.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayDebug.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_InitRefIndexPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_IdentPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_PosInitPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_PerfInitPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ThrustLimPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_TakeOffPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ApproachPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_NavDataPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MaintPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_RoutePage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_LateralRevisionPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_DepArrIndexPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ArrivalsPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_DeparturesPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_LegsPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_NavRadioPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_SelectWptPage.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_VNAVPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_InitRefIndexPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_IdentPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_PosInitPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_PerfInitPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_ThrustLimPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_TakeOffPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_ApproachPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_NavDataPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_MaintPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_RoutePage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_LateralRevisionPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_DepArrIndexPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_ArrivalsPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_DeparturesPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_LegsPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_NavRadioPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_SelectWptPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/B747_8_FMC_VNAVPage.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_SaltyOptions.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js"></script>
@@ -72,6 +78,14 @@
 
 <!-- COMM -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Index.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Altn.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_DesForecast.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Perf.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Preflight.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Requests.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Takeoff.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Uplink.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/COMM/B747_8_FMC_COMM_Wind.js"></script>
 
 <!-- SAT -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/SAT/B747_8_FMC_SAT_Index.js"></script>
@@ -85,3 +99,4 @@
 
 <!-- MAINT -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/MAINT/B747_8_FMC_MAINT_Index.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/CDU/MAINT/B747_8_FMC_MAINT_Options.js"></script>
