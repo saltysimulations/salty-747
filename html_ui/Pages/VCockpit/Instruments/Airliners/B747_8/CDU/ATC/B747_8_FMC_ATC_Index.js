@@ -1,14 +1,10 @@
 class FMC_ATC_Index {
     static ShowPage(fmc, store = {"printCell": "PRINT LOG"}) {
 		fmc.activeSystem = "DLNK";
-
-		/** Move to Main Display after testing */
-		const atcConnection = true;
-		const noPendingUplink = true;
 		let lines = [];
 
         fmc.clearDisplay();
-        if (atcConnection && noPendingUplink) {
+        if (fmc.atcComm.estab && !fmc.atcComm.uplinkPeding) {
 			const updateView = () => {
 				store.printCell = store.printCell;
 				fmc.setTemplate([
@@ -77,9 +73,9 @@ class FMC_ATC_Index {
 	        	FMC_ATC_VerifyRequest.ShowPage(fmc, "VOICE", lines = []);
 			}
 			
-	    } else if (atcConnection && !noPendingUplink) {
+	    } else if (fmc.atcComm.estab && fmc.atcComm.uplinkPeding) {
 	    	FMC_ATC_Log.ShowPage(fmc);
-	    } else if (!atcConnection) {
+	    } else if (!fmc.atcComm.estab) {
 	    	FMC_ATC_LogonStatus.ShowPage(fmc);
 	    }
     }

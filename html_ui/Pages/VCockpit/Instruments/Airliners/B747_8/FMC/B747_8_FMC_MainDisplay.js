@@ -64,6 +64,19 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
+        this.atcComm = [
+            estab = false,
+            loggedTo = "",
+            nextCtr = "",
+            ads = "",
+            adsEmerg = "",
+            dlnkStatus = "NO COMM",
+            uplinkPeding = false
+        ];
+        this.companyComm = [
+            estab = false,
+            company = "",
+        ]
     }
     get templateID() { return "B747_8_FMC"; }
     connectedCallback() {

@@ -1,4 +1,4 @@
-class FMC_COMM_Index {
+class FMC_COMM_DesForecast {
     static ShowPage(fmc) {
 		fmc.activeSystem = "FMC";
 		fmc.clearDisplay();

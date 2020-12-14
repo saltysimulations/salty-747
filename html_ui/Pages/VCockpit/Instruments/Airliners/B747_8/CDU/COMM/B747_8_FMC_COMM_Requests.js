@@ -1,21 +1,21 @@
-class FMC_COMM_Index {
+class FMC_COMM_Requests {
     static ShowPage(fmc) {
 		fmc.activeSystem = "FMC";
 		fmc.clearDisplay();
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["ATC INDEX"],
-				["\xa0UPLINK", ""],
-				["<RTE 1", "POS REPORT>"],
-				["\xa0UPLINK (2)", ""],
-				["<ALTN", ""],
+				["COMPANY REQUEST"],
 				["", ""],
-				["<PERF", "FREE TEXT>"],
+				["<WEATHER", "ARR INFO>"],
 				["", ""],
-				["<TAKEOFF", "CLEARANCE>"],
+				["<ATIS", "LOADSHEET>"],
 				["", ""],
-				["<WIND", "VOICE>"],
+				["", ""],
+				["", ""],
+				["", ""],
+				["", ""],
+				["", ""],
 				["", "DATA LINK", "__FMCSEPARATOR"],
 				["<DES FORECAST", "READY"]
 			]);

@@ -21,9 +21,33 @@ class FMC_COMM_Index {
 			]);
 		}
 		updateView();
+
+		fmc.onLeftInput[0] = () => {
+			FMC_COMM_Preflight.ShowPage(fmc);
+		}
+
+		fmc.onLeftInput[1] = () => {
+			FMC_COMM_Altn.ShowPage(fmc);
+		}
+		
+		fmc.onLeftInput[2] = () => {
+			FMC_COMM_Perf.ShowPage(fmc);
+		}
+		
+		fmc.onLeftInput[3] = () => {
+			FMC_COMM_Takeoff.ShowPage(fmc);
+		}
+		
+		fmc.onLeftInput[4] = () => {
+			FMC_COMM_Wind.ShowPage(fmc);
+		}
 		
 		fmc.onLeftInput[5] = () => {
 			FMC_Menu.ShowPage(fmc);
+		}
+		
+		fmc.onRightInput[0] = () => {
+			FMC_PosReport.ShowPage(fmc);
 		}
     }
 }

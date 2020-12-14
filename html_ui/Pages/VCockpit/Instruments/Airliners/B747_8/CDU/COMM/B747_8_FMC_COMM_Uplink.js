@@ -1,4 +1,4 @@
-class FMC_COMM_Index {
+class FMC_COMM_Uplink {
     static ShowPage(fmc) {
 		fmc.activeSystem = "FMC";
 		fmc.clearDisplay();

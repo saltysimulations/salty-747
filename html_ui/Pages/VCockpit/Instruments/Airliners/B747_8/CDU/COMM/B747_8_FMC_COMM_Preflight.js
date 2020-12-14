@@ -1,11 +1,11 @@
-class FMC_COMM_Altn {
+class FMC_COMM_Preflight {
     static ShowPage(fmc) {
 		fmc.activeSystem = "FMC";
 		fmc.clearDisplay();
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["ATC INDEX"],
+				["PREFLIGHT"],
 				["\xa0UPLINK", ""],
 				["<RTE 1", "POS REPORT>"],
 				["\xa0UPLINK (2)", ""],
