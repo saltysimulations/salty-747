@@ -17,9 +17,12 @@ var B747_8_LowerEICAS_ECL;
             this.allChecklists.style.visibility = "hidden";
         }
         //On button press calls sequencer for next checklist. INCOMPLETE! Requires two or three pushes to draw correctly??
-        onEvent() {
-            super.onEvent();
-            this.sequenceChecklist();
+        onEvent(_event) {
+            super.onEvent(_event);
+            if (_event == "EICAS_CHANGE_PAGE_chkl"){
+                this.sequenceChecklist();
+            }
+            return;
         }
         //Main loop
         update(_deltaTime) {

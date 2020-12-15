@@ -5,9 +5,12 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     }
     onEvent(_event) {
         super.onEvent(_event);
-        if(this.currentPage !== _event){
+        if (_event == "CHKL"){
+            let eclToDraw = sequenceElectronicChecklist();
+            this.currentPage = `CHKL-${eclToDraw}`;
+        } else if (this.currentPage !== _event){
             this.currentPage = _event;
-        }else{
+        } else {
             this.changePage("BLANK");
             this.currentPage = "blank";
             return;
@@ -42,11 +45,55 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.createLowerScreenPage("DRS", "BottomScreen", "b747-8-lower-eicas-drs");
         this.createLowerScreenPage("ELEC", "BottomScreen", "b747-8-lower-eicas-elec");
         this.createLowerScreenPage("GEAR", "BottomScreen", "b747-8-lower-eicas-gear");
-        this.createLowerScreenPage("CHKL", "BottomScreen", "b747-8-lower-eicas-ecl");
+        this.createLowerScreenPage("CHKL-preflight-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-preflight-checklist");
+        this.createLowerScreenPage("CHKL-before-start-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-before-start-checklist");
+        this.createLowerScreenPage("CHKL-before-tax-checklisti", "BottomScreen", "b747-8-lower-eicas-ecl-before-taxi-checklist");
+        this.createLowerScreenPage("CHKL-before-takeoff-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-before-takeoff-checklist");
+        this.createLowerScreenPage("CHKL-after-takeoff-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-after-takeoff-checklist");
+        this.createLowerScreenPage("CHKL-descent-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-descent-checklist");
+        this.createLowerScreenPage("CHKL-approach-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-approach-checklist");
+        this.createLowerScreenPage("CHKL-landing-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-landing-checklist");
+        this.createLowerScreenPage("CHKL-shutdown-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-shutdown-checklist");
+        this.createLowerScreenPage("CHKL-secure-checklist", "BottomScreen", "b747-8-lower-eicas-ecl-secure-checklist");
         this.createLowerScreenPage("BLANK", "BottomScreen", "b747-8-lower-eicas-blank"); // To blank the bottom eicas when selecting same page again
     }
     getLowerScreenChangeEventNamePrefix() {
         return "EICAS_CHANGE_PAGE_";
+    }
+    sequenceElectronicChecklist() {
+        let eclNextPage = "preflight-checklist";
+        if(SimVar.GetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool")){
+            if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool", 1);
+                eclNextPage = "before-start-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool", 1);
+                eclNextPage = "before-taxi-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool", 1);
+                eclNextPage = "before-takeoff-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool", 1);
+                eclNextPage = "after-takeoff-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 1);
+                eclNextPage = "descent-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool", 1);
+                eclNextPage = "approach-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
+                eclNextPage = "landing-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool", 1);
+                eclNextPage = "shutdown-checklist";
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SECURE_COMPLETE", "bool") == 0){
+                SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool", 1);
+                eclNextPage = "secure-checklist";
+            }
+            SimVar.SetSimVarValue("L:SALTY_ECL_CHECKLIST_COMPLETE", "bool", 0);
+        }
+        return eclNextPage;
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
