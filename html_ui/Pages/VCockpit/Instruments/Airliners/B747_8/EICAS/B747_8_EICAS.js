@@ -7,7 +7,8 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         super.onEvent(_event);
         if (_event == "EICAS_CHANGE_PAGE_chkl"){
             let eclToDraw = this.sequenceElectronicChecklist();
-            this.changePage(`CHKL-${eclToDraw}`)
+            SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", 4);
+            this.changePage(`CHKL-${eclToDraw}`);
             this.currentPage = `CHKL-${eclToDraw}`;
         } else if (this.currentPage !== _event){
             this.currentPage = _event;
