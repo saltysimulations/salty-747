@@ -10,25 +10,27 @@
     :root text {
       font-family: Roboto-Bold; }
 
-b747-8-lower-eicas-ecl {
+b747-8-lower-eicas-ecl-before-taxi-checklist {
   position: relative;
   left: 3.5%;
   width: 95.5%;
   top: 4.25%;
   height: 88%;
   display: block; }
-  b747-8-lower-eicas-ecl svg {
+  b747-8-lower-eicas-ecl-before-taxi-checklist  svg {
     width: 100%;
     height: 100%; }
-  b747-8-lower-eicas-ecl text {
+  b747-8-lower-eicas-ecl-before-taxi-checklist  text {
     fill: var(--eicasWhite);
     font-size: 17px; }
-  b747-8-lower-eicas-ecl rect {
+  b747-8-lower-eicas-ecl-before-taxi-checklist  rect {
     fill: #53536c; }
-  b747-8-lower-eicas-ecl path {
+  b747-8-lower-eicas-ecl-before-taxi-checklist  path {
     stroke: lime;
     fill: lime; 
     visibility: hidden;}
-    b747-8-lower-eicas-ecl #checklist-complete-rect {
-      fill: lime;
+  b747-8-lower-eicas-ecl-before-taxi-checklist  #checklist-complete-rect {
+    fill: lime;
     }
+  b747-8-lower-eicas-ecl-before-taxi-checklist #before-taxi-checklist-cursor-positions {
+    visibility: hidden; }

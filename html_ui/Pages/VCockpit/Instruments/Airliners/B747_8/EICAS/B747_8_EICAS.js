@@ -62,27 +62,27 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         return "EICAS_CHANGE_PAGE_";
     }
     sequenceElectronicChecklist() {
-        let eclNextPage = "preflight-checklist";
-        if (SimVar.GetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool") == 1){
-            eclNextPage = "before-start-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool") == 1){
-            eclNextPage = "before-taxi-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool") == 1){
-            eclNextPage = "before-takeoff-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool") == 1){
-            eclNextPage = "after-takeoff-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool") == 1){
-            eclNextPage = "descent-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool") == 1){
-            eclNextPage = "approach-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool") == 1){
-            eclNextPage = "landing-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool") == 1){
-            eclNextPage = "shutdown-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool") == 1){
-            eclNextPage = "secure-checklist";
-        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SECURE_COMPLETE", "bool") == 1){
+        let eclNextPage = "";
+        if (SimVar.GetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool") == 0){
             eclNextPage = "preflight-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool") == 0){
+            eclNextPage = "before-start-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool") == 0){
+            eclNextPage = "before-taxi-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool") == 0){
+            eclNextPage = "before-takeoff-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool") == 0){
+            eclNextPage = "after-takeoff-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_COMPLETE", "bool") == 0){
+            eclNextPage = "descent-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool") == 0){
+            eclNextPage = "approach-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool") == 0){
+            eclNextPage = "landing-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool") == 0){
+            eclNextPage = "shutdown-checklist";
+        } else if (SimVar.GetSimVarValue("L:SALTY_ECL_SECURE_COMPLETE", "bool") == 0){
+            eclNextPage = "secure-checklist";
         }
     return eclNextPage;
     }
