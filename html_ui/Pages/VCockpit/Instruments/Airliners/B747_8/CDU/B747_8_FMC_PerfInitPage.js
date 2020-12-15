@@ -24,18 +24,15 @@ class FMCPerfInitPage {
         };
         let crzAltCell = "□□□□□";
         if (isFinite(fmc.cruiseFlightLevel)) {
-            crzAltCell = fmc.cruiseFlightLevel.toFixed(0);
-        }
-        fmc.onRightInput[0] = () => {
-            let value = fmc.inOut;
-            fmc.clearUserInput();
-            if (fmc.setCruiseFlightLevelAndTemperature(value)) {
-                FMCPerfInitPage.ShowPage1(fmc);
+            if (fmc.cruiseFlightLevel < 1000) {
+                crzAltCell = "FL" + fmc.cruiseFlightLevel.toFixed(0);    
+            } else {
+                crzAltCell = fmc.cruiseFlightLevel.toFixed(0);    
             }
-        };
+        }
         let blockFuelCell = "□□□.□";
         if (isFinite(fmc.getBlockFuel(true))) {
-            blockFuelCell = fmc.getBlockFuel(true).toFixed(1) + " lb";
+            blockFuelCell = fmc.getBlockFuel(true).toFixed(1) + " LB";
         }
         let zeroFuelWeightCell = "□□□.□";
         if (isFinite(fmc.getZeroFuelWeight(true))) {
@@ -75,12 +72,12 @@ class FMCPerfInitPage {
             store.requestData = "SENDING\xa0";
             updateView();
             const get = async () => {
-                getSimBriefPlan(fmc, updateView);
+                getSimBriefPlan(fmc, store, updateView);
             };
 
             get()
                 .then(() => {
-                    insertRteUplink();
+                    fmc.insertPerfUplink(updateView);
                 setTimeout(() => {
                 }, 900);
             });
@@ -88,6 +85,13 @@ class FMCPerfInitPage {
 
         fmc.onLeftInput[5] = () => {
             B747_8_FMC_InitRefIndexPage.ShowPage1(fmc);
+        };
+        fmc.onRightInput[0] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            if (fmc.setCruiseFlightLevelAndTemperature(value)) {
+                FMCPerfInitPage.ShowPage1(fmc);
+            }
         };
 
         fmc.onRightInput[5] = () => {

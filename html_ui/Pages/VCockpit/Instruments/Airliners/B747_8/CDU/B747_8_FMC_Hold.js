@@ -1,4 +1,4 @@
-class FMC_COMM_Wind {
+class FMC_Hold {
     static ShowPage(fmc) {
 		fmc.activeSystem = "FMC";
 		fmc.clearDisplay();

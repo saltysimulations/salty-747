@@ -128,22 +128,39 @@ class FMCTakeOffPage {
             trimCell = fmc.takeOffTrim.toFixed(1);
         }
         fmc.setTemplate([
-            ["TAKE OFF"],
-            ["FLAPS", "V1"],
+            ["TAKEOFF REF", "1", "2"],
+            ["\xa0FLAPS", "V1"],
             [flapsCell, v1],
-            ["E/O ACCEL HT", "VR"],
+            ["\xa0THRUST", "VR"],
             ["000FT", vR],
-            ["THR REDUCTION", "V2"],
+            ["\xa0CG\xa0\xa0\xa0TRIM", "V2"],
             [thrRedCell, v2],
-            ["WIND/SLOPE", "CG", "TRIM"],
+            ["\xa0RWY/POS", "TOGW", "GR WT"],
             ["H00/U0.0", cgCell, trimCell],
-            ["RW COND", "POS"],
-            ["DRY", runwayCell],
+            ["\xa0REQUEST", "REF SPDS"],
+            ["<DATA", runwayCell],
             ["__FMCSEPARATOR"],
             ["<INDEX", "THRUST LIM>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCThrustLimPage.ShowPage1(fmc); };
+    }
+    static ShowPage2(fmc) {
+        fmc.setTemplate([
+            ["TAKEOFF REF", "2", "2"],
+            ["", "", "ALTN THRUST EO ACCEL HT"],
+            ["<TO", "1000FT"],
+            ["\xa0REF OAT", "Q-CLB AT"],
+            ["26°C", "1000FT"],
+            ["\xa0WIND", "CLB AT"],
+            ["340°/16", "3000FT"],
+            ["\xa0RWY WIND", "RESTORE RATE"],
+            ["14KTH 9KTR", "SLOW ←→ FAST>"],
+            ["\xa0SLOPE/COND", "STD LIM TOGW"],
+            ["U0.5/WET", "368.0"],
+            ["__FMCSEPARATOR", "Q_CLB"],
+            ["<INDEX", "OFF ←→ ARMED>"]
+        ]);
     }
 }
 FMCTakeOffPage._timer = 0;

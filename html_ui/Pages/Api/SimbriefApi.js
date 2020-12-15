@@ -1,13 +1,11 @@
 class SimBriefApi {   
     static getFltPlan(userid) {
         if (!userid) {
-            console.log("no user id");
             throw ("No SimBrief username provided");
         }
 
         return fetch(`${SimBriefApi.url}&userid=${userid}`)
             .then((response) => {
-                console.log(response);
                 if (!response.ok) {
                     throw (response);
                 }

@@ -1,4 +1,4 @@
-class FMCRoutePage {
+class FMCRouteData {
     static ShowPage1(fmc, store = {
         requestData: "<SEND",
         routeUplinkSeparator: "",
@@ -61,6 +61,9 @@ class FMCRoutePage {
             runwayCell = Avionics.Utils.formatRunway(runway.designation);
         }
         const updateView = () => {
+            if (fmc.simbrief.rteUplinkReady) {
+                store.rteUplinkReady = fmc.simbrief.rteUplinkReady;
+            }
             if (store.rteUplinkReady) {
                 store.uplinkSeparator = " ----- ROUTE UPLINK ----- ";
                 store.loadUplink = "<LOAD";
@@ -72,7 +75,7 @@ class FMCRoutePage {
                     destinationCell = fmc.simbrief.destinationIcao;
                 }
                 if (fmc.simbrief.flight_number) {
-                    flightNoCell = fmc.simbrief.icao_airline + fmc.simbrief.flight_number;
+                    flightNoCell = fmc.simbrief.flight_number;
                 }
                 if (fmc.simbrief.originIcao) {
                     coRouteCell = fmc.simbrief.originIcao + fmc.simbrief.destinationIcao;
@@ -123,26 +126,54 @@ class FMCRoutePage {
             });
         };
         fmc.onLeftInput[2] = () => {
-            store.requestData = "SENDING\xa0";
-            updateView();
-            const get = async () => {
-                getSimBriefPlan(fmc, store, updateView);
-            };
+            /*if (fmc.flightPlanManager.getOrigin() && fmc.flightPlanManager.getDestination()) {*/
+                store.requestData = "SENDING\xa0";
+                updateView();
+                const get = async () => {
+                    getSimBriefPlan(fmc, updateView);
+                };
 
-            get()
-                .then(() => {
-                    updateView();
-            });
+                get()
+                    .then(() => {
+                        store.rteUplinkReady = true;
+                        updateView();
+                    setTimeout(() => {
+                    }, 900);
+                });
+            /*}*/
         };
         fmc.onLeftInput[3] = () => {
             if (store.rteUplinkReady) {
-                store.rteUplinkReady = false;
-                store.uplinkSeparator = "";
-                store.loadUplink = "";
-                store.purgeUplink = "";
-                fmc.insertRteUplink(updateView);
-                fmc.showErrorMessage("ROUTE 1 UPLINK READY");
-                updateView();
+
+                const coRoute = fmc.simbrief.originIcao + fmc.simbrief.destinationIcao;
+                const fltNbr = fmc.simbrief.icao_airline + fmc.simbrief.flight_number;
+                const rteUplinkReady = "ROUTE 1 UPLINK READY";
+                const perfInitReady = "PERF INIT UPLINK";
+
+                fmc.showErrorMessage(rteUplinkReady);
+
+                fmc.updateRouteOrigin(fmc.simbrief.originIcao, (result) => {
+                    if (result) {                        
+                        updateView();
+                    }
+                });
+                fmc.updateRouteDestination(fmc.simbrief.destinationIcao, (result) => {
+                    if (result) {                        
+                        updateView();
+                    }
+                });
+
+                fmc.updateFlightNo(fltNbr, (result) => {
+                    if (result) {
+                        updateView();
+                    }
+                });
+
+                fmc.updateCoRoute(coRoute, (result) => {
+                    if (result) {
+                        updateView();
+                    }
+                });
             }
         };
         fmc.onRightInput[0] = () => {
@@ -175,11 +206,8 @@ class FMCRoutePage {
         fmc.onRightInput[3] = () => {
             if (store.rteUplinkReady) {
                 store.rteUplinkReady = false;
-                store.uplinkSeparator = "";
-                store.loadUplink = "";
-                store.purgeUplink = "";
+                updateView();
             }
-            FMCRoutePage.ShowPage1(fmc);
         };
     }
     static ShowPage2(fmc, offset = 0, pendingAirway, discontinuity = -1) {

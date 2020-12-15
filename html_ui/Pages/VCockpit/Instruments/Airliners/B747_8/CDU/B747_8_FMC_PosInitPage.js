@@ -1,6 +1,6 @@
 class FMCPosInitPage {
     static ShowPage1(fmc) {
-        let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
+        let gpsPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
         let date = new Date();
         let dateString = date.getHours().toFixed(0).padStart(2, "0") + date.getMinutes().toFixed(0).padStart(2, "0") + "z";
         let lastPos = "";
@@ -37,7 +37,7 @@ class FMCPosInitPage {
             ["GATE"],
             [gate],
             ["UTC (GPS)", "GPS POS"],
-            [dateString, currPos],
+            [dateString, gpsPos],
             ["SET HDG", "SET IRS POS"],
             [heading, irsPos],
             ["__FMCSEPARATOR"],
@@ -108,12 +108,16 @@ class FMCPosInitPage {
     static ShowPage2(fmc) {
         fmc.clearDisplay();
         let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
+        let irsPos = "";
+        if (fmc.initCoordinates) {
+            irsPos = fmc.initCoordinates;
+        }
         fmc.setTemplate([
             ["POS REF", "2", "4"],
             ["\xa0FMC (GPS L)", "UPDATE"],
             [currPos, "ARM>"],
             ["\xa0IRS(3)", "0.00NM"],
-            [currPos, ""],
+            [irsPos, ""],
             ["\xaGPS", "0.00NM"],
             [currPos, ""],
             ["\xa0RADIO", "0.00NM"],
@@ -137,16 +141,21 @@ class FMCPosInitPage {
 
     static ShowPage3(fmc) {
         fmc.clearDisplay();
+        let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
+        let irsPos = "";
+        if (fmc.initCoordinates) {
+            irsPos = fmc.initCoordinates;
+        }
         fmc.setTemplate([
             ["POS REF", "3", "4"],
             ["GPS L", ""],
-            ["000°/0.0NM", ""],
+            [currPos, ""],
             ["GPS R", ""],
-            ["000°/0.0NM", ""],
+            [currPos, ""],
             ["FMC L", ""],
-            ["000°/0.0NM", ""],
+            [irsPos, ""],
             ["FMC R", ""],
-            ["000°/0.0NM", ""],
+            [irsPos, ""],
             ["", ""],
             ["", ""],
             ["__FMCSEPARATOR"],
@@ -166,22 +175,28 @@ class FMCPosInitPage {
         };
     }
 
-    static ShowPage4(fmc) {
+    static ShowPage4(fmc, store = {irsPos: "", irsGs: "", infoSwitch: "BRG/DIS"}) {
         fmc.clearDisplay();
+        let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
+        let irsPos = "";
+        if (fmc.initCoordinates) {
+            irsPos = fmc.initCoordinates;
+        }
+        let irsGs = 290 + "KT";
         fmc.setTemplate([
             ["POS REF", "4", "4"],
             ["\xa0IRS L", "GS"],
-            ["000°/0.0NM", "290KT"],
+            [`${irsPos}`, `${irsGs}`],
             ["\xa0IRS C", "GS"],
-            ["000°/0.0NM", "290KT"],
+            [`${irsPos}`, `${irsPos}`],
             ["\xa0IRS R", "GS"],
-            ["000°/0.0NM", "290KT"],
+            [`${irsPos}`, `${irsPos}`],
             [""],
             [""],
             [""],
             [""],
             ["__FMCSEPARATOR"],
-            ["<INDEX", "LAT/LON>"]
+            ["<INDEX", `${infoSwitch}`]
         ]);
         fmc.onPrevPage = () => {
             FMCPosInitPage.ShowPage2(fmc);
