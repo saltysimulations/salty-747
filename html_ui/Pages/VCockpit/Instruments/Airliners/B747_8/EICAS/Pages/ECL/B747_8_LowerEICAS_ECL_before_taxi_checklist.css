@@ -30,7 +30,6 @@ b747-8-lower-eicas-ecl-before-taxi-checklist {
     fill: lime; 
     visibility: hidden;}
   b747-8-lower-eicas-ecl-before-taxi-checklist  #checklist-complete-rect {
-    fill: lime;
-    }
+    fill: lime; }
   b747-8-lower-eicas-ecl-before-taxi-checklist #before-taxi-checklist-cursor-positions {
     visibility: hidden; }

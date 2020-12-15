@@ -30,7 +30,6 @@ b747-8-lower-eicas-ecl-before-start-checklist {
     fill: lime; 
     visibility: hidden;}
   b747-8-lower-eicas-ecl-before-start-checklist #checklist-complete-rect {
-    fill: lime;
-  }
+    fill: lime; }
   b747-8-lower-eicas-ecl-before-start-checklist #before-start-checklist-cursor-positions {
     visibility: hidden; }
