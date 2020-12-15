@@ -111,21 +111,6 @@
             "date": 132524991715269282
         },
         {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL-descent-checklist.css",
-            "size": 800,
-            "date": 132524991495031732
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL-descent-checklist.html",
-            "size": 29954,
-            "date": 132524991495071752
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL-descent-checklist.js",
-            "size": 53930,
-            "date": 132524991715269282
-        },
-        {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL-landing-checklist.css",
             "size": 800,
             "date": 132524991495031732
@@ -182,13 +167,13 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_after_takeoff_checklist.html",
-            "size": 2914,
-            "date": 132525235172726778
+            "size": 2918,
+            "date": 132525243225594046
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_after_takeoff_checklist.js",
             "size": 5467,
-            "date": 132525239253853612
+            "date": 132525244020605738
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_before_start_checklist.css",
@@ -234,6 +219,21 @@
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_before_taxi_checklist.js",
             "size": 9485,
             "date": 132525195589429012
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_descent_checklist.css",
+            "size": 1010,
+            "date": 132525244887696662
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_descent_checklist.html",
+            "size": 3902,
+            "date": 132525245583455980
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_descent_checklist.js",
+            "size": 9070,
+            "date": 132525248120747268
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/ECL/B747_8_LowerEICAS_ECL_preflight_checklist.css",

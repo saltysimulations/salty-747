@@ -20,7 +20,7 @@ var B747_8_LowerEICAS_ECL_after_takeoff_checklist;
                 return;
             }
             var masterCursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
-            var maxCursorIndex = 4;
+            var maxCursorIndex = 5;
             this.afterTakeoffChecklist();
             this.cursorBoundsHandler(maxCursorIndex);
             this.updateCursorPosition(maxCursorIndex, masterCursorIndex);
