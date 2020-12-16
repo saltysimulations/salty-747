@@ -100,6 +100,27 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool", 0);
         SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool", 0);
         SimVar.SetSimVarValue("L:SALTY_ECL_SECURE_COMPLETE", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_OXYGEN_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_INSTRUMENTS_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_GEAR_PINS_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_MCP_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_CDU_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_TRIM_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_TAKEOFF_BRIEFING_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_ANTI_ICE_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_RECALL_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_CONTROLS_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_GROUND_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_RECALL_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_BRAKE_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK", "bool", 0);
+        SimVar.SetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool", 0);
         return;
     }
     onUpdate(_deltaTime) {
