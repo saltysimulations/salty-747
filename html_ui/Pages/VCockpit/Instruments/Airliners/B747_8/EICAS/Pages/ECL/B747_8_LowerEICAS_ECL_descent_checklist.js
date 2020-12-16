@@ -11,10 +11,8 @@ var B747_8_LowerEICAS_ECL_descent_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.allChecklists = document.querySelector("#all-checklists");
             this.globalItems = document.querySelector("#global-items");
             this.isInitialised = true; 
-            this.allChecklists.style.visibility = "hidden";
         }
         //Main loop
         update(_deltaTime) {
