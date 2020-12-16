@@ -28,15 +28,15 @@ var B747_8_LowerEICAS_ECL_after_takeoff_checklist;
         }
         //Get if cursor index has increased or decreased in order to select last cursor for deletion.
         clearCursors(maxCursorIndex, masterCursorIndex){
-            if(SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool")){
-                if(masterCursorIndex >= 1){
+            if (SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool")){
+                if (masterCursorIndex >= 1){
                     this.lastChecklistCursor = document.querySelector(`#after-takeoff-checklist-cursor${masterCursorIndex+1}`);
                     this.lastChecklistCursor.style.visibility = "hidden";
                     SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 0);
                 }
                 SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 0);
-            }else if(SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool")){
-                if(masterCursorIndex <= maxCursorIndex){
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool")){
+                if (masterCursorIndex <= maxCursorIndex){
                     this.lastChecklistCursor = document.querySelector(`#after-takeoff-checklist-cursor${masterCursorIndex-1}`);
                     this.lastChecklistCursor.style.visibility = "hidden";
                     SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 0);
@@ -69,24 +69,24 @@ var B747_8_LowerEICAS_ECL_after_takeoff_checklist;
             this.gearUpText = document.querySelector("#after-takeoff-checklist4");
             this.flapsUpTick = document.querySelector("#after-takeoff-checklist-tick2");
             this.flapsUpText = document.querySelector("#after-takeoff-checklist5");
-            if(SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0){
+            if (SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0){
                 this.gearUpText.style.fill = "lime";
                 this.gearUpTick.style.visibility = "visible";
-            }else{
+            } else {
                 this.gearUpText.style.fill = "white";
                 this.gearUpTick.style.visibility = "hidden";
             }
-            if(SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000){
+            if (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000){
                 this.flapsUpText.style.fill = "lime";
                 this.flapsUpTick.style.visibility = "visible";
-            }else{
+            } else {
                 this.flapsUpText.style.fill = "white";
                 this.flapsUpTick.style.visibility = "hidden";
             }
-            if((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && (SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0)){
+            if ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && (SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0)){
                 this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 1);
-            }else{
+            } else {
                 this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 0);
             }

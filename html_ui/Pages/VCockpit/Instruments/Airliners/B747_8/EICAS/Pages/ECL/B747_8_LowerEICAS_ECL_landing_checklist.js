@@ -28,15 +28,15 @@ var B747_8_LowerEICAS_ECL_landing_checklist;
         }
         //Get if cursor index has increased or decreased in order to select last cursor for deletion.
         clearCursors(maxCursorIndex, masterCursorIndex){
-            if(SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool")){
-                if(masterCursorIndex >= 1){
+            if (SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool")){
+                if (masterCursorIndex >= 1){
                     this.lastChecklistCursor = document.querySelector(`#landing-checklist-cursor${masterCursorIndex+1}`);
                     this.lastChecklistCursor.style.visibility = "hidden";
                     SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 0);
                 }
                 SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 0);
-            }else if(SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool")){
-                if(masterCursorIndex <= maxCursorIndex){
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool")){
+                if (masterCursorIndex <= maxCursorIndex){
                     this.lastChecklistCursor = document.querySelector(`#landing-checklist-cursor${masterCursorIndex-1}`);
                     this.lastChecklistCursor.style.visibility = "hidden";
                     SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 0);
@@ -77,35 +77,35 @@ var B747_8_LowerEICAS_ECL_landing_checklist;
             this.landingFlapsText.textContent = `Flaps........................................${fmcLandingFlap}`
             let landingFlapSet = 0;
             //Spoilers modelled and SimVar set incorrectly by Asobo. Should be armed when lever is pulled slightly out.
-            if(SimVar.GetSimVarValue("SPOILERS ARMED","bool")){
+            if (SimVar.GetSimVarValue("SPOILERS ARMED","bool")){
                 this.speedbrakeText.style.fill = "lime";
                 this.speedbrakeTick.style.visibility = "visible";
-            }else{
+            } else {
                 this.speedbrakeText.style.fill = "white";
                 this.speedbrakeTick.style.visibility = "hidden";
             }
-            if(SimVar.GetSimVarValue("GEAR POSITION","bool")){
+            if (SimVar.GetSimVarValue("GEAR POSITION","bool")){
                 this.landingGearText.style.fill = "lime";
                 this.landingGearTick.style.visibility = "visible";
-            }else{
+            } else {
                 this.landingGearText.style.fill = "white";
                 this.landingGearTick.style.visibility = "hidden";
             }
             //Compares FMC approach flap value with actual flap position. Flaps 25 and 30 are valid landing flaps.
-            if(((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 25 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.436))
+            if (((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 25 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.436))
                 || ((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 30 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.524))))){
                 this.landingFlapsText.style.fill = "lime";
                 this.landingFlapsTick.style.visibility = "visible";
                 landingFlapSet = 1;
-            }else{
+            } else {
                 this.landingFlapsText.style.fill = "white";
                 this.landingFlapsTick.style.visibility = "hidden";
                 landingFlapSet = 0;
             }
-            if(landingFlapSet && SimVar.GetSimVarValue("SPOILERS ARMED","bool") && SimVar.GetSimVarValue("GEAR POSITION","bool")){
+            if (landingFlapSet && SimVar.GetSimVarValue("SPOILERS ARMED","bool") && SimVar.GetSimVarValue("GEAR POSITION","bool")){
                 this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool", 1);
-            }else{
+            } else {
                 this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_COMPLETE", "bool", 0);
             }

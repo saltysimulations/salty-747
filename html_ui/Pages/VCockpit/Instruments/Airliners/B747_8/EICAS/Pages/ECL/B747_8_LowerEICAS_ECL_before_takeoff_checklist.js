@@ -28,15 +28,15 @@ var B747_8_LowerEICAS_ECL_before_takeoff_checklist;
         }
         //Get if cursor index has increased or decreased in order to select last cursor for deletion.
         clearCursors(maxCursorIndex, masterCursorIndex){
-            if(SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool")){
-                if(masterCursorIndex >= 1){
+            if (SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool")){
+                if (masterCursorIndex >= 1){
                     this.lastChecklistCursor = document.querySelector(`#before-takeoff-checklist-cursor${masterCursorIndex+1}`);
                     this.lastChecklistCursor.style.visibility = "hidden";
                     SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 0);
                 }
                 SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 0);
-            }else if(SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool")){
-                if(masterCursorIndex <= maxCursorIndex){
+            } else if (SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool")){
+                if (masterCursorIndex <= maxCursorIndex){
                     this.lastChecklistCursor = document.querySelector(`#before-takeoff-checklist-cursor${masterCursorIndex-1}`);
                     this.lastChecklistCursor.style.visibility = "hidden";
                     SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 0);
@@ -73,20 +73,20 @@ var B747_8_LowerEICAS_ECL_before_takeoff_checklist;
             this.flapsText.textContent = `Flaps........................................${fmcTakeOffFlap}`
             let flapsSet = 0;
             //Check if Flap Angle matches selected Takeoff Flap. 10 and 20 are valid settings.
-            if(((SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 10) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.175))
+            if (((SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 10) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.175))
                 || (SimVar.GetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number") == 20) && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.349)){
                 this.flapsText.style.fill = "lime";
                 this.flapsTick.style.visibility = "visible";
                 flapsSet = 1;
-            }else{
+            } else {
                 this.flapsText.style.fill = "white";
                 this.flapsTick.style.visibility = "hidden";
                 flapsSet = 0;
             }
-            if(flapsSet){
+            if (flapsSet){
                 this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool", 1);
-            }else{
+            } else {
                 this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAKEOFF_COMPLETE", "bool", 0);
             }
