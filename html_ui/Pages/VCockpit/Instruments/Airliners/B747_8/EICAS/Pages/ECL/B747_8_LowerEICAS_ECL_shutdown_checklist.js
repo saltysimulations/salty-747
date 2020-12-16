@@ -11,7 +11,7 @@ var B747_8_LowerEICAS_ECL_shutdown_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.globalItems = document.querySelector("#global-items");
+            this.checklistCompleteItems = document.querySelector("#shutdown-checklist-complete");
             this.isInitialised = true; 
         }
         //Main loop
@@ -157,10 +157,10 @@ var B747_8_LowerEICAS_ECL_shutdown_checklist;
             }
             if((SimVar.GetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK","bool") && (fuelPumpsOff)
                 && (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && !SimVar.GetSimVarValue("L:BTN_WX_ACTIVE","bool") && (fuelSwitchCutoff))){
-                this.globalItems.style.visibility = "visible";
+                this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool", 1);
             }else{
-                this.globalItems.style.visibility = "hidden";
+                this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_COMPLETE", "bool", 0);
             }
             return;           

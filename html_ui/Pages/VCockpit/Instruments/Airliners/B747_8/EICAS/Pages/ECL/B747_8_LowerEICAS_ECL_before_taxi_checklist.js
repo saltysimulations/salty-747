@@ -11,7 +11,7 @@ var B747_8_LowerEICAS_ECL_before_taxi_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.globalItems = document.querySelector("#global-items");
+            this.checklistCompleteItems = document.querySelector("#before-taxi-checklist-complete");
             this.isInitialised = true; 
         }
         //Main loop
@@ -142,10 +142,10 @@ var B747_8_LowerEICAS_ECL_before_taxi_checklist;
             if((SimVar.GetSimVarValue("L:SALTY_ECL_ANTI_ICE_CHK", "bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_RECALL_CHK", "bool")) 
                 && (SimVar.GetSimVarValue("L:SALTY_ECL_CONTROLS_CHK","bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_GROUND_CHK","bool")
                 && (SimVar.GetSimVarValue("AUTO BRAKE SWITCH CB", "Enum") == 0))){
-                this.globalItems.style.visibility = "visible";
+                this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool", 1);
             }else{
-                this.globalItems.style.visibility = "hidden";
+                this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_TAXI_COMPLETE", "bool", 0);
             }
             return;

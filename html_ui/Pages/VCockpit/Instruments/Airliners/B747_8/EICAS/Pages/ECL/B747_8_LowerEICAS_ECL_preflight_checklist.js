@@ -11,7 +11,7 @@ var B747_8_LowerEICAS_ECL_preflight_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.globalItems = document.querySelector("#global-items");
+            this.checklistCompleteItems = document.querySelector("#preflight-checklist-complete");
             this.isInitialised = true; 
         }
         //Main loop
@@ -130,10 +130,10 @@ var B747_8_LowerEICAS_ECL_preflight_checklist;
             //Check if all checklist conditions have been met, then display CHECKLIST COMPLETE globalItem. Also set L:SALTY_ECL_CHECKLIST_COMPLETE flag for use by sequenceChecklist().
             if((SimVar.GetSimVarValue("L:SALTY_ECL_OXYGEN_CHK", "bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_INSTRUMENTS_CHK", "bool")) 
                 && (SimVar.GetSimVarValue("BRAKE PARKING INDICATOR","bool")) && (fuelSwitchStatus)){
-                this.globalItems.style.visibility = "visible";
+                this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool", 1);
             }else{
-                this.globalItems.style.visibility = "hidden";
+                this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool", 0);
             }
             return;

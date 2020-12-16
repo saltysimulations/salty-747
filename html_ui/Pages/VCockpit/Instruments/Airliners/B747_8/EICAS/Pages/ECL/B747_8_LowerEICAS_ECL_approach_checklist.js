@@ -11,7 +11,7 @@ var B747_8_LowerEICAS_ECL_approach_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.globalItems = document.querySelector("#global-items");
+            this.checklistCompleteItems = document.querySelector("#approach-checklist-complete");
             this.isInitialised = true; 
         }
         //Main loop
@@ -95,10 +95,10 @@ var B747_8_LowerEICAS_ECL_approach_checklist;
                 this.approachSeatBeltsTick.style.visibility = "hidden";
             }
             if((SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_ALTIMETERS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT","bool"))){
-                this.globalItems.style.visibility = "visible";
+                this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 1);
             }else{
-                this.globalItems.style.visibility = "hidden";
+                this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_COMPLETE", "bool", 0);
             }
             return;

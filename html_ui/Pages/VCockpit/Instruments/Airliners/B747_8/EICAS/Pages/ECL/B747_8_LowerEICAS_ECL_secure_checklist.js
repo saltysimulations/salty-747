@@ -11,7 +11,7 @@ var B747_8_LowerEICAS_ECL_secure_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.globalItems = document.querySelector("#global-items");
+            this.checklistCompleteItems = document.querySelector("#secure-checklist-complete");
             this.isInitialised = true; 
         }
         //Main loop
@@ -116,10 +116,10 @@ var B747_8_LowerEICAS_ECL_secure_checklist;
             }
             SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 0);
             if(SimVar.GetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool") && SimVar.GetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK","bool") && SimVar.GetSimVarValue("L:SALTY_ECL_PACKS_CHK","bool")){
-                this.globalItems.style.visibility = "visible";
+                this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_SECURE_COMPLETE", "bool", 1);
             }else{
-                this.globalItems.style.visibility = "hidden";
+                this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_SECURE_COMPLETE", "bool", 0);
             }
             return;

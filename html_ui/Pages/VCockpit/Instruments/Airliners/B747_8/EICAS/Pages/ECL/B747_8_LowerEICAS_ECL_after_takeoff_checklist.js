@@ -11,7 +11,7 @@ var B747_8_LowerEICAS_ECL_after_takeoff_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {;
-            this.globalItems = document.querySelector("#global-items");
+            this.checklistCompleteItems = document.querySelector("#after-takeoff-checklist-complete");
             this.isInitialised = true; 
         }
         //Main loop
@@ -84,10 +84,10 @@ var B747_8_LowerEICAS_ECL_after_takeoff_checklist;
                 this.flapsUpTick.style.visibility = "hidden";
             }
             if((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians") == 0.000) && (SimVar.GetSimVarValue("GEAR ANIMATION POSITION", "percent") == 0)){
-                this.globalItems.style.visibility = "visible";
+                this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 1);
             }else{
-                this.globalItems.style.visibility = "hidden";
+                this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_AFTER_TAKEOFF_COMPLETE", "bool", 0);
             }
             return;

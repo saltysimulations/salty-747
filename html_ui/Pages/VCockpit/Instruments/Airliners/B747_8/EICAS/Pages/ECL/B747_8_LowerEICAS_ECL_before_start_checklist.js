@@ -11,7 +11,7 @@ var B747_8_LowerEICAS_ECL_before_start_checklist;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.globalItems = document.querySelector("#global-items");
+            this.checklistCompleteItems = document.querySelector("#before-start-checklist-complete");
             this.isInitialised = true; 
         }
         //Main loop
@@ -165,11 +165,12 @@ var B747_8_LowerEICAS_ECL_before_start_checklist;
             }   
             if((SimVar.GetSimVarValue("L:SALTY_ECL_GEAR_PINS_CHK", "bool")) && (SimVar.GetSimVarValue("L:SALTY_KNOB_SEATBELT", "bool")) 
                 && (SimVar.GetSimVarValue("L:SALTY_ECL_MCP_CHK","bool")) && (SimVar.GetSimVarValue("L:SALTY_ECL_CDU_CHK","bool")
-                && (SimVar.GetSimVarValue("L:SALTY_ECL_TRIM_CHK","bool")) && (SimVar.GetSimVarValue("LIGHT BEACON ON","bool")))){
-                this.globalItems.style.visibility = "visible";
+                && (SimVar.GetSimVarValue("L:SALTY_ECL_TRIM_CHK","bool")) && (SimVar.GetSimVarValue("LIGHT BEACON ON","bool")
+                && SimVar.GetSimVarValue("L:SALTY_ECL_TAKEOFF_BRIEFING_CHK", "bool")))){
+                this.checklistCompleteItems.style.visibility = "visible";
                 SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool", 1);
             }else{
-                this.globalItems.style.visibility = "hidden";
+                this.checklistCompleteItems.style.visibility = "hidden";
                 SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool", 0);
             }
             return;
