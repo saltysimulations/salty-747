@@ -76,54 +76,46 @@ var B747_8_LowerEICAS_ECL_descent_checklist;
             if (SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch (masterCursorIndex) {
                     case 4:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_RECALL_CHK", "bool")){
                             this.descentRecallTick.style.visibility = "visible";
                             this.descentRecallText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_RECALL_CHK", "bool", 1);
                         } else {
                             this.descentRecallTick.style.visibility = "hidden";
                             this.descentRecallText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_RECALL_CHK", "bool", 0);
                         }    
                     break;
                     case 5:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_5", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_DESCENT_BRAKE_CHK", "bool")){
                             this.descentAutobrakeTick.style.visibility = "visible";
                             this.descentAutobrakeText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_BRAKE_CHK", "bool", 1);
                         } else {
                             this.descentAutobrakeTick.style.visibility = "hidden";
                             this.descentAutobrakeText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_DESCENT_BRAKE_CHK", "bool", 0);
                         }    
                     break;
                     case 6:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_6", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK", "bool")){
                             this.landingDataTick.style.visibility = "visible";
                             this.landingDataText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK", "bool", 1);
                         } else {
                             this.landingDataTick.style.visibility = "hidden";
                             this.landingDataText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_LANDING_DATA_CHK", "bool", 0);
                         }    
                     break;
                     case 7:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_7", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK", "bool")){
                             this.approachBriefingTick.style.visibility = "visible";
                             this.approachBriefingText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK", "bool", 1);
                         } else {
                             this.approachBriefingTick.style.visibility = "hidden";
                             this.approachBriefingText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_APPROACH_BRIEFING_CHK", "bool", 0);
                         }    
                     break;                

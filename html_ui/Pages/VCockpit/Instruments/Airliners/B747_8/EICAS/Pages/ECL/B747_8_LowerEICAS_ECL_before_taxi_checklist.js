@@ -78,54 +78,46 @@ var B747_8_LowerEICAS_ECL_before_taxi_checklist;
             if (SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch (masterCursorIndex) {
                     case 4:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_ANTI_ICE_CHK", "bool")){
                             this.antiIceTick.style.visibility = "visible";
                             this.antiIceText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_ANTI_ICE_CHK", "bool", 1);
                         } else {
                             this.antiIceTick.style.visibility = "hidden";
                             this.antiIceText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_ANTI_ICE_CHK", "bool", 0);
                         }    
                     break;
                     case 5:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_5", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_RECALL_CHK", "bool")){
                             this.recallTick.style.visibility = "visible";
                             this.recallText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_RECALL_CHK", "bool", 1);
                         } else {
                             this.recallTick.style.visibility = "hidden";
                             this.recallText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_RECALL_CHK", "bool", 0);
                         }    
                     break;
                     case 7:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_7", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_CONTROLS_CHK", "bool")){
                             this.flightControlsTick.style.visibility = "visible";
                             this.flightControlsText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_CONTROLS_CHK", "bool", 1);
                         } else {
                             this.flightControlsTick.style.visibility = "hidden";
                             this.flightControlsText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_CONTROLS_CHK", "bool", 0);
                         }    
                     break;
                     case 8:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_8", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_GROUND_CHK", "bool")){
                             this.groundEquipmentTick.style.visibility = "visible";
                             this.groundEquipmentText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_8", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_GROUND_CHK", "bool", 1);
                         } else {
                             this.groundEquipmentTick.style.visibility = "hidden";
                             this.groundEquipmentText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_8", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_GROUND_CHK", "bool", 0);
                         }    
                     break;                

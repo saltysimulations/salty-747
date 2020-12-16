@@ -79,30 +79,26 @@ var B747_8_LowerEICAS_ECL_preflight_checklist;
             if (SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch (masterCursorIndex) {
                     case 4:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_OXYGEN_CHK", "bool")){
                             this.oxygenTick.style.visibility = "visible";
                             this.oxygenText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_OXYGEN_CHK", "bool", 1);
                         } else {
                             this.oxygenTick.style.visibility = "hidden";
                             this.oxygenText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_OXYGEN_CHK", "bool", 0);
                         }    
                     break;
                     case 5:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_5", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_INSTRUMENTS_CHK", "bool")){
                             this.instrumentsTick.style.visibility = "visible";
                             this.instrumentsText1.style.fill = "lime";
                             this.instrumentsText2.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_INSTRUMENTS_CHK", "bool", 1);
                         } else {
                             this.instrumentsTick.style.visibility = "hidden";
                             this.instrumentsText1.style.fill = "white";
                             this.instrumentsText2.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_INSTRUMENTS_CHK", "bool", 0);
                         }    
                     break;

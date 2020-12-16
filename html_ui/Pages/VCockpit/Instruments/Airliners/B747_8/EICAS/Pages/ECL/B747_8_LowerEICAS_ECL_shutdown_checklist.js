@@ -80,28 +80,24 @@ var B747_8_LowerEICAS_ECL_shutdown_checklist;
             if (SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch (masterCursorIndex) {
                     case 4:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool")){
                             this.hydraulicTick.style.visibility = "visible";
                             this.hydraulicText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool", 1);
                         } else {
                             this.hydraulicTick.style.visibility = "hidden";
                             this.hydraulicText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_HYDRAULIC_CHK", "bool", 0);
                         }    
                     break;
                     case 7:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_7", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK", "bool")){
                             this.shutdownBrakeTick.style.visibility = "visible";
                             this.shutdownBrakeText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK", "bool", 1);
                         } else {
                             this.shutdownBrakeTick.style.visibility = "hidden";
                             this.shutdownBrakeText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_SHUTDOWN_BRAKE_CHK", "bool", 0);
                         }    
                     break;               

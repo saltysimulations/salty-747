@@ -28,9 +28,8 @@ b747-8-lower-eicas-ecl-after-takeoff-checklist {
   b747-8-lower-eicas-ecl-after-takeoff-checklist path {
     stroke: lime;
     fill: lime; 
-    visibility: hidden;}
+    visibility: hidden; }
   b747-8-lower-eicas-ecl-after-takeoff-checklist #checklist-complete-rect {
-    fill: lime;
-  }
+    fill: lime; }
   b747-8-lower-eicas-ecl-after-takeoff-checklist #after-takeoff-checklist-cursor-positions {
     visibility: hidden; }

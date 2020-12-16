@@ -5,6 +5,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     }
     onEvent(_event) {
         super.onEvent(_event);
+        //Calls the sequencer when CHKL button pressed to check if next checklist should be drawn
         if (_event == "EICAS_CHANGE_PAGE_chkl"){
             let eclToDraw = this.sequenceElectronicChecklist();
             if (this.currentPage !== `CHKL-${eclToDraw}`){
@@ -64,6 +65,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     getLowerScreenChangeEventNamePrefix() {
         return "EICAS_CHANGE_PAGE_";
     }
+    //Each checklist sets a completed SimVar when done which is checked here to sequence the next one - cycle resets when secure checklist completed
     sequenceElectronicChecklist() {
         let eclNextPage = "";
         if (SimVar.GetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool") == 0){
@@ -90,8 +92,9 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
             this.resetECLSequence();
             eclNextPage = "preflight-checklist";
         }
-    return eclNextPage;
+        return eclNextPage;
     }
+    //This function resets the state of all checklists and their items
     resetECLSequence() {
         SimVar.SetSimVarValue("L:SALTY_ECL_PREFLIGHT_COMPLETE", "bool", 0);
         SimVar.SetSimVarValue("L:SALTY_ECL_BEFORE_START_COMPLETE", "bool", 0);
@@ -126,6 +129,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         SimVar.SetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool", 0);
         return;
     }
+    //Resets input tracking when next checklist is sequenced
     resetECLindexes() {
         SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1);
         SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1);

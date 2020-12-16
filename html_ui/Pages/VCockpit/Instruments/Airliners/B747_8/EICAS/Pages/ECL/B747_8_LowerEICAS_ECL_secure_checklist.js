@@ -74,41 +74,35 @@ var B747_8_LowerEICAS_ECL_secure_checklist;
             if (SimVar.GetSimVarValue("L:SALTY_ECL_BTN", "bool")){
                 switch (masterCursorIndex) {
                     case 4:
-                        if(SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_4", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool")){
                             this.irsTick.style.visibility = "visible";
                             this.irsText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool", 1);
                         } else {
                             this.irsTick.style.visibility = "hidden";
                             this.irsText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool", 0);
                         }    
                     break;  
                     case 5:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_5", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK", "bool")){
                             this.emerLightsTick.style.visibility = "visible";
                             this.emerLightsText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK", "bool", 1);
                         } else {
                             this.emerLightsTick.style.visibility = "hidden";
                             this.emerLightsText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK", "bool", 0);
                         }    
                     break;
                     case 6:
-                        if (SimVar.GetSimVarValue("L:SALTY_ECL_INDEX_6", "bool")){
+                        if (!SimVar.GetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool")){
                             this.packsTick.style.visibility = "visible";
                             this.packsText.style.fill = "lime";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 0);
                             SimVar.SetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool", 1);
                         } else {
                             this.packsTick.style.visibility = "hidden";
                             this.packsText.style.fill = "white";
-                            SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 1);
                             SimVar.SetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool", 0);
                         }    
                     break;              
