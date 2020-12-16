@@ -7,8 +7,11 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         super.onEvent(_event);
         if (_event == "EICAS_CHANGE_PAGE_chkl"){
             let eclToDraw = this.sequenceElectronicChecklist();
-            this.changePage(`CHKL-${eclToDraw}`);
-            this.currentPage = `CHKL-${eclToDraw}`;
+            if (this.currentPage !== `CHKL-${eclToDraw}`){
+                this.changePage(`CHKL-${eclToDraw}`);
+                this.currentPage = `CHKL-${eclToDraw}`;
+                this.resetECLindexes();
+            } 
         } else if (this.currentPage !== _event){
             this.currentPage = _event;
         } else {
@@ -121,6 +124,16 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         SimVar.SetSimVarValue("L:SALTY_ECL_IRS_CHK", "bool", 0);
         SimVar.SetSimVarValue("L:SALTY_ECL_EMERLIGHTS_CHK", "bool", 0);
         SimVar.SetSimVarValue("L:SALTY_ECL_PACKS_CHK", "bool", 0);
+        return;
+    }
+    resetECLindexes() {
+        SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_4", "bool", 1);
+        SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_5", "bool", 1);
+        SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_6", "bool", 1);
+        SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_7", "bool", 1);
+        SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_8", "bool", 1);
+        SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_9", "bool", 1);
+        SimVar.SetSimVarValue("L:SALTY_ECL_INDEX_10", "bool", 1);
         return;
     }
     onUpdate(_deltaTime) {
