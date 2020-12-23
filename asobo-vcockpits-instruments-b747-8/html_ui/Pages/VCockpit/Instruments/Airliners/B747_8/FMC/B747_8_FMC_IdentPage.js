@@ -19,7 +19,7 @@ class FMCIdentPage {
             ["OPC"],
             ["AW-C010-0-0", ""],
             ["__FMCSEPARATOR"],
-            ["<INDEX", "POS INIT>"]
+            ["\<INDEX", "POS INIT>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCPosInitPage.ShowPage1(fmc); };

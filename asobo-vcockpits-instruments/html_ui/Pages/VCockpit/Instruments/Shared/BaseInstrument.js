@@ -177,6 +177,7 @@ class BaseInstrument extends TemplateElement {
         this.startTime = Date.now();
         this.frameCount = 0;
         this.initTransponder();
+        this.dispatchEvent(new Event('Reboot'));
     }
     onFlightStart() {
         console.log("Flight Starting...");
@@ -317,7 +318,7 @@ class BaseInstrument extends TemplateElement {
         return SimVar.GetSimVarValue("CIRCUIT AVIONICS ON", "Bool");
     }
     playInstrumentSound(soundId) {
-        if (this.isElectricityAvailable()) {
+        if (this.isElectricityAvailable() && this.getGameState() == GameState.ingame) {
             Coherent.call("PLAY_INSTRUMENT_SOUND", soundId);
             return true;
         }

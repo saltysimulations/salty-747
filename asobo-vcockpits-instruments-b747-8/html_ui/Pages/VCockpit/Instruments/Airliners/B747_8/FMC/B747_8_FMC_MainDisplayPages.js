@@ -4,9 +4,9 @@ class FMCMainDisplayPages {
         fmc.setTemplate([
             ["MENU"],
             ["", "EFIS CP"],
-            ["<FMC", "", "<ACT>"],
+            ["\<FMC", "", "<ACT>"],
             ["", "EICAS CP"],
-            ["<ACARS"],
+            ["\<ACARS"],
             ["", "CTL PNL"],
             ["", "OFF←→ON>"],
             [],
@@ -14,7 +14,7 @@ class FMCMainDisplayPages {
             [],
             ["", ""],
             [],
-            ["<CMC"]
+            ["\<CMC"]
         ]);
         fmc.onLeftInput[0] = () => { FMCIdentPage.ShowPage1(fmc); };
     }
@@ -29,13 +29,13 @@ class FMCMainDisplayPages {
             ["LEVEL", "ZFW", "TOCG"],
             ["46,7%", "224.4", "23.0%"],
             ["", "FUEL DENSITY"],
-            ["<LONG RANGE", "0.803"],
+            ["\<LONG RANGE", "0.803"],
             ["", "PLAN FUEL (KGS)"],
-            ["<MED RANGE", "N/A"],
+            ["\<MED RANGE", "N/A"],
             [],
-            ["<SHORT RANGE"],
+            ["\<SHORT RANGE"],
             [],
-            ["<RETURN"]
+            ["\<RETURN"]
         ]);
     }
     static PayloadPage(fmc) {
@@ -53,7 +53,7 @@ class FMCMainDisplayPages {
             ["BULK CARGO"],
             ["1847", "SET EMPTY>"],
             [],
-            ["<RETURN", "SET RANDOM>"]
+            ["\<RETURN", "SET RANDOM>"]
         ]);
     }
 }

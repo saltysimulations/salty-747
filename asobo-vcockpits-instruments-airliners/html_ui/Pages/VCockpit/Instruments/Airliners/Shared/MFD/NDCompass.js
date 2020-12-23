@@ -43,7 +43,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 let topMask = document.createElementNS(Avionics.SVG.NS, "path");
                 topMask.setAttribute("d", "M0 " + -maskHeight + ", L" + circleRadius * 2 + " " + -maskHeight + ", L" + circleRadius * 2 + " " + circleRadius + ", A 25 25 0 1 0 0, " + circleRadius + "Z");
                 topMask.setAttribute("transform", "translate(" + (50 - circleRadius) + ", " + (50 - circleRadius) + ")");
-                topMask.setAttribute("fill", "black");
+                topMask.setAttribute("fill", "#0e0d08");
                 this.arcMaskGroup.appendChild(topMask);
             }
             var fixedGroup = document.createElementNS(Avionics.SVG.NS, "g");
@@ -279,7 +279,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 rect.setAttribute("y", (centerY - rectHeight * 0.5).toString());
                 rect.setAttribute("width", rectWidth.toString());
                 rect.setAttribute("height", rectHeight.toString());
-                rect.setAttribute("fill", "black");
+                rect.setAttribute("fill", "#0e0d08");
                 this.currentRefGroup.appendChild(rect);
                 let d = "M" + (centerX - (rectWidth * 0.5)) + " " + (centerY - (rectHeight * 0.5));
                 d += " l0 " + rectHeight;
@@ -517,6 +517,32 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 neutralLine.setAttribute("stroke", "yellow");
                 neutralLine.setAttribute("stroke-width", "4");
                 viewBox.appendChild(neutralLine);
+            }
+            {
+                let x = -240;
+                let y = (50 - circleRadius + 45);
+                this.selectedHeadingLeftText = document.createElementNS(Avionics.SVG.NS, "text");
+                this.selectedHeadingLeftText.textContent = "999";
+                this.selectedHeadingLeftText.setAttribute("x", x.toString());
+                this.selectedHeadingLeftText.setAttribute("y", y.toString());
+                this.selectedHeadingLeftText.setAttribute("fill", "#00F2FF");
+                this.selectedHeadingLeftText.setAttribute("font-size", "20");
+                this.selectedHeadingLeftText.setAttribute("font-family", "Roboto-Bold");
+                this.selectedHeadingLeftText.setAttribute("text-anchor", "middle");
+                this.selectedHeadingLeftText.setAttribute("transform", "rotate(-37.5 " + x + " " + y + ")");
+                viewBox.appendChild(this.selectedHeadingLeftText);
+                x = 340;
+                y = (50 - circleRadius + 45);
+                this.selectedHeadingRightText = document.createElementNS(Avionics.SVG.NS, "text");
+                this.selectedHeadingRightText.textContent = "000";
+                this.selectedHeadingRightText.setAttribute("x", x.toString());
+                this.selectedHeadingRightText.setAttribute("y", y.toString());
+                this.selectedHeadingRightText.setAttribute("fill", "#00F2FF");
+                this.selectedHeadingRightText.setAttribute("font-size", "20");
+                this.selectedHeadingRightText.setAttribute("font-family", "Roboto-Bold");
+                this.selectedHeadingRightText.setAttribute("text-anchor", "middle");
+                this.selectedHeadingRightText.setAttribute("transform", "rotate(37.5 " + x + " " + y + ")");
+                viewBox.appendChild(this.selectedHeadingRightText);
             }
         }
     }
@@ -1281,8 +1307,8 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 outerCircle.setAttribute("stroke", "white");
                 outerCircle.setAttribute("stroke-width", "4");
                 outerCircleGroup.appendChild(outerCircle);
-                this.addMapRange(outerCircleGroup, 500, 167, "white", "30", true, 0.5, true);
-                this.addMapRange(outerCircleGroup, 500, 833, "white", "30", true, 0.5, true);
+                this.addMapRange(outerCircleGroup, 500, 167, "white", "30", true, 1, true);
+                this.addMapRange(outerCircleGroup, 500, 833, "white", "30", true, 1, true);
             }
             let innerCircleGroup = document.createElementNS(Avionics.SVG.NS, "g");
             this.root.appendChild(innerCircleGroup);
@@ -1295,8 +1321,8 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 innerCircle.setAttribute("stroke", "white");
                 innerCircle.setAttribute("stroke-width", "4");
                 innerCircleGroup.appendChild(innerCircle);
-                this.addMapRange(innerCircleGroup, 500, 334, "white", "30", true, 0.25, true);
-                this.addMapRange(innerCircleGroup, 500, 666, "white", "30", true, 0.25, true);
+                this.addMapRange(innerCircleGroup, 500, 334, "white", "30", true, 0.5, true);
+                this.addMapRange(innerCircleGroup, 500, 666, "white", "30", true, 0.5, true);
             }
             let rangeGroup = document.createElementNS(Avionics.SVG.NS, "g");
             rangeGroup.setAttribute("id", "RangeGroup");
@@ -1430,7 +1456,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 rect.setAttribute("y", (centerY - rectHeight * 0.5).toString());
                 rect.setAttribute("width", rectWidth.toString());
                 rect.setAttribute("height", rectHeight.toString());
-                rect.setAttribute("fill", "black");
+                rect.setAttribute("fill", "#0e0d08");
                 this.currentRefGroup.appendChild(rect);
                 let d = "M" + (centerX - (rectWidth * 0.5)) + " " + (centerY - (rectHeight * 0.5));
                 d += " l0 " + rectHeight;
@@ -2632,7 +2658,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
             rect.setAttribute("y", (centerY - rectHeight * 0.5).toString());
             rect.setAttribute("width", rectWidth.toString());
             rect.setAttribute("height", rectHeight.toString());
-            rect.setAttribute("fill", "black");
+            rect.setAttribute("fill", "#0e0d08");
             this.currentRefGroup.appendChild(rect);
             let d = "M" + (centerX - (rectWidth * 0.5)) + " " + (centerY - (rectHeight * 0.5));
             d += " l0 " + rectHeight;

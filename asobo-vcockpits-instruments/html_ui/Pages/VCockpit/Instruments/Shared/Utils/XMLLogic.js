@@ -55,6 +55,8 @@ class LogicXMLElement {
             return value;
         }
     }
+    reset() {
+    }
 }
 class CompositeLogicXMLElement extends LogicXMLElement {
     constructor(_gps, _element) {
@@ -171,6 +173,11 @@ class CompositeLogicXMLElement extends LogicXMLElement {
             return this.childrens[0].getValue(_context);
         }
         return 0;
+    }
+    reset() {
+        for (let i = 0; i < this.childrens.length; i++) {
+            this.childrens[i].reset();
+        }
     }
 }
 class AndLogicXMLElement extends CompositeLogicXMLElement {
@@ -419,6 +426,11 @@ class TimerLogicXMLElement extends CompositeLogicXMLElement {
         }
         return undefined;
     }
+    reset() {
+        super.reset();
+        this.wasTrue = false;
+        this.timerBegin = 0;
+    }
 }
 class SimvarLogicXMLElement extends LogicXMLElement {
     constructor(_gps, _element) {
@@ -540,6 +552,13 @@ class LinearMultiPointLogicXMLElement extends LogicXMLElement {
         }
         return undefined;
     }
+    reset() {
+        super.reset();
+        if (this.param1)
+            this.param1.reset();
+        if (this.param2)
+            this.param2.reset();
+    }
 }
 class StateTransitionLogicXML {
 }
@@ -581,6 +600,10 @@ class StateMachineLogicXMLElement extends LogicXMLElement {
                 }
             }
         }
+    }
+    reset() {
+        super.reset();
+        this.currentState = this.states[0];
     }
 }
 class ToFixedLogicXMLElement extends CompositeLogicXMLElement {
@@ -633,6 +656,15 @@ class IfLogicXMLElement extends LogicXMLElement {
             else
                 return 0;
         }
+    }
+    reset() {
+        super.reset();
+        if (this.condition)
+            this.condition.reset();
+        if (this.then)
+            this.then.reset();
+        if (this.else)
+            this.else.reset();
     }
 }
 class FunctionXMLElement extends LogicXMLElement {

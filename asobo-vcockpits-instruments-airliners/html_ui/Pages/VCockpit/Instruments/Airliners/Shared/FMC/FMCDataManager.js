@@ -60,6 +60,21 @@ class FMCDataManager {
         waypoints.push(...ndbs);
         let airports = await this.GetWaypointsByIdentAndType(ident, "A");
         waypoints.push(...airports);
+        let i = 0;
+        while (i < waypoints.length) {
+            let wp = waypoints[i];
+            let j = i + 1;
+            while (j < waypoints.length) {
+                let other = waypoints[j];
+                if (wp.icao === other.icao) {
+                    waypoints.splice(j, 1);
+                }
+                else {
+                    j++;
+                }
+            }
+            i++;
+        }
         return waypoints;
     }
     async GetWaypointsByIdentAndType(ident, wpType = "W") {

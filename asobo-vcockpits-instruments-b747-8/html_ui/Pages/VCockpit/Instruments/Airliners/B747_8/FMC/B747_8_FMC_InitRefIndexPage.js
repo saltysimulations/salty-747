@@ -4,17 +4,17 @@ class B747_8_FMC_InitRefIndexPage {
         fmc.setTemplate([
             ["INIT/REF INDEX"],
             [""],
-            ["<IDENT", "NAV DATA>"],
+            ["\<IDENT", "NAV DATA>"],
             [""],
-            ["<POS"],
+            ["\<POS"],
             [""],
-            ["<PERF"],
+            ["\<PERF"],
             [""],
-            ["<THRUST LIM"],
+            ["\<THRUST LIM"],
             [""],
-            ["<TAKEOFF"],
+            ["\<TAKEOFF"],
             [""],
-            ["<APPROACH", "MAINT>"]
+            ["\<APPROACH", "MAINT>"]
         ]);
         fmc.onLeftInput[0] = () => { FMCIdentPage.ShowPage1(fmc); };
         fmc.onRightInput[0] = () => { FMCNavDataPage.ShowPage1(fmc); };

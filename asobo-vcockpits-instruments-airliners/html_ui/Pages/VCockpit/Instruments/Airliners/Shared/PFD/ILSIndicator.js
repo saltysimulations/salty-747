@@ -10,7 +10,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
         this.gs_cursorPosX = 0;
         this.gs_cursorPosY = 0;
         this.locVisible = false;
-        this.gsVisible = false;
+        this.gsVisible = undefined;
         this.infoVisible = false;
         this.isHud = false;
         this._aircraft = Aircraft.A320_NEO;
@@ -477,12 +477,28 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     let y = 20;
                     this.gs_cursorShapeUp = document.createElementNS(Avionics.SVG.NS, "path");
                     this.gs_cursorShapeUp.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
-                    this.gs_cursorShapeUp.setAttribute("d", "M " + (-x) + " 0 L0 " + (-y) + " L" + (x) + " 0 Z");
+                    this.gs_cursorShapeUp.setAttribute("stroke", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.gs_cursorShapeUp.setAttribute("stroke-width", "2");
+                    this.gs_cursorShapeUp.setAttribute("d", "M " + (-x) + " 0.25 L0 " + (-y) + " L" + (x) + " 0.25");
                     this.gs_cursorGroup.appendChild(this.gs_cursorShapeUp);
                     this.gs_cursorShapeDown = document.createElementNS(Avionics.SVG.NS, "path");
                     this.gs_cursorShapeDown.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
-                    this.gs_cursorShapeDown.setAttribute("d", "M " + (-x) + " 0 L0 " + (y) + " L" + (x) + " 0 Z");
+                    this.gs_cursorShapeDown.setAttribute("stroke", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.gs_cursorShapeDown.setAttribute("stroke-width", "2");
+                    this.gs_cursorShapeDown.setAttribute("d", "M " + (-x) + " -0.25 L0 " + (y) + " L" + (x) + " -0.25");
                     this.gs_cursorGroup.appendChild(this.gs_cursorShapeDown);
+                    this.gs_glidePathCursorUp = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.gs_glidePathCursorUp.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.gs_glidePathCursorUp.setAttribute("stroke", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.gs_glidePathCursorUp.setAttribute("stroke-width", "2");
+                    this.gs_glidePathCursorUp.setAttribute("d", "M " + (-x) + " 0.25 L" + (-x) + " " + (-y / 2) + " L" + (x) + " " + (-y / 2) + " L " + (x) + " 0.25");
+                    this.gs_cursorGroup.appendChild(this.gs_glidePathCursorUp);
+                    this.gs_glidePathCursorDown = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.gs_glidePathCursorDown.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.gs_glidePathCursorDown.setAttribute("stroke", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.gs_glidePathCursorDown.setAttribute("stroke-width", "2");
+                    this.gs_glidePathCursorDown.setAttribute("d", "M " + (-x) + " -0.25 L" + (-x) + " " + (y / 2) + " L" + (x) + " " + (y / 2) + " L " + (x) + " -0.25");
+                    this.gs_cursorGroup.appendChild(this.gs_glidePathCursorDown);
                 }
                 let neutralLine = document.createElementNS(Avionics.SVG.NS, "line");
                 neutralLine.setAttribute("id", "NeutralLine");
@@ -547,11 +563,15 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     let y = 12;
                     this.loc_cursorShapeRight = document.createElementNS(Avionics.SVG.NS, "path");
                     this.loc_cursorShapeRight.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
-                    this.loc_cursorShapeRight.setAttribute("d", "M 0 " + (-y) + " L" + (-x) + " 0 L0 " + (y) + " Z");
+                    this.loc_cursorShapeRight.setAttribute("stroke", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.loc_cursorShapeRight.setAttribute("stroke-width", "2");
+                    this.loc_cursorShapeRight.setAttribute("d", "M 0 " + (-y) + " L" + (-x) + " 0 L0 " + (y));
                     this.loc_cursorGroup.appendChild(this.loc_cursorShapeRight);
                     this.loc_cursorShapeLeft = document.createElementNS(Avionics.SVG.NS, "path");
                     this.loc_cursorShapeLeft.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
-                    this.loc_cursorShapeLeft.setAttribute("d", "M 0 " + (-y) + " L" + (x) + " 0 L0 " + (y) + " Z");
+                    this.loc_cursorShapeLeft.setAttribute("stroke", (this.isHud) ? "lime" : "#FF0CE2");
+                    this.loc_cursorShapeLeft.setAttribute("stroke-width", "2");
+                    this.loc_cursorShapeLeft.setAttribute("d", "M 0 " + (-y) + " L" + (x) + " 0 L0 " + (y));
                     this.loc_cursorGroup.appendChild(this.loc_cursorShapeLeft);
                 }
                 let neutralLine = document.createElementNS(Avionics.SVG.NS, "line");
@@ -818,20 +838,36 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     let y = this.gs_cursorMinY + (this.gs_cursorMaxY - this.gs_cursorMinY) * delta;
                     y = Math.min(this.gs_cursorMinY, Math.max(this.gs_cursorMaxY, y));
                     this.gs_cursorGroup.setAttribute("transform", "translate(" + this.gs_cursorPosX + ", " + y + ")");
-                    if (delta >= 0.95) {
+                    if (this.aircraft == Aircraft.AS01B) {
+                        if (delta >= 0.95 || delta <= 0.05) {
+                            this.gs_glidePathCursorUp.setAttribute("fill", "transparent");
+                            this.gs_glidePathCursorDown.setAttribute("fill", "transparent");
+                        }
+                        else {
+                            this.gs_glidePathCursorUp.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                            this.gs_glidePathCursorDown.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                        }
                         this.gs_glidePathCursorUp.setAttribute("visibility", "visible");
-                        this.gs_glidePathCursorDown.setAttribute("visibility", "hidden");
-                    }
-                    else if (delta <= 0.05) {
-                        this.gs_glidePathCursorUp.setAttribute("visibility", "hidden");
                         this.gs_glidePathCursorDown.setAttribute("visibility", "visible");
+                        this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
+                        this.gs_cursorShapeDown.setAttribute("visibility", "hidden");
                     }
                     else {
-                        this.gs_glidePathCursorUp.setAttribute("visibility", "visible");
-                        this.gs_glidePathCursorDown.setAttribute("visibility", "visible");
+                        if (delta >= 0.95) {
+                            this.gs_glidePathCursorUp.setAttribute("visibility", "visible");
+                            this.gs_glidePathCursorDown.setAttribute("visibility", "hidden");
+                        }
+                        else if (delta <= 0.05) {
+                            this.gs_glidePathCursorUp.setAttribute("visibility", "hidden");
+                            this.gs_glidePathCursorDown.setAttribute("visibility", "visible");
+                        }
+                        else {
+                            this.gs_glidePathCursorUp.setAttribute("visibility", "visible");
+                            this.gs_glidePathCursorDown.setAttribute("visibility", "visible");
+                        }
+                        this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
+                        this.gs_cursorShapeDown.setAttribute("visibility", "hidden");
                     }
-                    this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
-                    this.gs_cursorShapeDown.setAttribute("visibility", "hidden");
                 }
                 else if (localizer.id > 0 && SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + localizer.id, "Bool")) {
                     let gsi = -SimVar.GetSimVarValue("NAV GSI:" + localizer.id, "number") / 127.0;
@@ -839,17 +875,31 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     let y = this.gs_cursorMinY + (this.gs_cursorMaxY - this.gs_cursorMinY) * delta;
                     y = Math.min(this.gs_cursorMinY, Math.max(this.gs_cursorMaxY, y));
                     this.gs_cursorGroup.setAttribute("transform", "translate(" + this.gs_cursorPosX + ", " + y + ")");
-                    if (delta >= 0.95) {
+                    if (this.aircraft == Aircraft.AS01B) {
+                        if (delta >= 0.95 || delta <= 0.05) {
+                            this.gs_cursorShapeUp.setAttribute("fill", "transparent");
+                            this.gs_cursorShapeDown.setAttribute("fill", "transparent");
+                        }
+                        else {
+                            this.gs_cursorShapeUp.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                            this.gs_cursorShapeDown.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                        }
                         this.gs_cursorShapeUp.setAttribute("visibility", "visible");
-                        this.gs_cursorShapeDown.setAttribute("visibility", "hidden");
-                    }
-                    else if (delta <= 0.05) {
-                        this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
                         this.gs_cursorShapeDown.setAttribute("visibility", "visible");
                     }
                     else {
-                        this.gs_cursorShapeUp.setAttribute("visibility", "visible");
-                        this.gs_cursorShapeDown.setAttribute("visibility", "visible");
+                        if (delta >= 0.95) {
+                            this.gs_cursorShapeUp.setAttribute("visibility", "visible");
+                            this.gs_cursorShapeDown.setAttribute("visibility", "hidden");
+                        }
+                        else if (delta <= 0.05) {
+                            this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
+                            this.gs_cursorShapeDown.setAttribute("visibility", "visible");
+                        }
+                        else {
+                            this.gs_cursorShapeUp.setAttribute("visibility", "visible");
+                            this.gs_cursorShapeDown.setAttribute("visibility", "visible");
+                        }
                     }
                     this.gs_glidePathCursorUp.setAttribute("visibility", "hidden");
                     this.gs_glidePathCursorDown.setAttribute("visibility", "hidden");
@@ -868,26 +918,36 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     let x = this.loc_cursorMinX + (this.loc_cursorMaxX - this.loc_cursorMinX) * delta;
                     x = Math.max(this.loc_cursorMinX, Math.min(this.loc_cursorMaxX, x));
                     this.loc_cursorGroup.setAttribute("transform", "translate(" + x + ", " + this.loc_cursorPosY + ")");
-                    if (delta >= 0.95) {
+                    if (this.aircraft == Aircraft.AS01B) {
+                        if (delta >= 0.95 || delta <= 0.05) {
+                            this.loc_cursorShapeLeft.setAttribute("fill", "transparent");
+                            this.loc_cursorShapeRight.setAttribute("fill", "transparent");
+                        }
+                        else {
+                            this.loc_cursorShapeLeft.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                            this.loc_cursorShapeRight.setAttribute("fill", (this.isHud) ? "lime" : "#FF0CE2");
+                        }
                         this.loc_cursorShapeLeft.setAttribute("visibility", "visible");
-                        this.loc_cursorShapeRight.setAttribute("visibility", "hidden");
-                    }
-                    else if (delta <= 0.05) {
-                        this.loc_cursorShapeLeft.setAttribute("visibility", "hidden");
                         this.loc_cursorShapeRight.setAttribute("visibility", "visible");
                     }
                     else {
-                        this.loc_cursorShapeLeft.setAttribute("visibility", "visible");
-                        this.loc_cursorShapeRight.setAttribute("visibility", "visible");
+                        if (delta >= 0.95) {
+                            this.loc_cursorShapeLeft.setAttribute("visibility", "visible");
+                            this.loc_cursorShapeRight.setAttribute("visibility", "hidden");
+                        }
+                        else if (delta <= 0.05) {
+                            this.loc_cursorShapeLeft.setAttribute("visibility", "hidden");
+                            this.loc_cursorShapeRight.setAttribute("visibility", "visible");
+                        }
+                        else {
+                            this.loc_cursorShapeLeft.setAttribute("visibility", "visible");
+                            this.loc_cursorShapeRight.setAttribute("visibility", "visible");
+                        }
                     }
                 }
                 else {
                     this.loc_cursorShapeLeft.setAttribute("visibility", "hidden");
                     this.loc_cursorShapeRight.setAttribute("visibility", "hidden");
-                }
-                if (this.isHud) {
-                    let ySlide = B787_10_HUD_ILS.getYSlide();
-                    this.loc_mainGroup.setAttribute("transform", "translate(0, " + ySlide + ")");
                 }
             }
             if (this.InfoGroup && this.infoVisible) {
@@ -918,14 +978,16 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
         }
     }
     showGlideslope(_val) {
-        this.gsVisible = _val;
-        if (_val) {
-            this.gs_mainGroup.setAttribute("visibility", "visible");
-        }
-        else {
-            this.gs_mainGroup.setAttribute("visibility", "hidden");
-            this.gs_cursorShapeUp.removeAttribute("visibility");
-            this.gs_cursorShapeDown.removeAttribute("visibility");
+        if (this.gsVisible !== _val) {
+            this.gsVisible = _val;
+            if (_val) {
+                this.gs_mainGroup.setAttribute("visibility", "visible");
+            }
+            else {
+                this.gs_mainGroup.setAttribute("visibility", "hidden");
+                this.gs_cursorShapeUp.removeAttribute("visibility");
+                this.gs_cursorShapeDown.removeAttribute("visibility");
+            }
         }
     }
     showNavInfo(_val) {

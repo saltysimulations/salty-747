@@ -96,14 +96,13 @@ var Boeing;
     GearDisplay.TIMEOUT_LENGTH = 10000;
     Boeing.GearDisplay = GearDisplay;
     class FlapsDisplay {
-        constructor(_rootElement, _marker, _valueText, _bar, _gauge, _leverPosAngles) {
-            this.leverPosAngles = new Array();
+        constructor(_rootElement, _marker, _valueText, _bar, _gauge) {
             this.rootElement = _rootElement;
             this.marker = _marker;
             this.valueText = _valueText;
             this.bar = _bar;
             this.gauge = _gauge;
-            this.leverPosAngles = _leverPosAngles;
+            this.cockpitSettings = SimVar.GetGameVarValue("", "GlassCockpitSettings");
             this.refreshValue(0, 0, 0, true);
         }
         update(_deltaTime) {
@@ -134,7 +133,7 @@ var Boeing;
                     barBottom = barTop + this.bar.height.baseVal.value;
                     barHeight = (barBottom - barTop);
                 }
-                var markerY = barTop + (barHeight * this.flapsAngleToPercentage(targetAngle));
+                var markerY = barTop + (barHeight * this.currentPercent);
                 var markerYStr = markerY.toString();
                 if (this.marker != null) {
                     this.marker.setAttribute("y1", markerYStr);
@@ -157,16 +156,10 @@ var Boeing;
             }
         }
         flapsLeverPositionToAngle(_leverPos) {
-            if ((_leverPos >= 0) && (this.leverPosAngles != null) && (_leverPos < this.leverPosAngles.length)) {
-                return this.leverPosAngles[_leverPos];
+            if (this.cockpitSettings && this.cockpitSettings.FlapsLevels.initialised) {
+                return this.cockpitSettings.FlapsLevels.flapsAngle[_leverPos];
             }
-            return 0;
-        }
-        flapsAngleToPercentage(_angle) {
-            if ((this.leverPosAngles != null) && (this.leverPosAngles.length > 0)) {
-                return (_angle / this.leverPosAngles[this.leverPosAngles.length - 1]);
-            }
-            return 0;
+            return Simplane.getFlapsHandleAngle(_leverPos);
         }
     }
     FlapsDisplay.TIMEOUT_LENGTH = 3000;
@@ -204,7 +197,7 @@ var Boeing;
         }
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
-                this.currentValue = _value;
+                this.currentValue = Utils.Clamp(_value, 0, this.maxValue);
                 var displayValue = (this.currentValue + this.maxValue) * 0.5;
                 if (this.valueText != null) {
                     this.valueText.textContent = displayValue.toFixed(this.valueDecimals);

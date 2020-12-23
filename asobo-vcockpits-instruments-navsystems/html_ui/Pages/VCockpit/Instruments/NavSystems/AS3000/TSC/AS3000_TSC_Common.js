@@ -123,7 +123,8 @@ class AS3000_TSC extends NavSystemTouch {
         this.mapPointerControl = new NavSystemElementContainer("Map Pointer Control", "MapPointerControl", new AS3000_MapPointerControl());
         this.mapPointerControl.setGPS(this);
         this.confirmationWindow = new AS3000_TSC_ConfirmationWindow();
-        this.addIndependentElementContainer(new NavSystemElementContainer("Terrain Alert", "terrainAlert", new AS3000_TSC_TerrainAlert()));
+        this.terrainAlerts = new AS3000_TSC_TerrainAlert();
+        this.addIndependentElementContainer(new NavSystemElementContainer("Terrain Alert", "terrainAlert", this.terrainAlerts));
         this.addIndependentElementContainer(new NavSystemElementContainer("Confirmation Window", "ConfirmationWindow", this.confirmationWindow));
     }
     parseXMLConfig() {
@@ -135,6 +136,11 @@ class AS3000_TSC extends NavSystemTouch {
     }
     disconnectedCallback() {
         super.disconnectedCallback();
+    }
+    reboot() {
+        super.reboot();
+        if (this.terrainAlerts)
+            this.terrainAlerts.reset();
     }
     onUpdate() {
         let title = this.getCurrentPage().name;

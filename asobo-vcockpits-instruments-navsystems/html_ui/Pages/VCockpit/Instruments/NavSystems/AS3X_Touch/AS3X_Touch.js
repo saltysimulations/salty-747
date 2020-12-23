@@ -30,7 +30,8 @@ class AS3X_Touch extends NavSystemTouch {
         this.rightOuterKnobText = this.getChildById("RightOuterKnobText");
         this.mfdMapElement = this.getChildById("Map_Elements");
         this.mfdMapMapElement = this.mfdMapElement.getElementsByTagName("map-instrument")[0];
-        this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", new PFD_Warnings()));
+        this.warnings = new PFD_Warnings();
+        this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", this.warnings));
         this.addIndependentElementContainer(new NavSystemElementContainer("MainMap", "Map_Elements", new AS3X_Touch_Map()));
         this.topBar = new AS3X_Touch_TopBar();
         this.addIndependentElementContainer(new NavSystemElementContainer("TopBar", "TopBar", this.topBar));
@@ -174,6 +175,11 @@ class AS3X_Touch extends NavSystemTouch {
     }
     disconnectedCallback() {
         super.disconnectedCallback();
+    }
+    reboot() {
+        super.reboot();
+        if (this.warnings)
+            this.warnings.reset();
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);

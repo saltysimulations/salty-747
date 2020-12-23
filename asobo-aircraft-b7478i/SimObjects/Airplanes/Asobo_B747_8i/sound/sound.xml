@@ -61,8 +61,7 @@
     <Sound WwiseEvent="STALL_WARNING" WwiseData="true" />
     <Sound WwiseEvent="OVERSPEED_WARNING_SOUND" WwiseData="true" />
     <Sound WwiseEvent="GLIDESLOPE_WARNING_SOUND" WwiseData="true" />
-    <Sound WwiseEvent="NO_SMOKING_ALERT" WwiseData="true" />
-    <Sound WwiseEvent="SEATBELTS_ALERT" WwiseData="true" />
+    <Sound WwiseEvent="SEATBELTS_ALERT" WwiseData="true" BreakOnStop="true"/>
   </MiscellaneousSounds>
   
   <EngineSoundPresets>
@@ -234,7 +233,7 @@
   
 <!-- AvionicSounds ========================================================================================== --> 
   
-  <AvionicSounds> 
+  <AvionicSounds>
 	<Sound WwiseData="true" WwiseEvent="aural_10ft" />
 	<Sound WwiseData="true" WwiseEvent="aural_20ft" />
 	<Sound WwiseData="true" WwiseEvent="aural_30ft" />
@@ -360,16 +359,14 @@
 	<Sound WwiseData="true" WwiseEvent="logo_light_switch_off" ViewPoint="Inside"/>	  		  
 	<Sound WwiseData="true" WwiseEvent="potentiometer_light_switch_off" ViewPoint="Inside"/>	  		  
 	<Sound WwiseData="true" WwiseEvent="potentiometer_light_switch_on" ViewPoint="Inside"/>	  		  
-	<Sound WwiseData="true" WwiseEvent="light_switch" ViewPoint="Inside"/>	
-	
+	<Sound WwiseData="true" WwiseEvent="light_switch" ViewPoint="Inside"/>		
 	<Sound WwiseData="true" WwiseEvent="lighting_knob_generic" ViewPoint="Inside"/>	  
 	<Sound WwiseData="true" WwiseEvent="lighting_single_knob" ViewPoint="Inside"/>	  
 	<Sound WwiseData="true" WwiseEvent="lighting_outer_knob" ViewPoint="Inside"/>	  
 	<Sound WwiseData="true" WwiseEvent="lighting_inner_knob" ViewPoint="Inside"/>	  
 	  
     <!-- Deice ================================================================================================= -->  
-    <Sound WwiseData="true" WwiseEvent="deice_engine_switch_on" ViewPoint="Inside"/>	  	  
-	<Sound WwiseData="true" WwiseEvent="deice_engine_switch_off" ViewPoint="Inside"/>	  	      
+    <Sound WwiseData="true" WwiseEvent="deice_engine_knob" ViewPoint="Inside"/>	  	  
     <Sound WwiseData="true" WwiseEvent="deice_airframe_switch_on" ViewPoint="Inside"/>	  	  
 	<Sound WwiseData="true" WwiseEvent="deice_airframe_switch_off" ViewPoint="Inside"/>	  
 	<Sound WwiseData="true" WwiseEvent="deice_windshield_switch_on" ViewPoint="Inside"/>	
@@ -392,8 +389,12 @@
     <Sound WwiseData="true" WwiseEvent="cover_open" ViewPoint="Inside"/>	  	  
 	<Sound WwiseData="true" WwiseEvent="cover_close" ViewPoint="Inside"/>	  
 	<Sound WwiseData="true" WwiseEvent="safety_push_button_on" ViewPoint="Inside"/>	  
-	<Sound WwiseData="true" WwiseEvent="safety_push_button_off" ViewPoint="Inside"/>	  
+	<Sound WwiseData="true" WwiseEvent="safety_push_button_off" ViewPoint="Inside"/>	
 
+    <!-- Airliner common ============================================================================================== -->	
+	<Sound WwiseData="true" WwiseEvent="seatbelts_switch_on" ViewPoint="Inside"/>		
+	<Sound WwiseData="true" WwiseEvent="seatbelts_switch_off" ViewPoint="Inside"/>		
+	
 	<!-- Exterior ========================================================================================== --> 	
 	<Sound WwiseData="true" WwiseEvent="wipers_forward" NodeName="FUSELAGE_DETAIL1_CENTER"/>
 	<Sound WwiseData="true" WwiseEvent="wipers_backward" NodeName="FUSELAGE_DETAIL1_CENTER"/>

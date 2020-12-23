@@ -237,11 +237,13 @@ var Boeing_FMA;
             if (SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 1) {
                 return 5;
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.HOLD && SimVar.GetSimVarValue("L:AP_LNAV_ARMED", "number") === 1) {
-                return 8;
-            }
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && Simplane.getAutoPilotThrottleArmed(1)) {
-                return 8;
+            if (Simplane.getAutoPilotActive() || Simplane.getAutoPilotFlightDirectorActive(1) || Simplane.getAutoPilotFlightDirectorActive(2)) {
+                if (Simplane.getEngineThrottleMode(0) === ThrottleMode.HOLD && SimVar.GetSimVarValue("L:AP_LNAV_ARMED", "number") === 1) {
+                    return 8;
+                }
+                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && Simplane.getAutoPilotThrottleArmed(1)) {
+                    return 8;
+                }
             }
             if (Simplane.getAutoPilotHeadingLockActive()) {
                 if (SimVar.GetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number") === 1) {

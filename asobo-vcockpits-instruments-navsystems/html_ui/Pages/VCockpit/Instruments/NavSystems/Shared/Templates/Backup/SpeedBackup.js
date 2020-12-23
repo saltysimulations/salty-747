@@ -137,7 +137,7 @@ class SpeedBackup extends HTMLElement {
                     dashSvg.setAttribute("width", "25");
                     dashSvg.setAttribute("height", refHeight.toString());
                     dashSvg.setAttribute("viewBox", "0 0 25 " + refHeight);
-                    this.root.appendChild(dashSvg);
+                    this.airspeedGroup.appendChild(dashSvg);
                     this.startElement = document.createElementNS(Avionics.SVG.NS, "g");
                     dashSvg.appendChild(this.startElement);
                     let startBg = document.createElementNS(Avionics.SVG.NS, "rect");
@@ -588,7 +588,7 @@ class SpeedBackup extends HTMLElement {
                         this.startElement.setAttribute("transform", "translate(0," + val + ")");
                     }
                     if (this.maxValue > 0) {
-                        var val = ((Math.min(Math.max(center + 40 - this.maxValue, -10), 80) * 10) + (this.airspeed - center) * 10);
+                        var val = 275 + ((center - this.maxValue) * 8) + ((this.airspeed - center) * 8);
                         this.endElement.setAttribute("transform", "translate(0," + val + ")");
                     }
                     if (this.airspeedCurrentCenterGrad != center) {

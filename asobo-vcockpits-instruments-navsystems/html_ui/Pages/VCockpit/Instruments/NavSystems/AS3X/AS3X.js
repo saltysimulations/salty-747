@@ -38,13 +38,14 @@ class AS3X extends NavSystem {
                 ];
                 this.mapInstrument = new MapInstrumentElement();
                 this.mapInstrument.setGPS(this);
+                this.warnings = new PFD_Warnings();
                 this.addIndependentElementContainer(new NavSystemElementContainer("Airspeed", "PFD", new PFD_Airspeed()));
                 this.addIndependentElementContainer(new NavSystemElementContainer("Altimeter", "PFD", new PFD_Altimeter()));
                 this.addIndependentElementContainer(new NavSystemElementContainer("SimpleCompass", "PFD", new PFD_SimpleCompass()));
                 this.addIndependentElementContainer(new NavSystemElementContainer("CDI", "PFD", new PFD_CDI()));
                 this.addIndependentElementContainer(new NavSystemElementContainer("MapInstrument", "PFD", this.mapInstrument));
                 this.addIndependentElementContainer(new NavSystemElementContainer("Attitude", "PFD", new PFD_Attitude()));
-                this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", new PFD_Warnings()));
+                this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", this.warnings));
                 this.addIndependentElementContainer(new NavSystemElementContainer("Autopilot", "AutopilotInfos", new PFD_AutopilotDisplay()));
                 this.addIndependentElementContainer(new NavSystemElementContainer("Engine", "Engine", new GlassCockpit_XMLEngine()));
                 this.addIndependentElementContainer(new NavSystemElementContainer("TopBar", "TopBar", new AS3X_TopBar()));
@@ -63,8 +64,9 @@ class AS3X extends NavSystem {
                 this.proceduresPage.setGPS(this);
                 break;
             case "Split":
+                this.warnings = new PFD_Warnings();
                 this.addIndependentElementContainer(new AS3X_PFD());
-                this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", new PFD_Warnings()));
+                this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", this.warnings));
             case "MFD":
                 this.pageGroups = [
                     new NavSystemPageGroup("Main", this, [
@@ -115,6 +117,11 @@ class AS3X extends NavSystem {
         }
     }
     get templateID() { return "AS3X"; }
+    reboot() {
+        super.reboot();
+        if (this.warnings)
+            this.warnings.reset();
+    }
 }
 class AS3X_Page extends NavSystemPage {
     constructor(_name, _htmlElemId, _element, _shortName = "", _detailedName = "") {

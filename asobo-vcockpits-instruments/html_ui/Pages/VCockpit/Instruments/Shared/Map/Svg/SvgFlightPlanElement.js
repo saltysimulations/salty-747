@@ -97,8 +97,18 @@ class SvgFlightPlanElement extends SvgMapElement {
             }
             let pIndex = 0;
             let first = 0;
+            let firstApproach = 0;
             if (this.source.getIsDirectTo()) {
-                first = 1;
+                let directToTarget = this.source.getDirectToTarget();
+                if (directToTarget) {
+                    first = this.source.getWaypoints().findIndex(wp => { return wp.icao === directToTarget.icao; });
+                    if (first === -1) {
+                        firstApproach = this.source.getApproachWaypoints().findIndex(wp => { return wp.icao === directToTarget.icao; });
+                        if (firstApproach != -1) {
+                            first = Infinity;
+                        }
+                    }
+                }
             }
             else if (this.hideReachedWaypoints) {
                 first = Math.max(0, activeWaypointIndex - 1);
@@ -196,27 +206,32 @@ class SvgFlightPlanElement extends SvgMapElement {
             }
             if (approach) {
                 let waypoints = this.source.getApproachWaypoints();
-                for (let i = 0; i < waypoints.length; i++) {
-                    let wpPoints = [];
-                    if (waypoints[i].transitionLLas) {
-                        for (let j = 0; j < waypoints[i].transitionLLas.length; j++) {
-                            wpPoints.push(waypoints[i].transitionLLas[j]);
+                for (let i = firstApproach; i < waypoints.length; i++) {
+                    let waypoint = waypoints[i];
+                    if (waypoint) {
+                        let wpPoints = [];
+                        if (i > firstApproach || !this.source.getIsDirectTo()) {
+                            if (waypoints[i].transitionLLas) {
+                                for (let j = 0; j < waypoints[i].transitionLLas.length; j++) {
+                                    wpPoints.push(waypoints[i].transitionLLas[j]);
+                                }
+                            }
                         }
-                    }
-                    wpPoints.push(new LatLongAlt(waypoints[i].latitudeFP, waypoints[i].longitudeFP, waypoints[i].altitudeinFP));
-                    for (let j = 0; j < wpPoints.length; j++) {
-                        if (this.points[pIndex]) {
-                            map.coordinatesToXYToRef(wpPoints[j], this.points[pIndex]);
-                            this.points[pIndex].refWP = waypoints[i];
-                            this.points[pIndex].refWPIndex = last + i;
+                        wpPoints.push(new LatLongAlt(waypoints[i].latitudeFP, waypoints[i].longitudeFP, waypoints[i].altitudeinFP));
+                        for (let j = 0; j < wpPoints.length; j++) {
+                            if (this.points[pIndex]) {
+                                map.coordinatesToXYToRef(wpPoints[j], this.points[pIndex]);
+                                this.points[pIndex].refWP = waypoints[i];
+                                this.points[pIndex].refWPIndex = last + i;
+                            }
+                            else {
+                                let p = map.coordinatesToXY(wpPoints[j]);
+                                p.refWP = waypoints[i];
+                                p.refWPIndex = last + i;
+                                this.points.push(p);
+                            }
+                            pIndex++;
                         }
-                        else {
-                            let p = map.coordinatesToXY(wpPoints[j]);
-                            p.refWP = waypoints[i];
-                            p.refWPIndex = last + i;
-                            this.points.push(p);
-                        }
-                        pIndex++;
                     }
                 }
             }
@@ -315,7 +330,7 @@ class SvgFlightPlanElement extends SvgMapElement {
                 let isHighlit = false;
                 if (!this._isDashed && this.highlightActiveLeg) {
                     if (this.source.getActiveWaypoint(false, true)) {
-                        if (p2.refWP.ident === this.source.getActiveWaypoint(false, true).ident) {
+                        if (p2.refWP === this.source.getActiveWaypoint(false, true)) {
                             isHighlit = true;
                         }
                     }

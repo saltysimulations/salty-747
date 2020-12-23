@@ -67,16 +67,28 @@ class BaseAirliners extends NavSystem {
         if (this.isMachActive != isMachActive) {
             this.isMachActive = isMachActive;
             if (isMachActive) {
+                console.log("Switching from IAS to MACH");
                 let mach = SimVar.GetGameVarValue("FROM KIAS TO MACH", "number", Simplane.getAutoPilotSelectedAirspeedHoldValue());
                 Coherent.call("AP_MACH_VAR_SET", 1, mach);
                 mach = SimVar.GetGameVarValue("FROM KIAS TO MACH", "number", Simplane.getAutoPilotManagedAirspeedHoldValue());
                 Coherent.call("AP_MACH_VAR_SET", 2, mach);
+                SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
+                if (SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
+                    SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
+                    console.log("Switching SPEED HOLD to Knots");
+                }
             }
             else {
+                console.log("Switching from MACH to IAS");
                 let knots = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", Simplane.getAutoPilotSelectedMachHoldValue());
                 Coherent.call("AP_SPD_VAR_SET", 1, knots);
                 knots = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", Simplane.getAutoPilotManagedMachHoldValue());
                 Coherent.call("AP_SPD_VAR_SET", 2, knots);
+                SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+                if (SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
+                    SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
+                    console.log("Switching SPEED HOLD to Mach");
+                }
             }
             return true;
         }
@@ -185,6 +197,7 @@ var Airliners;
             var root = this.gps.getChildById(this.htmlElemId);
             if (root != null) {
                 this.screen = root.querySelector(this.selector);
+                this.screen.init(this.gps);
             }
         }
         onUpdate(_deltaTime) {
@@ -215,6 +228,7 @@ var Airliners;
             var root = this.gps.getChildById(this.container.htmlElemId);
             if (root != null) {
                 this.page = root.querySelector(this.selector);
+                this.page.init(this.gps);
             }
         }
         onEnter() {
@@ -240,17 +254,19 @@ var Airliners;
     }
     Airliners.EICASPage = EICASPage;
     class DynamicValueComponent {
-        constructor(_text, _getValueFunction, _roundToDP = 0, _formatFunction = null) {
+        constructor(_text, _getValueFunction, _roundToDP = 0, _formatFunction = null, _hideFunction = null) {
             this.visible = true;
             this.text = null;
             this.getValue = null;
             this.roundToDP = 0;
-            this.format = null;
+            this.formatCbk = null;
+            this.hideCbk = null;
             this.currentValue = 0;
             this.text = _text;
             this.getValue = _getValueFunction;
             this.roundToDP = _roundToDP;
-            this.format = _formatFunction;
+            this.formatCbk = _formatFunction;
+            this.hideCbk = _hideFunction;
             this.trySetValue(0, true);
         }
         set isVisible(_visible) {
@@ -277,11 +293,17 @@ var Airliners;
             if ((_value != this.currentValue) || _force) {
                 this.currentValue = _value;
                 if (this.text != null) {
-                    if (this.format != null) {
-                        this.text.textContent = this.format(_value, this.roundToDP);
+                    if (this.hideCbk && this.hideCbk()) {
+                        this.text.textContent = "";
+                        this.currentValue = -1;
                     }
                     else {
-                        this.text.textContent = DynamicValueComponent.formatValueToString(_value, this.roundToDP);
+                        if (this.formatCbk != null) {
+                            this.text.textContent = this.formatCbk(_value, this.roundToDP);
+                        }
+                        else {
+                            this.text.textContent = DynamicValueComponent.formatValueToString(_value, this.roundToDP);
+                        }
                     }
                 }
             }
@@ -479,9 +501,11 @@ var Airliners;
             }
             return height;
         }
-        highlight(_index) {
-            if (_index >= 0)
-                this.highlightId = _index;
+        set highlight(_index) {
+            this.highlightId = _index;
+        }
+        get highlight() {
+            return this.highlightId;
         }
         reset() {
         }
@@ -1158,32 +1182,43 @@ var Airliners;
         }
         updateHighlight() {
             if (this.highlightElem) {
-                let itemId = 0;
-                let lastItem;
-                for (let i = 0; i < this.allSections.length; i++) {
-                    let section = this.allSections[i];
-                    for (let j = 0; j < section.items.length; j++) {
-                        let item = section.items[j];
-                        if (item.interactive) {
-                            if (itemId == this.highlightId) {
-                                this.setHighlightedItem(item);
-                                return true;
+                if (this.highlightId >= 0) {
+                    let itemId = 0;
+                    let lastItem;
+                    for (let i = 0; i < this.allSections.length; i++) {
+                        let section = this.allSections[i];
+                        for (let j = 0; j < section.items.length; j++) {
+                            let item = section.items[j];
+                            if (item.interactive) {
+                                if (itemId == this.highlightId) {
+                                    this.setHighlightedItem(item);
+                                    return true;
+                                }
+                                lastItem = item;
+                                itemId++;
                             }
-                            lastItem = item;
-                            itemId++;
                         }
                     }
+                    if (lastItem) {
+                        this.highlightId = itemId - 1;
+                        this.setHighlightedItem(lastItem);
+                    }
                 }
-                if (lastItem) {
-                    this.highlightId = itemId - 1;
-                    this.setHighlightedItem(lastItem);
+                else {
+                    this.setHighlightedItem(null);
                 }
             }
         }
         setHighlightedItem(_item) {
             if (_item != this.highlightItem) {
                 this.highlightItem = _item;
-                this.highlightElem.setAttribute("y", _item.y.toString());
+                if (this.highlightItem) {
+                    this.highlightElem.setAttribute("y", _item.y.toString());
+                    this.highlightElem.setAttribute("visibility", "visible");
+                }
+                else {
+                    this.highlightElem.setAttribute("visibility", "hidden");
+                }
                 this.speedInc = 1.0;
             }
         }

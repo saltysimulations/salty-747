@@ -21,11 +21,11 @@
 
 		<Condition Valid="DISABLE_ANIMATION">
 			<False>
-				<AnimationTriggers Animation="#ANIM_NAME#">
-					<EventTrigger NormalizedTime="#NORMALIZED_TIME#" Direction="#DIRECTION#">
-						<EffectEvent Name="#EVENT_NAME#"/>
-					</EventTrigger>
-				</AnimationTriggers>
+		<AnimationTriggers Animation="#ANIM_NAME#">
+			<EventTrigger NormalizedTime="#NORMALIZED_TIME#" Direction="#DIRECTION#">
+				<EffectEvent Name="#EVENT_NAME#"/>
+			</EventTrigger>
+		</AnimationTriggers>
 			</False>
 		</Condition>
 	</Template>
@@ -59,11 +59,11 @@
 
 		<Condition Valid="DISABLE_ANIMATION">
 			<False>
-				<AnimationTriggers Animation="#ANIM_NAME#">
-					<EventTrigger NormalizedTime="#NORMALIZED_TIME#" Direction="#DIRECTION#">
-						<SoundEvent WwiseEvent="#WWISE_EVENT#" Action="#ACTION#"/>
-					</EventTrigger>
-				</AnimationTriggers>
+		<AnimationTriggers Animation="#ANIM_NAME#">
+			<EventTrigger NormalizedTime="#NORMALIZED_TIME#" Direction="#DIRECTION#">
+				<SoundEvent WwiseEvent="#WWISE_EVENT#" Action="#ACTION#"/>
+			</EventTrigger>
+		</AnimationTriggers>
 			</False>
 		</Condition>
 	</Template>
@@ -83,11 +83,11 @@
 		
 		<Condition Valid="DISABLE_ANIMATION">
 			<False>
-				<AnimationTriggers Animation="#ANIM_NAME#">
-					<EventTrigger Count="#COUNT#" Direction="#DIRECTION#">
-						<SoundEvent WwiseEvent="#WWISE_EVENT#" Action="#ACTION#"/>
-					</EventTrigger>
-				</AnimationTriggers>
+		<AnimationTriggers Animation="#ANIM_NAME#">
+			<EventTrigger Count="#COUNT#" Direction="#DIRECTION#">
+				<SoundEvent WwiseEvent="#WWISE_EVENT#" Action="#ACTION#"/>
+			</EventTrigger>
+		</AnimationTriggers>
 			</False>
 		</Condition>
 	</Template>
@@ -127,14 +127,14 @@
 
 		<Condition Valid="DISABLE_ANIMATION">
 			<False>
-				<AnimationTriggers Animation="#ANIM_NAME#">
-					<EventTrigger NormalizedTime="#NORMALIZED_TIME_1#" Direction="#DIRECTION_1#">
-						<SoundEvent WwiseEvent="#WWISE_EVENT_1#" Action="#ACTION_1#"/>
-					</EventTrigger>
-					<EventTrigger NormalizedTime="#NORMALIZED_TIME_2#" Direction="#DIRECTION_2#">
-						<SoundEvent WwiseEvent="#WWISE_EVENT_2#" Action="#ACTION_2#"/>
-					</EventTrigger>
-				</AnimationTriggers>
+		<AnimationTriggers Animation="#ANIM_NAME#">
+			<EventTrigger NormalizedTime="#NORMALIZED_TIME_1#" Direction="#DIRECTION_1#">
+				<SoundEvent WwiseEvent="#WWISE_EVENT_1#" Action="#ACTION_1#"/>
+			</EventTrigger>
+			<EventTrigger NormalizedTime="#NORMALIZED_TIME_2#" Direction="#DIRECTION_2#">
+				<SoundEvent WwiseEvent="#WWISE_EVENT_2#" Action="#ACTION_2#"/>
+			</EventTrigger>
+		</AnimationTriggers>
 			</False>
 		</Condition>
 	</Template>

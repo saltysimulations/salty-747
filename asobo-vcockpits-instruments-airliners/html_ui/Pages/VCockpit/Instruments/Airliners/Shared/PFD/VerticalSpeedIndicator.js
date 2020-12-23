@@ -702,7 +702,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 else
                     this.cursorPosY1 = this.cursorPosY2 + height;
                 let alert = false;
-                {
+                if (this.aircraft != Aircraft.AS01B) {
                     let altitude = Simplane.getAltitudeAboveGround();
                     if ((altitude <= 2500 && vSpeed <= -2000) || (altitude > 2500 && vSpeed <= -6000))
                         alert = true;

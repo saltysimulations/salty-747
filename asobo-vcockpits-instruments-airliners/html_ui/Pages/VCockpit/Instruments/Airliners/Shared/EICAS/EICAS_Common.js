@@ -6,9 +6,9 @@ class EICASCommonDisplay extends Airliners.EICASTemplateElement {
     get templateID() { return "EICASCommonDisplayTemplate"; }
     connectedCallback() {
         super.connectedCallback();
-        TemplateElement.call(this, this.init.bind(this));
     }
-    init() {
+    init(_eicas) {
+        this.eicas = _eicas;
         this.tatText = this.querySelector("#TATValue");
         this.satText = this.querySelector("#SATValue");
         this.currentSeconds = 0;

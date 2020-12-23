@@ -44,14 +44,14 @@ class RadioNav {
         return value;
     }
     getVORBeacon(_index) {
-        if (this.navMode == NavMode.TWO_SLOTS) {
-            let ils = this.getILSBeacon(_index);
-            if (ils.id > 0)
-                return ils;
-        }
         let vor = this._getVORBeacon(_index);
         if (vor.id > 0)
             return vor;
+        if (this.navMode == NavMode.TWO_SLOTS) {
+            let ils = this._getILSBeacon(_index);
+            if (ils.id > 0)
+                return ils;
+        }
         return this.navBeacon;
     }
     getBestVORBeacon(_useNavSource = true) {
@@ -78,9 +78,13 @@ class RadioNav {
         if (hasNav) {
             this.navBeacon.id = _index;
             this.navBeacon.freq = SimVar.GetSimVarValue("NAV FREQUENCY:" + _index, "MHz");
-            this.navBeacon.course = SimVar.GetSimVarValue("NAV OBS:" + _index, "degree");
             this.navBeacon.name = SimVar.GetSimVarValue("NAV NAME:" + _index, "string");
             this.navBeacon.ident = SimVar.GetSimVarValue("NAV IDENT:" + _index, "string");
+            let hasLocalizer = SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + _index, "Bool");
+            if (hasLocalizer)
+                this.navBeacon.course = SimVar.GetSimVarValue("NAV LOCALIZER:" + _index, "degree");
+            else
+                this.navBeacon.course = SimVar.GetSimVarValue("NAV OBS:" + _index, "degree");
             if (SimVar.GetSimVarValue("AUTOPILOT BACKCOURSE HOLD", "bool"))
                 this.navBeacon.course += 180;
         }
@@ -118,6 +122,17 @@ class RadioNav {
         return value;
     }
     getILSBeacon(_index) {
+        let ils = this._getILSBeacon(_index);
+        if (ils.id > 0)
+            return ils;
+        if (this.navMode == NavMode.TWO_SLOTS) {
+            let vor = this._getVORBeacon(_index);
+            if (vor.id > 0)
+                return vor;
+        }
+        return this.navBeacon;
+    }
+    _getILSBeacon(_index) {
         this.navBeacon.reset();
         let index = (this.navMode == NavMode.FOUR_SLOTS) ? _index + 2 : _index;
         let hasLocalizer = SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + index, "Bool");

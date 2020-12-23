@@ -33,8 +33,28 @@ class SvgWaypointElement extends SvgMapElement {
             return this.source.icao;
         }
     }
+    get icaoNoSpace() {
+        if (this.source instanceof WayPoint) {
+            return this.source.icaoNoSpace;
+        }
+        if (!this._icaoNoSpace) {
+            if (this.icao) {
+                this._icaoNoSpace = this.icao;
+                while (this._icaoNoSpace.indexOf(" ") != -1) {
+                    this._icaoNoSpace = this._icaoNoSpace.replace(" ", "_");
+                }
+            }
+        }
+        if (this._icaoNoSpace) {
+            return this._icaoNoSpace;
+        }
+    }
     set icao(v) {
         this._icao = v;
+        this._icaoNoSpace = this._icao;
+        while (this._icaoNoSpace.indexOf(" ") != -1) {
+            this._icaoNoSpace.replace(" ", "_");
+        }
     }
     get coordinates() {
         if (this._coordinates) {
@@ -173,8 +193,8 @@ class SvgWaypointElement extends SvgMapElement {
             this.x = pos.x;
             this.y = pos.y;
         }
-        let ident = FlightPlanManager.DEBUG_INSTANCE.getActiveWaypointIdent();
-        let isActiveWaypoint = this.source.ident === ident;
+        let wp = FlightPlanManager.DEBUG_INSTANCE.getActiveWaypoint(false, true);
+        let isActiveWaypoint = this.source === wp || (wp && wp.icao === this.source.icao);
         if (isActiveWaypoint != this._lastIsActiveWaypoint) {
             this._refreshLabel(map, isActiveWaypoint);
             if (this._image) {

@@ -10,6 +10,7 @@ class Backup_Airspeed extends NavSystemElement {
     constructor() {
         super();
         this.lastIndicatedSpeed = -10000;
+        this.maxSpeed = 0;
     }
     init(root) {
         this.airspeedElement = this.gps.getChildById("SvgMain");
@@ -26,6 +27,7 @@ class Backup_Airspeed extends NavSystemElement {
             this.airspeedElement.setAttribute("red-begin", cockpitSettings.AirSpeed.redStart.toString());
             this.airspeedElement.setAttribute("red-end", cockpitSettings.AirSpeed.redEnd.toString());
             this.airspeedElement.setAttribute("max-speed", cockpitSettings.AirSpeed.highLimit.toString());
+            this.maxSpeed = cockpitSettings.AirSpeed.highLimit;
         }
         else {
             var designSpeeds = Simplane.getDesignSpeeds();
@@ -38,6 +40,7 @@ class Backup_Airspeed extends NavSystemElement {
             this.airspeedElement.setAttribute("red-begin", designSpeeds.VNe.toString());
             this.airspeedElement.setAttribute("red-end", designSpeeds.VMax.toString());
             this.airspeedElement.setAttribute("max-speed", designSpeeds.VNe.toString());
+            this.maxSpeed = designSpeeds.VNe;
         }
         if (this.gps) {
             var aspectRatio = this.gps.getAspectRatio();
@@ -54,6 +57,12 @@ class Backup_Airspeed extends NavSystemElement {
         if (indicatedSpeed != this.lastIndicatedSpeed) {
             this.airspeedElement.setAttribute("airspeed", indicatedSpeed.toFixed(1));
             this.lastIndicatedSpeed = indicatedSpeed;
+        }
+        let crossSpeed = SimVar.GetGameVarValue("AIRCRAFT CROSSOVER SPEED", "Knots");
+        let cruiseMach = SimVar.GetGameVarValue("AIRCRAFT CRUISE MACH", "mach");
+        let crossSpeedFactor = Simplane.getCrossoverSpeedFactor(this.maxSpeed, cruiseMach);
+        if (crossSpeed != 0) {
+            this.airspeedElement.setAttribute("max-speed", (Math.min(crossSpeedFactor, 1) * this.maxSpeed).toString());
         }
     }
     onExit() {

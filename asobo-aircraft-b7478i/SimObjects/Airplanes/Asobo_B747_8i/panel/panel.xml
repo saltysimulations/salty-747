@@ -208,14 +208,76 @@
 
 		<Annunciation>
 		  <Type>Warning</Type>
-		  <Text>L/G GEAR NOT DOWN</Text>
+		  <Text>PARK BRAKE</Text>
+		  <Condition>
+			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Warning</Type>
+		  <Text>FIRE</Text>
+		  <Condition>
+			<Simvar name="ENG ON FIRE:1" unit="Bool"/>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW </Text>
+		  <Condition Suffix="L-R">
+			<And>
+			  <Lower>
+				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+				<Constant>9</Constant>
+			  </Lower>
+			  <Lower>
+				<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+				<Constant>9</Constant>
+			  </Lower>
+			</And>
+		  </Condition>
+		  <Condition Suffix="L">
+			<Lower>
+			  <Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+			  <Constant>9</Constant>
+			</Lower>
+		  </Condition>
+		  <Condition Suffix="R">
+			<Lower>
+			  <Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+			  <Constant>9</Constant>
+			</Lower>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL IMBALANCE</Text>
+		  <Condition>
+			<Inequal tolerance="700">
+				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+				<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+			</Inequal>
+		  </Condition>
+		</Annunciation>
+	</Annunciations>
+  
+	<!-- Voices Alerts -->
+  
+	<VoicesAlerts>
+		<Alert>
+		  <Type>Warning</Type>
+		  <SoundEvent>aural_landing_gear</SoundEvent>
+		  <ShortText>L/G GEAR NOT DOWN</ShortText>
+		  <LongText>L/G GEAR NOT DOWN</LongText>
 		  <Condition>
 			<StateMachine>
 				<State id="Under" value="0">
 					<Transition to="Over">
 						<GreaterEqual>
 							<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
-							<Constant>750</Constant>
+							<Constant>1500</Constant>
 						</GreaterEqual>
 					</Transition>
 				</State>
@@ -279,68 +341,8 @@
 				</State>
 			</StateMachine>
 		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Warning</Type>
-		  <Text>PARK BRAKE</Text>
-		  <Condition>
-			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Warning</Type>
-		  <Text>FIRE</Text>
-		  <Condition>
-			<Simvar name="ENG ON FIRE:1" unit="Bool"/>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Caution</Type>
-		  <Text>FUEL LOW </Text>
-		  <Condition Suffix="L-R">
-			<And>
-			  <Lower>
-				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
-				<Constant>9</Constant>
-			  </Lower>
-			  <Lower>
-				<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
-				<Constant>9</Constant>
-			  </Lower>
-			</And>
-		  </Condition>
-		  <Condition Suffix="L">
-			<Lower>
-			  <Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
-			  <Constant>9</Constant>
-			</Lower>
-		  </Condition>
-		  <Condition Suffix="R">
-			<Lower>
-			  <Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
-			  <Constant>9</Constant>
-			</Lower>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Caution</Type>
-		  <Text>FUEL IMBALANCE</Text>
-		  <Condition>
-			<Inequal tolerance="700">
-				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
-				<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
-			</Inequal>
-		  </Condition>
-		</Annunciation>
-	</Annunciations>
-  
-	<!-- Voices Alerts -->
-  
-	<VoicesAlerts>
+		</Alert>
+		
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_5ft</SoundEvent>

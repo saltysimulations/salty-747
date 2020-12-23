@@ -18,13 +18,13 @@ class B747_8_FMC_VerticalRevisionPage {
                 ["", "LL WING/INCR/NO"],
                 ["[][color]blue", "[ ]°/[ ]°/[][color]blue"],
                 ["", "NEXT WPT"],
-                ["<HOLD", "[ ][color]blue"],
+                ["\<HOLD", "[ ][color]blue"],
                 ["ENABLE[color]blue", "NEW DEST"],
                 ["←ALTN[color]blue", "[ ][color]blue"],
                 [""],
                 ["", "AIRWAYS>"],
                 [""],
-                ["<RETURN"]
+                ["\<RETURN"]
             ]);
             fmc.onLeftInput[5] = () => {
                 B747_8_FMC_LegsPage.ShowPage1(fmc);

@@ -106,13 +106,13 @@ class FMCRoutePage {
             ["RUNWAY", "FLT NO"],
             [runwayCell, flightNoCell],
             ["REQUEST", "CO ROUTE"],
-            ["<SEND", coRouteCell],
+            ["\<SEND", coRouteCell],
             ["__FMCSEPARATOR"],
             [""],
             [""],
             [""],
             [""],
-            ["<RTE 2", activateCell]
+            ["\<RTE 2", activateCell]
         ]);
         fmc.onNextPage = () => {
             FMCRoutePage.ShowPage2(fmc);
@@ -254,7 +254,7 @@ class FMCRoutePage {
             [""],
             rows[4],
             [""],
-            ["<RTE 2", activateCell]
+            ["\<RTE 2", activateCell]
         ]);
         fmc.onPrevPage = () => {
             if (offset === 0) {

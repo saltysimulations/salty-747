@@ -9,7 +9,8 @@ class AS1000_MFD extends BaseAS1000 {
     connectedCallback() {
         super.connectedCallback();
         this.pagesContainer = this.getChildById("RightInfos");
-        this.addIndependentElementContainer(new Engine("Engine", "LeftInfos"));
+        this.engines = new Engine("Engine", "LeftInfos");
+        this.addIndependentElementContainer(this.engines);
         this.pageGroups = [
             new NavSystemPageGroup("MAP", this, [
                 new AS1000_MFD_MainMap()
@@ -94,6 +95,11 @@ class AS1000_MFD extends BaseAS1000 {
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
         SimVar.SetSimVarValue("L:Glasscockpit_MFD_Started", "number", this.isStarted ? 1 : 0);
+    }
+    reboot() {
+        super.reboot();
+        if (this.engines)
+            this.engines.reset();
     }
 }
 class AS1000_MFD_NavStatus extends NavSystemElement {

@@ -16,6 +16,14 @@
     left: 6%;
     width: 100%;
     height: 100%; }
+  :root line.gaugeMarkerCurrent {
+    stroke: var(--eicasWhite);
+    stroke-width: 3px;
+    fill: none; }
+  :root line.gaugeMarkerManaged {
+    stroke: var(--eicasMagenta);
+    stroke-width: 3px;
+    fill: none; }
   :root line.gaugeMarkerNormal {
     stroke: var(--eicasGreen);
     stroke-width: 3px;

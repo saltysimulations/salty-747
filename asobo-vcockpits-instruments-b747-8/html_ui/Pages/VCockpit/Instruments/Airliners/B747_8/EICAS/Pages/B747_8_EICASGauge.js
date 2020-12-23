@@ -169,6 +169,12 @@ var B747_8_EICAS_Common;
                 }
             }
         }
+        getDynamicLine(id) {
+            if (id >= 0 && id < this.dynamicLines.length) {
+                return this.dynamicLines[id];
+            }
+            return null;
+        }
     }
     B747_8_EICAS_Common.Gauge = Gauge;
     class GaugeDualDefinition {

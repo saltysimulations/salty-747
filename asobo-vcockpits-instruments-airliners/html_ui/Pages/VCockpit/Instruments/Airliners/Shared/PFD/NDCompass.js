@@ -1,7 +1,6 @@
 class Jet_PFD_NDCompass extends Jet_NDCompass {
     constructor() {
         super();
-        this.hudTopOrigin = NaN;
     }
     connectedCallback() {
         super.connectedCallback();
@@ -11,7 +10,6 @@ class Jet_PFD_NDCompass extends Jet_NDCompass {
     }
     destroyLayout() {
         super.destroyLayout();
-        this.hudTopOrigin = NaN;
     }
     constructArc() {
         super.constructArc();
@@ -200,17 +198,6 @@ class Jet_PFD_NDCompass extends Jet_NDCompass {
     }
     update(_deltaTime) {
         super.update(_deltaTime);
-        if (this.isHud) {
-            if (!isFinite(this.hudTopOrigin)) {
-                let clientRect = this.getBoundingClientRect();
-                if (clientRect.width > 0)
-                    this.hudTopOrigin = clientRect.top;
-            }
-            else {
-                let ySlide = B787_10_HUD_Compass.getYSlide();
-                this.style.top = this.hudTopOrigin + ySlide + "px";
-            }
-        }
     }
 }
 customElements.define("jet-pfd-nd-compass", Jet_PFD_NDCompass);

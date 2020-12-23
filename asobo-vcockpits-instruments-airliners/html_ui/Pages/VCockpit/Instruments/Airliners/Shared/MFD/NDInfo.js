@@ -1,6 +1,7 @@
 class Jet_MFD_NDInfo extends HTMLElement {
     constructor() {
         super(...arguments);
+        this.windStrongEnough = false;
         this._navMode = Jet_NDCompass_Navigation.NAV;
         this._navSource = 0;
         this._showILS = false;
@@ -46,7 +47,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
         this.setMode(this._navMode, this._navSource, true);
     }
     update(_dTime) {
-        this._dTime = _dTime / 1000;
+        this._dTime = _dTime;
         this.updateTitle();
         this.updateSpeeds();
         this.updateWaypoint();
@@ -128,7 +129,15 @@ class Jet_MFD_NDInfo extends HTMLElement {
         var refreshWindAngle = ((_windAngle != this.currentWindAngle) || _force);
         var refreshWindStrength = ((_windStrength != this.currentWindStrength) || _force);
         var refreshWindArrow = (refreshWindAngle || refreshWindStrength || (_planeAngle != this.currentPlaneAngle) || _force);
-        let windStrongEnough = (this.currentWindStrength >= Jet_MFD_NDInfo.MIN_WIND_STRENGTH_FOR_ARROW_DISPLAY) ? true : false;
+        if (Simplane.getIsGrounded()) {
+            this.windStrongEnough = false;
+        }
+        else if (this.windStrongEnough && this.currentWindStrength < Jet_MFD_NDInfo.MIN_WIND_STRENGTH_FOR_ARROW_DISPLAY) {
+            this.windStrongEnough = false;
+        }
+        else if (!this.windStrongEnough && this.currentWindStrength >= (Jet_MFD_NDInfo.MIN_WIND_STRENGTH_FOR_ARROW_DISPLAY + 2)) {
+            this.windStrongEnough = true;
+        }
         if (refreshWindAngle) {
             let startAngle = this.currentWindAngle;
             let endAngle = _windAngle;
@@ -139,10 +148,10 @@ class Jet_MFD_NDInfo extends HTMLElement {
             else if (delta < -180) {
                 endAngle += 360;
             }
-            let smoothedAngle = Utils.SmoothSin(startAngle, endAngle, 0.25, this._dTime);
+            let smoothedAngle = Utils.SmoothSin(startAngle, endAngle, 0.25, this._dTime / 1000);
             this.currentWindAngle = smoothedAngle % 360;
             if (this.windDirection != null) {
-                if (windStrongEnough)
+                if (this.windStrongEnough)
                     this.windDirection.textContent = this.currentWindAngle.toFixed(0).padStart(3, "0");
                 else
                     this.windDirection.textContent = "---";
@@ -151,21 +160,36 @@ class Jet_MFD_NDInfo extends HTMLElement {
         if (refreshWindStrength) {
             this.currentWindStrength = _windStrength;
             if (this.windStrength != null) {
-                this.windStrength.textContent = this.currentWindStrength.toString().padStart(2, "0");
+                if (this.windStrongEnough)
+                    this.windStrength.textContent = this.currentWindStrength.toString().padStart(2, "0");
+                else
+                    this.windStrength.textContent = "--";
             }
         }
         if (refreshWindArrow) {
             this.currentPlaneAngle = _planeAngle;
             if (this.windArrow != null) {
-                {
+                if (this.windStrongEnough) {
                     var arrowAngle = this.currentWindAngle - this.currentPlaneAngle;
                     arrowAngle += 180;
                     var transformStr = this.windArrow.getAttribute("transform");
-                    var split = transformStr.split("rotate");
-                    if ((split != null) && (split.length > 0)) {
-                        this.windArrow.setAttribute("transform", split[0] + " rotate(" + arrowAngle + ")");
+                    if (transformStr) {
+                        var split = transformStr.split("rotate");
+                        if (split) {
+                            transformStr = split[0];
+                        }
+                        else {
+                            transformStr = "";
+                        }
                     }
+                    if (transformStr)
+                        this.windArrow.setAttribute("transform", transformStr + " rotate(" + arrowAngle + ")");
+                    else
+                        this.windArrow.setAttribute("transform", "rotate(" + arrowAngle + ")");
                     this.windArrow.style.display = "block";
+                }
+                else {
+                    this.windArrow.style.display = "none";
                 }
             }
         }
@@ -360,7 +384,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
         if (this.elapsedTime) {
             if (this._showET) {
                 if (this._chronoStarted) {
-                    this._chronoValue += this._dTime;
+                    this._chronoValue += this._dTime / 1000;
                 }
                 var hours = Math.floor(this._chronoValue / 3600);
                 var minutes = Math.floor((this._chronoValue - (hours * 3600)) / 60);

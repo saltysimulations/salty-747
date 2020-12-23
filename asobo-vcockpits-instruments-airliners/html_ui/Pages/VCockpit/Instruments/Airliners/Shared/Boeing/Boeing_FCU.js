@@ -157,7 +157,7 @@ var Boeing_FCU;
             super.connectedCallback();
             this.modeElement = this.querySelector("#mode");
             if (this.modeElement != null) {
-                this.modeElement.textContent = "";
+                this.modeElement.textContent = "V/S";
             }
             if (this.valueElement != null) {
                 this.valueElement.isVisible = false;
@@ -171,7 +171,7 @@ var Boeing_FCU;
                 this.m_isVisible = visible;
                 this.isFPAMode = fpaMode;
                 if (this.modeElement != null) {
-                    this.modeElement.textContent = this.m_isVisible ? (this.isFPAMode ? "FPA" : "V/S") : "";
+                    this.modeElement.textContent = this.isFPAMode ? "FPA" : "V/S";
                 }
                 if (this.valueElement != null) {
                     this.valueElement.isVisible = this.m_isVisible;

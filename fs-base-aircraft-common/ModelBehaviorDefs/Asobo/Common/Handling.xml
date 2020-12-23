@@ -266,7 +266,10 @@
 		<WWISE_EVENT>rudder_trim_knob</WWISE_EVENT>
 		<WWISE_EVENT_1>rudder_trim_knob_01</WWISE_EVENT_1>
 		<WWISE_EVENT_2>rudder_trim_knob_02</WWISE_EVENT_2>
+		<THRESHOLD_INPUT>0.00025</THRESHOLD_INPUT>
+		<THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE>
 	</DefaultTemplateParameters>
+	
 		<Switch>
 			<Case Valid="USE_DEFAULT_VARIABLE_SPEED_TRIM">
 				<UseTemplate Name="ASOBO_HANDLING_Trim_Variable_Speed_Base_Template">
@@ -315,51 +318,65 @@
 					</False>
 				</Condition>
 			</Case>
-			<Default>
+		<Case Check="WHEEL_TYPE">
 				<Component ID="#NODE_ID#" Node="#NODE_ID#">
-					<UseTemplate Name = "ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
-						<ANIM_SIMVAR>RUDDER TRIM PCT</ANIM_SIMVAR>
-						<ANIM_SIMVAR_UNITS>percent</ANIM_SIMVAR_UNITS>
-						<ANIM_SIMVAR_SCALE>0.5</ANIM_SIMVAR_SCALE>
-						<ANIM_SIMVAR_BIAS>50</ANIM_SIMVAR_BIAS>
-						<AXIS>X</AXIS>
-						<POSITIVE_AXIS_CODE>
-							(A:RUDDER TRIM PCT, Percent) #INCREMENT# + #ANIM_SIMVAR_MAX# min (&gt;K:RUDDER_TRIM_SET)
-						</POSITIVE_AXIS_CODE>
-						<NEGATIVE_AXIS_CODE>
-							(A:RUDDER TRIM PCT, Percent) #INCREMENT# - #ANIM_SIMVAR_MIN# max (&gt;K:RUDDER_TRIM_SET)
-						</NEGATIVE_AXIS_CODE>
-						<Condition Check="USE_TRAJECTORY_DRAG_MODE">
+				<Condition Check="INFINITE">
 							<True>
-								<DRAG_CODE>
-									(M:DragPercent) #ANIM_SIMVAR_MAX# #ANIM_SIMVAR_MIN# - * #ANIM_SIMVAR_MIN# + sp0
-									l0 #ANIM_SIMVAR_MAX# min #ANIM_SIMVAR_MIN# max (&gt;K:RUDDER_TRIM_SET)
-								</DRAG_CODE>
+						<UseTemplate Name="ASOBO_GT_Lever_DraggingYAxis_Code">
+							<UP_CODE>(A:RUDDER TRIM PCT, position 16k) #INCREMENT# + #ANIM_SIMVAR_MAX# min (&gt;K:RUDDER_TRIM_SET)</UP_CODE>
+							<DOWN_CODE>(A:RUDDER TRIM PCT, position 16k) #INCREMENT# - #ANIM_SIMVAR_MIN# max (&gt;K:RUDDER_TRIM_SET)</DOWN_CODE>
+							<IS_LOOPING/>
+						</UseTemplate>
 							</True>
 							<False>
-								<DRAG_CODE>
-									(O:_LastPos) (O:StartPos) - abs 0.001 &gt; if{
-										(A:RUDDER TRIM PCT, Percent) #DRAG_INCREMENT# (O:DragScale) * + #ANIM_SIMVAR_MAX# min #ANIM_SIMVAR_MIN# max (&gt;K:RUDDER_TRIM_SET)
-									}
-								</DRAG_CODE>
+						<UseTemplate Name="ASOBO_GT_Lever_DraggingYAxis_EventsSet">
+							<ANIM_LENGTH>200</ANIM_LENGTH>
+							<ANIM_CODE>(A:RUDDER TRIM PCT, percent) -0.5 * 50 +</ANIM_CODE>
+							<DRAG_SIMVAR>RUDDER TRIM PCT</DRAG_SIMVAR>
+							<DRAG_SIMVAR_UNITS>percent</DRAG_SIMVAR_UNITS>
+							<DRAG_EVENTID_SET>RUDDER_TRIM_SET</DRAG_EVENTID_SET>
+							<DRAG_SCALE>1</DRAG_SCALE>
+							<DRAG_MIN_VALUE>-100</DRAG_MIN_VALUE>
+							<DRAG_MAX_VALUE>100</DRAG_MAX_VALUE>
+							<DRAG_AXIS_SCALE>0.25</DRAG_AXIS_SCALE>
+						</UseTemplate>
 							</False>
 						</Condition>
-						<DOWN_CODE>
-							(O:_LastPos) (&gt;O:StartPos)
-						</DOWN_CODE>
-						<RELEASE_CODE>
-							(O:_LastPos) (O:StartPos) - abs 0.001 &lt; if{
-								(O:StartPos) 0 &gt; if{
-									g1
-								} els{
-									g2
-								}
-							}
-						</RELEASE_CODE>
+			</Component>
+		</Case>
+		<Case Check="KNOB_TYPE">
+			<Component ID="#NODE_ID#" Node="#NODE_ID#">
+				<UseTemplate Name = "ASOBO_GT_Knob_Finite_Code">
+					<ANIM_CODE>(A:RUDDER TRIM PCT, Percent) 100 + 2 /</ANIM_CODE>
+					<CLOCKWISE_CODE_DEFAULT_IM>(&gt;K:RUDDER_TRIM_LEFT)</CLOCKWISE_CODE_DEFAULT_IM>
+					<ANTICLOCKWISE_CODE_DEFAULT_IM>(&gt;K:RUDDER_TRIM_RIGHT)</ANTICLOCKWISE_CODE_DEFAULT_IM>
+					<CLOCKWISE_CODE_DRAG_IM>(A:RUDDER TRIM PCT, Percent) #INCREMENT# - #ANIM_SIMVAR_MIN# max (&gt;K:RUDDER_TRIM_SET)</CLOCKWISE_CODE_DRAG_IM>
+					<ANTICLOCKWISE_CODE_DRAG_IM>(A:RUDDER TRIM PCT, Percent) #INCREMENT# + #ANIM_SIMVAR_MAX# min (&gt;K:RUDDER_TRIM_SET)</ANTICLOCKWISE_CODE_DRAG_IM>
+				</UseTemplate>
+			</Component>
+		</Case>
+		<Default>
+			<Component ID="#NODE_ID#" Node="#NODE_ID#">
+				<UseTemplate Name = "ASOBO_GT_Knob_Finite_Code">
+					<CURSOR>Hand</CURSOR>
+					<CLOCKWISE_CODE>
+						(A:RUDDER TRIM PCT, Percent) #INCREMENT# - #ANIM_SIMVAR_MIN# max (&gt;K:RUDDER_TRIM_SET)
+					</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>
+						(A:RUDDER TRIM PCT, Percent) #INCREMENT# + #ANIM_SIMVAR_MAX# min (&gt;K:RUDDER_TRIM_SET)
+					</ANTICLOCKWISE_CODE>
+					<ANIM_CODE>(A:RUDDER TRIM PCT, percent) -0.5 * 50 +</ANIM_CODE>
+					<Condition Valid="INVERT_KNOB_ANIM">
+						<INVERT_ANIM>#INVERT_KNOB_ANIM#</INVERT_ANIM>
+					</Condition>
+					<Condition Valid="KNOB_HIGHLIGHT_NODE_ID">
+						<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID#</HIGHLIGHT_NODE_ID>
+					</Condition>
 					</UseTemplate>
 				</Component>
 			</Default>
 		</Switch>
+	
 	<Condition Check="NEEDLE_NODE_ID">
 		<Component ID="#NEEDLE_NODE_ID#" Node="#NEEDLE_NODE_ID#">
 			<UseTemplate Name="ASOBO_GT_Anim_Sim">
@@ -484,7 +501,9 @@
 	</Component>
 	<Component ID="#NODE_ID_DECEL#" Node="#NODE_ID_DECEL#">
 		<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-			<EMISSIVE_CODE>(A:AUTO BRAKE SWITCH CB, Enum) 1 != (A:ACCELERATION BODY Z, feet per second squared) #MIN_DECEL_FPSS# &lt;= and</EMISSIVE_CODE>
+			<EMISSIVE_CODE>
+				(L:XMLVAR_Autobrakes_Level) #AUTOBRAKE_LEVEL# == (A:AUTOBRAKES ACTIVE, Bool) (A:REJECTED TAKEOFF BRAKES ACTIVE, Bool) or and
+			</EMISSIVE_CODE>
 		</UseTemplate>
 	</Component>
 	<Component ID="#NODE_ID_ON#" Node="#NODE_ID_ON#">
@@ -538,9 +557,14 @@
 						}
 					</CLOCKWISE_CODE>
 					<ANTICLOCKWISE_CODE>
-						(A:AUTO BRAKE SWITCH CB, Enum) 1 == 
-						(L:XMLVar_Autobrake_Disarm) and if{
+						(A:AUTO BRAKE SWITCH CB, Enum) 1 == if{
+							(L:XMLVar_Autobrake_Disarm) if{
 							0 (&gt;L:XMLVar_Autobrake_Disarm)
+						} els{
+								(A:SIM ON GROUND, Bool) if{
+							(&gt;K:DECREASE_AUTOBRAKE_CONTROL)
+						}
+							}
 						} els{
 							(&gt;K:DECREASE_AUTOBRAKE_CONTROL)
 						}
@@ -613,6 +637,7 @@
 		<DRAG_AXIS_SCALE>100</DRAG_AXIS_SCALE>
 		<WWISE_EVENT_1>elevator_trim_lock_on</WWISE_EVENT_1>
 		<WWISE_EVENT_2>elevator_trim_lock_off</WWISE_EVENT_2>
+		<DRAG_SCALAR>0.001</DRAG_SCALAR>
 	</DefaultTemplateParameters>
 	
 	<Condition Check="LOCK">
@@ -640,7 +665,7 @@
 					</Condition>
 						<DOWN_CODE>1 (&gt;O:InteractingWithElevatorTrim)</DOWN_CODE>
 						<RELEASE_CODE>0 (&gt;O:InteractingWithElevatorTrim)</RELEASE_CODE>
-					<!-- Former tooltip w/ accurate simvar  <TOOLTIPID>TT:COCKPIT.TOOLTIPS.WHEEL_PITCH_TRIM(%((A:ELEVATOR TRIM POSITION, degrees))%!4.1f!Â°)</TOOLTIPID> --> 
+					<!-- Former tooltip w/ accurate simvar  <TOOLTIPID>TT:COCKPIT.TOOLTIPS.WHEEL_PITCH_TRIM(%((A:ELEVATOR TRIM POSITION, degrees))%!4.1f!°)</TOOLTIPID> --> 
 					<ANIM_NAME>#LOCK_ANIM_NAME#</ANIM_NAME>
 					<ANIM_LAG>512</ANIM_LAG>
 						<ANIM_CODE>(O:InteractingWithElevatorTrim) 100 *</ANIM_CODE>
@@ -658,6 +683,11 @@
 		</True>
 		<False>
 			<Component ID="#NODE_ID#" Node="#NODE_ID#">
+				<DefaultTemplateParameters>
+					<Condition Valid="HIGHLIGHT_NODE_ID_1">
+						<HIGHLIGHT_NODE_ID>#HIGHLIGHT_NODE_ID_1#</HIGHLIGHT_NODE_ID>
+					</Condition>
+				</DefaultTemplateParameters>
 				<Condition Check="INFINITE">
 					<True>
 						<UseTemplate Name="ASOBO_GT_Lever_DraggingYAxis_Code">
@@ -688,6 +718,11 @@
 
 	<Condition Check="DOUBLE_WHEEL">
 		<Component ID="#NODE_ID2#" Node="#NODE_ID2#">
+			<DefaultTemplateParameters>
+				<Condition Valid="HIGHLIGHT_NODE_ID_2">
+					<HIGHLIGHT_NODE_ID>#HIGHLIGHT_NODE_ID_2#</HIGHLIGHT_NODE_ID>
+				</Condition>
+			</DefaultTemplateParameters>
 			<Condition Check="INFINITE">
 				<True>
 					<UseTemplate Name="ASOBO_GT_Interaction_DraggingYAxis_Code">
@@ -723,6 +758,34 @@
 		<SEQ2_EMISSIVE_CODE>(A:SPOILERS ARMED, Bool) !</SEQ2_EMISSIVE_CODE>
 		<LEFT_SINGLE_CODE>(&gt;K:SPOILERS_ARM_TOGGLE)</LEFT_SINGLE_CODE>
 	</UseTemplate>
+</Template>
+
+<Template Name="ASOBO_HANDLING_Switch_Spoiler_Template">
+	<DefaultTemplateParameters>
+		<ANIM_NAME>HANDLING_Switch_Spoiler</ANIM_NAME>
+		<NODE_ID>HANDLING_Switch_Spoiler</NODE_ID>
+		<PART_ID>HANDLING_Switch_Spoiler</PART_ID>
+		<TIME_TO_FULL_RANGE_SEC>2</TIME_TO_FULL_RANGE_SEC>
+		<REPEAT_FREQUENCY>10</REPEAT_FREQUENCY>
+	</DefaultTemplateParameters>
+	<OverrideTemplateParameters>
+		<INCREMENT Process="Int">16384 #TIME_TO_FULL_RANGE_SEC# / #REPEAT_FREQUENCY# /</INCREMENT>
+	</OverrideTemplateParameters>
+	
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Switch_3States">
+			<CODE_REPEAT_0>
+				(A:SPOILERS HANDLE POSITION, Position 16k) #INCREMENT# + 16384 min (&gt;K:SPOILERS_SET)
+			</CODE_REPEAT_0>
+			<CODE_REPEAT_2>
+				(A:SPOILERS HANDLE POSITION, Position 16k) #INCREMENT# - 0 max (&gt;K:SPOILERS_SET)
+			</CODE_REPEAT_2>
+			<MOMENTARY_SWITCH/>
+			<STATE0_TIMER>0.1</STATE0_TIMER>
+			<STATE_MAX_TIMER>0</STATE_MAX_TIMER>
+			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+		</UseTemplate>
+	</Component>
 </Template>
 
 <Template Name="ASOBO_HANDLING_Lever_Spoilers_Template">	
@@ -807,14 +870,16 @@
 					<GATE_DIRECTION>0</GATE_DIRECTION>
 					<WWISE_EVENT_1>lever_speedbrakes</WWISE_EVENT_1>
 					<WWISE_EVENT_2>lever_speedbrakes</WWISE_EVENT_2>
+					<DONT_SYNC_DRAG_TO_ANIM>True</DONT_SYNC_DRAG_TO_ANIM>
 					<DRAG_CODE>
 						(#POSITION_TYPE#:#POSITION_VAR#)  1 &lt;= if{
-							(M:DragPercent) 0 != #ARMED_POSITION_INVERSION# if{
+							(M:DragPercent) (O:PrevDragPercent) - 0 &gt; sp0
+							(M:DragPercent) 0 != (M:DragPercent) 0.33 &gt; (M:InputType) 0 == l0 or ? #ARMED_POSITION_INVERSION# if{
 								#RETRACT_POSITION# (&gt;#POSITION_TYPE#:#POSITION_VAR#) 
 								(&gt;K:SPOILERS_ARM_OFF)
 								0 (&gt;K:SPOILERS_SET)
 							} els{
-								(M:DragPercent) 0 == #ARMED_POSITION_INVERSION# if{
+								(M:DragPercent) 0 == (M:DragPercent) 0.33 &lt; (M:InputType) 0 == l0 ! and ? #ARMED_POSITION_INVERSION# if{
 									#ARMED_POSITION# (&gt;#POSITION_TYPE#:#POSITION_VAR#) 
 									(&gt;K:SPOILERS_ARM_ON)
 									0 (&gt;K:SPOILERS_SET)
@@ -906,25 +971,26 @@
 <Template Name="ASOBO_HANDLING_Lever_Flaps_Template">
 	<DefaultTemplateParameters>
 		<ANIM_TRIGGER_COUNT>2</ANIM_TRIGGER_COUNT>
+		<MIN_DELTA>0.25</MIN_DELTA>
+		<MAX_HANDLE_INDEX>2</MAX_HANDLE_INDEX>
 		<ANIM_NAME>HANDLING_Lever_Flaps</ANIM_NAME>
 		<NODE_ID>HANDLING_Lever_Flaps</NODE_ID>
 		<PART_ID>HANDLING_Lever_Flaps</PART_ID>
 		<ANIM_LAG>400</ANIM_LAG>
 		<HELPID>HELPID_GAUGE_FLAPS_SWITCH</HELPID>
 		<ANIMREF_ID>0</ANIMREF_ID>
-		<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0>
+		<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
 		<ANIMTIP_1_ON_PERCENT>.5</ANIMTIP_1_ON_PERCENT>
 		<ANIMTIP_2_ON_PERCENT>1</ANIMTIP_2_ON_PERCENT>
 		<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.FLAPS_LEVER_UP</ANIMTIP_0>
 		<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.FLAPS_LEVER_TO</ANIMTIP_1>
 		<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.FLAPS_LEVER_LDG</ANIMTIP_2>
-		<MIN_DELTA>0.25</MIN_DELTA>
-		<MAX_HANDLE_INDEX>2</MAX_HANDLE_INDEX>
 	</DefaultTemplateParameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
 		<Condition Check="USE_TRAJECTORY_DRAG_MODE">
 			<True>
 				<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
+					<DONT_SYNC_DRAG_TO_ANIM/>
 					<NO_ARROWS/>
 					<CURSOR>Hand</CURSOR>
 					<HELPID>HELPID_GAUGE_FLAPS_SWITCH</HELPID>
@@ -1042,6 +1108,7 @@
 			<True>
 				<MAX_HANDLE_INDEX>(A:FLAPS NUM HANDLE POSITIONS:1, Number)</MAX_HANDLE_INDEX>
 				<MIN_DELTA>0.25</MIN_DELTA>
+				<DONT_SYNC_DRAG_TO_ANIM/>
 			</True>
 			<False>
 				<DELTA_MIN>0.001</DELTA_MIN>
@@ -1275,37 +1342,22 @@
 		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.AILERON_TRIM</TOOLTIPID> 
 		<WWISE_EVENT_1>aileron_trim_knob_01</WWISE_EVENT_1>
 		<WWISE_EVENT_2>aileron_trim_knob_02</WWISE_EVENT_2>
+		<THRESHOLD_INPUT>0.00025</THRESHOLD_INPUT>
+		<THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE>
 	</DefaultTemplateParameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name = "ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
-			<ANIM_SIMVAR>AILERON TRIM PCT</ANIM_SIMVAR>
-			<ANIM_SIMVAR_UNITS>percent</ANIM_SIMVAR_UNITS>
-			<ANIM_SIMVAR_BIAS>50</ANIM_SIMVAR_BIAS>
+		<UseTemplate Name = "ASOBO_GT_Knob_Finite_Code">
 			<CURSOR>Hand</CURSOR>
-			<AXIS>X</AXIS>
-			<POSITIVE_AXIS_CODE>
-				(A:AILERON TRIM PCT, Percent) #INCREMENT# + #ANIM_SIMVAR_MIN# max (&gt;K:AILERON_TRIM_SET)
-			</POSITIVE_AXIS_CODE>
-			<NEGATIVE_AXIS_CODE>
-				(A:AILERON TRIM PCT, Percent) #INCREMENT# - #ANIM_SIMVAR_MAX# min (&gt;K:AILERON_TRIM_SET)
-			</NEGATIVE_AXIS_CODE>
-			<DRAG_CODE>
-				(O:_LastPos) (O:StartPos) - abs 0.001 &gt; if{
-					(A:AILERON TRIM PCT, Percent) #DRAG_INCREMENT# (O:DragScale) * + #ANIM_SIMVAR_MAX# min #ANIM_SIMVAR_MIN# max (&gt;K:AILERON_TRIM_SET)
-				}
-			</DRAG_CODE>
-			<DOWN_CODE>
-				(O:_LastPos) (&gt;O:StartPos)
-			</DOWN_CODE>
-			<RELEASE_CODE>
-				(O:_LastPos) (O:StartPos) - abs 0.001 &lt; if{
-					(O:StartPos) 0 &gt; if{
-						g1
-					} els{
-						g2
-					}
-				}
-			</RELEASE_CODE>
+			<CLOCKWISE_CODE>
+				(A:AILERON TRIM PCT, Percent) #INCREMENT# + #ANIM_SIMVAR_MAX# min (&gt;K:AILERON_TRIM_SET)
+			</CLOCKWISE_CODE>
+			<ANTICLOCKWISE_CODE>
+				(A:AILERON TRIM PCT, Percent) #INCREMENT# - #ANIM_SIMVAR_MIN# max (&gt;K:AILERON_TRIM_SET)
+			</ANTICLOCKWISE_CODE>
+			<ANIM_CODE>(A:AILERON TRIM PCT, percent) -0.5 * 50 +</ANIM_CODE>
+			<Condition Valid="INVERT_KNOB_ANIM">
+				<INVERT_ANIM>#INVERT_KNOB_ANIM#</INVERT_ANIM>
+			</Condition>
 		</UseTemplate>
 	</Component>
 	<Condition Check="NEEDLE_NODE_ID">
@@ -1363,6 +1415,20 @@
 		<UseTemplate Name="ASOBO_GT_Switch_Code">
 			<LEFT_SINGLE_CODE>(&gt;K:TOGGLE_WATER_RUDDER)</LEFT_SINGLE_CODE>
 			<ANIM_CODE>(A:WATER RUDDER HANDLE POSITION, percent over 100) 0 &gt; 100 *</ANIM_CODE>
+		</UseTemplate>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_HANDLING_Switch_Wing_Fold_Template">
+	<DefaultTemplateParameters>
+		<NODE_ID>HANDLING_Switch_Wing_Fold</NODE_ID>
+		<ANIM_NAME>HANDLING_Switch_Wing_Fold</ANIM_NAME>
+	</DefaultTemplateParameters>
+	
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Switch">
+			<ANIM_SIMVAR>FOLDING WING HANDLE POSITION</ANIM_SIMVAR>
+			<EVENTID>TOGGLE_WING_FOLD</EVENTID>
 		</UseTemplate>
 	</Component>
 </Template>
@@ -1507,4 +1573,35 @@
 		</Switch>
 	</Component>
 </Template>
+
+<Template Name="ASOBO_HANDLING_Launch_Bar_Retract_Template">
+	<DefaultTemplateParameters>
+		<NODE_ID>HANDLING_Launch_Bar_Retract</NODE_ID>
+		<ANIM_NAME>HANDLING_Launch_Bar_Retract</ANIM_NAME>
+	</DefaultTemplateParameters>
+	
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Switch">
+			<ANIM_SIMVAR>LAUNCHBAR SWITCH</ANIM_SIMVAR>
+			<EVENTID>TOGGLE_LAUNCH_BAR_SWITCH</EVENTID>
+		</UseTemplate>
+	</Component>
+</Template>
+
+
+<Template Name="ASOBO_HANDLING_TailHook_Lever_Template">
+	<DefaultTemplateParameters>
+		<NODE_ID>HANDLING_TailHook_Lever</NODE_ID>
+		<ANIM_NAME>HANDLING_TailHook_Lever</ANIM_NAME>
+	</DefaultTemplateParameters>
+	
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Switch">
+			<ANIM_SIMVAR>TAILHOOK HANDLE</ANIM_SIMVAR>
+			<EVENTID>TOGGLE_TAIL_HOOK_HANDLE</EVENTID>
+		</UseTemplate>
+	</Component>
+</Template>
 </ModelBehaviors>
+
+

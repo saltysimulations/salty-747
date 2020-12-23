@@ -14,7 +14,7 @@ class FMCNavDataPage {
             [""],
             [""],
             [""],
-            ["<INDEX"]
+            ["\<INDEX"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
     }

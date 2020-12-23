@@ -187,12 +187,18 @@ circuit.105 = True,0.5
 circuit.106 = True,0.5
 circuit.107 = True,0.5
 circuit.108 = True,0.5
+circuit.111 = False,1.0
+
+
+[LocalVars.0]
+XMLVAR_SeatBelts=1
+B747_8_MFD_NAV_MODE=2
 
 [Gauges.0]
 KollsmanSetting=29.921342849731445313
 
 [BleedAir.0]
-BleedAirSource=0
+BleedAirSource=2
 
 [Switches.0]
 PitotHeat=False
@@ -238,7 +244,7 @@ ApproachHold=False
 BackCourseHold=False
 YawDamper=False
 ToGa=False
-AutoThrottleArm=True
+AutoThrottleArm=False
 GPSdrivesNAV1=False
 IsUsedForLesson=False
 ForceDisplayUI=False

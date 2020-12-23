@@ -30,13 +30,13 @@ class B747_8_FMC_LateralRevisionPage {
             ["", "LL WING/INCR/NO"],
             ["[][color]blue", "[ ]°/[ ]°/[][color]blue"],
             ["", "NEXT WPT"],
-            ["<HOLD", "[ ][color]blue"],
+            ["\<HOLD", "[ ][color]blue"],
             ["ENABLE[color]blue", "NEW DEST"],
             ["←ALTN[color]blue", "[ ][color]blue"],
             [""],
             ["", "AIRWAYS>"],
             [""],
-            ["<RETURN"]
+            ["\<RETURN"]
         ]);
         fmc.onRightInput[2] = async () => {
             let value = fmc.inOut;

@@ -14,6 +14,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.groundRibbonHasFixedHeight = false;
         this.groundLineSVGHeight = 0;
         this.mtrsVisible = false;
+        this.minimumReferenceValue = 200;
         this.hudAPAltitude = 0;
         this.isHud = false;
         this._aircraft = Aircraft.A320_NEO;
@@ -645,6 +646,38 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             mtrsGroup.appendChild(this.mtrsCursorGroup);
         }
         this.rootGroup.appendChild(mtrsGroup);
+        if (!this.minimumReferenceModeText) {
+            this.minimumReferenceModeText = document.createElementNS(Avionics.SVG.NS, "text");
+        }
+        this.minimumReferenceModeText.textContent = "BARO";
+        this.minimumReferenceModeText.setAttribute("x", "62");
+        this.minimumReferenceModeText.setAttribute("y", (posY + height - 45).toString());
+        this.minimumReferenceModeText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
+        this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.9).toString());
+        this.minimumReferenceModeText.setAttribute("font-family", "Roboto-Light");
+        this.minimumReferenceModeText.setAttribute("text-anchor", "end");
+        this.minimumReferenceModeText.setAttribute("letter-spacing", "-1px");
+        this.rootGroup.appendChild(this.minimumReferenceModeText);
+        if (!this.minimumReferenceValueText) {
+            this.minimumReferenceValueText = document.createElementNS(Avionics.SVG.NS, "text");
+        }
+        this.minimumReferenceValueText.textContent = "210";
+        this.minimumReferenceValueText.setAttribute("x", "62");
+        this.minimumReferenceValueText.setAttribute("y", (posY + height - 15).toString());
+        this.minimumReferenceValueText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
+        this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize).toString());
+        this.minimumReferenceValueText.setAttribute("font-family", "Roboto-Light");
+        this.minimumReferenceValueText.setAttribute("text-anchor", "end");
+        this.minimumReferenceValueText.setAttribute("letter-spacing", "-1px");
+        this.rootGroup.appendChild(this.minimumReferenceValueText);
+        if (!this.minimumReferenceCursor) {
+            this.minimumReferenceCursor = document.createElementNS(Avionics.SVG.NS, "path");
+        }
+        this.minimumReferenceCursor.setAttribute("fill", "none");
+        this.minimumReferenceCursor.setAttribute("d", "M 25 0 L 2 25 L 2 -25 L 25 0 L 120 0");
+        this.minimumReferenceCursor.setAttribute("stroke", (this.isHud) ? "lime" : "#24F000");
+        this.minimumReferenceCursor.setAttribute("stroke-width", this.strokeSize);
+        this.centerSVG.appendChild(this.minimumReferenceCursor);
         if (!this.pressureSVG)
             this.pressureSVG = document.createElementNS(Avionics.SVG.NS, "text");
         this.pressureSVG.textContent = "";
@@ -1044,6 +1077,38 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             mtrsGroup.appendChild(this.mtrsCursorGroup);
         }
         this.rootGroup.appendChild(mtrsGroup);
+        if (!this.minimumReferenceModeText) {
+            this.minimumReferenceModeText = document.createElementNS(Avionics.SVG.NS, "text");
+        }
+        this.minimumReferenceModeText.textContent = "BARO";
+        this.minimumReferenceModeText.setAttribute("x", "62");
+        this.minimumReferenceModeText.setAttribute("y", (posY + height - 45).toString());
+        this.minimumReferenceModeText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
+        this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.9).toString());
+        this.minimumReferenceModeText.setAttribute("font-family", "Roboto-Light");
+        this.minimumReferenceModeText.setAttribute("text-anchor", "end");
+        this.minimumReferenceModeText.setAttribute("letter-spacing", "-1px");
+        this.rootGroup.appendChild(this.minimumReferenceModeText);
+        if (!this.minimumReferenceValueText) {
+            this.minimumReferenceValueText = document.createElementNS(Avionics.SVG.NS, "text");
+        }
+        this.minimumReferenceValueText.textContent = "210";
+        this.minimumReferenceValueText.setAttribute("x", "62");
+        this.minimumReferenceValueText.setAttribute("y", (posY + height - 15).toString());
+        this.minimumReferenceValueText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
+        this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize).toString());
+        this.minimumReferenceValueText.setAttribute("font-family", "Roboto-Light");
+        this.minimumReferenceValueText.setAttribute("text-anchor", "end");
+        this.minimumReferenceValueText.setAttribute("letter-spacing", "-1px");
+        this.rootGroup.appendChild(this.minimumReferenceValueText);
+        if (!this.minimumReferenceCursor) {
+            this.minimumReferenceCursor = document.createElementNS(Avionics.SVG.NS, "path");
+        }
+        this.minimumReferenceCursor.setAttribute("fill", "none");
+        this.minimumReferenceCursor.setAttribute("d", "M 25 0 L 2 25 L 2 -25 L 25 0 L 120 0");
+        this.minimumReferenceCursor.setAttribute("stroke", (this.isHud) ? "lime" : "#24F000");
+        this.minimumReferenceCursor.setAttribute("stroke-width", this.strokeSize);
+        this.centerSVG.appendChild(this.minimumReferenceCursor);
         if (!this.pressureSVG)
             this.pressureSVG = document.createElementNS(Avionics.SVG.NS, "text");
         this.pressureSVG.textContent = "---";
@@ -1296,7 +1361,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         var groundReference = indicatedAltitude - Simplane.getAltitudeAboveGround();
         var baroMode = Simplane.getPressureSelectedMode(this.aircraft);
         var selectedAltitude;
-        if (this.aircraft === Aircraft.AS01B || this.aircraft === Aircraft.B747_8 || this.aircraft === Aircraft.A320_NEO) {
+        if (this.aircraft === Aircraft.AS01B || this.aircraft === Aircraft.B747_8) {
             selectedAltitude = Math.max(0, Simplane.getAutoPilotDisplayedAltitudeLockValue());
         }
         else {
@@ -1308,6 +1373,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.updateTargetAltitude(indicatedAltitude, selectedAltitude, baroMode);
         this.updateBaroPressure(baroMode);
         this.updateMtrs(indicatedAltitude, selectedAltitude);
+        this.updateMinimumReference(indicatedAltitude, this.minimumReferenceValue, Simplane.getMinimumReferenceMode());
     }
     updateMtrs(_altitude, _selected) {
         if (this.mtrsVisible) {
@@ -1494,15 +1560,17 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             var stdMode = (baroMode == "STD") ? true : false;
             if (this.aircraft == Aircraft.CJ4 || this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
                 if (APMode != AutopilotMode.MANAGED) {
+                    let deltaAltitude = targetAltitude - currentAltitude;
                     let divider = 100;
                     let refDelta = 275;
                     let textAlwaysVisible = false;
                     let leadingZeros = 2;
                     if (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
                         divider = 1000;
-                        refDelta = 400;
+                        refDelta = 410;
                         textAlwaysVisible = true;
                         leadingZeros = 3;
+                        deltaAltitude = Utils.Clamp(deltaAltitude, -refDelta * 0.99, refDelta * 0.99);
                     }
                     var integral = Math.floor(targetAltitude / divider);
                     var modulo = Math.floor(targetAltitude - (integral * divider));
@@ -1515,7 +1583,6 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                         this.targetAltitudeTextSVG2.textContent = Utils.leadingZeros(modulo, leadingZeros);
                     }
                     hudAltitude = targetAltitude;
-                    let deltaAltitude = targetAltitude - currentAltitude;
                     if (deltaAltitude < -refDelta || deltaAltitude > refDelta) {
                         this.targetAltitudeTextSVG1.setAttribute("visibility", "visible");
                         this.targetAltitudeTextSVG2.setAttribute("visibility", "visible");
@@ -1528,7 +1595,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                         this.targetAltitudeTextSVG2.setAttribute("visibility", (textAlwaysVisible) ? "visible" : "hidden");
                         if (this.targetAltitudeBgSVG)
                             this.targetAltitudeBgSVG.setAttribute("visibility", (textAlwaysVisible) ? "visible" : "hidden");
-                        var offsetY = this.valueToSvg(currentAltitude, targetAltitude);
+                        var offsetY = this.valueToSvg(currentAltitude, currentAltitude + deltaAltitude);
                         offsetY -= 48;
                         this.targetAltitudeIndicatorSVG.setAttribute("y", offsetY.toString());
                         this.targetAltitudeIndicatorSVG.setAttribute("visibility", "visible");
@@ -1587,6 +1654,22 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             this.hudAPAltitude = Math.round(hudAltitude);
             SimVar.SetSimVarValue("L:HUD_AP_SELECTED_ALTITUDE", "Number", this.hudAPAltitude);
         }
+    }
+    updateMinimumReference(indicatedAltitude, minimumAltitude, minimumMode) {
+        if (!this.minimumReferenceCursor || !this.minimumReferenceValueText || !this.minimumReferenceModeText) {
+            return;
+        }
+        var currentY = 0;
+        if (minimumMode === MinimumReferenceMode.BARO) {
+            currentY = this.valueToSvg(indicatedAltitude, minimumAltitude);
+        }
+        else {
+            currentY = this.valueToSvg(indicatedAltitude, minimumAltitude - Simplane.getAltitudeAboveGround() + indicatedAltitude);
+        }
+        this.minimumReferenceCursor.setAttribute("transform", "translate(0, " + currentY.toFixed(1) + ")");
+        this.minimumReferenceValueText.textContent = minimumAltitude.toFixed(0);
+        this.minimumReferenceModeText.textContent = minimumMode === MinimumReferenceMode.BARO ? "BARO" : "RADIO";
+        ;
     }
 }
 customElements.define("jet-pfd-altimeter-indicator", Jet_PFD_AltimeterIndicator);

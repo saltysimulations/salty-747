@@ -12,9 +12,9 @@ var B747_8_LowerEICAS_Fuel;
         get templateID() { return "B747_8LowerEICASFuelTemplate"; }
         connectedCallback() {
             super.connectedCallback();
-            TemplateElement.call(this, this.init.bind(this));
         }
-        init() {
+        init(_eicas) {
+            this.eicas = _eicas;
             this.unitTextSVG = this.querySelector("#TotalFuelUnits");
             this.allTextValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TotalFuelValue"), this.getTotalFuelInMegagrams.bind(this), 1));
             this.allTextValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#CenterValue"), this.getMainTankFuelInMegagrams.bind(this, 1), 1));

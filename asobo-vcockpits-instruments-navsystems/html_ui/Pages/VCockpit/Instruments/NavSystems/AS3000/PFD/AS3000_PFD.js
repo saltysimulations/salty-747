@@ -1,28 +1,73 @@
 class AS3000_PFD extends NavSystem {
     constructor() {
         super();
+        this.handleReversionaryMode = false;
         this.initDuration = 7000;
     }
     get IsGlassCockpit() { return true; }
     get templateID() { return "AS3000_PFD"; }
     connectedCallback() {
         super.connectedCallback();
+        this.mainPage = new AS3000_PFD_MainPage();
         this.pageGroups = [
             new NavSystemPageGroup("Main", this, [
-                new AS3000_PFD_MainPage()
+                this.mainPage
             ]),
         ];
+        this.warnings = new PFD_Warnings();
         this.addIndependentElementContainer(new NavSystemElementContainer("InnerMap", "InnerMap", new MapInstrumentElement()));
         this.addIndependentElementContainer(new NavSystemElementContainer("WindData", "WindData", new PFD_WindData()));
-        this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", new PFD_Warnings()));
+        this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", this.warnings));
         this.addIndependentElementContainer(new NavSystemElementContainer("SoftKeys", "SoftKeys", new SoftKeys(AS3000_PFD_SoftKeyHtmlElement)));
         this.maxUpdateBudget = 12;
     }
     disconnectedCallback() {
         super.disconnectedCallback();
     }
+    parseXMLConfig() {
+        super.parseXMLConfig();
+        let syntheticVision = null;
+        let reversionaryMode = null;
+        if (this.instrumentXmlConfig) {
+            syntheticVision = this.instrumentXmlConfig.getElementsByTagName("SyntheticVision")[0];
+            reversionaryMode = this.instrumentXmlConfig.getElementsByTagName("ReversionaryMode")[0];
+        }
+        if (!syntheticVision || syntheticVision.textContent == "True") {
+            if (this.mainPage.attitude.svg) {
+                this.mainPage.attitude.svg.setAttribute("background", "false");
+            }
+            this.getChildById("SyntheticVision").style.display = "block";
+            this.mainPage.syntheticVision = true;
+        }
+        else {
+            if (this.mainPage.attitude.svg) {
+                this.mainPage.attitude.svg.setAttribute("background", "true");
+            }
+            this.getChildById("SyntheticVision").style.display = "none";
+            this.mainPage.syntheticVision = false;
+        }
+        if (reversionaryMode && reversionaryMode.textContent == "True") {
+            this.handleReversionaryMode = true;
+        }
+    }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
+        if (this.handleReversionaryMode) {
+            this.reversionaryMode = false;
+            if (document.body.hasAttribute("reversionary")) {
+                var attr = document.body.getAttribute("reversionary");
+                if (attr == "true") {
+                    this.reversionaryMode = true;
+                }
+            }
+        }
+    }
+    reboot() {
+        super.reboot();
+        if (this.warnings)
+            this.warnings.reset();
+        if (this.mainPage)
+            this.mainPage.reset();
     }
 }
 class AS3000_PFD_SoftKeyElement extends SoftKeyElement {
@@ -63,6 +108,7 @@ class AS3000_PFD_SoftKeyHtmlElement extends SoftKeyHtmlElement {
 class AS3000_PFD_MainPage extends NavSystemPage {
     constructor() {
         super("Main", "Mainframe", new AS3000_PFD_MainElement());
+        this.syntheticVision = false;
         this.rootMenu = new SoftKeysMenu();
         this.pfdMenu = new SoftKeysMenu();
         this.otherPfdMenu = new SoftKeysMenu();
@@ -95,7 +141,12 @@ class AS3000_PFD_MainPage extends NavSystemPage {
         this.hsi = this.gps.getChildById("Compass");
         this.wind = this.gps.getChildById("WindData");
         this.mapInstrument.setGPS(this.gps);
-        this.attitude.svg.setAttribute("background", "false");
+        if (this.syntheticVision) {
+            this.attitude.svg.setAttribute("background", "false");
+        }
+        else {
+            this.attitude.svg.setAttribute("background", "true");
+        }
         this.rootMenu.elements = [
             new AS3000_PFD_SoftKeyElement("Map Range-", this.gps.computeEvent.bind(this.gps, "RANGE_DEC")),
             new AS3000_PFD_SoftKeyElement("Map Range+", this.gps.computeEvent.bind(this.gps, "RANGE_INC")),
@@ -153,6 +204,10 @@ class AS3000_PFD_MainPage extends NavSystemPage {
             new AS3000_PFD_SoftKeyElement("")
         ];
         this.softKeys = this.rootMenu;
+    }
+    reset() {
+        if (this.annunciations)
+            this.annunciations.reset();
     }
     switchToMenu(_menu) {
         this.softKeys = _menu;
@@ -268,7 +323,7 @@ class AS3000_PFD_ActiveNav extends NavSystemElement {
             let index = SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "number");
             Avionics.Utils.diffAndSet(this.ActiveNav, "NAV" + index);
             Avionics.Utils.diffAndSet(this.ActiveNavFreq, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:" + index, "MHz"), 2));
-            Avionics.Utils.diffAndSet(this.ActiveNavName, SimVar.GetSimVarValue("NAV IDENT:" + index, "string"));
+            Avionics.Utils.diffAndSet(this.ActiveNavName, SimVar.GetSimVarValue("NAV SIGNAL:" + index, "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:" + index, "string") : "");
         }
         else {
             Avionics.Utils.diffAndSetAttribute(this.NavInfos, "state", "Inactive");

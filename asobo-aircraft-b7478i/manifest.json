@@ -9,13 +9,13 @@
   "title": "747-8 Intercontinental",
   "manufacturer": "Boeing",
   "creator": "Asobo Studio",
-  "package_version": "0.1.59",
-  "minimum_game_version": "1.11.3",
+  "package_version": "0.1.66",
+  "minimum_game_version": "1.12.12",
   "release_notes": {
     "neutral": {
       "LastUpdate": "",
       "OlderHistory": ""
     }
   },
-  "total_package_size": "00000000000862051977"
+  "total_package_size": "00000000000742716886"
 }

@@ -4,7 +4,7 @@ class B747_8_FMC_DepArrIndexPage {
         let rowOrigin = [""];
         let origin = fmc.flightPlanManager.getOrigin();
         if (origin) {
-            rowOrigin = ["<DEP", "", origin.ident];
+            rowOrigin = ["\<DEP", "", origin.ident];
             fmc.onLeftInput[0] = () => {
                 B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc);
             };
@@ -173,7 +173,7 @@ class B747_8_FMC_DepArrIndexPage {
             ["SIDS", "RUNWAYS", "RTE 1"],
             ...rows,
             ["__FMCSEPARATOR"],
-            ["<INDEX", "ROUTE>"]
+            ["\<INDEX", "ROUTE>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_DepArrIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCRoutePage.ShowPage1(fmc); };
@@ -352,7 +352,7 @@ class B747_8_FMC_DepArrIndexPage {
             ["STAR", "APPROACH", "RTE 1"],
             ...rows,
             ["__FMCSEPARATOR"],
-            ["<INDEX", "ROUTE>"]
+            ["\<INDEX", "ROUTE>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_DepArrIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCRoutePage.ShowPage1(fmc); };
