@@ -89,11 +89,11 @@ class B747_8_FMC_VNAVPage {
             n1Cell = n1Value.toFixed(1) + "%";
         }
 
-        //Calculate maximum Flight level - uses linear regression derived formula from actual aircraft data
-        let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
-        let weightLimitedFltLevel = (((-0.02809 * currentWeight) + 56571.91142) / 100);
-        let maxFltLevel = Math.min(431, weightLimitedFltLevel);
-
+        let weightIndex = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds") - 608000;
+        let maxFltLevel = 431
+        if (weightIndex >= 0){
+            maxFltLevel = 431 - (weightIndex / 362000 * 110)
+        }
         fmc.setTemplate([
             [crzPageTitle, "2", "3"],
             ["CRZ ALT", "STEP TO"],
