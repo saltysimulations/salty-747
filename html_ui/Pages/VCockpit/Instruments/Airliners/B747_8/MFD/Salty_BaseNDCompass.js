@@ -179,8 +179,45 @@ class Jet_NDCompass extends HTMLElement {
         this.rotatingCircleTrs = "";
         this.graduations = null;
         this.mapRanges = [];
+        this.headingGroup = null;
+        this.headingBug = null;
+        this.headingLine = null;
+        this.trackingGroup = null;
+        this.trackingBug = null;
+        this.trackingLine = null;
+        this.ilsGroup = null;
+        this.selectedHeadingGroup = null;
+        this.selectedHeadingBug = null;
+        this.selectedHeadingLine = null;
+        this.selectedHeadingLeftText = null;
+        this.selectedHeadingRightText = null;
+        this.selectedTrackGroup = null;
+        this.selectedTrackBug = null;
+        this.selectedTrackLine = null;
+        this.currentRefGroup = null;
+        this.currentRefSelected = null;
+        this.currentRefMode = null;
+        this.currentRefType = null;
+        this.currentRefValue = null;
+        this.selectedRefGroup = null;
+        this.selectedRefMode = null;
+        this.selectedRefValue = null;
+        this.arcMaskGroup = null;
+        this.arcRangeGroup = null;
+        this.courseGroup = null;
+        this.course = null;
+        this.courseTO = null;
         this.courseTOLine = null;
+        this.courseDeviation = null;
+        this.courseFROM = null;
         this.courseFROMLine = null;
+        this.glideSlopeGroup = null;
+        this.glideSlopeCursor = null;
+        this.bearingCircle = null;
+        this.bearing1 = null;
+        this.isBearing1Displayed = false;
+        this.bearing2 = null;
+        this.isBearing2Displayed = false;
     }
     update(_deltaTime) {
         this.updateCompass(_deltaTime);
@@ -190,7 +227,13 @@ class Jet_NDCompass extends HTMLElement {
     }
     updateCompass(_deltaTime) {
         var simHeading = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degree");
-        var simSelectedHeading = SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR", "degree");
+        var simSelectedHeading = 0;
+        if (this.aircraft === Aircraft.B747_8 || this.aircraft === Aircraft.AS01B) {
+            simSelectedHeading = Simplane.getAutoPilotSelectedHeadingLockValue(false);
+        }
+        else {
+            simSelectedHeading = Simplane.getAutoPilotHeadingLockValue(false);
+        }
         var simTrack = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degree");
         var simSelectedTrack = SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degree");
         var simGroundSpeed = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
@@ -230,10 +273,12 @@ class Jet_NDCompass extends HTMLElement {
             if (this.currentRefGroup)
                 this.currentRefGroup.classList.toggle('hide', true);
         }
+        let showSelectedHeading = false;
+        let selectedHeading = 0;
         if (this.referenceMode == Jet_NDCompass_Reference.HEADING) {
             if (this.aircraft == Aircraft.A320_NEO) {
-                var selectedHeading = simSelectedHeading;
-                let showSelectedHeading = Simplane.getAutoPilotHeadingSelected();
+                selectedHeading = simSelectedHeading;
+                showSelectedHeading = Simplane.getAutoPilotHeadingSelected();
                 let showTrackLine = showSelectedHeading;
                 if (!showSelectedHeading) {
                     showSelectedHeading = SimVar.GetSimVarValue("L:A320_FCU_SHOW_SELECTED_HEADING", "number") === 1;
@@ -263,11 +308,11 @@ class Jet_NDCompass extends HTMLElement {
                     this.headingGroup.classList.toggle('hide', true);
             }
             else if (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
-                var selectedHeading = simSelectedHeading;
-                let showSelectedLine = Simplane.getAutoPilotHeadingLockActive();
-                if (!showSelectedLine) {
+                selectedHeading = simSelectedHeading;
+                showSelectedHeading = Simplane.getAutoPilotHeadingLockActive();
+                if (!showSelectedHeading) {
                     if (headingChanged) {
-                        showSelectedLine = true;
+                        showSelectedHeading = true;
                         this.showSelectedHeadingTimer = 5;
                     }
                     else if (this.showSelectedHeadingTimer > 0) {
@@ -275,7 +320,7 @@ class Jet_NDCompass extends HTMLElement {
                         if (this.showSelectedHeadingTimer <= 0)
                             this.showSelectedHeadingTimer = 0;
                         else
-                            showSelectedLine = true;
+                            showSelectedHeading = true;
                     }
                 }
                 else {
@@ -287,7 +332,7 @@ class Jet_NDCompass extends HTMLElement {
                     if (this.selectedHeadingGroup)
                         this.selectedHeadingGroup.classList.toggle('hide', false);
                     if (this.selectedHeadingLine)
-                        this.selectedHeadingLine.classList.toggle('hide', !showSelectedLine);
+                        this.selectedHeadingLine.classList.toggle('hide', !showSelectedHeading);
                 }
                 else {
                     if (this.selectedHeadingGroup)
@@ -302,7 +347,7 @@ class Jet_NDCompass extends HTMLElement {
                 }
             }
             else {
-                let showSelectedHeading = Simplane.getAutoPilotHeadingLockActive();
+                showSelectedHeading = Simplane.getAutoPilotHeadingLockActive();
                 if (!showSelectedHeading) {
                     if (headingChanged) {
                         showSelectedHeading = true;
@@ -320,9 +365,8 @@ class Jet_NDCompass extends HTMLElement {
                     this.showSelectedHeadingTimer = 0;
                 }
                 if (showSelectedHeading) {
-                    var selectedHeading = simSelectedHeading;
-                    var roundedSelectedHeading = fastToFixed(selectedHeading, 3);
-                    this.setAttribute("selected_heading_bug_rotation", roundedSelectedHeading);
+                    selectedHeading = simSelectedHeading;
+                    this.setAttribute("selected_heading_bug_rotation", fastToFixed(selectedHeading, 3));
                     if (this.navigationMode == Jet_NDCompass_Navigation.NAV) {
                         if (this.selectedHeadingGroup)
                             this.selectedHeadingGroup.classList.toggle('hide', false);
@@ -361,9 +405,9 @@ class Jet_NDCompass extends HTMLElement {
             }
         }
         else {
-            var selectedTrack = simSelectedTrack;
-            var roundedSelectedTrack = fastToFixed(selectedTrack, 3);
-            this.setAttribute("selected_tracking_bug_rotation", roundedSelectedTrack);
+            showSelectedHeading = true;
+            selectedHeading = simSelectedTrack;
+            this.setAttribute("selected_tracking_bug_rotation", fastToFixed(selectedHeading, 3));
             if (this.trackingLine)
                 this.trackingLine.classList.toggle('hide', false);
             if (this.selectedHeadingGroup)
@@ -372,11 +416,43 @@ class Jet_NDCompass extends HTMLElement {
                 this.selectedTrackGroup.classList.toggle('hide', false);
             if (this.selectedRefGroup) {
                 if (this.selectedRefValue)
-                    this.selectedRefValue.textContent = selectedTrack.toString();
+                    this.selectedRefValue.textContent = selectedHeading.toString();
                 this.selectedRefGroup.classList.toggle('hide', false);
             }
             if (this.headingGroup)
                 this.headingGroup.classList.toggle('hide', false);
+        }
+        if (this.selectedHeadingLeftText || this.selectedHeadingRightText) {
+            if (this.displayMode == Jet_NDCompass_Display.ARC) {
+                if (showSelectedHeading) {
+                    let delta = selectedHeading - simHeading;
+                    if (Math.abs(delta) > 180)
+                        delta -= 360 * Math.sign(delta);
+                    if (delta > 45) {
+                        this.selectedHeadingLeftText.classList.toggle('hide', true);
+                        this.selectedHeadingRightText.classList.toggle('hide', false);
+                    }
+                    else if (delta < -45) {
+                        this.selectedHeadingLeftText.classList.toggle('hide', false);
+                        this.selectedHeadingRightText.classList.toggle('hide', true);
+                    }
+                    else {
+                        this.selectedHeadingLeftText.classList.toggle('hide', true);
+                        this.selectedHeadingRightText.classList.toggle('hide', true);
+                    }
+                    let text = selectedHeading.toFixed(0).padStart(3, "0");
+                    this.selectedHeadingLeftText.textContent = text;
+                    this.selectedHeadingRightText.textContent = text;
+                }
+                else {
+                    this.selectedHeadingLeftText.classList.toggle('hide', true);
+                    this.selectedHeadingRightText.classList.toggle('hide', true);
+                }
+            }
+            else {
+                this.selectedHeadingLeftText.classList.toggle('hide', true);
+                this.selectedHeadingRightText.classList.toggle('hide', true);
+            }
         }
         var heading = simHeading;
         var roundedHeading = fastToFixed(heading, 3);
