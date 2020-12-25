@@ -140,7 +140,7 @@ class B747_8_FMC_VNAVPage {
             ["PAUSE @ DIST FROM DEST"],
             ["OFF", "FORECAST>"],
             [],
-            ["<OFFPATH DES"]
+            ["\<OFFPATH DES"]
         ]);
         fmc.onPrevPage = () => { B747_8_FMC_VNAVPage.ShowPage2(fmc); };
     }
