@@ -79,12 +79,6 @@ class FMCTakeOffPage {
         else {
             flapsCell = "□□°";
         }
-        if (Simplane.getIsGrounded() && Simplane.getV1Airspeed() <= 0 && Simplane.getVRAirspeed() <= 0 && Simplane.getV2Airspeed() <= 0) {
-            flapsCell = "□□°";
-            v1 = "---[color]blue";
-            vR = "---[color]blue";
-            v2 = "---[color]blue";
-        }
         fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
