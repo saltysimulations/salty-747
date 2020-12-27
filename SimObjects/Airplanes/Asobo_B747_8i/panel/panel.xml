@@ -207,81 +207,6 @@
 		</Annunciation>
 
 		<Annunciation>
-		  <Type>Warning</Type>
-		  <Text>L/G GEAR NOT DOWN</Text>
-		  <Condition>
-			<StateMachine>
-				<State id="Under" value="0">
-					<Transition to="Over">
-						<GreaterEqual>
-							<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
-							<Constant>750</Constant>
-						</GreaterEqual>
-					</Transition>
-				</State>
-				<State id="Over" value="0">
-					<Transition to="Alerting">
-						<And>
-							<Lower>
-								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
-								<Constant>750</Constant>
-							</Lower>
-							<Or>
-								<Lower>
-									<Simvar name="GEAR RIGHT POSITION" unit="Percent"/>
-									<Constant>100</Constant>
-								</Lower>
-								<Lower>
-									<Simvar name="GEAR CENTER POSITION" unit="Percent"/>
-									<Constant>100</Constant>
-								</Lower>
-								<Lower>
-									<Simvar name="GEAR LEFT POSITION" unit="Percent"/>
-									<Constant>100</Constant>
-								</Lower>
-							</Or>
-							<Or>
-								<GreaterEqual>
-									<Simvar name="FLAPS HANDLE INDEX" unit="number"/>
-									<Constant>3</Constant>
-								</GreaterEqual>
-								<LowerEqual>
-									<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="Percent"/>
-									<Constant>0</Constant>
-								</LowerEqual>
-							</Or>
-						</And>
-					</Transition>
-				</State>
-				<State id="Alerting" value="1">
-					<Transition to="Over">
-						<Or>
-							<GreaterEqual>
-								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
-								<Constant>750</Constant>
-							</GreaterEqual>
-							<And>
-								<Equal>
-									<Simvar name="GEAR RIGHT POSITION" unit="Percent"/>
-									<Constant>100</Constant>
-								</Equal>
-								<Equal>
-									<Simvar name="GEAR CENTER POSITION" unit="Percent"/>
-									<Constant>100</Constant>
-								</Equal>
-								<Equal>
-									<Simvar name="GEAR LEFT POSITION" unit="Percent"/>
-									<Constant>100</Constant>
-								</Equal>
-							</And>
-						</Or>
-					</Transition>
-				</State>
-			</StateMachine>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
 		  <Type>Advisory</Type>
 		  <Text>PARK BRAKE SET</Text>
 		  <Condition>
@@ -400,6 +325,81 @@
 	<!-- Voices Alerts -->
   
 	<VoicesAlerts>
+		<Alert>
+		  <SoundEvent>aural_landing_gear</SoundEvent>
+		  <ShortText>L/G GEAR NOT DOWN</ShortText>
+		  <LongText>L/G GEAR NOT DOWN</LongText>
+		  <Condition>
+			<StateMachine>
+				<State id="Under" value="0">
+					<Transition to="Over">
+						<GreaterEqual>
+							<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+							<Constant>1500</Constant>
+						</GreaterEqual>
+					</Transition>
+				</State>
+				<State id="Over" value="0">
+					<Transition to="Alerting">
+						<And>
+							<Lower>
+								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+								<Constant>750</Constant>
+							</Lower>
+							<Or>
+								<Lower>
+									<Simvar name="GEAR RIGHT POSITION" unit="Percent"/>
+									<Constant>100</Constant>
+								</Lower>
+								<Lower>
+									<Simvar name="GEAR CENTER POSITION" unit="Percent"/>
+									<Constant>100</Constant>
+								</Lower>
+								<Lower>
+									<Simvar name="GEAR LEFT POSITION" unit="Percent"/>
+									<Constant>100</Constant>
+								</Lower>
+							</Or>
+							<Or>
+								<GreaterEqual>
+									<Simvar name="FLAPS HANDLE INDEX" unit="number"/>
+									<Constant>3</Constant>
+								</GreaterEqual>
+								<LowerEqual>
+									<Simvar name="GENERAL ENG THROTTLE LEVER POSITION:1" unit="Percent"/>
+									<Constant>0</Constant>
+								</LowerEqual>
+							</Or>
+						</And>
+					</Transition>
+				</State>
+				<State id="Alerting" value="1">
+					<Transition to="Over">
+						<Or>
+							<GreaterEqual>
+								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+								<Constant>750</Constant>
+							</GreaterEqual>
+							<And>
+								<Equal>
+									<Simvar name="GEAR RIGHT POSITION" unit="Percent"/>
+									<Constant>100</Constant>
+								</Equal>
+								<Equal>
+									<Simvar name="GEAR CENTER POSITION" unit="Percent"/>
+									<Constant>100</Constant>
+								</Equal>
+								<Equal>
+									<Simvar name="GEAR LEFT POSITION" unit="Percent"/>
+									<Constant>100</Constant>
+								</Equal>
+							</And>
+						</Or>
+					</Transition>
+				</State>
+			</StateMachine>
+		  </Condition>
+		</Alert>
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_5ft</SoundEvent>
