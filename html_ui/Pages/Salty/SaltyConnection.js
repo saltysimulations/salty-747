@@ -30,14 +30,20 @@ const getSimBriefPlan = (fmc, store, updateView) => {
                 fmc.simbrief["flight_number"] = data.general.flight_number;
                 fmc.simbrief["alternateIcao"] = data.alternate.icao_code;
                 fmc.simbrief["avgTropopause"] = data.general.avg_tropopause;
+                /* TIMES */
                 fmc.simbrief["ete"] = data.times.est_time_enroute;
                 fmc.simbrief["blockTime"] = data.times.est_block;
                 fmc.simbrief["outTime"] = data.times.est_out;
                 fmc.simbrief["onTime"] = data.times.est_on;
                 fmc.simbrief["inTime"] = data.times.est_in;
                 fmc.simbrief["offTime"] = data.times.est_off;
+                /* FUEL */
                 fmc.simbrief["taxiFuel"] = data.fuel.taxi;
                 fmc.simbrief["tripFuel"] = data.fuel.enroute_burn;
+                fmc.simbrief["altnFuel"] = data.fuel.alternate_burn;
+                fmc.simbrief["finResFuel"] = data.fuel.reserve;
+                fmc.simbrief["contFuel"] = data.fuel.contingency;
+                /* DISTANCE */
                 fmc.simbrief["route_distance"] = data.general.route_distance;
                 fmc.simbrief.rteUplinkReady = true;
                 fmc.simbrief.perfUplinkReady = true;

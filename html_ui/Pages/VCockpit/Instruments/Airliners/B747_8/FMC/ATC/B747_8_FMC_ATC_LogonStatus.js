@@ -39,6 +39,7 @@ class FMC_ATC_LogonStatus {
 				store.atcCommSelect = "<SELECT OFF";
 				store.nextCtrLabel = "NEXT CTR";
 				store.dlnkStatus = fmc.atcComm.dlnkStatus;
+				store.maxUlDelay = fmc.atcComm.maxUlDelay;
 			}
 			fmc.setTemplate([
 				["ATC LOGON/STATUS", "1", "2"],
@@ -79,16 +80,17 @@ class FMC_ATC_LogonStatus {
 
 		fmc.onLeftInput[3] = () => {
         	let value = fmc.inOut;
-        	fmc.clearUserInput();
+			fmc.clearUserInput();
 			store.maxUlDelay = value;
+			fmc.atcComm.maxUlDelay = value;
 			updateView();
 		}
 
 		fmc.onLeftInput[4] = () => {
 			if (fmc.atcComm.estab) {
 				fmc.atcComm.estab = false;
-				updateView();
 			}
+			FMC_ATC_LogonStatus.ShowPage(fmc);
 		}
 
 		fmc.onLeftInput[5] = () => {
@@ -96,7 +98,7 @@ class FMC_ATC_LogonStatus {
 		}
 
 		fmc.onRightInput[0] = () => {
-        	if (store.logonTo != "" && store.fltNo != "" && store.maxUlDelay != "") {
+        	if (store.logonTo != "" && store.fltNo != "" && fmc.atcComm.maxUlDelay != "") {
 				store.sendStatus = "SENDING";
 				store.sendLabel = "SENT";
 				fmc.atcComm.estab = true;

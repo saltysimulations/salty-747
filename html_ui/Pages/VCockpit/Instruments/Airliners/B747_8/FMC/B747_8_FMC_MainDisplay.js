@@ -100,6 +100,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             offTime: "",
             taxiFuel: "",
             tripFuel: "",
+            altnFuel: "",
+            finResFuel: "",
+            contFuel: "",
             route_distance: "",
             rteUplinkReady: false,            
             perfUplinkReady: false
@@ -124,7 +127,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.onInit = () => {
-            if (fmc.flightPlanManager.getOrigin() && fmc.flightPlanManager.getDestination()) {
+            if (this.flightPlanManager.getOrigin() && this.flightPlanManager.getDestination()) {
                 FMCPerfInitPage.ShowPage1(this);
             } else {
                 B747_8_FMC_InitRefIndexPage.ShowPage1(this);
@@ -249,18 +252,30 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         });
     }
     insertPerfUplink(updateView) {
-        const zfw = this.simbrief.estZfw;
+        const zfw = (this.simbrief.estZfw / 1000);
         const crz = this.simbrief.cruiseAltitude;
-        const costIndex = this.simbrief.costIndex;
+        const costIndex = this.simbrief.costIndex.toString();
+        const resFuel = (parseFloat(this.simbrief.finResFuel) + parseFloat(this.simbrief.altnFuel)).toFixed(1) / 1000;
         const perfInitReady = "PERF INIT UPLINK";
-
-
-        this.tryUpdateCostIndex(costIndex, (result) => {
+        console.log(zfw);
+        console.log(crz);
+        console.log(costIndex);
+        console.log(resFuel);
+        this.trySetZeroFuelWeightZFWCG(zfw, (result) => {
             if (result) {
+                console.log(result + " SET INTO ZFW");
+                updateView();
+            }
+        });
+        this.tryUpdateCostIndex(costIndex, 9999);
+        this.setFuelReserves(resFuel, (result) => {
+            if (result) {
+                console.log(result + " SET INTO FUEL RES");
             }
         });
         this.setCruiseFlightLevelAndTemperature(crz, (result) => {
             if (result) {
+                console.log(result + " SET INTO FL");
                 this.showErrorMessage(perfInitReady);
                 updateView();
             }
@@ -374,13 +389,17 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         this.showErrorMessage(this.defaultInputErrorMessage);
         return false;
+    }    
+    getFuelReserves() {
+        return this._fuelReserves;
     }
-    tryUpdateCostIndex(costIndex) {
-        let value = parseInt(costIndex);
+    setFuelReserves(fuel) {
+        let value = fuel;
         if (isFinite(value)) {
             if (value >= 0) {
-                if (value < 1000) {
-                    this.costIndex = value;
+                if (value < 100) {
+                    value * 1000;
+                    this._fuelReserves = value;
                     return true;
                 }
             }

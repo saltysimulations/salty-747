@@ -5,46 +5,79 @@ class FMC_PosReport {
 		
 		let fltNoCell = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") ? SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") : "XXXX";
 		let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
-		let posCell = currPos;
-		let currAlt = new LatLong(SimVar.GetSimVarValue("PLANE ALTITUDE", "feet"));
-		let altCell = currAlt > fmc.transitionAltitude ? "FL" + currAlt > 100 : currAlt;
-		var utc = new Date();
-            if (utc.getUTCHours() <= 9) {
-                var utcHours = "0" + utc.getUTCHours();
-            } else {
-                var utcHours = utc.getUTCHours();
-            }
-            if (utc.getUTCMinutes() <= 9) {
-                var utcMinutes = "0" + utc.getUTCMinutes();
-            } else {
-                var utcMinutes = utc.getUTCMinutes();
-            }
-		var combinedUTC = utcHours + utcMinutes + "Z";
-		let ataCell = combinedUTC;
-		let estCell = "GRF";
-		let etaCell = "1335Z";
-		let nextCell = "46N120W";
-		let destEtaCell = "1530Z";
+		let posCell = "---";
+		let ataCell = "----Z";
+		let altCell = "-----";
+		let estCell = "---";
+		let etaCell = "----Z";
+		let nextCell = "---";
+		if (fmc.flightPlanManager.getWaypoint(fmc.flightPlanManager.getActiveWaypointIndex() - 1, undefined, true)) {
+			posCell = fmc.flightPlanManager.getWaypoint(fmc.flightPlanManager.getActiveWaypointIndex() - 1, undefined, true).ident;
+			ataCell = getUTC("ata");
+			var currAlt = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet").toFixed(0);
+			altCell = currAlt > fmc.transitionAltitude ? "FL" + currAlt > 100 : currAlt;
+		}
+		if (fmc.flightPlanManager.getActiveWaypointIndex()) {
+			estCell = fmc.flightPlanManager.getWaypoint(fmc.flightPlanManager.getActiveWaypointIndex(), undefined, true).ident;
+			etaCell = getUTC("eta");
+		}
+		if (fmc.flightPlanManager.getWaypoint(fmc.flightPlanManager.getActiveWaypointIndex() + 1, undefined, true)) {
+			nextCell = fmc.flightPlanManager.getWaypoint(fmc.flightPlanManager.getActiveWaypointIndex() + 1, undefined, true).ident;
+		}
 		let tempCell = `${SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "Celsius").toFixed(0)}°C`
-		let spdCell = ".80";
+		let spdCell = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR", "mach").toFixed(0);
 		let windCell = `${SimVar.GetSimVarValue("AMBIENT WIND DIRECTION", "Degrees").toFixed(0)}°/ ${SimVar.GetSimVarValue("AMBIENT WIND VELOCITY", "Knots").toFixed(0)}KT`;
-		let posFuelCell = "52.3";
+		let posFuelCell = fmc.getBlockFuel(true).toFixed(1);
 		let companySendCell = "SEND";
 		let atcSendCell = "SEND";
+		
+		let speed = Simplane.getGroundSpeed();
+        let currentTime = SimVar.GetGlobalVarValue("LOCAL TIME", "seconds");
+        let currentFuel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
+        let currentFuelFlow = SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:1", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:2", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:3", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:4", "pound per hour");
+        currentFuelFlow = currentFuelFlow / 1000;
+		let destinationCell = "";
+        let destination = fmc.flightPlanManager.getDestination();
+        let destEtaCell = "";
+		let destinationDistance = NaN;
+		let waypointActive = fmc.flightPlanManager.getActiveWaypoint();
+		if (destination) {
+            destinationCell = destination.ident;
+            destinationDistance = destination.cumulativeDistanceInFP;
+            if (waypointActive) {
+                destinationDistance -= waypointActive.distanceInFP;
+                destinationDistance += fmc.flightPlanManager.getDistanceToActiveWaypoint();
+                if (isFinite(destinationDistance)) {
+                    for (let i = 0; i < 3 - Math.log10(destinationDistance); i++) {
+                        destEtaCell += "&nbsp";
+                    }
+                    destEtaCell += destinationDistance.toFixed(0) + " ";
+                    let eta = fmc.computeETA(destinationDistance, speed, currentTime);
+                    if (isFinite(eta)) {
+                        let etaHours = Math.floor(eta / 3600);
+                        let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
+                        destEtaCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                    }
+                    else {
+                        destEtaCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
+                    }
+                }
+			}
+		}
 
 		fmc.setTemplate([
 			[`${fltNoCell} POS REPORT`],
 			["\xa0POS", "ALT", "ATA"],
 			[`${posCell}`, `${altCell}`, `${ataCell}`],
 			["\xa0EST", "ETA"],
-			[`${estCell}`, `${etaCell}`],
+			[`${estCell}[color]magenta`, `${etaCell}`],
 			["\xa0NEXT", "DEST ETA"],
 			[`${nextCell}`, `${destEtaCell}`],
 			["\xa0TEMP", "SPD", "WIND"],
-			[`${tempCell}`, `${spdCell}`, `${windCell}`],
+			[`${tempCell}`, `.${spdCell}`, `${windCell}`],
 			["", "POS FUEL"],
 			["", `${posFuelCell}`],
-			["COMPANY", "ATC", "__FMCSEPARATOR"],
+			["COMPANY", "ATC", "---------"],
 			[`<${companySendCell}`, `${atcSendCell}>`]
 		]);
 
@@ -78,6 +111,49 @@ class FMC_PosReport {
 
 		fmc.onLeftInput[5] = () => {
 			FMC_ATC_Index.ShowPage(fmc);
+		}
+
+		function getUTC(p) {
+			if (p == "ata") {
+				var utc = new Date();
+				if (utc.getUTCHours() <= 9) {
+					var utcHours = "0" + utc.getUTCHours();
+				} else {
+					var utcHours = utc.getUTCHours();
+				}
+				if (utc.getUTCMinutes() <= 9) {
+					var utcMinutes = "0" + utc.getUTCMinutes();
+				} else {
+					var utcMinutes = utc.getUTCMinutes();
+				}
+				return utcHours.toString() + utcMinutes.toString() + "Z";
+			} else if (p == "ete") {
+				var utc = new Date();
+				if (utc.getUTCHours() <= 9) {
+					var utcHours = "0" + utc.getUTCHours();
+				} else {
+					var utcHours = utc.getUTCHours();
+				}
+				if (utc.getUTCMinutes() <= 9) {
+					var utcMinutes = "0" + utc.getUTCMinutes();
+				} else {
+					var utcMinutes = utc.getUTCMinutes();
+				}
+				return utcHours.toString() + utcMinutes.toString() + "Z";
+			} else if (p == "dest") {
+				var utc = new Date();
+				if (utc.getUTCHours() <= 9) {
+					var utcHours = "0" + utc.getUTCHours();
+				} else {
+					var utcHours = utc.getUTCHours();
+				}
+				if (utc.getUTCMinutes() <= 9) {
+					var utcMinutes = "0" + utc.getUTCMinutes();
+				} else {
+					var utcMinutes = utc.getUTCMinutes();
+				}
+				return utcHours.toString() + utcMinutes.toString() + "Z";
+			}
 		}
     }
 }

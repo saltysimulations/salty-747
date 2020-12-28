@@ -44,11 +44,26 @@ class FMCPerfInitPage {
             if (fmc.trySetZeroFuelWeightZFWCG(value, true)) {
                 FMCPerfInitPage.ShowPage1(fmc);
             }
-        };
-        let costIndex = "□□□";
-        if (fmc.costIndex) {
-            costIndex = fmc.costIndex + "[color]blue";
+        };        
+        let costIndex = "□□□□";
+        if (isFinite(fmc.costIndex)) {
+            costIndex = fmc.costIndex.toFixed(0);
         }
+        fmc.onRightInput[1] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            if (fmc.tryUpdateCostIndex(value, 10000)) {
+                FMCPerfInitPage.ShowPage1(fmc);
+            }
+        };
+        let fuelResCell = "□□□.□";
+        if (fmc.getFuelReserves()) {
+            fuelResCell = fmc.getFuelReserves();
+        }
+        let minFuelTempCell = SaltyDataStore.get("PERF_MIN_FUEL_TEMP", -37);
+        let crzCg = "11.00%";
+        let stepSize =  SaltyDataStore.get("PERF_STEP_SIZE", "RVSM");
+
         const updateView = () => {
             fmc.setTemplate([
                 ["PERF INIT"],
@@ -57,16 +72,22 @@ class FMCPerfInitPage {
                 ["\xa0FUEL", "COST INDEX"],
                 [blockFuelCell, costIndex],
                 ["\xa0ZFW", "MIN FUEL TEMP"],
-                [zeroFuelWeightCell, "-37°c"],
+                [zeroFuelWeightCell, `${minFuelTempCell}°C`],
                 ["\xa0RESERVES", "CRZ CG"],
-                ["□□□.□", "20.0%"],
+                [`${fuelResCell}`, `${crzCg}[s-text]`],
                 ["\xa0REQUEST", "STEP SIZE"],
-                [`${store.requestData}`, "RVSM"],
+                [`${store.requestData}`, `${stepSize}`],
                 ["__FMCSEPARATOR"],
                 ["<INDEX", "THRUST LIM>"]
             ]);
         }
         updateView();
+
+        fmc.onLeftInput[3] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            fmc.setFuelReserves(value);
+        }
         
         fmc.onLeftInput[4] = () => {
             store.requestData = "SENDING\xa0";
@@ -86,12 +107,47 @@ class FMCPerfInitPage {
         fmc.onLeftInput[5] = () => {
             B747_8_FMC_InitRefIndexPage.ShowPage1(fmc);
         };
+
         fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (fmc.setCruiseFlightLevelAndTemperature(value)) {
                 FMCPerfInitPage.ShowPage1(fmc);
             }
+        };
+
+        fmc.onRightInput[2] = () => {
+            let value = fmc.inOut;
+            if (value >= -99 && value <= -1) {
+                fmc.clearUserInput();
+                SaltyDataStore.set("PERF_MIN_FUEL_TEMP", value);
+            } else {
+                fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+            }            
+        };
+
+        fmc.onRightInput[4] = () => {
+            let value = fmc.inOut;
+            if (value == "RVSM" || value == "ICAO") {
+                fmc.clearUserInput();
+                SaltyDataStore.set("PERF_STEP_SIZE", value);
+            } else if (value == "R") {
+                fmc.clearUserInput();
+                SaltyDataStore.set("PERF_STEP_SIZE", "RVSM");
+            } else if (value == "I") {
+                fmc.clearUserInput();
+                SaltyDataStore.set("PERF_STEP_SIZE", "ICAO");
+            } else if (parseInt(value) <= 9900 && parseInt(value) >= 100) {
+                fmc.clearUserInput();
+                value = parseInt(value);
+                value = (value / 100).toFixed(0);
+                value = value * 100;
+                console.log(value);
+                SaltyDataStore.set("PERF_STEP_SIZE", value.toString());
+            }
+            else {
+                fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+            }            
         };
 
         fmc.onRightInput[5] = () => {

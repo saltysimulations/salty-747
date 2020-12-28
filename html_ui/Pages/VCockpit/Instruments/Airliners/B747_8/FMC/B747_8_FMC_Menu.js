@@ -4,17 +4,17 @@ class FMC_Menu {
         fmc.setTemplate([
             ["MENU"],
             ["", "EFIS CP"],
-            ["<FMC", "", fmc.activeSystem == "FMC" ? "<ACT>" : ""],
+            ["\<FMC", "", fmc.activeSystem == "FMC" ? "<ACT>" : ""],
             ["", "EICAS CP"],
-            ["<DLNK", "", fmc.activeSystem == "DLNK" ? "<ACT>" : ""],
+            ["\<DLNK", "", fmc.activeSystem == "DLNK" ? "<ACT>" : ""],
             ["", "CTL PNL"],
-            ["<SAT", "OFF←→ON>", fmc.activeSystem == "SAT" ? "<ACT>" : ""],
+            ["\<SAT", "OFF←→ON>", fmc.activeSystem == "SAT" ? "<ACT>" : ""],
             ["", ""],
             ["", "PA/CI>"],
             ["", ""],
-            ["<ACMS", "SALTY>", fmc.activeSystem == "ACMS" ? "<ACT>" : ""],
+            ["\<ACMS", "SALTY>", fmc.activeSystem == "ACMS" ? "<ACT>" : ""],
             ["", ""],
-            ["<CMC", "MAINT>", fmc.activeSystem == "CMC" ? "<ACT>" : ""]
+            ["\<CMC", "MAINT>", fmc.activeSystem == "CMC" ? "<ACT>" : ""]
         ]);
 
         fmc.onLeftInput[0] = () => {
