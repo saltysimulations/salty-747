@@ -1,16 +1,18 @@
 class FMC_MAINT_Index {
     static ShowPage(fmc) {
+		fmc.activeSystem = "MAINT";
 		fmc.clearDisplay();
+		let simbriefId = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["OPTIONS"],
+				["MAINTENANCE"],
 				["", ""],
 				["<CROSS LOAD", "SENSORS>"],
 				["", ""],
 				["<AIRLINE POL", "DISCRETES>"],
-				["", ""],
-				["<IRS MONITOR", "OPTIONS>"],
+				["", "SIMBRIEF ID"],
+				["<IRS MONITOR", `[${simbriefId}]`],
 				["", ""],
 				["", ""],
 				["", ""],
@@ -26,6 +28,9 @@ class FMC_MAINT_Index {
 		}
 		
 		fmc.onRightInput[2] = () => {
+			let value = fmc.inOut;
+			fmc.clearUserInput();
+			SaltyDataStore.set("OPTIONS_SIMBRIEF_ID", value);
 			FMC_MAINT_Options.ShowPage(fmc);
 		}
     }

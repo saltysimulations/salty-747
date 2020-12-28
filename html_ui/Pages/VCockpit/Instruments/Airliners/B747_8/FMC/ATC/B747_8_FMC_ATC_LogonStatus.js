@@ -77,22 +77,18 @@ class FMC_ATC_LogonStatus {
 			updateView();
 		}
 
-		fmc.onLeftInput[1] = () => {
-        	let value = fmc.inOut;
-        	fmc.clearUserInput();
-			store.fltNo = value;
-			if (store.logonTo) {
-				store.sendLabel = "LOGON";
-				store.sendStatus = "SEND>";
-			}
-			updateView();
-		}
-
 		fmc.onLeftInput[3] = () => {
         	let value = fmc.inOut;
         	fmc.clearUserInput();
 			store.maxUlDelay = value;
 			updateView();
+		}
+
+		fmc.onLeftInput[4] = () => {
+			if (fmc.atcComm.estab) {
+				fmc.atcComm.estab = false;
+				updateView();
+			}
 		}
 
 		fmc.onLeftInput[5] = () => {
@@ -107,7 +103,9 @@ class FMC_ATC_LogonStatus {
 				fmc.atcComm.loggedTo = store.logonTo;
 				fmc.atcComm.maxUlDelay = store.maxUlDelay;
 				fmc.atcComm.dlnkStatus = "READY";
-				updateView();
+				setTimeout(function () {
+					FMC_ATC_Index.ShowPage(fmc)
+				}, 2000);
 			}
 		}
 

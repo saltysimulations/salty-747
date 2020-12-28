@@ -1,6 +1,5 @@
 class FMC_MAINT_Options {
     static ShowPage(fmc) {
-		fmc.activeSystem = "SAT";
 		fmc.clearDisplay();
 		let simbriefId = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
 		

@@ -1,6 +1,7 @@
 class FMCTakeOffPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
+        fmc.updateVSpeeds();
         FMCTakeOffPage._timer = 0;
         fmc.pageUpdate = () => {
             FMCTakeOffPage._timer++;
@@ -16,7 +17,8 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value === FMCMainDisplay.clrValue) {
-                fmc.trySetV1Speed(undefined);
+                fmc.v1Speed = undefined;
+                SimVar.SetSimVarValue("L:AIRLINER_V1_SPEED", "Knots", -1);
                 FMCTakeOffPage.ShowPage1(fmc);
             }
             else if (value === "") {
@@ -37,7 +39,8 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value === FMCMainDisplay.clrValue) {
-                fmc.trySetVRSpeed(undefined);
+                fmc.vRSpeed = undefined;
+                SimVar.SetSimVarValue("L:AIRLINER_VR_SPEED", "Knots", -1);
                 FMCTakeOffPage.ShowPage1(fmc);
             }
             else if (value === "") {
@@ -58,7 +61,8 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value === FMCMainDisplay.clrValue) {
-                fmc.trySetV2Speed(undefined);
+                fmc.v2Speed = undefined;
+                SimVar.SetSimVarValue("L:AIRLINER_V2_SPEED", "Knots", -1);
                 FMCTakeOffPage.ShowPage1(fmc);
             }
             else if (value === "") {
@@ -83,9 +87,6 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (fmc.setTakeOffFlap(value)) {
-                if (Simplane.getIsGrounded() && Simplane.getV1Airspeed() <= 0 && Simplane.getVRAirspeed() <= 0 && Simplane.getV2Airspeed() <= 0) {
-                    fmc.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
-                }
                 FMCTakeOffPage.ShowPage1(fmc);
             }
         };
@@ -127,22 +128,39 @@ class FMCTakeOffPage {
             trimCell = fmc.takeOffTrim.toFixed(1);
         }
         fmc.setTemplate([
-            ["TAKE OFF"],
-            ["FLAPS", "V1"],
+            ["TAKEOFF REF", "1", "2"],
+            ["\xa0FLAPS", "V1"],
             [flapsCell, v1],
-            ["E/O ACCEL HT", "VR"],
+            ["\xa0THRUST", "VR"],
             ["000FT", vR],
-            ["THR REDUCTION", "V2"],
+            ["\xa0CG\xa0\xa0\xa0TRIM", "V2"],
             [thrRedCell, v2],
-            ["WIND/SLOPE", "CG", "TRIM"],
+            ["\xa0RWY/POS", "TOGW", "GR WT"],
             ["H00/U0.0", cgCell, trimCell],
-            ["RW COND", "POS"],
-            ["DRY", runwayCell],
+            ["\xa0REQUEST", "REF SPDS"],
+            ["<DATA", runwayCell],
             ["__FMCSEPARATOR"],
-            ["\<INDEX", "THRUST LIM>"]
+            ["<INDEX", "THRUST LIM>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCThrustLimPage.ShowPage1(fmc); };
+    }
+    static ShowPage2(fmc) {
+        fmc.setTemplate([
+            ["TAKEOFF REF", "2", "2"],
+            ["", "", "ALTN THRUST EO ACCEL HT"],
+            ["<TO", "1000FT"],
+            ["\xa0REF OAT", "Q-CLB AT"],
+            ["26°C", "1000FT"],
+            ["\xa0WIND", "CLB AT"],
+            ["340°/16", "3000FT"],
+            ["\xa0RWY WIND", "RESTORE RATE"],
+            ["14KTH 9KTR", "SLOW ←→ FAST>"],
+            ["\xa0SLOPE/COND", "STD LIM TOGW"],
+            ["U0.5/WET", "368.0"],
+            ["__FMCSEPARATOR", "Q_CLB"],
+            ["<INDEX", "OFF ←→ ARMED>"]
+        ]);
     }
 }
 FMCTakeOffPage._timer = 0;

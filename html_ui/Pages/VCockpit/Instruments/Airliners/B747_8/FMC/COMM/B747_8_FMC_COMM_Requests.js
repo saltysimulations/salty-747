@@ -11,11 +11,11 @@ class FMC_COMM_Requests {
 				["", ""],
 				["<ATIS", "LOADSHEET>"],
 				["", ""],
+				["<PERF", ""],
 				["", ""],
+				["<TAKEOFF", ""],
 				["", ""],
-				["", ""],
-				["", ""],
-				["", ""],
+				["<WIND", ""],
 				["", "DATA LINK", "__FMCSEPARATOR"],
 				["<DES FORECAST", "READY"]
 			]);

@@ -118,7 +118,7 @@ class FMCPosInitPage {
             [currPos, "ARM>"],
             ["\xa0IRS(3)", "0.00NM"],
             [irsPos, ""],
-            ["\xaGPS", "0.00NM"],
+            ["\xa0GPS", "0.00NM"],
             [currPos, ""],
             ["\xa0RADIO", "0.00NM"],
             [currPos, "NOW>"],

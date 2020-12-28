@@ -1,13 +1,6 @@
 class B747_8_FMC_VNAVPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
-        B747_8_FMC_VNAVPage._timer = 0;
-        fmc.pageUpdate = () => {
-            B747_8_FMC_VNAVPage._timer++;
-            if (B747_8_FMC_VNAVPage._timer >= 100) {
-                B747_8_FMC_VNAVPage.ShowPage1(fmc);
-            }
-        };
         let crzAltCell = "□□□□□";
         if (fmc.cruiseFlightLevel) {
             crzAltCell = "FL" + fmc.cruiseFlightLevel;
@@ -50,32 +43,10 @@ class B747_8_FMC_VNAVPage {
     }
     static ShowPage2(fmc) {
         fmc.clearDisplay();
-        B747_8_FMC_VNAVPage._timer = 0;
-        fmc.pageUpdate = () => {
-            B747_8_FMC_VNAVPage._timer++;
-            if (B747_8_FMC_VNAVPage._timer >= 100) {
-                B747_8_FMC_VNAVPage.ShowPage2(fmc);
-            }
-        };        
-        let crzPageTitle = "ACT ECON CRZ"
-        let crzSpeedMode = "ECON SPD"
-        if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") == 1) {
-            crzPageTitle = "ACT MCP SPD CRZ"
-            crzSpeedMode = "SEL SPD"
-        }
-        let crzSpeedCell = ""
-        let machMode = Simplane.getAutoPilotMachModeActive();
-        if (machMode) {
-            let crzMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
-            var radixPos = crzMachNo.indexOf('.');
-            crzSpeedCell = crzMachNo.slice(radixPos);
-        } else {
-            crzSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
-        }
         let crzAltCell = "□□□□□";
         if (fmc.cruiseFlightLevel) {
-            crzAltCell = "FL" + fmc.cruiseFlightLevel;
-        }  
+            crzAltCell = fmc.cruiseFlightLevel + "FL";
+        }
         fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
@@ -88,39 +59,26 @@ class B747_8_FMC_VNAVPage {
         if (isFinite(n1Value)) {
             n1Cell = n1Value.toFixed(1) + "%";
         }
-
-        //Calculate maximum Flight level - uses linear regression derived formula from actual aircraft data
-        let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
-        let weightLimitedFltLevel = (((-0.02809 * currentWeight) + 56571.91142) / 100);
-        let maxFltLevel = Math.min(431, weightLimitedFltLevel);
-        
         fmc.setTemplate([
-            [crzPageTitle, "2", "3"],
+            ["CRZ", "2", "3"],
             ["CRZ ALT", "STEP TO"],
             [crzAltCell],
-            [crzSpeedMode, "AT"],
-            [crzSpeedCell],
+            ["ECON SPD", "AT"],
+            [],
             ["N1"],
             [n1Cell],
-            ["STEP", "RECMD", "OPT\xa0\xa0\xa0MAX"],
-            ["RVSM", "", "\xa0\xa0\xa0\xa0\xa0\xa0" + "FL" + maxFltLevel.toFixed(0)],
-            ["__FMCSEPARATOR"],
-            ["", "ENG OUT>"],
+            ["STEP", "RECMD", "OPT MAX"],
             [],
-            ["<RTA PROGRESS", "LRC>"]
+            ["", "1X @ TOD"],
+            ["", "OFF"],
+            ["PAUSE @ TOD"],
+            ["OFF", "<LRC"]
         ]);
         fmc.onPrevPage = () => { B747_8_FMC_VNAVPage.ShowPage1(fmc); };
         fmc.onNextPage = () => { B747_8_FMC_VNAVPage.ShowPage3(fmc); };
     }
     static ShowPage3(fmc) {
         fmc.clearDisplay();
-        B747_8_FMC_VNAVPage._timer = 0;
-        fmc.pageUpdate = () => {
-            B747_8_FMC_VNAVPage._timer++;
-            if (B747_8_FMC_VNAVPage._timer >= 100) {
-                B747_8_FMC_VNAVPage.ShowPage3(fmc);
-            }
-        };
         let speedTransCell = "---";
         let speed = fmc.getDesManagedSpeed();
         if (isFinite(speed)) {
@@ -140,7 +98,7 @@ class B747_8_FMC_VNAVPage {
             ["PAUSE @ DIST FROM DEST"],
             ["OFF", "FORECAST>"],
             [],
-            ["\<OFFPATH DES"]
+            ["<OFFPATH DES"]
         ]);
         fmc.onPrevPage = () => { B747_8_FMC_VNAVPage.ShowPage2(fmc); };
     }

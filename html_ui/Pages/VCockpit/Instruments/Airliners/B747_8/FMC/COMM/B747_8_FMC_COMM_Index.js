@@ -46,6 +46,10 @@ class FMC_COMM_Index {
 			FMC_Menu.ShowPage(fmc);
 		}
 		
+		fmc.onRightInput[2] = () => {
+			FMC_COMM_Requests.ShowPage(fmc);
+		}
+		
 		fmc.onRightInput[0] = () => {
 			FMC_PosReport.ShowPage(fmc);
 		}

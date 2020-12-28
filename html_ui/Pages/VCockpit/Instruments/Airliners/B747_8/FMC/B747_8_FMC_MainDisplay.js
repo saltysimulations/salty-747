@@ -124,7 +124,11 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.onInit = () => {
-            B747_8_FMC_InitRefIndexPage.ShowPage1(this);
+            if (fmc.flightPlanManager.getOrigin() && fmc.flightPlanManager.getDestination()) {
+                FMCPerfInitPage.ShowPage1(this);
+            } else {
+                B747_8_FMC_InitRefIndexPage.ShowPage1(this);
+            }
         };
         this.onLegs = () => {
             B747_8_FMC_LegsPage.ShowPage1(this);
@@ -140,6 +144,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         };
         this.onVNAV = () => {
             B747_8_FMC_VNAVPage.ShowPage1(this);
+        };
+        this.onProg = () => {
+            B747_8_FMC_ProgPage.ShowPage1(this);
         };
         this.onAtc = () => { 
             FMC_ATC_Index.ShowPage(this);
@@ -190,6 +197,11 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (input === "VNAV") {
             if (this.onVNAV) {
                 this.onVNAV();
+            }
+        }
+        if (input === "PROG") {
+            if (this.onProg) {
+                this.onProg();
             }
         }
         if (input === "ATC") {
@@ -946,7 +958,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return 204 + 40 * dWeight;
     }
     getClbManagedSpeed() {
-        let dCI = this.costIndex / 999;
+        let dCI = this.getCostIndexFactor();
         let speed = 310 * (1 - dCI) + 330 * dCI;
         if (Simplane.getAltitude() < 10000) {
             speed = Math.min(speed, 250);
@@ -954,7 +966,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return speed;
     }
     getCrzManagedSpeed(highAltitude = false) {
-        let dCI = this.costIndex / 999;
+        let dCI = this.getCostIndexFactor();
         dCI = dCI * dCI;
         let speed = 310 * (1 - dCI) + 330 * dCI;
         if (!highAltitude && Simplane.getAltitude() < 10000) {
@@ -963,7 +975,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return speed;
     }
     getDesManagedSpeed() {
-        let dCI = this.costIndex / 999;
+        let dCI = this.getCostIndexFactor();
         let speed = 240 * (1 - dCI) + 260 * dCI;
         if (Simplane.getAltitude() < 10000) {
             speed = Math.min(speed, 250);
@@ -1117,9 +1129,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let airport = this.flightPlanManager.getOrigin();
         if (airport) {
             let altitude = airport.infos.coordinates.alt;
-            return this.getTakeOffThrustN1(this.getThrustTakeOffTemp(), altitude) - this.getThrustTakeOffMode() * 10;
+            let n1 = this.getTakeOffThrustN1(this.getThrustTakeOffTemp(), altitude) - this.getThrustTakeOffMode() * 10;
+            return n1;
         }
-        return 100;
+        return 95;
     }
     getThrustClimbLimit() {
         let altitude = Simplane.getAltitude();
@@ -1142,6 +1155,15 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (currentApMasterStatus != this._apMasterStatus) {
                 this._apMasterStatus = currentApMasterStatus;
                 this._forceNextAltitudeUpdate = true;
+                if (currentApMasterStatus) {
+                    if (this.flightPlanManager.hasFlightPlan()) {
+                        this.activateLNAV();
+                        this.activateVNAV();
+                    }
+                    else {
+                        this.activateFLCH();
+                    }
+                }
             }
             this._apHasDeactivated = !currentApMasterStatus && this._previousApMasterStatus;
             this._previousApMasterStatus = currentApMasterStatus;
@@ -1210,7 +1232,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let altitude = Simplane.getAltitude();
                 let deltaAltitude = Math.abs(targetAltitude - altitude);
                 if (deltaAltitude < 150) {
-                    this.activateAltitudeHold();
+                    this.activateAltitudeHold(true);
                 }
             }
             if (this.getIsVSpeedActive()) {
@@ -1218,7 +1240,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let altitude = Simplane.getAltitude();
                 let deltaAltitude = Math.abs(targetAltitude - altitude);
                 if (deltaAltitude < 150) {
-                    this.activateAltitudeHold();
+                    this.activateAltitudeHold(true);
                 }
             }
             if (this._pendingHeadingSelActivation) {
@@ -1256,6 +1278,18 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             let apTargetAltitude = Simplane.getAutoPilotAltitudeLockValue("feet");
             let planeHeading = Simplane.getHeadingMagnetic();
             let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
+            if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_CLIMB) {
+                let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
+                if (activeWaypoint != this._activeWaypoint) {
+                    console.log("Update FMC Active Waypoint");
+                    if (this._activeWaypoint) {
+                        this._activeWaypoint.altitudeWasReached = Simplane.getAltitudeAboveGround();
+                        this._activeWaypoint.timeWasReached = SimVar.GetGlobalVarValue("LOCAL TIME", "seconds");
+                        this._activeWaypoint.fuelWasReached = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms") / 1000;
+                    }
+                    this._activeWaypoint = activeWaypoint;
+                }
+            }
             if (this.getIsVNAVActive()) {
                 let prevWaypoint = this.flightPlanManager.getPreviousActiveWaypoint();
                 let nextWaypoint = this.flightPlanManager.getActiveWaypoint();
@@ -1293,7 +1327,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     if (!this.flightPlanManager.getIsDirectTo() &&
                         isFinite(nextWaypoint.legAltitude1) &&
                         nextWaypoint.legAltitude1 < 20000 &&
-                        nextWaypoint.legAltitude1 > selectedAltitude) {
+                        nextWaypoint.legAltitude1 > selectedAltitude &&
+                        Simplane.getAltitude() > nextWaypoint.legAltitude1 - 200) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
@@ -1315,8 +1350,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                     }
                 }
+            }else if (!this.getIsFLCHActive() && this.getIsSPDActive()) {
+                this.setAPSpeedHoldMode();
             }
-            if (this._isVNAVArmed && !this._isVNAVActive) {
+            if (this.getIsVNAVArmed() && !this.getIsVNAVActive()) {
                 if (Simplane.getAutoPilotThrottleArmed()) {
                     if (!this._hasSwitchedToHoldOnTakeOff) {
                         let speed = Simplane.getIndicatedSpeed();
@@ -1330,7 +1367,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this._isHeadingHoldActive) {
                 Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
             }
-            if (!this.flightPlanManager.isActiveApproach()) {
+            if (!this.flightPlanManager.isActiveApproach() && this.currentFlightPhase != FlightPhase.FLIGHT_PHASE_APPROACH) {
                 let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
                 let nextActiveWaypoint = this.flightPlanManager.getNextActiveWaypoint();
                 if (activeWaypoint && nextActiveWaypoint) {
@@ -1355,7 +1392,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 if (this.getIsVNAVActive()) {
-                    let speed = this.getCleanTakeOffSpeed();
+                    let speed = this.getTakeOffManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
                 }
             }

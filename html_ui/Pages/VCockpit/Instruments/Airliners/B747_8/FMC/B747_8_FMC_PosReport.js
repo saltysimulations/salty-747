@@ -4,14 +4,28 @@ class FMC_PosReport {
 		fmc.clearDisplay();
 		
 		let fltNoCell = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") ? SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") : "XXXX";
-		let posCell = "4730N110W";
-		let altCell = "FL370";
-		let ataCell = "1336Z";
+		let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
+		let posCell = currPos;
+		let currAlt = new LatLong(SimVar.GetSimVarValue("PLANE ALTITUDE", "feet"));
+		let altCell = currAlt > fmc.transitionAltitude ? "FL" + currAlt > 100 : currAlt;
+		var utc = new Date();
+            if (utc.getUTCHours() <= 9) {
+                var utcHours = "0" + utc.getUTCHours();
+            } else {
+                var utcHours = utc.getUTCHours();
+            }
+            if (utc.getUTCMinutes() <= 9) {
+                var utcMinutes = "0" + utc.getUTCMinutes();
+            } else {
+                var utcMinutes = utc.getUTCMinutes();
+            }
+		var combinedUTC = utcHours + utcMinutes + "Z";
+		let ataCell = combinedUTC;
 		let estCell = "GRF";
 		let etaCell = "1335Z";
 		let nextCell = "46N120W";
 		let destEtaCell = "1530Z";
-		let tempCell = `${SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "Celsius")}°C`
+		let tempCell = `${SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "Celsius").toFixed(0)}°C`
 		let spdCell = ".80";
 		let windCell = `${SimVar.GetSimVarValue("AMBIENT WIND DIRECTION", "Degrees").toFixed(0)}°/ ${SimVar.GetSimVarValue("AMBIENT WIND VELOCITY", "Knots").toFixed(0)}KT`;
 		let posFuelCell = "52.3";
