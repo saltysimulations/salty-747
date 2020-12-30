@@ -1,9 +1,31 @@
-class SaltyConnection {
-
-    static setConnection(company, fltNo, reg) {
-        return true;
-    }
-
+const getMetar = (dept, updateView) => {
+    return SimBriefApi.getMetar(dept, updateView)
+        .then(data => {
+            console.log(data);
+            fmc.showErrorMessage("METAR UPLINK");
+            updateView();
+        })
+        .catch(_err => {
+            fmc.showErrorMessage("METAR UPLINK FAILED");
+            updateView();
+        });
+}
+const getAtis = (dept, store, updateView) => {
+    store.atis = "SENT";
+    updateView();
+    return SimBriefApi.getAtis(dept, updateView)
+        .then(data => {
+            store.atis = "RECEIVED";
+            updateView();
+            fmc.showErrorMessage("ACARS UPLINK");
+            updateView();
+        })
+        .catch(_err => {
+            store.atis = "FAILED";
+            updateView();
+            fmc.showErrorMessage("ACARS NOT AVAILABLE");
+            updateView();
+        });
 }
 
 const getSimBriefPlan = (fmc, store, updateView) => {

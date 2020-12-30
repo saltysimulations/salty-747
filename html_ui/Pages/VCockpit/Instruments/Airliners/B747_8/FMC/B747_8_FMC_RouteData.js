@@ -126,21 +126,19 @@ class FMCRouteData {
             });
         };
         fmc.onLeftInput[2] = () => {
-            /*if (fmc.flightPlanManager.getOrigin() && fmc.flightPlanManager.getDestination()) {*/
-                store.requestData = "SENDING\xa0";
-                updateView();
-                const get = async () => {
-                    getSimBriefPlan(fmc, updateView);
-                };
+            store.requestData = "SENDING\xa0";
+            updateView();
+            const get = async () => {
+                getSimBriefPlan(fmc, updateView);
+            };
 
-                get()
-                    .then(() => {
-                        store.rteUplinkReady = true;
-                        updateView();
-                    setTimeout(() => {
-                    }, 900);
-                });
-            /*}*/
+            get()
+                .then(() => {
+                    store.rteUplinkReady = true;
+                    updateView();
+                setTimeout(() => {
+                }, 900);
+            });
         };
         fmc.onLeftInput[3] = () => {
             if (store.rteUplinkReady) {

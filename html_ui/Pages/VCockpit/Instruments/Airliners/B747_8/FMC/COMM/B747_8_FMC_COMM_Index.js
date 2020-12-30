@@ -1,23 +1,23 @@
 class FMC_COMM_Index {
     static ShowPage(fmc) {
-		fmc.activeSystem = "FMC";
+		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["ATC INDEX"],
-				["\xa0UPLINK", ""],
-				["<RTE 1", "POS REPORT>"],
-				["\xa0UPLINK (2)", ""],
-				["<ALTN", "REQUESTS>"],
+				["ACARS INDEX"],
 				["", ""],
-				["<PERF", ""],
+				["<PREFLIGHT", ""],
 				["", ""],
-				["<TAKEOFF", ""],
+				["<INFLIGHT", ""],
 				["", ""],
-				["<WIND", ""],
-				["", "DATA LINK", "__FMCSEPARATOR"],
-				["<DES FORECAST", "READY"]
+				["<POSTFLIGHT", ""],
+				["", ""],
+				["", ""],
+				["", ""],
+				["", ""],
+				["", "LINK\xa0"],
+				["", "STATUS>"]
 			]);
 		}
 		updateView();
@@ -27,31 +27,15 @@ class FMC_COMM_Index {
 		}
 
 		fmc.onLeftInput[1] = () => {
-			FMC_COMM_Altn.ShowPage(fmc);
+			FMC_COMM_Inflight.ShowPage(fmc);
 		}
 		
 		fmc.onLeftInput[2] = () => {
-			FMC_COMM_Perf.ShowPage(fmc);
+			FMC_COMM_Postflight.ShowPage(fmc);
 		}
 		
-		fmc.onLeftInput[3] = () => {
-			FMC_COMM_Takeoff.ShowPage(fmc);
-		}
-		
-		fmc.onLeftInput[4] = () => {
-			FMC_COMM_Wind.ShowPage(fmc);
-		}
-		
-		fmc.onLeftInput[5] = () => {
-			FMC_Menu.ShowPage(fmc);
-		}
-		
-		fmc.onRightInput[2] = () => {
-			FMC_COMM_Requests.ShowPage(fmc);
-		}
-		
-		fmc.onRightInput[0] = () => {
-			FMC_PosReport.ShowPage(fmc);
+		fmc.onRightInput[5] = () => {
+			FMC_COMM_LinkStatus.ShowPage(fmc);
 		}
     }
 }

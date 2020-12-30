@@ -72,7 +72,14 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             ads: "",
             adsEmerg: "",
             dlnkStatus: "NO COMM",
-            uplinkPeding: false            
+            uplinkPeding: false,
+            fltNo: "",
+            origin: "",
+            planDep: "",
+            dest: "",
+            eta: "",
+            altn: "",
+            company: ""
         };
         this.companyComm = {
             estab: false,
@@ -108,6 +115,17 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             perfUplinkReady: false
         }
         this.fixInfo = [];
+        this.pdc = {
+            fltNo: "",
+            dept: "",
+            atis: "",
+            stand: "",
+            acType: "",
+            dest: "",
+            freeText: "",
+            ats: "",
+            sendStatus: ""
+        }
     }
     get templateID() { return "B747_8_FMC"; }
     connectedCallback() {
@@ -406,6 +424,20 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         this.showErrorMessage(this.defaultInputErrorMessage);
         return false;
+    }
+    getUTC() {
+        var utc = new Date();
+        if (utc.getUTCHours() <= 9) {
+            var utcHours = "0" + utc.getUTCHours();
+        } else {
+            var utcHours = utc.getUTCHours();
+        }
+        if (utc.getUTCMinutes() <= 9) {
+            var utcMinutes = "0" + utc.getUTCMinutes();
+        } else {
+            var utcMinutes = utc.getUTCMinutes();
+        }
+        return utcHours.toString() + utcMinutes.toString() + "Z";
     }
     ensureCurrentFlightPlanIsTemporary(callback = EmptyCallback.Boolean) {
         if (this.flightPlanManager.getCurrentFlightPlanIndex() === 0) {

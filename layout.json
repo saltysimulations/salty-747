@@ -112,8 +112,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC.html",
-            "size": 9898,
-            "date": 132536357197336376
+            "size": 10304,
+            "date": 132538133847993686
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ApproachPage.js",
@@ -182,8 +182,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
-            "size": 66366,
-            "date": 132536520904454846
+            "size": 66306,
+            "date": 132538148365429978
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayDebug.js",
@@ -217,8 +217,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_PerfInitPage.js",
-            "size": 5649,
-            "date": 132536517109795008
+            "size": 5765,
+            "date": 132536584498292198
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_PosInitPage.js",
@@ -227,8 +227,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_PosReport.js",
-            "size": 5673,
-            "date": 132536494815495036
+            "size": 6509,
+            "date": 132536542603897438
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_RouteData.js",
@@ -351,14 +351,39 @@
             "date": 132535661671563658
         },
         {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_CurrentFlight.js",
+            "size": 683,
+            "date": 132538137988395180
+        },
+        {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_Index.js",
-            "size": 1112,
-            "date": 132535719200761926
+            "size": 1048,
+            "date": 132538130816925146
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_Inflight.js",
+            "size": 584,
+            "date": 132538133199967194
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_LinkStatus.js",
+            "size": 530,
+            "date": 132538130397241892
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_PDC.js",
+            "size": 1979,
+            "date": 132538150073444912
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_Perf.js",
             "size": 600,
             "date": 132535661671593656
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_Postflight.js",
+            "size": 563,
+            "date": 132538135069128508
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_Preflight.js",
@@ -372,8 +397,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_Requests.js",
-            "size": 570,
-            "date": 132535719387701740
+            "size": 602,
+            "date": 132538141321499652
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/COMM/B747_8_FMC_COMM_RequestWeather.js",

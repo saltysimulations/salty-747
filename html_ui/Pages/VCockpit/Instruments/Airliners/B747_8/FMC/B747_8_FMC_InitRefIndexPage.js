@@ -46,12 +46,12 @@ class B747_8_FMC_InitRefIndexPage {
             FMCNavDataPage.ShowPage1(fmc);
         };
 
-        fmc.onRightInput[3] = () => {
-            FMC_COMM_Index.ShowPage1(fmc);
+        fmc.onRightInput[2] = () => {
+            FMC_COMM_Index.ShowPage(fmc);
         };
 
         fmc.onRightInput[5] = () => {
-            FMC_MAINT_Index.ShowPage1(fmc);
+            FMC_MAINT_Index.ShowPage(fmc);
         };
     }
 }

@@ -1,5 +1,5 @@
 class FMC_PosReport {
-    static ShowPage(fmc) {
+    static ShowPage(fmc, store = {sendCompany: "<SEND", sendAtc: "SEND>"}) {
 		fmc.activeSystem = "FMC";
 		fmc.clearDisplay();
 		
@@ -17,7 +17,7 @@ class FMC_PosReport {
 			var currAlt = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet").toFixed(0);
 			altCell = currAlt > fmc.transitionAltitude ? "FL" + currAlt > 100 : currAlt;
 		}
-		if (fmc.flightPlanManager.getActiveWaypointIndex()) {
+		if (fmc.flightPlanManager.getWaypoint(fmc.flightPlanManager.getActiveWaypointIndex(), undefined, true)) {
 			estCell = fmc.flightPlanManager.getWaypoint(fmc.flightPlanManager.getActiveWaypointIndex(), undefined, true).ident;
 			etaCell = getUTC("eta");
 		}
@@ -64,22 +64,24 @@ class FMC_PosReport {
                 }
 			}
 		}
-
-		fmc.setTemplate([
-			[`${fltNoCell} POS REPORT`],
-			["\xa0POS", "ALT", "ATA"],
-			[`${posCell}`, `${altCell}`, `${ataCell}`],
-			["\xa0EST", "ETA"],
-			[`${estCell}[color]magenta`, `${etaCell}`],
-			["\xa0NEXT", "DEST ETA"],
-			[`${nextCell}`, `${destEtaCell}`],
-			["\xa0TEMP", "SPD", "WIND"],
-			[`${tempCell}`, `.${spdCell}`, `${windCell}`],
-			["", "POS FUEL"],
-			["", `${posFuelCell}`],
-			["COMPANY", "ATC", "---------"],
-			[`<${companySendCell}`, `${atcSendCell}>`]
-		]);
+		const updateView = () => {
+			fmc.setTemplate([
+				[`${fltNoCell} POS REPORT`],
+				["\xa0POS", "ALT", "ATA"],
+				[`${posCell}`, `${altCell}`, `${ataCell}`],
+				["\xa0EST", "ETA"],
+				[`${estCell}[color]magenta`, `${etaCell}`],
+				["\xa0NEXT", "DEST ETA"],
+				[`${nextCell}`, `${destEtaCell}`],
+				["\xa0TEMP", "SPD", "WIND"],
+				[`${tempCell}`, `.${spdCell}`, `${windCell}`],
+				["", "POS FUEL"],
+				["", `${posFuelCell}`],
+				["COMPANY", "ATC", "---------"],
+				[`${store.sendCompany}`, `${store.sendAtc}`]
+			]);
+		}
+		updateView();
 
 		fmc.onLeftInput[0] = () => {
         	let value = fmc.inOut;
@@ -109,9 +111,39 @@ class FMC_PosReport {
 			FMC_ATC_Request.ShowPage(fmc, store);
 		}
 
-		fmc.onLeftInput[5] = () => {
-			FMC_ATC_Index.ShowPage(fmc);
-		}
+        fmc.onLeftInput[5] = () => {
+			store.sendCompany = "SENDING";
+			updateView();
+			setTimeout(
+				function() {
+					store.sendCompany = "SENT";
+					updateView();
+				}, 1000
+			);
+			setTimeout(
+				function() {
+					store.sendCompany = "<SEND";
+					updateView();
+				}, 5000
+			);
+        };
+
+        fmc.onRightInput[5] = () => {
+			store.sendAtc = "SENDING";
+			updateView();
+			setTimeout(
+				function() {
+					store.sendAtc = "SENT";
+					updateView();
+				}, 1000
+			);
+			setTimeout(
+				function() {
+					store.sendAtc = "SEND>";
+					updateView();
+				}, 5000
+			);
+        };
 
 		function getUTC(p) {
 			if (p == "ata") {

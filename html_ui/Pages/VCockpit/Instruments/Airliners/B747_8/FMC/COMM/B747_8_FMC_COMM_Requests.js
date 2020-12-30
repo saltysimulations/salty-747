@@ -1,29 +1,41 @@
 class FMC_COMM_Requests {
     static ShowPage(fmc) {
-		fmc.activeSystem = "FMC";
+		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["COMPANY REQUEST"],
+				["ACARS REQUESTS"],
 				["", ""],
-				["<WEATHER", "ARR INFO>"],
+				["<PDC", "WEATHER>"],
 				["", ""],
-				["<ATIS", "LOADSHEET>"],
+				["<ROUTE", "ATIS>"],
 				["", ""],
-				["<PERF", ""],
+				["<RELEASE", "ARR INFO>"],
 				["", ""],
-				["<TAKEOFF", ""],
-				["", ""],
-				["<WIND", ""],
-				["", "DATA LINK", "__FMCSEPARATOR"],
-				["<DES FORECAST", "READY"]
+				["<LOADSHEET", "LAND PERF>"],
+				["", "FREE TEXT"],
+				["<T/O PERF", "TELEX>"],
+				["\xa0ACARS", "DATA LINK"],
+				["<INDEX", "READY"]
 			]);
 		}
 		updateView();
 		
+		fmc.onLeftInput[0] = () => {
+			FMC_COMM_PDC.ShowPage(fmc);
+		}
+		
 		fmc.onLeftInput[5] = () => {
-			FMC_Menu.ShowPage(fmc);
+			FMC_COMM_Index.ShowPage(fmc);
+		}
+		
+		fmc.onRightInput[0] = () => {
+			FMC_COMM_RequestWeather.ShowPage(fmc);
+		}
+		
+		fmc.onRightInput[1] = () => {
+			FMC_COMM_RequestAtis.ShowPage(fmc);
 		}
     }
 }
