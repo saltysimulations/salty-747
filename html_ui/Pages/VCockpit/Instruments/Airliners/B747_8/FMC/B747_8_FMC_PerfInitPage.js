@@ -11,7 +11,7 @@ class FMCPerfInitPage {
         };
         let grossWeightCell = "□□□.□";
         if (isFinite(fmc.getWeight(true))) {
-            grossWeightCell = fmc.getWeight(true).toFixed(0);
+            grossWeightCell = fmc.getWeight(true).toFixed(1);
         }
         fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
