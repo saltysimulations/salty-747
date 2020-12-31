@@ -359,22 +359,22 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             let distanceToLevelArc = Math.abs(((arcDeltaAltMagnitude / Math.tan(arcFPA)) * 0.000164579)); //Feet to Nautical Miles
             let arcYcoord = 600 - ((distanceToLevelArc / mapRange) * 600);
             //Check if map is centred - Translates arc in Y axis - corrected for usable compass height 414/215px with 56/90px offset for uncentred/centred map
-            if ((SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool")) == 0){
+            if (SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool") == 0) {
                 this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 414 / 600) + 56)})`);
             }           
-            else{
+            else {
                 this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 210 / 600) + 90)})`);
             }           
             //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
-            if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 100) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))){
-                this.greenArc.style.visibility ="hidden";
+            if ((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 200) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))) {
+                this.greenArc.style.visibility = "hidden";
             }
-            else{ 
-                this.greenArc.style.visibility ="visible";
+            else { 
+                this.greenArc.style.visibility = "visible";
             }
         }
-        else{ 
-            this.greenArc.style.visibility ="hidden";
+        else { 
+            this.greenArc.style.visibility = "hidden";
         }
     }
 }
