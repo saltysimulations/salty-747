@@ -6,6 +6,10 @@ var B747_8_LowerEICAS_Stat;
             this.isInitialised = false;
             this.lastN = 0;
             this.APUWarm = false;
+            this.hydTempVariation1 = Math.floor(Math.random() * 35) + 10;
+            this.hydTempVariation2 = Math.floor(Math.random() * 35) + 10;
+            this.hydTempVariation3 = Math.floor(Math.random() * 35) + 10;
+            this.hydTempVariation4 = Math.floor(Math.random() * 35) + 10;
         }
         get templateID() { return "B747_8LowerEICASStatTemplate" }
         connectedCallback() {
@@ -13,6 +17,9 @@ var B747_8_LowerEICAS_Stat;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
+            Include.addScript("/JS/debug.js", function () {
+                g_modDebugMgr.AddConsole(null);
+            });
             this.isInitialised = true;
             this.months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
             this.date = document.querySelector("#date"),
@@ -27,6 +34,10 @@ var B747_8_LowerEICAS_Stat;
             this.hydPress2 = document.querySelector("#hydPress2");
             this.hydPress3 = document.querySelector("#hydPress3");
             this.hydPress4 = document.querySelector("#hydPress4");
+            this.hydTemp1 = document.querySelector("#hydTemp1");
+            this.hydTemp2 = document.querySelector("#hydTemp2");
+            this.hydTemp3 = document.querySelector("#hydTemp3");
+            this.hydTemp4 = document.querySelector("#hydTemp4");
             /* APU */
             this.apuEgt = document.querySelector("#apuEgt");
             this.apuN1 = document.querySelector("#apuN1");
@@ -37,11 +48,9 @@ var B747_8_LowerEICAS_Stat;
             this.apuBatV = document.querySelector("#apuBatV");
             this.mainBatA = document.querySelector("#mainBatA");
             this.apuBatA = document.querySelector("#apuBatA");
+            this.mainBattChg = document.querySelector("#mainBattChg");
             /* DATE */
             this.navDataRange = document.querySelector("#navDataRange");
-            Include.addScript("/JS/debug.js", function () {
-                g_modDebugMgr.AddConsole(null);
-            });
         }
         update(_deltaTime) {
             if (!this.isInitialised) {
@@ -54,6 +63,9 @@ var B747_8_LowerEICAS_Stat;
             this.updateClock();
         }
         updateHydraulics() {
+            let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
+
+            /* QTY */
             var hydQty1 = SimVar.GetSimVarValue("HYDRAULIC RESERVOIR PERCENT:1", "").toFixed(2);
             var hydQty2 = SimVar.GetSimVarValue("HYDRAULIC RESERVOIR PERCENT:2", "").toFixed(2);
             var hydQty3 = SimVar.GetSimVarValue("HYDRAULIC RESERVOIR PERCENT:3", "").toFixed(2);
@@ -62,8 +74,7 @@ var B747_8_LowerEICAS_Stat;
             this.hydQty2.textContent = hydQty2;
             this.hydQty3.textContent = hydQty3;
             this.hydQty4.textContent = hydQty4;
-
-
+            /* PRESS*/
             var hydPress1 = Math.ceil(SimVar.GetSimVarValue("HYDRAULIC PRESSURE:1", "psi").toFixed(0) / 10) * 10;
             var hydPress2 = Math.ceil(SimVar.GetSimVarValue("HYDRAULIC PRESSURE:2", "psi").toFixed(0) / 10) * 10;
             var hydPress3 = Math.ceil(SimVar.GetSimVarValue("HYDRAULIC PRESSURE:3", "psi").toFixed(0) / 10) * 10;
@@ -72,20 +83,23 @@ var B747_8_LowerEICAS_Stat;
             this.hydPress2.textContent = hydPress2;
             this.hydPress3.textContent = hydPress3;
             this.hydPress4.textContent = hydPress4;
+            /* TEMP */
+            this.hydTemp1.textContent = Math.ceil((oat + this.hydTempVariation1) / 10) * 10;
+            this.hydTemp2.textContent = Math.ceil((oat + this.hydTempVariation2) / 10) * 10;
+            this.hydTemp3.textContent = Math.ceil((oat + this.hydTempVariation3) / 10) * 10;
+            this.hydTemp4.textContent = Math.ceil((oat + this.hydTempVariation4) / 10) * 10;
         }
 
         updateApu() {
             var apuEgt;
             var apuN1;
-            var n2Raw;
             var apuN2;
             var apuOilQty = 0.95;
-            if(SimVar.GetSimVarValue("APU PCT RPM", "") > 0) {
-                var apuEgt = this.getAPUEGT();
-                var apuN1 = SimVar.GetSimVarValue("APU PCT RPM", "").toFixed(2);
-                var n2Raw = SimVar.GetSimVarValue("APU PCT RPM", "") - (SimVar.GetSimVarValue("APU PCT RPM", "") * 0.03);
-                var apuN2 = n2Raw.toFixed(2);
-                var apuOilQty = 0.95;
+            if (SimVar.GetSimVarValue("APU PCT RPM", "") > 0) {
+                apuEgt = this.getAPUEGT();
+                apuN1 = (this.getAPUN() / 100).toFixed(2);
+                apuN2 = (this.getAPUN() / 100).toFixed(2);
+                apuOilQty = 0.95;
             } else {
                 apuEgt = "";
                 apuN1 = "";
@@ -100,10 +114,10 @@ var B747_8_LowerEICAS_Stat;
 
         updateElec() {
             var mainBatV = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS VOLTAGE", "volts").toFixed(0);
-            var mainBatA = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS AMPS", "amperes").toFixed(0);
+            var mainBatA = 15;
             if (SimVar.GetSimVarValue("APU PCT RPM", "") > 0.95) {
                 var apuBatV = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS VOLTAGE", "volts").toFixed(0);
-                var apuBatA = SimVar.GetSimVarValue("ELECTRICAL BATTERY BUS AMPS", "amperes").toFixed(0);
+                var apuBatA = 15;
             } else {
                 var apuBatV = 0;
                 var apuBatA = 0;
@@ -112,6 +126,20 @@ var B747_8_LowerEICAS_Stat;
             this.mainBatA.textContent = mainBatA;
             this.apuBatV.textContent = apuBatV;
             this.apuBatA.textContent = apuBatA;
+            if (
+                SimVar.GetSimVarValue("EXTERNAL POWER ON:1", "") || 
+                SimVar.GetSimVarValue("EXTERNAL POWER ON:2", "") || 
+                SimVar.GetSimVarValue("APU GENERATOR SWITCH:1", "") || 
+                SimVar.GetSimVarValue("APU GENERATOR SWITCH:2", "") || 
+                SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:1", "") || 
+                SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:2", "") || 
+                SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:3", "") || 
+                SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:4", "")
+                ) {
+                this.mainBattChg.textContent = "CHG";
+            } else {
+                this.mainBattChg.textContent = "DIS";
+            }
         }
 
         updateNavDataDateRange() {
@@ -153,7 +181,7 @@ var B747_8_LowerEICAS_Stat;
                 if (n < 10) {
                     return 10;
                 } else if(n <14){
-                    reuturn ((90/6*n)- 140);
+                    return ((90/6*n)- 140);
                 } else if (n < 20) {
                     return ((215/4*n)-760);
                 } else if(n < 32){
