@@ -52,14 +52,19 @@ class FMC_COMM_Preflight {
 				[`${destCell}`, `${etaCell}Z`],
 				["\xa0ALTNRNT", "COMPANY"],
 				[`${altnCell}`, `${companyCell}`],
-				["", ""],
-				["", "REQUESTS>"],
+				["\xa0RECEIVED", ""],
+				["<MESSAGES", "REQUESTS>"],
 				["\xa0ACARS", ""],
 				["<INDEX", "INFLIGHT>"],
 			]);
 		}
 		updateView();
 
+		/* LSK5 */
+		fmc.onLeftInput[4] = () => {
+			FMC_COMM_Log.ShowPage(fmc);
+		}
+		
 		/** ALTN */
         fmc.onLeftInput[3] = () => {
 			let value = fmc.inOut;

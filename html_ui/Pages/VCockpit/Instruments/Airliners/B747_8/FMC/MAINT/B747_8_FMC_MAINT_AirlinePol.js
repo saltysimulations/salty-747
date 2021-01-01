@@ -1,12 +1,13 @@
-class FMC_MAINT_Options {
+class FMC_MAINT_AirlinePol {
     static ShowPage(fmc) {
 		fmc.clearDisplay();
+		let costIndexPolicy = 35;
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["OPTIONS"],
-				["\xa0MAINT", "", "INOP PAGE"],
-				[``, ""],
+				["AIRLINES POLICY"],
+				["\xa0COST INDEX", ""],
+				[`[${costIndexPolicy}]`, ""],
 				["", ""],
 				["", ""],
 				["", ""],

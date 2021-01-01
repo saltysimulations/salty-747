@@ -14,30 +14,49 @@ class SimBriefApi {
             });
     }
 
-    static getMetar(dept) {
-        return fetch(`${SimBriefApi.vatsimMetar}${dept}`)
+    static getMetar(icao, source) {
+        if (!icao) {
+            throw ("No ICAO provided");
+        }
+
+        return fetch(`${SimBriefApi.url}/metar/${icao}?source=${source}`)
             .then((response) => {
                 if (!response.ok) {
-                    fmc.showErrorMessage("METAR UPLINK FAILED");
                     throw (response);
                 }
+
                 return response.json();
             });
     }
 
-    static getAtis(dept) {
-        fmc.showErrorMessage("API RECEIVED");
-        return fetch("https://datis.clowd.io/api/klax")
+    static getTaf(icao, source) {
+        if (!icao) {
+            throw ("No ICAO provided");
+        }
+
+        return fetch(`${SimBriefApi.url}/taf/${icao}?source=${source}`)
             .then((response) => {
-                fmc.showErrorMessage("API RETURNED");
                 if (!response.ok) {
-                    fmc.showErrorMessage("METAR UPLINK FAILED");
                     throw (response);
                 }
+
+                return response.json();
+            });
+    }
+
+    static getAtis(icao, source) {
+        if (!icao) {
+            throw ("No ICAO provided");
+        }
+
+        return fetch(`${SimBriefApi.url}/atis/${icao}?source=${source}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw (response);
+                }
+
                 return response.json();
             });
     }
 }
 SimBriefApi.url = "http://www.simbrief.com/api/xml.fetcher.php?json=1";
-SimBriefApi.vatsimMetar = "https://metar.vatsim.net/metar.php?id=";
-SimBriefApi.faaAtis = "https://datis.clowd.io/api/";

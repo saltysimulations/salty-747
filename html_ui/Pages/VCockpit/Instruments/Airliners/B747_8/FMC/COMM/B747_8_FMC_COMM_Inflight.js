@@ -25,6 +25,11 @@ class FMC_COMM_Inflight {
 		fmc.onLeftInput[0] = () => {
 			FMC_PosReport.ShowPage(fmc);
 		}
+
+		/* LSK5 */
+		fmc.onLeftInput[4] = () => {
+			FMC_COMM_Log.ShowPage(fmc);
+		}
 		
 		fmc.onLeftInput[4] = () => {
 			FMC_ATC_Log.ShowPage(fmc);

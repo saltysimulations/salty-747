@@ -1,16 +1,16 @@
-class FMC_MAINT_Options {
+class FMC_MAINT_Sensors {
     static ShowPage(fmc) {
 		fmc.clearDisplay();
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["OPTIONS"],
-				["\xa0MAINT", "", "INOP PAGE"],
+				["SENSORS"],
+				["\xa0OAT", "SAT"],
 				[``, ""],
+				["FUEL TOTAL QUANTITY", "RADIO ALT"],
+				["<AIRLINE POL", "DISCRETES>"],
 				["", ""],
-				["", ""],
-				["", ""],
-				["", ""],
+				["<IRS MONITOR", ""],
 				["", ""],
 				["", ""],
 				["", ""],

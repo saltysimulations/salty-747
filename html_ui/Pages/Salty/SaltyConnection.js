@@ -1,32 +1,125 @@
-const getMetar = (dept, updateView) => {
-    return SimBriefApi.getMetar(dept, updateView)
-        .then(data => {
-            console.log(data);
-            fmc.showErrorMessage("METAR UPLINK");
-            updateView();
-        })
-        .catch(_err => {
-            fmc.showErrorMessage("METAR UPLINK FAILED");
-            updateView();
-        });
+const msgSep = "---------------------------[color]white";
+const srcMap = {
+    "FAA": "faa",
+    "IVAO": "ivao",
+    "MSFS": "ms",
+    "NOAA": "aviationweather",
+    "PILOTEDGE": "pilotedge",
+    "VATSIM": "vatsim"
+};
+
+function wordWrapToStringList(text, maxLength) {
+    const result = [];
+    let line = [];
+    let length = 0;
+    text.split(" ").forEach(function (word) {
+        if ((length + word.length) >= maxLength) {
+            result.push(line.join(" "));
+            line = []; length = 0;
+        }
+        length += word.length + 1;
+        line.push(word);
+    });
+    if (line.length > 0) {
+        result.push(line.join(" "));
+    }
+    return result;
 }
-const getAtis = (dept, store, updateView) => {
-    store.atis = "SENT";
+
+function fetchTimeValue() {
+    let timeValue = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
+    if (timeValue) {
+        const seconds = Number.parseInt(timeValue);
+        const displayTime = Utils.SecondsToDisplayTime(seconds, true, true, false);
+        timeValue = displayTime.toString();
+        timeValue = timeValue.replace(":", "");
+        return timeValue.substring(0, 4);
+    }
+    return null;
+}
+
+const getMETAR = async (icaos, lines, store, updateView) => {    
+    const storedMetarSrc = SaltyDataStore.get("OPTIONS_METAR_SRC", "MSFS");
+    for (const icao of icaos) {
+        if (icao !== "") {
+            await NXApi.getMetar(icao, srcMap[storedMetarSrc])
+                .then((data) => {
+                    lines.push(`${icao}`);
+                    const newLines = wordWrapToStringList(data.metar, 25);
+                    newLines.forEach(l => lines.push(l.concat("")));
+                    lines.push(msgSep);
+                    lines.push(msgSep);
+                    lines.push(msgSep);
+                })
+                .catch(() => {
+                    lines.push(`${icao}`);
+                    lines.push('STATION NOT AVAILABLE[color]yellow');
+                    lines.push(msgSep);
+                });
+        }
+    }
+};
+
+const getTAF = async (icaos, lines, store, updateView) => {
+    const storedTafSrc = SaltyDataStore.get("OPTIONS_TAF_SRC", "NOAA");
+    for (const icao of icaos) {
+        if (icao !== "") {
+            await NXApi.getTaf(icao, srcMap[storedTafSrc])
+                .then((data) => {
+                    lines.push(`TAF ${icao}[color]white`);
+                    const newLines = wordWrapToStringList(data.taf, 25);
+                    newLines.forEach(l => lines.push(l.concat("")));
+                    lines.push(msgSep);
+                })
+                .catch(() => {
+                    lines.push(`TAF ${icao}[color]white`);
+                    lines.push('STATION NOT AVAILABLE[color]yellow');
+                    lines.push(msgSep);
+                });
+        }
+    }
+    store["sendStatus"] = "SENT";
     updateView();
-    return SimBriefApi.getAtis(dept, updateView)
-        .then(data => {
-            store.atis = "RECEIVED";
-            updateView();
-            fmc.showErrorMessage("ACARS UPLINK");
-            updateView();
-        })
-        .catch(_err => {
-            store.atis = "FAILED";
-            updateView();
-            fmc.showErrorMessage("ACARS NOT AVAILABLE");
-            updateView();
-        });
-}
+};
+
+const getATIS = async (icao, lines, type, store, updateView) => {
+    const storedAtisSrc = SaltyDataStore.get("OPTIONS_ATIS_SRC", "FAA");
+    if (icao !== "") {
+        await NXApi.getAtis(icao, srcMap[storedAtisSrc])
+            .then((data) => {
+                let atisData;
+                switch (type) {
+                    case 0:
+                        if ("arr" in data) {
+                            atisData = data.arr;
+                        } else {
+                            atisData = data.combined;
+                        }
+                        break;
+                    case 1:
+                        if ("dep" in data) {
+                            atisData = data.dep;
+                        } else {
+                            atisData = data.combined;
+                        }
+                        break;
+                    default:
+                        atisData = data.combined;
+                }
+                lines.push(`ATIS ${icao}[color]white`);
+                const newLines = wordWrapToStringList(atisData, 25);
+                newLines.forEach(l => lines.push(l.concat("")));
+                lines.push(msgSep);
+            })
+            .catch(() => {
+                lines.push(`ATIS ${icao}[color]white`);
+                lines.push('D-ATIS NOT AVAILABLE[color]yellow');
+                lines.push(msgSep);
+            });
+    }
+    store["sendStatus"] = "SENT";
+    updateView();
+};
 
 const getSimBriefPlan = (fmc, store, updateView) => {
     const userid = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");

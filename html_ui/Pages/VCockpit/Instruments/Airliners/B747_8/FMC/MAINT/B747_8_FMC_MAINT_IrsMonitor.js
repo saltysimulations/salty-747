@@ -1,16 +1,17 @@
-class FMC_MAINT_Options {
+class FMC_MAINT_IrsMonitor {
     static ShowPage(fmc) {
 		fmc.clearDisplay();
+		let simbriefId = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
 		
 		const updateView = () => {
 			fmc.setTemplate([
-				["OPTIONS"],
-				["\xa0MAINT", "", "INOP PAGE"],
-				[``, ""],
-				["", ""],
-				["", ""],
-				["", ""],
-				["", ""],
+				["IRS MONITOR"],
+				["\xa0IRS 1", ""],
+				[`OK`, ""],
+				["\xa0IRS2", ""],
+				["OK", ""],
+				["\xa0IRS 3", ""],
+				[`OK`, ""],
 				["", ""],
 				["", ""],
 				["", ""],

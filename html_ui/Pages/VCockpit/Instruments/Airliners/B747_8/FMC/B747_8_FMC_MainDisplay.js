@@ -64,6 +64,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
+
+        /* SALTY 747 VARS */
+        this.messages = [];
+        this.sentMessages = [];
         this.atcComm = {            
             estab: false,
             loggedTo: "",
@@ -1526,6 +1530,73 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 this.gwValue.textContent = this.currentGW.toString();
             }
         }
+    }
+
+    // SALTY 747 FUNCTIONS
+    // INCOMING AOC MESSAGES
+    getMessages() {
+        return this.messages;
+    }
+    getMessage(id, type) {
+        const messages = this.messages;
+        const currentMessageIndex = messages.findIndex(m => m["id"].toString() === id.toString());
+        if (type === 'previous') {
+            if (messages[currentMessageIndex - 1]) {
+                return messages[currentMessageIndex - 1];
+            }
+            return null;
+        } else if (type === 'next') {
+            if (messages[currentMessageIndex + 1]) {
+                return messages[currentMessageIndex + 1];
+            }
+            return null;
+        }
+        return messages[currentMessageIndex];
+    }
+    getMessageIndex(id) {
+        return this.messages.findIndex(m => m["id"].toString() === id.toString());
+    }
+    addMessage(message) {
+        this.messages.unshift(message);
+        const cMsgCnt = SimVar.GetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number");
+        SimVar.SetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number", cMsgCnt + 1);
+    }
+    deleteMessage(id) {
+        if (!this.messages[id]["opened"]) {
+            const cMsgCnt = SimVar.GetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number");
+            SimVar.SetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number", cMsgCnt <= 1 ? 0 : cMsgCnt - 1);
+        }
+        this.messages.splice(id, 1);
+    }
+
+    // OUTGOING/SENT AOC MESSAGES
+    getSentMessages() {
+        return this.sentMessages;
+    }
+    getSentMessage(id, type) {
+        const messages = this.sentMessages;
+        const currentMessageIndex = messages.findIndex(m => m["id"].toString() === id.toString());
+        if (type === 'previous') {
+            if (messages[currentMessageIndex - 1]) {
+                return messages[currentMessageIndex - 1];
+            }
+            return null;
+        } else if (type === 'next') {
+            if (messages[currentMessageIndex + 1]) {
+                return messages[currentMessageIndex + 1];
+            }
+            return null;
+        }
+        return messages[currentMessageIndex];
+    }
+    getSentMessageIndex(id) {
+        return this.sentMessages.findIndex(m => m["id"].toString() === id.toString());
+    }
+    addSentMessage(message) {
+        this.sentMessages.unshift(message);
+    }
+    deleteSentMessage(id) {
+        this.sentMessages.splice(id, 1);
     }
 }
 B747_8_FMC_MainDisplay._v1s = [
