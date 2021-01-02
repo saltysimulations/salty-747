@@ -37,7 +37,7 @@ class FMC_COMM_RequestWeather {
 				["\xa0RECEIVED", "REQUEST"],
 				["<MESSAGES", `${store.taf}`],
 				["\xa0RETURN TO", "REQUEST"],
-				["<REQUESTS", `${store.shortTaf}[color]yellow`]
+				["<REQUESTS", `${store.shortTaf}[color]inop`]
 			]);
 		}
 		updateView();

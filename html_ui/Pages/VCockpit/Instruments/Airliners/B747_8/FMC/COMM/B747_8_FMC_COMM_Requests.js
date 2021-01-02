@@ -9,13 +9,13 @@ class FMC_COMM_Requests {
 				["", ""],
 				["<PDC", "WEATHER>"],
 				["", ""],
-				["<ROUTE", "ATIS>"],
+				["<ROUTE[color]inop", "ATIS>"],
 				["", ""],
-				["<RELEASE", "ARR INFO>"],
+				["<RELEASE[color]inop", "ARR INFO>[color]inop"],
 				["", ""],
-				["<LOADSHEET", "LAND PERF>"],
+				["<LOADSHEET[color]inop", "LAND PERF>[color]inop"],
 				["", "FREE TEXT"],
-				["<T/O PERF", "TELEX>"],
+				["<T/O PERF[color]inop", "TELEX>[color]inop"],
 				["\xa0ACARS", "DATA LINK"],
 				["<INDEX", "READY"]
 			]);

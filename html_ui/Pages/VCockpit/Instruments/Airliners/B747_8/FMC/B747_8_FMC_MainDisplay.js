@@ -1043,6 +1043,206 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
         });
     }
+
+    /* VISUALS */
+
+    getTitle() {
+        if (this._title === undefined) {
+            this._title = this._titleElement.textContent;
+        }
+        return this._title;
+    }
+    setTitle(content) {
+        let color = content.split("[color]")[1];
+        if (!color) {
+            color = "white";
+        }
+        this._title = content.split("[color]")[0];
+        this._titleElement.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+        this._titleElement.classList.add(color);
+        this._titleElement.innerHTML = this._title;
+    }
+    getPageCurrent() {
+        if (this._pageCurrent === undefined) {
+            this._pageCurrent = parseInt(this._pageCurrentElement.textContent);
+        }
+        return this._pageCurrent;
+    }
+    setPageCurrent(value) {
+        if (typeof (value) === "number") {
+            this._pageCurrent = value;
+        }
+        else if (typeof (value) === "string") {
+            this._pageCurrent = parseInt(value);
+        }
+        this._pageCurrentElement.textContent = (this._pageCurrent > 0 ? this._pageCurrent : "") + "";
+    }
+    getPageCount() {
+        if (this._pageCount === undefined) {
+            this._pageCount = parseInt(this._pageCountElement.textContent);
+        }
+        return this._pageCount;
+    }
+    setPageCount(value) {
+        if (typeof (value) === "number") {
+            this._pageCount = value;
+        }
+        else if (typeof (value) === "string") {
+            this._pageCount = parseInt(value);
+        }
+        this._pageCountElement.textContent = (this._pageCount > 0 ? this._pageCount : "") + "";
+        if (this._pageCount === 0) {
+            this.getChildById("page-slash").textContent = "";
+        }
+        else {
+            this.getChildById("page-slash").textContent = "/";
+        }
+    }
+    getLabel(row, col = 0) {
+        if (!this._labels[row]) {
+            this._labels[row] = [];
+        }
+        return this._labels[row][col];
+    }
+    setLabel(label, row, col = -1) {
+        if (col >= this._labelElements[row].length) {
+            return;
+        }
+        if (!this._labels[row]) {
+            this._labels[row] = [];
+        }
+        if (!label) {
+            label = "";
+        }
+        if (col === -1) {
+            for (let i = 0; i < this._labelElements[row].length; i++) {
+                this._labels[row][i] = "";
+                this._labelElements[row][i].textContent = "";
+            }
+            col = 0;
+        }
+        if (label === "__FMCSEPARATOR") {
+            label = "------------------------";
+        }
+        if (label !== "") {
+            let color = label.split("[color]")[1];
+            if (!color) {
+                color = "white";
+            }
+            let e = this._labelElements[row][col];
+            e.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+            e.classList.add(color);
+            label = label.split("[color]")[0];
+        }
+        this._labels[row][col] = label;
+        this._labelElements[row][col].textContent = label;
+    }
+    getLine(row, col = 0) {
+        if (!this._lines[row]) {
+            this._lines[row] = [];
+        }
+        return this._lines[row][col];
+    }
+    setLine(content, row, col = -1) {
+        if (col >= this._lineElements[row].length) {
+            return;
+        }
+        if (!content) {
+            content = "";
+        }
+        if (!this._lines[row]) {
+            this._lines[row] = [];
+        }
+        if (col === -1) {
+            for (let i = 0; i < this._lineElements[row].length; i++) {
+                this._lines[row][i] = "";
+                this._lineElements[row][i].textContent = "";
+            }
+            col = 0;
+        }
+        if (content === "__FMCSEPARATOR") {
+            content = "------------------------";
+        }
+        if (content !== "") {
+            if (content.indexOf("[s-text]") !== -1) {
+                content = content.replace("[s-text]", "");
+                this._lineElements[row][col].classList.add("s-text");
+            }
+            else {
+                this._lineElements[row][col].classList.remove("s-text");
+            }
+            let color = content.split("[color]")[1];
+            if (!color) {
+                color = "white";
+            }
+            let e = this._lineElements[row][col];
+            e.classList.remove("white", "blue", "yellow", "green", "red", "magenta", "inop");
+            e.classList.add(color);
+            content = content.split("[color]")[0];
+        }
+        content = content.replace("\<", "&lt");
+        this._lines[row][col] = content;
+        this._lineElements[row][col].innerHTML = this._lines[row][col];
+    }
+    get inOut() {
+        return this.getInOut();
+    }
+    getInOut() {
+        if (this._inOut === undefined) {
+            this._inOut = this._inOutElement.textContent;
+        }
+        return this._inOut;
+    }
+    set inOut(v) {
+        this.setInOut(v);
+    }
+    setInOut(content) {
+        this._inOut = content;
+        this._inOutElement.textContent = this._inOut;
+        if (content === FMCMainDisplay.clrValue) {
+            this._inOutElement.style.paddingLeft = "8%";
+        }
+        else {
+            this._inOutElement.style.paddingLeft = "";
+        }
+    }
+    setTemplate(template) {
+        if (template[0]) {
+            this.setTitle(template[0][0]);
+            this.setPageCurrent(template[0][1]);
+            this.setPageCount(template[0][2]);
+        }
+        for (let i = 0; i < 6; i++) {
+            let tIndex = 2 * i + 1;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLabel(template[tIndex][0], i, 0);
+                    this.setLabel(template[tIndex][1], i, 1);
+                    this.setLabel(template[tIndex][2], i, 2);
+                    this.setLabel(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLabel(template[tIndex][0], i, -1);
+                }
+            }
+            tIndex = 2 * i + 2;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLine(template[tIndex][0], i, 0);
+                    this.setLine(template[tIndex][1], i, 1);
+                    this.setLine(template[tIndex][2], i, 2);
+                    this.setLine(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLine(template[tIndex][0], i, -1);
+                }
+            }
+        }
+        if (template[13]) {
+            this.setInOut(template[13][0]);
+        }
+        SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
+    }
 }
 B747_8_FMC_MainDisplay._v1s = [
     [130, 156],

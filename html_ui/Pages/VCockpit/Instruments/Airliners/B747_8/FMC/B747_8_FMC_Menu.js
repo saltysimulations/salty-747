@@ -3,18 +3,18 @@ class FMC_Menu {
         fmc.clearDisplay();
         fmc.setTemplate([
             ["MENU"],
-            ["", "EFIS CP"],
+            ["", "EFIS CP[color]inop"],
             ["\<FMC", "", fmc.activeSystem == "FMC" ? "<ACT>" : ""],
-            ["", "EICAS CP"],
+            ["", "EICAS CP[color]inop"],
             ["\<DLNK", "", fmc.activeSystem == "DLNK" ? "<ACT>" : ""],
-            ["", "CTL PNL"],
-            ["\<SAT", "OFF←→ON>", fmc.activeSystem == "SAT" ? "<ACT>" : ""],
+            ["", "CTL PNL[color]inop"],
+            ["\<SAT", "OFF←→ON>[color]inop", fmc.activeSystem == "SAT" ? "<ACT>" : ""],
             ["", ""],
-            ["", "PA/CI>"],
+            ["", "PA/CI>[color]inop"],
             ["", ""],
-            ["\<ACMS", "SALTY>", fmc.activeSystem == "ACMS" ? "<ACT>" : ""],
+            ["\<ACMS[color]inop", "SALTY>", fmc.activeSystem == "ACMS" ? "<ACT>" : ""],
             ["", ""],
-            ["\<CMC", "MAINT>", fmc.activeSystem == "CMC" ? "<ACT>" : ""]
+            ["\<CMC[color]inop", "MAINT>", fmc.activeSystem == "CMC" ? "<ACT>" : ""]
         ]);
 
         fmc.onLeftInput[0] = () => {
@@ -25,21 +25,21 @@ class FMC_Menu {
             FMC_ATC_Index.ShowPage(fmc);
         };
 
-        fmc.onLeftInput[2] = () => {
+        /*fmc.onLeftInput[2] = () => {
             FMC_SAT_Index.ShowPage(fmc);
-        };
+        };*/
 		
         fmc.onLeftInput[3] = () => {
 			fmc.infoPanelsManager.addMessage("*ATC", "InfoIndication");
 		}
 
-        fmc.onLeftInput[5] = () => {
+        /*fmc.onLeftInput[5] = () => {
             FMC_CMC_Index.ShowPage(fmc);
-        };
+        };*/
         
-        fmc.onRightInput[3] = () => {
+        /*fmc.onRightInput[3] = () => {
             FMC_PACI_Index.ShowPage(fmc);
-        };
+        };*/
 
         fmc.onRightInput[4] = () => {
             FMCSaltyOptions.ShowPage1(fmc);
