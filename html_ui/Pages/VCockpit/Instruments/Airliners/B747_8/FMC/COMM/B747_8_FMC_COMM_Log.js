@@ -62,6 +62,34 @@ class FMC_COMM_Log {
             }
         };
 
+        /* LSK2 */
+        fmc.onLeftInput[1] = (value) => {
+            if (messages[offset - 5]) {
+                FMC_ATC_Message.ShowPage(fmc, messages[offset - 4]);
+            }
+        };
+
+        /* LSK3 */
+        fmc.onLeftInput[2] = (value) => {
+            if (messages[offset - 3]) {
+                FMC_ATC_Message.ShowPage(fmc, messages[offset - 3]);
+            }
+        };
+
+        /* LSK4 */
+        fmc.onLeftInput[3] = (value) => {
+            if (messages[offset - 2]) {
+                FMC_ATC_Message.ShowPage(fmc, messages[offset - 2]);
+            }
+        };
+
+        /* LSK5 */
+        fmc.onLeftInput[4] = (value) => {
+            if (messages[offset - 1]) {
+                FMC_ATC_Message.ShowPage(fmc, messages[offset - 1]);
+            }
+        };
+
 		/* LSK6 */
 		fmc.onLeftInput[5] = () => {
 			FMC_COMM_Index.ShowPage(fmc);

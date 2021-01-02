@@ -65,7 +65,7 @@ class FMCDeparturesPage {
                 rows[5],
                 rows[6],
                 rows[7],
-                ["<RETURN"]
+                ["\<RETURN"]
             ]);
             fmc.onLeftInput[5] = () => { B747_8_FMC_LegsPage.ShowPage1(fmc); };
             fmc.onPrevPage = () => {

@@ -8,11 +8,11 @@ class FMC_MAINT_Index {
 			fmc.setTemplate([
 				["MAINTENANCE"],
 				["", ""],
-				["<CROSS LOAD", "SENSORS>"],
+				["<CROSS LOAD[color]red", "SENSORS>"],
 				["", ""],
-				["<AIRLINE POL", "DISCRETES>"],
+				["<AIRLINE POL", "DISCRETES>[color]red"],
 				["", ""],
-				["<IRS MONITOR", ""],
+				["<IRS MONITOR[color]red", ""],
 				["", ""],
 				["", ""],
 				["", ""],
@@ -23,15 +23,19 @@ class FMC_MAINT_Index {
 		}
 		updateView();
 		
-		fmc.onLeftInput[5] = () => {
-			FMC_Menu.ShowPage(fmc);
+		/* RSK1 */
+		fmc.onRightInput[0] = () => {
+			FMC_MAINT_Sensors.ShowPage(fmc);
 		}
 		
-		fmc.onRightInput[2] = () => {
-			let value = fmc.inOut;
-			fmc.clearUserInput();
-			SaltyDataStore.set("OPTIONS_SIMBRIEF_ID", value);
-			FMC_MAINT_Options.ShowPage(fmc);
+		/* LSK2 */
+		fmc.onLeftInput[1] = () => {
+			FMC_MAINT_AirlinePol.ShowPage(fmc);
+		}
+		
+		/* LSK6 */
+		fmc.onLeftInput[5] = () => {
+			FMC_Menu.ShowPage(fmc);
 		}
     }
 }

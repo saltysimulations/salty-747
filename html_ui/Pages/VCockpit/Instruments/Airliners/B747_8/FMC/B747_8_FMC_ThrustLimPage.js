@@ -11,7 +11,7 @@ class FMCThrustLimPage {
         };
         let toN1Cell = fmc.getThrustTakeOffLimit().toFixed(1) + "%";
         let oatValue = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-        let oatCell = oatValue.toFixed(1) + "°";
+        let oatCell = oatValue.toFixed(0) + "°C";
         let thrustTOMode = fmc.getThrustTakeOffMode();
         let thrustClimbMode = fmc.getThrustCLBMode();
         fmc.onLeftInput[1] = () => {
@@ -46,15 +46,15 @@ class FMCThrustLimPage {
             ["SEL", "TO N1", "OAT"],
             [selectedTempCell, toN1Cell, oatCell],
             [""],
-            ["<TO" + (thrustTOMode === 0 ? " <SEL>" : ""), (thrustClimbMode === 0 ? "<SEL> " : "") + "CLB>"],
+            ["\<TO" + (thrustTOMode === 0 ? " <SEL>" : ""), (thrustClimbMode === 0 ? "<SEL> " : "") + "CLB>"],
             ["TO 1"],
-            ["<-10%" + (thrustTOMode === 1 ? " <SEL>" : ""), (thrustClimbMode === 1 ? "<SEL> " : "") + "CLB 1>"],
+            ["\<-10%" + (thrustTOMode === 1 ? " <SEL>" : ""), (thrustClimbMode === 1 ? "<SEL> " : "") + "CLB 1>"],
             ["TO 2"],
-            ["<-20%" + (thrustTOMode === 2 ? " <SEL>" : ""), (thrustClimbMode === 2 ? "<SEL> " : "") + "CLB 2>"],
+            ["\<-20%" + (thrustTOMode === 2 ? " <SEL>" : ""), (thrustClimbMode === 2 ? "<SEL> " : "") + "CLB 2>"],
             [""],
-            ["<TO-B"],
+            ["\<TO-B"],
             ["__FMCSEPARATOR"],
-            ["<INDEX", "TAKEOFF>"]
+            ["\<INDEX", "TAKEOFF>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCTakeOffPage.ShowPage1(fmc); };

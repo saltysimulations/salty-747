@@ -59,6 +59,7 @@ class FMCPerfInitPage {
         let fuelResCell = "□□□.□";
         if (fmc.getFuelReserves()) {
             fuelResCell = fmc.getFuelReserves();
+            fuelResCell = parseFloat(fuelResCell).toFixed(1);    
         }
         let minFuelTempCell = SaltyDataStore.get("PERF_MIN_FUEL_TEMP", -37);
         let crzCg = "11.00%";

@@ -2,24 +2,29 @@ class FMCSaltyOptions_Taf {
 	static ShowPage(fmc) {
 		fmc.clearDisplay();
 
-		var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
-		if (IRSState == 0) { IRSState = "NOT ALIGNED[color]red"; }
-		if (IRSState == 1) { IRSState = "ALIGNING[color]yellow"; }
-		if (IRSState == 2) { IRSState = "ALIGNED[color]green"; }
-		/* Simbrief Options */
-		let simbriefId = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
-		let simbriefUser = SaltyDataStore.get("OPTIONS_SIMBRIEF_USER", "");
+        const storedTafSrc = SaltyDataStore.get("OPTIONS_TAF_SRC", "NOAA");
+
+        let noaa = "*NOAA[color]white";
+        let ivao = "*IVAO[color]white";
+
+        switch (storedTafSrc) {
+            case "IVAO":
+                ivao = "IVAO[color]green";
+                break;
+            default:
+                noaa = "NOAA[color]green";
+        }
 
 		fmc.setTemplate([
 			["SALTY OPTIONS"],
 			["", ""],
-			["<IRS", ""],
+			[ivao, ""],
+			["", ""],
+			[noaa, ""],
 			["", ""],
 			["", ""],
 			["", ""],
-			["<METAR SRC", "ATIS SRC>"],
-			["SIMBRIEF ID", "USERNAME"],
-			[`<SIMBRIEF`, ""],
+			["", ""],
 			["", ""],
 			["", ""],
 			["", ""],
@@ -28,23 +33,15 @@ class FMCSaltyOptions_Taf {
 
 		/* LSK1 */
 		fmc.onLeftInput[0] = () => {
-			FMCSaltyOptions.IrsStatus(fmc);
+			SaltyDataStore.set("OPTIONS_TAF_SRC", "IVAO");
+			FMCSaltyOptions_Taf.ShowPage(fmc);
 		}
 
 		/* LSK2 */
-		fmc.onLeftInput[2] = () => {
-		 	FMCSaltyOptions.MetarSrc(fmc);
+		fmc.onLeftInput[1] = () => {
+			SaltyDataStore.set("OPTIONS_TAF_SRC", "NOAA");
+		 	FMCSaltyOptions_Taf.ShowPage(fmc);
 		};
-
-		/* RSK2 */
-		fmc.onRightInput[2] = () => {
-		  	FMCSaltyOptions.AtisSrc(fmc);
-		};
-		
-		/* LSK4 */
-		fmc.onLeftInput[3] = () => {
-		  	FMCSaltyOptions.Simbrief(fmc);
-		}
 	}
 }
 //# sourceMappingURL=B747_8_FMC_SaltyOptions.js.map

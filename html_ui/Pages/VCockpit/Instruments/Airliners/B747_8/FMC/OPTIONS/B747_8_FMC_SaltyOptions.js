@@ -21,9 +21,9 @@ class FMCSaltyOptions {
 			["", ""],
 			[`<SIMBRIEF`, ""],
 			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			["<CPDLC", ""],
+			["\xa0RETURN TO", ""],
+			["<INDEX", ""]
 		]);
 
 		/* LSK1 */
@@ -49,6 +49,16 @@ class FMCSaltyOptions {
 		/* LSK4 */
 		fmc.onLeftInput[3] = () => {
 		  	FMCSaltyOptions_Simbrief.ShowPage(fmc);
+		}
+		
+		/* LSK5 */
+		fmc.onLeftInput[4] = () => {
+		  	FMCSaltyOptions_Cpdlc.ShowPage(fmc);
+		}
+		
+		/* LSK6 */
+		fmc.onLeftInput[5] = () => {
+		  	FMC_Menu.ShowPage(fmc);
 		}
 	}
 }

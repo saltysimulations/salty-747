@@ -18,7 +18,7 @@ class FMC_ATC_Message {
         const currentMesssageIndex = fmc.getMessageIndex(message["id"]);
         const currentMesssageCount = currentMesssageIndex + 1;
         const msgArrows = fmc.messages.length > 1 ? " {}" : "";
-        let totalPages = lines.length / 5;
+        let totalPages = Math.ceil((lines.length) / 10);
 
 		fmc.setTemplate([
 			["ACARS MESSAGE", `${store.currPage}`, `${totalPages}`],

@@ -70,7 +70,7 @@ class FMCApproachPage {
             [""],
             [""],
             ["__FMCSEPARATOR"],
-            ["<INDEX", "THRUST LIM>"]
+            ["\<INDEX", "THRUST LIM>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCThrustLimPage.ShowPage1(fmc); };

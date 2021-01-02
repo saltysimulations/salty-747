@@ -66,6 +66,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._apCooldown = 500;
 
         /* SALTY 747 VARS */
+        this._TORwyWindHdg = "";
+        this._TORwyWindSpd = "";
         this.messages = [];
         this.sentMessages = [];
         this.atcComm = {            
@@ -245,63 +247,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
         }
         return false;
-    }
-    insertRteUplink(updateView) {
-        const origin = this.simbrief.originIcao;
-        const destination = this.simbrief.destinationIcao;
-        const coRoute = this.simbrief.originIcao + this.simbrief.destinationIcao;
-        const fltNbr = this.simbrief.icao_airline + this.simbrief.flight_number;
-        const rteUplinkReady = "ROUTE 1 UPLINK READY";
-
-        this.showErrorMessage(this.simbrief.uplinkReady);
-
-        this.updateRouteOrigin(origin.toString(), (result) => {
-            if (result) {
-                this.updateRouteDestination(destination.toString(), (result) => {
-                    if (result) {
-                        this.updateFlightNo(fltNbr, (result) => {
-                            if (result) {
-                                this.updateCoRoute(coRoute, (result) => {
-                                    if (result) {
-                                        updateView();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
-    insertPerfUplink(updateView) {
-        const zfw = (this.simbrief.estZfw / 1000);
-        const crz = this.simbrief.cruiseAltitude;
-        const costIndex = this.simbrief.costIndex.toString();
-        const resFuel = (parseFloat(this.simbrief.finResFuel) + parseFloat(this.simbrief.altnFuel)).toFixed(1) / 1000;
-        const perfInitReady = "PERF INIT UPLINK";
-        console.log(zfw);
-        console.log(crz);
-        console.log(costIndex);
-        console.log(resFuel);
-        this.trySetZeroFuelWeightZFWCG(zfw, (result) => {
-            if (result) {
-                console.log(result + " SET INTO ZFW");
-                updateView();
-            }
-        });
-        this.tryUpdateCostIndex(costIndex, 9999);
-        this.setFuelReserves(resFuel, (result) => {
-            if (result) {
-                console.log(result + " SET INTO FUEL RES");
-            }
-        });
-        this.setCruiseFlightLevelAndTemperature(crz, (result) => {
-            if (result) {
-                console.log(result + " SET INTO FL");
-                this.showErrorMessage(perfInitReady);
-                updateView();
-            }
-        });
     }
     get cruiseFlightLevel() {
         return this._cruiseFlightLevel;
@@ -1597,6 +1542,63 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     deleteSentMessage(id) {
         this.sentMessages.splice(id, 1);
+    }
+    insertRteUplink(updateView) {
+        const origin = this.simbrief.originIcao;
+        const destination = this.simbrief.destinationIcao;
+        const coRoute = this.simbrief.originIcao + this.simbrief.destinationIcao;
+        const fltNbr = this.simbrief.icao_airline + this.simbrief.flight_number;
+        const rteUplinkReady = "ROUTE 1 UPLINK READY";
+
+        this.showErrorMessage(this.simbrief.uplinkReady);
+
+        this.updateRouteOrigin(origin.toString(), (result) => {
+            if (result) {
+                this.updateRouteDestination(destination.toString(), (result) => {
+                    if (result) {
+                        this.updateFlightNo(fltNbr, (result) => {
+                            if (result) {
+                                this.updateCoRoute(coRoute, (result) => {
+                                    if (result) {
+                                        updateView();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    insertPerfUplink(updateView) {
+        const zfw = (this.simbrief.estZfw / 1000);
+        const crz = this.simbrief.cruiseAltitude;
+        const costIndex = this.simbrief.costIndex.toString();
+        const resFuel = (parseFloat(this.simbrief.finResFuel) + parseFloat(this.simbrief.altnFuel)).toFixed(1) / 1000;
+        const perfInitReady = "PERF INIT UPLINK";
+        console.log(zfw);
+        console.log(crz);
+        console.log(costIndex);
+        console.log(resFuel);
+        this.trySetZeroFuelWeightZFWCG(zfw, (result) => {
+            if (result) {
+                console.log(result + " SET INTO ZFW");
+                updateView();
+            }
+        });
+        this.tryUpdateCostIndex(costIndex, 9999);
+        this.setFuelReserves(resFuel, (result) => {
+            if (result) {
+                console.log(result + " SET INTO FUEL RES");
+            }
+        });
+        this.setCruiseFlightLevelAndTemperature(crz, (result) => {
+            if (result) {
+                console.log(result + " SET INTO FL");
+                this.showErrorMessage(perfInitReady);
+                updateView();
+            }
+        });
     }
 }
 B747_8_FMC_MainDisplay._v1s = [

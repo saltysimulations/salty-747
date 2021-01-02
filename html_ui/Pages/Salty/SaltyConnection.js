@@ -44,12 +44,12 @@ const getMETAR = async (icaos, lines, store, updateView) => {
         if (icao !== "") {
             await NXApi.getMetar(icao, srcMap[storedMetarSrc])
                 .then((data) => {
-                    lines.push(`${icao}`);
+                    lines.push(`METAR ${icao}`);
                     const newLines = wordWrapToStringList(data.metar, 25);
                     newLines.forEach(l => lines.push(l.concat("")));
+                    lines.push("");
                     lines.push(msgSep);
-                    lines.push(msgSep);
-                    lines.push(msgSep);
+                    lines.push("");
                 })
                 .catch(() => {
                     lines.push(`${icao}`);
@@ -66,20 +66,20 @@ const getTAF = async (icaos, lines, store, updateView) => {
         if (icao !== "") {
             await NXApi.getTaf(icao, srcMap[storedTafSrc])
                 .then((data) => {
-                    lines.push(`TAF ${icao}[color]white`);
+                    lines.push(`TAF ${icao}`);
                     const newLines = wordWrapToStringList(data.taf, 25);
                     newLines.forEach(l => lines.push(l.concat("")));
+                    lines.push("");
                     lines.push(msgSep);
+                    lines.push("");
                 })
                 .catch(() => {
-                    lines.push(`TAF ${icao}[color]white`);
+                    lines.push(`TAF ${icao}`);
                     lines.push('STATION NOT AVAILABLE[color]yellow');
                     lines.push(msgSep);
                 });
         }
     }
-    store["sendStatus"] = "SENT";
-    updateView();
 };
 
 const getATIS = async (icao, lines, type, store, updateView) => {
@@ -109,7 +109,9 @@ const getATIS = async (icao, lines, type, store, updateView) => {
                 lines.push(`ATIS ${icao}[color]white`);
                 const newLines = wordWrapToStringList(atisData, 25);
                 newLines.forEach(l => lines.push(l.concat("")));
+                lines.push("");
                 lines.push(msgSep);
+                lines.push("");
             })
             .catch(() => {
                 lines.push(`ATIS ${icao}[color]white`);
@@ -117,8 +119,6 @@ const getATIS = async (icao, lines, type, store, updateView) => {
                 lines.push(msgSep);
             });
     }
-    store["sendStatus"] = "SENT";
-    updateView();
 };
 
 const getSimBriefPlan = (fmc, store, updateView) => {

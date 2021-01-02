@@ -106,10 +106,12 @@ class FMCTakeOffPage {
             }
         };
         let runwayCell = "---";
+        let posCell = "----";
         let selectedRunway = fmc.flightPlanManager.getDepartureRunway();
         if (selectedRunway) {
-            runwayCell = "RW " + Avionics.Utils.formatRunway(selectedRunway.designation);
+            runwayCell = Avionics.Utils.formatRunway(selectedRunway.designation);
         }
+
         let cgCell = "--%";
         if (isFinite(fmc.zeroFuelWeightMassCenter)) {
             cgCell = fmc.zeroFuelWeightMassCenter.toFixed(0) + "%";
@@ -130,7 +132,7 @@ class FMCTakeOffPage {
         }
 
         let thrustCell = fmc.getThrustTakeOffTemp() + "°";
-        let thrustTOMode;
+        let thrustTOMode = fmc.getThrustTakeOffMode();
         if (thrustTOMode === 0) {
             thrustTOMode = "TO[s-text]"
         } else if (thrustTOMode === 1) {
@@ -145,8 +147,12 @@ class FMCTakeOffPage {
         }
         
         let TOgrossWeightCell = "---.-";
+        let taxiFuel = 0.6;
         if (isFinite(fmc.getWeight(true))) {
-            TOgrossWeightCell = fmc.getWeight(true).toFixed(1) - 0.6;
+            if (fmc.simbrief.taxiFuel) {
+                taxiFuel = fmc.simbrief.taxiFuel / 1000;
+            }
+            TOgrossWeightCell = (fmc.getWeight(true) - taxiFuel).toFixed(1);
         }
 
         let refSpdsCell = "off←→ON";
@@ -160,7 +166,7 @@ class FMCTakeOffPage {
                 ["\xa0CG\xa0\xa0\xa0TRIM", "V2"],
                 [`${cgCell}\xa0\xa0\xa0${trimCell}`, v2],
                 ["\xa0RWY/POS", "TOGW", "GR WT"],
-                [`${runwayCell}/---`, `${TOgrossWeightCell}`, `${grossWeightCell}[s-text]`],
+                [`${runwayCell}/${posCell}`, `${TOgrossWeightCell}`, `${grossWeightCell}[s-text]`],
                 ["\xa0REQUEST", "REF SPDS"],
                 [`${store.requestData}`, `${refSpdsCell}`],
                 ["__FMCSEPARATOR"],
@@ -181,16 +187,65 @@ class FMCTakeOffPage {
     static ShowPage2(fmc) {        
         fmc.clearDisplay();
         let altnThrust = "TO";
-        let eoAccelHt = "1000";
+        let eoAccelHt = SaltyDataStore.get("TO_EO_ACCEL_HT", 1000);
         let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius") + "°C";
-        let qClb = "1000";
-        let wind = "---°/---";
-        let clbAt = "3000";
-        let rwyWnd = "--KTH --KTR";
+        let qClb = SaltyDataStore.get("TO_Q_CLB_AT", 1000);
+
+        let windCell = "---°/--KT";
+        let clbAt = SaltyDataStore.get("TO_CLB_AT", 3000);
+        let rwyHdg;
+        let rwyHdWnd;
+        let rwyXWnd;
+        let rwyHdWndCell = "--KT";
+        let rwyXWndCell = "--KT";
+        /* LSK3 */
+        fmc.onLeftInput[2] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            if (value.length >= 5 && value.length <= 6) {
+                value = value.split("/");
+                if (value[0]) {
+                    fmc._TORwyWindHdg = value[0];
+                }
+                if (value[1]) {                
+                    fmc._TORwyWindSpd = value[1];
+                }
+            } else if (value == "") {
+                fmc.inOut =  fmc._TORwyWindHdg + "/" +  fmc._TORwyWindSpd;
+            } else {
+                fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+            }
+            FMCTakeOffPage.ShowPage2(fmc);
+        }
+        if (fmc._TORwyWindHdg != "" && fmc._TORwyWindSpd != "") {
+            windCell = fmc._TORwyWindHdg + "°/" + fmc._TORwyWindSpd.padStart(2, 0) + "KT";
+            if (fmc.flightPlanManager.getDepartureRunway()) {
+                rwyHdg = fmc.flightPlanManager.getDepartureRunway().direction;
+                rwyHdg = parseFloat(rwyHdg).toFixed(0);
+                rwyHdWnd =  Math.cos(rwyHdg - fmc._TORwyWindHdg);
+                rwyXWnd =  Math.sin(rwyHdg - fmc._TORwyWindHdg);
+                console.log(Math.sign(rwyXWnd));
+                if (rwyHdWnd > 0) {
+                    rwyHdWndCell = (rwyHdWnd * fmc._TORwyWindSpd).toFixed(0) + "KTH";
+                } else if (rwyHdWnd == 0) {
+                    rwyHdWndCell = (rwyHdWnd * fmc._TORwyWindSpd).toFixed(0) + "KT";
+                } else if (rwyHdWnd < 0) {
+                    rwyHdWndCell = (rwyHdWnd * fmc._TORwyWindSpd).toFixed(0) + "KTT";
+                }
+                if (rwyXWnd > 0) {
+                    rwyXWndCell = (rwyXWnd * fmc._TORwyWindSpd).toFixed(0) + "KTR";
+                } else if (rwyHdWnd == 0) {
+                    rwyXWndCell = (rwyXWnd * fmc._TORwyWindSpd).toFixed(0) + "KT";
+                } else if (rwyHdWnd < 0) {
+                    rwyXWndCell = (rwyXWnd * fmc._TORwyWindSpd).toFixed(0) + "KTL";
+                }
+            }
+        }
+
         let restoreRate = "SLOW ←→ FAST>";
         let slopeCond = "U0.5/WET"
         let stdLimToGw = "368.0"
-        let qClbArmed = "OFF ←→ ARMED>";
+        let qClbArmed = "OFF←→ARMED>";
         let n1Pct = fmc.getThrustTakeOffLimit().toFixed(1) + "%";
         
         const updateView = () => {
@@ -201,9 +256,9 @@ class FMCTakeOffPage {
                 ["\xa0REF OAT", "Q-CLB AT"],
                 [`${oat}`, `${qClb}FT`],
                 ["\xa0WIND", "CLB AT"],
-                [`${wind}`, `${clbAt}FT`],
+                [`${windCell}`, `${clbAt}FT`],
                 ["\xa0RWY WIND", "RESTORE RATE"],
-                [`${rwyWnd}`, `${restoreRate}`],
+                [`${rwyHdWndCell}\xa0\xa0${rwyXWndCell}`, `${restoreRate}`],
                 ["\xa0SLOPE/COND", "STD LIM TOGW"],
                 [`${slopeCond}`, `${stdLimToGw}`],
                 ["__FMCSEPARATOR", "Q_CLB", "N1"],
@@ -213,11 +268,12 @@ class FMCTakeOffPage {
         updateView();
 
         fmc.onPrevPage = () => {
-            FMCTakeOffPage.ShowPage2(fmc);
+            FMCTakeOffPage.ShowPage1(fmc);
         };
         fmc.onNextPage = () => {
-            FMCTakeOffPage.ShowPage2(fmc);
+            FMCTakeOffPage.ShowPage1(fmc);
         };
+
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
     }
 }
