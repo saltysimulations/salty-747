@@ -144,11 +144,13 @@ class FMC_ATC_XRequest {
 						lines.push("\xa0MAINTAIN OWN");
 						lines.push("SEPARATION AND VMC");
 					}
-					if (store.altPerfActive == 1) {
+					if (store.altPerfActive == 1) {						
+						// REQUEST: /data2/53//Y/REQUEST%20CLIMB%20TO@${ALTITUDE}@|DUE%20TO@WEATHER
 						lines.push("/ DUE TO");
 						lines.push("AIRCRAFT PERFORMANCE");
 					}
 					if (store.altWeatherActive == 1) {
+						// REQUEST: /data2/53//Y/REQUEST%20CLIMB%20TO@${ALTITUDE}@|DUE%20TO@WEATHER
 						lines.push("/ DUE TO");
 						lines.push("WEATHER");
 					}

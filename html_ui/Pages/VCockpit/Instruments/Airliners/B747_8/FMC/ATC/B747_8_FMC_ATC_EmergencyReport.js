@@ -4,6 +4,10 @@ class FMC_ATC_EmergencyReport {
 		fmc.clearDisplay();
 		fmc.activeSystem = "DLNK";
 
+		/*
+			MAYDAY, 14000, 2 free text: /data2/58//N/@MAYDAY MAYDAY MAYDAY@|DESCENDING TO@14000@|FREE TEXT@FREE@@TEXT
+		*/
+
         let maydayCell = "";
         let panCell = "";
         let divertCell = "----";
