@@ -14,7 +14,7 @@ class FMC_COMM_Requests {
 				["<RELEASE[color]inop", "ARR INFO>[color]inop"],
 				["", ""],
 				["<LOADSHEET[color]inop", "LAND PERF>[color]inop"],
-				["", "FREE TEXT"],
+				["", "FREE TEXT[color]inop"],
 				["<T/O PERF[color]inop", "TELEX>[color]inop"],
 				["\xa0ACARS", "DATA LINK"],
 				["<INDEX", "READY"]

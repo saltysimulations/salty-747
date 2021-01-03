@@ -9,7 +9,7 @@ class FMC_COMM_Preflight {
 		let etaCell = "□□□□";
 		let altnCell = "□□□□";
 		let companyCell =  "□□□";
-		let currUTC = fmc.getUTC();
+		let currUTC = fmc.getTimeString(new Date());
 		if (SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string")) {
 			fmc.atcComm.fltNo = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string");
 		}
@@ -50,7 +50,7 @@ class FMC_COMM_Preflight {
 				[`${originCell}`, `${planDepCell}Z`],
 				["\xa0DEST", "ETA"],
 				[`${destCell}`, `${etaCell}Z`],
-				["\xa0ALTNRNT", "COMPANY"],
+				["\xa0ALTN", "COMPANY"],
 				[`${altnCell}`, `${companyCell}`],
 				["\xa0RECEIVED", ""],
 				["<MESSAGES", "REQUESTS>"],

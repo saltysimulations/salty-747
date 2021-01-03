@@ -8,7 +8,7 @@ class FMC_MAINT_Index {
 			fmc.setTemplate([
 				["MAINTENANCE"],
 				["", ""],
-				["<CROSS LOAD[color]inop", "SENSORS>"],
+				["<CROSS LOAD", "SENSORS>"],
 				["", ""],
 				["<AIRLINE POL", "DISCRETES>[color]inop"],
 				["", ""],
@@ -22,6 +22,11 @@ class FMC_MAINT_Index {
 			]);
 		}
 		updateView();
+		
+		/* LSK1 */
+		fmc.onLeftInput[0] = () => {
+			fmc.showErrorMessage("CHECK AIRLINE POLICY");
+		}		
 		
 		/* RSK1 */
 		fmc.onRightInput[0] = () => {

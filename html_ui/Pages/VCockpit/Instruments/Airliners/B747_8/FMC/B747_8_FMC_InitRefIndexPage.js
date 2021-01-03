@@ -1,7 +1,7 @@
 class B747_8_FMC_InitRefIndexPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
-        fmc.activeSystem = "MAINT";
+        fmc.activeSystem = "FMC";
         fmc.setTemplate([
             ["INIT/REF INDEX"],
             [""],

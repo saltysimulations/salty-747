@@ -991,7 +991,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         const destination = this.simbrief.destinationIcao;
         const coRoute = this.simbrief.originIcao + this.simbrief.destinationIcao;
         const fltNbr = this.simbrief.icao_airline + this.simbrief.flight_number;
-        const rteUplinkReady = "ROUTE 1 UPLINK READY";
 
         this.showErrorMessage(this.simbrief.uplinkReady);
 
@@ -1003,7 +1002,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                             if (result) {
                                 this.updateCoRoute(coRoute, (result) => {
                                     if (result) {
-                                        updateView();
+                                        if (this._pageCurrent == "RTE 1") {
+                                            updateView();
+                                        }
                                     }
                                 });
                             }
@@ -1014,34 +1015,33 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         });
     }
     insertPerfUplink(updateView) {
-        const zfw = (this.simbrief.estZfw / 1000);
+        const zfw = (this.simbrief.estZfw / 1000).toString();
         const crz = this.simbrief.cruiseAltitude;
         const costIndex = this.simbrief.costIndex.toString();
         const resFuel = (parseFloat(this.simbrief.finResFuel) + parseFloat(this.simbrief.altnFuel)).toFixed(1) / 1000;
-        const perfInitReady = "PERF INIT UPLINK";
-        console.log(zfw);
-        console.log(crz);
-        console.log(costIndex);
-        console.log(resFuel);
         this.trySetZeroFuelWeightZFWCG(zfw, (result) => {
             if (result) {
-                console.log(result + " SET INTO ZFW");
-                updateView();
             }
         });
         this.tryUpdateCostIndex(costIndex, 9999);
         this.setFuelReserves(resFuel, (result) => {
             if (result) {
-                console.log(result + " SET INTO FUEL RES");
             }
         });
         this.setCruiseFlightLevelAndTemperature(crz, (result) => {
             if (result) {
-                console.log(result + " SET INTO FL");
-                this.showErrorMessage(perfInitReady);
-                updateView();
             }
         });
+    }
+    getTimeString(time) {
+        var hours = time.getUTCHours();
+        hours = hours.toString();
+        hours = hours.padStart(2, "0");
+        var minutes = time.getUTCMinutes();
+        minutes = minutes.toString();
+        minutes = minutes.padStart(2, "0");
+        var timeString = hours + minutes + "Z";
+        return timeString
     }
 
     /* VISUALS */

@@ -1,7 +1,7 @@
 class FMCIdentPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
-        fmc.activeSystem = "MAINT";
+        fmc.activeSystem = "FMC";
         let model = SimVar.GetSimVarValue("ATC MODEL", "string", "FMC");
         if (!model) {
             model = "unkn.";

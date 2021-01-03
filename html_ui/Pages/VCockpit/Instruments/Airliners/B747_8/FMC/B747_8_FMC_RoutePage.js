@@ -61,7 +61,7 @@ class FMCRoutePage {
             runwayCell = Avionics.Utils.formatRunway(runway.designation);
         }
         const updateView = () => {
-            if (store.rteUplinkReady) {
+            if (fmc.simbrief.rteUplinkReady) {
                 store.uplinkSeparator = " ----- ROUTE UPLINK ----- ";
                 store.loadUplink = "<LOAD";
                 store.purgeUplink = "PURGE>";
@@ -77,7 +77,7 @@ class FMCRoutePage {
                 if (fmc.simbrief.originIcao) {
                     coRouteCell = fmc.simbrief.originIcao + fmc.simbrief.destinationIcao;
                 }
-            } else if (!store.rteUplinkReady) {
+            } else if (!fmc.simbrief.rteUplinkReady) {
                 store.uplinkSeparator = "";
                 store.loadUplink = "";
                 store.purgeUplink = "";                
@@ -123,7 +123,7 @@ class FMCRoutePage {
             });
         };
         fmc.onLeftInput[2] = () => {
-            store.requestData = "SENDING\xa0";
+            store.requestData = "\xa0SENDING";
             updateView();
             const get = async () => {
                 getSimBriefPlan(fmc, store, updateView);
@@ -131,18 +131,27 @@ class FMCRoutePage {
 
             get()
                 .then(() => {
-                    updateView();
+                    setTimeout(
+                        function() {
+                            store.requestData = "<SEND";
+                            fmc.showErrorMessage("ROUTE 1 UPLINK READY");
+                            updateView();   
+                        }, 1000
+                    );
             });
         };
         fmc.onLeftInput[3] = () => {
-            if (store.rteUplinkReady) {
-                store.rteUplinkReady = false;
+            if (fmc.simbrief.rteUplinkReady) {
+                fmc.simbrief.rteUplinkReady = false;
                 store.uplinkSeparator = "";
                 store.loadUplink = "";
                 store.purgeUplink = "";
-                fmc.insertRteUplink(updateView);
-                fmc.showErrorMessage("ROUTE 1 UPLINK READY");
-                updateView();
+                setTimeout (
+                    function() {
+                        fmc.insertRteUplink(updateView);
+                        updateView();
+                    }, 750
+                );
             }
         };
         fmc.onRightInput[0] = () => {
@@ -173,8 +182,8 @@ class FMCRoutePage {
             });
         };
         fmc.onRightInput[3] = () => {
-            if (store.rteUplinkReady) {
-                store.rteUplinkReady = false;
+            if (fmc.simbrief.rteUplinkReady) {
+                fmc.simbrief.rteUplinkReady = false;
                 store.uplinkSeparator = "";
                 store.loadUplink = "";
                 store.purgeUplink = "";

@@ -1,37 +1,54 @@
 class FMC_Menu {
-    static ShowPage(fmc) {
+    static ShowPage(fmc, store = {act: "<ACT>"}) {
         fmc.clearDisplay();
-        fmc.setTemplate([
-            ["MENU"],
-            ["", "EFIS CP[color]inop"],
-            ["\<FMC", "", fmc.activeSystem == "FMC" ? "<ACT>" : ""],
-            ["", "EICAS CP[color]inop"],
-            ["\<DLNK", "", fmc.activeSystem == "DLNK" ? "<ACT>" : ""],
-            ["", "CTL PNL[color]inop"],
-            ["\<SAT", "OFF←→ON>[color]inop", fmc.activeSystem == "SAT" ? "<ACT>" : ""],
-            ["", ""],
-            ["", "PA/CI>[color]inop"],
-            ["", ""],
-            ["\<ACMS[color]inop", "SALTY>", fmc.activeSystem == "ACMS" ? "<ACT>" : ""],
-            ["", ""],
-            ["\<CMC[color]inop", "MAINT>", fmc.activeSystem == "CMC" ? "<ACT>" : ""]
-        ]);
+        const updateView = () => {
+            fmc.setTemplate([
+                ["MENU"],
+                ["", "EFIS CP[color]inop"],
+                ["\<FMC", "", fmc.activeSystem == "FMC" ? store.act : ""],
+                ["", "EICAS CP[color]inop"],
+                ["\<DLNK", "", fmc.activeSystem == "DLNK" ? store.act : ""],
+                ["", "CTL PNL[color]inop"],
+                ["\<SAT[color]inop", "OFF←→ON>[color]inop", fmc.activeSystem == "SAT" ? store.act : ""],
+                ["", ""],
+                ["", "PA/CI>[color]inop"],
+                ["", ""],
+                ["\<ACMS[color]inop", "SALTY>", fmc.activeSystem == "ACMS" ? store.act : ""],
+                ["", ""],
+                ["\<CMC[color]inop", "MAINT>", fmc.activeSystem == "CMC" ? store.act : ""]
+            ]);
+        }
+        updateView();
 
         fmc.onLeftInput[0] = () => {
-            FMCIdentPage.ShowPage1(fmc);
+            fmc.activeSystem = "FMC";
+            store.act = "<REQ>";
+            updateView();
+            setTimeout(
+                function() {
+                    FMCIdentPage.ShowPage1(fmc);
+                }, 500
+            );
         };
 
         fmc.onLeftInput[1] = () => {
-            FMC_ATC_Index.ShowPage(fmc);
+            fmc.activeSystem = "DLNK";
+            store.act = "<REQ>";
+            updateView();
+            setTimeout(
+                function() {
+                    FMC_ATC_Index.ShowPage(fmc);
+                }, 500
+            );
         };
 
         /*fmc.onLeftInput[2] = () => {
             FMC_SAT_Index.ShowPage(fmc);
         };*/
 		
-        fmc.onLeftInput[3] = () => {
+        /*fmc.onLeftInput[3] = () => {
 			fmc.infoPanelsManager.addMessage("*ATC", "InfoIndication");
-		}
+		}*/
 
         /*fmc.onLeftInput[5] = () => {
             FMC_CMC_Index.ShowPage(fmc);
@@ -42,11 +59,23 @@ class FMC_Menu {
         };*/
 
         fmc.onRightInput[4] = () => {
-            FMCSaltyOptions.ShowPage1(fmc);
+            fmc.activeSystem = "SALTY";
+            store.act = "<REQ>";
+            updateView();
+            setTimeout(
+                function() {
+                    FMCSaltyOptions.ShowPage1(fmc);
+                }, 500
+            );
         };
         
         fmc.onRightInput[5] = () => {
-            FMC_MAINT_Index.ShowPage(fmc);
+            updateView();
+            setTimeout(
+                function() {
+                    FMC_MAINT_Index.ShowPage(fmc);
+                }, 500
+            );
         };
     }
 }
