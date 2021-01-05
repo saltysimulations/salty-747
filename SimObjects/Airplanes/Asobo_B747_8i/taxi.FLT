@@ -179,6 +179,8 @@ FoldingWingsState=0, 0
 AuxPowerUnitSwitch=False
 
 [LocalVars.0]
+XMLVAR_SeatBelts=1
+B747_8_MFD_NAV_MODE=2
 SALTY_IRS_STATE=2
 747_IRS_KNOB_1=2
 747_IRS_KNOB_2=2
@@ -193,6 +195,7 @@ circuit.105 = True,0.5
 circuit.106 = True,0.5
 circuit.107 = True,0.5
 circuit.108 = True,0.5
+circuit.111 = False,1.0
 
 [Gauges.0]
 KollsmanSetting=29.921342849731445313

@@ -1,11 +1,11 @@
-class B747_8_FMC_ProgressPage {
-    static ShowPage(fmc) {
+class B747_8_FMC_ProgPage {
+    static ShowPage1(fmc) {
         fmc.clearDisplay();
-        B747_8_FMC_ProgressPage._timer = 0;
+        B747_8_FMC_ProgPage._timer = 0;
         fmc.pageUpdate = () => {
-            B747_8_FMC_ProgressPage._timer++;
-            if (B747_8_FMC_ProgressPage._timer >= 100) {
-                B747_8_FMC_ProgressPage.ShowPage(fmc);
+            B747_8_FMC_ProgPage._timer++;
+            if (B747_8_FMC_ProgPage._timer >= 100) {
+                B747_8_FMC_ProgPage.ShowPage1(fmc);
             }
         };
         
@@ -139,4 +139,4 @@ class B747_8_FMC_ProgressPage {
 }
 
 
-//# sourceMappingURL=B747_8_FMC_ProgressPage.js.map
+//# sourceMappingURL=B747_8_FMC_ProgPage.js.map

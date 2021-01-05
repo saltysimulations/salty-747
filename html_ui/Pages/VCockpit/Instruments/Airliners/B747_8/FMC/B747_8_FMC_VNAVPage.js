@@ -93,7 +93,7 @@ class B747_8_FMC_VNAVPage {
         let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
         let weightLimitedFltLevel = (((-0.02809 * currentWeight) + 56571.91142) / 100);
         let maxFltLevel = Math.min(431, weightLimitedFltLevel);
-
+        
         fmc.setTemplate([
             [crzPageTitle, "2", "3"],
             ["CRZ ALT", "STEP TO"],
@@ -140,7 +140,7 @@ class B747_8_FMC_VNAVPage {
             ["PAUSE @ DIST FROM DEST"],
             ["OFF", "FORECAST>"],
             [],
-            ["<OFFPATH DES"]
+            ["\<OFFPATH DES"]
         ]);
         fmc.onPrevPage = () => { B747_8_FMC_VNAVPage.ShowPage2(fmc); };
     }
