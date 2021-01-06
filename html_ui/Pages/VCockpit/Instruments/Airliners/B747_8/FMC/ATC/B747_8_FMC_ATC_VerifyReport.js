@@ -20,7 +20,7 @@ class FMC_ATC_VerifyReport {
 	            [lines[5] ? lines[5] : ""],
 	            [lines[6] ? lines[6] : ""],
 	            [lines[7] ? lines[7] : "", "REPORT"],
-	            [lines[8] ? lines[8] : "", "SEND>"],
+	            [lines[8] ? lines[8] : "", "SEND>[color]inop"],
 	            ["", "", "__FMCSEPARATOR"],
 	            [`<${returnTo}`]
 	        ]);

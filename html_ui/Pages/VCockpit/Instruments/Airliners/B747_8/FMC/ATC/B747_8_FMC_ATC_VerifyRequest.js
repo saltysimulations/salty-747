@@ -26,21 +26,21 @@ class FMC_ATC_VerifyRequest {
 	            [lines[6] ? lines[6] : ""],
 	            [lines[7] ? lines[7] : ""],
 	            [lines[8] ? lines[8] : "", "REPORT"],
-	            [lines[9] ? lines[9] : "", `${sendStatus}`],
+	            [lines[9] ? lines[9] : "", `${sendStatus}[color]inop`],
 	            ["", "", "__FMCSEPARATOR"],
 	            [`<${returnPage}`]
 	        ]);
         }
 		updateView();
 		
-        fmc.onRightInput[4] = () => {
+        /*fmc.onRightInput[4] = () => {
 			sendStatus = "SENDING";
 			updateView();
 			setTimeout(function(){
 		 		sendStatus = "SENT";
 		 		updateView();
 			}, 3000);
-		}
+		}*/
 		
         fmc.onLeftInput[5] = () => {
 			if (title == "EMERGENCY") {

@@ -7,7 +7,7 @@ class FMC_COMM_Index {
 			fmc.setTemplate([
 				["ACARS INDEX"],
 				["", ""],
-				["<PREFLIGHT", ""],
+				["<PREFLIGHT", "REQUESTS>"],
 				["", ""],
 				["<INFLIGHT", ""],
 				["", ""],
@@ -25,6 +25,11 @@ class FMC_COMM_Index {
 		/* LSK1 */
 		fmc.onLeftInput[0] = () => {
 			FMC_COMM_Preflight.ShowPage(fmc);
+		}
+
+		/* RSK1 */
+		fmc.onRightInput[0] = () => {
+			FMC_COMM_Requests.ShowPage(fmc);
 		}
 
 		/* LSK2 */

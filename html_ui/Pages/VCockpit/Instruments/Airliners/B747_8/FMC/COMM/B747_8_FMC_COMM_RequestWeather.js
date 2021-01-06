@@ -8,22 +8,23 @@ class FMC_COMM_RequestWeather {
 		let aprt3Cell = "----";
 		let aprt4Cell = "----";
 
-		store.arpt1 = "KLAX";//fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "";
-		store.arpt2 = "KSEA";//fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "";
-		if (store.arpt1 != "") {
-			aprt1Cell = store.arpt1;
-		}
-		if (store.arpt2 != "") {
-			aprt2Cell = store.arpt2;
-		}
-		if (store.arpt3 != "") {
-			aprt3Cell = store.arpt3;
-		}
-		if (store.arpt4 != "") {
-			aprt4Cell = store.arpt4;
-		}
+		store.arpt1 = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "";
+		store.arpt2 = fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "";
 		
 		const updateView = () => {
+			if (store.arpt1 != "") {
+				aprt1Cell = store.arpt1;
+			}
+			if (store.arpt2 != "") {
+				aprt2Cell = store.arpt2;
+			}
+			if (store.arpt3 != "") {
+				aprt3Cell = store.arpt3;
+			}
+			if (store.arpt4 != "") {
+				aprt4Cell = store.arpt4;
+			}
+
 			fmc.setTemplate([
 				["WEATHER REQUEST"],
 				["\xa0ORIGIN", "DESTINATION"],
@@ -47,7 +48,8 @@ class FMC_COMM_RequestWeather {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value.length == 4) {
-            	store.arpt3 = value;	
+            	store.arpt3 = value;
+            	updateView();
             } else {
             	fmc.showErrorMessage(fmc.defaultInputErrorMessage);
             }            
@@ -58,7 +60,8 @@ class FMC_COMM_RequestWeather {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value.length == 4) {
-            	store.arpt4 = value;	
+            	store.arpt4 = value;
+            	updateView();
             } else {
             	fmc.showErrorMessage(fmc.defaultInputErrorMessage);
             }            

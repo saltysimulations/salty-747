@@ -1,14 +1,14 @@
 class FMC_ATC_LogonStatus {
     static ShowPage(fmc, store = {
-			"logonTo": "--------",
-			"fltNo": "-------",
+			"logonTo": "",
+			"fltNo": "",
 			"sendLabel": "",
 			"sendStatus": "",
 			"atcCtrLabel": "ATC CTR",
-			"actCtr": "----",
+			"actCtr": "",
 			"nextCtrLabel": "NEXT CTR",
-			"nextCtr": "----",
-			"maxUlDelay": "---",
+			"nextCtr": "",
+			"maxUlDelay": "",
 			"atcCommLabel": "",
 			"atcCommSelect": "",
 			"dlnkStatus": "NO COMM"
@@ -19,6 +19,11 @@ class FMC_ATC_LogonStatus {
 		let originCell = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "----";
 		let destinationCell = fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "----";
 		let regCell = SimVar.GetSimVarValue("ATC ID", "string") ? SimVar.GetSimVarValue("ATC ID", "string") : "-------";
+		let logonToCell = "--------";
+		let fltNoCell = "-------";
+		let atcCtrCell = "----";
+		let nextCtrCell = "----";
+		let maxUlDelayCell = "----";
 
 		/* REMOVE AFTER TESTING */
 		/* END REMOVE */
@@ -29,9 +34,9 @@ class FMC_ATC_LogonStatus {
 			}
 			if (!fmc.atcComm.estab) {
 				store.atcCtrLabel = "";
-				store.actCtr = "";
+				atcCtrCell = "";
 				store.nextCtrLabel = "";
-				store.nextCtr = "";
+				nextCtrCell = "";
 			} else {
 				store.actCtr = fmc.atcComm.loggedTo;
 				store.nextCtr = fmc.atcComm.nextCtr != "" ? fmc.atcComm.nextCtr : "----";
@@ -41,19 +46,34 @@ class FMC_ATC_LogonStatus {
 				store.dlnkStatus = fmc.atcComm.dlnkStatus;
 				store.maxUlDelay = fmc.atcComm.maxUlDelay;
 			}
+			if (store.logonTo != "") {
+				logonToCell = store.logonTo
+			}
+			if (store.fltNo != "") {
+				fltNoCell = store.fltNo
+			}
+			if (store.at != "") {
+				atcCtrCell = store.actCtr
+			}
+			if (store.nextCtr != "") {
+				nextCtrCell = store.nextCtr
+			}
+			if (store.maxUlDelay != "") {
+				maxUlDelayCell = store.maxUlDelay
+			}
 			fmc.setTemplate([
 				["ATC LOGON/STATUS", "1", "2"],
 				["\xa0LOGON TO", `${store.sendLabel}`],
-				[`${store.logonTo}`, `${store.sendStatus}`],
+				[`${logonToCell}`, `${store.sendStatus}`],
 				["\xa0FLT NO", "ORIGIN"],
-				[`${store.fltNo}`, `${originCell}`],
+				[`${fltNoCell}`, `${originCell}`],
 				["\xa0TAIL NO", "DESTINATION"],
 				[`${regCell}`, `${destinationCell}`],
 				["\xa0MAX U/L DELAY", `${store.atcCtrLabel}`],
-				[`${store.maxUlDelay}SEC`, `${store.actCtr}`],
+				[`${maxUlDelayCell}SEC`, `${atcCtrCell}`],
 				[`\xa0${store.atcCommLabel}`, `${store.nextCtrLabel}`],
-				[`${store.atcCommSelect}`, `${store.nextCtr}`],
-				["", "DATA LINK", "__FMCSEPARATOR"],
+				[`${store.atcCommSelect}`, `${nextCtrCell}`],
+				["----------------", "DATA LINK"],
 				["<ATC INDEX", `${store.dlnkStatus}`]
 			]);
 		}
@@ -71,7 +91,7 @@ class FMC_ATC_LogonStatus {
         	let value = fmc.inOut;
         	fmc.clearUserInput();
 			store.logonTo = value;
-			if (store.fltNo) {
+			if (store.logonTo != "" && store.fltNo != "" && fmc.atcComm.maxUlDelay != "") {
 				store.sendLabel = "LOGON";
 				store.sendStatus = "SEND>";
 			}
@@ -83,6 +103,10 @@ class FMC_ATC_LogonStatus {
 			fmc.clearUserInput();
 			store.maxUlDelay = value;
 			fmc.atcComm.maxUlDelay = value;
+			if (store.logonTo != "" && store.fltNo != "" && fmc.atcComm.maxUlDelay != "") {
+				store.sendLabel = "LOGON";
+				store.sendStatus = "SEND>";
+			}
 			updateView();
 		}
 
@@ -99,15 +123,19 @@ class FMC_ATC_LogonStatus {
 
 		fmc.onRightInput[0] = () => {
         	if (store.logonTo != "" && store.fltNo != "" && fmc.atcComm.maxUlDelay != "") {
-				store.sendStatus = "SENDING";
-				store.sendLabel = "SENT";
-				fmc.atcComm.estab = true;
-				fmc.atcComm.loggedTo = store.logonTo;
-				fmc.atcComm.maxUlDelay = store.maxUlDelay;
-				fmc.atcComm.dlnkStatus = "READY";
+				store.sendStatus = "SENDING\xa0";
+				updateView();
+				setTimeout(function () {
+					store.sendStatus = "SENT\xa0";
+					fmc.atcComm.estab = true;
+					fmc.atcComm.loggedTo = store.logonTo;
+					fmc.atcComm.maxUlDelay = store.maxUlDelay;
+					fmc.atcComm.dlnkStatus = "READY";
+					updateView();
+				}, fmc.getInsertDelay());
 				setTimeout(function () {
 					FMC_ATC_Index.ShowPage(fmc)
-				}, 2000);
+				}, fmc.getUplinkDelay());
 			}
 		}
 

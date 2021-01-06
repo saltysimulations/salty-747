@@ -2,7 +2,7 @@ class FMC_COMM_Postflight {
     static ShowPage(fmc) {
 		fmc.activeSystem = "DLNK";
 		fmc.clearDisplay();
-		let currUTC = fmc.getUTC();
+		let currUTC = fmc.getTimeString(new Date());
 		
 		const updateView = () => {
 			fmc.setTemplate([

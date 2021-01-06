@@ -8,8 +8,8 @@ class FMC_COMM_RequestAtis {
 		let aprt3Cell = "----";
 		let aprt4Cell = "----";
 
-		store.arpt1 = "KLAX";//fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "";
-		store.arpt2 = "KSEA";//fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "";
+		store.arpt1 = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "";
+		store.arpt2 = fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "";
 		if (store.arpt1 != "") {
 			aprt1Cell = store.arpt1;
 		}
@@ -28,8 +28,8 @@ class FMC_COMM_RequestAtis {
 				["ATIS REQUEST"],
 				["\xa0ORIGIN", "DESTINATION"],
 				[`<${aprt1Cell}`, `${aprt2Cell}>`],
-				["\xa0ALTERNATE", "AIRPORT"],
-				[`<${aprt3Cell}`, `${aprt4Cell}>`],
+				["", ""],
+				["", ""],
 				["", ""],
 				["", ""],
 				["", "REQUEST"],

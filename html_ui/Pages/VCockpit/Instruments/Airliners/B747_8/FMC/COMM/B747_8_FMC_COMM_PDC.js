@@ -60,10 +60,10 @@ class FMC_COMM_PDC {
 				[`${acTypeCell}`, `${destCell}`],
 				["\xa0FREE TEXT", ""],
 				[`${freeTextCell}`, ""],
-				["__FMCSEPARATOR", "TO ATS UNIT"],
+				["----------", "TO ATS UNIT"],
 				["", `${atsCell}`],
 				["\xa0RETURN TO", ""],
-				["<REQUESTS", `${store.sendStatus}`]
+				["<REQUESTS", `${store.sendStatus}[color]inop`]
 			]);
 		}
 		updateView();
@@ -156,7 +156,7 @@ class FMC_COMM_PDC {
 			FMC_COMM_PDC.ShowPage(fmc);
         };
 
-        fmc.onRightInput[5] = () => {
+        /*fmc.onRightInput[5] = () => {
 			store.sendStatus = "SENDING";
 			updateView();
 			setTimeout(
@@ -171,6 +171,6 @@ class FMC_COMM_PDC {
 					updateView();
 				}, 5000
 			);
-        };
+        };*/
     }
 }
