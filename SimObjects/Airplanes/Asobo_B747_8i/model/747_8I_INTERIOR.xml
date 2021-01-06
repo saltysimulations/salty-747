@@ -2325,7 +2325,7 @@
 			</Component>
 			<Component ID="EICAS">
 				<!-- TODO - Glasscockpit ? -->
-				<!-- EICAS
+				<!-- EICAS --
 				eicas_push_canc_rcl
 				eicas_master_knob_eiu_sel
 				eicas_master_knob_fmc_master
