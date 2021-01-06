@@ -50,7 +50,7 @@ GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
 FuelPumpSwitch_EX1=0
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 IgnitionSwitch=0
@@ -68,7 +68,7 @@ GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
 FuelPumpSwitch_EX1=0
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 IgnitionSwitch=0
@@ -86,7 +86,7 @@ GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
 FuelPumpSwitch_EX1=0
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 IgnitionSwitch=0
@@ -104,25 +104,17 @@ GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
 FuelPumpSwitch_EX1=0
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 IgnitionSwitch=0
 Afterburner=0
 
 [FuelSystem.0]
-Tank.1=0
-Tank.2=0.095495752990245819092
-Tank.3=0.095495752990245819092
-Tank.4=0.095495752990245819092
-Tank.5=0.095495752990245819092
-Tank.6=0
-Tank.7=0
-Tank.8=0
-Valve.1=False
+Valve.1=True
 Valve.2=True
 Valve.3=True
-Valve.4=False
+Valve.4=True
 Valve.5=False
 Valve.6=False
 Valve.7=False
@@ -170,8 +162,7 @@ Pump.21=True
 
 [Systems.0]
 BatterySwitch=False
-StructuralDeiceSwitch=True
-StructuralDeiceSwitch_EX1=1
+StructuralDeiceSwitch=False
 PropDeiceSwitch=False
 Autobrakes=1
 StandbyVacuum=False
@@ -185,28 +176,7 @@ TailhookHandle=False
 TailhookState=0
 FoldingWingsHandle=False
 FoldingWingsState=0, 0
-ExternalPowerSwitch=False
 AuxPowerUnitSwitch=False
-SeatBeltsSwitch=False
-NoSmokingSwitch=False
-
-[LocalVars.0]
-XMLVAR_SeatBelts=1
-747_Aircond_Knob_1=3
-747_Aircond_Knob_2=3
-747_Aircond_Knob_3=3
-B747_8_MFD_NAV_MODE=2
-SALTY_IRS_STATE=0
-747_IRS_KNOB_1=0
-747_IRS_KNOB_2=0
-747_IRS_KNOB_3=0
-SALTY_ISFD_INIT_DONE=0
-BTN_WX_ACTIVE=0
-BTN_TERRONND_ACTIVE=0
-B747_8_EICAS_2_State=0
-XMLVAR_DeiceAirFrame_Auto=1
-XMLVAR_IsDeiceAirFrame=0
-XMLVAR_IsDeiceAirFrame2=0
 
 [Electrical.0]
 bus.6=bus.4:0
@@ -219,25 +189,24 @@ circuit.107 = True,0.5
 circuit.108 = True,0.5
 circuit.111 = False,1.0
 
+
+[LocalVars.0]
+XMLVAR_SeatBelts=1
+B747_8_MFD_NAV_MODE=2
+
 [Gauges.0]
 KollsmanSetting=29.921342849731445313
 
 [BleedAir.0]
-BleedAirSource=0
-EngineAirBleed.1=True
-EngineAirBleed.2=True
-EngineAirBleed.3=True
-EngineAirBleed.4=True
-APUAirBleed=False
+BleedAirSource=2
 
 [Switches.0]
 PitotHeat=False
-WindshieldDeice=1
 BeaconLights=False
 LandingLights=False
 LogoLights=False
 NavLights=False
-PanelLights=False
+PanelLights=True
 RecognitionLights=False
 StrobeLights=False
 TaxiLights=False
@@ -245,20 +214,6 @@ WingLights=False
 CabinLights=False
 GlareshieldLights=False
 PedestalLights=False
-AmbientLights=False
-BeaconLightsNight=False
-LandingLightsNight=False
-LogoLightsNight=False
-NavLightsNight=False
-PanelLightsNight=True
-RecognitionLightsNight=False
-StrobeLightsNight=False
-TaxiLightsNight=False
-WingLightsNight=False
-CabinLightsNight=True
-GlareshieldLightsNight=True
-PedestalLightsNight=True
-AmbientLightsNight=True
 Potentiometer.25=0.5
 Potentiometer.26=0.5
 Potentiometer.27=0.5

@@ -49,7 +49,7 @@ RightMagneto=True
 GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 Afterburner=0
@@ -67,7 +67,7 @@ RightMagneto=False
 GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 Afterburner=0
@@ -85,7 +85,7 @@ RightMagneto=False
 GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 Afterburner=0
@@ -103,7 +103,7 @@ RightMagneto=False
 GeneratorSwitch=True
 CowlFlapPct=0
 FuelPumpSwitch=False
-CarbHeat/DeiceSwitch=True
+CarbHeat/DeiceSwitch=False
 EngineMasterSwitch=True
 GlowPlugTemperaturePct=1
 Afterburner=0
@@ -162,10 +162,9 @@ Pump.21=True
 
 [Systems.0]
 BatterySwitch=True
-StructuralDeiceSwitch=True
-StructuralDeiceSwitch_EX1=1
+StructuralDeiceSwitch=False
 PropDeiceSwitch=False
-Autobrakes=0
+Autobrakes=4
 StandbyVacuum=False
 PropSync=False
 AutoFeatherSwitch=False
@@ -179,21 +178,6 @@ FoldingWingsHandle=False
 FoldingWingsState=0, 0
 AuxPowerUnitSwitch=False
 
-[LocalVars.0]
-XMLVAR_SeatBelts=1
-747_Aircond_Knob_1=3
-747_Aircond_Knob_2=3
-747_Aircond_Knob_3=3
-B747_8_MFD_NAV_MODE=2
-SALTY_IRS_STATE=2
-747_IRS_KNOB_1=2
-747_IRS_KNOB_2=2
-747_IRS_KNOB_3=2
-SALTY_ISFD_INIT_DONE=1
-XMLVAR_DeiceAirFrame_Auto=1
-XMLVAR_IsDeiceAirFrame=0
-XMLVAR_IsDeiceAirFrame2=0
-
 [Electrical.0]
 alternator.5=False
 alternator.6=False
@@ -204,6 +188,10 @@ circuit.107 = True,0.5
 circuit.108 = True,0.5
 circuit.111 = False,1.0
 
+[LocalVars.0]
+XMLVAR_SeatBelts=1
+B747_8_MFD_NAV_MODE=2
+
 [Gauges.0]
 KollsmanSetting=29.921342849731445313
 
@@ -212,33 +200,18 @@ BleedAirSource=0
 
 [Switches.0]
 PitotHeat=False
-WindshieldDeice=1
 BeaconLights=True
 LandingLights=False
-LogoLights=False
+LogoLights=True
 NavLights=True
-PanelLights=False
+PanelLights=True
 RecognitionLights=True
-StrobeLights=False
+StrobeLights=True
 TaxiLights=True
-WingLights=False
-CabinLights=False
+WingLights=True
+CabinLights=True
 GlareshieldLights=False
 PedestalLights=False
-AmbientLights=False
-BeaconLightsNight=True
-LandingLightsNight=False
-LogoLightsNight=True
-NavLightsNight=True
-PanelLightsNight=True
-RecognitionLightsNight=True
-StrobeLightsNight=False
-TaxiLightsNight=True
-WingLightsNight=False
-CabinLightsNight=False
-GlareshieldLightsNight=True
-PedestalLightsNight=True
-AmbientLightsNight=True
 Potentiometer.25=0.5
 Potentiometer.26=0.5
 Potentiometer.27=0.5
