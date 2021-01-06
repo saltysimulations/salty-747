@@ -181,34 +181,117 @@ class FMCTakeOffPage {
 		fmc.onNextPage = () => {
 			FMCTakeOffPage.ShowPage2(fmc);
 		};
+
+		/* LSK5 */
+		fmc.onLeftInput[4] = () => {
+			store.requestData = "\xa0SENDING";
+			updateView();
+			setTimeout(
+				function() {					
+					fmc._TORwyWindHdg = parseFloat(SimVar.GetSimVarValue("AMBIENT WIND DIRECTION", "degrees")).toFixed(0);
+					fmc._TORwyWindSpd = parseFloat(SimVar.GetSimVarValue("AMBIENT WIND VELOCITY", "knots")).toFixed(0);
+					updateView();
+				}, 1000
+			);
+		}
+		
 		fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
 		fmc.onRightInput[5] = () => { FMCThrustLimPage.ShowPage1(fmc); };
 	}
 	static ShowPage2(fmc) {        
 		fmc.clearDisplay();
 		let altnThrust = "TO";
-		let eoAccelHt = SaltyDataStore.get("TO_EO_ACCEL_HT", 1000);
 		let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius") + "°C";
-		let qClb = SaltyDataStore.get("TO_Q_CLB_AT", 1000);
 
-		let windCell = "---°/--KT";
+		/*
+			RSK1
+			SET ENGINE OUT OFF ACCEL HEIGHT
+		*/
+		let eoAccelHt = SaltyDataStore.get("TO_EO_ACCEL_HT", 1000);
+		fmc.onRightInput[0] = () => {
+			let value = fmc.inOut;
+			value = parseInt(value);
+			if (value >= 400 && value <= 9999) {				
+				SaltyDataStore.get("TO_EO_ACCEL_HT", 1000);
+				fmc.clearUserInput();
+			} else {
+				fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+			}
+		}
+
+
+		/*
+			RSK2
+			SET ENGINE ACCEL HT OR Q CLB HT
+		*/
+		let accelHt = SaltyDataStore.get("TO_ACCEL_HT", 1000);
+		let qClb = SaltyDataStore.get("TO_Q_CLB_AT", 1000);
+		if (!qClbActive) {
+			fmc.onRightInput[1] = () => {
+				let value = fmc.inOut;
+				value = parseInt(value);
+				if (value >= 400 && value <= 9999) {				
+					SaltyDataStore.get("TO_ACCEL_HT", 1000);
+					fmc.clearUserInput();
+				} else {
+					fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+				}
+			}
+		} else {
+			fmc.onRightInput[1] = () => {
+				let value = fmc.inOut;
+				value = parseInt(value);
+				if (value >= 800 && value <= 9999) {				
+					SaltyDataStore.get("TO_EO_ACCEL_HT", 1000);
+					fmc.clearUserInput();
+				} else {
+					fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+				}
+			}
+		}
+
+		/*
+			RSK3
+			SET CLB AT, THR REDUCTION OR CLIMB BY
+		*/
 		let clbAt = SaltyDataStore.get("TO_CLB_AT", 3000);
+		if (!qClbActive) {
+			fmc.onRightInput[2] = () => {
+				let value = fmc.inOut;
+				value = parseInt(value);
+				if (value >= 400 && value <= 9999) {				
+					SaltyDataStore.get("TO_THR_REDUCTION", 3000);
+					fmc.clearUserInput();
+				} else {
+					fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+				}
+			}
+		}
+
+		/*
+			LSK3
+			SET WINDS
+		*/
+		let windCell = "---°/--KT";
 		let rwyHdg;
 		let rwyHdWnd;
 		let rwyXWnd;
 		let rwyHdWndCell = "--KT";
 		let rwyXWndCell = "--KT";
-		/* LSK3 */
 		fmc.onLeftInput[2] = () => {
 			let value = fmc.inOut;
 			fmc.clearUserInput();
 			if (value.length >= 5 && value.length <= 6) {
 				value = value.split("/");
 				if (value[0]) {
-					fmc._TORwyWindHdg = value[0];
+					console.log("---- VALUE 0 ----");
+					console.log(value[0]);
+					fmc._TORwyWindHdg = parseFloat(value[0]);
 				}
-				if (value[1]) {                
-					fmc._TORwyWindSpd = value[1];
+				if (value[1]) {
+					console.log("---- VALUE 1 ----");
+					console.log(value[1]);            
+					fmc._TORwyWindSpd = parseFloat(value[1]);
 				}
 			} else if (value == "") {
 				fmc.inOut =  fmc._TORwyWindHdg + "/" +  fmc._TORwyWindSpd;
@@ -217,34 +300,39 @@ class FMCTakeOffPage {
 			}
 			FMCTakeOffPage.ShowPage2(fmc);
 		}
-		if (fmc._TORwyWindHdg != "" && fmc._TORwyWindSpd != "") {
-			windCell = fmc._TORwyWindHdg + "°/" + fmc._TORwyWindSpd.padStart(2, 0) + "KT";
+		if (fmc._TORwyWindHdg != "" && fmc._TORwyWindSpd != "" && fmc.flightPlanManager.getDepartureRunway()) {
+			windCell = parseFloat(fmc._TORwyWindHdg).toFixed(0) + "°/" + parseFloat(fmc._TORwyWindSpd).toFixed(0) + "KT";
 			if (fmc.flightPlanManager.getDepartureRunway()) {
 				rwyHdg = fmc.flightPlanManager.getDepartureRunway().direction;
 				rwyHdg = parseFloat(rwyHdg).toFixed(0);
-				rwyHdWnd =  Math.cos(rwyHdg - fmc._TORwyWindHdg);
-				rwyXWnd =  Math.sin(rwyHdg - fmc._TORwyWindHdg);
-				console.log(Math.sign(rwyXWnd));
+				rwyHdWnd = rwyHdg - fmc._TORwyWindHdg;
+				rwyXWnd = rwyHdg - fmc._TORwyWindHdg;
+				rwyHdWnd = Math.cos(rwyHdWnd * Math.PI / 180);
+				console.log("---- HEADWIND ----");
+				console.log(rwyHdWnd);
+				rwyXWnd = Math.sin(rwyXWnd * Math.PI / 180);
+				rwyHdWnd = Math.round(rwyHdWnd * fmc._TORwyWindSpd);
+				rwyXWnd = Math.round(rwyXWnd * fmc._TORwyWindSpd);
 				if (rwyHdWnd > 0) {
-					rwyHdWndCell = (rwyHdWnd * fmc._TORwyWindSpd).toFixed(0) + "KTH";
+					rwyHdWndCell = rwyHdWnd + "KTH";
 				} else if (rwyHdWnd == 0) {
-					rwyHdWndCell = (rwyHdWnd * fmc._TORwyWindSpd).toFixed(0) + "KT";
+					rwyHdWndCell = rwyHdWnd + "KT";
 				} else if (rwyHdWnd < 0) {
-					rwyHdWndCell = (rwyHdWnd * fmc._TORwyWindSpd).toFixed(0) + "KTT";
+					rwyHdWndCell = rwyHdWnd + "KTT";
 				}
-				if (rwyXWnd > 0) {
-					rwyXWndCell = (rwyXWnd * fmc._TORwyWindSpd).toFixed(0) + "KTR";
+				if (rwyXWnd < 0) {
+					rwyXWndCell = rwyXWnd + "KTR";
 				} else if (rwyHdWnd == 0) {
-					rwyXWndCell = (rwyXWnd * fmc._TORwyWindSpd).toFixed(0) + "KT";
-				} else if (rwyHdWnd < 0) {
-					rwyXWndCell = (rwyXWnd * fmc._TORwyWindSpd).toFixed(0) + "KTL";
+					rwyXWndCell = rwyXWnd + "KT";
+				} else if (rwyHdWnd > 0) {
+					rwyXWndCell = rwyXWnd + "KTL";
 				}
 			}
 		}
 
-		let restoreRate = "SLOW ←→ FAST>";
-		let slopeCond = "U0.5/WET"
-		let stdLimToGw = "368.0"
+		let restoreRate = "SLOW←→FAST>";
+		let slopeCond = "U0.0/DRY"
+		let stdLimToGw = "987.0"
 		let qClbArmed = "OFF←→ARMED>";
 		let n1Pct = fmc.getThrustTakeOffLimit().toFixed(1) + "%";
 		
@@ -252,17 +340,17 @@ class FMCTakeOffPage {
 			fmc.setTemplate([
 				["TAKEOFF REF", "2", "2"],
 				["ALTN THRUST", "EO ACCEL HT"],
-				[`<${altnThrust}`, `${eoAccelHt}FT`],
-				["\xa0REF OAT", "Q-CLB AT"],
-				[`${oat}`, `${qClb}FT`],
-				["\xa0WIND", "CLB AT"],
+				[`<${altnThrust}[color]inop`, `${eoAccelHt}FT`],
+				["\xa0REF OAT", "ACCEL HT"],
+				[`${oat}`, `${accelHt}FT`],
+				["\xa0WIND", "THR REDUCTION"],
 				[`${windCell}`, `${clbAt}FT`],
 				["\xa0RWY WIND", "RESTORE RATE"],
-				[`${rwyHdWndCell}\xa0\xa0${rwyXWndCell}`, `${restoreRate}`],
+				[`${rwyHdWndCell}\xa0\xa0${rwyXWndCell}`, `${restoreRate}[s-text][color]inop`],
 				["\xa0SLOPE/COND", "STD LIM TOGW"],
-				[`${slopeCond}`, `${stdLimToGw}`],
-				["__FMCSEPARATOR", "Q_CLB", "N1"],
-				["<INDEX", `${qClbArmed}`, `${n1Pct}`]
+				[`${slopeCond}[color]inop`, `${stdLimToGw}[color]inop`],
+				["", "Q_CLB", "N1"],
+				["<INDEX", `${qClbArmed}[s-text][color]inop`, `${n1Pct}`]
 			]);
 		}
 		updateView();

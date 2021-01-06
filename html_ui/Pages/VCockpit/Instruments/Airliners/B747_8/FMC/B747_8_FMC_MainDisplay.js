@@ -151,11 +151,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.onInit = () => {
-            if (this.flightPlanManager.getOrigin() && this.flightPlanManager.getDestination()) {
-                FMCPerfInitPage.ShowPage1(this);
-            } else {
-                B747_8_FMC_InitRefIndexPage.ShowPage1(this);
-            }
+            B747_8_FMC_InitRefIndexPage.ShowPage1(this);
         };
         this.onLegs = () => {
             B747_8_FMC_LegsPage.ShowPage1(this);
@@ -958,6 +954,15 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
 
     // OUTGOING/SENT AOC MESSAGES
+
+    /* Delay when uplinking data */
+    getUplinkDelay() {
+        return 1000 + 750 * Math.random();
+    }
+    /* Delay when inserting data */
+    getInsertDelay() {
+        return 650 + 500 * Math.random();
+    }
     getSentMessages() {
         return this.sentMessages;
     }
@@ -985,53 +990,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     deleteSentMessage(id) {
         this.sentMessages.splice(id, 1);
-    }
-    insertRteUplink(updateView) {
-        const origin = this.simbrief.originIcao;
-        const destination = this.simbrief.destinationIcao;
-        const coRoute = this.simbrief.originIcao + this.simbrief.destinationIcao;
-        const fltNbr = this.simbrief.icao_airline + this.simbrief.flight_number;
-
-        this.showErrorMessage(this.simbrief.uplinkReady);
-
-        this.updateRouteOrigin(origin.toString(), (result) => {
-            if (result) {
-                this.updateRouteDestination(destination.toString(), (result) => {
-                    if (result) {
-                        this.updateFlightNo(fltNbr, (result) => {
-                            if (result) {
-                                this.updateCoRoute(coRoute, (result) => {
-                                    if (result) {
-                                        if (this._pageCurrent == "RTE 1") {
-                                            updateView();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
-    insertPerfUplink(updateView) {
-        const zfw = (this.simbrief.estZfw / 1000).toString();
-        const crz = this.simbrief.cruiseAltitude;
-        const costIndex = this.simbrief.costIndex.toString();
-        const resFuel = (parseFloat(this.simbrief.finResFuel) + parseFloat(this.simbrief.altnFuel)).toFixed(1) / 1000;
-        this.trySetZeroFuelWeightZFWCG(zfw, (result) => {
-            if (result) {
-            }
-        });
-        this.tryUpdateCostIndex(costIndex, 9999);
-        this.setFuelReserves(resFuel, (result) => {
-            if (result) {
-            }
-        });
-        this.setCruiseFlightLevelAndTemperature(crz, (result) => {
-            if (result) {
-            }
-        });
     }
     getTimeString(time) {
         var hours = time.getUTCHours();

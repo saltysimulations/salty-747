@@ -85,6 +85,7 @@ class FMCPerfInitPage {
                 crzAltCell = fmc.simbrief.cruiseAltitude;
                 costIndex = fmc.simbrief.costIndex;
                 zeroFuelWeightCell = (parseFloat(fmc.simbrief.estZfw) / 1000).toFixed(1);
+                grossWeightCell = ((parseFloat(zeroFuelWeightCell) + (parseFloat(blockFuelCell)))).toFixed(1); 
                 reservesCell = ((parseFloat(fmc.simbrief.finResFuel) + (parseFloat(fmc.simbrief.altnFuel))) / 1000).toFixed(1);                
             } else {
                 store.dataLink = "REQUEST";
@@ -125,24 +126,26 @@ class FMCPerfInitPage {
                 FMCPerfInitPage.ShowPage1(fmc);
             };
 
-            /* LSK5 */
+            /* 
+                LSK5
+                REQUEST DATA
+                REJECT DATA
+            */    
             fmc.onLeftInput[4] = () => {
-                console.log(fmc.simbrief.perfUplinkReady);
                 if (!fmc.simbrief.perfUplinkReady) {
                     store.requestData = "\xa0SENDING";
                     updateView();
-                    const get = async () => {
+                    const getInfo = async () => {
                         getSimBriefPlan(fmc, store, updateView);
                     };
 
-                    get()
+                    getInfo()
                         .then(() => {
                             setTimeout(
                                 function() {
                                     store.requestData = "<SEND";
-                                    fmc.showErrorMessage("PERF UPLINK READY");
-                                    updateView();   
-                                }, 1000
+                                    updateView();
+                                }, fmc.getUplinkDelay()
                             );
                     });
                 } else {
@@ -151,7 +154,11 @@ class FMCPerfInitPage {
                 }
             };
 
-            /* RSK5 */
+            /*
+                RSK5
+                1. STEP SIZE
+                2. ACCEPT DATA
+            */
             fmc.onRightInput[4] = () => {
                 console.log(fmc.simbrief.perfUplinkReady);
                 if (!fmc.simbrief.perfUplinkReady) {
@@ -178,11 +185,17 @@ class FMCPerfInitPage {
                     }
                 } else {
                     fmc.simbrief.perfUplinkReady = false;
-                    fmc.insertPerfUplink(updateView);
-                    setTimeout (
-                        function() {
-                            updateView();
-                        }, 750
+                    const insertInfo = async () => {
+                        insertPerfUplink(fmc, updateView);
+                    };
+                    insertInfo()
+                        .then(() => {
+                            setTimeout(
+                                function() {
+                                    //updateView();
+                                }, fmc.getInsertDelay()
+                            );
+                        }
                     );
                 }
             };

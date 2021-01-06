@@ -3,18 +3,21 @@ class FMC_MAINT_AirlinePol {
 		fmc.clearDisplay();
         let costIndexPolicy = SaltyDataStore.get("COST_INDEX_POL", 35);
         let eoAccelHt = SaltyDataStore.get("TO_EO_ACCEL_HT", 1000);
+        let accelHt = SaltyDataStore.get("TO_ACCEL_HT", 1000);
         let clbAt = SaltyDataStore.get("TO_CLB_AT", 3000);
         let qClb = SaltyDataStore.get("TO_Q_CLB_AT", 1000);
+        let qClb = SaltyDataStore.get("TO_THR_REDUCTION", 3000);
+        let qClb = SaltyDataStore.get("TO_CLB_BY", 3000);
 		
 		const updateView = () => {
 			fmc.setTemplate([
 				["AIRLINES POLICY"],
 				["\xa0COST INDEX", ""],
 				[`[${costIndexPolicy}]`, ""],
-				["EO ACCEL HT", "CLB AT"],
-				[`[${eoAccelHt}] FT`, `[${clbAt}] FT`],
-				["Q-CLB AT", ""],
-				[`[${qClb}] FT`, ""],
+				["EO ACCEL HT", "ACCEL HT"],
+				[`[${eoAccelHt}] FT`, `[${accelHt}] FT`],
+				["Q-CLB AT", "CLB AT"],
+				[`[${qClb}] FT`, `[${clbAt}] FT`],
 				["", ""],
 				["", ""],
 				["", ""],
@@ -45,7 +48,7 @@ class FMC_MAINT_AirlinePol {
 		fmc.onRightInput[1] = () => {
 			let value = fmc.inOut;
 			fmc.clearUserInput();
-			SaltyDataStore.set("TO_CLB_AT", value);
+			SaltyDataStore.set("TO_ACCEL_HT", value);
 			FMC_MAINT_AirlinePol.ShowPage(fmc);
 		}
 		
@@ -54,6 +57,14 @@ class FMC_MAINT_AirlinePol {
 			let value = fmc.inOut;
 			fmc.clearUserInput();
 			SaltyDataStore.set("TO_Q_CLB_AT", value);
+			FMC_MAINT_AirlinePol.ShowPage(fmc);
+		}
+		
+		/* RSK3 */
+		fmc.onLeftInput[2] = () => {
+			let value = fmc.inOut;
+			fmc.clearUserInput();
+			SaltyDataStore.set("TO_CLB_AT", value);
 			FMC_MAINT_AirlinePol.ShowPage(fmc);
 		}
 		
