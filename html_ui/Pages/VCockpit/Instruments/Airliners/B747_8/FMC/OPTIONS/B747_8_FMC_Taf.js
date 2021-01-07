@@ -1,6 +1,6 @@
 class FMCSaltyOptions_Taf {
-	static ShowPage(fmc) {
-		fmc.clearDisplay();
+    static ShowPage(fmc) {
+        fmc.clearDisplay();
 
         const storedTafSrc = SaltyDataStore.get("OPTIONS_TAF_SRC", "NOAA");
 
@@ -15,33 +15,33 @@ class FMCSaltyOptions_Taf {
                 noaa = "NOAA[color]green";
         }
 
-		fmc.setTemplate([
-			["SALTY OPTIONS"],
-			["", ""],
-			[ivao, ""],
-			["", ""],
-			[noaa, ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
-		]);
+        fmc.setTemplate([
+            ["SALTY OPTIONS"],
+            ["", ""],
+            [ivao, ""],
+            ["", ""],
+            [noaa, ""],
+            ["", ""],
+            ["", ""],
+            ["", ""],
+            ["", ""],
+            ["", ""],
+            ["", ""],
+            ["", ""],
+            ["", ""]
+        ]);
 
-		/* LSK1 */
-		fmc.onLeftInput[0] = () => {
-			SaltyDataStore.set("OPTIONS_TAF_SRC", "IVAO");
-			FMCSaltyOptions_Taf.ShowPage(fmc);
-		}
+        /* LSK1 */
+        fmc.onLeftInput[0] = () => {
+            SaltyDataStore.set("OPTIONS_TAF_SRC", "IVAO");
+            FMCSaltyOptions_Taf.ShowPage(fmc);
+        }
 
-		/* LSK2 */
-		fmc.onLeftInput[1] = () => {
-			SaltyDataStore.set("OPTIONS_TAF_SRC", "NOAA");
-		 	FMCSaltyOptions_Taf.ShowPage(fmc);
-		};
-	}
+        /* LSK2 */
+        fmc.onLeftInput[1] = () => {
+            SaltyDataStore.set("OPTIONS_TAF_SRC", "NOAA");
+             FMCSaltyOptions_Taf.ShowPage(fmc);
+        };
+    }
 }
 //# sourceMappingURL=B747_8_FMC_SaltyOptions.js.map

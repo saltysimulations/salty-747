@@ -1,6 +1,6 @@
 class FMCSaltyOptions_Atis {
-	static ShowPage(fmc) {
-		fmc.clearDisplay();
+    static ShowPage(fmc) {
+        fmc.clearDisplay();
 
         const storedAtisSrc = SaltyDataStore.get("OPTIONS_ATIS_SRC", "FAA");
 
@@ -23,26 +23,26 @@ class FMCSaltyOptions_Atis {
                 faa = "FAA (US ONLY)[color]green";
         }
 
-		const updateView = () => {
-			fmc.setTemplate([
-				["ATIS SRC"],
-				[],
-				[`${vatsim}`, ""],
-				[],
-				[`${pilotedge}`, ""],
-				[],
-				[`${ivao}`, ""],
-				[],
-				[`${faa}`, ""],
-				[],
-				[``, ""],
-				["\xa0RETURN TO", ""],
-				["<OPTIONS", ""]
-			]);
-		}
-		updateView();
+        const updateView = () => {
+            fmc.setTemplate([
+                ["ATIS SRC"],
+                [],
+                [`${vatsim}`, ""],
+                [],
+                [`${pilotedge}`, ""],
+                [],
+                [`${ivao}`, ""],
+                [],
+                [`${faa}`, ""],
+                [],
+                [``, ""],
+                ["\xa0RETURN TO", ""],
+                ["<OPTIONS", ""]
+            ]);
+        }
+        updateView();
 
-		/* LSK1 */
+        /* LSK1 */
         fmc.onLeftInput[0] = () => {
             if (storedAtisSrc != "VATSIM") {
                 SaltyDataStore.set("OPTIONS_ATIS_SRC", "VATSIM");
@@ -50,7 +50,7 @@ class FMCSaltyOptions_Atis {
             }
         };
 
-		/* LSK2 */
+        /* LSK2 */
         fmc.onLeftInput[1] = () => {
             if (storedAtisSrc != "PILOTEDGE") {
                 SaltyDataStore.set("OPTIONS_ATIS_SRC", "PILOTEDGE");
@@ -58,7 +58,7 @@ class FMCSaltyOptions_Atis {
             }
         };
 
-		/* LSK3 */
+        /* LSK3 */
         fmc.onLeftInput[2] = () => {
             if (storedAtisSrc != "IVAO") {
                 SaltyDataStore.set("OPTIONS_ATIS_SRC", "IVAO");
@@ -66,7 +66,7 @@ class FMCSaltyOptions_Atis {
             }
         };
 
-		/* LSK4 */
+        /* LSK4 */
         fmc.onLeftInput[3] = () => {
             if (storedAtisSrc != "FAA") {
                 SaltyDataStore.set("OPTIONS_ATIS_SRC", "FAA");
@@ -74,10 +74,10 @@ class FMCSaltyOptions_Atis {
             }
         };
 
-		/* LSK6 */
-		fmc.onLeftInput[5] = () => {
-			FMCSaltyOptions.ShowPage1(fmc);
-		}
-	}
+        /* LSK6 */
+        fmc.onLeftInput[5] = () => {
+            FMCSaltyOptions.ShowPage1(fmc);
+        }
+    }
 }
 //# sourceMappingURL=B747_8_FMC_SaltyOptions.js.map

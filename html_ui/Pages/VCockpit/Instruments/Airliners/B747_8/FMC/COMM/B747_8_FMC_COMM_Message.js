@@ -1,6 +1,6 @@
 class FMC_ATC_Message {
     static ShowPage(fmc, message, offset = 0, store = {currPage: 1}) {
-		fmc.activeSystem = "DLNK";
+        fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
         const lines = message["content"];
         if (!message["opened"]) {
@@ -20,8 +20,8 @@ class FMC_ATC_Message {
         const msgArrows = fmc.messages.length > 1 ? " {}" : "";
         let totalPages = Math.ceil((lines.length) / 10);
 
-		fmc.setTemplate([
-			["ACARS MESSAGE", `${store.currPage}`, `${totalPages}`],
+        fmc.setTemplate([
+            ["ACARS MESSAGE", `${store.currPage}`, `${totalPages}`],
             [`${lines[offset] ? lines[offset] : ""}`],
             [`${lines[offset + 1] ? lines[offset + 1] : ""}`],
             [`${lines[offset + 2] ? lines[offset + 2] : ""}`],
@@ -32,9 +32,9 @@ class FMC_ATC_Message {
             [`${lines[offset + 7] ? lines[offset + 7] : ""}`],
             [`${lines[offset + 8] ? lines[offset + 8] : ""}`],
             [`${lines[offset + 9] ? lines[offset + 9] : ""}`],
-			["\xa0RETURN TO", ""],
-			["<MESSAGES", ""]
-		]);
+            ["\xa0RETURN TO", ""],
+            ["<MESSAGES", ""]
+        ]);
 
         if (lines.length > 9) {
             fmc.onPrevPage = () => {
@@ -55,8 +55,8 @@ class FMC_ATC_Message {
             };
         }
 
-		fmc.onLeftInput[5] = () => {
-			FMC_COMM_Log.ShowPage(fmc);
-		}
+        fmc.onLeftInput[5] = () => {
+            FMC_COMM_Log.ShowPage(fmc);
+        }
     }
 }

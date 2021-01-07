@@ -1,6 +1,6 @@
 class FMCSaltyOptions_Metar {
-	static ShowPage(fmc) {
-		fmc.clearDisplay();
+    static ShowPage(fmc) {
+        fmc.clearDisplay();
 
         const storedMetarSrc = SaltyDataStore.get("OPTIONS_METAR_SRC", "MSFS");
 
@@ -27,26 +27,26 @@ class FMCSaltyOptions_Metar {
                 msfs = "METEOBLUE (MSFS)[color]green";
         }
 
-		const updateView = () => {
-			fmc.setTemplate([
-				["METAR SRC"],
-				[],
-				[`${avwx}`, ""],
-				[],
-				[`${vatsim}`, ""],
-				[],
-				[`${pilotedge}`, ""],
-				[],
-				[`${ivao}`, ""],
-				[],
-				[`${msfs}`, ""],
-				["\xa0RETURN TO", ""],
-				["<OPTIONS", ""]
-			]);
-		}
-		updateView();
+        const updateView = () => {
+            fmc.setTemplate([
+                ["METAR SRC"],
+                [],
+                [`${avwx}`, ""],
+                [],
+                [`${vatsim}`, ""],
+                [],
+                [`${pilotedge}`, ""],
+                [],
+                [`${ivao}`, ""],
+                [],
+                [`${msfs}`, ""],
+                ["\xa0RETURN TO", ""],
+                ["<OPTIONS", ""]
+            ]);
+        }
+        updateView();
 
-		/* LSK1 */
+        /* LSK1 */
         fmc.onLeftInput[0] = () => {
             if (storedMetarSrc != "AVWX") {
                 SaltyDataStore.set("OPTIONS_METAR_SRC", "AVWX");
@@ -54,7 +54,7 @@ class FMCSaltyOptions_Metar {
             }
         };
 
-		/* LSK2 */
+        /* LSK2 */
         fmc.onLeftInput[1] = () => {
             if (storedMetarSrc != "VATSIM") {
                 SaltyDataStore.set("OPTIONS_METAR_SRC", "VATSIM");
@@ -62,7 +62,7 @@ class FMCSaltyOptions_Metar {
             }
         };
 
-		/* LSK3 */
+        /* LSK3 */
         fmc.onLeftInput[2] = () => {
             if (storedMetarSrc != "PILOTEDGE") {
                 SaltyDataStore.set("OPTIONS_METAR_SRC", "PILOTEDGE");
@@ -70,7 +70,7 @@ class FMCSaltyOptions_Metar {
             }
         };
 
-		/* LSK4 */
+        /* LSK4 */
         fmc.onLeftInput[3] = () => {
             if (storedMetarSrc != "IVAO") {
                 SaltyDataStore.set("OPTIONS_METAR_SRC", "IVAO");
@@ -78,7 +78,7 @@ class FMCSaltyOptions_Metar {
             }
         };
 
-		/* LSK5 */
+        /* LSK5 */
         fmc.onLeftInput[4] = () => {
             if (storedMetarSrc != "MSFS") {
                 SaltyDataStore.set("OPTIONS_METAR_SRC", "MSFS");
@@ -86,10 +86,10 @@ class FMCSaltyOptions_Metar {
             }
         };
 
-		/* LSK6 */
-		fmc.onLeftInput[5] = () => {
-			FMCSaltyOptions.ShowPage1(fmc);
-		}
-	}
+        /* LSK6 */
+        fmc.onLeftInput[5] = () => {
+            FMCSaltyOptions.ShowPage1(fmc);
+        }
+    }
 }
 //# sourceMappingURL=B747_8_FMC_SaltyOptions.js.map

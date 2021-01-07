@@ -45,10 +45,10 @@ class FMC_Menu {
         /*fmc.onLeftInput[2] = () => {
             FMC_SAT_Index.ShowPage(fmc);
         };*/
-		
+        
         /*fmc.onLeftInput[3] = () => {
-			fmc.infoPanelsManager.addMessage("*ATC", "InfoIndication");
-		}*/
+            fmc.infoPanelsManager.addMessage("*ATC", "InfoIndication");
+        }*/
 
         /*fmc.onLeftInput[5] = () => {
             FMC_CMC_Index.ShowPage(fmc);
