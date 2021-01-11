@@ -3,6 +3,10 @@ class FMCPerfInitPage {
         fmc.updateFuelVars().then(() => {
             fmc.clearDisplay();
             FMCPerfInitPage._timer = 0;
+            let units = false;
+            if (!mc._unitIsMetric) {
+                units = true;
+            }
             fmc.pageUpdate = () => {
                 FMCPerfInitPage._timer++;
                 if (FMCPerfInitPage._timer >= 15) {
@@ -10,8 +14,8 @@ class FMCPerfInitPage {
                 }
             };
             let grossWeightCell = "□□□.□";
-            if (isFinite(fmc.getFuelVarsUpdatedGrossWeight(true))) {
-                grossWeightCell = fmc.getFuelVarsUpdatedGrossWeight(true).toFixed(1) + " lb";
+            if (isFinite(fmc.getFuelVarsUpdatedGrossWeight(units))) {
+                grossWeightCell = fmc.getFuelVarsUpdatedGrossWeight(units).toFixed(1);
             }
             fmc.onLeftInput[0] = () => {
                 let value = fmc.inOut;
@@ -20,7 +24,7 @@ class FMCPerfInitPage {
                     if (result) {
                         FMCPerfInitPage.ShowPage1(fmc);
                     }
-                }, true);
+                }, units);
             };
             let crzAltCell = "□□□□□";
             if (isFinite(fmc.cruiseFlightLevel)) {
@@ -34,17 +38,17 @@ class FMCPerfInitPage {
                 }
             };
             let blockFuelCell = "□□□.□";
-            if (isFinite(fmc.getBlockFuel(true))) {
-                blockFuelCell = fmc.getBlockFuel(true).toFixed(1) + " lb";
+            if (isFinite(fmc.getBlockFuel(units))) {
+                blockFuelCell = fmc.getBlockFuel(units).toFixed(1);
             }
             let zeroFuelWeightCell = "□□□.□";
-            if (isFinite(fmc.getZeroFuelWeight(true))) {
-                zeroFuelWeightCell = fmc.getZeroFuelWeight(true).toFixed(1) + " lb";
+            if (isFinite(fmc.getZeroFuelWeight(units))) {
+                zeroFuelWeightCell = fmc.getZeroFuelWeight(units).toFixed(1);
             }
             fmc.onLeftInput[2] = () => {
                 let value = fmc.inOut;
                 fmc.clearUserInput();
-                if (fmc.trySetZeroFuelWeightZFWCG(value, true)) {
+                if (fmc.trySetZeroFuelWeightZFWCG(value, units)) {
                     FMCPerfInitPage.ShowPage1(fmc);
                 }
             };
@@ -67,7 +71,7 @@ class FMCPerfInitPage {
             fmc.onLeftInput[3] = () => {
                 let value = fmc.inOut;
                 fmc.clearUserInput();
-                if (fmc.setFuelReserves(value, true)) {
+                if (fmc.setFuelReserves(value, units)) {
                     FMCPerfInitPage.ShowPage1(fmc);
                 }
             };

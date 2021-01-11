@@ -63,6 +63,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
+        this._unitIsMetric = SaltyDataStore.get("OPTIONS_WEIGHT", true);
     }
     get templateID() { return "B747_8_FMC"; }
     connectedCallback() {
@@ -92,6 +93,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
 
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
+        Include.addScript("/JS/debug.js", function () {
+            g_modDebugMgr.AddConsole(null);
+        });
     }
     onPowerOn() {
         super.onPowerOn();

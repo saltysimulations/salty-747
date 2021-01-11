@@ -2,6 +2,10 @@ class FMCTakeOffPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
         FMCTakeOffPage._timer = 0;
+        let units = false;
+        if (!mc._unitIsMetric) {
+            units = true;
+        }
         fmc.pageUpdate = () => {
             FMCTakeOffPage._timer++;
             if (FMCTakeOffPage._timer >= 15) {
