@@ -143,7 +143,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         this.targetSpeedSVG.setAttribute("y", (posY + sideTextHeight * 0.5).toString());
         this.targetSpeedSVG.setAttribute("fill", "#D570FF");
         this.targetSpeedSVG.setAttribute("font-size", (this.fontSize * 1.6).toString());
-        this.targetSpeedSVG.setAttribute("font-family", "Roboto-Bold");
+        this.targetSpeedSVG.setAttribute("font-family", "BoeingEICAS");
         this.targetSpeedSVG.setAttribute("text-anchor", "middle");
         this.targetSpeedSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.targetSpeedSVG);
@@ -193,7 +193,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                         line.SVGText1.setAttribute("x", (linePosX - 10).toString());
                         line.SVGText1.setAttribute("fill", "white");
                         line.SVGText1.setAttribute("font-size", (this.fontSize * 1.1).toString());
-                        line.SVGText1.setAttribute("font-family", "Roboto-Bold");
+                        line.SVGText1.setAttribute("font-family", "BoeingEICAS");
                         line.SVGText1.setAttribute("text-anchor", "end");
                         line.SVGText1.setAttribute("alignment-baseline", "central");
                     }
@@ -233,9 +233,9 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 this.cursorSVG.appendChild(this.cursorSVGShape);
                 var _cursorPosX = -14;
                 var _cursorPosY = cursorHeight * 0.5;
-                this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 40, _cursorPosY, _width, "Roboto-Bold", this.fontSize * 1.5, "white");
-                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 64, _cursorPosY, _width, "Roboto-Bold", this.fontSize * 1.5, "white");
-                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 87, _cursorPosY, _width, "Roboto-Bold", this.fontSize * 1.5, "white");
+                this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 40, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
+                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 64, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
+                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 87, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
             }
             if (!this.speedTrendArrowSVG) {
                 this.speedTrendArrowSVG = document.createElementNS(Avionics.SVG.NS, "svg");
@@ -346,7 +346,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
                 text.setAttribute("font-size", (this.fontSize * 1.0).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
+                text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
                 this.speedNotSetSVG.appendChild(text);
@@ -357,7 +357,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
                 text.setAttribute("font-size", (this.fontSize * 1.0).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
+                text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
                 this.speedNotSetSVG.appendChild(text);
@@ -368,7 +368,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
                 text.setAttribute("font-size", (this.fontSize * 1.0).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
+                text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
                 this.speedNotSetSVG.appendChild(text);
@@ -379,7 +379,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
                 text.setAttribute("font-size", (this.fontSize * 1.0).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
+                text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
                 this.speedNotSetSVG.appendChild(text);
@@ -390,7 +390,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
                 text.setAttribute("font-size", (this.fontSize * 1.0).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
+                text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
                 this.speedNotSetSVG.appendChild(text);
@@ -441,7 +441,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.machPrefixSVG.setAttribute("y", (posY + height + sideTextHeight * 0.65).toString());
             this.machPrefixSVG.setAttribute("fill", "white");
             this.machPrefixSVG.setAttribute("font-size", (this.fontSize * 1.1).toString());
-            this.machPrefixSVG.setAttribute("font-family", "Roboto-Bold");
+            this.machPrefixSVG.setAttribute("font-family", "BoeingEICAS");
             this.machPrefixSVG.setAttribute("text-anchor", "end");
             this.machPrefixSVG.setAttribute("alignment-baseline", "top");
             this.rootGroup.appendChild(this.machPrefixSVG);
@@ -451,7 +451,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.machValueSVG.setAttribute("y", (posY + height + sideTextHeight * 0.65).toString());
             this.machValueSVG.setAttribute("fill", "white");
             this.machValueSVG.setAttribute("font-size", (this.fontSize * 1.25).toString());
-            this.machValueSVG.setAttribute("font-family", "Roboto-Bold");
+            this.machValueSVG.setAttribute("font-family", "BoeingEICAS");
             this.machValueSVG.setAttribute("text-anchor", "start");
             this.machValueSVG.setAttribute("alignment-baseline", "top");
             this.rootGroup.appendChild(this.machValueSVG);
@@ -495,7 +495,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         text.setAttribute("y", (offsetY + this.speedMarkersHeight * 0.5).toString());
         text.setAttribute("fill", _color);
         text.setAttribute("font-size", (this.fontSize * _textScale).toString());
-        text.setAttribute("font-family", "Roboto-Bold");
+        text.setAttribute("font-family", "BoeingEICAS");
         text.setAttribute("text-anchor", "start");
         text.setAttribute("alignment-baseline", "central");
         svg.appendChild(text);
@@ -505,7 +505,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         speed.setAttribute("y", (offsetY + this.speedMarkersHeight * 0.8).toString());
         speed.setAttribute("fill", _color);
         speed.setAttribute("font-size", (this.fontSize * _textScale).toString());
-        speed.setAttribute("font-family", "Roboto-Bold");
+        speed.setAttribute("font-family", "BoeingEICAS");
         speed.setAttribute("text-anchor", "start");
         speed.setAttribute("alignment-baseline", "central");
         svg.appendChild(speed);
