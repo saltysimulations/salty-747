@@ -3,52 +3,64 @@ class FMC_COMM_RequestAtis {
         fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
         let labelTimeout;
-        let aprt1Cell = "----";
-        let aprt2Cell = "----";
-        let aprt3Cell = "----";
-        let aprt4Cell = "----";
+        let arpt1Cell = "----";
+        let arpt2Cell = "----";
+        let arpt3Cell = "----";
+        let arpt4Cell = "----";
 
         store.arpt1 = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "";
         store.arpt2 = fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "";
         if (store.arpt1 != "") {
-            aprt1Cell = store.arpt1;
+            arpt1Cell = store.arpt1;
         }
         if (store.arpt2 != "") {
-            aprt2Cell = store.arpt2;
+            arpt2Cell = store.arpt2;
         }
         if (store.arpt3 != "") {
-            aprt3Cell = store.arpt3;
+            arpt3Cell = store.arpt3;
         }
         if (store.arpt4 != "") {
-            aprt4Cell = store.arpt4;
+            arpt4Cell = store.arpt4;
         }
         
         const updateView = () => {
             fmc.setTemplate([
                 ["ATIS REQUEST"],
                 ["\xa0ORIGIN", "DESTINATION"],
-                [`<${aprt1Cell}`, `${aprt2Cell}>`],
-                ["", ""],
-                ["", ""],
+                [`<${arpt1Cell}`, `${arpt2Cell}>`],
+                ["\xa0ALTERNATE", "AIRPORT"],
+                [`<${arpt3Cell}`, `${arpt4Cell}`],
                 ["", ""],
                 ["", ""],
                 ["", "REQUEST"],
                 ["", `${store.depAtis}`],
                 ["\xa0RECEIVED", "REQUEST"],
                 ["<MESSAGES", `${store.arrAtis}`],
-                ["\xa0ACARS", ""],
-                ["<INDEX", ""]
+                ["\xa0RETURN TO", ""],
+                ["<REQUESTS", ""]
             ]);
         }
         updateView();
         
         /* RSK4 */
         fmc.onRightInput[3] = () => {
-            const icaos = [aprt1Cell, aprt2Cell];
+            let icaos = [];
+            if (store.arpt1 != "") {
+                icaos.push(store.arpt1);
+            }
+            if (store.arpt2 != "") {
+                icaos.push(store.arpt2);
+            }
+            if (store.arpt3 != "") {
+                icaos.push(store.arpt3);
+            }
+            if (store.arpt4 != "") {
+                icaos.push(store.arpt4);
+            }
             const lines = [];
             const newMessage = { "id": Date.now(), "time": '00:00', "opened": null, "type": 'D-ATIS', "content": lines, };
             const getInfo = async () => {
-                getATIS(store.arpt1, lines, "dep", store, updateView);
+                getATIS(icaos, lines, "dep", store, updateView);
             };
 
             getInfo().then(() => {
@@ -77,11 +89,23 @@ class FMC_COMM_RequestAtis {
         
         /* RSK5 */
         fmc.onRightInput[4] = () => {
-            const icaos = [aprt1Cell, aprt2Cell];
+            let icaos = [];
+            if (store.arpt1 != "") {
+                icaos.push(store.arpt1);
+            }
+            if (store.arpt2 != "") {
+                icaos.push(store.arpt2);
+            }
+            if (store.arpt3 != "") {
+                icaos.push(store.arpt3);
+            }
+            if (store.arpt4 != "") {
+                icaos.push(store.arpt4);
+            }
             const lines = [];
             const newMessage = { "id": Date.now(), "time": '00:00', "opened": null, "type": 'D-ATIS', "content": lines, };
             const getInfo = async () => {
-                getATIS(store.arpt2, lines, "arr", store, updateView);
+                getATIS(icaos, lines, "arr", store, updateView);
             };
 
             getInfo().then(() => {

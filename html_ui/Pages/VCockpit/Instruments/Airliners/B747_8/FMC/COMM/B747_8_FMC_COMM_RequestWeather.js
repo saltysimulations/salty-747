@@ -3,34 +3,34 @@ class FMC_COMM_RequestWeather {
         fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
         let labelTimeout;
-        let aprt1Cell = "----";
-        let aprt2Cell = "----";
-        let aprt3Cell = "----";
-        let aprt4Cell = "----";
+        let arpt1Cell = "----";
+        let arpt2Cell = "----";
+        let arpt3Cell = "----";
+        let arpt4Cell = "----";
 
         store.arpt1 = fmc.flightPlanManager.getOrigin() ? fmc.flightPlanManager.getOrigin().ident : "";
         store.arpt2 = fmc.flightPlanManager.getDestination() ? fmc.flightPlanManager.getDestination().ident : "";
         
         const updateView = () => {
             if (store.arpt1 != "") {
-                aprt1Cell = store.arpt1;
+                arpt1Cell = store.arpt1;
             }
             if (store.arpt2 != "") {
-                aprt2Cell = store.arpt2;
+                arpt2Cell = store.arpt2;
             }
             if (store.arpt3 != "") {
-                aprt3Cell = store.arpt3;
+                arpt3Cell = store.arpt3;
             }
             if (store.arpt4 != "") {
-                aprt4Cell = store.arpt4;
+                arpt4Cell = store.arpt4;
             }
 
             fmc.setTemplate([
                 ["WEATHER REQUEST"],
                 ["\xa0ORIGIN", "DESTINATION"],
-                [`<${aprt1Cell}`, `${aprt2Cell}>`],
+                [`<${arpt1Cell}`, `${arpt2Cell}>`],
                 ["\xa0ALTERNATE", "AIRPORT"],
-                [`<${aprt3Cell}`, `${aprt4Cell}>`],
+                [`<${arpt3Cell}`, `${arpt4Cell}>`],
                 ["", ""],
                 ["", ""],
                 ["", "REQUEST"],
@@ -43,6 +43,34 @@ class FMC_COMM_RequestWeather {
         }
         updateView();
         
+        /* LSK1 */
+        fmc.onLeftInput[0] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            if (value.length == 4) {
+                store.arpt1 = value;
+                updateView();
+            } else if (value == "DELETE") {
+                store.arpt1 = "";
+            } else {
+                fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+            }            
+        }
+        
+        /* RSK1 */
+        fmc.onRightInput[0] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            if (value.length == 4) {
+                store.arpt2 = value;
+                updateView();
+            } else if (value == "DELETE") {
+                store.arpt2 = "";
+            } else {
+                fmc.showErrorMessage(fmc.defaultInputErrorMessage);
+            }            
+        }        
+        
         /* LSK2 */
         fmc.onLeftInput[1] = () => {
             let value = fmc.inOut;
@@ -50,6 +78,8 @@ class FMC_COMM_RequestWeather {
             if (value.length == 4) {
                 store.arpt3 = value;
                 updateView();
+            } else if (value == "DELETE") {
+                store.arpt3 = "";
             } else {
                 fmc.showErrorMessage(fmc.defaultInputErrorMessage);
             }            
@@ -62,6 +92,8 @@ class FMC_COMM_RequestWeather {
             if (value.length == 4) {
                 store.arpt4 = value;
                 updateView();
+            } else if (value == "DELETE") {
+                store.arpt4 = "";
             } else {
                 fmc.showErrorMessage(fmc.defaultInputErrorMessage);
             }            
@@ -69,7 +101,19 @@ class FMC_COMM_RequestWeather {
         
         /* RSK4 */
         fmc.onRightInput[3] = () => {
-            const icaos = [aprt1Cell, aprt2Cell];
+            let icaos = [];
+            if (store.arpt1 != "") {
+                icaos.push(store.arpt1);
+            }
+            if (store.arpt2 != "") {
+                icaos.push(store.arpt2);
+            }
+            if (store.arpt3 != "") {
+                icaos.push(store.arpt3);
+            }
+            if (store.arpt4 != "") {
+                icaos.push(store.arpt4);
+            }
             const lines = [];
             const newMessage = { "id": Date.now(), "time": '00:00', "opened": null, "type": 'METAR', "content": lines, };
             const getInfo = async () => {
@@ -102,7 +146,19 @@ class FMC_COMM_RequestWeather {
         
         /* RSK5 */
         fmc.onRightInput[4] = () => {
-            const icaos = [aprt1Cell, aprt2Cell];
+            const icaos = [];
+            if (store.arpt1 != "") {
+                icaos.push(store.arpt1);
+            }
+            if (store.arpt2 != "") {
+                icaos.push(store.arpt2);
+            }
+            if (store.arpt3 != "") {
+                icaos.push(store.arpt3);
+            }
+            if (store.arpt4 != "") {
+                icaos.push(store.arpt4);
+            }
             const lines = [];
             const newMessage = { "id": Date.now(), "time": '00:00', "opened": null, "type": 'TAF', "content": lines, };
             const getInfo = async () => {
