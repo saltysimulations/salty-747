@@ -165,7 +165,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 let mediumHeight = 3;
                 let smallWidth = 40;
                 let smallHeight = 2;
-                let fontSize = 20;
+                let fontSize = 15;
                 let angle = -maxDash;
                 let nextAngle;
                 let width;

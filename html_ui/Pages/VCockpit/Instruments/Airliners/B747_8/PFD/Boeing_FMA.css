@@ -58,7 +58,8 @@ boeing-fma {
   boeing-fma #Background {
     height: 100%; }
   boeing-fma .top {
-    height: 55%; }
+    height: 55%;
+    font-size: 45px; }
   boeing-fma .middle {
     top: 60%;
     height: 33%;
@@ -70,12 +71,12 @@ boeing-fma {
     color: orange; }
   boeing-fma .highlight-top, boeing-fma .highlight-middle, boeing-fma .highlight-bottom {
     color: none;
-    border: 1px solid lime;
+    border: 3px solid lime;
     left: 5%;
     width: 90%;
-    height: 50%; }
+    height: 58%; }
   boeing-fma .highlight-top {
-    top: 5%; }
+    top: 0%; }
   boeing-fma .highlight-middle {
     top: 39%; }
   boeing-fma .highlight-bottom {
@@ -101,15 +102,15 @@ boeing-fma {
     width: 33%; }
 
 boeing-fma.B747_8_PFD {
-  font-size: 35px; }
+  font-size: 45px; }
   boeing-fma.B747_8_PFD .middle {
-    font-size: 24px;
+    font-size: 30px;
     color: white; }
   boeing-fma.B747_8_PFD #Background {
     background-color: #343B51; }
   boeing-fma.B747_8_PFD #Column2 .bottom {
     top: 220%;
-    font-size: 36px; }
+    font-size: 55px; }
   boeing-fma.B747_8_PFD #Column2 #COL2_BOTTOM_ARROWS {
     top: 200%; }
 
