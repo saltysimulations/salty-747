@@ -9,6 +9,12 @@
   0%, 100% {
     visibility: hidden; } }
 
+@font-face {
+  font-family: "BoeingEICAS";
+  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+    
 html {
   height: 100%;
   width: 100%;
@@ -34,12 +40,6 @@ html {
   height: 100%; }
   #Electricity[state=off] {
     display: none; }
-
-@font-face {
-  font-family: "BoeingEICAS";
-  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal; }
 
 eicas-common-display {
   display: block;
