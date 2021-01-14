@@ -512,6 +512,17 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
     }
     init(root) {
         this.ndInfo = this.gps.getChildById("NDInfo");
+        this.gs = this.ndInfo.querySelector("#GS_Value");
+        this.tasText = this.ndInfo.querySelector("#TAS_Text");
+        this.tasVal = this.ndInfo.querySelector("#TAS_Value");
+        this.windDirection = this.ndInfo.querySelector("#Wind_Direction");
+        this.windStrength = this.ndInfo.querySelector("#Wind_Strength");
+        this.windArrow = this.ndInfo.querySelector("#Wind_Arrow");
+        this.windSeperator = this.ndInfo.querySelector("#Wind_Separator");
+        this.wpData = this.ndInfo.querySelector("#WP_Data");
+        this.zuluETA = document.querySelector("#WP_ZuluTime");
+        this.zuluClock = document.querySelector("#ZuluClock_Time");
+        this.waypointDistance = document.querySelector("#WP_Distance_Value");
         this.ndInfo.aircraft = Aircraft.B747_8;
         this.ndInfo.gps = this.gps;
         this.allSymbols.push(this.ndInfo.querySelector("#ARPT"));
@@ -528,42 +539,28 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
             this.ndInfo.update(_deltaTime);
         }
 
-        var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
-        var showData; 
-        var groundSpeed = Math.round(Simplane.getGroundSpeed());
-        var gs = this.ndInfo.querySelector("#GS_Value");
-        const tas_text = this.ndInfo.querySelector("#TAS_Text");
-        var tas_val = this.ndInfo.querySelector("#TAS_Value");
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        const groundSpeed = Math.round(Simplane.getGroundSpeed());
+        const utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
+        let showData;
 
-        var wd = this.ndInfo.querySelector("#Wind_Direction");
-        var ws = this.ndInfo.querySelector("#Wind_Strength");
-        var wa = this.ndInfo.querySelector("#Wind_Arrow");
-        const sep = this.ndInfo.querySelector("#Wind_Separator");
-
-        //get waypoint track, name, dist, etc. 
-        var wpdata = this.ndInfo.querySelector("#WP_Data");
-        //get Waypoint ETA in Zulu
-        this.zuluETA = document.querySelector("#WP_ZuluTime");
         this.zuluETA.textContent = "------Z";
-        var utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
-        if (Simplane.getNextWaypointName() && (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0)) {
-            var wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
-            var utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
+        if (Simplane.getNextWaypointName() && !SimVar.GetSimVarValue("SIM ON GROUND", "bool")) {
+            const wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
+            const utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
             const hours = Math.floor(utcETA / 3600);
             const minutes = Math.floor((utcETA % 3600) / 60);
             const tenths = Math.floor((utcETA % 3600) / 600);
             this.zuluETA.textContent = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}.${tenths.toString().padStart(1, "0")}Z`;
         }
-        //get Zulu Time
-        this.zuluClock = document.querySelector("#ZuluClock_Time");
-        var seconds = Number.parseInt(utcTime);
-        var time = Utils.SecondsToDisplayTime(seconds, true, true, false);
+        const seconds = Number.parseInt(utcTime);
+        const time = Utils.SecondsToDisplayTime(seconds, true, true, false);
+
         this.zuluClock.textContent = time.toString();
-        //get Distance to Waypoint
-        this.waypointDistance = document.querySelector("#WP_Distance_Value");
         this.waypointDistance.textContent = "---"
+
         if (Simplane.getNextWaypointName()) {
-            var nextWaypointDistance = Simplane.getNextWaypointDistance();
+            const nextWaypointDistance = Simplane.getNextWaypointDistance();
             if (nextWaypointDistance > 100) {
                 this.waypointDistance.textContent = nextWaypointDistance.toFixed(0);
             } else {
@@ -574,25 +571,24 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
             showData = false; 
         }
         else {
-           showData = true;
+            showData = true;
         }
 
-       tas_text.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       tas_val.setAttribute("visibility", (showData) ? "visible" : "hidden");
+        this.tasText.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.tasVal.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windSeperator.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windDirection.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windStrength.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windArrow.setAttribute("visibility", showData ? "visible" : "hidden");
 
-       sep.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       wd.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       ws.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       wa.setAttribute("visibility", (showData) ? "visible" : "hidden");
-
-       if (IRSState != 2) {
-           gs.textContent = "---";
-           wpdata.setAttribute("visibility", "hidden");
-       }
-       else {
-           gs.textContent = groundSpeed.toString().padStart(3); 
-           wpdata.setAttribute("visibility", "visible"); 
-       }
+        if (IRSState != 2) {
+            this.gs.textContent = "---";
+            this.wpData.setAttribute("visibility", "hidden");
+        }
+        else {
+            this.gs.textContent = groundSpeed.toString().padStart(3); 
+            this.wpData.setAttribute("visibility", "visible"); 
+        }
     }
     onExit() {
     }
