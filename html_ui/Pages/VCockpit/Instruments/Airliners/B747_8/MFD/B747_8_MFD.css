@@ -196,17 +196,17 @@ b747-8-mfd-element {
       text-anchor: middle; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #State {
       font-size: calc( 3 * 1vh * var(--bodyHeightScale));
-      fill: white; }
+      fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #ID {
       font-size: calc( 3 * 1vh * var(--bodyHeightScale));
-      fill: white; }
+      fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #Mode {
       font-size: calc( 3 * 1vh * var(--bodyHeightScale));
-      fill: white;
+      fill: lime;
       text-decoration: underline; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #Distance {
       font-size: calc( 2.5 * 1vh * var(--bodyHeightScale));
-      fill: white; }
+      fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #Unit {
       font-size: calc( 2.5 * 1vh * var(--bodyHeightScale));
       fill: cyan; }

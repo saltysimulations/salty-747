@@ -77,7 +77,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     circle.setAttribute("r", circleRadius.toString());
                     circle.setAttribute("fill-opacity", "0");
                     circle.setAttribute("stroke", "white");
-                    circle.setAttribute("stroke-width", "2");
+                    circle.setAttribute("stroke-width", "3");
                     circleGroup.appendChild(circle);
                     let radians = 0;
                     for (let i = 0; i < dashSpacing; i++) {
@@ -207,6 +207,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.selectedHeadingBug.setAttribute("d", "M50 " + (50 + circleRadius) + " h 22 v 22 h -7 l -15 -22 l -15 22 h -7 v -22 z");
                     this.selectedHeadingBug.setAttribute("stroke", "#ff00e0");
                     this.selectedHeadingBug.setAttribute("fill", "none");
+                    this.selectedHeadingBug.setAttribute("stroke-width", "2");
                     this.selectedHeadingGroup.appendChild(this.selectedHeadingBug);
                 }
                 this.rotatingCircle.appendChild(this.selectedHeadingGroup);
@@ -250,7 +251,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.currentRefMode.textContent = "HDG";
                     this.currentRefMode.setAttribute("x", (centerX - rectWidth * 0.5 - textOffset).toString());
                     this.currentRefMode.setAttribute("y", centerY.toString());
-                    this.currentRefMode.setAttribute("fill", "green");
+                    this.currentRefMode.setAttribute("fill", "lime");
                     this.currentRefMode.setAttribute("font-size", "23");
                     this.currentRefMode.setAttribute("font-family", "BoeingEICAS");
                     this.currentRefMode.setAttribute("text-anchor", "end");
@@ -267,23 +268,24 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     path.setAttribute("d", "M" + (centerX - (rectWidth * 0.5)) + " " + (centerY - (rectHeight * 0.5)) + " l0 " + rectHeight + " l" + rectWidth + " 0 l0 " + (-rectHeight));
                     path.setAttribute("fill", "none");
                     path.setAttribute("stroke", "white");
-                    path.setAttribute("stroke-width", "1");
+                    path.setAttribute("stroke-width", "2");
                     this.currentRefGroup.appendChild(path);
                     this.currentRefValue = document.createElementNS(Avionics.SVG.NS, "text");
                     this.currentRefValue.textContent = "266";
                     this.currentRefValue.setAttribute("x", centerX.toString());
-                    this.currentRefValue.setAttribute("y", centerY.toString());
+                    this.currentRefValue.setAttribute("y", (centerY + 3).toString());
                     this.currentRefValue.setAttribute("fill", "white");
-                    this.currentRefValue.setAttribute("font-size", "28");
+                    this.currentRefValue.setAttribute("font-size", "30");
                     this.currentRefValue.setAttribute("font-family", "BoeingEICAS");
                     this.currentRefValue.setAttribute("text-anchor", "middle");
                     this.currentRefValue.setAttribute("alignment-baseline", "central");
+                    this.currentRefValue.style.letterSpacing = "1px";
                     this.currentRefGroup.appendChild(this.currentRefValue);
                     this.currentRefType = document.createElementNS(Avionics.SVG.NS, "text");
                     this.currentRefType.textContent = "MAG";
                     this.currentRefType.setAttribute("x", (centerX + rectWidth * 0.5 + textOffset).toString());
                     this.currentRefType.setAttribute("y", centerY.toString());
-                    this.currentRefType.setAttribute("fill", "green");
+                    this.currentRefType.setAttribute("fill", "lime");
                     this.currentRefType.setAttribute("font-size", "23");
                     this.currentRefType.setAttribute("font-family", "BoeingEICAS");
                     this.currentRefType.setAttribute("text-anchor", "start");
@@ -304,12 +306,12 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     textBg.setAttribute("height", "64");
                     textBg.setAttribute("fill", "black");
                     textBg.setAttribute("stroke", "white");
-                    textBg.setAttribute("stroke-width", "1");
+                    textBg.setAttribute("stroke-width", "2");
                     rangeGroup.appendChild(textBg);
                     let textTitle = document.createElementNS(Avionics.SVG.NS, "text");
                     textTitle.textContent = "RANGE";
                     textTitle.setAttribute("x", centerX.toString());
-                    textTitle.setAttribute("y", (centerY - 15).toString());
+                    textTitle.setAttribute("y", (centerY - 10).toString());
                     textTitle.setAttribute("fill", "white");
                     textTitle.setAttribute("font-size", "25");
                     textTitle.setAttribute("font-family", "BoeingEICAS");
@@ -432,7 +434,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 textBg.setAttribute("height", "64");
                 textBg.setAttribute("fill", "black");
                 textBg.setAttribute("stroke", "white");
-                textBg.setAttribute("stroke-width", "1");
+                textBg.setAttribute("stroke-width", "2");
                 rangeGroup.appendChild(textBg);
                 let textTitle = document.createElementNS(Avionics.SVG.NS, "text");
                 textTitle.textContent = "RANGE";
