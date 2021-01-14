@@ -15,7 +15,7 @@ html {
   overflow: hidden; }
   html body {
     -webkit-user-select: none;
-    font-family: "BoeingEICAS";
+    font-family: "BoeingEICAS" !important;
     font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100);
     color: white;
     height: 100%;
@@ -53,7 +53,7 @@ eicas-common-display {
     stroke-width: 6; }
   eicas-common-display text {
     font-size: 20px;
-    font-family: "BoeingEICAS"; }
+    font-family: "BoeingEICAS" !important; }
   eicas-common-display text.Title {
     fill: white; }
   eicas-common-display text.Value {
