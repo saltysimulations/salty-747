@@ -82,7 +82,7 @@ class B747_8_SAI_BaroIndicator extends HTMLElement {
                 this.line.setAttribute("y", (this.height * 0.5).toString());
                 this.line.setAttribute("fill", "lightgreen");
                 this.line.setAttribute("font-size", "16");
-                this.line.setAttribute("font-family", "Roboto-Light");
+                this.line.setAttribute("font-family", "BoeingEICAS");
                 this.line.setAttribute("letter-spacing", "-1.5");
                 this.line.setAttribute("text-anchor", "end");
                 this.line.setAttribute("alignment-baseline", "central");
@@ -246,7 +246,7 @@ class B747_8_SAI_HSIndicator extends HTMLElement {
                             text.setAttribute("y", "12");
                             text.setAttribute("fill", "white");
                             text.setAttribute("font-size", "16");
-                            text.setAttribute("font-family", "Roboto-Light");
+                            text.setAttribute("font-family", "BoeingEICAS");
                             text.setAttribute("text-anchor", "middle");
                             text.setAttribute("alignment-baseline", "central");
                             text.setAttribute("transform", "rotate(" + angle + " 180 180)");
@@ -490,7 +490,7 @@ class B747_8_SAI_AirspeedIndicator extends HTMLElement {
                         line.SVGText1.setAttribute("x", (linePosX - 2).toString());
                         line.SVGText1.setAttribute("fill", "white");
                         line.SVGText1.setAttribute("font-size", (this.fontSize * 0.65).toString());
-                        line.SVGText1.setAttribute("font-family", "Roboto-Light");
+                        line.SVGText1.setAttribute("font-family", "BoeingEICAS");
                         line.SVGText1.setAttribute("letter-spacing", "-1.5");
                         line.SVGText1.setAttribute("text-anchor", "end");
                         line.SVGText1.setAttribute("alignment-baseline", "central");
@@ -535,9 +535,9 @@ class B747_8_SAI_AirspeedIndicator extends HTMLElement {
             this.cursorSVG.appendChild(rect);
             var _cursorPosX = this.graduationScrollPosX + 8;
             var _cursorPosY = cursorHeight * 0.5;
-            this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX - 30, _cursorPosY, _width, "Roboto-Light", this.fontSize, "white");
-            this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX - 17, _cursorPosY, _width, "Roboto-Light", this.fontSize, "white");
-            this.cursorDecimals.construct(this.cursorSVG, _cursorPosX - 2, _cursorPosY, _width, "Roboto-Light", this.fontSize, "white");
+            this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX - 30, _cursorPosY, _width, "BoeingEICAS", this.fontSize, "white");
+            this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX - 17, _cursorPosY, _width, "BoeingEICAS", this.fontSize, "white");
+            this.cursorDecimals.construct(this.cursorSVG, _cursorPosX - 2, _cursorPosY, _width, "BoeingEICAS", this.fontSize, "white");
             this.rootGroup.appendChild(this.cursorSVG);
         }
         this.rootSVG.appendChild(this.rootGroup);
@@ -724,7 +724,7 @@ class B747_8_SAI_AltimeterIndicator extends HTMLElement {
                     line.SVGText1.setAttribute("x", (posX + 6).toString());
                     line.SVGText1.setAttribute("fill", "white");
                     line.SVGText1.setAttribute("font-size", (this.fontSize * 0.75).toString());
-                    line.SVGText1.setAttribute("font-family", "Roboto-Light");
+                    line.SVGText1.setAttribute("font-family", "BoeingEICAS");
                     line.SVGText1.setAttribute("letter-spacing", "-1.5");
                     line.SVGText1.setAttribute("text-anchor", "end");
                     line.SVGText1.setAttribute("alignment-baseline", "central");
@@ -778,10 +778,10 @@ class B747_8_SAI_AltimeterIndicator extends HTMLElement {
             this.cursorSVG.appendChild(this.cursorSVGShape);
             var _cursorPosX = width - 5;
             var _cursorPosY = cursorHeight * 0.5;
-            this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX - 55, _cursorPosY, _width, "Roboto-Light", this.fontSize, "white");
-            this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX - 40, _cursorPosY, _width, "Roboto-Light", this.fontSize, "white");
-            this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX - 25, _cursorPosY, _width, "Roboto-Light", this.fontSize, "white");
-            this.cursorDecimals.construct(this.cursorSVG, _cursorPosX, _cursorPosY, _width, "Roboto-Light", this.fontSize * 0.75, "white");
+            this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX - 55, _cursorPosY, _width, "BoeingEICAS", this.fontSize, "white");
+            this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX - 40, _cursorPosY, _width, "BoeingEICAS", this.fontSize, "white");
+            this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX - 25, _cursorPosY, _width, "BoeingEICAS", this.fontSize, "white");
+            this.cursorDecimals.construct(this.cursorSVG, _cursorPosX, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 0.75, "white");
             if (!this.cursorSVGAltitudeLevelShape)
                 this.cursorSVGAltitudeLevelShape = document.createElementNS(Avionics.SVG.NS, "rect");
             this.cursorSVGAltitudeLevelShape.setAttribute("fill", "rgb(96, 255, 5)");
@@ -1111,7 +1111,7 @@ class B747_8_SAI_AttitudeIndicator extends HTMLElement {
                                 leftText.setAttribute("y", (this.bankSizeRatio * angle - height / 2 + fontSize / 2).toString());
                                 leftText.setAttribute("text-anchor", "end");
                                 leftText.setAttribute("font-size", (fontSize * 1.2).toString());
-                                leftText.setAttribute("font-family", "Roboto-Bold");
+                                leftText.setAttribute("font-family", "BoeingEICAS");
                                 leftText.setAttribute("fill", "white");
                                 this.attitude_pitch.appendChild(leftText);
                             }
