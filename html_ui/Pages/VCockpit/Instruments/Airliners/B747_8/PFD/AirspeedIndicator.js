@@ -339,7 +339,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             {
                 let textPosX = _left + _width * 1.2;
                 let textPosY = _top + _height * 0.225;
-                let textSpace = 30;
+                let textSpace = 23;
                 let text = document.createElementNS(Avionics.SVG.NS, "text");
                 text.textContent = "NO";
                 text.setAttribute("x", textPosX.toString());
@@ -422,10 +422,10 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             for (let i = 0; i < nbHandles; i++) {
                 this.createSpeedMarker("", speedMarkersPosX, speedMarkersPosY, this.updateMarkerFlap, 1.0, 1.0, "#24F000", false, [i]);
             }
-            this.createSpeedMarker("V1", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV1, 1.5, 1.2, "#24F000");
-            this.createSpeedMarker("VR", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVR, 1.5, 1.2, "#24F000");
-            this.createSpeedMarker("V2", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV2, 1.5, 1.2, "#24F000");
-            this.createSpeedMarker("REF", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVRef, 1.5, 1.2, "#24F000");
+            this.createSpeedMarker("V1", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV1, 1.0, 1.0, "#24F000");
+            this.createSpeedMarker("VR", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVR, 1.0, 1.0, "#24F000");
+            this.createSpeedMarker("V2", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV2, 1.0, 1.0, "#24F000");
+            this.createSpeedMarker("REF", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVRef, 1.0, 1.0, "#24F000");
             this.centerSVG.appendChild(this.stripsSVG);
             this.centerSVG.appendChild(this.speedNotSetSVG);
             this.centerSVG.appendChild(this.speedMarkerSVG);
@@ -450,7 +450,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.machValueSVG.setAttribute("x", (posX - 15).toString());
             this.machValueSVG.setAttribute("y", (posY + height + sideTextHeight * 0.65).toString());
             this.machValueSVG.setAttribute("fill", "white");
-            this.machValueSVG.setAttribute("font-size", (this.fontSize * 1.4).toString());
+            this.machValueSVG.setAttribute("font-size", (this.fontSize * 1.6).toString());
             this.machValueSVG.setAttribute("font-family", "BoeingEICAS");
             this.machValueSVG.setAttribute("text-anchor", "start");
             this.machValueSVG.setAttribute("alignment-baseline", "top");

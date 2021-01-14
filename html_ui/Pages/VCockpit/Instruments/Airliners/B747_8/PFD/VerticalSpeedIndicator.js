@@ -123,8 +123,8 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
                 text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
+                text.setAttribute("x", (_left + 7).toString());
+                text.setAttribute("y", (y + 2).toString());
                 text.setAttribute("fill", "white");
                 text.setAttribute("font-size", (this.fontSize * 0.9).toString());
                 text.setAttribute("font-family", "BoeingEICAS");
@@ -143,8 +143,8 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
                 text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
+                text.setAttribute("x", (_left + 7).toString());
+                text.setAttribute("y", (y + 2).toString());
                 text.setAttribute("fill", "white");
                 text.setAttribute("font-size", (this.fontSize * 0.9).toString());
                 text.setAttribute("font-family", "BoeingEICAS");
@@ -282,7 +282,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             {
                 let threshold = 400;
                 var displaySpeed = Math.abs(Math.floor(_speed));
-                displaySpeed = Math.round(displaySpeed / 5) * 5;
+                displaySpeed = Math.round(displaySpeed / 50) * 50;
                 if (this.topSpeedText) {
                     if (_speed >= threshold)
                         this.topSpeedText.textContent = displaySpeed.toString();

@@ -109,8 +109,8 @@ boeing-fma.B747_8_PFD {
   boeing-fma.B747_8_PFD #Background {
     background-color: #343B51; }
   boeing-fma.B747_8_PFD #Column2 .bottom {
-    top: 220%;
-    font-size: 55px; }
+    top: 200%;
+    font-size: 65px; }
   boeing-fma.B747_8_PFD #Column2 #COL2_BOTTOM_ARROWS {
     top: 200%; }
 

@@ -144,10 +144,10 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 fixedElements.appendChild(this.selectedHeadingText);
                 this.selectedHeadingTextRef = document.createElementNS(Avionics.SVG.NS, "text");
                 this.selectedHeadingTextRef.textContent = "MAG";
-                this.selectedHeadingTextRef.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.225).toString());
+                this.selectedHeadingTextRef.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.32).toString());
                 this.selectedHeadingTextRef.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.725).toString());
                 this.selectedHeadingTextRef.setAttribute("fill", "lime");
-                this.selectedHeadingTextRef.setAttribute("font-size", (this.fontSize * 0.2).toString());
+                this.selectedHeadingTextRef.setAttribute("font-size", (this.fontSize * 0.25).toString());
                 this.selectedHeadingTextRef.setAttribute("font-family", "BoeingEICAS");
                 this.selectedHeadingTextRef.setAttribute("text-anchor", "end");
                 this.selectedHeadingTextRef.setAttribute("alignment-baseline", "central");

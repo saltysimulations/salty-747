@@ -382,7 +382,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.radioAltitude.setAttribute("x", "140");
                 this.radioAltitude.setAttribute("y", "-172");
                 this.radioAltitude.setAttribute("text-anchor", "end");
-                this.radioAltitude.setAttribute("font-size", "18");
+                this.radioAltitude.setAttribute("font-size", "24");
                 this.radioAltitude.setAttribute("font-family", "BoeingEICAS");
                 this.radioAltitude.setAttribute("fill", "white");
                 this.radioAltitudeGroup.appendChild(this.radioAltitude);
