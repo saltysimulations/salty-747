@@ -167,13 +167,33 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
-            "size": 10073,
-            "date": 132552093809099078
+            "size": 10101,
+            "date": 132552162949265214
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
             "size": 26065,
             "date": 132551404635576338
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/mapConfig.json",
+            "size": 2998,
+            "date": 132552212172630828
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.css",
+            "size": 2215,
+            "date": 132552172049905948
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.html",
+            "size": 5277,
+            "date": 132552162573742148
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.js",
+            "size": 63096,
+            "date": 132550146877192492
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_BaseNDCompass.js",
@@ -184,6 +204,21 @@
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_NDCompass.js",
             "size": 48921,
             "date": 132551402992085982
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/BoeingActiveWaypoint.png",
+            "size": 1130734,
+            "date": 132552195770205926
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/BoeingWaypoint.png",
+            "size": 1130734,
+            "date": 132552196045058592
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Svg/SvgWaypointElement.js",
+            "size": 12680,
+            "date": 132552206343632516
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AirspeedIndicator.js",
