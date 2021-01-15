@@ -27,8 +27,8 @@ class FMCSaltyOptions_Taf {
             ["", ""],
             ["", ""],
             ["", ""],
-            ["", ""],
-            ["", ""]
+            ["\xa0RETURN TO", ""],
+            ["<OPTIONS", ""]
         ]);
 
         /* LSK1 */
@@ -42,6 +42,11 @@ class FMCSaltyOptions_Taf {
             SaltyDataStore.set("OPTIONS_TAF_SRC", "NOAA");
              FMCSaltyOptions_Taf.ShowPage(fmc);
         };
+
+        /* LSK6 */
+        fmc.onLeftInput[5] = () => {
+            FMCSaltyOptions.ShowPage1(fmc);
+        }
     }
 }
 //# sourceMappingURL=B747_8_FMC_SaltyOptions.js.map
