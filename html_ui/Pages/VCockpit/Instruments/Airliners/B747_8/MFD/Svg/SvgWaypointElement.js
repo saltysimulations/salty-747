@@ -233,7 +233,7 @@ class SvgWaypointElement extends SvgMapElement {
                         a = this.source.runways[0].direction;
                     }
                     if (isFinite(a)) {
-                        this._alpha = a - 45;
+                        this._alpha = a;
                     }
                 }
                 if (isFinite(this._alpha)) {
