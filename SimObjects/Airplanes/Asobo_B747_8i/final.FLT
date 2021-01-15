@@ -190,6 +190,9 @@ SALTY_IRS_STATE=2
 747_IRS_KNOB_1=2
 747_IRS_KNOB_2=2
 747_IRS_KNOB_3=2
+747_Aircond_Knob_1=3
+747_Aircond_Knob_2=3
+747_Aircond_Knob_3=3
 SALTY_ISFD_INIT_DONE=1
 
 [Electrical.0]
@@ -210,6 +213,7 @@ BleedAirSource=0
 
 [Switches.0]
 PitotHeat=False
+WindshieldDeice=1
 BeaconLights=True
 LandingLights=True
 LogoLights=True

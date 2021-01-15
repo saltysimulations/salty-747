@@ -185,6 +185,9 @@ SALTY_IRS_STATE=0
 747_IRS_KNOB_1=0
 747_IRS_KNOB_2=0
 747_IRS_KNOB_3=0
+747_Aircond_Knob_1=3
+747_Aircond_Knob_2=3
+747_Aircond_Knob_3=3
 SALTY_ISFD_INIT_DONE=0
 
 [Electrical.0]
@@ -203,9 +206,11 @@ KollsmanSetting=29.921342849731445313
 
 [BleedAir.0]
 BleedAirSource=2
+APUAirBleed=False
 
 [Switches.0]
 PitotHeat=False
+WindshieldDeice=1
 BeaconLights=False
 LandingLights=False
 LogoLights=False
