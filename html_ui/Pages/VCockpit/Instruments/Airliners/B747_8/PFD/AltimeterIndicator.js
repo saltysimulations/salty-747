@@ -100,9 +100,10 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.targetAltitudeTextSVG1.setAttribute("font-family", "BoeingEICAS");
         this.targetAltitudeTextSVG1.setAttribute("text-anchor", "end");
         this.targetAltitudeTextSVG1.setAttribute("alignment-baseline", "bottom");
+        this.targetAltitudeTextSVG1.style.letterSpacing = "3px";
         this.rootGroup.appendChild(this.targetAltitudeTextSVG1);
         this.targetAltitudeTextSVG2 = document.createElementNS(Avionics.SVG.NS, "text");
-        this.targetAltitudeTextSVG2.setAttribute("x", "115");
+        this.targetAltitudeTextSVG2.setAttribute("x", "117");
         this.targetAltitudeTextSVG2.setAttribute("y", (posY + sideTextHeight * 0.5).toString());
         this.targetAltitudeTextSVG2.setAttribute("width", width.toString());
         this.targetAltitudeTextSVG2.setAttribute("fill", "#D570FF");
@@ -110,6 +111,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.targetAltitudeTextSVG2.setAttribute("font-family", "BoeingEICAS");
         this.targetAltitudeTextSVG2.setAttribute("text-anchor", "start");
         this.targetAltitudeTextSVG2.setAttribute("alignment-baseline", "bottom");
+        this.targetAltitudeTextSVG2.style.letterSpacing = "3px";
         this.rootGroup.appendChild(this.targetAltitudeTextSVG2);
         posY += sideTextHeight * 0.835;
         if (!this.centerSVG) {

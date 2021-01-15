@@ -142,8 +142,9 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         this.targetSpeedSVG.setAttribute("x", (posX + 10).toString());
         this.targetSpeedSVG.setAttribute("y", (posY + sideTextHeight * 0.5).toString());
         this.targetSpeedSVG.setAttribute("fill", "#D570FF");
-        this.targetSpeedSVG.setAttribute("font-size", (this.fontSize * 1.7).toString());
+        this.targetSpeedSVG.setAttribute("font-size", (this.fontSize * 1.6).toString());
         this.targetSpeedSVG.setAttribute("font-family", "BoeingEICAS");
+        this.targetSpeedSVG.style.letterSpacing = "3px";
         this.targetSpeedSVG.setAttribute("text-anchor", "middle");
         this.targetSpeedSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.targetSpeedSVG);
