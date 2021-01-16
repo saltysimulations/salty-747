@@ -121,13 +121,13 @@ class B747_8_FMC_ProgPage {
             }
         fmc.setTemplate([
             [progressTitle],
-            ["TO", "FUEL", "DTG\xa0\xa0ETA"],
+            ["\xa0TO", "FUEL", "DTG\xa0\xa0ETA"],
             [waypointActiveCell + "[color]magenta", waypointActiveFuelCell, waypointActiveDistanceCell],
-            ["NEXT"],
+            ["\xa0NEXT", "", "\xa0\xa0\xa0\xa0\xa0ETA"],
             [waypointActiveNextCell, waypointActiveNextFuelCell, waypointActiveNextDistanceCell],
-            ["DEST"],
+            ["\xa0DEST"],
             [destinationCell, destinationFuelCell, destinationDistanceCell],
-            ["SEL SPD"],
+            ["\xa0SEL SPD"],
             [crzSpeedCell],
             [],
             [""],
