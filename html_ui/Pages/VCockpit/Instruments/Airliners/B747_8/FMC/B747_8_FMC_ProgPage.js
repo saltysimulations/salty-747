@@ -8,37 +8,14 @@ class B747_8_FMC_ProgPage {
                 B747_8_FMC_ProgPage.ShowPage1(fmc);
             }
         };
+        let progressTitle = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") + " PROGRESS";
         let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
-        let waypointFromCell = "";
-        let waypointFromAltAtaCell = "";
-        let waypointFromFuelCell = "";
-        let waypointFrom;
-        if (fmc.flightPlanManager.getActiveWaypointIndex() === -1) {
-            waypointFrom = fmc.flightPlanManager.getOrigin();
-        }
-        else {
-            waypointFrom = fmc.flightPlanManager.getPreviousActiveWaypoint();
-        }
-        if (waypointFrom) {
-            waypointFromCell = waypointFrom.ident;
-            if (isFinite(waypointFrom.altitudeWasReached) && isFinite(waypointFrom.timeWasReached)) {
-                let t = waypointFrom.timeWasReached;
-                let hours = Math.floor(t / 3600);
-                let minutes = Math.floor((t - hours * 3600) / 60);
-                for (let i = 0; i < 4 - Math.log10(waypointFrom.altitudeWasReached); i++) {
-                    waypointFromAltAtaCell += "&nbsp";
-                }
-                waypointFromAltAtaCell += waypointFrom.altitudeWasReached.toFixed(0) + " " + hours.toFixed(0).padStart(2, "0") + minutes.toFixed(0).padStart(2, "0") + "&nbsp";
-            }
-            if (isFinite(waypointFrom.fuelWasReached)) {
-                waypointFromFuelCell = waypointFrom.getFuelWasReached(true).toFixed(0);
-            }
-        }
         let speed = Simplane.getGroundSpeed();
-        let currentTime = SimVar.GetGlobalVarValue("LOCAL TIME", "seconds");
+        let currentTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
         let currentFuel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
         let currentFuelFlow = SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:1", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:2", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:3", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:4", "pound per hour");
         currentFuelFlow = currentFuelFlow / 1000;
+        let machMode = Simplane.getAutoPilotMachModeActive();
         let waypointActiveCell = "";
         let waypointActiveDistanceCell = "";
         let waypointActiveFuelCell = "";
@@ -56,14 +33,14 @@ class B747_8_FMC_ProgPage {
                 if (isFinite(eta)) {
                     let etaHours = Math.floor(eta / 3600);
                     let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                    waypointActiveDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                    waypointActiveDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "z";
                 }
                 else {
                     waypointActiveDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                 }
                 let fuelLeft = fmc.computeFuelLeft(waypointActiveDistance, speed, currentFuel, currentFuelFlow);
                 if (isFinite(fuelLeft)) {
-                    waypointActiveFuelCell = fuelLeft.toFixed(0);
+                    waypointActiveFuelCell = fuelLeft.toFixed(1);
                 }
             }
         }
@@ -88,14 +65,14 @@ class B747_8_FMC_ProgPage {
                         if (isFinite(eta)) {
                             let etaHours = Math.floor(eta / 3600);
                             let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                            waypointActiveNextDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                            waypointActiveNextDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "z";
                         }
                         else {
                             waypointActiveNextDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                         }
                         let fuelLeft = fmc.computeFuelLeft(waypointActiveNextDistance, speed, currentFuel, currentFuelFlow);
                         if (isFinite(fuelLeft)) {
-                            waypointActiveNextFuelCell = fuelLeft.toFixed(0);
+                            waypointActiveNextFuelCell = fuelLeft.toFixed(1);
                         }
                     }
                 }
@@ -121,32 +98,41 @@ class B747_8_FMC_ProgPage {
                     if (isFinite(eta)) {
                         let etaHours = Math.floor(eta / 3600);
                         let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                        destinationDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                        destinationDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "z";
                     }
                     else {
                         destinationDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                     }
                     let fuelLeft = fmc.computeFuelLeft(destinationDistance, speed, currentFuel, currentFuelFlow);
                     if (isFinite(fuelLeft)) {
-                        destinationFuelCell = fuelLeft.toFixed(0);
+                        destinationFuelCell = fuelLeft.toFixed(1);
                     }
                 }
             }
         }
+        //Gets current command speed/mach from FMC    
+        let crzSpeedCell = "";
+        if (machMode) {
+            let crzMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
+            var radixPos = crzMachNo.indexOf('.');
+            crzSpeedCell = crzMachNo.slice(radixPos);
+            } else {
+                crzSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
+            }
         fmc.setTemplate([
-            ["PROGRESS"],
-            ["FROM", "FUEL", "ALT ATA"],
-            [waypointFromCell, waypointFromFuelCell, waypointFromAltAtaCell],
-            ["", "FUEL", "DTG ETA"],
-            [waypointActiveCell, waypointActiveFuelCell, waypointActiveDistanceCell],
-            [""],
+            [progressTitle],
+            ["TO", "FUEL", "DTG\xa0\xa0ETA"],
+            [waypointActiveCell + "[color]magenta", waypointActiveFuelCell, waypointActiveDistanceCell],
+            ["NEXT"],
             [waypointActiveNextCell, waypointActiveNextFuelCell, waypointActiveNextDistanceCell],
-            [""],
+            ["DEST"],
             [destinationCell, destinationFuelCell, destinationDistanceCell],
-            ["TO T/D", "FUEL QTY"],
+            ["SEL SPD"],
+            [crzSpeedCell],
+            [],
             [""],
-            ["WIND"],
-            ["", "NAV STATUS>"]
+            ["__FMCSEPARATOR"],
+            ["<POS REPORT", "POS REF>"]
         ]);
     }
 }
