@@ -183,9 +183,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         FMC_Menu.ShowPage(this);
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
-        Include.addScript("/JS/debug.js", function () {
-            g_modDebugMgr.AddConsole(null);
-        });
     }
     onPowerOn() {
         super.onPowerOn();
@@ -202,6 +199,93 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         this.updateAutopilot();
         this.saltyBase.update();
+    }
+    onEvent(_event) {
+        if (_event.indexOf("1_BTN_") !== -1 || _event.indexOf("2_BTN_") !== -1 || _event.indexOf("BTN_") !== -1 ||  _event.indexOf("3_") !== -1) {
+            const input = _event.replace("1_BTN_", "").replace("2_BTN_", "").replace("BTN_", "").replace("3_", "");
+            if (this.onInputAircraftSpecific(input)) {
+                return;
+            }
+            if (input === "INIT") {
+                this.onInit();
+            }
+            else if (input === "DEPARR") {
+                this.onDepArr();
+            }
+            else if (input === "ATC") {
+                this.onAtc();
+            }
+            else if (input === "FIX") {
+                this.onFix();
+            }
+            else if (input === "HOLD") {
+                this.onHold();
+            }
+            else if (input === "FMCCOMM") {
+                this.onFmcComm();
+            }
+            else if (input === "PROG") {
+                this.onProg();
+            }
+            else if (input === "MENU") {
+                this.onMenu();
+            }
+            else if (input === "NAVRAD") {
+                this.onRad();
+            }
+            else if (input === "PREVPAGE") {
+                this.onPrevPage();
+            }
+            else if (input === "NEXTPAGE") {
+                this.onNextPage();
+            }
+            else if (input === "SP") {
+                this.onSp();
+            }
+            else if (input === "DEL") {
+                this.onDel();
+            }
+            else if (input === "CLR") {
+                this.onClr();
+            }
+            else if (input === "CLR_Long") {
+                this.onClrLong();
+            }
+            else if (input === "DIV") {
+                this.onDiv();
+            }
+            else if (input === "DOT") {
+                this.inOut += ".";
+            }
+            else if (input === "PLUSMINUS") {
+                this.inOut += "-";
+            }
+            else if (input === "Localizer") {
+                this._apLocalizerOn = !this._apLocalizerOn;
+            }
+            else if (input.length === 2 && input[0] === "L") {
+                let v = parseInt(input[1]);
+                if (isFinite(v)) {
+                    if (this.onLeftInput[v - 1]) {
+                        this.onLeftInput[v - 1]();
+                    }
+                }
+            }
+            else if (input.length === 2 && input[0] === "R") {
+                let v = parseInt(input[1]);
+                if (isFinite(v)) {
+                    if (this.onRightInput[v - 1]) {
+                        this.onRightInput[v - 1]();
+                    }
+                }
+            }
+            else if (input.length === 1 && FMCMainDisplay._AvailableKeys.indexOf(input) !== -1) {
+                this.onLetterInput(input);
+            }
+            else {
+                console.log("'" + input + "'");
+            }
+        }
     }
     onInputAircraftSpecific(input) {
         console.log("B747_8_FMC_MainDisplay.onInputAircraftSpecific input = '" + input + "'");
