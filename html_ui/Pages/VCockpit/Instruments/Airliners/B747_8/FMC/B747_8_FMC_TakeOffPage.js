@@ -1,7 +1,6 @@
 class FMCTakeOffPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
-        fmc.updateVSpeeds();
         FMCTakeOffPage._timer = 0;
         fmc.pageUpdate = () => {
             FMCTakeOffPage._timer++;
@@ -17,8 +16,7 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value === FMCMainDisplay.clrValue) {
-                fmc.v1Speed = undefined;
-                SimVar.SetSimVarValue("L:AIRLINER_V1_SPEED", "Knots", -1);
+                fmc.trySetV1Speed(undefined);
                 FMCTakeOffPage.ShowPage1(fmc);
             }
             else if (value === "") {
@@ -39,8 +37,7 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value === FMCMainDisplay.clrValue) {
-                fmc.vRSpeed = undefined;
-                SimVar.SetSimVarValue("L:AIRLINER_VR_SPEED", "Knots", -1);
+                fmc.trySetVRSpeed(undefined);
                 FMCTakeOffPage.ShowPage1(fmc);
             }
             else if (value === "") {
@@ -61,8 +58,7 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (value === FMCMainDisplay.clrValue) {
-                fmc.v2Speed = undefined;
-                SimVar.SetSimVarValue("L:AIRLINER_V2_SPEED", "Knots", -1);
+                fmc.trySetV2Speed(undefined);
                 FMCTakeOffPage.ShowPage1(fmc);
             }
             else if (value === "") {
@@ -82,12 +78,6 @@ class FMCTakeOffPage {
         }
         else {
             flapsCell = "□□°";
-        }
-        if (Simplane.getIsGrounded() && Simplane.getV1Airspeed() <= 0 && Simplane.getVRAirspeed() <= 0 && Simplane.getV2Airspeed() <= 0) {
-            flapsCell = "□□°";
-            v1 = "---[color]blue";
-            vR = "---[color]blue";
-            v2 = "---[color]blue";
         }
         fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
@@ -149,7 +139,7 @@ class FMCTakeOffPage {
             ["RW COND", "POS"],
             ["DRY", runwayCell],
             ["__FMCSEPARATOR"],
-            ["<INDEX", "THRUST LIM>"]
+            ["\<INDEX", "THRUST LIM>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCThrustLimPage.ShowPage1(fmc); };
