@@ -102,7 +102,7 @@ var B747_8_LowerEICAS_Engine;
     B747_8_LowerEICAS_Engine.Display = Display;
     class EngineInfo {
         constructor(_eicas, _engineId, _engineStateParent, _n2Parent, _ffParent) {
-            this.ffGPHToKGPHX1000 = 0;
+            this.ffGPHToLBPHX1000 = 0;
             this.eicas = _eicas;
             this.engineId = _engineId;
             if (_engineStateParent != null) {
@@ -118,7 +118,7 @@ var B747_8_LowerEICAS_Engine;
             if (_ffParent != null) {
                 _ffParent.appendChild(this.ffGauge);
             }
-            this.ffGPHToKGPHX1000 = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 1000;
+            this.ffGPHToLBPHX1000 = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
         }
         createN2GaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
@@ -140,7 +140,7 @@ var B747_8_LowerEICAS_Engine;
             return definition;
         }
         getFFValue() {
-            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToKGPHX1000);
+            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToLBPHX1000);
         }
         getOilPValue() {
             return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engineId, "psi");
