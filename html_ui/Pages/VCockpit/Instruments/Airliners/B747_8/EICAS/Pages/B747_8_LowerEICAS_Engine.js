@@ -10,14 +10,14 @@ var B747_8_LowerEICAS_Engine;
         get templateID() { return "B747_8LowerEICASEngineTemplate"; }
         connectedCallback() {
             super.connectedCallback();
-            TemplateElement.call(this, this.init.bind(this));
         }
-        init() {
+        init(_eicas) {
+            this.eicas = _eicas;
             var stateParent = this.querySelector("#EngineStates");
             var n2Parent = this.querySelector("#N2Gauges");
             var ffParent = this.querySelector("#FFGauges");
             for (var engine = 1; engine <= Simplane.getEngineCount(); ++engine) {
-                this.allEngineInfos.push(new EngineInfo(engine, stateParent, n2Parent, ffParent));
+                this.allEngineInfos.push(new EngineInfo(this.eicas, engine, stateParent, n2Parent, ffParent));
             }
             this.createOilPGauges();
             this.createOilTGauges();
@@ -100,53 +100,38 @@ var B747_8_LowerEICAS_Engine;
         }
     }
     B747_8_LowerEICAS_Engine.Display = Display;
-    let EngineInfoState;
-    (function (EngineInfoState) {
-        EngineInfoState[EngineInfoState["IDLE"] = 0] = "IDLE";
-        EngineInfoState[EngineInfoState["AUTOSTART"] = 1] = "AUTOSTART";
-        EngineInfoState[EngineInfoState["RUNNING"] = 2] = "RUNNING";
-        EngineInfoState[EngineInfoState["READY"] = 3] = "READY";
-        EngineInfoState[EngineInfoState["DECELERATE"] = 4] = "DECELERATE";
-    })(EngineInfoState || (EngineInfoState = {}));
     class EngineInfo {
-        constructor(_engine, _engineStateParent, _n2Parent, _ffParent) {
-            this.currentState = EngineInfoState.IDLE;
-            this.timeInState = 0;
-            this.ffGPHToLBSPHX1000 = 0;
-            this.engine = _engine;
+        constructor(_eicas, _engineId, _engineStateParent, _n2Parent, _ffParent) {
+            this.ffGPHToKGPHX1000 = 0;
+            this.eicas = _eicas;
+            this.engineId = _engineId;
             if (_engineStateParent != null) {
-                this.stateText = _engineStateParent.querySelector("#Engine" + this.engine + "_State");
+                this.stateText = _engineStateParent.querySelector("#Engine" + this.engineId + "_State");
             }
             this.n2Gauge = window.document.createElement("b747-8-eicas-gauge");
-            this.n2Gauge.init(this.createN2GaugeDefinition(_engine));
+            this.n2Gauge.init(this.createN2GaugeDefinition());
             this.ffGauge = window.document.createElement("b747-8-eicas-gauge");
-            this.ffGauge.init(this.createFFGaugeDefinition(_engine));
+            this.ffGauge.init(this.createFFGaugeDefinition());
             if (_n2Parent != null) {
                 _n2Parent.appendChild(this.n2Gauge);
             }
             if (_ffParent != null) {
                 _ffParent.appendChild(this.ffGauge);
             }
-            this.ffGPHToLBSPHX1000 = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
+            this.ffGPHToKGPHX1000 = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 1000;
         }
-        createN2GaugeDefinition(_engine) {
+        createN2GaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
-            definition.getValue = this.getN2Value.bind(this);
+            definition.getValue = this.eicas.getN2Value.bind(this, this.engineId);
             definition.maxValue = 110;
             definition.valueBoxWidth = 80;
             definition.valueTextPrecision = 1;
             definition.barHeight = 60;
             definition.addLineDefinition(110, 40, "gaugeMarkerDanger");
-            definition.addLineDefinition(0, 40, "gaugeMarkerNormal", this.getN2IdleValue.bind(this));
+            definition.addLineDefinition(0, 40, "gaugeMarkerNormal", this.eicas.getN2IdleValue.bind(this));
             return definition;
         }
-        getN2IdleValue() {
-            return 50;
-        }
-        getN2Value() {
-            return SimVar.GetSimVarValue("ENG N2 RPM:" + this.engine, "percent");
-        }
-        createFFGaugeDefinition(_engine) {
+        createFFGaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getFFValue.bind(this);
             definition.maxValue = 1000;
@@ -155,75 +140,49 @@ var B747_8_LowerEICAS_Engine;
             return definition;
         }
         getFFValue() {
-            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engine, "gallons per hour") * this.ffGPHToLBSPHX1000);
+            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToKGPHX1000);
         }
         getOilPValue() {
-            return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engine, "psi");
+            return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engineId, "psi");
         }
         getOilTValue() {
-            return SimVar.GetSimVarValue("ENG OIL TEMPERATURE:" + this.engine, "celsius");
+            return SimVar.GetSimVarValue("ENG OIL TEMPERATURE:" + this.engineId, "celsius");
         }
         getOilQValue() {
-            return (SimVar.GetSimVarValue("ENG OIL QUANTITY:" + this.engine, "percent scaler 16k") * 0.001);
+            return (SimVar.GetSimVarValue("ENG OIL QUANTITY:" + this.engineId, "percent scaler 16k") * 0.001);
         }
         getVIBValue() {
-            return SimVar.GetSimVarValue("ENG VIBRATION:" + this.engine, "Number");
+            return SimVar.GetSimVarValue("ENG VIBRATION:" + this.engineId, "Number");
         }
         refresh(_deltaTime) {
-            this.timeInState += _deltaTime / 1000;
-            let N2Value = this.getN2Value();
-            switch (this.currentState) {
-                case EngineInfoState.IDLE:
-                    if (N2Value >= 50.0)
-                        this.changeState(EngineInfoState.RUNNING);
-                    else if (N2Value >= 0.05)
-                        this.changeState(EngineInfoState.AUTOSTART);
-                    break;
-                case EngineInfoState.AUTOSTART:
-                    if (N2Value >= 50.0)
-                        this.changeState(2);
-                    break;
-                case EngineInfoState.RUNNING:
-                    if (N2Value >= 50.0) {
-                        if (this.timeInState > 30)
-                            this.changeState(EngineInfoState.READY);
-                    }
-                    else
-                        this.changeState(4);
-                    break;
-                case EngineInfoState.READY:
-                    if (N2Value < 50.0)
-                        this.changeState(EngineInfoState.DECELERATE);
-                    break;
-                case EngineInfoState.DECELERATE:
-                    if (N2Value < 0.05)
-                        this.changeState(EngineInfoState.IDLE);
-                    else if (N2Value >= 50.0)
-                        this.changeState(EngineInfoState.RUNNING);
-                    break;
-            }
-            if (this.n2Gauge != null) {
-                this.n2Gauge.refresh();
-            }
-            if (this.ffGauge != null) {
-                this.ffGauge.refresh();
-            }
-        }
-        changeState(_state) {
-            if (this.currentState == _state)
-                return;
-            this.currentState = _state;
-            this.timeInState = 0;
-            switch (this.currentState) {
-                case EngineInfoState.AUTOSTART:
+            let state = this.eicas.getEngineState(this.engineId);
+            switch (state) {
+                case B747_8_EngineState.AUTOSTART:
                     this.stateText.textContent = "AUTOSTART";
+                    this.stateText.setAttribute("class", "white");
                     break;
-                case EngineInfoState.RUNNING:
+                case B747_8_EngineState.RUNNING:
                     this.stateText.textContent = "RUNNING";
+                    this.stateText.setAttribute("class", "");
                     break;
                 default:
                     this.stateText.textContent = "";
                     break;
+            }
+            if (this.n2Gauge != null) {
+                let n2IdleLine = this.n2Gauge.getDynamicLine(0);
+                if (n2IdleLine) {
+                    let currentN2 = this.eicas.getN2Value(this.engineId);
+                    let idleN2 = n2IdleLine.currentValue;
+                    if (Math.round(currentN2) >= idleN2)
+                        n2IdleLine.line.setAttribute("display", "none");
+                    else
+                        n2IdleLine.line.setAttribute("display", "block");
+                }
+                this.n2Gauge.refresh();
+            }
+            if (this.ffGauge != null) {
+                this.ffGauge.refresh();
             }
         }
     }
