@@ -206,55 +206,25 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this.onInputAircraftSpecific(input)) {
                 return;
             }
-            if (input === "INIT") {
-                this.onInit();
+            switch (input) {
+                case "INIT": this.onInit(); break;
+                case "DEPARR": this.onDepArr(); break;
+                case "ATC": this.onAtc(); break;
+                case "FIX": this.onDepArr(); break;
+                case "HOLD": this.onHold(); break;
+                case "FMCCOMM": this.onFmcComm(); break;
+                case "PROG": this.onProg(); break;
+                case "MENU": this.onMenu(); break;
+                case "NAVRAD": this.onRad(); break;
+                case "PREVPAGE": this.onPrevPage(); break;
+                case "NEXTPAGE": this.onNextPage(); break;
+                case "SP": this.onSp(); break;
+                case "DEL": this.onDel(); break;
+                case "CLR": this.onClr(); break;
+                case "CLR_LONG": this.onClrLong(); break;
+                case "DIV": this.onDiv(); break;
             }
-            else if (input === "DEPARR") {
-                this.onDepArr();
-            }
-            else if (input === "ATC") {
-                this.onAtc();
-            }
-            else if (input === "FIX") {
-                this.onFix();
-            }
-            else if (input === "HOLD") {
-                this.onHold();
-            }
-            else if (input === "FMCCOMM") {
-                this.onFmcComm();
-            }
-            else if (input === "PROG") {
-                this.onProg();
-            }
-            else if (input === "MENU") {
-                this.onMenu();
-            }
-            else if (input === "NAVRAD") {
-                this.onRad();
-            }
-            else if (input === "PREVPAGE") {
-                this.onPrevPage();
-            }
-            else if (input === "NEXTPAGE") {
-                this.onNextPage();
-            }
-            else if (input === "SP") {
-                this.onSp();
-            }
-            else if (input === "DEL") {
-                this.onDel();
-            }
-            else if (input === "CLR") {
-                this.onClr();
-            }
-            else if (input === "CLR_Long") {
-                this.onClrLong();
-            }
-            else if (input === "DIV") {
-                this.onDiv();
-            }
-            else if (input === "DOT") {
+            if (input === "DOT") {
                 this.inOut += ".";
             }
             else if (input === "PLUSMINUS") {
@@ -281,9 +251,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
             else if (input.length === 1 && FMCMainDisplay._AvailableKeys.indexOf(input) !== -1) {
                 this.onLetterInput(input);
-            }
-            else {
-                console.log("'" + input + "'");
             }
         }
     }
