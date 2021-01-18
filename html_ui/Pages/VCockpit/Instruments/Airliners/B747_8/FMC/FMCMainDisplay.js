@@ -1636,7 +1636,7 @@ class FMCMainDisplay extends BaseAirliners {
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let enterClimbPhase = false;
                 let agl = Simplane.getAltitude();
-                let altValue = isFinite(this.thrustReductionAltitude) ? this.thrustReductionAltitude : 1500;
+                let altValue = 3000;
                 if (agl > altValue) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
                     enterClimbPhase = true;

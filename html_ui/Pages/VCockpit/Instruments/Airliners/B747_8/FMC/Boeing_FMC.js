@@ -527,8 +527,8 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     getTakeOffManagedSpeed() {
         let altitude = Simplane.getAltitudeAboveGround();
-        if (altitude < 35) {
-            return this.v2Speed + 15;
+        if (altitude < 3000) {
+            return this.v2Speed;
         }
         return 250;
     }
