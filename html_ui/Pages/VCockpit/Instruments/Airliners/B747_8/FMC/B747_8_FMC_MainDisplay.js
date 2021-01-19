@@ -648,19 +648,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 0);
                     }
                     let selectedAltitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
-                    if (!this.flightPlanManager.getIsDirectTo() &&
-                        isFinite(nextWaypoint.legAltitude1) &&
-                        nextWaypoint.legAltitude1 < 20000 &&
-                        nextWaypoint.legAltitude1 > selectedAltitude &&
-                        Simplane.getAltitude() > nextWaypoint.legAltitude1 - 200) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
-                    }
+                    if (!this.flightPlanManager.getIsDirectTo() && isFinite(nextWaypoint.legAltitude1) &&
+                        isFinite(selectedAltitude)) {
+                            let currentAlt = Simplane.getAltitude();
+                            let mcpDelta = selectedAltitude - currentAlt;
+                            let constraintDelta = nextWaypoint.legAltitude1 - currentAlt;
+                            if (mcpDelta > constraintDelta) {
+                                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
+                                this._forceNextAltitudeUpdate = false;
+                                SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
+                            } 
+                            else {
+                                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
+                                this._forceNextAltitudeUpdate = false;
+                                SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
+                            }
+                        }
                     else {
                         let altitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
                         if (isFinite(altitude)) {
-                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, this.cruiseFlightLevel * 100, this._forceNextAltitudeUpdate);
+                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, altitude, this._forceNextAltitudeUpdate);
                             this._forceNextAltitudeUpdate = false;
                             SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                         }
@@ -669,7 +676,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 else {
                     let altitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
                     if (isFinite(altitude)) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, this.cruiseFlightLevel * 100, this._forceNextAltitudeUpdate);
+                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, altitude, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                     }

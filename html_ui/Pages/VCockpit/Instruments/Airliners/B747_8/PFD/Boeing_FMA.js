@@ -385,7 +385,7 @@ var Boeing_FMA;
             if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
                 if (Simplane.getAutoPilotAltitudeLockActive()) {
                     let altitude = Simplane.getAltitude();
-                    if (altitude > SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number") + 100) {
+                    if (Math.abs(altitude - SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number")) >= 100) {
                         return 9;
                     }
                     return 7;
