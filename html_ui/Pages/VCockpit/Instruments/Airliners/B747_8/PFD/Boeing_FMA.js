@@ -236,14 +236,11 @@ var Boeing_FMA;
             if (ApproachStatus.isRolloutActive) {
                 return 7;
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number" ) === 0) {
                 return 8;
             }
             if (SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 1) {
                 return 5;
-            }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.HOLD && SimVar.GetSimVarValue("L:AP_LNAV_ARMED", "number") === 1) {
-                return 8;
             }
             if (Simplane.getAutoPilotHeadingLockActive()) {
                 if (SimVar.GetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number") === 1) {
@@ -382,7 +379,7 @@ var Boeing_FMA;
                     return 4;
                 }
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number" ) === 0) {
                 return 6;
             }
             if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
@@ -394,9 +391,6 @@ var Boeing_FMA;
                     return 7;
                 }
                 return 8;
-            }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.HOLD && SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1) {
-                return 6;
             }
             if (SimVar.GetSimVarValue("L:AP_FLCH_ACTIVE", "number") === 1) {
                 return 2;

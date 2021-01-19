@@ -206,7 +206,6 @@ class Boeing_FMC extends FMCMainDisplay {
         SimVar.SetSimVarValue("K:ALTITUDE_SLOT_INDEX_SET", "number", 2);
         if (this.aircraftType == Aircraft.AS01B)
             this.activateSPD();
-        this.setThrottleMode(ThrottleMode.CLIMB);
     }
     setThrottleMode(_mode) {
         if (this.getIsSPDActive() && this.aircraftType == Aircraft.AS01B)
@@ -362,7 +361,12 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     activateTHRREFMode() {
         let altitude = Simplane.getAltitudeAboveGround();
-        this.setThrottleMode(ThrottleMode.CLIMB);
+        if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && altitude <= 500) {
+            this.setThrottleMode(ThrottleMode.TOGA);
+            return;
+        } else {
+            this.setThrottleMode(ThrottleMode.CLIMB);
+        }
         let n1 = 100;
         if (altitude < this.thrustReductionAltitude) {
             n1 = this.getThrustTakeOffLimit();
@@ -526,11 +530,11 @@ class Boeing_FMC extends FMCMainDisplay {
         return 200;
     }
     getTakeOffManagedSpeed() {
-        let altitude = Simplane.getAltitudeAboveGround();
-        if (altitude < 3000) {
+        if (this.v2Speed) {
             return this.v2Speed;
         }
-        return 250;
+        let takeoffSpeed = Simplane.getAutoPilotAirspeedHoldValue();
+        return takeoffSpeed;
     }
     getIsRouteActivated() {
         return this._isRouteActivated;
