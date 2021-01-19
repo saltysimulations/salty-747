@@ -87,7 +87,7 @@ class B747_8_FMC_ProgPage {
             destinationCell = destination.ident;
             destinationDistance = destination.cumulativeDistanceInFP;
             if (waypointActive) {
-                destinationDistance -= waypointActive.distanceInFP;
+                destinationDistance -= waypointActive.cumulativeDistanceInFP;
                 destinationDistance += fmc.flightPlanManager.getDistanceToActiveWaypoint();
                 if (isFinite(destinationDistance)) {
                     for (let i = 0; i < 3 - Math.log10(destinationDistance); i++) {
