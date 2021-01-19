@@ -284,9 +284,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
     }
     activateSPD() {
-        if (this.getIsVNAVActive() && this.aircraftType != Aircraft.AS01B) {
-            return;
-        }
         let altitude = Simplane.getAltitudeAboveGround();
         if (altitude < 400) {
             this._pendingSPDActivation = true;

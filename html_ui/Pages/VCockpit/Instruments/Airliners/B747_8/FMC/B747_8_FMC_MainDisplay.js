@@ -681,6 +681,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                     }
                 }
+                //Triggers correct Autothrottle mode SPD when capturing in VNAV
+                if (Simplane.getAutoPilotAltitudeLockActive() && Simplane.getAutoPilotThrottleArmed()) {
+                    this.activateSPD();
+                }
             }
             else if (!this.getIsFLCHActive() && this.getIsSPDActive()) {
                 this.setAPSpeedHoldMode();

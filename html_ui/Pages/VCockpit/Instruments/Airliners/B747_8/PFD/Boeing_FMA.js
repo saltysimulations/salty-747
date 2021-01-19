@@ -384,6 +384,7 @@ var Boeing_FMA;
             }
             if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
                 if (Simplane.getAutoPilotAltitudeLockActive()) {
+                    //When capturing in VNAV, triggers VNAV ALT if in conflict with MCP altitude
                     if (Math.abs(Simplane.getAutoPilotSelectedAltitudeLockValue("feet") - SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number")) >= 100) {
                         return 9;
                     }
