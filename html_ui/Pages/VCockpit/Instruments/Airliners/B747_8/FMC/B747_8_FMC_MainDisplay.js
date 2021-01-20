@@ -648,6 +648,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 0);
                     }
                     let selectedAltitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
+                    //Sets autopilot capture altitude to closest of MCP alt or Leg Constraint to allow for VNAV ALT mode
                     if (!this.flightPlanManager.getIsDirectTo() && isFinite(nextWaypoint.legAltitude1) &&
                         isFinite(selectedAltitude)) {
                             let currentAlt = Simplane.getAltitude();
@@ -730,6 +731,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getTakeOffManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
+                    //Sets CLB Thrust when passing thrust reduction altitude
+                    let agl = Simplane.getAltitudeAboveGround();
+                    let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
+                    let n1 = 100;
+                    let thrDerate = 0;
+                    if (agl > 1500) {
+                        n1 = this.getThrustClimbLimit() / 100;
+                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
+                        this.setThrottleMode(ThrottleMode.CLIMB);
+                    }
                 }
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
@@ -744,6 +755,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     else {
                         n1 = this.getThrustClimbLimit() / 100;
                     }
+                    
                     SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
                 }
             }

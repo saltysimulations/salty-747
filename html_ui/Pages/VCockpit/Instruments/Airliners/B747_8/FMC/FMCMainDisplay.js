@@ -1635,9 +1635,10 @@ class FMCMainDisplay extends BaseAirliners {
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let enterClimbPhase = false;
-                let agl = Simplane.getAltitude();
-                let altValue = 3000;
-                if (agl > altValue) {
+                //Schedules FLIGHT_PHASE_CLIMB when passing acceleration altitude
+                let agl = Simplane.getAltitudeAboveGround();
+                let accelAlt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "feet");
+                if (agl > 3000) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
                     enterClimbPhase = true;
                 }
