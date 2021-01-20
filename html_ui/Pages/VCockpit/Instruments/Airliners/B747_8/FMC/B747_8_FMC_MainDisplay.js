@@ -286,7 +286,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dCI = this.getCostIndexFactor();
         let speed = 310 * (1 - dCI) + 330 * dCI;
         let flapsHandleIndex = Simplane.getFlapsHandleIndex();
-        
         let flapLimitSpeed = Simplane.getFlapsLimitSpeed(this.aircraft, flapsHandleIndex);
         speed = flapLimitSpeed - 5;
         let flapsUPmanueverSpeed = this.getFlapApproachSpeed(true) + 80;
@@ -656,23 +655,56 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 0);
                     }             
                 }
-                //Sets autopilot capture altitude to closest of MCP alt or Leg Constraint to allow for VNAV ALT mode.
-                let selectedAltitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
+                //Sets autopilot capture altitude to closest of MCP alt or Leg Constraint/CRZ ALT to allow for VNAV ALT mode.
+                let selectedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue("feet");
                 let crzAlt = SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number");
                 if (isFinite(selectedAltitude) && isFinite(nextWaypoint.legAltitude1) && isFinite(crzAlt)) {
                     let currentAlt = Simplane.getAltitude();
-                    let mcpDelta = selectedAltitude - currentAlt;
-                    let constraintDelta = nextWaypoint.legAltitude1 - currentAlt;
-                    let crzAltDelta = crzAlt - currentAlt;
+                    let mcpDelta = Math.abs(selectedAltitude - currentAlt);
+                    let constraintDelta = Math.abs(nextWaypoint.legAltitude1 - currentAlt);
+                    let crzAltDelta = Math.abs(crzAlt - currentAlt);
+                    SimVar.SetSimVarValue("L:MCP", "number", mcpDelta);
+                    SimVar.SetSimVarValue("L:CONSTRAINT", "number", constraintDelta);
+                    SimVar.SetSimVarValue("L:CRZ", "number", crzAltDelta);
+
+                    //MCP Alt is closest
                     if (mcpDelta < constraintDelta && mcpDelta < crzAltDelta) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                     } 
+                    //Waypoint constraint is closest
                     else if (constraintDelta < crzAltDelta){
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
+                        //Set autopilot target to waypoint leg AT constraint
+                        if (nextWaypoint.legAltitudeDescription === 1){
+                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
+                            this._forceNextAltitudeUpdate = false;
+                            SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
+                        } 
+                        //Ignore waypoint leg ABOVE constraint while climbing
+                        else if (nextWaypoint.legAltitudeDescription === 2 && ((Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_TAKEOFF)
+                        || (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_CLIMB))) {
+                            
+                        } 
+                        //Set autopilot target to waypoint leg BELOW constraint while climbing
+                        else if (nextWaypoint.legAltitudeDescription === 3 && ((Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_TAKEOFF)
+                        || (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_CLIMB))) {
+                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
+                            this._forceNextAltitudeUpdate = false;
+                            SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
+                        } 
+                        //Ignore waypoint leg BELOW constraint while descending
+                        else if (nextWaypoint.legAltitudeDescription === 3 && ((Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_DESCENT)
+                        || (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_APPROACH))) {
+                            
+                        } 
+                        //Set autopilot target to waypoint leg ABOVE constraint while descending
+                        else if (nextWaypoint.legAltitudeDescription === 2 && ((Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_DESCENT)
+                        || (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_APPROACH))) {
+                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
+                            this._forceNextAltitudeUpdate = false;
+                            SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
+                        } 
                     }
                     else {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, crzAlt, this._forceNextAltitudeUpdate);
@@ -755,15 +787,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getCrzManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                    let altitude = Simplane.getAltitudeAboveGround();
-                    let n1 = 100;
-                    if (altitude < this.thrustReductionAltitude) {
-                        n1 = this.getThrustTakeOffLimit() / 100;
-                    }
-                    else {
-                        n1 = this.getThrustClimbLimit() / 100;
-                    }
-                    SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
                 }
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_DESCENT) {
