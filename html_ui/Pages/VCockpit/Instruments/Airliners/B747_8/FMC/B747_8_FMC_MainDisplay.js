@@ -281,11 +281,19 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeight = (this.getWeight(true) - 500) / (900 - 500);
         return 204 + 40 * dWeight;
     }
+    //VNAV climb speed commands 5 knots below current flap placard speed - NOTE this will exceed 250 below 10000
     getClbManagedSpeed() {
         let dCI = this.getCostIndexFactor();
         let speed = 310 * (1 - dCI) + 330 * dCI;
-        if (Simplane.getAltitude() < 10000) {
-            speed = Math.min(speed, 250);
+        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
+        
+        let flapLimitSpeed = Simplane.getFlapsLimitSpeed(this.aircraft, flapsHandleIndex);
+        speed = flapLimitSpeed - 5;
+        let flapsUPmanueverSpeed = this.getFlapApproachSpeed(true) + 80;
+        SimVar.SetSimVarValue("L:TEST", "Enum", flapsUPmanueverSpeed);
+        //When flaps up - commands UP + 20 or speed transition, whichever higher 
+        if (flapsHandleIndex == 0) {
+            speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
         return speed;
     }
@@ -735,7 +743,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     let agl = Simplane.getAltitudeAboveGround();
                     let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
                     let n1 = 100;
-                    let thrDerate = 0;
                     if (agl > thrRedAlt) {
                         n1 = this.getThrustClimbLimit() / 100;
                         SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
@@ -747,16 +754,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getClbManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                    let altitude = Simplane.getAltitudeAboveGround();
-                    let n1 = 100;
-                    if (altitude < this.thrustReductionAltitude) {
-                        n1 = this.getThrustTakeOffLimit() / 100;
-                    }
-                    else {
-                        n1 = this.getThrustClimbLimit() / 100;
-                    }
-                    
-                    SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
                 }
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
