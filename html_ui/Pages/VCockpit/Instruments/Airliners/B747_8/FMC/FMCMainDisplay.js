@@ -105,7 +105,7 @@ class FMCMainDisplay extends BaseAirliners {
             color = "white";
         }
         this._title = content.split("[color]")[0];
-        this._titleElement.classList.remove("white", "blue", "yellow", "green", "red");
+        this._titleElement.classList.remove("white", "blue", "yellow", "green", "red", "magenta");
         this._titleElement.classList.add(color);
         this._titleElement.innerHTML = this._title;
     }
@@ -177,7 +177,7 @@ class FMCMainDisplay extends BaseAirliners {
                 color = "white";
             }
             let e = this._labelElements[row][col];
-            e.classList.remove("white", "blue", "yellow", "green", "red");
+            e.classList.remove("white", "blue", "yellow", "green", "red", "magenta");
             e.classList.add(color);
             label = label.split("[color]")[0];
         }

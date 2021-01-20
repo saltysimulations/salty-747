@@ -19,32 +19,34 @@ class B747_8_FMC_VNAVPage {
                 B747_8_FMC_VNAVPage.ShowPage1(fmc);
             }
         };
+        let clbSpeedCell = ""
+        clbSpeedCell = fmc.getClbManagedSpeed().toFixed(0);
         let speedTransCell = "---";
-        let speed = fmc.getCrzManagedSpeed();
-        if (isFinite(speed)) {
-            speedTransCell = speed.toFixed(0);
+        let flapsUPmanueverSpeed = fmc.getFlapApproachSpeed(true) + 80;
+        let transSpeed = Math.max(flapsUPmanueverSpeed + 20, 250);
+        if (isFinite(transSpeed)) {
+            speedTransCell = transSpeed.toFixed(0);
+            speedTransCell += "/10000";
         }
-        speedTransCell += "/";
+        let transAltCell = "";
         if (isFinite(fmc.transitionAltitude)) {
-            speedTransCell += fmc.transitionAltitude.toFixed(0);
+            transAltCell = fmc.transitionAltitude.toFixed(0);
         }
-        else {
-            speedTransCell += "-----";
-        }
+        let maxAngleCell = (flapsUPmanueverSpeed + 20).toFixed(0);
         fmc.setTemplate([
-            ["CLB", "1", "3"],
-            ["CRZ ALT"],
+            ["ACT ECON CLB", "1", "3"],
+            ["\xa0CRZ ALT"],
             [crzAltCell],
-            ["ECON SPD"],
+            ["\xa0ECON SPD"],
+            [clbSpeedCell],
+            ["\xa0SPD TRANS", "TRANS ALT"],
+            [speedTransCell, transAltCell],
+            ["\xa0SPD RESTR", "MAX ANGLE"],
+            ["---/-----", maxAngleCell],
+            ["__FMCSEPARATOR"],
+            ["<ECON", "ENG OUT>"],
             [],
-            ["SPD TRANS", "TRANS ALT"],
-            [speedTransCell],
-            ["SPD RESTR"],
-            [],
-            [],
-            ["", "<ENG OUT"],
-            [],
-            []
+            ["", "CLB DIR>"]
         ]);
         fmc.onNextPage = () => { B747_8_FMC_VNAVPage.ShowPage2(fmc); };
     }
@@ -58,10 +60,10 @@ class B747_8_FMC_VNAVPage {
             }
         };        
         let crzPageTitle = "ACT ECON CRZ"
-        let crzSpeedMode = "ECON SPD"
+        let crzSpeedMode = "\xa0ECON SPD"
         if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") == 1) {
             crzPageTitle = "ACT MCP SPD CRZ"
-            crzSpeedMode = "SEL SPD"
+            crzSpeedMode = "\xa0SEL SPD"
         }
         let crzSpeedCell = ""
         let machMode = Simplane.getAutoPilotMachModeActive();
@@ -96,13 +98,13 @@ class B747_8_FMC_VNAVPage {
         
         fmc.setTemplate([
             [crzPageTitle, "2", "3"],
-            ["CRZ ALT", "STEP TO"],
+            ["\xa0CRZ ALT", "STEP TO"],
             [crzAltCell],
             [crzSpeedMode, "AT"],
             [crzSpeedCell],
-            ["N1"],
+            ["\xa0N1"],
             [n1Cell],
-            ["STEP", "RECMD", "OPT\xa0\xa0\xa0MAX"],
+            ["\xa0STEP", "RECMD", "OPT\xa0\xa0\xa0MAX"],
             ["RVSM", "", "\xa0\xa0\xa0\xa0\xa0\xa0" + "FL" + maxFltLevel.toFixed(0)],
             ["__FMCSEPARATOR"],
             ["", "ENG OUT>"],

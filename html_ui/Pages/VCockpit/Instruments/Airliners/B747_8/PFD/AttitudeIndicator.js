@@ -619,13 +619,13 @@ var Jet_PFD_FlightDirector;
                         currentFDPitch = -8;
                     }
                     if (((fdPhase == 1) || altAboveGround > 5) && Simplane.getIndicatedSpeed() > 80) {
-                        currentFDPitch = -11 ;
+                        currentFDPitch = -10 ;
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 1);
                     }
                     if ((vertSpeed >= 600 || fdPhase == 2) && altAboveGround > 10) {  
                         SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
-                        let blendfactor = (vertSpeed - 600) / 200;
-                        currentFDPitch = Simplane.getFlightDirectorPitch() - 11 + blendfactor;
+                        let blendfactor = (vertSpeed - 600) / 350;
+                        currentFDPitch = Simplane.getFlightDirectorPitch() - 7 + blendfactor;
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 2);
                     }
                     if ((vertSpeed >= 1200 || fdPhase == 3) && altAboveGround > 10) {  
