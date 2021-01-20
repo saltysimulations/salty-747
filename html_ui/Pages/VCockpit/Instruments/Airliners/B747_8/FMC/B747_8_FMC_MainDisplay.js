@@ -736,7 +736,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
                     let n1 = 100;
                     let thrDerate = 0;
-                    if (agl > 1500) {
+                    if (agl > thrRedAlt) {
                         n1 = this.getThrustClimbLimit() / 100;
                         SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
                         this.setThrottleMode(ThrottleMode.CLIMB);

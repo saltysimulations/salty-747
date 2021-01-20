@@ -1636,9 +1636,9 @@ class FMCMainDisplay extends BaseAirliners {
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let enterClimbPhase = false;
                 //Schedules FLIGHT_PHASE_CLIMB when passing acceleration altitude
-                let agl = Simplane.getAltitudeAboveGround();
-                let accelAlt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "feet");
-                if (agl > 3000) {
+                let alt = Simplane.getAltitude();
+                let accelAlt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number");
+                if (alt > accelAlt) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
                     enterClimbPhase = true;
                 }
@@ -2126,7 +2126,7 @@ class FMCMainDisplay extends BaseAirliners {
             if (isFinite(origin.altitudeinFP)) {
                 let altitude = Math.round(origin.altitudeinFP / 10) * 10;
                 this.thrustReductionAltitude = altitude + 1500;
-                this.accelerationAltitude = altitude + 1500;
+                this.accelerationAltitude = altitude + 3000;
                 if (origin.infos instanceof AirportInfo) {
                     this.transitionAltitude = origin.infos.transitionAltitude;
                 }
