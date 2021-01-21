@@ -90,7 +90,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.topSpeedText.setAttribute("x", (_left - 10).toString());
         this.topSpeedText.setAttribute("y", (_top - 22).toString());
         this.topSpeedText.setAttribute("fill", "white");
-        this.topSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
+        this.topSpeedText.setAttribute("font-size", (this.fontSize * 1.2).toString());
         this.topSpeedText.setAttribute("font-family", "BoeingEICAS");
         this.topSpeedText.setAttribute("text-anchor", "start");
         this.topSpeedText.setAttribute("alignment-baseline", "central");
@@ -197,7 +197,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.bottomSpeedText.setAttribute("x", (_left - 10).toString());
         this.bottomSpeedText.setAttribute("y", (_top + _height + 25).toString());
         this.bottomSpeedText.setAttribute("fill", "white");
-        this.bottomSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
+        this.bottomSpeedText.setAttribute("font-size", (this.fontSize * 1.2).toString());
         this.bottomSpeedText.setAttribute("font-family", "BoeingEICAS");
         this.bottomSpeedText.setAttribute("text-anchor", "start");
         this.bottomSpeedText.setAttribute("alignment-baseline", "central");

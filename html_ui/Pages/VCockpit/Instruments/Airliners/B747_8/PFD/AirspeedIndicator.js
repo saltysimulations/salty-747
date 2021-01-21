@@ -140,11 +140,11 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.targetSpeedSVG = document.createElementNS(Avionics.SVG.NS, "text");
         this.targetSpeedSVG.textContent = ".000";
         this.targetSpeedSVG.setAttribute("x", (posX + 10).toString());
-        this.targetSpeedSVG.setAttribute("y", (posY + sideTextHeight * 0.5).toString());
-        this.targetSpeedSVG.setAttribute("fill", "#D570FF");
+        this.targetSpeedSVG.setAttribute("y", (posY + 10 + sideTextHeight * 0.5).toString());
+        this.targetSpeedSVG.setAttribute("fill", "magenta");
         this.targetSpeedSVG.setAttribute("font-size", (this.fontSize * 1.6).toString());
         this.targetSpeedSVG.setAttribute("font-family", "BoeingEICAS");
-        this.targetSpeedSVG.style.letterSpacing = "3px";
+        this.targetSpeedSVG.style.letterSpacing = "1px";
         this.targetSpeedSVG.setAttribute("text-anchor", "middle");
         this.targetSpeedSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.targetSpeedSVG);
@@ -210,7 +210,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 this.centerSVG.appendChild(graduationGroup);
             }
             var cursorPosX = _left - 7;
-            var cursorPosY = _top + _height * 0.5 + 3;
+            var cursorPosY = _top + _height * 0.5;
             var cursorWidth = width;
             var cursorHeight = 76;
             if (!this.cursorSVG) {
@@ -234,9 +234,9 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 this.cursorSVG.appendChild(this.cursorSVGShape);
                 var _cursorPosX = -14;
                 var _cursorPosY = cursorHeight * 0.5;
-                this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 40, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.7, "white");
-                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 63, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.7, "white");
-                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 87, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.7, "white");
+                this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 42, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
+                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 62, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
+                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 83, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
             }
             if (!this.speedTrendArrowSVG) {
                 this.speedTrendArrowSVG = document.createElementNS(Avionics.SVG.NS, "svg");
@@ -253,7 +253,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 if (!this.speedTrendArrowSVGShape)
                     this.speedTrendArrowSVGShape = document.createElementNS(Avionics.SVG.NS, "path");
                 this.speedTrendArrowSVGShape.setAttribute("fill", "none");
-                this.speedTrendArrowSVGShape.setAttribute("stroke", "green");
+                this.speedTrendArrowSVGShape.setAttribute("stroke", "lime");
                 this.speedTrendArrowSVGShape.setAttribute("stroke-width", "2");
                 this.speedTrendArrowSVG.appendChild(this.speedTrendArrowSVGShape);
             }
@@ -397,7 +397,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 this.speedNotSetSVG.appendChild(text);
             }
             var targetSpeedPointerPosX = _left + _width * 0.77;
-            var targetSpeedPointerPosY = _top + _height * 0.5;
+            var targetSpeedPointerPosY = _top + _height * 0.50;
             var targetSpeedPointerWidth = width;
             this.targetSpeedPointerHeight = 46;
             this.targetSpeedPointerSVG = document.createElementNS(Avionics.SVG.NS, "svg");
@@ -410,7 +410,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             {
                 let shape = document.createElementNS(Avionics.SVG.NS, "path");
                 shape.setAttribute("fill", "none");
-                shape.setAttribute("stroke", "#D570FF");
+                shape.setAttribute("stroke", "magenta");
                 shape.setAttribute("stroke-width", "3");
                 shape.setAttribute("d", "M 0 22 L 25 10 L 52 10 L 52 34 L 25 34 Z");
                 this.targetSpeedPointerSVG.appendChild(shape);
@@ -439,22 +439,24 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.machPrefixSVG = document.createElementNS(Avionics.SVG.NS, "text");
             this.machPrefixSVG.textContent = ".";
             this.machPrefixSVG.setAttribute("x", (posX - 16).toString());
-            this.machPrefixSVG.setAttribute("y", (posY + height + sideTextHeight * 0.65).toString());
+            this.machPrefixSVG.setAttribute("y", (posY + 15 + height + sideTextHeight * 0.65).toString());
             this.machPrefixSVG.setAttribute("fill", "white");
             this.machPrefixSVG.setAttribute("font-size", (this.fontSize * 1.1).toString());
             this.machPrefixSVG.setAttribute("font-family", "BoeingEICAS");
             this.machPrefixSVG.setAttribute("text-anchor", "end");
             this.machPrefixSVG.setAttribute("alignment-baseline", "top");
+            this.machPrefixSVG.style.letterSpacing = "1px";
             this.rootGroup.appendChild(this.machPrefixSVG);
             this.machValueSVG = document.createElementNS(Avionics.SVG.NS, "text");
             this.machValueSVG.textContent = "000";
             this.machValueSVG.setAttribute("x", (posX - 15).toString());
-            this.machValueSVG.setAttribute("y", (posY + height + sideTextHeight * 0.65).toString());
+            this.machValueSVG.setAttribute("y", (posY + 15 + height + sideTextHeight * 0.65).toString());
             this.machValueSVG.setAttribute("fill", "white");
             this.machValueSVG.setAttribute("font-size", (this.fontSize * 1.6).toString());
             this.machValueSVG.setAttribute("font-family", "BoeingEICAS");
             this.machValueSVG.setAttribute("text-anchor", "start");
             this.machValueSVG.setAttribute("alignment-baseline", "top");
+            this.machValueSVG.style.letterSpacing = "1px";
             this.rootGroup.appendChild(this.machValueSVG);
         }
         this.rootSVG.appendChild(this.rootGroup);
@@ -673,7 +675,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             if (this.machSpeed > 0.998)
                 this.machSpeed = 0.998;
             if (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
-                if ((!this.machVisible && this.machSpeed >= 0.4) || (this.machVisible && this.machSpeed >= 0.35)) {
+                if ((!this.machVisible && this.machSpeed >= 0.4) || (this.machVisible && this.machSpeed >= 0.4)) {
                     var fixedMach = this.machSpeed.toFixed(3);
                     var radixPos = fixedMach.indexOf('.');
                     this.machPrefixSVG.textContent = ".";
@@ -683,7 +685,16 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 else {
                     var groundSpeed = Math.round(Simplane.getGroundSpeed());
                     this.machPrefixSVG.textContent = "GS";
-                    this.machValueSVG.textContent = Utils.leadingZeros(groundSpeed, 3);
+
+                    if (groundSpeed < 10) {
+                        this.machValueSVG.textContent = "\xa0\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                    }
+                    else if (groundSpeed < 100 && groundSpeed >= 10) {
+                        this.machValueSVG.textContent = "\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                    }  
+                    else {
+                        this.machValueSVG.textContent = Utils.leadingZeros(groundSpeed, 0);
+                    }
                     this.machVisible = true;
                 }
             }

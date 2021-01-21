@@ -14,6 +14,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
         this.nbSecondaryGraduations = 1;
         this.totalGraduations = this.nbPrimaryGraduations + ((this.nbPrimaryGraduations - 1) * this.nbSecondaryGraduations);
         this.graduationSpacing = 50;
+        this.minimumReferenceValue = 200;
         this._showILS = false;
         this._aircraft = Aircraft.A320_NEO;
     }
@@ -114,7 +115,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.selectedHeadingBug = document.createElementNS(Avionics.SVG.NS, "path");
                 this.selectedHeadingBug.setAttribute("id", "Heading");
                 this.selectedHeadingBug.setAttribute("fill", "transparent");
-                this.selectedHeadingBug.setAttribute("stroke", "#FF0CE2");
+                this.selectedHeadingBug.setAttribute("stroke", "magenta");
                 this.selectedHeadingBug.setAttribute("stroke-width", "0.75");
                 this.selectedHeadingBug.setAttribute("d", "M " + this.rotatingCompassX + " " + (this.rotatingCompassY - circleRadius) + " l-6 0 l0 -5 l3 0 l3 5 l3 -5 l3 0 l0 5 Z");
                 this.selectedHeadingGroup.appendChild(this.selectedHeadingBug);
@@ -134,10 +135,10 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             {
                 this.selectedHeadingText = document.createElementNS(Avionics.SVG.NS, "text");
                 this.selectedHeadingText.textContent = "135H";
-                this.selectedHeadingText.setAttribute("x", (this.rotatingCompassX - circleRadius * 0.225).toString());
+                this.selectedHeadingText.setAttribute("x", (this.rotatingCompassX - circleRadius * 0.3).toString());
                 this.selectedHeadingText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.725).toString());
-                this.selectedHeadingText.setAttribute("fill", "#FF0CE2");
-                this.selectedHeadingText.setAttribute("font-size", (this.fontSize * 0.25).toString());
+                this.selectedHeadingText.setAttribute("fill", "magenta");
+                this.selectedHeadingText.setAttribute("font-size", (this.fontSize * 0.3).toString());
                 this.selectedHeadingText.setAttribute("font-family", "BoeingEICAS");
                 this.selectedHeadingText.setAttribute("text-anchor", "start");
                 this.selectedHeadingText.setAttribute("alignment-baseline", "central");
@@ -158,11 +159,34 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 topTriangle.setAttribute("stroke", "white");
                 topTriangle.setAttribute("stroke-width", "0.5");
                 fixedElements.appendChild(topTriangle);
+                if (!this.minimumReferenceModeText) {
+                    this.minimumReferenceModeText = document.createElementNS(Avionics.SVG.NS, "text");
+                }
+                this.minimumReferenceModeText.textContent = "BARO";
+                this.minimumReferenceModeText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.775).toString());
+                this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1).toString());
+                this.minimumReferenceModeText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
+                this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.275).toString());
+                this.minimumReferenceModeText.setAttribute("font-family", "BoeingEICAS");
+                this.minimumReferenceModeText.setAttribute("text-anchor", "end");
+                fixedElements.appendChild(this.minimumReferenceModeText);
+                if (!this.minimumReferenceValueText) {
+                    this.minimumReferenceValueText = document.createElementNS(Avionics.SVG.NS, "text");
+                }
+                this.minimumReferenceValueText.textContent = "210";
+                this.minimumReferenceValueText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.775).toString());;
+                this.minimumReferenceValueText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.90).toString());
+                this.minimumReferenceValueText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
+                this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize * 0.35).toString());
+                this.minimumReferenceValueText.setAttribute("font-family", "BoeingEICAS");
+                this.minimumReferenceValueText.setAttribute("text-anchor", "end");
+                fixedElements.appendChild(this.minimumReferenceValueText);
             }
         }
         this.appendChild(this.rootSVG);
     }
     update(dTime) {
+        this.updateMinimumText(this.minimumReferenceValue, Simplane.getMinimumReferenceMode());
         if (this.rotatingCompass)
             this.updateCircle();
         else
@@ -258,10 +282,11 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             var autoPilotActive = true;
             if (autoPilotActive) {
                 var selectedHeading = SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR", "Degree");
+                var roundedSelectedHeading = Math.round(selectedHeading);
                 var delta = compass - selectedHeading;
                 this.selectedHeadingGroup.setAttribute("transform", "rotate(" + (-delta) + " " + this.rotatingCompassX + " " + this.rotatingCompassY + ")");
                 this.selectedHeadingGroup.setAttribute("visibility", "visible");
-                this.selectedHeadingText.textContent = Math.round(selectedHeading) + "H";
+                this.selectedHeadingText.textContent = Utils.leadingZeros(roundedSelectedHeading % 360, 3, 0) + "H";
                 let headingLocked = Simplane.getAutoPilotHeadingLockActive();
                 if (this.selectedHeadingLine)
                     this.selectedHeadingLine.classList.toggle('hide', headingLocked);
@@ -279,6 +304,18 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             var delta = compass - track;
             this.currentTrackGroup.setAttribute("transform", "rotate(" + (-delta) + " " + this.rotatingCompassX + " " + this.rotatingCompassY + ")");
         }
+    }
+    updateMinimumText(minimumAltitude, minimumMode) {
+        if (minimumAltitude < -100){
+            this.minimumReferenceValueText.setAttribute("visibility", "hidden");
+            this.minimumReferenceModeText.setAttribute("visibility", "hidden");
+        } 
+        else {
+            this.minimumReferenceValueText.setAttribute("visibility", "visible");
+            this.minimumReferenceModeText.setAttribute("visibility", "visible");
+        }
+        this.minimumReferenceValueText.textContent = minimumAltitude.toFixed(0);
+        this.minimumReferenceModeText.textContent = minimumMode === MinimumReferenceMode.BARO ? "BARO" : "RADIO";
     }
 }
 customElements.define("jet-pfd-hs-indicator", Jet_PFD_HSIndicator);
