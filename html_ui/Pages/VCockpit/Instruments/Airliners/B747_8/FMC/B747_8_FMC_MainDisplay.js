@@ -624,6 +624,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this.getIsVNAVActive()) {
                 let prevWaypoint = this.flightPlanManager.getPreviousActiveWaypoint();
                 let nextWaypoint = this.flightPlanManager.getActiveWaypoint();
+                if (nextWaypoint && SimVar.GetSimVarValue("L:ALT_SEL_PUSHED", "bool")) {
+                    nextWaypoint.legAltitudeDescription = 0;
+                    SimVar.SetSimVarValue("L:ALT_SEL_PUSHED", "bool", 0);
+                }
                 if (nextWaypoint && (nextWaypoint.legAltitudeDescription === 3 || nextWaypoint.legAltitudeDescription === 4)) {
                     let targetAltitude = nextWaypoint.legAltitude1;
                     if (nextWaypoint.legAltitudeDescription === 4) {
@@ -661,12 +665,15 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (isFinite(selectedAltitude) && isFinite(nextWaypoint.legAltitude1) && isFinite(crzAlt)) {
                     let currentAlt = Simplane.getAltitude();
                     let mcpDelta = Math.abs(selectedAltitude - currentAlt);
-                    let constraintDelta = Math.abs(nextWaypoint.legAltitude1 - currentAlt);
+                    let constraintDelta = 100000;
+                    //not a constraint if no description specified
+                    if (nextWaypoint.legAltitudeDescription !== 0) {
+                        constraintDelta = Math.abs(nextWaypoint.legAltitude1 - currentAlt);
+                    }
                     let crzAltDelta = Math.abs(crzAlt - currentAlt);
                     SimVar.SetSimVarValue("L:MCP", "number", mcpDelta);
                     SimVar.SetSimVarValue("L:CONSTRAINT", "number", constraintDelta);
                     SimVar.SetSimVarValue("L:CRZ", "number", crzAltDelta);
-
                     //MCP Alt is closest
                     if (mcpDelta < constraintDelta && mcpDelta < crzAltDelta) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
