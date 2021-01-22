@@ -160,22 +160,22 @@ b747-8-mfd-element {
         height: 100%;
         font-family: "BoeingEICAS"; }
       b747-8-mfd-element #Mainframe #TopBox text.Value {
-        font-size: 38px;
+        font-size: 42px;
         fill: white; }
       b747-8-mfd-element #Mainframe #TopBox text.ValueVor {
-        font-size: 38px;
+        font-size: 42px;
         fill: cyan; }
       b747-8-mfd-element #Mainframe #TopBox text.ValueIls {
-        font-size: 38px;
+        font-size: 42px;
         fill: #ff00ff; }
       b747-8-mfd-element #Mainframe #TopBox text.Small {
-        font-size: 30px;
+        font-size: 32px;
         fill: white; }
       b747-8-mfd-element #Mainframe #TopBox text.Large {
-        font-size: 38px;
+        font-size: 42px;
         fill: white; }
       b747-8-mfd-element #Mainframe #TopBox text.Units {
-        font-size: 30px;
+        font-size: 32px;
         fill: cyan; }
     b747-8-mfd-element #Mainframe #VORDMENavaids div {
       top: 87%;
@@ -195,7 +195,7 @@ b747-8-mfd-element {
       text-align: center;
       text-anchor: middle; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #State {
-      font-size: 40px;
+      font-size: 48px;
       fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #ID {
       font-size: calc( 3 * 1vh * var(--bodyHeightScale));
@@ -227,11 +227,11 @@ b747-8-mfd-element {
         height: 100%;
         font-family: "BoeingEICAS"; }
       b747-8-mfd-element #Mainframe #Symbols text.Small {
-        font-size: 30px;
-        fill: #009696; }
+        font-size: 36px;
+        fill: cyan; }
       b747-8-mfd-element #Mainframe #Symbols text.Large {
-        font-size: 38px;
-        fill: #009696; }
+        font-size: 48px;
+        fill: cyan; }
   b747-8-mfd-element[mapstyle=rose] #Mainframe #Compass {
     top: 4.5%; }
   b747-8-mfd-element[mapstyle=rose] #Mainframe #Map {

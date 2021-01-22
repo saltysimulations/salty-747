@@ -250,9 +250,9 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.currentRefMode = document.createElementNS(Avionics.SVG.NS, "text");
                     this.currentRefMode.textContent = "HDG";
                     this.currentRefMode.setAttribute("x", (centerX - rectWidth * 0.5 - textOffset).toString());
-                    this.currentRefMode.setAttribute("y", centerY.toString());
+                    this.currentRefMode.setAttribute("y", (centerY + 5).toString());
                     this.currentRefMode.setAttribute("fill", "lime");
-                    this.currentRefMode.setAttribute("font-size", "23");
+                    this.currentRefMode.setAttribute("font-size", "26");
                     this.currentRefMode.setAttribute("font-family", "BoeingEICAS");
                     this.currentRefMode.setAttribute("text-anchor", "end");
                     this.currentRefMode.setAttribute("alignment-baseline", "central");
@@ -273,7 +273,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.currentRefValue = document.createElementNS(Avionics.SVG.NS, "text");
                     this.currentRefValue.textContent = "266";
                     this.currentRefValue.setAttribute("x", centerX.toString());
-                    this.currentRefValue.setAttribute("y", (centerY + 3).toString());
+                    this.currentRefValue.setAttribute("y", (centerY + 2).toString());
                     this.currentRefValue.setAttribute("fill", "white");
                     this.currentRefValue.setAttribute("font-size", "30");
                     this.currentRefValue.setAttribute("font-family", "BoeingEICAS");
@@ -284,9 +284,9 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.currentRefType = document.createElementNS(Avionics.SVG.NS, "text");
                     this.currentRefType.textContent = "MAG";
                     this.currentRefType.setAttribute("x", (centerX + rectWidth * 0.5 + textOffset).toString());
-                    this.currentRefType.setAttribute("y", centerY.toString());
+                    this.currentRefType.setAttribute("y", (centerY + 5).toString());
                     this.currentRefType.setAttribute("fill", "lime");
-                    this.currentRefType.setAttribute("font-size", "23");
+                    this.currentRefType.setAttribute("font-size", "26");
                     this.currentRefType.setAttribute("font-family", "BoeingEICAS");
                     this.currentRefType.setAttribute("text-anchor", "start");
                     this.currentRefType.setAttribute("alignment-baseline", "central");
@@ -622,7 +622,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 this.selectedHeadingBug = document.createElementNS(Avionics.SVG.NS, "path");
                 this.selectedHeadingBug.setAttribute("id", "selectedHeadingBug");
                 this.selectedHeadingBug.setAttribute("d", "M500 " + (500 - circleRadius) + " h 22 v -22 h -7 l -15 22 l -15 -22 h -7 v 22 z");
-                this.selectedHeadingBug.setAttribute("stroke", "#ff00e0");
+                this.selectedHeadingBug.setAttribute("stroke", "magenta");
                 this.selectedHeadingBug.setAttribute("fill", "none");
                 this.selectedHeadingGroup.appendChild(this.selectedHeadingBug);
             }
