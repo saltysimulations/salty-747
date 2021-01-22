@@ -1138,7 +1138,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         else if (_marker.engaged && !_marker.passed) {
             v1Speed = SimVar.GetSimVarValue("L:AIRLINER_V1_SPEED", "Knots");
         }
-        if (v1Speed > 0) {
+        if (v1Speed > 0 && Simplane.getIsGrounded()) {
             var posY = this.valueToSvg(currentAirspeed, v1Speed);
             if (posY < 25 && (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B)) {
                 posY = 25;
@@ -1165,7 +1165,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         else if (_marker.engaged && !_marker.passed) {
             vRSpeed = SimVar.GetSimVarValue("L:AIRLINER_VR_SPEED", "Knots");
         }
-        if (vRSpeed > 0) {
+        if (vRSpeed > 0 && Simplane.getIsGrounded()) {
             var posY = this.valueToSvg(currentAirspeed, vRSpeed);
             if (posY >= this.refHeight + 25) {
                 _marker.passed = true;
@@ -1242,7 +1242,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         let markerHandleIndex = _marker.params[0];
         let altitude = Simplane.getAltitude();
         if (phase >= FlightPhase.FLIGHT_PHASE_TAKEOFF && altitude < 20000) {
-            if (this.aircraft == Aircraft.AS01B && markerHandleIndex == flapsHandleIndex) {
+            if (markerHandleIndex == flapsHandleIndex) {
                 hideMarker = false;
             }
             if (phase == FlightPhase.FLIGHT_PHASE_CLIMB || phase == FlightPhase.FLIGHT_PHASE_CRUISE) {
