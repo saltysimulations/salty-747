@@ -393,13 +393,15 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
     }
     showLocalizer(_val) {
         this.locVisible = _val;
-        if (_val) {
+        if (this.loc_mainGroup){
+            if (_val) {
             this.loc_mainGroup.setAttribute("visibility", "visible");
-        }
-        else {
-            this.loc_mainGroup.setAttribute("visibility", "hidden");
-            this.loc_cursorShapeLeft.removeAttribute("visibility");
-            this.loc_cursorShapeRight.removeAttribute("visibility");
+            }
+            else {
+                this.loc_mainGroup.setAttribute("visibility", "hidden");
+                this.loc_cursorShapeLeft.removeAttribute("visibility");
+                this.loc_cursorShapeRight.removeAttribute("visibility");
+            }
         }
     }
     showGlideslope(_val) {
