@@ -23,7 +23,7 @@ class B747_8_FMC_VNAVPage {
         clbSpeedCell = fmc.getClbManagedSpeed().toFixed(0);
         let speedTransCell = "---";
         let flapsUPmanueverSpeed = fmc.getFlapApproachSpeed(true) + 80;
-        let transSpeed = Math.max(flapsUPmanueverSpeed + 20, 250);
+        let transSpeed = Math.max(flapsUPmanueverSpeed + 40, 250);
         if (isFinite(transSpeed)) {
             speedTransCell = transSpeed.toFixed(0);
             speedTransCell += "/10000";

@@ -283,16 +283,18 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     //VNAV climb speed commands 5 knots below current flap placard speed - NOTE this will exceed 250 below 10000
     getClbManagedSpeed() {
-        let dCI = this.getCostIndexFactor();
-        let speed = 310 * (1 - dCI) + 330 * dCI;
         let flapsHandleIndex = Simplane.getFlapsHandleIndex();
         let flapLimitSpeed = Simplane.getFlapsLimitSpeed(this.aircraft, flapsHandleIndex);
-        speed = flapLimitSpeed - 5;
+        let alt = Simplane.getAltitude();
+        let speedTrans = 10000;
+        let speed = flapLimitSpeed - 5;
         let flapsUPmanueverSpeed = this.getFlapApproachSpeed(true) + 80;
-        SimVar.SetSimVarValue("L:TEST", "Enum", flapsUPmanueverSpeed);
         //When flaps up - commands UP + 20 or speed transition, whichever higher 
-        if (flapsHandleIndex == 0) {
+        if (flapsHandleIndex == 0 && alt <= speedTrans) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
+        }
+        if (flapsHandleIndex == 0 && alt >= speedTrans) {
+            speed = Math.max(flapsUPmanueverSpeed + 40, 250);
         }
         return speed;
     }
@@ -356,8 +358,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     getSlatApproachSpeed(useCurrentWeight = true) {
         return this.getVRef(8, useCurrentWeight);
     }
-    getFlapApproachSpeed(useCurrentWeight = true) {
-        return this.getVRef(9, useCurrentWeight);
+    getFlapApproachSpeed() {
+        //Polynomial regression derived from FCOM published VREF30
+        let coefficients = [
+            2.3553249135664828e+003,
+           -2.5235300510393268e-002,
+            1.1863316816152008e-007,
+           -3.0407661025608525e-013,
+            4.6145415553700456e-019,
+           -4.1453080554788646e-025,
+            2.0398742109813664e-031,
+           -4.2401188353198822e-038
+        ];
+        let vRef30 = 0;
+        let grossWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
+        let i;
+        for (i = 0; i < coefficients.length; i++) {
+            let a = coefficients[i] * (Math.pow(grossWeight, i) );
+            vRef30 += a;
+        }
+        return Math.round(vRef30);
     }
     setSelectedApproachFlapSpeed(s) {
         let flap = NaN;
@@ -469,6 +489,11 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let altitude = Simplane.getAltitude();
         let temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         return this.getClimbThrustN1(temperature, altitude) - this.getThrustCLBMode() * 8.6;
+    }
+    setVNAVTargetAltitude(altitude, isConstraint) {
+        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, altitude, this._forceNextAltitudeUpdate);
+        this._forceNextAltitudeUpdate = false;
+        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", isConstraint);
     }
     updateAutopilot() {
         let now = performance.now();
@@ -662,8 +687,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     let currentAlt = Simplane.getAltitude();
                     let mcpDelta = Math.abs(selectedAltitude - currentAlt);
                     let crzAltDelta = Math.abs(crzAlt - currentAlt);
-                    SimVar.SetSimVarValue("L:MCP", "number", mcpDelta);
-                    SimVar.SetSimVarValue("L:CRZ", "number", crzAltDelta);
                     //MCP Alt is closest
                     if (mcpDelta < crzAltDelta) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
