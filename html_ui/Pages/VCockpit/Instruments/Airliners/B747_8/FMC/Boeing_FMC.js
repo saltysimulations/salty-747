@@ -101,7 +101,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
             this.activateAltitudeSel();
-            SimVar.SetSimVarValue("L:ALT_SEL_PUSHED", "bool", 1);
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
             this.toggleAltitudeHold();
