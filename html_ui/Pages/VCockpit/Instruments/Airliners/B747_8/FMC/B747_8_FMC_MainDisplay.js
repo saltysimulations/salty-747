@@ -48,8 +48,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             [83.4, 84.8, 861, 86.7, 87.3, 87.9, 88.6, 89.3, 90, 90.7, 91, 91.2, 91.5]
         ];
         this._takeOffN1TempRow = [70, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -10, -20, -30, -40, -50];
-        this._thrustTakeOffMode = 1;
-        this._thrustCLBMode = 1;
+        this._thrustTakeOffMode = 0;
+        this._thrustCLBMode = 0;
         this._thrustTakeOffTemp = 20;
         this._lastUpdateAPTime = NaN;
         this.refreshFlightPlanCooldown = 0;
