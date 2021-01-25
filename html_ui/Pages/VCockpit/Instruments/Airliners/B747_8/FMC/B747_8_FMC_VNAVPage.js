@@ -83,7 +83,7 @@ class B747_8_FMC_VNAVPage {
         if (fmc.cruiseFlightLevel) {
             crzAltCell = "FL" + fmc.cruiseFlightLevel;
         }  
-        fmc.onRightInput[0] = () => {
+        fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (fmc.setCruiseFlightLevelAndTemperature(value)) {

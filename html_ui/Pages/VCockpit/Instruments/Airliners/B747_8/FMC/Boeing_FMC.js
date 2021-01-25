@@ -100,7 +100,9 @@ class Boeing_FMC extends FMCMainDisplay {
             this.toggleVSpeed();
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
-            this.activateAltitudeSel();
+            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                this.activateAltitudeSel();
+            }
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
             this.toggleAltitudeHold();
@@ -467,10 +469,8 @@ class Boeing_FMC extends FMCMainDisplay {
         SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
     }
     activateAltitudeSel() {
-        if (this.getIsVNAVActive()) {
-            let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-            this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
-        }
+        let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+        this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
     }
     toggleAltitudeHold() {
         if (this.getIsAltitudeHoldActive()) {

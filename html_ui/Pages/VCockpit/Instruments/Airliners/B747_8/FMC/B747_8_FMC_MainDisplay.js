@@ -307,10 +307,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return speed;
     }
     getCrzManagedSpeed(highAltitude = false) {
-        //Commands Mach 0.845 
+        //Commands lowest of UP + 100, 350kts or M.845
         let mach = 0.845
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
-        let speed = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        //UP + 20 or 250 below 10000
         if (!highAltitude && Simplane.getAltitude() < 10000) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
