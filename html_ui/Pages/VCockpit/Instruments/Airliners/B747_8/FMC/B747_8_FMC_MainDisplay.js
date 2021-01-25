@@ -296,15 +296,19 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
         if (flapsHandleIndex == 0 && alt >= speedTrans) {
-            speed = Math.min(flapsUPmanueverSpeed + 100, 350);
+            let mach = 0.845;
+            let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+            speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+            if (speed == machlimit) {
+                SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
+            }
         }
         return speed;
     }
     getCrzManagedSpeed(highAltitude = false) {
+        let mach = 0.845
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
-        let dCI = this.getCostIndexFactor();
-        dCI = dCI * dCI;
-        let speed = 310 * (1 - dCI) + 330 * dCI;
+        let speed = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         if (!highAltitude && Simplane.getAltitude() < 10000) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
@@ -508,11 +512,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let altitude = Simplane.getAltitude();
         let temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         return this.getClimbThrustN1(temperature, altitude) - this.getThrustCLBMode() * 8.6;
-    }
-    setVNAVTargetAltitude(altitude, isConstraint) {
-        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, altitude, this._forceNextAltitudeUpdate);
-        this._forceNextAltitudeUpdate = false;
-        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", isConstraint);
     }
     updateAutopilot() {
         let now = performance.now();
