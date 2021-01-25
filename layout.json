@@ -13,27 +13,48 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.html",
             "size": 3736,
+<<<<<<< HEAD
             "date": 132560529829530470
+=======
+            "date": 132555741309869918
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js",
             "size": 9084,
+<<<<<<< HEAD
             "date": 132556703883980334
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Boeing_Common.js",
             "size": 25692,
             "date": 132560529829590232
+=======
+            "date": 132553938900724730
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Boeing_Common.js",
+            "size": 25280,
+            "date": 132550146092897222
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.css",
             "size": 1102,
+<<<<<<< HEAD
             "date": 132560529829600238
+=======
+            "date": 132552874392232988
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.html",
             "size": 4247,
+<<<<<<< HEAD
             "date": 132560529829616520
+=======
+            "date": 132552874392242976
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.js",
@@ -43,12 +64,20 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.css",
             "size": 1883,
+<<<<<<< HEAD
             "date": 132560529829646482
+=======
+            "date": 132552874392303000
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.html",
             "size": 14074,
+<<<<<<< HEAD
             "date": 132560529829686494
+=======
+            "date": 132552874392353008
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.js",
@@ -63,7 +92,11 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_FCTL.html",
             "size": 11319,
+<<<<<<< HEAD
             "date": 132560529829696498
+=======
+            "date": 132552874392363014
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_FCTL.js",
@@ -78,7 +111,11 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_GEAR.html",
             "size": 7826,
+<<<<<<< HEAD
             "date": 132560529829735842
+=======
+            "date": 132552874392413020
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_GEAR.js",
@@ -88,7 +125,11 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_Stat.css",
             "size": 1026,
+<<<<<<< HEAD
             "date": 132560529829735842
+=======
+            "date": 132552874392423018
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_Stat.html",
@@ -102,6 +143,7 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC.html",
+<<<<<<< HEAD
             "size": 5059,
             "date": 132560529829745846
         },
@@ -114,21 +156,42 @@
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
             "size": 39898,
             "date": 132560784928286574
+=======
+            "size": 5046,
+            "date": 132555620212671952
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
+            "size": 39232,
+            "date": 132555737538148928
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayPages.js",
             "size": 1810,
+<<<<<<< HEAD
             "date": 132556703884060010
+=======
+            "date": 132553938900744740
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_PerfInitPage.js",
             "size": 3872,
+<<<<<<< HEAD
             "date": 132556703884069976
+=======
+            "date": 132553938900744740
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ProgPage.js",
             "size": 8247,
+<<<<<<< HEAD
             "date": 132556703884069976
+=======
+            "date": 132555620212691956
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_SaltyOptions.js",
@@ -138,16 +201,26 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_TakeOffPage.js",
             "size": 5259,
+<<<<<<< HEAD
             "date": 132556703884079984
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_VNAVPage.js",
             "size": 5879,
             "date": 132560664204863224
+=======
+            "date": 132554607475284266
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_VNAVPage.js",
+            "size": 5234,
+            "date": 132553938900764750
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/Boeing_FMC.js",
             "size": 21320,
+<<<<<<< HEAD
             "date": 132560529829805856
         },
         {
@@ -159,25 +232,46 @@
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/FMCMainDisplay.js",
             "size": 100808,
             "date": 132560529829814160
+=======
+            "date": 132555677367008886
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/FMCMainDisplay.js",
+            "size": 100791,
+            "date": 132555737637057090
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
             "size": 10070,
+<<<<<<< HEAD
             "date": 132560529829863340
+=======
+            "date": 132552874392483038
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
             "size": 26065,
+<<<<<<< HEAD
             "date": 132556703884099978
+=======
+            "date": 132553938900824752
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_BaseNDCompass.js",
             "size": 39839,
+<<<<<<< HEAD
             "date": 132560529829873344
+=======
+            "date": 132553938900824752
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_NDCompass.js",
             "size": 48771,
+<<<<<<< HEAD
             "date": 132560529829883346
         },
         {
@@ -189,26 +283,55 @@
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AttitudeIndicator.js",
             "size": 42682,
             "date": 132560529829953382
+=======
+            "date": 132553938900834766
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AirspeedIndicator.js",
+            "size": 67001,
+            "date": 132553938900844768
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AttitudeIndicator.js",
+            "size": 42683,
+            "date": 132555696284599100
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.css",
             "size": 3841,
+<<<<<<< HEAD
             "date": 132560529829963386
+=======
+            "date": 132552874392523040
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.html",
             "size": 5919,
+<<<<<<< HEAD
             "date": 132560529829973386
+=======
+            "date": 132552874392583076
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.js",
             "size": 9722,
+<<<<<<< HEAD
             "date": 132560529829973386
+=======
+            "date": 132553938900854760
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.css",
             "size": 3753,
+<<<<<<< HEAD
             "date": 132560529829983386
+=======
+            "date": 132552874392583076
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.html",
@@ -217,8 +340,13 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/Boeing_FMA.js",
+<<<<<<< HEAD
             "size": 18664,
             "date": 132560529830041718
+=======
+            "size": 18726,
+            "date": 132555620212811592
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/SAI/B747_8_SAI.html",
@@ -228,62 +356,111 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/SAI/B747_8_SAI.js",
             "size": 64853,
+<<<<<<< HEAD
             "date": 132560529830051716
+=======
+            "date": 132552874392603068
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/approach.FLT",
             "size": 5285,
+<<<<<<< HEAD
             "date": 132556703883893182
+=======
+            "date": 132553938900654716
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/apron.FLT",
             "size": 5152,
+<<<<<<< HEAD
             "date": 132556703883893182
+=======
+            "date": 132553938900654716
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/Climb.flt",
             "size": 5290,
+<<<<<<< HEAD
             "date": 132556703883883180
+=======
+            "date": 132553938900644712
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/cruise.FLT",
             "size": 5285,
+<<<<<<< HEAD
             "date": 132556703883903196
+=======
+            "date": 132553938900664726
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/engines.cfg",
             "size": 7132,
+<<<<<<< HEAD
             "date": 132556703883903196
+=======
+            "date": 132553938900664726
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/final.FLT",
             "size": 5293,
+<<<<<<< HEAD
             "date": 132556703883913202
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/flight_model.cfg",
             "size": 44785,
             "date": 132560744280988486
+=======
+            "date": 132553938900674726
+        },
+        {
+            "path": "SimObjects/Airplanes/Asobo_B747_8i/flight_model.cfg",
+            "size": 44784,
+            "date": 132553938900674726
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/hangar.flt",
             "size": 4264,
+<<<<<<< HEAD
             "date": 132556703883923204
+=======
+            "date": 132553938900684726
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/runway.FLT",
             "size": 5150,
+<<<<<<< HEAD
             "date": 132556703883960374
+=======
+            "date": 132553938900714738
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/taxi.FLT",
             "size": 5079,
+<<<<<<< HEAD
             "date": 132556703883960374
+=======
+            "date": 132553938900714738
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
             "size": 189921,
+<<<<<<< HEAD
             "date": 132556703883943196
+=======
+            "date": 132553938900694738
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.cfg",
@@ -293,7 +470,11 @@
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.xml",
             "size": 23083,
+<<<<<<< HEAD
             "date": 132556703883950646
+=======
+            "date": 132553938900704736
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS",
@@ -308,7 +489,11 @@
         {
             "path": "ModelBehaviorDefs/Asobo/Airliner/Boeing.xml",
             "size": 46602,
+<<<<<<< HEAD
             "date": 132556703883873178
+=======
+            "date": 132553938900593502
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
         }
     ]
 }

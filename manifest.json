@@ -21,5 +21,9 @@
             "OlderHistory": ""
         }
     },
+<<<<<<< HEAD
     "total_package_size": "00000000000005287119"
+=======
+    "total_package_size": "00000000000005213931"
+>>>>>>> parent of 87e0723... Add default FlightPlanManager
 }
