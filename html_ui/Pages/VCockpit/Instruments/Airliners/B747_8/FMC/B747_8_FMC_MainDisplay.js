@@ -107,6 +107,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.refreshPageCallback();
         }
         this.updateAutopilot();
+        this.updateVREF30();
         this.saltyBase.update();
     }
     onInputAircraftSpecific(input) {
@@ -355,20 +356,36 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeight = (this.getWeight(true) - 258.4) / (447.5 - 258.4);
         return 152 + 40 * dWeight;
     }
-    getSlatApproachSpeed(useCurrentWeight = true) {
-        return this.getVRef(8, useCurrentWeight);
+    updateVREF25() {
+        //Polynomial regression derived from FCOM published VREF25
+        let coefficients = [
+           -1.5467919598658073e+003,
+            1.5106421359771541e-002,
+           -5.6968579138009758e-008,
+            1.1360121592598009e-013,
+           -1.2514991427515442e-019,
+            7.2184630711155283e-026,
+           -1.7036813116590257e-032
+         ];
+         let vRef25 = 0;
+         let grossWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
+         let i;
+         for (i = 0; i < coefficients.length; i++) {
+             let a = coefficients[i] * (Math.pow(grossWeight, i) );
+             vRef25 += a;
+         }
+         SimVar.SetSimVarValue("L:SALTY_VREF25", "knots", Math.round(vRef25));
     }
-    getFlapApproachSpeed() {
+    updateVREF30() {
         //Polynomial regression derived from FCOM published VREF30
         let coefficients = [
-            2.3553249135664828e+003,
-           -2.5235300510393268e-002,
-            1.1863316816152008e-007,
-           -3.0407661025608525e-013,
-            4.6145415553700456e-019,
-           -4.1453080554788646e-025,
-            2.0398742109813664e-031,
-           -4.2401188353198822e-038
+           -1.0271030433117912e+003,
+            1.0235086042112870e-002,
+           -3.8432475698588999e-008,
+            7.6704299010379434e-014,
+           -8.4569127892214961e-020,
+            4.8771524333784454e-026,
+           -1.1496146052268411e-032
         ];
         let vRef30 = 0;
         let grossWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
@@ -377,7 +394,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             let a = coefficients[i] * (Math.pow(grossWeight, i) );
             vRef30 += a;
         }
-        return Math.round(vRef30);
+        SimVar.SetSimVarValue("L:SALTY_VREF30", "knots", Math.round(vRef30));
     }
     setSelectedApproachFlapSpeed(s) {
         let flap = NaN;

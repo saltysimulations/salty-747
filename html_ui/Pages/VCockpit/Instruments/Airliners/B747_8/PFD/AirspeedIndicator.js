@@ -1291,8 +1291,8 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 }
                 _marker.setText(degrees.toFixed(0));
             }
-            
-            let vRef30 = this.getVREF30Speed();
+            let vRef25 = SimVar.GetSimVarValue("L:SALTY_VREF25", "knots");
+            let vRef30 = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots");
             let flapMarkerSpeed = 0;
             switch (markerHandleIndex) {
                 case 0:
@@ -1311,7 +1311,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                     flapMarkerSpeed = vRef30 + 10;
                     break;   
                 case 5:
-                    flapMarkerSpeed = vRef30 + 5;
+                    flapMarkerSpeed = vRef25;
                     break;
                 case 6:
                     flapMarkerSpeed = vRef30;
