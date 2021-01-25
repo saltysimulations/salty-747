@@ -107,6 +107,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.refreshPageCallback();
         }
         this.updateAutopilot();
+        this.updateVREF25();
         this.updateVREF30();
         this.saltyBase.update();
     }
@@ -289,22 +290,23 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let alt = Simplane.getAltitude();
         let speedTrans = 10000;
         let speed = flapLimitSpeed - 5;
-        let flapsUPmanueverSpeed = this.getFlapApproachSpeed(true) + 80;
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
         //When flaps up - commands UP + 20 or speed transition, whichever higher 
         if (flapsHandleIndex == 0 && alt <= speedTrans) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
         if (flapsHandleIndex == 0 && alt >= speedTrans) {
-            speed = Math.max(flapsUPmanueverSpeed + 40, 250);
+            speed = Math.min(flapsUPmanueverSpeed + 100, 350);
         }
         return speed;
     }
     getCrzManagedSpeed(highAltitude = false) {
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
         let dCI = this.getCostIndexFactor();
         dCI = dCI * dCI;
         let speed = 310 * (1 - dCI) + 330 * dCI;
         if (!highAltitude && Simplane.getAltitude() < 10000) {
-            speed = Math.min(speed, 250);
+            speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
         return speed;
     }

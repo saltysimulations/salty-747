@@ -19,20 +19,25 @@ class B747_8_FMC_VNAVPage {
                 B747_8_FMC_VNAVPage.ShowPage1(fmc);
             }
         };
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        let transSpeed = Math.max(flapsUPmanueverSpeed + 20, 250);
         let clbSpeedCell = ""
-        clbSpeedCell = fmc.getClbManagedSpeed().toFixed(0);
+        clbSpeedCell = Math.min(flapsUPmanueverSpeed + 100, 350).toFixed(0);
         let speedTransCell = "---";
-        let flapsUPmanueverSpeed = fmc.getFlapApproachSpeed(true) + 80;
-        let transSpeed = Math.max(flapsUPmanueverSpeed + 40, 250);
         if (isFinite(transSpeed)) {
             speedTransCell = transSpeed.toFixed(0);
             speedTransCell += "/10000";
         }
         let transAltCell = "";
-        if (isFinite(fmc.transitionAltitude)) {
-            transAltCell = fmc.transitionAltitude.toFixed(0);
+        let origin = fmc.flightPlanManager.getOrigin();
+        if (origin) {
+            if (isFinite(origin.altitudeinFP)) {
+                let origin = fmc.flightPlanManager.getOrigin();
+                let transitionAltitude = origin.infos.transitionAltitude;
+                transAltCell = transitionAltitude.toFixed(0);
+            }
         }
-        let maxAngleCell = (flapsUPmanueverSpeed + 20).toFixed(0);
+        let maxAngleCell = (flapsUPmanueverSpeed).toFixed(0);
         fmc.setTemplate([
             ["ACT ECON CLB", "1", "3"],
             ["\xa0CRZ ALT"],
