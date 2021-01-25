@@ -627,27 +627,6 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             }
         }
     }
-    getVREF30Speed() {
-        //Polynomial regression derived from FCOM published VREF30
-        let coefficients = [
-            2.3553249135664828e+003,
-           -2.5235300510393268e-002,
-            1.1863316816152008e-007,
-           -3.0407661025608525e-013,
-            4.6145415553700456e-019,
-           -4.1453080554788646e-025,
-            2.0398742109813664e-031,
-           -4.2401188353198822e-038
-        ];
-        let vRef30 = 0;
-        let grossWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
-        let i;
-        for (i = 0; i < coefficients.length; i++) {
-            let a = coefficients[i] * (Math.pow(grossWeight, i) );
-            vRef30 += a;
-        }
-        return Math.round(vRef30);
-    }
     computeIASAcceleration(_currentAirspeed) {
         let speed = _currentAirspeed;
         if (speed < this.graduationMinValue)
