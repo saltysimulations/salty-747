@@ -123,7 +123,10 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         return B747_8_EngineState.IDLE;
     }
     getN2IdleValue() {
-        return 60;
+		let density = SimVar.GetSimVarValue("AMBIENT DENSITY", "kilogram per cubic meter");
+		var N2 ;
+		N2 = 5.702985185 * density + 53.28060753 ;
+		return N2 ;
     }
     getN2Value(_engineId) {
         return SimVar.GetSimVarValue("ENG N2 RPM:" + _engineId, "percent");
@@ -162,14 +165,25 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                     break;
                 case B747_8_EngineState.READY:
                     if (N2Value < this.getN2IdleValue())
-                        this.changeState(i, B747_8_EngineState.DECELERATE);
+                        this.changeState(i, B747_8_EngineState.AUTORELIGHT);
                     break;
                 case B747_8_EngineState.DECELERATE:
-                    if (N2Value < 0.05)
+					if (N2Value < this.getN2IdleValue() && this.getFuelValveOpen())
+						this.changeState(i, B747_8_EngineState.AUTORELIGHT);
+                    else if (N2Value < 0.05)
                         this.changeState(i, B747_8_EngineState.IDLE);
                     else if (N2Value >= this.getN2IdleValue())
                         this.changeState(i, B747_8_EngineState.RUNNING);
                     break;
+				case B747_8_EngineState.AUTORELIGHT:
+					if (N2Value >= this.getN2IdleValue()) {
+						this.changeState(i, B747_8_EngineState.RUNNING);
+					}
+					else if (N2Value < 0.05)
+						this.changeState(i, B747_8_EngineState.IDLE);
+					else if (!this.getFuelValveOpen())
+						this.changeState(i, B747_8_EngineState.DECELERATE);
+					break;
             }
             this.engines[i].timeInState += _deltaTime / 1000;
         }
@@ -188,6 +202,7 @@ var B747_8_EngineState;
     B747_8_EngineState[B747_8_EngineState["RUNNING"] = 2] = "RUNNING";
     B747_8_EngineState[B747_8_EngineState["READY"] = 3] = "READY";
     B747_8_EngineState[B747_8_EngineState["DECELERATE"] = 4] = "DECELERATE";
+	B747_8_EngineState[B747_8_EngineState["AUTORELIGHT"] = 5] = "AUTORELIGHT";
 })(B747_8_EngineState || (B747_8_EngineState = {}));
 class B747_8_Engine {
     constructor() {
