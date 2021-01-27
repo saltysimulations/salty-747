@@ -216,6 +216,17 @@
 
 		<Annunciation>
 		  <Type>Advisory</Type>
+		  <Text>APU RUNNING</Text>
+		  <Condition>
+		    <GreaterEqual>
+			  <Simvar name="APU PCT RPM" unit="percent"/>
+			  <Constant>95</Constant>
+			</GreaterEqual>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
 		  <Text>AUTOBRAKES</Text>
 		  <Condition Suffix=" RTO">
 		    <Equal>
