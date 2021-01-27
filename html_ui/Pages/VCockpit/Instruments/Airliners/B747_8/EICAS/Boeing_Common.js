@@ -507,6 +507,11 @@ var Boeing;
             if (this.parent != null) {
                 this.divMain = this.createDiv(this.divID);
                 this.parent.appendChild(this.divMain);
+                for (var i = 0; i < 11; ++i) {
+                    var newDiv = document.createElement("div");
+                    this.allDivs.push(newDiv);
+                    this.divMain.appendChild(newDiv);
+                }
             }
         }
         createDiv(_id, _class = "", _text = "") {
@@ -522,10 +527,19 @@ var Boeing;
             }
             return div;
         }
-        getNextAvailableDiv() {
-            for (var i = 0; i < this.allDivs.length; ++i) {
-                if (this.allDivs[i].textContent.length == 0) {
-                    return this.allDivs[i];
+        getNextAvailableDiv(_style) {
+            if(_style == Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION) {
+                for (var i = 10; i > 0; --i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        return this.allDivs[i];
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < this.allDivs.length; ++i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        return this.allDivs[i];
+                    }
                 }
             }
             if (this.divMain != null) {
@@ -553,7 +567,7 @@ var Boeing;
             return "";
         }
         addMessage(_message, _style) {
-            var div = this.getNextAvailableDiv();
+            var div = this.getNextAvailableDiv(_style);
             if (div != null) {
                 div.textContent = _message;
                 div.className = this.getClassNameFromStyle(_style);
