@@ -113,4 +113,10 @@ b747-8-lower-eicas-fuel {
     letter-spacing: 0px; }
   b747-8-lower-eicas-fuel #Values #TotalFuelValue {
     font-size: 24px; }
-
+  b747-8-lower-eicas-fuel #TransferOutlines {
+    stroke-width: 6px !important;
+    stroke: var(--eicasWhite); }
+  b747-8-lower-eicas-fuel #TransferFlow {
+    stroke-width: 0px;
+    fill: var(--eicasGreen);
+    stroke: var(--eicasGreen); }

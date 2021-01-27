@@ -182,12 +182,19 @@ var B747_8_LowerEICAS_Fuel;
             this.lineIndex = 0;
             this.isLineActive = false;
             this.lineIndex = _lineIndex;
+            this.flowStabOutline = document.querySelector("#TransferStab");
+            this.flowStab = document.querySelector("#FlowStab");
+            this.flowRes1Outline = document.querySelector("#TransferReserve1");
+            this.flowRes1 = document.querySelector("#FlowReserve1");
+            this.flowRes4Outline = document.querySelector("#TransferReserve4"); 
+            this.flowRes4 = document.querySelector("#FlowReserve4");
         }
         init() {
             this.refresh(false, false, false, true);
         }
         update(_deltaTime) {
             this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"), (SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:" + this.lineIndex, "number") > 0));
+            this.updateTransferArrows();
         }
         refresh(_isPumpSwitched, _isPumpActive, _isLineActive, _force = false) {
             if (_force || (this.isPumpSwitched != _isPumpSwitched) || (this.isPumpActive != _isPumpActive) || (this.isLineActive != _isLineActive)) {
@@ -204,6 +211,32 @@ var B747_8_LowerEICAS_Fuel;
                     }
                     this.element.setAttribute("class", "fuelpump-" + className);
                 }
+            }
+        }
+        updateTransferArrows() {
+            if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:18", "bool")) {
+                this.flowStabOutline.style.visibility = "visible";
+                this.flowStab.style.visibility = "visible";
+            }
+            else {
+                this.flowStabOutline.style.visibility = "hidden";
+                this.flowStab.style.visibility = "hidden";
+            }
+            if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:10", "bool")) {
+                this.flowRes1Outline.style.visibility = "visible";
+                this.flowRes1.style.visibility = "visible";
+            }
+            else {
+                this.flowRes1Outline.style.visibility = "hidden";
+                this.flowRes1.style.visibility = "hidden";
+            }
+            if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:12", "bool")) {
+                this.flowRes4Outline.style.visibility = "visible";
+                this.flowRes4.style.visibility = "visible";
+            }
+            else {
+                this.flowRes4Outline.style.visibility = "hidden";
+                this.flowRes4.style.visibility = "hidden";
             }
         }
     }
