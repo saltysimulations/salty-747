@@ -1198,7 +1198,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         }
     }
     updateMarkerVRef(_marker, currentAirspeed) {
-        let vRefSpeed = Simplane.getREFAirspeed();
+        let vRefSpeed = SimVar.GetSimVarValue("L:AIRLINER_VREF_SPEED", "Knots");
         if (vRefSpeed > 0) {
             var posY = this.valueToSvg(currentAirspeed, vRefSpeed);
             if (posY > this.refHeight - 25 && (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B)) {

@@ -307,7 +307,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return speed;
     }
     getCrzManagedSpeed(highAltitude = false) {
-        //Commands lowest of UP + 100, 350kts or M.845
+        //Commands lowest of UP + 100, 350kts or M.845.
         let mach = 0.845
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
         let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
@@ -319,10 +319,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return speed;
     }
     getDesManagedSpeed() {
-        let dCI = this.getCostIndexFactor();
-        let speed = 240 * (1 - dCI) + 260 * dCI;
+        //Commands lowest of 340kts or M.845 then 240 below 10000.
+        let mach = 0.845
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let speed = Math.min(340, machlimit);
         if (Simplane.getAltitude() < 10000) {
-            speed = Math.min(speed, 250);
+            speed = Math.min(speed, 240);
         }
         return speed;
     }
@@ -359,12 +361,15 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         return min + (max - min) * dWeight;
     }
-    getManagedApproachSpeed(flapsHandleIndex = NaN, useCurrentWeight = true) {
-        return this.getVRef(flapsHandleIndex, useCurrentWeight) - 5;
+    getManagedApproachSpeed() {
+        if (SimVar.GetSimVarValue("L:AIRLINER_VREF_SPEED", "knots")) {
+            return SimVar.GetSimVarValue("L:AIRLINER_VREF_SPEED", "knots") + 5;
+        }
+        return SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 5;
     }
     getCleanApproachSpeed() {
-        let dWeight = (this.getWeight(true) - 258.4) / (447.5 - 258.4);
-        return 152 + 40 * dWeight;
+        let cleanApproachSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        return cleanApproachSpeed;
     }
     updateVREF25() {
         //Polynomial regression derived from FCOM published VREF25
@@ -418,8 +423,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (isFinite(flap) && flap >= 0 && flap < 60) {
                 this.selectedApproachFlap = flap;
             }
-            if (isFinite(speed) && speed >= 10 && speed < 300) {
+            if (isFinite(speed) && speed >= 100 && speed < 300) {
                 this.selectedApproachSpeed = speed;
+                SimVar.SetSimVarValue("L:AIRLINER_VREF_SPEED", "Knots", speed);
             }
             return true;
         }
@@ -562,7 +568,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_DESCENT) {
                 vRef = 1.3 * Simplane.getStallSpeed();
             }
-            SimVar.SetSimVarValue("L:AIRLINER_VREF_SPEED", "knots", vRef);
             if (this._apHasDeactivated) {
                 this.deactivateVNAV();
                 if (!this.getIsSPDActive()) {
@@ -710,7 +715,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     let mcpDelta = Math.abs(selectedAltitude - currentAlt);
                     let crzAltDelta = Math.abs(crzAlt - currentAlt);
                     //MCP Alt is closest
-                    if (mcpDelta < crzAltDelta) {
+                    if (SimVar.GetSimVarValue("L:SALTY_FMC_DESCENT_HAS_BEGUN", "bool")) {
+                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
+                        this._forceNextAltitudeUpdate = false;
+                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
+                    } 
+                    else if (mcpDelta < crzAltDelta) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
@@ -807,7 +817,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
                 if (this.getIsVNAVActive()) {
-                    let speed = this.getManagedApproachSpeed();
+                    let speed = this.getDesManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
                 }
                 if (Simplane.getAutoPilotThrottleActive()) {

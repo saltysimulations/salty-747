@@ -100,9 +100,25 @@ class Boeing_FMC extends FMCMainDisplay {
             this.toggleVSpeed();
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
-                this.activateAltitudeSel();
+            let cruiseFlightLevel = this.cruiseFlightLevel * 100;
+            let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
+            let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
+            let planeLla = new LatLongAlt(lat, long);
+            let destination = this.flightPlanManager.getDestination();
+            let dist = Avionics.Utils.computeGreatCircleDistance(destination.infos.coordinates, planeLla);
+            if (destination) {
+                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                    if (dist > ((cruiseFlightLevel / 6076 * 20) + 50)) {
+                        this.activateAltitudeSel();
+                    }
+                    else if (dist < ((cruiseFlightLevel / 6076 * 20) + 50)) {
+                        SimVar.SetSimVarValue("L:SALTY_FMC_DESCENT_HAS_BEGUN", "bool", 1);
+                        SimVar.SetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number", 5);
+                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+                    } 
+                }
             }
+            SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);        
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
             this.toggleAltitudeHold();

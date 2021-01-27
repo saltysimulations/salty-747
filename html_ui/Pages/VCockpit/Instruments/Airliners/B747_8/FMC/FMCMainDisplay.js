@@ -1609,17 +1609,14 @@ class FMCMainDisplay extends BaseAirliners {
     async tryGoInApproachPhase() {
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_APPROACH;
-            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
             return true;
         }
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_APPROACH;
-            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
             return true;
         }
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_DESCENT) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_APPROACH;
-            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
             return true;
         }
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
@@ -1655,7 +1652,7 @@ class FMCMainDisplay extends BaseAirliners {
                 let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel * 100;
                 if (isFinite(cruiseFlightLevel)) {
-                    if (altitude >= 0.96 * cruiseFlightLevel) {
+                    if (altitude >= 0.98 * cruiseFlightLevel) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CRUISE;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                     }
@@ -1665,31 +1662,9 @@ class FMCMainDisplay extends BaseAirliners {
                 let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel * 100;
                 if (isFinite(cruiseFlightLevel)) {
-                    if (altitude < 0.9 * cruiseFlightLevel) {
+                    if (altitude < 0.96 * cruiseFlightLevel) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
-                    }
-                    let destination = this.flightPlanManager.getDestination();
-                    if (destination) {
-                        let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-                        let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-                        let planeLla = new LatLongAlt(lat, long);
-                        let dist = Avionics.Utils.computeGreatCircleDistance(destination.infos.coordinates, planeLla);
-                        if (dist < cruiseFlightLevel / 6076 * 20) {
-                            this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
-                            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
-                        }
-                    }
-                }
-            }
-            if (this.currentFlightPhase != FlightPhase.FLIGHT_PHASE_APPROACH) {
-                if (this.flightPlanManager.decelWaypoint) {
-                    let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-                    let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-                    let planeLla = new LatLongAlt(lat, long);
-                    let dist = Avionics.Utils.computeGreatCircleDistance(this.flightPlanManager.decelWaypoint.infos.coordinates, planeLla);
-                    if (dist < 3) {
-                        this.tryGoInApproachPhase();
                     }
                 }
             }
