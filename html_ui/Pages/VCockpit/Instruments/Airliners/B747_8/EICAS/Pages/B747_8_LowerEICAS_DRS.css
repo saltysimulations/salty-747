@@ -8,7 +8,13 @@
     --eicasRed: red;
     --eicasMagenta: magenta; }
     :root text {
-      font-family: Roboto-Bold; }
+      font-family: "BoeingEICAS"; }
+
+@font-face {
+  font-family: "BoeingEICAS";
+  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
 
 b747-8-lower-eicas-drs {
   position: relative;
