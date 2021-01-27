@@ -355,6 +355,142 @@
 		  </Condition>
 		</Annunciation>
 
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+				<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
 		<Annunciation>
 		  <Type>Caution</Type>
 		  <Text>FUEL LOW CTR R</Text>

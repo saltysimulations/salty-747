@@ -507,7 +507,7 @@ var Boeing;
             if (this.parent != null) {
                 this.divMain = this.createDiv(this.divID);
                 this.parent.appendChild(this.divMain);
-                for (var i = 0; i < 11; ++i) {
+                for (var i = 0; i < 22; ++i) {
                     var newDiv = document.createElement("div");
                     this.allDivs.push(newDiv);
                     this.divMain.appendChild(newDiv);
@@ -531,13 +531,26 @@ var Boeing;
             if(_style == Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION) {
                 for (var i = 10; i > 0; --i) {
                     if (this.allDivs[i].textContent.length == 0) {
+                        this.allDivs[i].style.visibility = "visible";
                         return this.allDivs[i];
                     }
                 }
+                for (var i = 21; i > 0; --i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        this.allDivs[i].style.visibility = "hidden";
+                        return this.allDivs[i];
+                    }
+                }           
             }
             else {
                 for (var i = 0; i < this.allDivs.length; ++i) {
                     if (this.allDivs[i].textContent.length == 0) {
+                        if (i > 10) {
+                            this.allDivs[i].style.visibility = "hidden";
+                        } 
+                        else {
+                            this.allDivs[i].style.visibility = "visible";
+                        }
                         return this.allDivs[i];
                     }
                 }
