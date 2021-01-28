@@ -68,7 +68,7 @@ class SvgConstraintElement extends SvgMapElement {
                 context.fillStyle = "black";
                 context.fillRect(0, 0, this._textWidth + map.config.waypointLabelBackgroundPaddingLeft + map.config.waypointLabelBackgroundPaddingRight, this._textHeight + map.config.waypointLabelBackgroundPaddingTop + map.config.waypointLabelBackgroundPaddingBottom);
             }
-            context.fillStyle = "magenta";
+            context.fillStyle = "#D570FF";
             context.font = fontSize + "px " + map.config.waypointLabelFontFamily;
             context.fillText(text, map.config.waypointLabelBackgroundPaddingLeft, this._textHeight + map.config.waypointLabelBackgroundPaddingTop);
             if (this.source.speedConstraint > 0) {
@@ -80,7 +80,6 @@ class SvgConstraintElement extends SvgMapElement {
         this.svgElement.id = this.id(map);
         this.svgElement.classList.add("constraint-icon");
         this.svgElement.setAttribute("hasTextBox", "true");
-        this.svgElement.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + this.imageFileName());
         this.svgElement.setAttribute("width", fastToFixed(map.config.waypointIconSize * 1.3, 0));
         this.svgElement.setAttribute("height", fastToFixed(map.config.waypointIconSize * 1.3, 0));
         return this.svgElement;
