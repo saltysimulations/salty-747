@@ -1,3 +1,6 @@
+[Options]
+Sound=True
+
 [SimVars.0]
 PVelBodyAxis=0
 BVelBodyAxis=0

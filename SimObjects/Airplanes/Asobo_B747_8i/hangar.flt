@@ -1,3 +1,6 @@
+[Options]
+Sound=True
+
 [Avionics.0]
 Comm1Active=118.300
 Comm1Standby=124.850
