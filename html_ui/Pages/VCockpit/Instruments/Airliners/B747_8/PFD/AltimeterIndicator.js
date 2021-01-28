@@ -95,7 +95,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.targetAltitudeTextSVG1 = document.createElementNS(Avionics.SVG.NS, "text");
         this.targetAltitudeTextSVG1.setAttribute("x", "115");
         this.targetAltitudeTextSVG1.setAttribute("y", (posY + 10 + sideTextHeight * 0.5).toString());
-        this.targetAltitudeTextSVG1.setAttribute("fill", "magenta");
+        this.targetAltitudeTextSVG1.setAttribute("fill", "#D570FF");
         this.targetAltitudeTextSVG1.setAttribute("font-size", (this.fontSize * 1.6).toString());
         this.targetAltitudeTextSVG1.setAttribute("font-family", "BoeingEICAS");
         this.targetAltitudeTextSVG1.setAttribute("text-anchor", "end");
@@ -106,7 +106,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.targetAltitudeTextSVG2.setAttribute("x", "117");
         this.targetAltitudeTextSVG2.setAttribute("y", (posY + 10 + sideTextHeight * 0.5).toString());
         this.targetAltitudeTextSVG2.setAttribute("width", width.toString());
-        this.targetAltitudeTextSVG2.setAttribute("fill", "magenta");
+        this.targetAltitudeTextSVG2.setAttribute("fill", "#D570FF");
         this.targetAltitudeTextSVG2.setAttribute("font-size", (this.fontSize * 1.29).toString());
         this.targetAltitudeTextSVG2.setAttribute("font-family", "BoeingEICAS");
         this.targetAltitudeTextSVG2.setAttribute("text-anchor", "start");
@@ -290,7 +290,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 if (!this.targetAltitudeIndicatorSVGShape)
                     this.targetAltitudeIndicatorSVGShape = document.createElementNS(Avionics.SVG.NS, "path");
                 this.targetAltitudeIndicatorSVGShape.setAttribute("fill", "none");
-                this.targetAltitudeIndicatorSVGShape.setAttribute("stroke", "magenta");
+                this.targetAltitudeIndicatorSVGShape.setAttribute("stroke", "#D570FF");
                 this.targetAltitudeIndicatorSVGShape.setAttribute("stroke-width", "3");
                 this.targetAltitudeIndicatorSVGShape.setAttribute("d", "M 10 10 L 50 10 L 50 90 L 10 90 L 10 60 L 18 50 L 10 40 Z");
                 this.targetAltitudeIndicatorSVG.appendChild(this.targetAltitudeIndicatorSVGShape);
@@ -346,7 +346,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.mtrsSelectedSVGText = document.createElementNS(Avionics.SVG.NS, "text");
                 this.mtrsSelectedSVGText.setAttribute("x", "158");
                 this.mtrsSelectedSVGText.setAttribute("y", (sideTextHeight * 0.5).toString());
-                this.mtrsSelectedSVGText.setAttribute("fill", "magenta");
+                this.mtrsSelectedSVGText.setAttribute("fill", "#D570FF");
                 this.mtrsSelectedSVGText.setAttribute("font-size", (this.fontSize * 1.2).toString());
                 this.mtrsSelectedSVGText.setAttribute("font-family", "BoeingEICAS");
                 this.mtrsSelectedSVGText.setAttribute("text-anchor", "end");
@@ -692,7 +692,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                     this.targetAltitudeText.style.top = "720px";
                     this.targetAltitudeText.style.left = "115px";
                     this.targetAltitudeText.style.display = "block";
-                    this.targetAltitudeText.style.color = (APMode == AutopilotMode.SELECTED) ? "cyan" : "magenta";
+                    this.targetAltitudeText.style.color = (APMode == AutopilotMode.SELECTED) ? "cyan" : "#D570FF";
                     this.targetAltitudeIndicatorSVG.setAttribute("visibility", "hidden");
                 }
                 else if (deltaAltitude > 650) {
@@ -700,7 +700,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                     this.targetAltitudeText.style.top = "-20px";
                     this.targetAltitudeText.style.left = "115px";
                     this.targetAltitudeText.style.display = "block";
-                    this.targetAltitudeText.style.color = (APMode == AutopilotMode.SELECTED) ? "cyan" : "magenta";
+                    this.targetAltitudeText.style.color = (APMode == AutopilotMode.SELECTED) ? "cyan" : "#D570FF";
                     this.targetAltitudeIndicatorSVG.setAttribute("visibility", "hidden");
                 }
                 else {
@@ -709,13 +709,13 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                     offsetY -= 51;
                     this.targetAltitudeIndicatorSVG.setAttribute("y", offsetY.toString());
                     this.targetAltitudeIndicatorSVG.setAttribute("visibility", "visible");
-                    this.targetAltitudeIndicatorSVGShape.setAttribute("stroke", (APMode == AutopilotMode.SELECTED) ? "cyan" : "magenta");
+                    this.targetAltitudeIndicatorSVGShape.setAttribute("stroke", (APMode == AutopilotMode.SELECTED) ? "cyan" : "#D570FF");
                     if (this.targetAltitudeIndicatorSVGText) {
                         if (targetAltitude >= 10)
                             this.targetAltitudeIndicatorSVGText.textContent = targetAltitude.toFixed(0);
                         else
                             this.targetAltitudeIndicatorSVGText.textContent = "100";
-                        this.targetAltitudeIndicatorSVGText.setAttribute("fill", (APMode == AutopilotMode.SELECTED) ? "cyan" : "magenta");
+                        this.targetAltitudeIndicatorSVGText.setAttribute("fill", (APMode == AutopilotMode.SELECTED) ? "cyan" : "#D570FF");
                     }
                 }
                 hudAltitude = targetAltitude;

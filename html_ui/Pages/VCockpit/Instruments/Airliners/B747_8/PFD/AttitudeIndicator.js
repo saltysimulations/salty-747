@@ -361,7 +361,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 centerRect.setAttribute("height", "8");
                 centerRect.setAttribute("width", "8");
                 centerRect.setAttribute("stroke", "white");
-                centerRect.setAttribute("stroke-width", "3");
+                centerRect.setAttribute("stroke-width", "2");
                 centerRect.setAttribute("fill", "transparent");
                 centerRectGroup.appendChild(centerRect);
             }
@@ -622,7 +622,7 @@ var Jet_PFD_FlightDirector;
                 this.pitchLine.setAttribute("transform", "translate(0, " + lineY + ")");
             }
         }
-        getLineLength() { return 140; }
+        getLineLength() { return 160; }
         getStrokeWidth() { return "4"; }
         getFDBankLimit() { return 30; }
         getFDBankDisplayLimit() { return 75; }
@@ -630,7 +630,7 @@ var Jet_PFD_FlightDirector;
     class CommandBarsDisplay_Airbus extends CommandBarsDisplay {
     }
     class CommandBarsDisplay_B747 extends CommandBarsDisplay {
-        getColour() { return "magenta"; }
+        getColour() { return "#D570FF"; }
         getFDBankLimit() { return 30; }
         getFDBankDisplayLimit() { return 50; }
     }

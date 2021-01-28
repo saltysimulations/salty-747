@@ -176,7 +176,7 @@ class SvgWaypointElement extends SvgMapElement {
             }
         }
         else {
-            context.fillStyle = "magenta";
+            context.fillStyle = "#D570FF";
         }
         context.font = fontSize + "px " + map.config.waypointLabelFontFamily;
         context.fillText(text, map.config.waypointLabelBackgroundPaddingLeft, this._textHeight + map.config.waypointLabelBackgroundPaddingTop);

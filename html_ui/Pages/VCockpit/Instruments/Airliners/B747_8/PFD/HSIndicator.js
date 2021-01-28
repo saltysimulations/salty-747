@@ -109,13 +109,13 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             this.selectedHeadingGroup.setAttribute("id", "selectedHeadingGroup");
             this.rootSVG.appendChild(this.selectedHeadingGroup);
             {
-                this.selectedHeadingLine = Avionics.SVG.computeDashLine(this.rotatingCompassX, this.rotatingCompassY, (-circleRadius), 15, 1, "#ff00e0");
+                this.selectedHeadingLine = Avionics.SVG.computeDashLine(this.rotatingCompassX, this.rotatingCompassY, (-circleRadius), 15, 1, "#D570FF");
                 this.selectedHeadingLine.setAttribute("id", "selectedHeadingLine");
                 this.selectedHeadingGroup.appendChild(this.selectedHeadingLine);
                 this.selectedHeadingBug = document.createElementNS(Avionics.SVG.NS, "path");
                 this.selectedHeadingBug.setAttribute("id", "Heading");
                 this.selectedHeadingBug.setAttribute("fill", "transparent");
-                this.selectedHeadingBug.setAttribute("stroke", "magenta");
+                this.selectedHeadingBug.setAttribute("stroke", "#D570FF");
                 this.selectedHeadingBug.setAttribute("stroke-width", "0.75");
                 this.selectedHeadingBug.setAttribute("d", "M " + this.rotatingCompassX + " " + (this.rotatingCompassY - circleRadius) + " l-6 0 l0 -5 l3 0 l3 5 l3 -5 l3 0 l0 5 Z");
                 this.selectedHeadingGroup.appendChild(this.selectedHeadingBug);
@@ -137,7 +137,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.selectedHeadingText.textContent = "135H";
                 this.selectedHeadingText.setAttribute("x", (this.rotatingCompassX - circleRadius * 0.3).toString());
                 this.selectedHeadingText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.725).toString());
-                this.selectedHeadingText.setAttribute("fill", "magenta");
+                this.selectedHeadingText.setAttribute("fill", "#D570FF");
                 this.selectedHeadingText.setAttribute("font-size", (this.fontSize * 0.3).toString());
                 this.selectedHeadingText.setAttribute("font-family", "BoeingEICAS");
                 this.selectedHeadingText.setAttribute("text-anchor", "start");
