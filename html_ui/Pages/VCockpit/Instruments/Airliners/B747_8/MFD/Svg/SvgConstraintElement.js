@@ -124,7 +124,7 @@ class SvgConstraintElement extends SvgMapElement {
                     }
                 }
                 if (this._label) {
-                    let textX = (x + map.config.waypointIconSize * 0.5 - this._textWidth * 0.5 + map.config.waypointLabelDistanceX);
+                    let textX = (x + map.config.waypointIconSize * 0.5 - this._textWidth * 0.5 + map.config.waypointLabelDistanceX) - 2;
                     let textY = y + map.config.waypointLabelDistance + map.config.waypointLabelFontSize + 4;
                     this._label.setAttribute("x", textX + "");
                     this._label.setAttribute("y", textY + "");
