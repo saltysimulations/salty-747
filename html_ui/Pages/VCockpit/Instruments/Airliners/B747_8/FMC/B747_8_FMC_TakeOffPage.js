@@ -87,9 +87,6 @@ class FMCTakeOffPage {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (fmc.setTakeOffFlap(value)) {
-                if (Simplane.getIsGrounded() && Simplane.getV1Airspeed() <= 0 && Simplane.getVRAirspeed() <= 0 && Simplane.getV2Airspeed() <= 0) {
-                    fmc.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
-                }
                 FMCTakeOffPage.ShowPage1(fmc);
             }
         };

@@ -6,23 +6,19 @@ class FMCApproachPage {
         let flaps30Cell = "";
         let flaps25VRefCell = "";
         let flaps30VRefCell = "";
-        let units = false;
-        if (!mc._unitIsMetric) {
-            units = true;
-        }
-        let landingWeight = fmc.getWeight(units);
+        let landingWeight = fmc.getWeight(true);
         if (isFinite(landingWeight)) {
             landingWeightCell = landingWeight.toFixed(1);
             flaps25Cell = "25°";
             flaps30Cell = "30°";
-            let flaps25Speed = fmc.getSlatApproachSpeed(units);
+            let flaps25Speed = fmc.getSlatApproachSpeed(true);
             if (isFinite(flaps25Speed)) {
                 flaps25VRefCell = flaps25Speed.toFixed(0) + "KT";
                 fmc.onRightInput[0] = () => {
                     fmc.inOut = "25/" + flaps25Speed.toFixed(0);
                 };
             }
-            let flaps30Speed = fmc.getFlapApproachSpeed(units);
+            let flaps30Speed = fmc.getFlapApproachSpeed(true);
             if (isFinite(flaps30Speed)) {
                 flaps30VRefCell = flaps30Speed.toFixed(0) + "KT";
                 fmc.onRightInput[1] = () => {
