@@ -2,6 +2,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     constructor() {
         super(...arguments);
         this.engines = new Array();
+        this.units = 1;
     }
     Init() {
         super.Init();
@@ -12,6 +13,17 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         Include.addScript("/JS/debug.js", function () {
             g_modDebugMgr.AddConsole(null);
         });
+        const storedUnits = SaltyDataStore.get("OPTIONS_UNITS", "KG");
+        switch (storedUnits) {
+            case "KG":
+                this.units = 1;
+                break;
+            case "LBS":
+                this.units = 0;
+                break;
+            default:
+                this.units = 1;
+        }
     }
     reboot() {
         super.reboot();

@@ -1,24 +1,30 @@
 class FMCApproachPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
+        let units;
+        if (fmc.units == 1) {
+            units = 0
+        } else if (fmc.units == 0) {
+            units = 1;
+        }
         let landingWeightCell = "";
         let flaps25Cell = "";
         let flaps30Cell = "";
         let flaps25VRefCell = "";
         let flaps30VRefCell = "";
-        let landingWeight = fmc.getWeight(true);
+        let landingWeight = fmc.getWeight(units);
         if (isFinite(landingWeight)) {
             landingWeightCell = landingWeight.toFixed(1);
             flaps25Cell = "25°";
             flaps30Cell = "30°";
-            let flaps25Speed = fmc.getSlatApproachSpeed(true);
+            let flaps25Speed = fmc.getSlatApproachSpeed(units);
             if (isFinite(flaps25Speed)) {
                 flaps25VRefCell = flaps25Speed.toFixed(0) + "KT";
                 fmc.onRightInput[0] = () => {
                     fmc.inOut = "25/" + flaps25Speed.toFixed(0);
                 };
             }
-            let flaps30Speed = fmc.getFlapApproachSpeed(true);
+            let flaps30Speed = fmc.getFlapApproachSpeed(units);
             if (isFinite(flaps30Speed)) {
                 flaps30VRefCell = flaps30Speed.toFixed(0) + "KT";
                 fmc.onRightInput[1] = () => {

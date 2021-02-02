@@ -8,7 +8,7 @@ var B747_8_LowerEICAS_Fuel;
             this.gallonToMegagrams = 0;
             this.gallonToMegapounds = 0;
             this.isInitialised = false;
-            this._unitIsMetric = SaltyDataStore.get("OPTIONS_UNITS", true);
+            this.units;
         }
         get templateID() { return "B747_8LowerEICASFuelTemplate"; }
         connectedCallback() {
@@ -137,6 +137,17 @@ var B747_8_LowerEICAS_Fuel;
             }
         }
         update(_deltaTime) {
+            const storedUnits = SaltyDataStore.get("OPTIONS_UNITS", "KG");
+            switch (storedUnits) {
+                case "KG":
+                    this.units = true;
+                    break;
+                case "LBS":
+                    this.units = false;
+                    break;
+                default:
+                    this.units = true;
+            }
             if (!this.isInitialised) {
                 return;
             }
@@ -155,21 +166,22 @@ var B747_8_LowerEICAS_Fuel;
                 }
             }
             if (this.unitTextSVG) {
-                if (BaseAirliners.unitIsMetric(this._unitIsMetric))
+                if (this.units) {
                     this.unitTextSVG.textContent = "KGS X 1000";
-                else
+                } else if (!this.units) {
                     this.unitTextSVG.textContent = "LBS X 1000";
+                }
             }
         }
         getTotalFuelInMegagrams() {
             let factor = this.gallonToMegapounds;
-            if (BaseAirliners.unitIsMetric(this._unitIsMetric))
+            if (this.units)
                 factor = this.gallonToMegagrams;
             return (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * factor);
         }
         getMainTankFuelInMegagrams(_index) {
             let factor = this.gallonToMegapounds;
-            if (BaseAirliners.unitIsMetric(this._unitIsMetric))
+            if (this.units)
                 factor = this.gallonToMegagrams;
             return (SimVar.GetSimVarValue("FUELSYSTEM TANK QUANTITY:" + _index, "gallons") * factor);
         }
