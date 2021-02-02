@@ -33,12 +33,12 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.html",
             "size": 3806,
-            "date": 132566005147496838
+            "date": 132567802956568072
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js",
-            "size": 9557,
-            "date": 132566333986661678
+            "size": 9199,
+            "date": 132567803510089236
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.css",
@@ -97,8 +97,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_Fuel.js",
-            "size": 12233,
-            "date": 132566335098869610
+            "size": 12170,
+            "date": 132567801201593740
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_GEAR.css",
@@ -129,6 +129,21 @@
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_LowerEICAS_Stat.js",
             "size": 2177,
             "date": 132565531263095440
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_UpperEICAS.css",
+            "size": 5658,
+            "date": 132531405478250174
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_UpperEICAS.html",
+            "size": 6156,
+            "date": 132567796461463096
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_UpperEICAS.js",
+            "size": 12427,
+            "date": 132567807206153770
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC.css",
@@ -452,8 +467,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/OPTIONS/B747_8_FMC_Units.js",
-            "size": 1480,
-            "date": 132567159253411162
+            "size": 1477,
+            "date": 132567172378110762
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/PACI/B747_8_FMC_PACI_Directory.js",
