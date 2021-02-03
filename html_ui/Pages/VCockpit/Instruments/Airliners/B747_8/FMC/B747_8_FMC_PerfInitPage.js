@@ -166,7 +166,6 @@ class FMCPerfInitPage {
                 2. ACCEPT DATA
             */
             fmc.onRightInput[4] = () => {
-                console.log(fmc.simbrief.perfUplinkReady);
                 if (!fmc.simbrief.perfUplinkReady) {
                     let value = fmc.inOut;
                     if (value == "RVSM" || value == "ICAO") {
@@ -183,7 +182,6 @@ class FMCPerfInitPage {
                         value = parseInt(value);
                         value = (value / 100).toFixed(0);
                         value = value * 100;
-                        console.log(value);
                         SaltyDataStore.set("PERF_STEP_SIZE", value.toString());
                     }
                     else {
