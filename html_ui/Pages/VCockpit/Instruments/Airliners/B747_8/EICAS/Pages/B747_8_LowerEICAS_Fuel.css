@@ -6,11 +6,11 @@
   --eicasGreen: green;
   --eicasOrange: #db7200;
   --eicasRed: red;
-  --eicasMagenta: magenta; }
+  --eicasMagenta: #D570FF; }
   :root div {
-    font-family: Roboto-Bold; }
+    font-family: BoeingEICAS; }
   :root text {
-    font-family: Roboto-Bold; }
+    font-family: BoeingEICAS; }
   :root div.gauges {
     position: absolute;
     left: 6%;
@@ -36,6 +36,12 @@
     stroke: var(--eicasRed);
     stroke-width: 3px;
     fill: none; }
+
+@font-face {
+  font-family: "BoeingEICAS";
+  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
 
 b747-8-lower-eicas-fuel {
   position: relative;

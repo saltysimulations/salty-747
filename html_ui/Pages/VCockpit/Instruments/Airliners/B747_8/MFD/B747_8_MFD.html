@@ -9,7 +9,7 @@
             </div>
             <div id="map-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
                 <svg viewBox="0 0 600 600">
-                    <rect fill="transpartent" x="283" y="317" width="35px" height="20px" stroke="#db8e00" stroke-width="2" id="map-rect"></rect>
+                    <rect fill="transpartent" x="283" y="317" width="35px" height="20px" stroke="#db8e00" stroke-width="3" id="map-rect"></rect>
                     <text x="300" y="334" style="text-anchor:middle;fill:#db8e00;font-size:17px;">MAP</text>     
                 </svg>
             </div>
@@ -31,13 +31,13 @@
                     <div id="Speed">
                         <svg>
                             <text id="GS_Text" class="Small" x="0%" y="20%" alignment-baseline="baseline">GS</text>
-                            <text id="GS_Value" class="Value" x="24%" y="20%" alignment-baseline="baseline" text-anchor="end">---</text>
-                            <text id="TAS_Text" class="Small" x="26%" y="20%" alignment-baseline="baseline">TAS</text>
-                            <text id="TAS_Value" class="Value" x="39%" y="20%" alignment-baseline="baseline">---</text>
+                            <text id="GS_Value" class="Value" x="20%" y="20%" alignment-baseline="baseline" text-anchor="end">---</text>
+                            <text id="TAS_Text" class="Small" x="25%" y="20%" alignment-baseline="baseline">TAS</text>
+                            <text id="TAS_Value" class="Value" x="35.5%" y="20%" alignment-baseline="baseline">---</text>
                             <text id="Wind_Direction" class="Value" x="0%" y="45%" alignment-baseline="baseline">--</text>
-                            <text id="Wind_Separator" class="Large" x="14%" y="45%" alignment-baseline="baseline">/</text>
-                            <text id="Wind_Strength" class="Value" x="22%" y="45%" alignment-baseline="baseline">--</text>
-                            <polygon id="Wind_Arrow" points="-3 20, 3 20, 3 -20, 15 -20, 0 -40, -15 -20, -3 -20" transform="translate(40 130) rotate(0)" fill="white" display="none" />
+                            <text id="Wind_Separator" class="Large" x="14%" y="45%" alignment-baseline="baseline">°/</text>
+                            <text id="Wind_Strength" class="Value" x="23%" y="45%" alignment-baseline="baseline">--</text>
+                            <polygon id="Wind_Arrow" points="-3 35, 3 35, 3 -30, 14 -21, 17 -25, 0 -40, -17 -25, -14 -21, -3 -30," transform="translate(50 127) rotate(0)" fill="white" display="none" />
                         </svg>
                     </div>
 
@@ -55,12 +55,12 @@
                         <svg>
                             <g id="WP_Data">
                             <text id="WP_Track_Value" class="Units" x="0%" y="0%" alignment-baseline="baseline" style="fill:#000000"></text>
-                            <text id="WP_Name" class="Large" x="64.5%" y="20%" alignment-baseline="baseline" style="fill:#ff00ff;text-anchor:start"></text>
-                            <text id="WP_ZuluTime" class="Value" x="99.25%" y="45%" alignment-baseline="baseline" style="text-align:left">------</text>
-                            <text id="WP_Distance_Value" class="Value" x="84.5%" y="70%" alignment-baseline="baseline" style="text-align:left">-.-</text>
-                            <text id="WP_Distance_Units" class="Units" x="92.25%" y="70%" alignment-baseline="baseline" style="fill:#ffffff">NM</text>
-                            <text id="ZuluClock_Time" class="Units" x="85%" y="90%" alignment-baseline="baseline" style="fill:#ffffff"></text>
-                            <text id="ZuluClock_Label" class="Units" x="100%" y="90%" alignment-baseline="baseline" style="fill:#00ffff">UTC</text>
+                            <text id="WP_Name" class="Large" x="67.5%" y="20%" alignment-baseline="baseline" style="fill:#D570FF;text-anchor:start"></text>
+                            <text id="WP_ZuluTime" class="Value" x="98.75%" y="43%" alignment-baseline="baseline" style="text-align:left">------</text>
+                            <text id="WP_Distance_Value" class="Value" x="85.5%" y="66%" alignment-baseline="baseline" style="text-align:left">-.-</text>
+                            <text id="WP_Distance_Units" class="Units" x="92.5%" y="66%" alignment-baseline="baseline" style="fill:#ffffff">NM</text>
+                            <text id="ZuluClock_Time" class="Units" x="85%" y="87%" alignment-baseline="baseline" style="fill:#ffffff"></text>
+                            <text id="ZuluClock_Label" class="Units" x="100%" y="87%" alignment-baseline="baseline" style="fill:#00ffff">UTC</text>
                             </g> 
                         </svg>
                     </div>
@@ -69,9 +69,9 @@
                 <div id="VORDMENavaids">
                     <div id="VORDMENavaid_Left" style="display:none">
                         <svg>
-                            <text id="State" x="50%" y="16%" alignment-baseline="middle"></text>
+                            <text id="State" x="18%" y="16%" alignment-baseline="middle"></text>
                             <text id="ID" x="42.5%" y="50%" alignment-baseline="middle"></text>
-                            <text id="Mode" x="67.5%" y="50%" alignment-baseline="middle"></text>
+                            <text id="Mode" x="50.5%" y="50%" alignment-baseline="middle"></text>
                             <text id="Distance" x="50%" y="84%" alignment-baseline="middle">--</text>
                             <text id="Unit" x="75%" y="84%" alignment-baseline="middle">nm</text>
                         </svg>
@@ -79,7 +79,7 @@
 
                     <div id="VORDMENavaid_Right" style="display:none">
                         <svg>
-                            <text id="State" x="50%" y="16%" alignment-baseline="middle"></text>
+                            <text id="State" x="72%" y="16%" alignment-baseline="middle"></text>
                             <text id="ID" x="42.5%" y="50%" alignment-baseline="middle"></text>
                             <text id="Mode" x="67.5%" y="50%" alignment-baseline="middle"></text>
                             <text id="Distance" x="25%" y="84%" alignment-baseline="middle">--</text>
@@ -90,12 +90,12 @@
 
                 <div id="Symbols">
                     <svg>
-                        <text id="ARPT" class="Small" x="0%" y="5%" alignment-baseline="baseline">ARPT</text>
-                        <text id="WPT" class="Small" x="0%" y="10%" alignment-baseline="baseline">WPT</text>
-                        <text id="STA" class="Small" x="0%" y="15%" alignment-baseline="baseline">STA</text>
+                        <text id="ARPT" class="Small" x="0%" y="3%" alignment-baseline="baseline">ARPT</text>
+                        <text id="WPT" class="Small" x="0%" y="8%" alignment-baseline="baseline">WPT</text>
+                        <text id="STA" class="Small" x="0%" y="13%" alignment-baseline="baseline">STA</text>
                         <text id="TERR" class="Large" x="0%" y="20%" alignment-baseline="baseline">TERR</text>
                         <text id="WXR" class="Large" x="0%" y="20%" alignment-baseline="baseline">WXR</text>
-                        <text id="WXRInfo" class="Large" x="0%" y="25%" alignment-baseline="baseline">---</text>
+                        <text id="WXRInfo" class="Large" x="0%" y="27%" alignment-baseline="baseline">-1</text>
                     </svg>
                 </div>
             </jet-mfd-nd-info>
@@ -126,7 +126,7 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SelectableElement.js"></script>
 
-<script type="text/html" import-template="/Pages/VCockpit/Instruments/Shared/Map/MapInstrument.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.html"></script> <!-- Modified -->
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/NavSystem.js"></script>
 
