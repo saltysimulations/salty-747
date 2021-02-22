@@ -36,7 +36,12 @@
     stroke: var(--eicasRed);
     stroke-width: 3px;
     fill: none; }
-
+  @font-face {
+    font-family: "BoeingEICAS";
+    src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal; }
+    
 b747-8-eicas-gauge {
   display: inline-block;
   width: 14%;
