@@ -1,6 +1,7 @@
 class B747_8_FMC_MainDisplay extends Boeing_FMC {
     constructor() {
         super(...arguments);
+        this.activeSystem = "FMC";
         this._registered = false;
         this._lastActiveWP = 0;
         this._wasApproachActive = false;
@@ -91,6 +92,74 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
+
+        /* SALTY 747 VARS */
+        this._TORwyWindHdg = "";
+        this._TORwyWindSpd = "";
+        this.messages = [];
+        this.sentMessages = [];
+        this.atcComm = {            
+            estab: false,
+            loggedTo: "",
+            nextCtr: "",
+            maxUlDelay: "",
+            ads: "",
+            adsEmerg: "",
+            dlnkStatus: "NO COMM",
+            uplinkPeding: false,
+            fltNo: "",
+            origin: "",
+            planDep: "",
+            dest: "",
+            eta: "",
+            altn: "",
+            company: ""
+        };
+        this.companyComm = {
+            estab: false,
+            company: "",
+        };
+        this.simbrief = {
+            route: "",
+            cruiseAltitude: "",
+            originIcao: "",
+            destinationIcao: "",
+            blockFuel: "",
+            payload: "",
+            estZfw: "",
+            costIndex: "",
+            navlog: "",
+            icao_airline: "",
+            flight_number: "",
+            alternateIcao: "",
+            avgTropopause: "",
+            ete: "",
+            blockTime: "",
+            outTime: "",
+            onTime: "",
+            inTime: "",
+            offTime: "",
+            taxiFuel: "",
+            tripFuel: "",
+            altnFuel: "",
+            finResFuel: "",
+            contFuel: "",
+            route_distance: "",
+            rteUplinkReady: false,            
+            perfUplinkReady: false
+        }
+        this.fixInfo = [];
+        this.pdc = {
+            fltNo: "",
+            dept: "",
+            atis: "",
+            stand: "",
+            acType: "",
+            dest: "",
+            freeText: "",
+            ats: "",
+            sendStatus: ""
+        }
     }
     get templateID() { return "B747_8_FMC"; }
     connectedCallback() {
@@ -109,15 +178,37 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._thrustTakeOffTemp = NaN  /*Math.ceil(oat / 10) * 10*/;
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
-        this.onInit = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(this); };
-        this.onLegs = () => { B747_8_FMC_LegsPage.ShowPage1(this); };
-        this.onRte = () => { FMCRoutePage.ShowPage1(this); };
-        this.onDepArr = () => { B747_8_FMC_DepArrIndexPage.ShowPage1(this); };
-        this.onRad = () => { B747_8_FMC_NavRadioPage.ShowPage(this); };
-        this.onVNAV = () => { B747_8_FMC_VNAVPage.ShowPage1(this); };
-        this.onProg = () => { B747_8_FMC_ProgPage.ShowPage1(this); };
-        FMCIdentPage.ShowPage1(this);
-
+        this.onInit = () => {
+            B747_8_FMC_InitRefIndexPage.ShowPage1(this);
+        };
+        this.onLegs = () => {
+            B747_8_FMC_LegsPage.ShowPage1(this);
+        };
+        this.onRte = () => {
+            FMCRoutePage.ShowPage1(this);
+        };
+        this.onDepArr = () => {
+            B747_8_FMC_DepArrIndexPage.ShowPage1(this);
+        };
+        this.onRad = () => {
+            B747_8_FMC_NavRadioPage.ShowPage(this);
+        };
+        this.onVNAV = () => {
+            B747_8_FMC_VNAVPage.ShowPage1(this);
+        };
+        this.onProg = () => {
+            B747_8_FMC_ProgPage.ShowPage1(this);
+        };
+        this.onAtc = () => { 
+            FMC_ATC_Index.ShowPage(this);
+        };
+        this.onFmcComm = () => { 
+            FMC_COMM_Index.ShowPage(this);
+        };
+        this.onMenu = () => { 
+            FMC_Menu.ShowPage(this);
+        };
+        FMC_Menu.ShowPage(this);
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
     }
@@ -154,6 +245,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (input === "VNAV") {
             if (this.onVNAV) {
                 this.onVNAV();
+            }
+        }
+        if (input === "PROG") {
+            if (this.onProg) {
+                this.onProg();
+            }
+        }
+        if (input === "ATC") {
+            if (this.onAtc) {
+                this.onAtc();
+            }
+        }
+        if (input === "FMCCOMM") {
+            if (this.onFmcComm) {
+                this.onFmcComm();
+            }
+        }
+        if (input === "MENU") {
+            if (this.onMenu) {
+                this.onMenu();
             }
         }
         return false;
@@ -801,6 +912,319 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
             this.updateAutopilotCooldown = this._apCooldown;
         }
+    }
+    static stringTohhmm(value) {
+        value = value.padStart(4, "0");
+        const h = parseInt(value.slice(0, 2));
+        const m = parseInt(value.slice(2, 4));
+        return h.toFixed(0).padStart(2, "0") + ":" + m.toFixed(0).padStart(2, "0");
+    }
+    
+    refreshGrossWeight(_force = false) {
+        let gw = 0;
+        let isInMetric = BaseAirliners.unitIsMetric(Aircraft.A320_NEO);
+        if (isInMetric) {
+            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "kg"));
+            if (this.gwUnit)
+                this.gwUnit.textContent = "KG";
+        }
+        else {
+            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs"));
+            if (this.gwUnit)
+                this.gwUnit.textContent = "LBS";
+        }
+        if ((gw != this.currentGW) || _force) {
+            this.currentGW = gw;
+            if (this.gwValue != null) {
+                this.gwValue.textContent = this.currentGW.toString();
+            }
+        }
+    }
+
+    // SALTY 747 FUNCTIONS
+    // INCOMING AOC MESSAGES
+    getMessages() {
+        return this.messages;
+    }
+    getMessage(id, type) {
+        const messages = this.messages;
+        const currentMessageIndex = messages.findIndex(m => m["id"].toString() === id.toString());
+        if (type === 'previous') {
+            if (messages[currentMessageIndex - 1]) {
+                return messages[currentMessageIndex - 1];
+            }
+            return null;
+        } else if (type === 'next') {
+            if (messages[currentMessageIndex + 1]) {
+                return messages[currentMessageIndex + 1];
+            }
+            return null;
+        }
+        return messages[currentMessageIndex];
+    }
+    getMessageIndex(id) {
+        return this.messages.findIndex(m => m["id"].toString() === id.toString());
+    }
+    addMessage(message) {
+        this.messages.unshift(message);
+        const cMsgCnt = SimVar.GetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number");
+        SimVar.SetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number", cMsgCnt + 1);
+    }
+    deleteMessage(id) {
+        if (!this.messages[id]["opened"]) {
+            const cMsgCnt = SimVar.GetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number");
+            SimVar.SetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number", cMsgCnt <= 1 ? 0 : cMsgCnt - 1);
+        }
+        this.messages.splice(id, 1);
+    }
+
+    // OUTGOING/SENT AOC MESSAGES
+
+    /* Delay when uplinking data */
+    getUplinkDelay() {
+        return 1000 + 750 * Math.random();
+    }
+    /* Delay when inserting data */
+    getInsertDelay() {
+        return 650 + 500 * Math.random();
+    }
+    getSentMessages() {
+        return this.sentMessages;
+    }
+    getSentMessage(id, type) {
+        const messages = this.sentMessages;
+        const currentMessageIndex = messages.findIndex(m => m["id"].toString() === id.toString());
+        if (type === 'previous') {
+            if (messages[currentMessageIndex - 1]) {
+                return messages[currentMessageIndex - 1];
+            }
+            return null;
+        } else if (type === 'next') {
+            if (messages[currentMessageIndex + 1]) {
+                return messages[currentMessageIndex + 1];
+            }
+            return null;
+        }
+        return messages[currentMessageIndex];
+    }
+    getSentMessageIndex(id) {
+        return this.sentMessages.findIndex(m => m["id"].toString() === id.toString());
+    }
+    addSentMessage(message) {
+        this.sentMessages.unshift(message);
+    }
+    deleteSentMessage(id) {
+        this.sentMessages.splice(id, 1);
+    }
+    getTimeString(time) {
+        var hours = time.getUTCHours();
+        hours = hours.toString();
+        hours = hours.padStart(2, "0");
+        var minutes = time.getUTCMinutes();
+        minutes = minutes.toString();
+        minutes = minutes.padStart(2, "0");
+        var timeString = hours + minutes + "Z";
+        return timeString
+    }
+
+    /* VISUALS */
+
+    getTitle() {
+        if (this._title === undefined) {
+            this._title = this._titleElement.textContent;
+        }
+        return this._title;
+    }
+    setTitle(content) {
+        let color = content.split("[color]")[1];
+        if (!color) {
+            color = "white";
+        }
+        this._title = content.split("[color]")[0];
+        this._titleElement.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+        this._titleElement.classList.add(color);
+        this._titleElement.innerHTML = this._title;
+    }
+    getPageCurrent() {
+        if (this._pageCurrent === undefined) {
+            this._pageCurrent = parseInt(this._pageCurrentElement.textContent);
+        }
+        return this._pageCurrent;
+    }
+    setPageCurrent(value) {
+        if (typeof (value) === "number") {
+            this._pageCurrent = value;
+        }
+        else if (typeof (value) === "string") {
+            this._pageCurrent = parseInt(value);
+        }
+        this._pageCurrentElement.textContent = (this._pageCurrent > 0 ? this._pageCurrent : "") + "";
+    }
+    getPageCount() {
+        if (this._pageCount === undefined) {
+            this._pageCount = parseInt(this._pageCountElement.textContent);
+        }
+        return this._pageCount;
+    }
+    setPageCount(value) {
+        if (typeof (value) === "number") {
+            this._pageCount = value;
+        }
+        else if (typeof (value) === "string") {
+            this._pageCount = parseInt(value);
+        }
+        this._pageCountElement.textContent = (this._pageCount > 0 ? this._pageCount : "") + "";
+        if (this._pageCount === 0) {
+            this.getChildById("page-slash").textContent = "";
+        }
+        else {
+            this.getChildById("page-slash").textContent = "/";
+        }
+    }
+    getLabel(row, col = 0) {
+        if (!this._labels[row]) {
+            this._labels[row] = [];
+        }
+        return this._labels[row][col];
+    }
+    setLabel(label, row, col = -1) {
+        if (col >= this._labelElements[row].length) {
+            return;
+        }
+        if (!this._labels[row]) {
+            this._labels[row] = [];
+        }
+        if (!label) {
+            label = "";
+        }
+        if (col === -1) {
+            for (let i = 0; i < this._labelElements[row].length; i++) {
+                this._labels[row][i] = "";
+                this._labelElements[row][i].textContent = "";
+            }
+            col = 0;
+        }
+        if (label === "__FMCSEPARATOR") {
+            label = "------------------------";
+        }
+        if (label !== "") {
+            let color = label.split("[color]")[1];
+            if (!color) {
+                color = "white";
+            }
+            let e = this._labelElements[row][col];
+            e.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+            e.classList.add(color);
+            label = label.split("[color]")[0];
+        }
+        this._labels[row][col] = label;
+        this._labelElements[row][col].textContent = label;
+    }
+    getLine(row, col = 0) {
+        if (!this._lines[row]) {
+            this._lines[row] = [];
+        }
+        return this._lines[row][col];
+    }
+    setLine(content, row, col = -1) {
+        if (col >= this._lineElements[row].length) {
+            return;
+        }
+        if (!content) {
+            content = "";
+        }
+        if (!this._lines[row]) {
+            this._lines[row] = [];
+        }
+        if (col === -1) {
+            for (let i = 0; i < this._lineElements[row].length; i++) {
+                this._lines[row][i] = "";
+                this._lineElements[row][i].textContent = "";
+            }
+            col = 0;
+        }
+        if (content === "__FMCSEPARATOR") {
+            content = "------------------------";
+        }
+        if (content !== "") {
+            if (content.indexOf("[s-text]") !== -1) {
+                content = content.replace("[s-text]", "");
+                this._lineElements[row][col].classList.add("s-text");
+            }
+            else {
+                this._lineElements[row][col].classList.remove("s-text");
+            }
+            let color = content.split("[color]")[1];
+            if (!color) {
+                color = "white";
+            }
+            let e = this._lineElements[row][col];
+            e.classList.remove("white", "blue", "yellow", "green", "red", "magenta", "inop");
+            e.classList.add(color);
+            content = content.split("[color]")[0];
+        }
+        content = content.replace("\<", "&lt");
+        this._lines[row][col] = content;
+        this._lineElements[row][col].innerHTML = this._lines[row][col];
+    }
+    get inOut() {
+        return this.getInOut();
+    }
+    getInOut() {
+        if (this._inOut === undefined) {
+            this._inOut = this._inOutElement.textContent;
+        }
+        return this._inOut;
+    }
+    set inOut(v) {
+        this.setInOut(v);
+    }
+    setInOut(content) {
+        this._inOut = content;
+        this._inOutElement.textContent = this._inOut;
+        if (content === FMCMainDisplay.clrValue) {
+            this._inOutElement.style.paddingLeft = "8%";
+        }
+        else {
+            this._inOutElement.style.paddingLeft = "";
+        }
+    }
+    setTemplate(template) {
+        if (template[0]) {
+            this.setTitle(template[0][0]);
+            this.setPageCurrent(template[0][1]);
+            this.setPageCount(template[0][2]);
+        }
+        for (let i = 0; i < 6; i++) {
+            let tIndex = 2 * i + 1;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLabel(template[tIndex][0], i, 0);
+                    this.setLabel(template[tIndex][1], i, 1);
+                    this.setLabel(template[tIndex][2], i, 2);
+                    this.setLabel(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLabel(template[tIndex][0], i, -1);
+                }
+            }
+            tIndex = 2 * i + 2;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLine(template[tIndex][0], i, 0);
+                    this.setLine(template[tIndex][1], i, 1);
+                    this.setLine(template[tIndex][2], i, 2);
+                    this.setLine(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLine(template[tIndex][0], i, -1);
+                }
+            }
+        }
+        if (template[13]) {
+            this.setInOut(template[13][0]);
+        }
+        SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
     }
 }
 B747_8_FMC_MainDisplay._v1s = [

@@ -152,6 +152,7 @@ var B747_8_UpperEICAS;
         createEGTGaugeDefinition(_engine) {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getEGTValue.bind(this);
+
             definition.maxValue = 1060;
             definition.valueBoxWidth = 60;
             definition.barHeight = 60;
@@ -172,6 +173,7 @@ var B747_8_UpperEICAS;
 			else {
 				return 875;
 			}
+
         }
         refresh() {
             if (this.n1Gauge != null) {
