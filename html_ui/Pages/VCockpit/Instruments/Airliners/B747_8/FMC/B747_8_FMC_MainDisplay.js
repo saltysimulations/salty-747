@@ -27,6 +27,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             [81.3, 83.8, 86.2, 87.5, 89.6, 91.2, 94.3, 96.0, 95.9, 95.8]
         ];
         this._climbN1TempRow = [60, 50, 40, 30, 20, 15, 10, 5, 0, -5, -10, -15, -20, -25, -30, -35, -40];
+        this._climb1N1Table = [];
+        this._climb2N1TempRow = [];
         this._takeOffN1Table = [
             [89.7, 90.1, 90.6, 90.6, 90.6, 90.5, 90.4, 90.4, 90.3, 90.3, 89.7, 89.2, 88.5],
             [92.5, 93, 93.4, 93.4, 93.4, 93.3, 93.3, 93.2, 93.2, 93.2, 92.6, 92, 91.4],
@@ -38,17 +40,89 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             [97.2, 98.8, 100.4, 100.4, 100.4, 100.4, 100.4, 100.1, 100, 99.9, 99.5, 99.2, 98.8],
             [96.4, 98, 99.6, 100.1, 100.7, 101.1, 101.1, 101.1, 101.7, 101.3, 100.3, 99.9, 99.5],
             [95.6, 97.2, 98.8, 99.3, 99.9, 100.5, 101.1, 101.8, 102.2, 102.4, 102.1, 101.5, 100.3],
-            [94.8, 96.3, 97.9, 98.4, 99, 99.6, 1012, 101, 101.7, 102.5, 102.5, 102.2, 1011],
-            [93.9, 95.5, 97.1, 97.6, 981, 98.8, 99.4, 100.1, 100.8, 101.6, 101.8, 102, 102.3],
-            [93.1, 94.7, 96.2, 96.7, 97.3, 97.9, 98.5, 991, 99.9, 100.7, 100.9, 101.2, 101.4],
+            [94.8, 96.3, 97.9, 98.4, 99, 99.6, 100.2, 101, 101.7, 102.5, 102.5, 102.2, 101.2],
+            [93.9, 95.5, 97.1, 97.6, 98.1, 98.8, 99.4, 100.1, 100.8, 101.6, 101.8, 102, 102.3],
+            [93.1, 94.7, 96.2, 96.7, 97.3, 97.9, 98.5, 99.2, 99.9, 100.7, 100.9, 101.2, 101.4],
             [92.3, 93.8, 95.3, 95.8, 96.4, 97, 97.6, 98.3, 99.1, 99.8, 100, 100.3, 100.6],
             [90.6, 92.1, 93.6, 94.1, 94.6, 95.2, 95.9, 96.6, 97.3, 98, 8.3, 98.5, 98.8],
             [88.8, 90.3, 91.8, 92.3, 92.8, 93.4, 94.1, 94.8, 95.5, 96.3, 96.5, 96.7, 97],
             [87.0, 815, 89.9, 90.4, 91, 91.6, 92.3, 93, 93.7, 94.4, 94.7, 94.9, 95.2],
             [85.2, 86.7, 88.1, 88.6, 89.1, 89.8, 90.5, 91.2, 91.9, 92.6, 92.8, 93.1, 93.4],
-            [83.4, 84.8, 861, 86.7, 87.3, 87.9, 88.6, 89.3, 90, 90.7, 91, 91.2, 91.5]
+            [83.4, 84.8, 86.1, 86.7, 87.3, 87.9, 88.6, 89.3, 90, 90.7, 91, 91.2, 91.5]
         ];
         this._takeOffN1TempRow = [70, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -10, -20, -30, -40, -50];
+        this._takeOff1N1Table = [
+            [86.0, 86.5, 86.9, 86.9, 86.8, 86.8, 86.7, 86.6, 86.6, 86.6, 86.1, 85.9, 86.0],
+            [88.7, 89.1, 89.6, 89.6, 89.5, 89.5, 89.4, 89.3, 89.3, 89.3, 88.8, 88.2, 87.6],
+            [90.0, 90.5, 90.9, 90.9, 90.9, 90.8, 90.7, 90.7, 90.7, 90.6, 90.1, 89.5, 89.0],
+            [91.3, 91.8, 92.2, 92.1, 92.1, 92.1, 92.0, 92.0, 92.0, 91.9, 91.4, 90.8, 90.3],
+            [92.6, 93.1, 93.5, 93.4, 93.4, 93.3, 93.3, 93.2, 93.2, 93.2, 92.7, 92.1, 91.5],
+            [93.5, 94.3, 94.9, 94.7, 94.5, 94.5, 94.5, 94.5, 94.4, 94.4, 93.9, 93.4, 92.8],
+            [93.9, 94.8, 95.6, 95.5, 95.5, 95.3, 95.2, 95.1, 95.1, 95.1, 94.8, 94.4, 94.0],
+            [93.3, 94.7, 96.1, 96.0, 96.0, 96.0, 96.0, 95.8, 95.7, 95.6, 95.3, 95.0, 94.7],
+            [92.5, 93.9, 95.3, 95.7, 96.2, 96.5, 96.6, 96.6, 97.0, 96.7, 95.9, 95.5, 95.2],
+            [91.7, 93.1, 94.5, 94.9, 95.4, 95.9, 96.3, 96.8, 97.0, 97.1, 97.0, 96.6, 95.7],
+            [90.9, 92.3, 93.6, 94.1, 94.6, 95.1, 95.5, 96.0, 96.4, 96.9, 96.9, 96.7, 96.1],
+            [90.1, 91.5, 92.8, 93.3, 93.8, 94.3, 94.7, 95.1, 95.6, 96.0, 96.2, 96.3, 96.5],
+            [89.3, 90.7, 92.0, 92.5, 93.0, 93.4, 93.8, 94.3, 94.7, 95.2, 95.3, 95.5, 95.6],
+            [88.5, 89.9, 91.2, 91.6, 92.1, 92.6, 93.0, 93.4, 93.9, 94.3, 94.5, 94.6, 94.8],
+            [86.9, 88.2, 89.5, 89.9, 90.4, 90.9, 91.3, 91.8, 92.2, 92.6, 92.8, 92.9, 93.1],
+            [85.2, 86.5, 87.8, 88.2, 88.7, 89.2, 89.6, 90.0, 90.5, 90.9, 91.1, 91.2, 91.4],
+            [83.5, 84.8, 86.0, 86.4, 86.9, 87.4, 87.9, 88.3, 88.7, 89.2, 89.3, 89.5, 89.6],
+            [81.8, 83.0, 84.2, 84.7, 85.1, 85.7, 86.1, 86.5, 87.0, 87.4, 87.6, 87.7, 87.9],
+            [80.0, 81.2, 82.4, 82.9, 83.4, 83.9, 84.3, 84.7, 85.2, 85.6, 85.7, 85.9, 86.1],
+        ];
+        this._takeOff1N1TempRow = [70, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -10, -20, -30, -40, -50];
+        this._takeOff2N1Table = [
+            [85.9, 85.9, 85.9, 85.9, 85.9, 85.9, 85.9, 85.9, 85.9, 85.9, 85.9, 85.9, 86.0],
+            [84.7, 85.1, 85.5, 85.5, 85.5, 85.4, 85.3, 85.3, 85.3, 85.2, 84.7, 84.7, 84.7],
+            [85.9, 86.4, 86.8, 86.7, 86.7, 86.7, 86.6, 86.5, 86.5, 86.5, 86.0, 85.5, 84.9],
+            [87.1, 87.6, 88.1, 88.0, 88.0, 87.9, 87.8, 87.8, 87.8, 87.8, 87.2, 86.7, 86.1],
+            [88.4, 88.9, 89.3, 89.2, 89.1, 89.1, 89.1, 89.0, 89.0, 89.0, 88.5, 87.9, 87.4],
+            [89.3, 90.0, 90.6, 90.4, 90.2, 90.2, 90.2, 90.2, 90.1, 90.2, 89.7, 89.1, 88.6],
+            [89.6, 90.5, 91.2, 91.2, 91.2, 91.0, 90.9, 90.8, 90.8, 90.8, 90.5, 90.1, 89.8],
+            [89.1, 90.4, 91.7, 91.7, 91.7, 91.7, 91.7, 91.4, 91.4, 91.3, 91.0, 90.7, 90.4],
+            [88.3, 89.6, 90.9, 91.4, 91.9, 92.1, 92.2, 92.2, 92.6, 92.4, 91.5, 91.2, 90.9],
+            [87.6, 88.9, 90.2, 90.6, 91.1, 91.6, 91.9, 92.4, 92.5, 92.7, 92.5, 92.2, 91.4],
+            [86.8, 88.1, 89.4, 89.8, 90.3, 90.8, 91.1, 91.6, 92.0, 92.4, 92.4, 92.3, 91.7],
+            [86.1, 87.4, 88.6, 89.1, 89.5, 90.0, 90.4, 90.8, 91.2, 91.6, 91.7, 91.8, 92.0],
+            [85.3, 86.6, 87.8, 88.3, 88.8, 89.2, 89.6, 90.0, 90.4, 90.8, 90.9, 91.0, 91.2],
+            [84.5, 85.8, 87.0, 87.5, 87.9, 88.4, 88.8, 89.2, 89.6, 90.0, 90.1, 90.2, 90.4],
+            [83.0, 84.2, 85.4, 85.9, 86.3, 86.8, 87.1, 87.6, 88.0, 88.4, 88.5, 88.6, 88.8],
+            [81.4, 82.6, 83.8, 84.2, 84.7, 85.1, 85.5, 85.9, 86.3, 86.7, 86.8, 87.0, 87.1],
+            [79.8, 81.0, 82.1, 82.5, 83.0, 83.5, 83.9, 84.3, 84.6, 85.0, 85.2, 85.3, 85.5],
+            [78.1, 79.3, 80.4, 80.8, 81.3, 81.8, 82.2, 82.6, 83.0, 83.4, 83.5, 83.6, 83.8],
+            [76.4, 77.6, 78.7, 79.1, 79.6, 80.1, 80.5, 80.8, 81.2, 81.6, 81.7, 81.9, 82.0],
+        ];
+        this._takeOff2N1TempRow = [70, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -10, -20, -30, -40, -50];
+		this._goAroundN1Table = [
+			[85.9, 86.7, 87.5, 88.3, 88.7, 89.1, 89.4, 89.8, 89.9, 89.6, 89.0],
+			[87.9, 88.8, 89.7, 90.7, 91.2, 91.7, 92.1, 92.5, 92.7, 92.4, 91.8],
+			[88.8, 89.8, 90.8, 91.8, 92.4, 93.0, 93.4, 93.9, 94.1, 93.8, 93.2],
+			[90.2, 90.9, 91.9, 92.9, 93.6, 94.2, 94.6, 95.1, 95.4, 95.1, 94.5],
+			[91.5, 92.3, 93.2, 94.2, 94.8, 95.3, 95.9, 96.4, 96.7, 96.4, 95.8],
+			[92.8, 93.6, 94.5, 95.4, 96.0, 96.6, 97.1, 97.6, 98.0, 97.7, 97.1],
+			[94.2, 94.9, 95.8, 96.8, 97.2, 97.7, 98.3, 99.0, 99.0, 98.8, 98.3],
+			[94.8, 95.7, 96.6, 97.6, 98.2, 98.7, 99.2, 99.7, 99.9, 99.5, 99.2],
+			[94.1, 95.5, 97.0, 98.1, 98.7, 99.2, 100.3, 100.8, 100.7, 100.3, 99.9],
+			[93.3, 94.7, 96.2, 97.7, 98.9, 100.1, 100.9, 101.7, 102.2, 101.6, 100.7],
+			[92.5, 93.9, 95.4, 96.8, 98.0, 99.3, 100.7, 102.4, 102.9, 102.4, 101.6],
+			[91.7, 93.1, 94.5, 96.0, 97.2, 98.5, 99.8, 101.5, 102.5, 102.5, 102.5],
+			[90.8, 92.1, 93.5, 95.0, 96.2, 97.4, 98.8, 100.4, 101.4, 101.4, 101.5],
+			[90.0, 91.3, 92.7, 94.2, 95.3, 96.6, 97.9, 99.6, 100.5, 100.5, 100.7],
+			[88.3, 89.6, 91.0, 92.4, 93.6, 94.9, 96.2, 97.8, 98.8, 98.8, 98.9],
+			[86.6, 87.9, 89.3, 90.7, 91.9, 93.2, 94.5, 96.1, 97.0, 97.0, 97.1],
+			[84.9, 86.2, 87.6, 89.0, 90.2, 91.4, 92.7, 94.3, 95.2, 95.2, 95.3],
+			[83.2, 84.4, 85.8, 87.2, 88.5, 89.7, 90.9, 92.5, 93.4, 93.4, 93.5],
+			[81.4, 82.7, 84.0, 85.5, 86.7, 87.9, 89.1, 90.6, 91.5, 91.6, 91.7]
+		];
+		this._goAroundN1OATempRow = [70, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -10, -20, -30, -40, -50];
+		this._goAroundN1TATempRow = [74, 64, 59, 54, 49, 44, 39, 34, 29, 24, 19, 14, 8, 3, -7, -17, -27, -37, -47];
+		this._maxContN1Table = [
+		
+		
+		];
+		this._maxContN1TempRow = [ ];
         this._thrustTakeOffMode = 1;
         this._thrustCLBMode = 1;
         this._thrustTakeOffTemp = 20;
@@ -147,7 +221,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     Init() {
         super.Init();
         let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-        this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
+        SimVar.SetSimVarValue("L:AIRLINER_ASSUMED_TEMP", "string", "--");
+        this._thrustTakeOffTemp = SimVar.GetSimVarValue("L:AIRLINER_ASSUMED_TEMP");
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.onInit = () => {
@@ -513,17 +588,69 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return this._climbN1Table[lineIndex][rowIndex];
     }
     getTakeOffThrustN1(temperature, airportAltitude) {
+        let mode = this.getThrustTakeOffMode();
         let lineIndex = 0;
-        for (let i = 0; i < this._takeOffN1TempRow.length; i++) {
-            lineIndex = i;
-            if (temperature > this._takeOffN1TempRow[i]) {
-                break;
+        if (mode === 0) {
+            for (let i = 0; i < this._takeOffN1TempRow.length; i++) {
+                lineIndex = i;
+                if (temperature > this._takeOffN1TempRow[i]) {
+                    break;
+                }
+            }
+            let rowIndex = Math.floor(airportAltitude / 1000) + 2;
+            rowIndex = Math.max(0, rowIndex);
+            rowIndex = Math.min(rowIndex, this._takeOffN1Table[0].length - 1);
+            return this._takeOffN1Table[lineIndex][rowIndex];
+        }
+        else if (mode === 1) {
+            for (let i = 0; i < this._takeOff1N1TempRow.length; i++) {
+                lineIndex = i;
+                if (temperature > this._takeOff1N1TempRow[i]) {
+                    break;
+                }
+            }
+            let rowIndex = Math.floor(airportAltitude / 1000) + 2;
+            rowIndex = Math.max(0, rowIndex);
+            rowIndex = Math.min(rowIndex, this._takeOff1N1Table[0].length - 1);
+            return this._takeOff1N1Table[lineIndex][rowIndex];
+        }
+        else if (mode === 2) {
+            for (let i = 0; i < this._takeOff2N1TempRow.length; i++) {
+                lineIndex = i;
+                if (temperature > this._takeOff2N1TempRow[i]) {
+                    break;
+                }
+            }
+            let rowIndex = Math.floor(airportAltitude / 1000) + 2;
+            rowIndex = Math.max(0, rowIndex);
+            rowIndex = Math.min(rowIndex, this._takeOff2N1Table[0].length - 1);
+            return this._takeOff2N1Table[lineIndex][rowIndex];
+        }
+    }
+    getGoAroundThrustN1(temperature, altitude) {
+        let lineIndex = 0;
+        let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
+        let tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "celsius");
+        if (oat > tat) {
+            for (let i = 0; i < this._goAroundN1OATempRow.length; i++) {
+                lineIndex = i;
+                if (temperature > this._goAroundN1OATempRow[i]) {
+                    break;
+                }
             }
         }
-        let rowIndex = Math.floor(airportAltitude / 1000) + 2;
+        else {
+            for (let i = 0; i < this._goAroundN1TATempRow.length; i++) {
+                lineIndex = i;
+                if (temperature > this._goAroundN1TATempRow[i]) {
+                    break;
+                }
+            }
+        }
+        let rowIndex = Math.floor(altitude / 5000);
         rowIndex = Math.max(0, rowIndex);
-        rowIndex = Math.min(rowIndex, this._takeOffN1Table[0].length - 1);
-        return this._takeOffN1Table[lineIndex][rowIndex];
+        rowIndex = Math.min(rowIndex, this._goAroundN1Table[0].length - 1);
+        return this._goAroundN1Table[lineIndex][rowIndex];
     }
     getThrustTakeOffMode() {
         return this._thrustTakeOffMode;
@@ -538,7 +665,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return this._thrustCLBMode;
     }
     setThrustCLBMode(m) {
-        if (m >= 0 && m <= 2) {
+        if (m >= 0 && m <= 5) {
             this._thrustCLBMode = m;
             SimVar.SetSimVarValue("L:AIRLINER_THRUST_CLIMB_MODE", "number", this._thrustCLBMode);
         }
@@ -549,10 +676,11 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     setThrustTakeOffTemp(s) {
         let v = parseFloat(s);
         if (isFinite(v)) {
-            let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-            if (v >= oat && v < 80) {
-                this._thrustTakeOffTemp = v;
-                return true;
+            let oat = Math.round(SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius"));
+            if (v >= oat && v < 100) {
+                SimVar.SetSimVarValue("L:AIRLINER_ASSUMED_TEMP", "Number", v);
+				this._thrustTakeOffTemp = v;
+				return true;
             }
             this.showErrorMessage("OUT OF RANGE");
             return false;
@@ -561,18 +689,20 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return false;
     }
     getThrustTakeOffLimit() {
-        let airport = this.flightPlanManager.getOrigin();
-        if (airport) {
-            let altitude = airport.infos.coordinates.alt;
-            let n1 = this.getTakeOffThrustN1(this.getThrustTakeOffTemp(), altitude) - this.getThrustTakeOffMode() * 10;
-            return n1;
-        }
-        return 95;
+        let altitude = SimVar.GetSimVarValue("INDICATED ALTITUDE", "feet");
+        let n1 = this.getTakeOffThrustN1(this.getThrustTakeOffTemp(), altitude);
+        return n1;
     }
     getThrustClimbLimit() {
         let altitude = Simplane.getAltitude();
         let temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         return this.getClimbThrustN1(temperature, altitude) - this.getThrustCLBMode() * 8.6;
+    }
+    getThrustGoAroundLimit() {
+        let altitude = Simplane.getAltitude();
+        temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
+        let n1 = this.getGoAroundThrustN1(temperature, altitude);
+		return n1;
     }
     updateAutopilot() {
         let now = performance.now();
