@@ -2,12 +2,6 @@ class FMCThrustLimPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
         let selectedTempCell = fmc.getThrustTakeOffTemp() + "°";
-		/*if (isNaN(selectedTempCell)) {
-			selectedTempCell = "--";
-		}
-		else {
-			selectedTempCell = fmc.getThrustTakeOffTemp ();
-		}*/
         fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
@@ -26,28 +20,14 @@ class FMCThrustLimPage {
             FMCThrustLimPage.ShowPage1(fmc);
         };
         fmc.onLeftInput[2] = () => {
-			if (selectedTempCell === "--"){
-				fmc.setThrustTakeOffMode(1);
-				fmc.setThrustCLBMode(1);
-				FMCThrustLimPage.ShowPage1(fmc);
-			}
-			else {
-				fmc.setThrustTakeOffMode(1);
-				fmc.setThrustCLBMode(1);
-				FMCThrustLimPage.ShowPage1(fmc);
-			}
+            fmc.setThrustTakeOffMode(1);
+            fmc.setThrustCLBMode(1);
+            FMCThrustLimPage.ShowPage1(fmc);
         };
         fmc.onLeftInput[3] = () => {
-            if (selectedTempCell === "--"){
-				fmc.setThrustTakeOffMode(2);
-				fmc.setThrustCLBMode(2);
-				FMCThrustLimPage.ShowPage1(fmc);
-			}
-			else {
-				fmc.setThrustTakeOffMode(2);
-				fmc.setThrustCLBMode(2);
-				FMCThrustLimPage.ShowPage1(fmc);
-			}
+            fmc.setThrustTakeOffMode(2);
+            fmc.setThrustCLBMode(2);
+            FMCThrustLimPage.ShowPage1(fmc);
         };
         fmc.onRightInput[1] = () => {
             fmc.setThrustCLBMode(0);

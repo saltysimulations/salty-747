@@ -6,11 +6,11 @@
   --eicasGreen: green;
   --eicasOrange: #db7200;
   --eicasRed: red;
-  --eicasMagenta: magenta; }
+  --eicasMagenta: #D570FF; }
   :root div {
-    font-family: Roboto-Bold; }
+    font-family: BoeingEICAS !important; }
   :root text {
-    font-family: Roboto-Bold; }
+    font-family: BoeingEICAS !important; }
   :root div.gauges {
     position: absolute;
     left: 6%;
