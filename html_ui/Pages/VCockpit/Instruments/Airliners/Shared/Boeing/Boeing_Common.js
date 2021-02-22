@@ -8,13 +8,14 @@ var Boeing;
             this.refresh("", true);
         }
         getText(phase, mode) {
-			let assumed = Simplane.getFlexTemperature();
+            let oat = Math.round(SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius"));
+			let assumed = SimVar.GetSimVarValue("L:AIRLINER_ASSUMED_TEMP", "Number");
             let text = "-";
             if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
-				if (Number.isNaN(assumed)) {
+				if (assumed > oat) {
 					text = "D-TO";
 					if (mode === 0) {
-						text += "+" + assumed + "C";
+						text += " +" + assumed + "C";
 					}
 					if (mode === 1) {
 						text += " 1" + " +" + assumed + "C";
@@ -22,8 +23,16 @@ var Boeing;
 					if (mode === 2) {
 						text += " 2" + " +" + assumed + "C";
 					}
+                    if (mode === 3) {
+                        text = "GA";
+                    }
+                    if (mode === 4) {
+                        text = "CON";
+                    }
+                    if (mode === 5) {
+                        text = "CRZ";
+                    }
 				}
-
 				else {
 					text = "TO";
 					if (mode === 1) {
@@ -32,26 +41,27 @@ var Boeing;
 					if (mode === 2) {
 						text += " 2";
 					}
+
 				}
 			}
-            else if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB) {
-                text = "CLB";
+            else {
+                text = "CLB"
                 if (mode === 1) {
                     text += " 1";
                 }
-                if (mode === 2) {
+                else if (mode === 2) {
                     text += " 2";
                 }
-            }
-            else if (phase <= FlightPhase.FLIGHT_PHASE_CRUISE) {
-                text = "CRZ";
-            }
-			else if (phase = FlightPhase.FLIGHT_PHASE_GOAROUND) {
-				text = "GA";
+                else if (mode === 3) {
+                    text = "GA";
+                }
+                else if (mode === 4) {
+                    text = "CON";
+                }
+                else if (mode === 5) {
+                    text = "CRZ";
+                }
 			}
-			/*else if (mode === 3) {
-				text = "CON";
-			}*/
             return text;
         }
         update() {
