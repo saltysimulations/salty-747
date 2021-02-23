@@ -9,9 +9,6 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
             this.engines.push(new B747_8_Engine());
         }
         this.currentPage = "B747_8_EICAS_fuel";
-        Include.addScript("/JS/debug.js", function () {
-            g_modDebugMgr.AddConsole(null);
-        });
     }
     reboot() {
         super.reboot();
