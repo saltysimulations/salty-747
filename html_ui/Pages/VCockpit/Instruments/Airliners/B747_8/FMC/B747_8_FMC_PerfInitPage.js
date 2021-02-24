@@ -2,12 +2,8 @@ class FMCPerfInitPage {
     static ShowPage1(fmc, store = {requestData: "<SEND", loadUplink: "", purgeUplink: "__FMCSEPARATOR", dataLink: "REQUEST", stepSizeLabel: "STEP SIZE", perfUplinkHeader: ""}) {
         fmc.updateFuelVars().then(() => {
             fmc.clearDisplay();
-            let units;
-            if (fmc.units == 1) {
-                units = 0
-            } else if (fmc.units == 0) {
-                units = 1;
-            }
+            let units = fmc.useLbs;
+            console.log(SaltyDataStore.get("OPTIONS_UNITS", "KG"));
             FMCPerfInitPage._timer = 0;
             fmc.pageUpdate = () => {
                 FMCPerfInitPage._timer++;

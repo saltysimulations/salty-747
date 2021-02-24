@@ -1,12 +1,7 @@
 class FMCApproachPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
-        let units;
-        if (fmc.units == 1) {
-            units = 0
-        } else if (fmc.units == 0) {
-            units = 1;
-        }
+        let units = fmc.useLbs;
         let landingWeightCell = "";
         let flaps25Cell = "";
         let flaps30Cell = "";

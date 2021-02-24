@@ -1,6 +1,20 @@
 class B747_8_FMC_ProgPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
+        let fuelBurnUnits;
+        let fuelQtyUnits;
+        let fuelQtyDensity;
+        if (fmc.units) {
+            fuelBurnUnits = "kilograms per hour";
+            fuelQtyUnits = "liters";
+            fuelQtyDensity = 0.000804;
+            console.log("unit is metric");
+        } else {
+            fuelBurnUnits = "pounds per hour";
+            fuelQtyUnits = "gallons";
+            fuelQtyDensity = 0.0067;
+            console.log("unit is not metric");
+        }
         B747_8_FMC_ProgPage._timer = 0;
         fmc.pageUpdate = () => {
             B747_8_FMC_ProgPage._timer++;
@@ -10,7 +24,7 @@ class B747_8_FMC_ProgPage {
         };
         
         let progressTitle = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") + " PROGRESS";
-        let currentFuelBurn = (SimVar.GetSimVarValue("TURB ENG CORRECTED FF:1", "pounds per hour") + SimVar.GetSimVarValue("TURB ENG CORRECTED FF:2", "pounds per hour") + SimVar.GetSimVarValue("TURB ENG CORRECTED FF:3", "pounds per hour") + SimVar.GetSimVarValue("TURB ENG CORRECTED FF:4", "pounds per hour") / 1000);
+        let currentFuelBurn = (SimVar.GetSimVarValue("TURB ENG CORRECTED FF:1", fuelBurnUnits) + SimVar.GetSimVarValue("TURB ENG CORRECTED FF:2", fuelBurnUnits) + SimVar.GetSimVarValue("TURB ENG CORRECTED FF:3", fuelBurnUnits) + SimVar.GetSimVarValue("TURB ENG CORRECTED FF:4", fuelBurnUnits) / 1000);
         let utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
         let timeToActivePoint = SimVar.GetSimVarValue("GPS WP ETE", "seconds"); 
         let flightPlanIndex = fmc.flightPlanManager.getActiveWaypointIndex(); 
@@ -52,7 +66,7 @@ class B747_8_FMC_ProgPage {
                 const hours = Math.floor(utcETA / 3600);
                 const minutes = Math.floor((utcETA % 3600) / 60);
                 activeWaypointETACell = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}z`;
-                activeWaypointFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((wpETE /3600) * (currentFuelBurn / 1000)));
+                activeWaypointFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", fuelQtyUnits) * fuelQtyDensity) - ((wpETE /3600) * (currentFuelBurn / 1000)));
                 activeWaypointFuelCell = activeWaypointFuel.toFixed(1);
             }
         }
@@ -68,7 +82,7 @@ class B747_8_FMC_ProgPage {
                 const hours = Math.floor(utcETA / 3600);
                 const minutes = Math.floor((utcETA % 3600) / 60);
                 nextWaypointETACell = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}z`;
-                nextWaypointFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((wpETE /3600) * (currentFuelBurn / 1000)));
+                nextWaypointFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", fuelQtyUnits) * fuelQtyDensity) - ((wpETE /3600) * (currentFuelBurn / 1000)));
                 nextWaypointFuelCell = nextWaypointFuel.toFixed(1);
             }        
         }
@@ -83,7 +97,7 @@ class B747_8_FMC_ProgPage {
                 const hours = Math.floor(utcETA / 3600);
                 const minutes = Math.floor((utcETA % 3600) / 60);
                 destinationETACell = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}z`;
-                destinationFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * 0.0067) - ((wpETE /3600) * (currentFuelBurn / 1000)));
+                destinationFuel = ((SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", fuelQtyUnits) * fuelQtyDensity) - ((wpETE /3600) * (currentFuelBurn / 1000)));
                 destinationFuelCell = destinationFuel.toFixed(1);
             }
         }
