@@ -3,7 +3,6 @@ class FMCPerfInitPage {
         fmc.updateFuelVars().then(() => {
             fmc.clearDisplay();
             let units = fmc.useLbs;
-            console.log(SaltyDataStore.get("OPTIONS_UNITS", "KG"));
             FMCPerfInitPage._timer = 0;
             fmc.pageUpdate = () => {
                 FMCPerfInitPage._timer++;
