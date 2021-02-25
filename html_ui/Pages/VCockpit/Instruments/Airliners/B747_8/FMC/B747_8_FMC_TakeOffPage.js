@@ -104,7 +104,7 @@ class FMCTakeOffPage {
         let runwayCell = "---";
         let selectedRunway = fmc.flightPlanManager.getDepartureRunway();
         if (selectedRunway) {
-            runwayCell = Avionics.Utils.formatRunway(selectedRunway.designation) +"/----";
+            runwayCell = Avionics.Utils.formatRunway(selectedRunway.designation) +"/----[color]inop";
         }
         fmc.onLeftInput[2] = () => {
             let value = fmc.inOut;
@@ -132,10 +132,10 @@ class FMCTakeOffPage {
             [thrustCell, vR],
             ["\xa0CG", "V2"],
             [cgCell, v2],
-            ["\xa0RWY/POS", "TOGW", "\xa0\xa0GR\xa0WT"],
+            ["\xa0RWY/POS[color]inop", "TOGW", "\xa0\xa0GR\xa0WT"],
             [runwayCell, takeoffGrossWeightCell, grossWeightCell],
-            ["\xa0REQUEST", "REF SPDS"],
-            ["<SEND", "OFF←→ON>"],
+            ["\xa0REQUEST[color]inop", "REF SPDS[color]inop"],
+            ["<SEND[color]inop", "OFF←→ON>[color]inop"],
             ["__FMCSEPARATOR"],
             ["\<INDEX", "THRUST LIM>"]
         ]);
@@ -153,11 +153,11 @@ class FMCTakeOffPage {
             }
         };
         //Placeholders for takeoff perf calculation for now
-        let eoAccelHtCell = "1000FT";
-        let oatCell = "--°C";
-        let windCell = "---°/--KT";   
-        let slopeCondCell = "U0.0/DRY";
-        let limitTakeoffGrossWeightCell = "987.0";
+        let eoAccelHtCell = "1000FT[color]inop";
+        let oatCell = "--°C[color]inop";
+        let windCell = "---°/--KT[color]inop";   
+        let slopeCondCell = "U0.0/DRY[color]inop";
+        let limitTakeoffGrossWeightCell = "987.0[color]inop";
         
         //Acceleration Height Settable
         let accelHtCell = "";
@@ -204,23 +204,23 @@ class FMCTakeOffPage {
             });
         };
 
-    
         fmc.setTemplate([
             ["TAKEOFF REF" , "2", "2"],
-            ["STD THRUST", "EO ACCEL HT"],
-            ["TO", eoAccelHtCell],
-            ["\xa0REF OAT", "ACCEL HT"],
+            ["STD THRUST[color]inop", "EO ACCEL HT[color]inop"],
+            ["--[color]inop", eoAccelHtCell],
+            ["\xa0REF OAT[color]inop", "ACCEL HT"],
             [oatCell, accelHtCell],
-            ["\xa0WIND", "THR REDUCTION"],
+            ["\xa0WIND[color]inop", "THR REDUCTION"],
             [windCell, thrRedCell],
-            ["\xa0RWY WIND"],
+            ["\xa0RWY WIND[color]inop"],
             [],
-            ["\xa0SLOPE/COND", "STD LIM TOGW"],
+            ["\xa0SLOPE/COND[color]inop", "STD LIM TOGW[color]inop"],
             [slopeCondCell, limitTakeoffGrossWeightCell],
-            ["--------------------Q-CLB"],
-            ["\<INDEX", "OFF←→ARMED>"]
+            ["--------------------", "Q-CLB[color]inop"],
+            ["\<INDEX", "OFF←→ARMED>[color]inop"]
         ]);
         fmc.onPrevPage = () => { FMCTakeOffPage.ShowPage1(fmc); };
+        fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
     }
 }
 FMCTakeOffPage._timer = 0;
