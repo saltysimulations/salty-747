@@ -934,23 +934,37 @@ class FMCMainDisplay extends BaseAirliners {
         this.showErrorMessage(this.defaultInputErrorMessage);
         return false;
     }
-    trySetThrustReductionAccelerationAltitude(s) {
-        let thrRed = NaN;
+    trySetAccelerationAltitude(s) {
         let accAlt = NaN;
-        if (s) {
-            let sSplit = s.split("/");
-            thrRed = parseInt(sSplit[0]);
-            accAlt = parseInt(sSplit[1]);
+        let airportElevation = 0;
+        let origin = this.flightPlanManager.getOrigin();
+        if(isFinite(origin.altitudeinFP)) {
+            airportElevation = Math.round(origin.altitudeinFP / 10) * 10;
         }
-        if (isFinite(thrRed) || isFinite(accAlt)) {
-            if (isFinite(thrRed)) {
-                this.thrustReductionAltitude = thrRed;
-                SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", this.thrustReductionAltitude);
-            }
-            if (isFinite(accAlt)) {
-                this.accelerationAltitude = accAlt;
-                SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", this.accelerationAltitude);
-            }
+        if (s) {
+            accAlt = parseInt(s);
+        }
+        if (isFinite(accAlt)) {
+            this.accelerationAltitude = accAlt + airportElevation;
+            SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", this.accelerationAltitude);
+            return true;
+        }
+        this.showErrorMessage(this.defaultInputErrorMessage);
+        return false;
+    }
+    trySetThrustReductionAltitude(s) {
+        let thrRed = NaN;
+        let airportElevation = 0;
+        let origin = this.flightPlanManager.getOrigin();
+        if(isFinite(origin.altitudeinFP)) {
+            airportElevation = Math.round(origin.altitudeinFP / 10) * 10;
+        }
+        if (s) {
+            thrRed = parseInt(s);
+        }
+        if (isFinite(thrRed)) {
+            this.thrustReductionAltitude = thrRed + airportElevation;
+            SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", this.thrustReductionAltitude);   
             return true;
         }
         this.showErrorMessage(this.defaultInputErrorMessage);
