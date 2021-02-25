@@ -19,11 +19,11 @@ class B747_8_FMC_VNAVPage {
                 B747_8_FMC_VNAVPage.ShowPage1(fmc);
             }
         };
-        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
-        let transSpeed = Math.max(flapsUPmanueverSpeed + 20, 250);
         let clbSpeedCell = ""
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;      
         clbSpeedCell = Math.min(flapsUPmanueverSpeed + 100, 350).toFixed(0);
         let speedTransCell = "---";
+        let transSpeed = Math.max(flapsUPmanueverSpeed + 20, 250); 
         if (isFinite(transSpeed)) {
             speedTransCell = transSpeed.toFixed(0);
             speedTransCell += "/10000";

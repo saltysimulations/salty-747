@@ -1638,6 +1638,7 @@ class FMCMainDisplay extends BaseAirliners {
         }
         return false;
     }
+    //Modified to schedules FLIGHT_PHASE_CLIMB when passing acceleration altitude
     checkUpdateFlightPhase() {
         let airSpeed = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         if (airSpeed > 10) {
@@ -1646,7 +1647,6 @@ class FMCMainDisplay extends BaseAirliners {
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let enterClimbPhase = false;
-                //Schedules FLIGHT_PHASE_CLIMB when passing acceleration altitude
                 let alt = Simplane.getAltitude();
                 let accelAlt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number");
                 if (alt > accelAlt) {
