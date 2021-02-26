@@ -15,7 +15,7 @@ class FMCSaltyOptions_Units {
 
         const updateView = () => {
             fmc.setTemplate([
-                ["ATIS SRC"],
+                ["UNITS"],
                 [],
                 [`*${storedUnits}`, ""],
                 [],
