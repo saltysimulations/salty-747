@@ -622,13 +622,9 @@ var Jet_PFD_FlightDirector;
                     }
                     if ((vertSpeed >= 600 || fdPhase == 2) && altAboveGround > 10) {  
                         SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
-                        let blendfactor = (vertSpeed - 600) / 350;
-                        currentFDPitch = Simplane.getFlightDirectorPitch() - 7 + blendfactor;
+                        let blendfactor = (vertSpeed) / 350;
+                        currentFDPitch = Math.min((Simplane.getFlightDirectorPitch() - 7 + blendfactor), Simplane.getFlightDirectorPitch());
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 2);
-                    }
-                    if ((vertSpeed >= 1200 || fdPhase == 3) && altAboveGround > 10) {  
-                        currentFDPitch = Simplane.getFlightDirectorPitch();
-                        SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 3);
                     }
                 }
                 if (this._pitchIsNotReadyYet) {

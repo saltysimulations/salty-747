@@ -383,12 +383,12 @@ var Boeing_FMA;
                 return 6;
             }
             if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
-                //When capturing in VNAV, triggers VNAV ALT if in conflict with MCP altitude
                 if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    if (SimVar.GetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number")) {
-                        return 7;
+                    let altitude = Simplane.getAltitude();
+                    if (altitude > SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number") + 100) {
+                        return 9;
                     }
-                    return 9;
+                    return 7;
                 }
                 return 8;
             }
