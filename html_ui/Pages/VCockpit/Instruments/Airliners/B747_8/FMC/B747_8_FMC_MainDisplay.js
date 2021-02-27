@@ -394,7 +394,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeight = (this.getWeight(true) - 500) / (900 - 500);
         return 204 + 40 * dWeight;
     }
-    //VNAV climb speed commands 5 knots below current flap placard speed - NOTE this will exceed 250 below 10000
+    //VNAV climb speed commands 5 knots below current flap placard speed
     getClbManagedSpeed() {
         let flapsHandleIndex = Simplane.getFlapsHandleIndex();
         let flapLimitSpeed = Simplane.getFlapsLimitSpeed(this.aircraft, flapsHandleIndex);
@@ -402,12 +402,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let speedTrans = 10000;
         let speed = flapLimitSpeed - 5;
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
-        //When flaps up - commands UP + 20 or speed transition, whichever higher 
-        if (flapsHandleIndex == 0 && alt <= speedTrans) {
+        //When flaps 1 - commands UP + 20 or speed transition, whichever higher 
+        if (flapsHandleIndex <= 1 && alt <= speedTrans) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
         //Above 10000 commands lowest of UP + 100, 350kts or M.845
-        if (flapsHandleIndex == 0 && alt >= speedTrans) {
+        if (flapsHandleIndex <= 1 && alt >= speedTrans) {
             let mach = 0.845;
             let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
             speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
@@ -434,7 +434,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let mach = 0.845
         let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         let speed = Math.min(340, machlimit);
-        if (Simplane.getAltitude() < 10000) {
+        if (machlimit > 340) {
+            SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+        }
+        if (Simplane.getAltitude() < 10500) {
             speed = Math.min(speed, 240);
         }
         return speed;
@@ -821,16 +824,17 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 //Sets autopilot capture altitude to closest of MCP alt or Leg Constraint/CRZ ALT to allow for VNAV ALT mode.
                 let selectedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue("feet");
                 let crzAlt = SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number");
-                if (isFinite(selectedAltitude) && isFinite(nextWaypoint.legAltitude1) && isFinite(crzAlt)) {
+                if (isFinite(selectedAltitude) && isFinite(crzAlt)) {
                     let currentAlt = Simplane.getAltitude();
                     let mcpDelta = Math.abs(selectedAltitude - currentAlt);
                     let crzAltDelta = Math.abs(crzAlt - currentAlt);
-                    //MCP Alt is closest
-                    if (SimVar.GetSimVarValue("L:SALTY_FMC_DESCENT_HAS_BEGUN", "bool")) {
+                    //If in descent ignore CRZ alt
+                    if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_DESCENT) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
-                    } 
+                    }
+                    //MCP Alt is closest 
                     else if (mcpDelta < crzAltDelta) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;

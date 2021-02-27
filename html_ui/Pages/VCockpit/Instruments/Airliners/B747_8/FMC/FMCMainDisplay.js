@@ -1641,13 +1641,14 @@ class FMCMainDisplay extends BaseAirliners {
         }
         return false;
     }
-    //Modified to schedule FLIGHT_PHASE_CLIMB when passing acceleration altitude
+    
     checkUpdateFlightPhase() {
         let airSpeed = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         if (airSpeed > 10) {
             if (this.currentFlightPhase === 0) {
                 this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
             }
+            //Modified to change to FLIGHT_PHASE_CLIMB when passing acceleration altitude instead of Thrust reduction previously
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let enterClimbPhase = false;
                 let alt = Simplane.getAltitude();
@@ -1679,7 +1680,19 @@ class FMCMainDisplay extends BaseAirliners {
                 let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel * 100;
                 if (isFinite(cruiseFlightLevel)) {
-                    if (altitude < 0.96 * cruiseFlightLevel) {
+                    if (altitude < 0.90 * cruiseFlightLevel) {
+                        this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
+                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+                    }
+                }
+                //Force DESCENT flight phase if at approx TOD based on CRZ level
+                let destination = this.flightPlanManager.getDestination();
+                if (destination) {
+                    let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
+                    let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
+                    let planeLla = new LatLongAlt(lat, long);
+                    let dist = Avionics.Utils.computeGreatCircleDistance(destination.infos.coordinates, planeLla);
+                    if (dist < (cruiseFlightLevel / 6076 * 20) + 10) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                     }
