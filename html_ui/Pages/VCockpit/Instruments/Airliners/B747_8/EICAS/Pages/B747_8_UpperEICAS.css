@@ -142,10 +142,10 @@ b747-8-upper-eicas {
     stroke-width: 2px;
     fill: none; }
   b747-8-upper-eicas #FlapsInfo line {
-    stroke-width: 3px;
+    stroke-width: 2px;
     fill: none; }
   b747-8-upper-eicas #FlapsInfo text.value {
-    font-size: 24px; }
+    font-size: 20px !important; }
   b747-8-upper-eicas #FlapsInfo.static {
     display: block; }
     b747-8-upper-eicas #FlapsInfo.static line {
@@ -171,7 +171,8 @@ b747-8-upper-eicas {
   b747-8-upper-eicas #StabInfo .value {
     fill: lime;
     font-size: 20px;
-    text-anchor: middle; }
+    letter-spacing: 1px !important;
+    text-anchor: end; }
   b747-8-upper-eicas #StabInfo #valueStroke {
     fill: none;
     stroke: lime;

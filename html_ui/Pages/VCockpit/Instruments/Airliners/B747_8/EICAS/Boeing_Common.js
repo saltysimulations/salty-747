@@ -143,7 +143,7 @@ var Boeing;
                 }
                 if (this.valueText != null) {
                     this.valueText.textContent = (targetAngle <= 0) ? "UP" : targetAngle.toFixed(0);
-                    this.valueText.setAttribute("y", markerYStr);
+                    this.valueText.setAttribute("y", markerYStr - 2);
                 }
                 if (this.gauge != null) {
                     var height = barHeight * this.currentPercent;
@@ -209,7 +209,7 @@ var Boeing;
                 this.trimBand = _root.querySelector(".trimBand");
                 var bar = _root.querySelector(".bar");
                 if (bar != null) {
-                    var barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value;
+                    var barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value + 135;
                     this.valueToArrowY = (barHeight * 0.5) / this.maxValue;
                 }
                 if (this.takeoffText != null) {
@@ -224,14 +224,17 @@ var Boeing;
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
                 this.currentValue = Utils.Clamp(_value, 0, this.maxValue);
-                var displayValue = (this.currentValue + this.maxValue) * 0.5;
-                if (this.valueText != null) {
-                    this.valueText.textContent = displayValue.toFixed(this.valueDecimals);
+                var displayValue = this.currentValue * 10;
+                if (Math.round(displayValue) < 10) {
+                    this.valueText.textContent = "0" + displayValue.toFixed(0);
+                }
+                else {
+                    this.valueText.textContent = displayValue.toFixed(0);
                 }
                 if (this.arrow != null) {
                     let clampedVal = Utils.Clamp(this.currentValue, -this.maxValue, this.maxValue);
                     var arrowY = clampedVal * this.valueToArrowY;
-                    this.arrow.setAttribute("transform", "translate(0," + arrowY + ")");
+                    this.arrow.setAttribute("transform", "translate(0," + (arrowY - 56) + ")");
                 }
             }
         }
