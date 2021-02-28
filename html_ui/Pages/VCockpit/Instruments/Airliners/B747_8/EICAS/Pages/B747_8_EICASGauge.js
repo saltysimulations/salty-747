@@ -20,9 +20,9 @@ var B747_8_EICAS_Common;
         }
     }
     GaugeDefinition.VALUE_TEXT_BOX_HEIGHT = 15;
-    GaugeDefinition.VALUE_TEXT_X_OFFSET_FROM_BOX = 3;
+    GaugeDefinition.VALUE_TEXT_X_OFFSET_FROM_BOX = 5;
     GaugeDefinition.GAUGE_TOP = 20;
-    GaugeDefinition.GAUGE_WIDTH = 16;
+    GaugeDefinition.GAUGE_WIDTH = 12;
     B747_8_EICAS_Common.GaugeDefinition = GaugeDefinition;
     class GaugeLineDefinition {
         constructor() {
@@ -66,8 +66,11 @@ var B747_8_EICAS_Common;
                 this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
                 this.rootSVG.setAttribute("viewBox", "0 0 100 200");
                 this.appendChild(this.rootSVG);
-                if (_definition.valueBoxWidth > 0) {
-                    this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision);
+                if (_definition.maxValue == 1100) {
+                    this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision, 1);
+                }
+                if (_definition.maxValue == 1000) {
+                    this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision, 0);
                 }
                 if (_definition.barHeight > 0) {
                     this.createGaugeDisplay(_definition.barHeight);
@@ -79,19 +82,30 @@ var B747_8_EICAS_Common;
                 }
             }
         }
-        createValueDisplay(_boxWidth, _valuePrecision) {
+        createValueDisplay(_boxWidth, _valuePrecision, _isN1Box) {
             this.valuePrecision = _valuePrecision;
             if (this.rootSVG != null) {
                 var boxX = ((100 - _boxWidth) * 0.5);
                 var textX = 100 - boxX - GaugeDefinition.VALUE_TEXT_X_OFFSET_FROM_BOX;
-                var textY = GaugeDefinition.VALUE_TEXT_BOX_HEIGHT * 0.5;
+                var textY = (GaugeDefinition.VALUE_TEXT_BOX_HEIGHT * 0.5) + 0.75;
                 this.rootSVG.appendChild(this.createRect(boxX + "%", "0%", _boxWidth + "%", GaugeDefinition.VALUE_TEXT_BOX_HEIGHT + "%", "value"));
                 this.valueText = document.createElementNS(Avionics.SVG.NS, "text");
-                this.valueText.setAttribute("x", textX + "%");
+                this.valueText.setAttribute("x", (textX + 1.5) + "%");
                 this.valueText.setAttribute("y", textY + "%");
                 this.valueText.setAttribute("class", "value");
+                this.valueText.setAttribute("class", "value");
+                this.valueText.style.fontSize = "29";
+                this.valueText.style.letterSpacing = "2px";
                 this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
                 this.rootSVG.appendChild(this.valueText);
+                if (_isN1Box) {
+                    this.decimalPoint = document.createElementNS(Avionics.SVG.NS, "text");
+                    this.decimalPoint.setAttribute("x", (textX - 20) + "%");
+                    this.decimalPoint.setAttribute("y", (textY + 1) + "%");
+                    this.decimalPoint.style.fontSize = "24";
+                    this.decimalPoint.textContent = "."
+                    this.rootSVG.appendChild(this.decimalPoint);
+                }
             }
         }
         createGaugeDisplay(_barHeight) {
@@ -116,6 +130,7 @@ var B747_8_EICAS_Common;
             rect.setAttribute("width", _width);
             rect.setAttribute("height", _height);
             rect.setAttribute("class", _class);
+            rect.style.strokeWidth = "2px";
             return rect;
         }
         createLine(_lineDef) {
@@ -146,7 +161,12 @@ var B747_8_EICAS_Common;
                 if (value != this.currentValue) {
                     this.currentValue = Utils.Clamp(value, this.minValue, this.maxValue);
                     if (this.valueText != null) {
-                        this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
+                        if (Math.round(this.currentValue) < 10) {
+                            this.valueText.textContent = "0" + this.currentValue.toFixed(this.valuePrecision);
+                        }
+                        else {
+                            this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
+                        }
                     }
                     if (this.gauge != null) {
                         this.gauge.setAttribute("height", Math.max(this.valueToGaugeHeight(this.currentValue), 0.001) + "%");

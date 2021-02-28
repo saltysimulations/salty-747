@@ -47,13 +47,18 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.html",
-            "size": 3721,
-            "date": 132589870431775780
+            "size": 3738,
+            "date": 132589871198966994
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js",
             "size": 9084,
             "date": 132587218983976896
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Boeing_Common.js",
+            "size": 26798,
+            "date": 132589871198966994
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_EICASGauge.js",
@@ -707,8 +712,8 @@
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.xml",
-            "size": 23083,
-            "date": 132589870431765788
+            "size": 24398,
+            "date": 132589871198956988
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS",

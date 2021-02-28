@@ -125,6 +125,8 @@ var Boeing;
                 this.currentPercent = _realFlapsPercent;
                 this.currentAngle = _realFlapsAngle;
                 var targetAngle = this.flapsLeverPositionToAngle(this.currentLeverPosition);
+                SimVar.SetSimVarValue("L:TEST_TE_FLAPS_PERCENT", "number", this.currentPercent);
+                SimVar.SetSimVarValue("L:TEST_TE_FLAPS_ANGLE", "number", this.currentAngle);
                 var barTop = 0;
                 var barBottom = 0;
                 var barHeight = 0;
@@ -133,7 +135,7 @@ var Boeing;
                     barBottom = barTop + this.bar.height.baseVal.value;
                     barHeight = (barBottom - barTop);
                 }
-                var markerY = barTop + (barHeight * this.currentPercent);
+                var markerY = barTop + (barHeight * this.flapsAngleToPercentage(targetAngle));
                 var markerYStr = markerY.toString();
                 if (this.marker != null) {
                     this.marker.setAttribute("y1", markerYStr);
@@ -160,6 +162,30 @@ var Boeing;
                 return this.cockpitSettings.FlapsLevels.flapsAngle[_leverPos];
             }
             return Simplane.getFlapsHandleAngle(_leverPos);
+        }
+        flapsAngleToPercentage(_angle) {
+            if (_angle == 0) {
+                return 0;
+            }
+            if (_angle == 1) {
+                return 0.033;
+            }
+            if (_angle == 5) {
+                return 0.167;
+            }
+            if (_angle == 10) {
+                return 0.333;
+            }
+            if (_angle == 20) {
+                return 0.667;
+            }
+            if (_angle == 25) {
+                return 0.833;
+            }
+            if (_angle == 30) {
+                return 1;
+            }
+            return;
         }
     }
     FlapsDisplay.TIMEOUT_LENGTH = 3000;
