@@ -32,8 +32,8 @@ var B747_8_UpperEICAS;
             this.cabinAlt = this.querySelector("#CAB_ALT_Value");
             this.cabinRate = this.querySelector("#RATE_Value");
             this.deltaP = this.querySelector("#DELTAP_Value");
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#GROSS_WEIGHT_Value"), this.getGrossWeightInMegagrams.bind(this), 1));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TOTAL_FUEL_Value"), this.getTotalFuelInMegagrams.bind(this), 1));
+            this.grossWeight = this.querySelector("#GROSS_WEIGHT_Value");
+            this.totalFuel = this.querySelector("#TOTAL_FUEL_Value");
             var n1Parent = this.querySelector("#N1Gauges");
             var egtParent = this.querySelector("#EGTGauges");
             for (var engine = 1; engine <= Simplane.getEngineCount(); ++engine) {
@@ -59,6 +59,7 @@ var B747_8_UpperEICAS;
             }
             this.updateReferenceThrust();
             this.updatePressurisationValues();
+            this.updateWeights();
             if (this.tmaDisplay) {
                 this.tmaDisplay.update();
             }
@@ -108,12 +109,24 @@ var B747_8_UpperEICAS;
         updatePressurisationValues() {
             this.cabinAlt.textContent = (Math.round(Simplane.getPressurisationCabinAltitude() / 100) * 100).toFixed(0);
             this.cabinRate.textContent = (Math.round(Simplane.getPressurisationCabinAltitudeRate() / 100) * 100).toFixed(0);
-            this.deltaP.textContent = Simplane.getPressurisationDifferential().toFixed(1);
+            let deltaPValue = Simplane.getPressurisationDifferential() * 10;
+            if (Math.round(deltaPValue) < 10) {
+                this.deltaP.textContent = "0" + deltaPValue.toFixed(0);
+            }
+            else {
+                this.deltaP.textContent = deltaPValue.toFixed(0);
+            }
+            return;
+        }
+        updateWeights() {
+            this.grossWeight.textContent = (this.getGrossWeightInMegagrams() * 10).toFixed(0);
+            this.totalFuel.textContent = (this.getTotalFuelInMegagrams() * 10).toFixed(0);
             return;
         }
         getGrossWeightInMegagrams() {
-            if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
+            if (BaseAirliners.unitIsMetric(Aircraft.B747_8)) {
                 return SimVar.GetSimVarValue("TOTAL WEIGHT", "kg") * 0.001;
+            }
             return SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs") * 0.001;
         }
         getTotalFuelInMegagrams() {

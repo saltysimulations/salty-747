@@ -92,7 +92,7 @@ b747-8-upper-eicas {
     text-anchor: end;}
   b747-8-upper-eicas text.ValueWhiteLarge {
     fill: var(--eicasWhite);
-    font-size: 24px;
+    font-size: 26px;
     text-anchor: end;}
   b747-8-upper-eicas #GearInfo text {
     text-anchor: middle; }
