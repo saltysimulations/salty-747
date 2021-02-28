@@ -507,7 +507,7 @@ var Boeing;
             if (this.parent != null) {
                 this.divMain = this.createDiv(this.divID);
                 this.parent.appendChild(this.divMain);
-                for (var i = 0; i < 22; ++i) {
+                for (var i = 0; i < 32; ++i) {
                     var newDiv = document.createElement("div");
                     this.allDivs.push(newDiv);
                     this.divMain.appendChild(newDiv);
@@ -535,7 +535,13 @@ var Boeing;
                         return this.allDivs[i];
                     }
                 }
-                for (var i = 21; i > 0; --i) {
+                for (var i = 21; i > 10; --i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        this.allDivs[i].style.visibility = "hidden";
+                        return this.allDivs[i];
+                    }
+                }
+                for (var i = 32; i > 21; --i) {
                     if (this.allDivs[i].textContent.length == 0) {
                         this.allDivs[i].style.visibility = "hidden";
                         return this.allDivs[i];
