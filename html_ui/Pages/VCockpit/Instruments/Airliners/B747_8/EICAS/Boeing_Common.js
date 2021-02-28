@@ -202,6 +202,8 @@ var Boeing;
             this.trimBand = null;
             this.maxValue = _maxValue;
             this.valueDecimals = _valueDecimals;
+            this.valueStroke = document.querySelector("#valueStroke");
+            this.decimalPoint = document.querySelector("#decimalPoint");
             if (_root != null) {
                 this.takeoffText = _root.querySelector(".takeoff");
                 this.valueText = _root.querySelector(".value");
@@ -220,6 +222,19 @@ var Boeing;
         }
         update(_deltaTime) {
             this.refreshValue(SimVar.GetSimVarValue("ELEVATOR TRIM POSITION", "degree"));
+            //Hides Greenband and trim value if airborne.
+            if (Simplane.getIsGrounded()) {
+                this.valueText.style.display = "block";
+                this.trimBand.style.display = "block";
+                this.valueStroke.style.display = "block";
+                this.decimalPoint.style.display = "block";
+            }
+            else {
+                this.valueText.style.display = "none";
+                this.trimBand.style.display = "none";
+                this.valueStroke.style.display = "none";
+                this.decimalPoint.style.display = "none";
+            }
         }
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
