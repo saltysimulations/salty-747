@@ -215,6 +215,58 @@
 		</Annunciation>
 
 		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>APU RUNNING</Text>
+		  <Condition>
+		    <GreaterEqual>
+			  <Simvar name="APU PCT RPM" unit="percent"/>
+			  <Constant>95</Constant>
+			</GreaterEqual>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>AUTOBRAKES</Text>
+		  <Condition Suffix=" RTO">
+		    <Equal>
+			  <Simvar name="AUTO BRAKE SWITCH CB" unit="Enum"/>
+			  <Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		  <Condition Suffix=" 1">
+		    <Equal>
+			  <Simvar name="AUTO BRAKE SWITCH CB" unit="Enum"/>
+			  <Constant>2</Constant>
+			</Equal>
+		  </Condition>
+		  <Condition Suffix=" 2">
+		    <Equal>
+			  <Simvar name="AUTO BRAKE SWITCH CB" unit="Enum"/>
+			  <Constant>3</Constant>
+			</Equal>
+		  </Condition>
+		  <Condition Suffix=" 3">
+		    <Equal>
+			  <Simvar name="AUTO BRAKE SWITCH CB" unit="Enum"/>
+			  <Constant>4</Constant>
+			</Equal>
+		  </Condition>
+	      <Condition Suffix=" 4">
+		    <Equal>
+			  <Simvar name="AUTO BRAKE SWITCH CB" unit="Enum"/>
+			  <Constant>5</Constant>
+			</Equal>
+		  </Condition>
+		  <Condition Suffix=" MAX">
+		    <Equal>
+			  <Simvar name="AUTO BRAKE SWITCH CB" unit="Enum"/>
+			  <Constant>6</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
 		  <Type>Warning</Type>
 		  <Text>FIRE</Text>
 		  <Condition>
