@@ -211,7 +211,7 @@ var Boeing;
                 this.trimBand = _root.querySelector(".trimBand");
                 var bar = _root.querySelector(".bar");
                 if (bar != null) {
-                    var barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value + 135;
+                    var barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value - 110.75;
                     this.valueToArrowY = (barHeight * 0.5) / this.maxValue;
                 }
                 if (this.takeoffText != null) {
@@ -238,8 +238,7 @@ var Boeing;
         }
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
-                this.currentValue = Utils.Clamp(_value, 0, this.maxValue);
-                var displayValue = this.currentValue * 10;
+                var displayValue = ((_value * 3.75) + 75);
                 if (Math.round(displayValue) < 10) {
                     this.valueText.textContent = "0" + displayValue.toFixed(0);
                 }
@@ -247,8 +246,7 @@ var Boeing;
                     this.valueText.textContent = displayValue.toFixed(0);
                 }
                 if (this.arrow != null) {
-                    let clampedVal = Utils.Clamp(this.currentValue, -this.maxValue, this.maxValue);
-                    var arrowY = clampedVal * this.valueToArrowY;
+                    var arrowY = displayValue * this.valueToArrowY;
                     this.arrow.setAttribute("transform", "translate(0," + (arrowY - 56) + ")");
                 }
             }
