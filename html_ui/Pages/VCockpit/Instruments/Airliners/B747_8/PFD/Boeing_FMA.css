@@ -81,7 +81,10 @@ boeing-fma {
   boeing-fma .highlight-middle {
     top: 39%; }
   boeing-fma .highlight-bottom {
-    top: 72%; }
+    left: -9.5% !important;
+    width: 120%;
+    height: 80%;
+    top: 205%; }
   boeing-fma #Column1, boeing-fma #Column2, boeing-fma #Column3 {
     text-align: center; }
   boeing-fma #Column1 {

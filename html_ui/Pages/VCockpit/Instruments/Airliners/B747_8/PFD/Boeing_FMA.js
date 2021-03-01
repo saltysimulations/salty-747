@@ -25,7 +25,7 @@ var Boeing;
                 this.allAnnunciations.push(new Boeing_FMA.Column1Top(this, this.querySelector("#COL1_TOP"), this.querySelector("#COL1_TOP_HIGHLIGHT")));
                 this.allAnnunciations.push(new Boeing_FMA.Column2Top(this, this.querySelector("#COL2_TOP"), this.querySelector("#COL2_TOP_HIGHLIGHT")));
                 this.allAnnunciations.push(new Boeing_FMA.Column2Middle(this, this.querySelector("#COL2_MIDDLE"), null));
-                this.allAnnunciations.push(new Boeing_FMA.Column2Bottom(this, this.querySelector("#COL2_BOTTOM"), null, this.querySelector("#COL2_BOTTOM_ARROWS")));
+                this.allAnnunciations.push(new Boeing_FMA.Column2Bottom(this, this.querySelector("#COL2_BOTTOM"), this.querySelector("#COL2_BOTTOM_HIGHLIGHT"), this.querySelector("#COL2_BOTTOM_ARROWS")));
                 this.allAnnunciations.push(new Boeing_FMA.Column3Top(this, this.querySelector("#COL3_TOP"), this.querySelector("#COL3_TOP_HIGHLIGHT")));
                 this.allAnnunciations.push(new Boeing_FMA.Column3Middle(this, this.querySelector("#COL3_MIDDLE"), null));
             }
