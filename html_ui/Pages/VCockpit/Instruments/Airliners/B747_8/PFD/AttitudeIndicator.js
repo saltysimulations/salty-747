@@ -321,18 +321,28 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
 
                 let cursors = document.createElementNS(Avionics.SVG.NS, "g");
                 this.attitude_bank_root.appendChild(cursors);
+                
+                
+                let centerRectBG = document.createElementNS(Avionics.SVG.NS, "rect");
+                centerRectBG.setAttribute("x", "-4");
+                centerRectBG.setAttribute("y", "-23");
+                centerRectBG.setAttribute("height", "8");
+                centerRectBG.setAttribute("width", "8");
+                centerRectBG.setAttribute("stroke", "none");
+                centerRectBG.setAttribute("fill", "black");
+                cursors.appendChild(centerRectBG); 
                 let leftUpper = document.createElementNS(Avionics.SVG.NS, "path");
                 leftUpper.setAttribute("d", "M-105 -15 l0 -8 l55 0 l0 22 l-7 0 l0 -14 l-40 0 Z");
                 leftUpper.setAttribute("fill", "black");
                 leftUpper.setAttribute("stroke", "white");
-                leftUpper.setAttribute("stroke-width", "1");
+                leftUpper.setAttribute("stroke-width", "1.5");
                 leftUpper.setAttribute("stroke-opacity", "1.0");
                 cursors.appendChild(leftUpper);
                 let rightUpper = document.createElementNS(Avionics.SVG.NS, "path");
                 rightUpper.setAttribute("d", "M105 -15 l0 -8 l-55 0 l0 22 l7 0 l0 -14 l40 -0 Z");
                 rightUpper.setAttribute("fill", "black");
                 rightUpper.setAttribute("stroke", "white");
-                rightUpper.setAttribute("stroke-width", "1");
+                rightUpper.setAttribute("stroke-width", "1.5");
                 rightUpper.setAttribute("stroke-opacity", "1.0");
                 cursors.appendChild(rightUpper);
                 this.slipSkidTriangle = document.createElementNS(Avionics.SVG.NS, "path");
@@ -350,10 +360,10 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
             }
             //New CenterRectGroup allows FD bars to be drawn correctly underneath center rect.
             {
+                let centerRectGroup = document.createElementNS(Avionics.SVG.NS, "g");
                 this.flightDirector = new Jet_PFD_FlightDirector.B747_8_Handler();
                 this.flightDirector.init(this.attitude_bank_root);
                 this.applyAttributes();
-                let centerRectGroup = document.createElementNS(Avionics.SVG.NS, "g");
                 this.attitude_bank_root.appendChild(centerRectGroup);
                 let centerRect = document.createElementNS(Avionics.SVG.NS, "rect");
                 centerRect.setAttribute("x", "-4");
@@ -380,7 +390,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.radioAltitudeGroup.appendChild(this.radioDecisionHeight);
                 this.radioAltitude = document.createElementNS(Avionics.SVG.NS, "text");
                 this.radioAltitude.textContent = "";
-                this.radioAltitude.setAttribute("x", "140");
+                this.radioAltitude.setAttribute("x", "135");
                 this.radioAltitude.setAttribute("y", "-190");
                 this.radioAltitude.setAttribute("text-anchor", "end");
                 this.radioAltitude.setAttribute("font-size", "26");
@@ -477,12 +487,12 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 let textVal;
                 {
                     let absVal = Math.abs(val);
-                    if (absVal <= 10)
-                        textVal = absVal;
-                    else if (absVal <= 50)
-                        textVal = absVal - (absVal % 5);
-                    else
+                    if (absVal <= 100) {
+                        textVal = absVal - (absVal % 2);
+                    }        
+                    else {
                         textVal = absVal - (absVal % 10);
+                    }     
                 }
                 this.radioAltitude.textContent = (textVal * Math.sign(val)).toString();
                 if (this.radioAltitudeColorLimit > 0) {
