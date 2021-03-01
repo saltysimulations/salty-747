@@ -451,7 +451,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             if (this.mtrsSelectedGroup) {
                 var APMode = this.getAutopilotMode();
                 if (APMode != AutopilotMode.MANAGED) {
-                    let meters = Math.round(_selected * 0.3048);
+                    let meters = Math.round(_selected * 0.03048) * 10;
                     this.mtrsSelectedSVGText.textContent = meters.toString();
                     this.mtrsSelectedGroup.setAttribute("visibility", "visible");
                 }

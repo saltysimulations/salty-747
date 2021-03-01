@@ -87,12 +87,12 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         var _graduationHeight = (_top + _height * 0.95) - _graduationStartY;
         this.topSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
         this.topSpeedText.textContent = "";
-        this.topSpeedText.setAttribute("x", (_left - 10).toString());
+        this.topSpeedText.setAttribute("x", (_left + 50).toString());
         this.topSpeedText.setAttribute("y", (_top - 22).toString());
         this.topSpeedText.setAttribute("fill", "white");
         this.topSpeedText.setAttribute("font-size", (this.fontSize * 1.2).toString());
         this.topSpeedText.setAttribute("font-family", "BoeingEICAS");
-        this.topSpeedText.setAttribute("text-anchor", "start");
+        this.topSpeedText.setAttribute("text-anchor", "end");
         this.topSpeedText.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.topSpeedText);
         if (!this.graduationsGroup) {
@@ -194,12 +194,12 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.rootGroup.appendChild(this.centerGroup);
         this.bottomSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
         this.bottomSpeedText.textContent = "";
-        this.bottomSpeedText.setAttribute("x", (_left - 10).toString());
+        this.bottomSpeedText.setAttribute("x", (_left + 50).toString());
         this.bottomSpeedText.setAttribute("y", (_top + _height + 25).toString());
         this.bottomSpeedText.setAttribute("fill", "white");
         this.bottomSpeedText.setAttribute("font-size", (this.fontSize * 1.2).toString());
         this.bottomSpeedText.setAttribute("font-family", "BoeingEICAS");
-        this.bottomSpeedText.setAttribute("text-anchor", "start");
+        this.bottomSpeedText.setAttribute("text-anchor", "end");
         this.bottomSpeedText.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.bottomSpeedText);
         this.rootSVG.appendChild(this.rootGroup);
