@@ -156,8 +156,8 @@ var B747_8_UpperEICAS;
             definition.maxValue = 1060;
             definition.valueBoxWidth = 60;
             definition.barHeight = 60;
-            definition.addLineDefinition(1060, 40, "gaugeMarkerDanger"); /*1000*/
-            definition.addLineDefinition(1030, 32, "gaugeMarkerWarning"); /*950*/
+            definition.addLineDefinition(1060, 40, "gaugeMarkerDanger");
+            definition.addLineDefinition(1030, 32, "gaugeMarkerWarning");
             definition.addLineDefinition(0, 32, "gaugeMarkerDanger", this.getEGTLimitValue.bind(this));
             definition.addLineDefinition(0, 32, "gaugeMarkerCurrent", this.getEGTValue.bind(this));
             return definition;
@@ -166,14 +166,13 @@ var B747_8_UpperEICAS;
             return SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:" + this.engine, "celsius");
         }
         getEGTLimitValue() {
-			let ground = Simplane.getIsGrounded();
-			if (ground){
-				return 750;
-			}
-			else {
-				return 875;
-			}
-
+		let ground = Simplane.getIsGrounded();
+		if (ground){
+			return 750;
+		}
+		else {
+			return 875;
+		}
         }
         refresh() {
             if (this.n1Gauge != null) {
