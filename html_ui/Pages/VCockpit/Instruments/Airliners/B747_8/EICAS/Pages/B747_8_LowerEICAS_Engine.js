@@ -102,7 +102,7 @@ var B747_8_LowerEICAS_Engine;
     B747_8_LowerEICAS_Engine.Display = Display;
     class EngineInfo {
         constructor(_eicas, _engineId, _engineStateParent, _n2Parent, _ffParent) {
-            this.ffGPHToKGPHX1000 = 0;
+            this.ffGPHToLBSPHX1000 = 0;
             this.eicas = _eicas;
             this.engineId = _engineId;
             if (_engineStateParent != null) {
@@ -118,7 +118,7 @@ var B747_8_LowerEICAS_Engine;
             if (_ffParent != null) {
                 _ffParent.appendChild(this.ffGauge);
             }
-            this.ffGPHToKGPHX1000 = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 1000;
+            this.ffGPHToLBSPHX1000 = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
         }
         createN2GaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
@@ -165,22 +165,10 @@ var B747_8_LowerEICAS_Engine;
                     this.stateText.textContent = "RUNNING";
                     this.stateText.setAttribute("class", "");
                     break;
-				case B747_8_EngineState.AUTORELIGHT:
-					this.stateText.textContent = "AUTORELIGHT";
-					this.stateText.setAttribute("class", "white");
-					break;
-				/*case B747_8_EngineState.IDLE:
-                    this.stateText.textContent = "IDLE";
-                    this.stateText.setAttribute("class", "white");
-                    break;
-				 case B747_8_EngineState.DECELERATE:
-                    this.stateText.textContent = "DECELERATE";
-                    this.stateText.setAttribute("class", "white");
-                    break;
-				 case B747_8_EngineState.READY:
-                    this.stateText.textContent = "READY";
-                    this.stateText.setAttribute("class", "white");
-                    break;*/
+		case B747_8_EngineState.AUTORELIGHT:
+			this.stateText.textContent = "AUTORELIGHT";
+			this.stateText.setAttribute("class", "white");
+			break;
                 default:
                     this.stateText.textContent = "";
                     break;
@@ -190,8 +178,9 @@ var B747_8_LowerEICAS_Engine;
                 if (n2IdleLine) {
                     let currentN2 = this.eicas.getN2Value(this.engineId);
                     let idleN2 = n2IdleLine.currentValue;
-                    if (Math.round(currentN2) >= idleN2)
+                    if (Math.round(currentN2) >= idleN2){
                         n2IdleLine.line.setAttribute("display", "none");
+		    }
                     else {
                         n2IdleLine.line.setAttribute("display", "block");
 					}
