@@ -181,31 +181,21 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
         this.rootSVG.appendChild(this.InfoGroup);
         {
             this.ILSIdent = document.createElementNS(Avionics.SVG.NS, "text");
-            this.ILSIdent.textContent = "ILS";
+            this.ILSIdent.textContent = "";
             this.ILSIdent.setAttribute("x", "0");
-            this.ILSIdent.setAttribute("y", "5");
+            this.ILSIdent.setAttribute("y", "12");
             this.ILSIdent.setAttribute("fill", "white");
-            this.ILSIdent.setAttribute("font-size", "12");
+            this.ILSIdent.setAttribute("font-size", "14");
             this.ILSIdent.setAttribute("font-family", "BoeingEICAS");
             this.ILSIdent.setAttribute("text-anchor", "start");
             this.ILSIdent.setAttribute("alignment-baseline", "central");
             this.InfoGroup.appendChild(this.ILSIdent);
-            this.ILSFreq = document.createElementNS(Avionics.SVG.NS, "text");
-            this.ILSFreq.textContent = "109.50";
-            this.ILSFreq.setAttribute("x", "0");
-            this.ILSFreq.setAttribute("y", "17");
-            this.ILSFreq.setAttribute("fill", "white");
-            this.ILSFreq.setAttribute("font-size", "13");
-            this.ILSFreq.setAttribute("font-family", "BoeingEICAS");
-            this.ILSFreq.setAttribute("text-anchor", "start");
-            this.ILSFreq.setAttribute("alignment-baseline", "central");
-            this.InfoGroup.appendChild(this.ILSFreq);
             this.ILSDist = document.createElementNS(Avionics.SVG.NS, "text");
             this.ILSDist.textContent = "";
             this.ILSDist.setAttribute("x", "0");
             this.ILSDist.setAttribute("y", "29");
             this.ILSDist.setAttribute("fill", "white");
-            this.ILSDist.setAttribute("font-size", "13");
+            this.ILSDist.setAttribute("font-size", "14");
             this.ILSDist.setAttribute("font-family", "BoeingEICAS");
             this.ILSDist.setAttribute("text-anchor", "start");
             this.ILSDist.setAttribute("alignment-baseline", "central");
@@ -296,10 +286,12 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             if (this.InfoGroup && this.infoVisible) {
                 if (localizer.id > 0) {
                     this.InfoGroup.setAttribute("visibility", "visible");
-                    if (this.ILSIdent)
+                    if (this.ILSIdent) {
                         this.ILSIdent.textContent = localizer.ident;
-                    if (this.ILSFreq)
-                        this.ILSFreq.textContent = localizer.freq.toFixed(2);
+                    }
+                    else if (this.ILSFreq) {
+                        this.ILSIdent.textContent = localizer.freq.toFixed(2);
+                    }     
                     if (this.ILSDist)
                         this.ILSDist.textContent = SimVar.GetSimVarValue("NAV HAS DME:" + localizer.id, "Bool") ? "DME " + SimVar.GetSimVarValue("NAV DME:" + localizer.id, "nautical miles").toFixed(1) : "";
                 }
