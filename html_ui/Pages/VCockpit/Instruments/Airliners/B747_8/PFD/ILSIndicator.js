@@ -139,7 +139,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             }
             this.centerGroup.appendChild(this.gs_mainGroup);
             posX = 69;
-            posY = 413;
+            posY = 384;
             width = 375;
             height = 35;
             this.loc_mainGroup = document.createElementNS(Avionics.SVG.NS, "g");
@@ -152,7 +152,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                 neutralLine.setAttribute("x2", (posX + width * 0.5).toString());
                 neutralLine.setAttribute("y2", (posY + height - 5).toString());
                 neutralLine.setAttribute("stroke", "white");
-                neutralLine.setAttribute("stroke-width", "2");
+                neutralLine.setAttribute("stroke-width", "3");
                 this.loc_mainGroup.appendChild(neutralLine);
                 let rangeFactor = 0.7;
                 let nbCircles = 2;
@@ -168,7 +168,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     circle.setAttribute("r", "5");
                     circle.setAttribute("fill", "none");
                     circle.setAttribute("stroke", "white");
-                    circle.setAttribute("stroke-width", "2");
+                    circle.setAttribute("stroke-width", "3");
                     this.loc_mainGroup.appendChild(circle);
                     x = posX + (width * 0.5) - ((rangeFactor * width * 0.5) * (i + 1)) / nbCircles;
                     circle = document.createElementNS(Avionics.SVG.NS, "circle");
@@ -177,7 +177,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     circle.setAttribute("r", "5");
                     circle.setAttribute("fill", "none");
                     circle.setAttribute("stroke", "white");
-                    circle.setAttribute("stroke-width", "2");
+                    circle.setAttribute("stroke-width", "3");
                     this.loc_mainGroup.appendChild(circle);
                 }
                 this.loc_cursorGroup = document.createElementNS(Avionics.SVG.NS, "g");
