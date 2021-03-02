@@ -178,12 +178,12 @@ var B747_8_LowerEICAS_Engine;
                 if (n2IdleLine) {
                     let currentN2 = this.eicas.getN2Value(this.engineId);
                     let idleN2 = n2IdleLine.currentValue;
-                    if (Math.round(currentN2) >= idleN2){
+                    if (Math.round(currentN2) >= idleN2) {
                         n2IdleLine.line.setAttribute("display", "none");
 		    }
                     else {
                         n2IdleLine.line.setAttribute("display", "block");
-					}
+		    }
                 }
                 this.n2Gauge.refresh();
             }
