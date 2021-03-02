@@ -33,7 +33,7 @@
   "airplaneIcon2": "ICON_MAP_PLANE_B747_02",
   "airplaneIcon3": "ICON_MAP_PLANE",
 
-  "imagesDir": "/Pages/VCockpit/Instruments/Airliners/Shared/MFD/Images/",
+  "imagesDir": "/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/",
 
   "runwayFillColor": "white",
   "runwayStrokeColor": "gray",

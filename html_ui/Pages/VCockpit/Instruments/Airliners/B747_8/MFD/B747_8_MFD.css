@@ -195,8 +195,7 @@ b747-8-mfd-element {
       text-align: center;
       text-anchor: middle; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #State {
-      font-size: 48px;
-      fill: lime; }
+      font-size: 48px; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #ID {
       font-size: calc( 3 * 1vh * var(--bodyHeightScale));
       fill: black; }

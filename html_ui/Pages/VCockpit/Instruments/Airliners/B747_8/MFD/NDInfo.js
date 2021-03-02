@@ -468,6 +468,7 @@ class VORDMENavAid {
             this.currentState = _state;
             var show = false;
             var type = "";
+            var colour = "";
             switch (this.currentState) {
                 case NAV_AID_STATE.ADF:
                     {
@@ -479,6 +480,7 @@ class VORDMENavAid {
                         else
                             type += " R";
                         show = true;
+                        colour = "cyan";
                         break;
                     }
                 case NAV_AID_STATE.VOR:
@@ -491,6 +493,7 @@ class VORDMENavAid {
                         else
                             type += " R";
                         show = true;
+                        colour = "lime";
                         break;
                     }
             }
@@ -499,6 +502,7 @@ class VORDMENavAid {
             }
             if (this.stateText != null) {
                 this.stateText.textContent = type;
+                this.stateText.setAttribute("fill", colour);
             }
         }
     }

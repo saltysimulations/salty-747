@@ -77,13 +77,13 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     circle.setAttribute("r", circleRadius.toString());
                     circle.setAttribute("fill-opacity", "0");
                     circle.setAttribute("stroke", "white");
-                    circle.setAttribute("stroke-width", "3");
+                    circle.setAttribute("stroke-width", "2.5");
                     circleGroup.appendChild(circle);
                     let radians = 0;
                     for (let i = 0; i < dashSpacing; i++) {
                         let line = document.createElementNS(Avionics.SVG.NS, "line");
                         let bIsBig = (i % 2 == 0) ? true : false;
-                        let length = (bIsBig) ? 16 : 8.5;
+                        let length = (bIsBig) ? 28 : 12;
                         let lineStart = 50 + circleRadius;
                         let lineEnd = lineStart - length;
                         let degrees = (radians / Math.PI) * 180;
@@ -93,12 +93,12 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                         line.setAttribute("y2", lineEnd.toString());
                         line.setAttribute("transform", "rotate(" + (-degrees + 180) + " 50 50)");
                         line.setAttribute("stroke", "white");
-                        line.setAttribute("stroke-width", "3");
+                        line.setAttribute("stroke-width", "2.5");
                         if (bIsBig) {
                             let text = document.createElementNS(Avionics.SVG.NS, "text");
                             text.textContent = (i % 3 == 0) ? fastToFixed(degrees / 10, 0) : "";
                             text.setAttribute("x", "50");
-                            text.setAttribute("y", (-(circleRadius - 50 - length - 18)).toString());
+                            text.setAttribute("y", (-(circleRadius - 45 - length - 18)).toString());
                             text.setAttribute("fill", "white");
                             text.setAttribute("font-size", (i % 3 == 0) ? "28" : "20");
                             text.setAttribute("font-family", "BoeingEICAS");
@@ -128,9 +128,10 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 {
                     this.headingBug = document.createElementNS(Avionics.SVG.NS, "path");
                     this.headingBug.setAttribute("id", "headingBug");
-                    this.headingBug.setAttribute("d", "M50 " + (50 + circleRadius) + " l -11 20 l 22 0 z");
+                    this.headingBug.setAttribute("d", "M50 " + (50 + circleRadius) + " l -11 20 l 22 0 Z");
                     this.headingBug.setAttribute("fill", "none");
                     this.headingBug.setAttribute("stroke", "white");
+                    this.headingBug.setAttribute("stroke-width", "2");
                     this.headingGroup.appendChild(this.headingBug);
                 }
                 this.rotatingCircle.appendChild(this.headingGroup);
@@ -204,7 +205,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.selectedHeadingGroup.appendChild(this.selectedHeadingLine);
                     this.selectedHeadingBug = document.createElementNS(Avionics.SVG.NS, "path");
                     this.selectedHeadingBug.setAttribute("id", "selectedHeadingBug");
-                    this.selectedHeadingBug.setAttribute("d", "M50 " + (50 + circleRadius) + " h 22 v 22 h -7 l -15 -22 l -15 22 h -7 v -22 z");
+                    this.selectedHeadingBug.setAttribute("d", "M43 " + (50 + circleRadius) + " h 22 v 12 h -8 l -7 -12 l -7 12 h -8 v -12 z");
                     this.selectedHeadingBug.setAttribute("stroke", "#D570FF");
                     this.selectedHeadingBug.setAttribute("fill", "none");
                     this.selectedHeadingBug.setAttribute("stroke-width", "2");
@@ -219,7 +220,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.selectedTrackGroup.appendChild(this.selectedTrackLine);
                     this.selectedTrackBug = document.createElementNS(Avionics.SVG.NS, "path");
                     this.selectedTrackBug.setAttribute("id", "selectedTrackBug");
-                    this.selectedTrackBug.setAttribute("d", "M50 " + (50 + circleRadius) + " h -30 v -15 l 30 -15 l 30 15 v 15 z");
+                    this.selectedTrackBug.setAttribute("d", "M50 " + (5 + circleRadius) + " h -30 v -15 l 30 -15 l 30 15 v 15 z");
                     this.selectedTrackBug.setAttribute("stroke", "#D570FF");
                     this.selectedTrackBug.setAttribute("stroke-width", "2");
                     this.selectedTrackGroup.appendChild(this.selectedTrackBug);

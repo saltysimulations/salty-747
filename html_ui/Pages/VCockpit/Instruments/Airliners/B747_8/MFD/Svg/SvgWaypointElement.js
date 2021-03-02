@@ -116,10 +116,10 @@ class SvgWaypointElement extends SvgMapElement {
         this._image.setAttribute("width", "100%");
         this._image.setAttribute("height", "100%");
         if (!isActiveWaypoint) {
-            this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", "/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/BoeingWaypoint.png");
+            this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + this.imageFileName());
         }
         else {
-            this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", "/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/BoeingActiveWaypoint.png");
+            this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_INTERSECTION_ACTIVE.png");
         }
         this._lastIsActiveWaypoint = isActiveWaypoint;
         this._image.setAttribute("width", fastToFixed((map.config.waypointIconSize * 1.6), 0));
@@ -199,10 +199,10 @@ class SvgWaypointElement extends SvgMapElement {
             this._refreshLabel(map, isActiveWaypoint);
             if (this._image) {
                 if (!isActiveWaypoint) {
-                    this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", "/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/BoeingWaypoint.png");
+                    this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + this.imageFileName());
                 }
                 else {
-                    this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", "/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/BoeingActiveWaypoint.png");
+                    this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_INTERSECTION_ACTIVE.png");
                 }
             }
             this._lastIsActiveWaypoint = isActiveWaypoint;
