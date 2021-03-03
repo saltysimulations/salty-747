@@ -67,13 +67,16 @@ class SvgConstraintElement extends SvgMapElement {
             if (map.config.waypointLabelUseBackground) {
                 context.fillStyle = "black";
                 context.fillRect(0, 0, this._textWidth + map.config.waypointLabelBackgroundPaddingLeft + map.config.waypointLabelBackgroundPaddingRight, this._textHeight + map.config.waypointLabelBackgroundPaddingTop + map.config.waypointLabelBackgroundPaddingBottom);
+            } 
+            let activeWaypoint = FlightPlanManager.DEBUG_INSTANCE.getActiveWaypoint(false, true);
+            if (this.source.ident === activeWaypoint.ident) {
+                context.fillStyle = "#D570FF";
             }
-            context.fillStyle = "#D570FF";
+            else {
+                context.fillStyle = "white";
+            }
             context.font = fontSize + "px " + map.config.waypointLabelFontFamily;
-            context.fillText(text, map.config.waypointLabelBackgroundPaddingLeft, this._textHeight + map.config.waypointLabelBackgroundPaddingTop);
-            if (this.source.speedConstraint > 0) {
-                context.fillText(speedText, map.config.waypointLabelBackgroundPaddingLeft, this._textHeight * 2.2 + map.config.waypointLabelBackgroundPaddingTop);
-            }
+            context.fillText(text, map.config.waypointLabelBackgroundPaddingLeft, this._textHeight + map.config.waypointLabelBackgroundPaddingTop - 22);
             map.textLayer.appendChild(this._label);
         }
         this.svgElement = document.createElementNS(Avionics.SVG.NS, "image");
@@ -124,6 +127,14 @@ class SvgConstraintElement extends SvgMapElement {
                     }
                 }
                 if (this._label) {
+                    let lastWaypoint = FlightPlanManager.DEBUG_INSTANCE.getPreviousActiveWaypoint();
+                    if (this.source.ident === lastWaypoint.ident) {
+                        this._label.style.visibility = "hidden";
+                    }
+                    let activeWaypoint = FlightPlanManager.DEBUG_INSTANCE.getActiveWaypoint(false, true);
+                    if (this.source.ident === activeWaypoint.ident) {
+                        this._label.setAttribute("stroke", "#D570FF");
+                    }
                     let textX = (x + map.config.waypointIconSize * 0.5 - this._textWidth * 0.5 + map.config.waypointLabelDistanceX) - 2;
                     let textY = y + map.config.waypointLabelDistance + map.config.waypointLabelFontSize + 4;
                     this._label.setAttribute("x", textX + "");

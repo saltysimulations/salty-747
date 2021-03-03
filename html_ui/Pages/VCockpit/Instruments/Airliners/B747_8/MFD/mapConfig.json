@@ -8,7 +8,7 @@
   "waypointLabelBackgroundColor": "#ffffff",
   "waypointLabelBackgroundStrokeColor": "black",
   "waypointLabelBackgroundStrokeWidth": 0,
-  "waypointLabelBackgroundPadding": "5 5 5 5",
+  "waypointLabelBackgroundPadding": "25 5 5 3",
   "waypointLabelDistanceX": 30,
   "waypointLabelDistance": 25,
   "waypointIconSize": 22,
