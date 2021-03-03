@@ -166,6 +166,11 @@
             "date": 132590300598912828
         },
         {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FlightElements/Waypoint.js",
+            "size": 34110,
+            "date": 132592010913317792
+        },
+        {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC.css",
             "size": 3163,
             "date": 132589486304402946
@@ -533,7 +538,7 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/mapConfig.json",
             "size": 2998,
-            "date": 132591771976323286
+            "date": 132591808174946382
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.css",
@@ -542,13 +547,13 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.html",
-            "size": 5323,
-            "date": 132587236480495812
+            "size": 5380,
+            "date": 132591903045783296
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.js",
-            "size": 63096,
-            "date": 132591778965290454
+            "size": 62476,
+            "date": 132591977726056800
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/NDInfo.js",
@@ -566,69 +571,19 @@
             "date": 132591751581801106
         },
         {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT.png",
-            "size": 2118,
-            "date": 132591793904705526
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT7.png",
-            "size": 1306,
-            "date": 132429658058120644
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT8.png",
-            "size": 1306,
-            "date": 132429658058130648
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_HELIPORT_PINK.png",
-            "size": 2118,
-            "date": 132591793904705526
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_NON_TOWERED_NON_SERVICED_PINK.png",
-            "size": 2118,
-            "date": 132591793904705526
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_NON_TOWERED_SEAPLANE_CIV_PINK.png",
-            "size": 2118,
-            "date": 132591793904705526
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_NON_TOWERED_SERVICED_PINK.png",
-            "size": 2118,
-            "date": 132591793904705526
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_PRIVATE_PINK.png",
-            "size": 2118,
-            "date": 132591793904705526
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_TOWERED_NON_SERVICED_BLUE.png",
-            "size": 2118,
-            "date": 132591793904705526
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_TOWERED_SEAPLANE_CIV_BLUE.png",
-            "size": 1306,
-            "date": 132429658058170654
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_FLIGHTPLAN.png",
+            "size": 17279,
+            "date": 132591957655082508
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_TOWERED_SERVICED_BLUE.png",
-            "size": 1306,
-            "date": 132429658058180662
-        },
-        {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_AIRPORT_UNKNOWN_PINK.png",
-            "size": 1306,
-            "date": 132429658058180662
+            "size": 23021,
+            "date": 132591850169875684
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_INTERSECTION.png",
-            "size": 982,
-            "date": 132429658058190662
+            "size": 1091,
+            "date": 132591878855584464
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_INTERSECTION_ACTIVE.png",
@@ -737,8 +692,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_VOR_TACAN_FLIGHTPLAN_ACTIVE.png",
-            "size": 3604,
-            "date": 132429658059100864
+            "size": 17279,
+            "date": 132591957655082508
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/ICON_MAP_VOR_VORTAC.png",
@@ -766,9 +721,14 @@
             "date": 132587236480525820
         },
         {
+            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Svg/SvgMapConfig.js",
+            "size": 14320,
+            "date": 132592004089058040
+        },
+        {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Svg/SvgWaypointElement.js",
-            "size": 12565,
-            "date": 132591775273462918
+            "size": 13320,
+            "date": 132592011766012306
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/AirspeedIndicator.js",

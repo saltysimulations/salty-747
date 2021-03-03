@@ -812,12 +812,12 @@ class MapInstrument extends ISvgMapRootElement {
                         this.navMap.mapElements.push(this.tmpDirectToElement);
                     }
                     this.navMap.mapElements.push(...this.backOnTracks);
-                    if ((SimVar.GetSimVarValue("L:FLIGHTPLAN_USE_DECEL_WAYPOINT", "number") === 1) && this.flightPlanManager.decelWaypoint) {
+                    /*if ((SimVar.GetSimVarValue("L:FLIGHTPLAN_USE_DECEL_WAYPOINT", "number") === 1) && this.flightPlanManager.decelWaypoint) {
                         this.navMap.mapElements.push(this.flightPlanManager.decelWaypoint.getSvgElement(this.navMap.index));
                     }
                     if (this.debugApproachFlightPlanElement) {
                         this.navMap.mapElements.push(this.debugApproachFlightPlanElement);
-                    }
+                    }*/
                 }
                 this.navMap.mapElements.push(...this.maskElements);
                 this.navMap.mapElements.push(...this.topOfCurveElements);

@@ -94,6 +94,9 @@ class SvgWaypointElement extends SvgMapElement {
             return this.source.imageFileName();
         }
     }
+    getWaypoints() {
+        return [...FlightPlanManager.DEBUG_INSTANCE.getWaypoints(), ...FlightPlanManager.DEBUG_INSTANCE.getApproachWaypoints()];
+    }
     createDraw(map) {
         let fontSize = map.config.waypointLabelFontSize;
         let text = this.ident;
@@ -117,6 +120,16 @@ class SvgWaypointElement extends SvgMapElement {
         this._image.setAttribute("height", "100%");
         if (!isActiveWaypoint) {
             this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + this.imageFileName());
+            let waypoints = this.getWaypoints();
+            let destination = FlightPlanManager.DEBUG_INSTANCE.getDestination();
+            waypoints.forEach((waypoint) => {
+				if (this.ident === waypoint.ident) {
+					this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_INTERSECTION_FLIGHTPLAN.png");
+				}
+                if (this.ident === destination.ident) {
+                    this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_AIRPORT_FLIGHTPLAN.png");
+                }
+			});
         }
         else {
             this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_INTERSECTION_ACTIVE.png");
