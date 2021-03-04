@@ -140,7 +140,7 @@ var B747_8_LowerEICAS_Engine;
             return definition;
         }
         getFFValue() {
-            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToKGPHX1000);
+            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToLBSPHX1000);
         }
         getOilPValue() {
             return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engineId, "psi");
