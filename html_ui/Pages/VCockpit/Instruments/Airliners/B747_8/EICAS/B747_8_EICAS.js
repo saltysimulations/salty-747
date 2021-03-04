@@ -124,7 +124,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     }
     getN2IdleValue() {
         let density = SimVar.GetSimVarValue("AMBIENT DENSITY", "kilogram per cubic meter");
-	var N2 = 214 * Math.pow(density, 6) - 1051.8 * Math.pow(density, 5) + 2087.1 * Math.pow(density, 4) - 2129.8 * Math.pow(density, 3) + 1167.7 * Math.pow(density, 2) - 315.83 * density + 87.453; 
+	let N2 = 214 * Math.pow(density, 6) - 1051.8 * Math.pow(density, 5) + 2087.1 * Math.pow(density, 4) - 2129.8 * Math.pow(density, 3) + 1167.7 * Math.pow(density, 2) - 315.83 * density + 87.453; 
 	return N2;
     }
     getN2Value(_engineId) {
