@@ -151,14 +151,14 @@ var B747_8_LowerEICAS_ELEC;
 
 			//BUS DISPLAY LOGIC - EACH BUS IS SHOWN AS POWERED IF ASSOCIATED GEN IS ON OR BUS TIE IS CLOSED AND SYNC BUS IS POWERED
 			if (((SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:1", "bool")) && (SimVar.GetSimVarValue("TURB ENG N2:1", "percent") >= 50)) || ((SimVar.GetSimVarValue("ELECTRICAL MAIN BUS VOLTAGE:1", "volts") > 0) && (SimVar.GetSimVarValue("BUS CONNECTION ON:2", "bool")))) {
-				this.querySelector("#bus1label-rect").style.stroke = "green";
-				this.querySelector("#bus1off-text").style.fill = "green";
-				this.querySelector("#utilityline1a").style.stroke = "green";
-				this.querySelector("#utilityline1b").style.stroke = "green";
-				this.querySelector("#utility1-text").style.fill = "green";
-				this.querySelector("#galleyline1a").style.stroke = "green";
-				this.querySelector("#galleyline1b").style.stroke = "green";
-				this.querySelector("#galley1-text").style.fill = "green";
+				this.querySelector("#bus1label-rect").style.stroke = "lime";
+				this.querySelector("#bus1off-text").style.fill = "lime";
+				this.querySelector("#utilityline1a").style.stroke = "lime";
+				this.querySelector("#utilityline1b").style.stroke = "lime";
+				this.querySelector("#utility1-text").style.fill = "lime";
+				this.querySelector("#galleyline1a").style.stroke = "lime";
+				this.querySelector("#galleyline1b").style.stroke = "lime";
+				this.querySelector("#galley1-text").style.fill = "lime";
 			} else {
 				this.querySelector("#bus1label-rect").style.stroke = "#db7200";
 				this.querySelector("#bus1off-text").style.fill = "#db7200";
@@ -171,14 +171,14 @@ var B747_8_LowerEICAS_ELEC;
 			}
 
 			if (((SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:2", "bool")) && (SimVar.GetSimVarValue("TURB ENG N2:2", "percent") >= 50)) || ((SimVar.GetSimVarValue("ELECTRICAL MAIN BUS VOLTAGE:1", "volts") > 0) && (SimVar.GetSimVarValue("BUS CONNECTION ON:3", "bool")))) {
-				this.querySelector("#bus2label-rect").style.stroke = "green";
-				this.querySelector("#bus2off-text").style.fill = "green";
-				this.querySelector("#utilityline2a").style.stroke = "green";
-				this.querySelector("#utilityline2b").style.stroke = "green";
-				this.querySelector("#utility2-text").style.fill = "green";
-				this.querySelector("#galleyline2a").style.stroke = "green";
-				this.querySelector("#galleyline2b").style.stroke = "green";
-				this.querySelector("#galley2-text").style.fill = "green";
+				this.querySelector("#bus2label-rect").style.stroke = "lime";
+				this.querySelector("#bus2off-text").style.fill = "lime";
+				this.querySelector("#utilityline2a").style.stroke = "lime";
+				this.querySelector("#utilityline2b").style.stroke = "lime";
+				this.querySelector("#utility2-text").style.fill = "lime";
+				this.querySelector("#galleyline2a").style.stroke = "lime";
+				this.querySelector("#galleyline2b").style.stroke = "lime";
+				this.querySelector("#galley2-text").style.fill = "lime";
 			} else {
 				this.querySelector("#bus2label-rect").style.stroke = "#db7200";
 				this.querySelector("#bus2off-text").style.fill = "#db7200";
@@ -191,14 +191,14 @@ var B747_8_LowerEICAS_ELEC;
 			}
 
 			if (((SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:3", "bool")) && (SimVar.GetSimVarValue("TURB ENG N2:3", "percent") >= 50)) || ((SimVar.GetSimVarValue("ELECTRICAL MAIN BUS VOLTAGE:1", "volts") > 0) && (SimVar.GetSimVarValue("BUS CONNECTION ON:4", "bool")))) {
-				this.querySelector("#bus3label-rect").style.stroke = "green";
-				this.querySelector("#bus3off-text").style.fill = "green";
-				this.querySelector("#utilityline3a").style.stroke = "green";
-				this.querySelector("#utilityline3b").style.stroke = "green";
-				this.querySelector("#utility3-text").style.fill = "green";
-				this.querySelector("#galleyline3a").style.stroke = "green";
-				this.querySelector("#galleyline3b").style.stroke = "green";
-				this.querySelector("#galley3-text").style.fill = "green";
+				this.querySelector("#bus3label-rect").style.stroke = "lime";
+				this.querySelector("#bus3off-text").style.fill = "lime";
+				this.querySelector("#utilityline3a").style.stroke = "lime";
+				this.querySelector("#utilityline3b").style.stroke = "lime";
+				this.querySelector("#utility3-text").style.fill = "lime";
+				this.querySelector("#galleyline3a").style.stroke = "lime";
+				this.querySelector("#galleyline3b").style.stroke = "lime";
+				this.querySelector("#galley3-text").style.fill = "lime";
 			} else {
 				this.querySelector("#bus3label-rect").style.stroke = "#db7200";
 				this.querySelector("#bus3off-text").style.fill = "#db7200";
@@ -211,14 +211,14 @@ var B747_8_LowerEICAS_ELEC;
 			}
 
 			if (((SimVar.GetSimVarValue("GENERAL ENG MASTER ALTERNATOR:4", "bool")) && (SimVar.GetSimVarValue("TURB ENG N2:4", "percent") >= 50)) || ((SimVar.GetSimVarValue("ELECTRICAL MAIN BUS VOLTAGE:1", "volts") > 0) && (SimVar.GetSimVarValue("BUS CONNECTION ON:5", "bool")))) {
-				this.querySelector("#bus4label-rect").style.stroke = "green";
-				this.querySelector("#bus4off-text").style.fill = "green";
-				this.querySelector("#utilityline4a").style.stroke = "green";
-				this.querySelector("#utilityline4b").style.stroke = "green";
-				this.querySelector("#utility4-text").style.fill = "green";
-				this.querySelector("#galleyline4a").style.stroke = "green";
-				this.querySelector("#galleyline4b").style.stroke = "green";
-				this.querySelector("#galley4-text").style.fill = "green";
+				this.querySelector("#bus4label-rect").style.stroke = "lime";
+				this.querySelector("#bus4off-text").style.fill = "lime";
+				this.querySelector("#utilityline4a").style.stroke = "lime";
+				this.querySelector("#utilityline4b").style.stroke = "lime";
+				this.querySelector("#utility4-text").style.fill = "lime";
+				this.querySelector("#galleyline4a").style.stroke = "lime";
+				this.querySelector("#galleyline4b").style.stroke = "lime";
+				this.querySelector("#galley4-text").style.fill = "lime";
 			} else {
 				this.querySelector("#bus4label-rect").style.stroke = "#db7200";
 				this.querySelector("#bus4off-text").style.fill = "#db7200";
@@ -304,7 +304,7 @@ var B747_8_LowerEICAS_ELEC;
 
 			//GEN DRIVE LOGIC - CHECK EACH ENG N2 RPM ABOVE 50%
 			if (SimVar.GetSimVarValue("TURB ENG N2:1", "percent") >= 50) {
-				this.querySelector("#drive1-rect").style.stroke = "green";
+				this.querySelector("#drive1-rect").style.stroke = "lime";
 				this.querySelector("#drive1offupper-text").style.visibility = "hidden";
 				this.querySelector("#drive1offmiddle-text").style.visibility = "hidden";
 				this.querySelector("#drive1offlower-text").style.visibility = "hidden";
@@ -316,7 +316,7 @@ var B747_8_LowerEICAS_ELEC;
 			}
 
 			if (SimVar.GetSimVarValue("TURB ENG N2:2", "percent") >= 50) {
-				this.querySelector("#drive2-rect").style.stroke = "green";
+				this.querySelector("#drive2-rect").style.stroke = "lime";
 				this.querySelector("#drive2offupper-text").style.visibility = "hidden";
 				this.querySelector("#drive2offmiddle-text").style.visibility = "hidden";
 				this.querySelector("#drive2offlower-text").style.visibility = "hidden";
@@ -327,7 +327,7 @@ var B747_8_LowerEICAS_ELEC;
 				this.querySelector("#drive2offlower-text").style.visibility = "visible";
 			}
 			if (SimVar.GetSimVarValue("TURB ENG N2:3", "percent") >= 50) {
-				this.querySelector("#drive3-rect").style.stroke = "green";
+				this.querySelector("#drive3-rect").style.stroke = "lime";
 				this.querySelector("#drive3offupper-text").style.visibility = "hidden";
 				this.querySelector("#drive3offmiddle-text").style.visibility = "hidden";
 				this.querySelector("#drive3offlower-text").style.visibility = "hidden";
@@ -338,7 +338,7 @@ var B747_8_LowerEICAS_ELEC;
 				this.querySelector("#drive3offlower-text").style.visibility = "visible";
 			}
 			if (SimVar.GetSimVarValue("TURB ENG N2:4", "percent") >= 50) {
-				this.querySelector("#drive4-rect").style.stroke = "green";
+				this.querySelector("#drive4-rect").style.stroke = "lime";
 				this.querySelector("#drive4offupper-text").style.visibility = "hidden";
 				this.querySelector("#drive4offmiddle-text").style.visibility = "hidden";
 				this.querySelector("#drive4offlower-text").style.visibility = "hidden";
