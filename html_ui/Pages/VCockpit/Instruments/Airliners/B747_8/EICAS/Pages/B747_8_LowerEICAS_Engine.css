@@ -38,8 +38,8 @@
     fill: none; }
 
 @font-face {
-  font-family: "BoeingEICAS";
-  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-family: "BoeingEICASSpecialDecimal";
+  src: url("/Fonts/BoeingEICASSpecialDecimal.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
 
@@ -107,23 +107,23 @@ b747-8-lower-eicas-engine {
     text-anchor: middle;
     alignment-baseline: baseline; }
   b747-8-lower-eicas-engine text.Label {
-    fill: var(--eicasBlue);
+    fill: cyan;
     font-size: 15px; }
   b747-8-lower-eicas-engine #EngineStates text {
-    fill: var(--eicasGreen);
+    fill: lime;
     font-size: 16px; }
   b747-8-lower-eicas-engine #EngineStates .white {
     fill: var(--eicasWhite); }
   b747-8-lower-eicas-engine #N2Gauges {
     top: 7%; }
   b747-8-lower-eicas-engine #FFGauges {
-    top: 34%; }
+    top: 28%; }
   b747-8-lower-eicas-engine #OilPGauges {
-    top: 50%; }
+    top: 45%; }
   b747-8-lower-eicas-engine #OilTGauges {
-    top: 65%; }
+    top: 60%; }
   b747-8-lower-eicas-engine #OilQGauges {
-    top: 74%; }
+    top: 69%; }
   b747-8-lower-eicas-engine #VIBGauges {
-    top: 86%; }
+    top: 81%; }
 

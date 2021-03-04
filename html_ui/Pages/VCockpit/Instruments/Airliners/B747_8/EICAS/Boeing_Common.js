@@ -125,8 +125,6 @@ var Boeing;
                 this.currentPercent = _realFlapsPercent;
                 this.currentAngle = _realFlapsAngle;
                 var targetAngle = this.flapsLeverPositionToAngle(this.currentLeverPosition);
-                SimVar.SetSimVarValue("L:TEST_TE_FLAPS_PERCENT", "number", this.currentPercent);
-                SimVar.SetSimVarValue("L:TEST_TE_FLAPS_ANGLE", "number", this.currentAngle);
                 var barTop = 0;
                 var barBottom = 0;
                 var barHeight = 0;

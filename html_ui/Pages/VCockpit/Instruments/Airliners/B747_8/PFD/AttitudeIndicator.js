@@ -470,8 +470,6 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
         this.applyAttributes();
     }
     update(_deltaTime) {
-        let pitch = SimVar.GetSimVarValue("PLANE PITCH DEGREES", "degrees");
-        SimVar.SetSimVarValue("L:SALTY_TEST_PITCH", "degrees", pitch);
         if (this.flightDirector != null) {
             this.flightDirector.refresh(_deltaTime);
         }

@@ -109,7 +109,7 @@ var B747_8_UpperEICAS;
         updatePressurisationValues() {
             this.cabinAlt.textContent = (Math.round(Simplane.getPressurisationCabinAltitude() / 100) * 100).toFixed(0);
             this.cabinRate.textContent = (Math.round(Simplane.getPressurisationCabinAltitudeRate() / 100) * 100).toFixed(0);
-            let deltaPValue = Simplane.getPressurisationDifferential() * 10;
+            let deltaPValue = Math.abs(Simplane.getPressurisationDifferential() * 10);
             if (Math.round(deltaPValue) < 10) {
                 this.deltaP.textContent = "0" + deltaPValue.toFixed(0);
             }
@@ -163,6 +163,7 @@ var B747_8_UpperEICAS;
             definition.valueBoxWidth = 70;
             definition.valueTextPrecision = 0;
             definition.barHeight = 80;
+            definition.type = 0;
             definition.addLineDefinition(1100, 32, "gaugeMarkerDanger");
             definition.addLineDefinition(1000, 22, "gaugeMarkerWarning");
             definition.addLineDefinition(0, 22, "gaugeMarkerCurrent", this.getN1CommandedValue.bind(this));
@@ -184,6 +185,7 @@ var B747_8_UpperEICAS;
             definition.maxValue = 1000;
             definition.valueBoxWidth = 70;
             definition.barHeight = 40;
+            definition.type = 1;
             definition.addLineDefinition(1000, 32, "gaugeMarkerDanger");
             definition.addLineDefinition(950, 22, "gaugeMarkerWarning");
             definition.addLineDefinition(0, 32, "gaugeMarkerDanger", this.getEGTLimitValue.bind(this));

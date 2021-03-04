@@ -66,11 +66,8 @@ var B747_8_EICAS_Common;
                 this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
                 this.rootSVG.setAttribute("viewBox", "0 0 100 200");
                 this.appendChild(this.rootSVG);
-                if (_definition.maxValue == 1100) {
-                    this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision, 1);
-                }
-                if (_definition.maxValue == 1000) {
-                    this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision, 0);
+                if (_definition.valueBoxWidth > 0) {
+                this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision, _definition.type);
                 }
                 if (_definition.barHeight > 0) {
                     this.createGaugeDisplay(_definition.barHeight);
@@ -82,7 +79,7 @@ var B747_8_EICAS_Common;
                 }
             }
         }
-        createValueDisplay(_boxWidth, _valuePrecision, _isN1Box) {
+        createValueDisplay(_boxWidth, _valuePrecision, _type) {
             this.valuePrecision = _valuePrecision;
             if (this.rootSVG != null) {
                 var boxX = ((100 - _boxWidth) * 0.5);
@@ -98,9 +95,25 @@ var B747_8_EICAS_Common;
                 this.valueText.style.letterSpacing = "2px";
                 this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
                 this.rootSVG.appendChild(this.valueText);
-                if (_isN1Box) {
+                if (_type === 0) {
                     this.decimalPoint = document.createElementNS(Avionics.SVG.NS, "text");
                     this.decimalPoint.setAttribute("x", (textX - 20) + "%");
+                    this.decimalPoint.setAttribute("y", (textY + 1) + "%");
+                    this.decimalPoint.style.fontSize = "24";
+                    this.decimalPoint.textContent = "."
+                    this.rootSVG.appendChild(this.decimalPoint);
+                }
+                else if (_type === 2) {
+                    this.decimalPoint = document.createElementNS(Avionics.SVG.NS, "text");
+                    this.decimalPoint.setAttribute("x", (textX - 14) + "%");
+                    this.decimalPoint.setAttribute("y", (textY + 1) + "%");
+                    this.decimalPoint.style.fontSize = "24";
+                    this.decimalPoint.textContent = "."
+                    this.rootSVG.appendChild(this.decimalPoint);
+                }
+                else if (_type === 3) {
+                    this.decimalPoint = document.createElementNS(Avionics.SVG.NS, "text");
+                    this.decimalPoint.setAttribute("x", (textX - 14) + "%");
                     this.decimalPoint.setAttribute("y", (textY + 1) + "%");
                     this.decimalPoint.style.fontSize = "24";
                     this.decimalPoint.textContent = "."

@@ -123,11 +123,12 @@ var B747_8_LowerEICAS_Engine;
         createN2GaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.eicas.getN2Value.bind(this, this.engineId);
-            definition.maxValue = 110;
-            definition.valueBoxWidth = 80;
-            definition.valueTextPrecision = 1;
-            definition.barHeight = 60;
-            definition.addLineDefinition(110, 40, "gaugeMarkerDanger");
+            definition.maxValue = 1100;
+            definition.valueBoxWidth = 70;
+            definition.valueTextPrecision = 0;
+            definition.barHeight = 40;
+            definition.type = 2;
+            definition.addLineDefinition(1100, 32, "gaugeMarkerDanger");
             definition.addLineDefinition(0, 40, "gaugeMarkerNormal", this.eicas.getN2IdleValue.bind(this));
             return definition;
         }
@@ -135,12 +136,13 @@ var B747_8_LowerEICAS_Engine;
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getFFValue.bind(this);
             definition.maxValue = 1000;
-            definition.valueBoxWidth = 60;
-            definition.valueTextPrecision = 1;
+            definition.valueBoxWidth = 55;
+            definition.valueTextPrecision = 0;
+            definition.type = 3;
             return definition;
         }
         getFFValue() {
-            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToKGPHX1000);
+            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToKGPHX1000 * 10);
         }
         getOilPValue() {
             return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engineId, "psi");
