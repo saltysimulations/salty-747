@@ -144,7 +144,7 @@ var B747_8_EICAS_Common;
             if (this.getValue != null) {
                 var value = this.getValue();
                 if (value != this.currentValue) {
-                    this.currentValue = value; /*Utils.Clamp(value, this.minValue, this.maxValue);*/
+                    this.currentValue = value;
                     if (this.valueText != null) {
                         this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
                     }
