@@ -260,7 +260,7 @@ class FMCMainDisplay extends BaseAirliners {
             this.setPageCount(template[0][2]);
         }
         for (let i = 0; i < 6; i++) {
-            let tIndex = 2 * i + 1; /* let tIndex = 2 * i + 1; */ 
+            let tIndex = 2 * i + 1; 
             if (template[tIndex]) {
                 if (template[tIndex][1] !== undefined) {
                     this.setLabel(template[tIndex][0], i, 0);
@@ -272,7 +272,7 @@ class FMCMainDisplay extends BaseAirliners {
                     this.setLabel(template[tIndex][0], i, -1);
                 }
             }
-            tIndex = 2 * i + 2; /* tIndex = 2 * i + 2; */
+            tIndex = 2 * i + 2;
             if (template[tIndex]) {
                 if (template[tIndex][1] !== undefined) {
                     this.setLine(template[tIndex][0], i, 0);
