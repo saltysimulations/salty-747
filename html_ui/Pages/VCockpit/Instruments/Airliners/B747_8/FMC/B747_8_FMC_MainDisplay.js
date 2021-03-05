@@ -587,7 +587,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         rowIndex = Math.min(rowIndex, this._climbN1Table[0].length - 1);
         return this._climbN1Table[lineIndex][rowIndex];
     }
-    getTakeOffThrustN1(temperature, airportAltitude) {
+    getTakeOffThrustN1(temperature, pressureAltitude) {
         let mode = this.getThrustTakeOffMode();
         let lineIndex = 0;
         if (mode === 0) {
@@ -597,37 +597,39 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     break;
                 }
             }
-            let rowIndex = Math.floor(airportAltitude / 1000) + 2;
+            let rowIndex = Math.floor(pressureAltitude / 1000) + 2;
             rowIndex = Math.max(0, rowIndex);
             rowIndex = Math.min(rowIndex, this._takeOffN1Table[0].length - 1);
             return this._takeOffN1Table[lineIndex][rowIndex];
         }
-        else if (mode === 1) {
+        if (mode === 1) {
+            let lineIndex = 0;
             for (let i = 0; i < this._takeOff1N1TempRow.length; i++) {
                 lineIndex = i;
                 if (temperature > this._takeOff1N1TempRow[i]) {
                     break;
                 }
             }
-            let rowIndex = Math.floor(airportAltitude / 1000) + 2;
+            let rowIndex = Math.floor(pressureAltitude / 1000) + 2;
             rowIndex = Math.max(0, rowIndex);
             rowIndex = Math.min(rowIndex, this._takeOff1N1Table[0].length - 1);
             return this._takeOff1N1Table[lineIndex][rowIndex];
         }
-        else if (mode === 2) {
+        if (mode === 2) {
+            let lineIndex = 0;
             for (let i = 0; i < this._takeOff2N1TempRow.length; i++) {
                 lineIndex = i;
                 if (temperature > this._takeOff2N1TempRow[i]) {
                     break;
                 }
             }
-            let rowIndex = Math.floor(airportAltitude / 1000) + 2;
+            let rowIndex = Math.floor(pressureAltitude / 1000) + 2;
             rowIndex = Math.max(0, rowIndex);
             rowIndex = Math.min(rowIndex, this._takeOff2N1Table[0].length - 1);
             return this._takeOff2N1Table[lineIndex][rowIndex];
-        }
+        } 
     }
-    getGoAroundThrustN1(temperature, altitude) {
+	getGoAroundThrustN1(temperature, pressureAltitude) {
         let lineIndex = 0;
         let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "celsius");
@@ -638,6 +640,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     break;
                 }
             }
+            let rowIndex = Math.floor(pressureAltitude / 5000);
+            rowIndex = Math.max(0, rowIndex);
+            rowIndex = Math.min(rowIndex, this._goAroundN1Table[0].length - 1);
+            return this._goAroundN1Table[lineIndex][rowIndex];
         }
         else {
             for (let i = 0; i < this._goAroundN1TATempRow.length; i++) {
@@ -646,11 +652,11 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     break;
                 }
             }
+            let rowIndex = Math.floor(pressureAltitude / 5000);
+            rowIndex = Math.max(0, rowIndex);
+            rowIndex = Math.min(rowIndex, this._goAroundN1Table[0].length - 1);
+            return this._goAroundN1Table[lineIndex][rowIndex];
         }
-        let rowIndex = Math.floor(altitude / 5000);
-        rowIndex = Math.max(0, rowIndex);
-        rowIndex = Math.min(rowIndex, this._goAroundN1Table[0].length - 1);
-        return this._goAroundN1Table[lineIndex][rowIndex];
     }
     getThrustTakeOffMode() {
         return this._thrustTakeOffMode;
@@ -689,8 +695,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return false;
     }
     getThrustTakeOffLimit() {
-        let altitude = SimVar.GetSimVarValue("INDICATED ALTITUDE", "feet");
-        let n1 = this.getTakeOffThrustN1(this.getThrustTakeOffTemp(), altitude);
+        let altitude = Simplane.getAltitude();
+        let barosetting = SimVar.GetSimVarValue("KOHLSMAN SETTING MB", "millibars");
+        let pressureAltitude = (1013.25 - barosetting) * 30 + altitude;
+        let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
+        let temperature = Math.max(oat, this.getThrustTakeOffTemp());
+        let n1 = this.getTakeOffThrustN1(temperature, pressureAltitude);
         return n1;
     }
     getThrustClimbLimit() {
@@ -699,9 +709,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return this.getClimbThrustN1(temperature, altitude) - this.getThrustCLBMode() * 8.6;
     }
     getThrustGoAroundLimit() {
-        let altitude = Simplane.getAltitude();
-        temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-        let n1 = this.getGoAroundThrustN1(temperature, altitude);
+        let altitude = Simplane.getAltitude(); /*airport.infos.coordinates.alt;*/
+        let barosetting = SimVar.GetSimVarValue("KOHLSMAN SETTING MB", "millibars");
+        let pressureAltitude = (1013.25 - barosetting) * 30 + altitude;
+        let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
+        let temperature = Math.max(oat, this.getThrustTakeOffTemp());
+        let n1 = this.getGoAroundThrustN1(temperature, pressureAltitude);
+        return n1;
 		return n1;
     }
     updateAutopilot() {
