@@ -18,6 +18,7 @@ class FMCThrustLimPage {
         let oatCell = oatValue.toFixed(0) + "°C";
         let thrustTOMode = fmc.getThrustTakeOffMode();
         let thrustClimbMode = fmc.getThrustCLBMode();
+        let ground = Simplane.getIsGrounded();
         fmc.onLeftInput[1] = () => {
             if (Simplane.getIsGrounded()) {
                 fmc.setThrustTakeOffMode(0);
@@ -66,18 +67,18 @@ class FMCThrustLimPage {
         };
         fmc.setTemplate([
             ["THRUST LIM"],
-            [(Simplane.getIsGrounded() ? "SEL" : ""), (Simplane.getIsGrounded() ? "TO N1" : "CLB N1"), (Simplane.getIsGrounded() ? "OAT" : "")],
-            [(Simplane.getIsGrounded() ? selectedTempCell + "°": ""),(Simplane.getIsGrounded() ? toN1Cell : clbN1Cell), (Simplane.getIsGrounded() ? oatCell : "")],
-            [""],
-            [(Simplane.getIsGrounded() ? "TO" + (thrustTOMode === 0 ? " <SEL>" : "") : "GA" + (thrustClimbMode === 3 ? " <SEL>" : "")), (Simplane.getIsGrounded() ? (thrustClimbMode === 0 ? "<ARM> " : "") : "<SEL> ") + "CLB>"],
-            [(Simplane.getIsGrounded() ? "TO 1" : "")],
-            [(Simplane.getIsGrounded() ? "-10%" + (thrustTOMode === 1 ? " <SEL>" : "") : "CON" + (thrustClimbMode === 4 ? " <SEL>" : "")), (Simplane.getIsGrounded() ? (thrustClimbMode === 1 ? "<ARM> " : "") : "<SEL> ") + "CLB 1>"],
-            [(Simplane.getIsGrounded() ? "TO 2" : "")],
-            [(Simplane.getIsGrounded() ? "-20%" + (thrustTOMode === 2 ? " <SEL>" : "") : "CRZ" + (thrustClimbMode === 5 ? " <SEL>" : "")), (Simplane.getIsGrounded() ? (thrustClimbMode === 2 ? "<ARM> " : "") : "<SEL> ") + "CLB 2>"],
+            [(ground ? "SEL" : ""), (ground ? "TO N1" : "CLB N1"), (ground ? "OAT" : "")],
+            [(ground ? selectedTempCell + "°": ""),(ground ? toN1Cell : clbN1Cell), (ground ? oatCell : "")],
+            ["<AA", "BBB>", " <SEL> " + " <ARM> "],
+            ["<TO", "CLB>", " <SEL> " + " <ARM> "],
+            [(ground ? "TO 1" : "")],
+            [(ground ? (thrustTOMode === 1 ? "<-10% <SEL>" : "<-10%") : (thrustClimbMode === 4 ? "<CON <SEL>" : "<CON")), (ground ? (thrustClimbMode === 1 ? "<ARM> CLB 1>" : "CLB 1>") : (thrustClimbMode === 1) ? "<SEL> CLB 1>" : "CLB 1>")],
+            [(ground ? "TO 2" : "")],
+            [(ground ? (thrustTOMode === 2 ? "<-20% <SEL>" : "<-20%") : (thrustClimbMode === 5 ? "<CRZ <SEL>" : "<CRZ")), (ground ? (thrustClimbMode === 2 ? "<ARM> CLB 2>" : "CLB 2>") : (thrustClimbMode === 2) ? "<SEL> CLB2>" : "CLB 2>")],
             [""],
             [""],
             ["__FMCSEPARATOR"],
-            ["<INDEX", "TAKEOFF>"]
+            ["\<INDEX", "TAKEOFF>"]
         ]);
         fmc.onLeftInput[5] = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(fmc); };
         fmc.onRightInput[5] = () => { FMCTakeOffPage.ShowPage1(fmc); };
