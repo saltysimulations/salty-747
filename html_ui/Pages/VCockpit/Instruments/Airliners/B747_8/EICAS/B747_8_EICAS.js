@@ -105,7 +105,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                         );
                 }
                 for (let i = this.annunciations.displayAdvisory.length - 1; i >= 0; i--) {
-                    if (!this.annunciations.displayAdvisory[i].Acknowledged)
+                    if (!this.annunciations.displayAdvisory[i].Acknowledged) 
                         infoPanelManager.addMessage(
                             Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
                             this.annunciations.displayAdvisory[i].Text,
@@ -124,8 +124,8 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     }
     getN2IdleValue() {
         let density = SimVar.GetSimVarValue("AMBIENT DENSITY", "kilogram per cubic meter");
-	let N2 = 214 * Math.pow(density, 6) - 1051.8 * Math.pow(density, 5) + 2087.1 * Math.pow(density, 4) - 2129.8 * Math.pow(density, 3) + 1167.7 * Math.pow(density, 2) - 315.83 * density + 87.453; 
-	return N2;
+        let N2 = 214 * Math.pow(density, 6) - 1051.8 * Math.pow(density, 5) + 2087.1 * Math.pow(density, 4) - 2129.8 * Math.pow(density, 3) + 1167.7 * Math.pow(density, 2) - 315.83 * density + 87.453;
+        return N2;
     }
     getN2Value(_engineId) {
         return SimVar.GetSimVarValue("ENG N2 RPM:" + _engineId, "percent");
@@ -138,71 +138,71 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
             let N2Value = this.getN2Value(i + 1);
             switch (this.engines[i].currentState) {
                 case B747_8_EngineState.IDLE:
-                    if (this.getFuelValveOpen(i + 1)) {
-                        if (N2Value >= this.getN2IdleValue()) {
-                            this.changeState(i, B747_8_EngineState.RUNNING);
-			}
-                        else if (N2Value >= 0.05)}
-                            this.changeState(i, B747_8_EngineState.AUTOSTART);
-		    	}
-                    }
-                    break;
-                case B747_8_EngineState.AUTOSTART:
-                    if (this.getFuelValveOpen(i + 1)) {
-                        if (N2Value >= this.getN2IdleValue()) {
-                            this.changeState(i, B747_8_EngineState.RUNNING);
-			}
-                    }
-                    else {
-                        this.changeState(i, B747_8_EngineState.DECELERATE);
-                    }
-                    break;
-                case B747_8_EngineState.RUNNING:
+                if (this.getFuelValveOpen(i + 1)) {
                     if (N2Value >= this.getN2IdleValue()) {
-                        if (this.engines[i].timeInState > 30) {
-                            this.changeState(i, B747_8_EngineState.READY);
-			}
+                        this.changeState(i, B747_8_EngineState.RUNNING);
+                    }
+                    else if (N2Value >= 0.05) {
+                        this.changeState(i, B747_8_EngineState.AUTOSTART);
+                    }
+                }
+                break;
+                case B747_8_EngineState.AUTOSTART:
+                if (this.getFuelValveOpen(i + 1)) {
+                    if (N2Value >= this.getN2IdleValue()) {
+                        this.changeState(i, B747_8_EngineState.RUNNING);
+                    }
+                }
+                else {
+                    this.changeState(i, B747_8_EngineState.DECELERATE);
+                }
+                break;
+                case B747_8_EngineState.RUNNING:
+                if (N2Value >= this.getN2IdleValue()) {
+                    if (this.engines[i].timeInState > 30) {
+                        this.changeState(i, B747_8_EngineState.READY);
                     }
                     else {
                         this.changeState(i, B747_8_EngineState.DECELERATE);
-		    }
-                    break;
+                    }
+                }
+                break;
                 case B747_8_EngineState.READY:
-                    if (N2Value < this.getN2IdleValue()) {
-                        this.changeState(i, B747_8_EngineState.AUTORELIGHT);
-		    }
-                    break;
+                if (N2Value < this.getN2IdleValue()) {
+                    this.changeState(i, B747_8_EngineState.AUTORELIGHT);
+                }
+                break;
                 case B747_8_EngineState.DECELERATE:
-			if (N2Value < this.getN2IdleValue() && this.getFuelValveOpen()) {
-				this.changeState(i, B747_8_EngineState.AUTORELIGHT);
-			}
-                    	else if (N2Value < 0.05) {
-                        	this.changeState(i, B747_8_EngineState.IDLE);
-			}
-                    	else if (N2Value >= this.getN2IdleValue()) {
-                        	this.changeState(i, B747_8_EngineState.RUNNING);
-			}
-                    	break;
-		case B747_8_EngineState.AUTORELIGHT:
-			if (N2Value >= this.getN2IdleValue()) {
-				this.changeState(i, B747_8_EngineState.RUNNING);
-			}
-			else if (N2Value < 0.05) {
-				this.changeState(i, B747_8_EngineState.IDLE);
-			}
-			else if (!this.getFuelValveOpen()) {
-				this.changeState(i, B747_8_EngineState.DECELERATE);
-			}
-			break;
+                    if (N2Value < this.getN2IdleValue() && this.getFuelValveOpen()) {
+                        this.changeState(i, B747_8_EngineState.AUTORELIGHT);
+                    }
+                    else if (N2Value < 0.05) {
+                        this.changeState(i, B747_8_EngineState.IDLE);
+                    }
+                    else if (N2Value >= this.getN2IdleValue()) {
+                        this.changeState(i, B747_8_EngineState.RUNNING);
+                    }
+                break;
+		        case B747_8_EngineState.AUTORELIGHT:
+                if (N2Value >= this.getN2IdleValue()) {
+                    this.changeState(i, B747_8_EngineState.RUNNING);
+                }
+                else if (N2Value < 0.05) {
+                    this.changeState(i, B747_8_EngineState.IDLE);
+                }
+                else if (!this.getFuelValveOpen()) {
+                    this.changeState(i, B747_8_EngineState.DECELERATE);
+                }
+                break;
             }
             this.engines[i].timeInState += _deltaTime / 1000;
         }
     }
     changeState(_index, _state) {
-        if (this.engines[_index].currentState == _state)
-            return;
-        this.engines[_index].currentState = _state;
-        this.engines[_index].timeInState = 0;
+    if (this.engines[_index].currentState == _state)
+        return;
+    this.engines[_index].currentState = _state;
+    this.engines[_index].timeInState = 0;
     }
 }
 var B747_8_EngineState;
@@ -212,7 +212,7 @@ var B747_8_EngineState;
     B747_8_EngineState[B747_8_EngineState["RUNNING"] = 2] = "RUNNING";
     B747_8_EngineState[B747_8_EngineState["READY"] = 3] = "READY";
     B747_8_EngineState[B747_8_EngineState["DECELERATE"] = 4] = "DECELERATE";
-	B747_8_EngineState[B747_8_EngineState["AUTORELIGHT"] = 5] = "AUTORELIGHT";
+    B747_8_EngineState[B747_8_EngineState["AUTORELIGHT"] = 5] = "AUTORELIGHT";
 })(B747_8_EngineState || (B747_8_EngineState = {}));
 class B747_8_Engine {
     constructor() {
