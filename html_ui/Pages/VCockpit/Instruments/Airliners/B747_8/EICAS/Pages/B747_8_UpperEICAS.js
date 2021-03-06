@@ -166,13 +166,13 @@ var B747_8_UpperEICAS;
             return SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:" + this.engine, "celsius");
         }
         getEGTLimitValue() {
-		let ground = Simplane.getIsGrounded();
-		if (ground){
-			return 750;
-		}
-		else {
-			return 875;
-		}
+            let ground = Simplane.getIsGrounded();
+            if (ground) {
+                return 750;
+            }
+            else {
+                return 875;
+            }
         }
         refresh() {
             if (this.n1Gauge != null) {
