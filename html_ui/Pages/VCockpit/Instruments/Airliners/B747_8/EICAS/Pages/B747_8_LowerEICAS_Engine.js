@@ -165,10 +165,10 @@ var B747_8_LowerEICAS_Engine;
                     this.stateText.textContent = "RUNNING";
                     this.stateText.setAttribute("class", "");
                     break;
-		case B747_8_EngineState.AUTORELIGHT:
-			this.stateText.textContent = "AUTORELIGHT";
-			this.stateText.setAttribute("class", "white");
-			break;
+                case B747_8_EngineState.AUTORELIGHT:
+                    this.stateText.textContent = "AUTORELIGHT";
+                    this.stateText.setAttribute("class", "white");
+                    break;
                 default:
                     this.stateText.textContent = "";
                     break;
@@ -180,10 +180,10 @@ var B747_8_LowerEICAS_Engine;
                     let idleN2 = n2IdleLine.currentValue;
                     if (Math.round(currentN2) >= idleN2) {
                         n2IdleLine.line.setAttribute("display", "none");
-		    }
+                    }
                     else {
                         n2IdleLine.line.setAttribute("display", "block");
-		    }
+                    }
                 }
                 this.n2Gauge.refresh();
             }
