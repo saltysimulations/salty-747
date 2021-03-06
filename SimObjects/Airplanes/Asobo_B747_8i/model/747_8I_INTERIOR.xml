@@ -4219,5 +4219,17 @@
 			
 		</Component>
 		
+	        <Component ID="Cockpit_Pilots">
+	            <Component ID="PILOT_0" Node="PILOT_0">
+	                <UseTemplate Name="ASOBO_GT_Visibility_Code">
+	                    <VISIBILITY_CODE>(L:SALTY_VIS_PILOT_0) ! (A:CAMERA STATE, Enum) 2 != or</VISIBILITY_CODE>
+	                </UseTemplate>
+	            </Component>
+	            <Component ID="PILOT_1" Node="PILOT_1">
+	                <UseTemplate Name="ASOBO_GT_Visibility_Code">
+	                    <VISIBILITY_CODE>(L:SALTY_VIS_PILOT_1) ! (A:CAMERA STATE, Enum) 2 != or</VISIBILITY_CODE>
+	                </UseTemplate>
+	            </Component>
+	        </Component>
 	</Behaviors>
 </ModelInfo>
