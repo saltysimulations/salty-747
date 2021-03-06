@@ -225,7 +225,7 @@ var B747_8_UpperEICAS;
                         egtLimit.line.setAttribute("display", "block");
                     }
                 }
-                this.egtGauge.refresh();
+                this.egtGauge.refresh(true);
             }
         }
     }

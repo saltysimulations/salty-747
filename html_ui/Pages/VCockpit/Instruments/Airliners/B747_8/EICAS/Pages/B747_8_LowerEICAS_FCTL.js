@@ -134,10 +134,11 @@ var B747_8_LowerEICAS_FCTL;
             } else {
                 this.querySelector("#trim").style.stroke = "White";
                 this.querySelector(".value").style.fill = "White";
+                this.querySelector("#trim").style.display = "block";
             }
 
             if (this.stab != null) {
-                this.stab.update(_deltaTime);
+                this.stab.update(_deltaTime, 1);
             }
         }
     }

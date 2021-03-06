@@ -154,7 +154,7 @@ var B747_8_LowerEICAS_Engine;
             return (SimVar.GetSimVarValue("ENG OIL QUANTITY:" + this.engineId, "percent scaler 16k") * 0.001);
         }
         getVIBValue() {
-            return SimVar.GetSimVarValue("ENG VIBRATION:" + this.engineId, "Number");
+            return Math.abs(SimVar.GetSimVarValue("ENG VIBRATION:" + this.engineId, "Number"));
         }
         refresh(_deltaTime) {
             let state = this.eicas.getEngineState(this.engineId);
@@ -184,7 +184,7 @@ var B747_8_LowerEICAS_Engine;
                 this.n2Gauge.refresh();
             }
             if (this.ffGauge != null) {
-                this.ffGauge.refresh();
+                this.ffGauge.refresh(false);
             }
         }
     }

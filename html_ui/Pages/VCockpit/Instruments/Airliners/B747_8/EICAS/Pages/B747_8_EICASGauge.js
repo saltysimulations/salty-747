@@ -168,13 +168,13 @@ var B747_8_EICAS_Common;
         valueToGaugePosY(_value) {
             return (GaugeDefinition.GAUGE_TOP + (this.barHeight - this.valueToGaugeHeight(_value)));
         }
-        refresh() {
+        refresh(_isEGT) {
             if (this.getValue != null) {
                 var value = this.getValue();
                 if (value != this.currentValue) {
                     this.currentValue = Utils.Clamp(value, this.minValue, this.maxValue);
                     if (this.valueText != null) {
-                        if (Math.round(this.currentValue) < 10) {
+                        if ((Math.round(this.currentValue) < 10 && !_isEGT)) {
                             this.valueText.textContent = "0" + this.currentValue.toFixed(this.valuePrecision);
                         }
                         else {

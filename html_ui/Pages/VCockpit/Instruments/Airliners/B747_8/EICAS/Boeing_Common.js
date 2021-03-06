@@ -218,20 +218,22 @@ var Boeing;
             }
             this.refreshValue(0, true);
         }
-        update(_deltaTime) {
+        update(_deltaTime, _isLowerEICAS) {
             this.refreshValue(SimVar.GetSimVarValue("ELEVATOR TRIM POSITION", "degree"));
             //Hides Greenband and trim value if airborne.
-            if (Simplane.getIsGrounded()) {
-                this.valueText.style.display = "block";
-                this.trimBand.style.display = "block";
-                this.valueStroke.style.display = "block";
-                this.decimalPoint.style.display = "block";
-            }
-            else {
-                this.valueText.style.display = "none";
-                this.trimBand.style.display = "none";
-                this.valueStroke.style.display = "none";
-                this.decimalPoint.style.display = "none";
+            if(!_isLowerEICAS) {
+                if (Simplane.getIsGrounded()) {
+                    this.valueText.style.display = "block";
+                    this.trimBand.style.display = "block";
+                    this.valueStroke.style.display = "block";
+                    this.decimalPoint.style.display = "block";
+                }
+                else {
+                    this.valueText.style.display = "none";
+                    this.trimBand.style.display = "none";
+                    this.valueStroke.style.display = "none";
+                    this.decimalPoint.style.display = "none";
+                }
             }
         }
         refreshValue(_value, _force = false) {
