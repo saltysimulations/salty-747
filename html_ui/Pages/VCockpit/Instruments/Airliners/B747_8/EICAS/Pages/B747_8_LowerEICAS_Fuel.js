@@ -217,24 +217,23 @@ var B747_8_LowerEICAS_Fuel;
             if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:18", "bool")) {
                 this.flowStabOutline.style.visibility = "visible";
                 this.flowStab.style.visibility = "visible";
-            }
-            else {
+            } else {
                 this.flowStabOutline.style.visibility = "hidden";
                 this.flowStab.style.visibility = "hidden";
             }
+            
             if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:10", "bool")) {
                 this.flowRes1Outline.style.visibility = "visible";
                 this.flowRes1.style.visibility = "visible";
-            }
-            else {
+            } else {
                 this.flowRes1Outline.style.visibility = "hidden";
                 this.flowRes1.style.visibility = "hidden";
             }
+            
             if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:12", "bool")) {
                 this.flowRes4Outline.style.visibility = "visible";
                 this.flowRes4.style.visibility = "visible";
-            }
-            else {
+            } else {
                 this.flowRes4Outline.style.visibility = "hidden";
                 this.flowRes4.style.visibility = "hidden";
             }
