@@ -160,7 +160,6 @@ var B747_8_EICAS_Common;
                         value = this.dynamicLines[line].getValue();
                         if (value != this.dynamicLines[line].currentValue) {
                             this.dynamicLines[line].currentValue = Utils.Clamp(value, this.minValue, this.maxValue);
-                            ;
                             var yStr = this.valueToGaugePosY(this.dynamicLines[line].currentValue) + "%";
                             this.dynamicLines[line].line.setAttribute("y1", yStr);
                             this.dynamicLines[line].line.setAttribute("y2", yStr);
