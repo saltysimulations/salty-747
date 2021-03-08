@@ -171,7 +171,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                         this.changeState(i, B747_8_EngineState.RUNNING);
                     }
                 break;
-		case B747_8_EngineState.AUTORELIGHT:
+                case B747_8_EngineState.AUTORELIGHT:
                 if (N2Value >= this.getN2IdleValue()) {
                     this.changeState(i, B747_8_EngineState.RUNNING);
                 }
