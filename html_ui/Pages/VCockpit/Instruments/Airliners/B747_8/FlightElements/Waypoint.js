@@ -360,8 +360,10 @@ class AirportInfo extends WayPointInfo {
             return fName;
         }
         let origin = FlightPlanManager.DEBUG_INSTANCE.getOrigin();
-        if (this.ident === origin.ident) {
-            fName = "ICON_MAP_AIRPORT_FLIGHTPLAN.svg";
+        if (origin) {
+            if (this.ident === origin.ident) {
+                fName = "ICON_MAP_AIRPORT_FLIGHTPLAN.svg";
+            }
         }
         return fName.replace(".svg", ".png");
     }
