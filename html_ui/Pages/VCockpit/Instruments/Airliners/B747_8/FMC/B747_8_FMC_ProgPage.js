@@ -12,8 +12,13 @@ class B747_8_FMC_ProgPage {
         let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
         let speed = Simplane.getGroundSpeed();
         let currentTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
-        let currentFuel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
-        let currentFuelFlow = SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:1", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:2", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:3", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:4", "pound per hour");
+        if (fmc.units) {
+            let currentFuel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms") / 1000;
+            let currentFuelFlow = SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:1", "kilograms per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:2", "kilograms per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:3", "kilograms per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:4", "kilograms per hour");
+        } else if (!fmc.units) {
+            let currentFuel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
+            let currentFuelFlow = SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:1", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:2", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:3", "pound per hour") + SimVar.GetSimVarValue("TURB ENG FUEL FLOW PPH:4", "pound per hour");
+        }
         currentFuelFlow = currentFuelFlow / 1000;
         let machMode = Simplane.getAutoPilotMachModeActive();
         let waypointActiveCell = "";
