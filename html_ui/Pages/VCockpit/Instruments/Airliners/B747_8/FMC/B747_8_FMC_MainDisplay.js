@@ -152,16 +152,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
-<<<<<<< Updated upstream
-=======
-        if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
-            this.units = true;
-            this.useLbs = false;
-        } else if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "LBS") {
-            this.units = false;
-            this.useLbs = true;
-        }
->>>>>>> Stashed changes
         this.onInit = () => {
             B747_8_FMC_InitRefIndexPage.ShowPage1(this);
         };
