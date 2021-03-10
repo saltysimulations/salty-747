@@ -192,9 +192,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         FMC_Menu.ShowPage(this);
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
-        Include.addScript("/JS/debug.js", function () {
-            g_modDebugMgr.AddConsole(null);
-        });
     }
     onPowerOn() {
         super.onPowerOn();
