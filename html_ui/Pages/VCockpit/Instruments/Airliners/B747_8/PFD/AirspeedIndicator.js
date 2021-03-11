@@ -518,8 +518,60 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         this.speedMarkerSVG.appendChild(svg);
         return marker;
     }
+    getStallSpeed() {
+        let flapSetting = Simplane.getFlapsAngle() * 180 / Math.PI;
+        SimVar.SetSimVarValue("L:SALTY FLAPS SETTING", "Number", flapSetting);
+        let altitude = Simplane.getAltitude();
+        let grossWeight = Math.round(Simplane.getWeight() / 1000);
+        SimVar.SetSimVarValue("L:SALTY GW", "Number", grossWeight);
+        let gLoad = SimVar.GetSimVarValue("G FORCE", "GForce");
+        if (flapSetting === 0) {
+            let stallSpeed = Math.round((0.2595 * grossWeight + 100.63) * Math.sqrt(gLoad));
+            SimVar.SetSimVarValue("L:SALTY STALL SPEED", "Number", stallSpeed)
+            //SimVar.SetGameVarValue("AIRCRAFT STALL PROTECTION SPEED MAX", "knots", stallSpeed);
+            return stallSpeed;
+        }
+        else if (flapSetting === 1) {
+            let stallSpeed = Math.round((0.2294 * grossWeight + 73.855) * Math.sqrt(gLoad));
+            SimVar.SetSimVarValue("L:SALTY STALL SPEED", "Number", stallSpeed);
+            //SimVar.SetGameVarValue("AIRCRAFT STALL PROTECTION SPEED MAX", "knots", stallSpeed);
+            return stallSpeed;
+        }
+        else if (flapSetting === 5) {
+            let stallSpeed = Math.round((0.2236 * grossWeight + 71.791) * Math.sqrt(gLoad));
+            SimVar.SetSimVarValue("L:SALTY STALL SPEED", "Number", stallSpeed);
+            //SimVar.SetGameVarValue("AIRCRAFT STALL PROTECTION SPEED MAX", "knots", stallSpeed);
+            return stallSpeed;
+        }
+        else if (flapSetting === 10) {
+            let stallSpeed = Math.round((0.2091 * grossWeight + 71) * Math.sqrt(gLoad));
+            SimVar.SetSimVarValue("L:SALTY STALL SPEED", "Number", stallSpeed);
+            SimVar.SetGameVarValue("AIRCRAFT STALL PROTECTION SPEED MAX", "knots", stallSpeed);
+            return stallSpeed;
+        }
+        else if (flapSetting === 20) {
+            let stallSpeed = Math.round((0.2 * grossWeight + 66) * Math.sqrt(gLoad));
+            SimVar.SetSimVarValue("L:SALTY STALL SPEED", "Number", stallSpeed);
+            SimVar.SetGameVarValue("AIRCRAFT STALL PROTECTION SPEED MAX", "knots", stallSpeed);
+            return stallSpeed;
+        }
+        else if (flapSetting === 25) {
+            let stallSpeed = Math.round((0.2045 * grossWeight + 60) * Math.sqrt(gLoad));
+            SimVar.SetSimVarValue("L:SALTY STALL SPEED", "Number", stallSpeed);
+            SimVar.SetGameVarValue("AIRCRAFT STALL PROTECTION SPEED MAX", "knots", stallSpeed);
+            return stallSpeed;
+        }
+        else if (flapSetting === 30) {
+            let stallSpeed = Math.round((0.2023 * grossWeight + 59.5) * Math.sqrt(gLoad)) ;
+            SimVar.SetSimVarValue("L:SALTY STALL SPEED", "Number", stallSpeed);
+            SimVar.SetGameVarValue("AIRCRAFT STALL PROTECTION SPEED MAX", "knots", stallSpeed);
+            return stallSpeed;
+        }
+
+    }
     update(dTime) {
         let indicatedSpeed = Simplane.getIndicatedSpeed();
+        let MMO = 0.9;
         this.updateArcScrolling(indicatedSpeed);
         this.updateGraduationScrolling(indicatedSpeed);
         this.updateCursorScrolling(indicatedSpeed);
@@ -528,12 +580,12 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         let cruiseMach = SimVar.GetGameVarValue("AIRCRAFT CRUISE MACH", "mach");
         let crossSpeedFactor = Simplane.getCrossoverSpeedFactor(crossSpeed, cruiseMach);
         let nextFlapSpeed = Simplane.getNextFlapsExtendSpeed(this.aircraft) * crossSpeedFactor;
-        let maxSpeed = Simplane.getMaxSpeed(this.aircraft) * crossSpeedFactor;
+        let maxSpeed = Math.min(SimVar.GetGameVarValue("FROM MACH TO KIAS", "Number", MMO), Simplane.getMaxSpeed(this.aircraft));
         let greenDot = Simplane.getGreenDotSpeed() * crossSpeedFactor;
         let lowestSelectableSpeed = Simplane.getLowestSelectableSpeed();
-        let stallProtectionMin = Simplane.getStallProtectionMinSpeed();
         let stallProtectionMax = Simplane.getStallProtectionMaxSpeed();
-        let stallSpeed = Simplane.getStallSpeed();
+        let stallSpeed = this.getStallSpeed();
+        let stallProtectionMin = Math.round(stallSpeed * Math.sqrt(1.3));
         let altitudeAboveGround = Simplane.getAltitudeAboveGround();
         this.smoothSpeeds(indicatedSpeed, dTime, maxSpeed, lowestSelectableSpeed, stallProtectionMin, stallProtectionMax, stallSpeed);
         this.updateSpeedTrendArrow(indicatedSpeed, speedTrend);
@@ -541,9 +593,9 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         this.updateNextFlapSpeedIndicator(indicatedSpeed, nextFlapSpeed);
         this.updateStrip(this.vMaxStripSVG, indicatedSpeed, this._maxSpeed, false, true);
         this.updateStrip(this.vLSStripSVG, indicatedSpeed, this._lowestSelectableSpeed, (altitudeAboveGround < 100), false);
-        this.updateStrip(this.stallProtMinStripSVG, indicatedSpeed, this._alphaProtectionMin, (altitudeAboveGround < 10), false);
-        this.updateStrip(this.stallProtMaxStripSVG, indicatedSpeed, this._alphaProtectionMax, (altitudeAboveGround < 10), false);
-        this.updateStrip(this.stallStripSVG, indicatedSpeed, this._stallSpeed, (altitudeAboveGround < 10), false);
+        this.updateStrip(this.stallProtMinStripSVG, indicatedSpeed, stallProtectionMin, (altitudeAboveGround < 10), false);
+        this.updateStrip(this.stallProtMaxStripSVG, indicatedSpeed, stallSpeed, (altitudeAboveGround < 10), false);
+        this.updateStrip(this.stallStripSVG, indicatedSpeed, stallSpeed, (altitudeAboveGround < 10), false);
         this.updateGreenDot(indicatedSpeed, greenDot);
         this.updateSpeedMarkers(indicatedSpeed);
         this.updateMachSpeed(dTime);
