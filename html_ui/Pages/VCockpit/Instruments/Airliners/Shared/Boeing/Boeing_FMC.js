@@ -362,7 +362,6 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     activateTHRREFMode() {
         let altitude = Simplane.getAltitudeAboveGround();
-        /*this.setThrottleMode(ThrottleMode.CLIMB);*/
         let n1 = 100;
         if (altitude < this.thrustReductionAltitude) {
             n1 = this.getThrustTakeOffLimit();
