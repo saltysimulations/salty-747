@@ -90,7 +90,7 @@ var B747_8_EICAS_Common;
                 this.valueText.setAttribute("x", textX + "%");
                 this.valueText.setAttribute("y", textY + "%");
                 this.valueText.setAttribute("class", "value");
-                this.valueText.textContent = this.currentValue.toFixed(/*this.valuePrecision*/);
+                this.valueText.textContent = this.currentValue.toFixed();
                 this.rootSVG.appendChild(this.valueText);
             }
         }
