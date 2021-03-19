@@ -87,7 +87,7 @@
 		</Case>
 		<Default>
 			<Switch Param="TYPE">
-				<Case Value="FA18E">
+				<Case Value="AS04F">
 			<Component ID="#NODE_ID#" Node="#NODE_ID#">
 						<UseTemplate Name="ASOBO_GT_Switch_3States">
 							<CODE_POS_0>
@@ -495,7 +495,7 @@
 				<OFF>1</OFF>
 				<HIGH>2</HIGH>
 			</Case>
-			<Case Value="FA18E">
+			<Case Value="AS04F">
 				<DEFAULT_POS>1</DEFAULT_POS>
 				<SWITCH_POSITION_TYPE>I</SWITCH_POSITION_TYPE>
 				<SWITCH_POSITION_VAR>XMLVAR_DeiceWindshield_#ID#</SWITCH_POSITION_VAR>
@@ -578,7 +578,7 @@
 					<STATE#HIGH#_TEST>#HIGH# (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) ==</STATE#HIGH#_TEST>
 				</UseTemplate>
 			</Case>
-			<Case Value="FA18E">
+			<Case Value="AS04F">
 				<UseTemplate Name="ASOBO_GT_Switch_3States">
 					<CODE_POS_0>
 						(A:WINDSHIELD DEICE SWITCH, Bool) ! if{ (&gt;K:WINDSHIELD_DEICE_TOGGLE) }
@@ -719,7 +719,7 @@
 				<Default>
 					<Component ID="#NODE_ID#" Node="#NODE_ID#">
 						<Switch Param="TYPE">
-							<Case Value="FA18E">
+							<Case Value="AS04F">
 								<UseTemplate Name="ASOBO_GT_Update">
 									<FREQUENCY>1</FREQUENCY>
 									<UPDATE_CODE>

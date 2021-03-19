@@ -13,24 +13,24 @@ class Runway {
             newRunway.designation = designations[i];
             let runwayNumber = parseInt(newRunway.designation);
             if (i === 0) {
-                if (this.designatorCharPrimary === 1) {
+                if (this.designatorCharPrimary === RunwayDesignator.RUNWAY_DESIGNATOR_LEFT) {
                     newRunway.designation += "L";
                 }
-                if (this.designatorCharPrimary === 2) {
+                if (this.designatorCharPrimary === RunwayDesignator.RUNWAY_DESIGNATOR_RIGHT) {
                     newRunway.designation += "R";
                 }
-                if (this.designatorCharPrimary === 3) {
+                if (this.designatorCharPrimary === RunwayDesignator.RUNWAY_DESIGNATOR_CENTER) {
                     newRunway.designation += "C";
                 }
             }
             if (i === 1) {
-                if (this.designatorCharSecondary === 1) {
+                if (this.designatorCharSecondary === RunwayDesignator.RUNWAY_DESIGNATOR_LEFT) {
                     newRunway.designation += "L";
                 }
-                if (this.designatorCharSecondary === 2) {
+                if (this.designatorCharSecondary === RunwayDesignator.RUNWAY_DESIGNATOR_RIGHT) {
                     newRunway.designation += "R";
                 }
-                if (this.designatorCharSecondary === 3) {
+                if (this.designatorCharSecondary === RunwayDesignator.RUNWAY_DESIGNATOR_CENTER) {
                     newRunway.designation += "C";
                 }
             }

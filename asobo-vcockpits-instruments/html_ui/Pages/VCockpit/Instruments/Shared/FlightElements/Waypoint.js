@@ -129,10 +129,10 @@ class WayPoint {
         }
         this.ident = this.icao.substring(7, 12).replace(new RegExp(" ", "g"), "");
         this.type = this.icao[0];
+        this.magvar = data.magvar;
         if (this.type === "A") {
             this.infos = new AirportInfo(this.instrument);
-            this.infos.SetFromIFacilityAirport(data);
-            return callback();
+            this.infos.SetFromIFacilityAirport(data, true, callback);
         }
         else if (this.type === "W") {
             this.infos = new IntersectionInfo(this.instrument);
@@ -421,7 +421,7 @@ class AirportInfo extends WayPointInfo {
     IsUpToDate() {
         return this.loaded;
     }
-    SetFromIFacilityAirport(data, loadApproachesData = true) {
+    async SetFromIFacilityAirport(data, loadApproachesData = true, callback) {
         super.SetFromIFacilityWaypoint(data);
         this.privateType = data.airportPrivateType;
         this.fuel = data.fuel1 + " " + data.fuel2;
@@ -437,7 +437,7 @@ class AirportInfo extends WayPointInfo {
         this.frequencies = [];
         if (data.frequencies) {
             for (let i = 0; i < data.frequencies.length; i++) {
-                this.frequencies.push(new Frequency(data.frequencies[i].name, data.frequencies[i].freqMHz, data.frequencies[i].freqBCD16));
+                this.frequencies.push(new Frequency(data.frequencies[i].name, data.frequencies[i].freqMHz, data.frequencies[i].freqBCD16, data.frequencies[i].type));
             }
         }
         this.runways = [];
@@ -495,6 +495,23 @@ class AirportInfo extends WayPointInfo {
                 let approach = new Approach();
                 approach.name = approachData.name;
                 approach.runway = approachData.runway;
+                if (approach.name.indexOf("VOR") != -1) {
+                    let vorIcao = "";
+                    for (let j = 0; j < approachData.finalLegs.length; j++) {
+                        let leg = approachData.finalLegs[j];
+                        if (leg.originIcao && leg.originIcao[0] === "V") {
+                            vorIcao = leg.originIcao;
+                            break;
+                        }
+                    }
+                    if (vorIcao) {
+                        let vor = await this.instrument.facilityLoader.getFacility(vorIcao);
+                        if (vor && vor.infos && vor.infos instanceof VORInfo) {
+                            approach.vorFrequency = vor.infos.frequencyMHz;
+                            approach.vorIdent = vor.ident;
+                        }
+                    }
+                }
                 if (loadApproachesData) {
                     approach.transitions = [];
                     for (let i = 0; i < approachData.transitions.length; i++) {
@@ -588,6 +605,9 @@ class AirportInfo extends WayPointInfo {
             for (let j = 0; j < this.arrivals[i].enRouteTransitions.length; j++) {
                 this.arrivals[i].enRouteTransitions[j].name = this.arrivals[i].enRouteTransitions[j].legs[0].fixIcao.substr(7, 5);
             }
+        }
+        if (callback) {
+            callback();
         }
     }
 }
@@ -925,11 +945,68 @@ class IntersectionInfo extends WayPointInfo {
 }
 IntersectionInfo.readManager = new InstrumentDataReadManager();
 IntersectionInfo.longestAirway = 0;
+var EFrequencyType;
+(function (EFrequencyType) {
+    EFrequencyType[EFrequencyType["NONE"] = 0] = "NONE";
+    EFrequencyType[EFrequencyType["ATIS"] = 1] = "ATIS";
+    EFrequencyType[EFrequencyType["MULTICOM"] = 2] = "MULTICOM";
+    EFrequencyType[EFrequencyType["UNICOM"] = 3] = "UNICOM";
+    EFrequencyType[EFrequencyType["CTAF"] = 4] = "CTAF";
+    EFrequencyType[EFrequencyType["GROUND"] = 5] = "GROUND";
+    EFrequencyType[EFrequencyType["TOWER"] = 6] = "TOWER";
+    EFrequencyType[EFrequencyType["CLEARANCE"] = 7] = "CLEARANCE";
+    EFrequencyType[EFrequencyType["APPROACH"] = 8] = "APPROACH";
+    EFrequencyType[EFrequencyType["DEPARTURE"] = 9] = "DEPARTURE";
+    EFrequencyType[EFrequencyType["CENTER"] = 10] = "CENTER";
+    EFrequencyType[EFrequencyType["FSS"] = 11] = "FSS";
+    EFrequencyType[EFrequencyType["AWOS"] = 12] = "AWOS";
+    EFrequencyType[EFrequencyType["ASOS"] = 13] = "ASOS";
+    EFrequencyType[EFrequencyType["CPT"] = 14] = "CPT";
+    EFrequencyType[EFrequencyType["GCO"] = 15] = "GCO";
+})(EFrequencyType || (EFrequencyType = {}));
 class Frequency {
-    constructor(_name, _mhValue, _bcd16Value) {
+    constructor(_name, _mhValue, _bcd16Value, _type) {
         this.name = _name;
         this.mhValue = _mhValue;
         this.bcd16Value = _bcd16Value;
+        this.type = _type ? _type : 0;
+    }
+    getTypeName() {
+        switch (this.type) {
+            case EFrequencyType.ATIS:
+                return "ATIS";
+            case EFrequencyType.MULTICOM:
+                return "MULTICOM";
+            case EFrequencyType.UNICOM:
+                return "UNICOM";
+            case EFrequencyType.CTAF:
+                return "CTAF";
+            case EFrequencyType.GROUND:
+                return "GROUND";
+            case EFrequencyType.TOWER:
+                return "TOWER";
+            case EFrequencyType.CLEARANCE:
+                return "CLEARANCE";
+            case EFrequencyType.APPROACH:
+                return "APPROACH";
+            case EFrequencyType.DEPARTURE:
+                return "DEPARTURE";
+            case EFrequencyType.CENTER:
+                return "CENTER";
+            case EFrequencyType.FSS:
+                return "FSS";
+            case EFrequencyType.AWOS:
+                return "AWOS";
+            case EFrequencyType.ASOS:
+                return "ASOS";
+            case EFrequencyType.CPT:
+                return "CPT";
+            case EFrequencyType.GCO:
+                return "GCO";
+            case EFrequencyType.NONE:
+            default:
+                return this.name;
+        }
     }
 }
 //# sourceMappingURL=Waypoint.js.map

@@ -14,14 +14,14 @@ class SvgRailwayElement extends SvgMapElement {
         let shape = document.createElementNS(Avionics.SVG.NS, "path");
         shape.classList.add("map-railway");
         shape.setAttribute("stroke", map.config.railwayStrokeColor);
-        shape.setAttribute("stroke-width", fastToFixed(map.config.railwayWidth, 0));
+        shape.setAttribute("stroke-width", fastToFixed(map.config.railwayWidth / map.overdrawFactor, 0));
         shape.setAttribute("fill", "none");
         container.appendChild(shape);
         let shapeRail = document.createElementNS(Avionics.SVG.NS, "path");
         shapeRail.classList.add("map-railway");
         shapeRail.setAttribute("stroke", map.config.railwayStrokeColor);
-        shapeRail.setAttribute("stroke-width", fastToFixed((map.config.railwayWidth * 3), 0));
-        shapeRail.setAttribute("stroke-dasharray", map.config.railwayWidth + " " + map.config.railwayDashLength);
+        shapeRail.setAttribute("stroke-width", fastToFixed((map.config.railwayWidth / map.overdrawFactor * 3), 0));
+        shapeRail.setAttribute("stroke-dasharray", map.config.railwayWidth / map.overdrawFactor + " " + map.config.railwayDashLength / map.overdrawFactor);
         shapeRail.setAttribute("fill", "none");
         container.appendChild(shapeRail);
         return container;

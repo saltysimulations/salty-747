@@ -16,12 +16,13 @@ class HSIndicator extends HTMLElement {
         this.crossTrackGoal = 0;
         this.sourceIsGps = true;
         this.displayStyle = HSIndicatorDisplayType.GlassCockpit;
-        this.fmsAlias = "FMS";
+        this.fmsAlias = "GPS";
         this.logic_dmeDisplayed = false;
         this.logic_dmeSource = 1;
         this.logic_cdiSource = 3;
         this.logic_brg1Source = 0;
         this.logic_brg2Source = 0;
+        this.logic_navSelected = 0;
     }
     static get observedAttributes() {
         return [
@@ -364,10 +365,10 @@ class HSIndicator extends HTMLElement {
             this.navSourceBg = document.createElementNS(Avionics.SVG.NS, "rect");
             this.navSourceBg.setAttribute("fill", "#1a1d21");
             this.navSourceBg.setAttribute("fill-opacity", "1");
-            this.navSourceBg.setAttribute("x", "28");
+            this.navSourceBg.setAttribute("x", "27");
             this.navSourceBg.setAttribute("y", "34.5");
             this.navSourceBg.setAttribute("height", "7");
-            this.navSourceBg.setAttribute("width", "14");
+            this.navSourceBg.setAttribute("width", "16");
             this.root.appendChild(this.navSourceBg);
             this.navSource = document.createElementNS(Avionics.SVG.NS, "text");
             this.navSource.textContent = "GPS";
@@ -381,10 +382,10 @@ class HSIndicator extends HTMLElement {
             this.flightPhaseBg = document.createElementNS(Avionics.SVG.NS, "rect");
             this.flightPhaseBg.setAttribute("fill", "#1a1d21");
             this.flightPhaseBg.setAttribute("fill-opacity", "1");
-            this.flightPhaseBg.setAttribute("x", "57");
+            this.flightPhaseBg.setAttribute("x", "56");
             this.flightPhaseBg.setAttribute("y", "34.5");
             this.flightPhaseBg.setAttribute("height", "7");
-            this.flightPhaseBg.setAttribute("width", "16");
+            this.flightPhaseBg.setAttribute("width", "18");
             this.root.appendChild(this.flightPhaseBg);
             let flightPhase = document.createElementNS(Avionics.SVG.NS, "text");
             flightPhase.textContent = "TERM";
@@ -399,10 +400,10 @@ class HSIndicator extends HTMLElement {
             this.crossTrackErrorBg = document.createElementNS(Avionics.SVG.NS, "rect");
             this.crossTrackErrorBg.setAttribute("fill", "#1a1d21");
             this.crossTrackErrorBg.setAttribute("fill-opacity", "1");
-            this.crossTrackErrorBg.setAttribute("x", "30");
+            this.crossTrackErrorBg.setAttribute("x", "29");
             this.crossTrackErrorBg.setAttribute("y", "60.5");
             this.crossTrackErrorBg.setAttribute("height", "7");
-            this.crossTrackErrorBg.setAttribute("width", "38");
+            this.crossTrackErrorBg.setAttribute("width", "40");
             this.root.appendChild(this.crossTrackErrorBg);
             let crossTrackError = document.createElementNS(Avionics.SVG.NS, "text");
             crossTrackError.textContent = "XTK 3.15NM";
@@ -662,9 +663,6 @@ class HSIndicator extends HTMLElement {
                             this.crossTrackError.setAttribute("visibility", "visible");
                             this.crossTrackErrorBg.setAttribute("visibility", "visible");
                             this.crossTrackError.textContent = "XTK " + fastToFixed(deviation, 2) + "NM";
-                            let courseDevRect = this.crossTrackError.getBBox();
-                            this.crossTrackErrorBg.setAttribute("width", (courseDevRect.width + 2).toString());
-                            this.crossTrackErrorBg.setAttribute("x", (courseDevRect.x - 1).toString());
                         }
                     }
                     else {
@@ -718,12 +716,9 @@ class HSIndicator extends HTMLElement {
                 break;
             case "nav_source":
                 if (this.navSource) {
-                    this.navSource.textContent = newValue == "FMS" ? this.fmsAlias : newValue;
-                    let rect = this.navSource.getBBox();
-                    this.navSourceBg.setAttribute("width", (rect.width + 2).toString());
-                    this.navSourceBg.setAttribute("x", (rect.x - 1).toString());
+                    this.navSource.textContent = newValue == "GPS" ? this.fmsAlias : newValue;
                     switch (newValue) {
-                        case "FMS":
+                        case "GPS":
                             this.sourceIsGps = true;
                             this.beginArrow.setAttribute("fill", "#d12bc7");
                             this.CDI.setAttribute("fill", "#d12bc7");
@@ -783,9 +778,6 @@ class HSIndicator extends HTMLElement {
             case "flight_phase":
                 if (this.flightPhase) {
                     this.flightPhase.textContent = newValue;
-                    let flightPhaseRect = this.flightPhase.getBBox();
-                    this.flightPhaseBg.setAttribute("width", (flightPhaseRect.width + 2).toString());
-                    this.flightPhaseBg.setAttribute("x", (flightPhaseRect.x - 1).toString());
                 }
                 break;
             case "crosstrack_full_error":
@@ -954,36 +946,40 @@ class HSIndicator extends HTMLElement {
         var roundedHeading = fastToFixed(heading, 3);
         this.setAttribute("heading_bug_rotation", roundedHeading);
         this.setAttribute("current_track", SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degrees"));
-        this.logic_cdiSource = SimVar.GetSimVarValue("GPS DRIVES NAV1", "Bool") ? 3 : SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "Number");
+        this.logic_cdiSource = 3;
+        if (!Simplane.getAutopilotGPSDriven() || (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotApproachType() != ApproachType.APPROACH_TYPE_RNAV)) {
+            this.logic_navSelected = Simplane.getAutoPilotSelectedNav();
+            this.logic_cdiSource = ((this.logic_navSelected - 1) % 2) + 1;
+        }
         switch (this.logic_cdiSource) {
             case 1:
-                this.setAttribute("display_deviation", SimVar.GetSimVarValue("NAV HAS NAV:1", "boolean") != 0 ? "True" : "False");
-                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:1", "Bool")) {
+                this.setAttribute("display_deviation", SimVar.GetSimVarValue("NAV HAS NAV:" + this.logic_navSelected, "boolean") != 0 ? "True" : "False");
+                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + this.logic_navSelected, "Bool")) {
                     this.setAttribute("nav_source", "LOC1");
-                    this.setAttribute("course", SimVar.GetSimVarValue("NAV LOCALIZER:1", "degree").toString());
+                    this.setAttribute("course", SimVar.GetSimVarValue("NAV LOCALIZER:" + this.logic_navSelected, "degree").toString());
                 }
                 else {
                     this.setAttribute("nav_source", "VOR1");
-                    this.setAttribute("course", SimVar.GetSimVarValue("NAV OBS:1", "degree").toString());
+                    this.setAttribute("course", SimVar.GetSimVarValue("NAV OBS:" + this.logic_navSelected, "degree").toString());
                 }
-                this.setAttribute("course_deviation", (SimVar.GetSimVarValue("NAV CDI:1", "number") / 127).toString());
-                this.setAttribute("to_from", SimVar.GetSimVarValue("NAV TOFROM:1", "Enum").toString());
+                this.setAttribute("course_deviation", (SimVar.GetSimVarValue("NAV CDI:" + this.logic_navSelected, "number") / 127).toString());
+                this.setAttribute("to_from", SimVar.GetSimVarValue("NAV TOFROM:" + this.logic_navSelected, "Enum").toString());
                 break;
             case 2:
-                this.setAttribute("display_deviation", SimVar.GetSimVarValue("NAV HAS NAV:2", "boolean") != 0 ? "True" : "False");
-                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:2", "Bool")) {
+                this.setAttribute("display_deviation", SimVar.GetSimVarValue("NAV HAS NAV:" + this.logic_navSelected, "boolean") != 0 ? "True" : "False");
+                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + this.logic_navSelected, "Bool")) {
                     this.setAttribute("nav_source", "LOC2");
-                    this.setAttribute("course", SimVar.GetSimVarValue("NAV LOCALIZER:2", "degree").toString());
+                    this.setAttribute("course", SimVar.GetSimVarValue("NAV LOCALIZER:" + this.logic_navSelected, "degree").toString());
                 }
                 else {
                     this.setAttribute("nav_source", "VOR2");
-                    this.setAttribute("course", SimVar.GetSimVarValue("NAV OBS:2", "degree").toString());
+                    this.setAttribute("course", SimVar.GetSimVarValue("NAV OBS:" + this.logic_navSelected, "degree").toString());
                 }
-                this.setAttribute("course_deviation", (SimVar.GetSimVarValue("NAV CDI:2", "number") / 127).toString());
-                this.setAttribute("to_from", SimVar.GetSimVarValue("NAV TOFROM:2", "Enum").toString());
+                this.setAttribute("course_deviation", (SimVar.GetSimVarValue("NAV CDI:" + this.logic_navSelected, "number") / 127).toString());
+                this.setAttribute("to_from", SimVar.GetSimVarValue("NAV TOFROM:" + this.logic_navSelected, "Enum").toString());
                 break;
             case 3:
-                this.setAttribute("nav_source", "FMS");
+                this.setAttribute("nav_source", "GPS");
                 this.setAttribute("display_deviation", SimVar.GetSimVarValue("GPS WP NEXT ID", "string") != "" ? "True" : "False");
                 this.setAttribute("course", SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degree"));
                 this.setAttribute("course_deviation", SimVar.GetSimVarValue("GPS WP CROSS TRK", "nautical mile"));
@@ -1014,7 +1010,7 @@ class HSIndicator extends HTMLElement {
             case 1:
                 this.setAttribute("bearing1_source", "NAV1");
                 if (SimVar.GetSimVarValue("NAV HAS NAV:1", "Bool")) {
-                    this.setAttribute("bearing1_ident", SimVar.GetSimVarValue("NAV IDENT:1", "string"));
+                    this.setAttribute("bearing1_ident", SimVar.GetSimVarValue("NAV SIGNAL:1", "number") == 0 ? "" : SimVar.GetSimVarValue("NAV IDENT:1", "string"));
                     this.setAttribute("bearing1_distance", SimVar.GetSimVarValue("NAV HAS DME:1", "Bool") ? SimVar.GetSimVarValue("NAV DME:1", "nautical miles") : "");
                     this.setAttribute("bearing1_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:1", "degree")) % 360).toString());
                 }
@@ -1027,7 +1023,7 @@ class HSIndicator extends HTMLElement {
             case 2:
                 this.setAttribute("bearing1_source", "NAV2");
                 if (SimVar.GetSimVarValue("NAV HAS NAV:2", "Bool")) {
-                    this.setAttribute("bearing1_ident", SimVar.GetSimVarValue("NAV IDENT:2", "string"));
+                    this.setAttribute("bearing1_ident", SimVar.GetSimVarValue("NAV SIGNAL:2", "number") == 0 ? "" : SimVar.GetSimVarValue("NAV IDENT:2", "string"));
                     this.setAttribute("bearing1_distance", SimVar.GetSimVarValue("NAV HAS DME:2", "Bool") ? SimVar.GetSimVarValue("NAV DME:2", "nautical miles") : "");
                     this.setAttribute("bearing1_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:2", "degree")) % 360).toString());
                 }
@@ -1061,7 +1057,7 @@ class HSIndicator extends HTMLElement {
             case 1:
                 this.setAttribute("bearing2_source", "NAV1");
                 if (SimVar.GetSimVarValue("NAV HAS NAV:1", "Bool")) {
-                    this.setAttribute("bearing2_ident", SimVar.GetSimVarValue("NAV IDENT:1", "string"));
+                    this.setAttribute("bearing2_ident", SimVar.GetSimVarValue("NAV SIGNAL:1", "number") == 0 ? "" : SimVar.GetSimVarValue("NAV IDENT:1", "string"));
                     this.setAttribute("bearing2_distance", SimVar.GetSimVarValue("NAV HAS DME:1", "Bool") ? SimVar.GetSimVarValue("NAV DME:1", "nautical miles") : "");
                     this.setAttribute("bearing2_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:1", "degree")) % 360).toString());
                 }
@@ -1074,7 +1070,7 @@ class HSIndicator extends HTMLElement {
             case 2:
                 this.setAttribute("bearing2_source", "NAV2");
                 if (SimVar.GetSimVarValue("NAV HAS NAV:2", "Bool")) {
-                    this.setAttribute("bearing2_ident", SimVar.GetSimVarValue("NAV IDENT:2", "string"));
+                    this.setAttribute("bearing2_ident", SimVar.GetSimVarValue("NAV SIGNAL:2", "number") == 0 ? "" : SimVar.GetSimVarValue("NAV IDENT:2", "string"));
                     this.setAttribute("bearing2_distance", SimVar.GetSimVarValue("NAV HAS DME:2", "Bool") ? SimVar.GetSimVarValue("NAV DME:2", "nautical miles") : "");
                     this.setAttribute("bearing2_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:2", "degree")) % 360).toString());
                 }
@@ -1109,7 +1105,7 @@ class HSIndicator extends HTMLElement {
                 SimVar.SetSimVarValue("L:Glasscockpit_DmeSource", "Number", 1);
             case 1:
                 this.setAttribute("dme_source", "NAV1");
-                if (SimVar.GetSimVarValue("NAV HAS DME:1", "Bool")) {
+                if (SimVar.GetSimVarValue("NAV SIGNAL:1", "number") > 0 && SimVar.GetSimVarValue("NAV HAS DME:1", "Bool")) {
                     this.setAttribute("dme_ident", fastToFixed(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:1", "MHz"), 2));
                     this.setAttribute("dme_distance", SimVar.GetSimVarValue("NAV DME:1", "nautical miles"));
                 }
@@ -1120,7 +1116,7 @@ class HSIndicator extends HTMLElement {
                 break;
             case 2:
                 this.setAttribute("dme_source", "NAV2");
-                if (SimVar.GetSimVarValue("NAV HAS DME:2", "Bool")) {
+                if (SimVar.GetSimVarValue("NAV SIGNAL:2", "number") > 0 && SimVar.GetSimVarValue("NAV HAS DME:2", "Bool")) {
                     this.setAttribute("dme_ident", fastToFixed(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:2", "MHz"), 2));
                     this.setAttribute("dme_distance", SimVar.GetSimVarValue("NAV DME:2", "nautical miles"));
                 }
@@ -1154,6 +1150,9 @@ class HSIndicator extends HTMLElement {
                 else if (this.logic_cdiSource == 2) {
                     SimVar.SetSimVarValue("K:VOR2_OBI_INC", "number", 0);
                 }
+                else if (SimVar.GetSimVarValue("GPS OBS ACTIVE", "boolean")) {
+                    SimVar.SetSimVarValue("K:GPS_OBS_INC", "number", 0);
+                }
                 break;
             case "CRS_DEC":
                 if (this.logic_cdiSource == 1) {
@@ -1161,6 +1160,9 @@ class HSIndicator extends HTMLElement {
                 }
                 else if (this.logic_cdiSource == 2) {
                     SimVar.SetSimVarValue("K:VOR2_OBI_DEC", "number", 0);
+                }
+                else if (SimVar.GetSimVarValue("GPS OBS ACTIVE", "boolean")) {
+                    SimVar.SetSimVarValue("K:GPS_OBS_DEC", "number", 0);
                 }
                 break;
             case "CRS_PUSH":
@@ -1214,7 +1216,7 @@ class HSIndicator extends HTMLElement {
                     SimVar.SetSimVarValue("K:TOGGLE_GPS_DRIVES_NAV1", "Bool", 0);
                 }
                 if (this.logic_cdiSource != 3) {
-                    SimVar.SetSimVarValue("K:AP_NAV_SELECT_SET", "number", this.logic_cdiSource);
+                    Simplane.setAutoPilotSelectedNav(this.logic_cdiSource);
                 }
                 break;
         }

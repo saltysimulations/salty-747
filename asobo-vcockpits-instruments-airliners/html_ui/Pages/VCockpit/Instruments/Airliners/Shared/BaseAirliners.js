@@ -1276,7 +1276,9 @@ var Airliners;
                         let found = false;
                         for (let i = 0; i < _item.section.items.length; i++) {
                             if (_item.section.items[i].radioVal) {
-                                this.dictionary.set(_item.dictKeys[0], _item.radioName);
+                                if (_item.section.items[i] == _item) {
+                                    this.dictionary.set(_item.dictKeys[0], _item.radioName);
+                                }
                                 found = true;
                                 break;
                             }

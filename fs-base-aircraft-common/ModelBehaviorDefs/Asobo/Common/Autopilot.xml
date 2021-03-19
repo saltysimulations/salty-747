@@ -1436,25 +1436,32 @@
 				</True>
 			</Condition>
 			<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
-			<ANTICLOCKWISE_CODE_DEFAULT_IM>
-					(L:XMLVAR_SpeedIsManuallySet) if{
-						(L:XMLVAR_AirSpeedIsInMach) if{
-							(&gt;K:AP_MACH_VAR_DEC)
-						} els{
-							(&gt;K:AP_SPD_VAR_DEC)
+				<ANTICLOCKWISE_CODE_DEFAULT_IM>
+						(L:XMLVAR_SpeedIsManuallySet) if{
+							(L:XMLVAR_AirSpeedIsInMach) if{
+								(&gt;K:AP_MACH_VAR_DEC)
+							} els{
+								(&gt;K:AP_SPD_VAR_DEC)
+							}
 						}
-					}
-			</ANTICLOCKWISE_CODE_DEFAULT_IM>
-			<CLOCKWISE_CODE_DEFAULT_IM>
-					(L:XMLVAR_SpeedIsManuallySet) if{
-						(L:XMLVAR_AirSpeedIsInMach) if{
-							(&gt;K:AP_MACH_VAR_INC)
-						} els{
-							(&gt;K:AP_SPD_VAR_INC)
+				</ANTICLOCKWISE_CODE_DEFAULT_IM>
+				<CLOCKWISE_CODE_DEFAULT_IM>
+						(L:XMLVAR_SpeedIsManuallySet) if{
+							(L:XMLVAR_AirSpeedIsInMach) if{
+								(&gt;K:AP_MACH_VAR_INC)
+							} els{
+								(&gt;K:AP_SPD_VAR_INC)
+							}
 						}
-					}
-			</CLOCKWISE_CODE_DEFAULT_IM>
-				<LEFT_SINGLE_CODE>(L:XMLVAR_AirSpeedIsInMach) ! (&gt;L:XMLVAR_AirSpeedIsInMach)</LEFT_SINGLE_CODE>
+				</CLOCKWISE_CODE_DEFAULT_IM>
+				<Condition Check="USE_SIMVAR_FOR_MACH">
+					<False>
+						<LEFT_SINGLE_CODE>(L:XMLVAR_AirSpeedIsInMach) ! (&gt;L:XMLVAR_AirSpeedIsInMach)</LEFT_SINGLE_CODE>
+					</False>
+					<True>
+						<LEFT_SINGLE_CODE>(&gt;K:AP_MANAGED_SPEED_IN_MACH_TOGGLE) (A:AUTOPILOT MANAGED SPEED IN MACH, Bool) (&gt;L:XMLVAR_AirSpeedIsInMach)</LEFT_SINGLE_CODE>
+					</True>
+				</Condition>
 				<WWISE_EVENT>autopilot_speed_knob</WWISE_EVENT>
 				<COUNT>36</COUNT>
 				<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>

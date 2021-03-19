@@ -1656,7 +1656,7 @@ var Jet_PFD_FlightDirector;
                 _element.setAttribute("fill", "none");
             }
         }
-        getStrokeWidth() { return "1.5"; }
+        getStrokeWidth() { return "2.5"; }
     }
     DisplayBase.HEADING_MAX_POS_X = 60;
     DisplayBase.HEADING_MAX_ANGLE = 10;
@@ -1784,8 +1784,8 @@ var Jet_PFD_FlightDirector;
                             currentPitch *= -1;
                         }
                     }
-                    var x = this.calculatePosXFromBank(currentHeading, 0);
-                    var y = this.calculatePosYFromPitch(currentPitch, 0);
+                    var x = this.calculatePosXFromBank(0, currentHeading);
+                    var y = this.calculatePosYFromPitch(Simplane.getPitch(), currentPitch);
                     this.group.setAttribute("transform", "translate(" + x + ", " + y + ")");
                 }
                 else {

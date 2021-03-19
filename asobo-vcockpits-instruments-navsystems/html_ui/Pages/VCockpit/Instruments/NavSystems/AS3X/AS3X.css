@@ -299,19 +299,32 @@ as3x-element {
           width: 90%;
           margin-left: 5.5%;
           border: 1px solid white; }
-          as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #subTitle {
+          as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #SubTitle {
             color: white;
             background-color: dimgray;
             font-size: calc( 2.3 * 1vh * var(--bodyHeightScale));
             padding-left: 3vw; }
-          as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements {
-            color: aquamarine;
-            width: 100%; }
-            as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements .ContextualMenuElement[state=Inactive] {
-              color: dimgray; }
-            as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements .ContextualMenuElement[state=Selected] {
-              background-color: aquamarine;
-              color: black; }
+          as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List {
+            display: flex; }
+            as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements {
+              flex: 1;
+              color: aquamarine;
+              width: 100%; }
+              as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements .ContextualMenuElement[state=Inactive] {
+                color: dimgray; }
+              as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements .ContextualMenuElement[state=Selected] {
+                background-color: aquamarine;
+                color: black; }
+            as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu {
+              flex: 0.03;
+              border: 2px solid white; }
+              as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu #SliderMenuCursor {
+                background-color: white;
+                position: relative; }
+              as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu[state=Active] {
+                visibility: inherit; }
+              as3x-element #Content #popUpContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu[state=Inactive] {
+                visibility: hidden; }
     as3x-element #Content #popUpContainer #ProceduresWindow {
       position: absolute;
       left: 15%;

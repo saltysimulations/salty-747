@@ -194,10 +194,10 @@ class ArcHSIIndicator extends HSIndicator {
             this.navSourceBg = document.createElementNS(Avionics.SVG.NS, "rect");
             this.navSourceBg.setAttribute("fill", "#1a1d21");
             this.navSourceBg.setAttribute("fill-opacity", "1");
-            this.navSourceBg.setAttribute("x", "28");
+            this.navSourceBg.setAttribute("x", "27");
             this.navSourceBg.setAttribute("y", "74.5");
             this.navSourceBg.setAttribute("height", "7");
-            this.navSourceBg.setAttribute("width", "14");
+            this.navSourceBg.setAttribute("width", "16");
             this.root.appendChild(this.navSourceBg);
             this.navSource = document.createElementNS(Avionics.SVG.NS, "text");
             this.navSource.textContent = "GPS";
@@ -211,10 +211,10 @@ class ArcHSIIndicator extends HSIndicator {
             this.flightPhaseBg = document.createElementNS(Avionics.SVG.NS, "rect");
             this.flightPhaseBg.setAttribute("fill", "#1a1d21");
             this.flightPhaseBg.setAttribute("fill-opacity", "1");
-            this.flightPhaseBg.setAttribute("x", "57");
+            this.flightPhaseBg.setAttribute("x", "56");
             this.flightPhaseBg.setAttribute("y", "74.5");
             this.flightPhaseBg.setAttribute("height", "7");
-            this.flightPhaseBg.setAttribute("width", "16");
+            this.flightPhaseBg.setAttribute("width", "18");
             this.root.appendChild(this.flightPhaseBg);
             let flightPhase = document.createElementNS(Avionics.SVG.NS, "text");
             flightPhase.textContent = "TERM";
@@ -440,11 +440,8 @@ class ArcHSIIndicator extends HSIndicator {
             case "nav_source":
                 if (this.navSource) {
                     this.navSource.textContent = newValue;
-                    let rect = this.navSource.getBBox();
-                    this.navSourceBg.setAttribute("width", (rect.width + 2).toString());
-                    this.navSourceBg.setAttribute("x", (rect.x - 1).toString());
                     switch (newValue) {
-                        case "FMS":
+                        case "GPS":
                             this.sourceIsGps = true;
                             this.beginArrow.setAttribute("fill", "#d12bc7");
                             this.beginArrow.setAttribute("fill-opacity", "1");
@@ -484,9 +481,6 @@ class ArcHSIIndicator extends HSIndicator {
             case "flight_phase":
                 if (this.flightPhase) {
                     this.flightPhase.textContent = newValue;
-                    let flightPhaseRect = this.flightPhase.getBBox();
-                    this.flightPhaseBg.setAttribute("width", (flightPhaseRect.width + 2).toString());
-                    this.flightPhaseBg.setAttribute("x", (flightPhaseRect.x - 1).toString());
                 }
                 break;
             case "crosstrack_full_error":

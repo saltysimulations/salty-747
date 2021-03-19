@@ -53,6 +53,12 @@
 						</UseTemplate>
 					</True>
 				</Condition>
+				<Condition NotEmpty="EMISSIVE_CODE">
+					<True>
+						<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+						</UseTemplate>
+					</True>
+				</Condition>
 			</Component>
 		</False>
 	</Condition>
@@ -364,6 +370,7 @@
 		<!-- Big arrows by default -->
 		<CURSOR_RIGHT>TurnRight</CURSOR_RIGHT>
 		<CENTER_RADIUS>0.004</CENTER_RADIUS>
+		<DOWN_TIME_BEFORE_REPEAT>0.5</DOWN_TIME_BEFORE_REPEAT>
 		<HELPID/>
 		<TOOLTIPID/>
 		<CENTER_CURSOR>Hand</CENTER_CURSOR>
@@ -492,7 +499,9 @@
 		</Condition>
 	</Parameters>
 	<Update Frequency = "#UPDATE_FREQUENCY#" InteractionModel="Default">
-		#UPDATE_DEFAULT_IM#
+		(O:XMLVAR_Interacting_RepeatTime) (E:SIMULATION TIME, seconds) &lt; if{
+			#UPDATE_DEFAULT_IM#
+		}
 	</Update>
 	<Condition Valid="NO_PUSH_PULL_LOCK">
 		<False>
@@ -523,6 +532,8 @@
 				(M:RelativeX) abs #CENTER_RADIUS# &gt; if{
 					0 (&gt;O:_ButtonPressed)
 					(M:RelativeX) (&gt;O:_MouseDownRelativePosX)
+					(E:SIMULATION TIME, seconds) #DOWN_TIME_BEFORE_REPEAT# + (&gt;O:XMLVAR_Interacting_RepeatTime)
+					#UPDATE_DEFAULT_IM#
 					#LEFT_SINGLE_CODE_OUTER#
 				} els{
 					0 (&gt;O:_MouseDownRelativePosX)

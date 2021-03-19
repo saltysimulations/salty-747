@@ -43,6 +43,11 @@ class AS530_VorInfos extends NavSystemElement {
         this.vor = this.gps.getChildById("vorValue");
         this.rad = this.gps.getChildById("radValue");
         this.dis = this.gps.getChildById("disValue");
+        this.baliseType = this.gps.getChildById("vorTitle");
+        this.airportIdent = this.gps.getChildById("ILSAirportIdent");
+        this.ilsRunway = this.gps.getChildById("ILSRunway");
+        this.vorRadContainer = this.gps.getChildById("VorRad");
+        this.disContainer = this.gps.getChildById("DIS");
     }
     onEnter() {
     }
@@ -52,8 +57,43 @@ class AS530_VorInfos extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         let ident = SimVar.GetSimVarValue("NAV SIGNAL:1", "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:1", "string") : "";
+        let isLoc = SimVar.GetSimVarValue("NAV HAS LOCALIZER:1", "boolean");
+        if (isLoc) {
+            let airportIdent = SimVar.GetSimVarValue("NAV LOC AIRPORT IDENT:1", "string");
+            Avionics.Utils.diffAndSet(this.airportIdent, airportIdent ? airportIdent : "____");
+            let runwayName = SimVar.GetSimVarValue("NAV LOC RUNWAY NUMBER:1", "number");
+            let runwayDesignation = SimVar.GetSimVarValue("NAV LOC RUNWAY DESIGNATOR:1", "number");
+            switch (runwayDesignation) {
+                case RunwayDesignator.RUNWAY_DESIGNATOR_LEFT:
+                    runwayName += "L";
+                    break;
+                case RunwayDesignator.RUNWAY_DESIGNATOR_RIGHT:
+                    runwayName += "R";
+                    break;
+                case RunwayDesignator.RUNWAY_DESIGNATOR_CENTER:
+                    runwayName += "C";
+                    break;
+                case RunwayDesignator.RUNWAY_DESIGNATOR_A:
+                    runwayName += "A";
+                    break;
+                case RunwayDesignator.RUNWAY_DESIGNATOR_B:
+                    runwayName += "B";
+                    break;
+            }
+            Avionics.Utils.diffAndSet(this.ilsRunway, this.airportIdent ? "ILS " + runwayName : "____");
+        }
+        Avionics.Utils.diffAndSetAttribute(this.vorRadContainer, "mode", isLoc ? "LOC" : "VOR");
+        Avionics.Utils.diffAndSetAttribute(this.disContainer, "mode", isLoc ? "LOC" : "VOR");
+        Avionics.Utils.diffAndSet(this.baliseType, isLoc ? "LOC" : "VOR");
         Avionics.Utils.diffAndSet(this.vor, ident != "" ? ident : "___");
-        Avionics.Utils.diffAndSet(this.rad, (SimVar.GetSimVarValue("NAV HAS NAV:1", "bool") ? Math.round(SimVar.GetSimVarValue("NAV RELATIVE BEARING TO STATION:1", "degrees")).toFixed(0) : "___") + "°");
+        let radial = Math.round(SimVar.GetSimVarValue("NAV RADIAL:1", "degrees"));
+        while (radial < 0) {
+            radial += 360;
+        }
+        while (radial >= 360) {
+            radial -= 360;
+        }
+        Avionics.Utils.diffAndSet(this.rad, (SimVar.GetSimVarValue("NAV HAS NAV:1", "bool") ? radial.toFixed(0) : "___") + "°");
         Avionics.Utils.diffAndSet(this.dis, (SimVar.GetSimVarValue("NAV HAS DME:1", "bool") ? Math.round(SimVar.GetSimVarValue("NAV DME:1", "Nautical Miles")).toFixed(1) : "__._"));
     }
 }

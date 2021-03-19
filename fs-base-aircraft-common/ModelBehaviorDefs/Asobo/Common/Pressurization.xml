@@ -104,7 +104,7 @@
 	</DefaultTemplateParameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
 		<Switch Param="TYPE">
-			<Case Value="FA18E">
+			<Case Value="AS04F">
 				<UseTemplate Name="ASOBO_GT_Switch_5States">
 					<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
 					<ARROW_TYPE>Curved</ARROW_TYPE>
@@ -303,7 +303,7 @@
 	</DefaultTemplateParameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
 		<Switch Param="TYPE">
-			<Case Value="FA18E">
+			<Case Value="AS04F">
 				<UseTemplate Name="ASOBO_GT_Switch_3States">
 					<SWITCH_POSITION_TYPE>O</SWITCH_POSITION_TYPE>
 					<SWITCH_POSITION_VAR>XMLVAR_CabinPressState</SWITCH_POSITION_VAR>

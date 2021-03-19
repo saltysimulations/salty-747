@@ -85,19 +85,23 @@ class AS1000_PFD extends BaseAS1000 {
 }
 class AS1000_PFD_MainPage extends NavSystemPage {
     constructor() {
-        super("Main", "Mainframe", new AS1000_PFD_MainElement());
+        super("Main", "Mainframe", null);
         this.rootMenu = new SoftKeysMenu();
         this.insetMenu = new SoftKeysMenu();
         this.xpndrMenu = new SoftKeysMenu();
         this.xpndrCodeMenu = new SoftKeysMenu();
         this.pfdMenu = new SoftKeysMenu();
+        this.synVisMenu = new SoftKeysMenu();
         this.windMenu = new SoftKeysMenu();
         this.hsiFrmtMenu = new SoftKeysMenu();
         this.syntheticVision = false;
+        this.PFDBrightIsAuto = true;
+        this.MFDBrightIsAuto = true;
         this.annunciations = new PFD_Annunciations();
         this.attitude = new PFD_Attitude();
         this.mapInstrument = new MapInstrumentElement();
         this.element = new NavSystemElementGroup([
+            new AS1000_PFD_MainElement(),
             this.attitude,
             new PFD_Airspeed(),
             new PFD_Altimeter(),
@@ -129,7 +133,7 @@ class AS1000_PFD_MainPage extends NavSystemPage {
             new SoftKeyElement("INSET", this.activateInsetMap.bind(this)),
             new SoftKeyElement(),
             new SoftKeyElement("PFD", this.switchToMenu.bind(this, this.pfdMenu)),
-            new SoftKeyElement("OBS"),
+            new SoftKeyElement("OBS", this.toggleOBS.bind(this), this.getKeyState.bind(this, "OBS")),
             new SoftKeyElement("CDI", this.gps.computeEvent.bind(this.gps, "SoftKey_CDI")),
             new SoftKeyElement("ADF/DME", this.gps.computeEvent.bind(this.gps, "SoftKey_ADF_DME")),
             new SoftKeyElement("XPDR", this.switchToMenu.bind(this, this.xpndrMenu)),
@@ -182,7 +186,7 @@ class AS1000_PFD_MainPage extends NavSystemPage {
             this.alertSoftkey
         ];
         this.pfdMenu.elements = [
-            new SoftKeyElement(""),
+            (this.syntheticVision ? new SoftKeyElement("SYN VIS", this.switchToMenu.bind(this, this.synVisMenu)) : new SoftKeyElement("")),
             new SoftKeyElement("DFLTS"),
             new SoftKeyElement("WIND", this.switchToMenu.bind(this, this.windMenu)),
             new SoftKeyElement("DME", this.gps.computeEvent.bind(this.gps, "SoftKeys_PFD_DME")),
@@ -193,6 +197,20 @@ class AS1000_PFD_MainPage extends NavSystemPage {
             new SoftKeyElement("ALT UNIT"),
             new SoftKeyElement("STD BARO"),
             new SoftKeyElement("BACK", this.switchToMenu.bind(this, this.rootMenu)),
+            this.alertSoftkey
+        ];
+        this.synVisMenu.elements = [
+            new SoftKeyElement("PATHWAY"),
+            new SoftKeyElement("SYN TERR", this.toggleSVT.bind(this), this.getKeyState.bind(this, "SYN TERR")),
+            new SoftKeyElement("HRZN HDG"),
+            new SoftKeyElement("APTSIGNS"),
+            new SoftKeyElement(""),
+            new SoftKeyElement(""),
+            new SoftKeyElement(""),
+            new SoftKeyElement(""),
+            new SoftKeyElement(""),
+            new SoftKeyElement(""),
+            new SoftKeyElement("BACK", this.switchToMenu.bind(this, this.pfdMenu)),
             this.alertSoftkey
         ];
         this.windMenu.elements = [
@@ -223,7 +241,18 @@ class AS1000_PFD_MainPage extends NavSystemPage {
             new SoftKeyElement("BACK", this.switchToMenu.bind(this, this.pfdMenu)),
             this.alertSoftkey
         ];
+        this.syntheticVisionElement = this.gps.getChildById("SyntheticVision");
         this.softKeys = this.rootMenu;
+        let pfdSetup = new AS1000_PFD_PFDSetup();
+        this.pfdSetup = new NavSystemElementContainer("PFD Setup", "PFDSetup", pfdSetup);
+        this.pfdSetup.setGPS(this.gps);
+        pfdSetup.mainPage = this;
+        this.defaultMenu = new ContextualMenu("PFD Menu", [
+            new ContextualMenuElement("PFD Setup", this.openPFDSetup.bind(this))
+        ]);
+    }
+    openPFDSetup() {
+        this.gps.switchToPopUpPage(this.pfdSetup);
     }
     reset() {
         if (this.annunciations)
@@ -255,6 +284,15 @@ class AS1000_PFD_MainPage extends NavSystemPage {
     toggleIsolines() {
         this.gps.getElementOfType(PFD_InnerMap).toggleIsolines();
     }
+    toggleOBS() {
+        SimVar.SetSimVarValue("K:GPS_OBS_SET", "degrees", SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degree"));
+        SimVar.SetSimVarValue("K:GPS_OBS", "number", 0);
+    }
+    toggleSVT() {
+        this.syntheticVision = !this.syntheticVision;
+        Avionics.Utils.diffAndSetAttribute(this.attitude.svg, "background", (this.syntheticVision ? "false" : "true"));
+        this.syntheticVisionElement.style.display = (this.syntheticVision ? "Block" : "None");
+    }
     getKeyState(_keyName) {
         switch (_keyName) {
             case "TOPO":
@@ -269,8 +307,106 @@ class AS1000_PFD_MainPage extends NavSystemPage {
                         return "White";
                     break;
                 }
+            case "OBS":
+                {
+                    if (SimVar.GetSimVarValue("GPS OBS ACTIVE", "boolean")) {
+                        return "White";
+                    }
+                    break;
+                }
+            case "SYN TERR":
+                {
+                    if (this.syntheticVision) {
+                        return "White";
+                    }
+                    break;
+                }
         }
         return "None";
+    }
+}
+class AS1000_PFD_PFDSetup extends NavSystemElement {
+    constructor() {
+        super(...arguments);
+        this.PFDPotentiometerIndex = 4;
+        this.MFDPotentiometerIndex = 4;
+    }
+    init(root) {
+        this.PFDBackLightMode = this.gps.getChildById("PFDBackLightMode");
+        this.PFDBackLightValue = this.gps.getChildById("PFDBackLightValue");
+        this.MFDBackLightMode = this.gps.getChildById("MFDBackLightMode");
+        this.MFDBackLightValue = this.gps.getChildById("MFDBackLightValue");
+        this.defaultSelectables = [
+            new SelectableElement(this.gps, this.PFDBackLightMode, this.pfdBacklightModeCallback.bind(this)),
+            new SelectableElement(this.gps, this.PFDBackLightValue, this.pfdBacklightValueCallback.bind(this)),
+            new SelectableElement(this.gps, this.MFDBackLightMode, this.mfdBacklightModeCallback.bind(this)),
+            new SelectableElement(this.gps, this.MFDBackLightValue, this.mfdBacklightValueCallback.bind(this))
+        ];
+        this.root = root;
+    }
+    onEnter() {
+        Avionics.Utils.diffAndSetAttribute(this.root, "state", "Active");
+    }
+    onExit() {
+        Avionics.Utils.diffAndSetAttribute(this.root, "state", "Inactive");
+    }
+    onEvent(_event) {
+    }
+    onUpdate(_deltaTime) {
+        Avionics.Utils.diffAndSet(this.PFDBackLightMode, this.mainPage.PFDBrightIsAuto ? "AUTO" : "MANUAL");
+        Avionics.Utils.diffAndSet(this.MFDBackLightMode, this.mainPage.MFDBrightIsAuto ? "AUTO" : "MANUAL");
+        Avionics.Utils.diffAndSet(this.PFDBackLightValue, (SimVar.GetSimVarValue("L:AS1000_PFD_Brightness", "number") * 100).toFixed(0));
+        Avionics.Utils.diffAndSet(this.MFDBackLightValue, (SimVar.GetSimVarValue("L:AS1000_MFD_Brightness", "number") * 100).toFixed(0));
+    }
+    pfdBacklightModeCallback(_event) {
+        switch (_event) {
+            case "NavigationSmallInc":
+                this.mainPage.PFDBrightIsAuto = true;
+                break;
+            case "NavigationSmallDec":
+                this.mainPage.PFDBrightIsAuto = false;
+                break;
+            case "ENT_Push":
+                this.mainPage.PFDBrightIsAuto = !this.mainPage.PFDBrightIsAuto;
+                break;
+        }
+    }
+    pfdBacklightValueCallback(_event) {
+        if (!this.mainPage.PFDBrightIsAuto) {
+            switch (_event) {
+                case "NavigationSmallInc":
+                    SimVar.SetSimVarValue("L:AS1000_PFD_Brightness", "number", Math.min(1, Math.max(0, SimVar.GetSimVarValue("L:AS1000_PFD_Brightness", "number") + 0.01)));
+                    break;
+                case "NavigationSmallDec":
+                    SimVar.SetSimVarValue("L:AS1000_PFD_Brightness", "number", Math.min(1, Math.max(0, SimVar.GetSimVarValue("L:AS1000_PFD_Brightness", "number") - 0.01)));
+                    break;
+            }
+        }
+    }
+    mfdBacklightModeCallback(_event) {
+        switch (_event) {
+            case "NavigationSmallInc":
+                this.mainPage.MFDBrightIsAuto = true;
+                break;
+            case "NavigationSmallDec":
+                this.mainPage.MFDBrightIsAuto = false;
+                break;
+            case "ENT_Push":
+                this.mainPage.MFDBrightIsAuto = !this.mainPage.MFDBrightIsAuto;
+                break;
+        }
+    }
+    mfdBacklightValueCallback(_event) {
+        if (!this.mainPage.MFDBrightIsAuto) {
+            switch (_event) {
+                case "NavigationSmallInc":
+                    SimVar.SetSimVarValue("L:AS1000_MFD_Brightness", "number", Math.min(1, Math.max(0, SimVar.GetSimVarValue("L:AS1000_MFD_Brightness", "number") + 0.01)));
+                    break;
+                case "NavigationSmallDec":
+                    SimVar.SetSimVarValue("L:AS1000_MFD_Brightness", "number", Math.min(1, Math.max(0, SimVar.GetSimVarValue("L:AS1000_MFD_Brightness", "number") - 0.01)));
+                    break;
+            }
+        }
     }
 }
 class AS1000_PFD_MainElement extends NavSystemElement {
@@ -279,6 +415,14 @@ class AS1000_PFD_MainElement extends NavSystemElement {
     onEnter() {
     }
     onUpdate(_deltaTime) {
+        let mainPage = this.container;
+        let timeOfDay = SimVar.GetSimVarValue("E:TIME OF DAY", "number");
+        if (mainPage.PFDBrightIsAuto) {
+            SimVar.SetSimVarValue("L:AS1000_PFD_Brightness", "number", (timeOfDay == 1 ? 1 : timeOfDay == 3 ? 0.1 : 0.35));
+        }
+        if (mainPage.MFDBrightIsAuto) {
+            SimVar.SetSimVarValue("L:AS1000_MFD_Brightness", "number", (timeOfDay == 1 ? 1 : timeOfDay == 3 ? 0.1 : 0.35));
+        }
     }
     onExit() {
     }
@@ -406,7 +550,7 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
                 Avionics.Utils.diffAndSet(this.AP_LateralActive, "GPS");
             }
             else {
-                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "Number"), "Boolean")) {
+                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + Simplane.getAutoPilotSelectedNav(), "Boolean")) {
                     Avionics.Utils.diffAndSet(this.AP_LateralActive, "LOC");
                 }
                 else {
@@ -422,7 +566,7 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
                 Avionics.Utils.diffAndSet(this.AP_LateralActive, "GPS");
             }
             else {
-                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "Number"), "Boolean")) {
+                if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + Simplane.getAutoPilotSelectedNav(), "Boolean")) {
                     Avionics.Utils.diffAndSet(this.AP_LateralActive, "LOC");
                 }
                 else {
@@ -439,7 +583,7 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
                     Avionics.Utils.diffAndSet(this.AP_LateralArmed, "GPS");
                 }
                 else {
-                    if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "Number"), "Boolean")) {
+                    if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + Simplane.getAutoPilotSelectedNav(), "Boolean")) {
                         Avionics.Utils.diffAndSet(this.AP_LateralArmed, "LOC");
                     }
                     else {
@@ -455,7 +599,7 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
                     Avionics.Utils.diffAndSet(this.AP_LateralArmed, "GPS");
                 }
                 else {
-                    if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "Number"), "Boolean")) {
+                    if (SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + Simplane.getAutoPilotSelectedNav(), "Boolean")) {
                         Avionics.Utils.diffAndSet(this.AP_LateralArmed, "LOC");
                     }
                     else {
@@ -488,6 +632,12 @@ class AS1000_PFD_APDisplay extends NavSystemElement {
 class AS1000_PFD_WaypointLine extends MFD_WaypointLine {
     onEvent(_subIndex, _event) {
         switch (_event) {
+            case "NavigationLargeInc":
+            case "NavigationLargeDec":
+                if (_subIndex === 0 && this.waypoint) {
+                    this.element.gps.lastRelevantICAO = this.waypoint.icao;
+                }
+                break;
             case "NavigationSmallInc":
             case "NavigationSmallDec":
                 switch (_subIndex) {

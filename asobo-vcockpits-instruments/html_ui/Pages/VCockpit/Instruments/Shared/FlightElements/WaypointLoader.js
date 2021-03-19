@@ -407,7 +407,8 @@ class FacilityLoader {
                             lon: 0,
                             region: "UKNW",
                             city: "UKNW",
-                            altitudeMode: ""
+                            altitudeMode: "",
+                            magvar: 0
                         });
                         let n = this.loadingFacilities.indexOf(icao);
                         if (n >= 0) {

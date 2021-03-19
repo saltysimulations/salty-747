@@ -134,6 +134,7 @@ class AS3X_PFD extends AS3X_Page {
     constructor() {
         super("PFD", "PFD", null, "PFD");
         this.valueSelectionMode = 0;
+        this.syntheticVision = true;
         this.element = new NavSystemElementGroup([
             new PFD_Compass("HSI")
         ]);
@@ -159,12 +160,18 @@ class AS3X_PFD extends AS3X_Page {
             new SoftKeyElement("BACK", this.switchFromBaroMenu.bind(this))
         ];
         this.softKeys = this.mainSoftkeyMenu;
+        this.syntheticVisionMenuElement = new ContextualMenuElement("Synthetic Vision On", this.toggleSyntheticVision.bind(this));
+        this.defaultMenu = new ContextualMenu("Page Menu", [
+            this.syntheticVisionMenuElement
+        ]);
+        this.syntheticVisionElement = this.gps.getChildById("SyntheticVision");
         if (this.gps.instrumentXmlConfig) {
             let altimeterIndexElems = this.gps.instrumentXmlConfig.getElementsByTagName("AltimeterIndex");
             if (altimeterIndexElems.length > 0) {
                 this.altimeterIndex = parseInt(altimeterIndexElems[0].textContent) + 1;
             }
         }
+        SimVar.SetSimVarValue("K:TOGGLE_GPS_DRIVES_NAV1", "Bool", 0);
     }
     switchToValueSelectionMode(_value) {
         if (_value == this.valueSelectionMode) {
@@ -173,6 +180,18 @@ class AS3X_PFD extends AS3X_Page {
         else {
             this.valueSelectionMode = _value;
         }
+    }
+    toggleSyntheticVision() {
+        this.syntheticVision = !this.syntheticVision;
+        let attitude = this.gps.getElementOfType(PFD_Attitude);
+        if (attitude) {
+            Avionics.Utils.diffAndSetAttribute(attitude.svg, "background", (this.syntheticVision ? "false" : "true"));
+        }
+        if (this.syntheticVisionElement) {
+            this.syntheticVisionElement.style.display = (this.syntheticVision ? "Block" : "None");
+        }
+        this.syntheticVisionElement.style.display = (this.syntheticVision ? "Block" : "None");
+        this.syntheticVisionMenuElement.name = "Synthetic Vision " + (this.syntheticVision ? "On" : "Off");
     }
     valueSelectionModeStateCallback(_value) {
         if (_value == this.valueSelectionMode) {
@@ -195,7 +214,7 @@ class AS3X_PFD extends AS3X_Page {
     }
     switchCdiSrc() {
         let isGPSDrived = SimVar.GetSimVarValue("GPS DRIVES NAV1", "Bool");
-        let cdiSrc = isGPSDrived ? 3 : SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "number");
+        let cdiSrc = isGPSDrived ? 3 : Simplane.getAutoPilotSelectedNav();
         cdiSrc = (cdiSrc % 3) + 1;
         if (cdiSrc == 2 && !SimVar.GetSimVarValue("NAV AVAILABLE:2", "Bool")) {
             cdiSrc = 3;
@@ -204,7 +223,7 @@ class AS3X_PFD extends AS3X_Page {
             SimVar.SetSimVarValue("K:TOGGLE_GPS_DRIVES_NAV1", "Bool", 0);
         }
         if (cdiSrc != 3) {
-            SimVar.SetSimVarValue("K:AP_NAV_SELECT_SET", "number", cdiSrc);
+            Simplane.setAutoPilotSelectedNav(cdiSrc);
         }
     }
     onUpdate(_deltaTime) {

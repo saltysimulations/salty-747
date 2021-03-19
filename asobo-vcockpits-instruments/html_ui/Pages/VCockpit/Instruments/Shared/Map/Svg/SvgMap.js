@@ -1,3 +1,11 @@
+var EMapRotationMode;
+(function (EMapRotationMode) {
+    EMapRotationMode[EMapRotationMode["NorthUp"] = 0] = "NorthUp";
+    EMapRotationMode[EMapRotationMode["TrackUp"] = 1] = "TrackUp";
+    EMapRotationMode[EMapRotationMode["DTKUp"] = 2] = "DTKUp";
+    EMapRotationMode[EMapRotationMode["HDGUp"] = 3] = "HDGUp";
+    EMapRotationMode[EMapRotationMode["KeepCurrent"] = 4] = "KeepCurrent";
+})(EMapRotationMode || (EMapRotationMode = {}));
 class SvgMap {
     constructor(_root, arg) {
         this._maxUpdateTime = 0;
@@ -5,13 +13,17 @@ class SvgMap {
         this._mediumUpdateTime = 0;
         this._iterations = 0;
         this.configLoaded = false;
-        this.rotateWithPlane = false;
+        this.rotationMode = EMapRotationMode.NorthUp;
+        this.overdrawFactor = 1;
         this.lineCanvasClipping = new Avionics.Intersect();
         this.mapElements = [];
         this._elementsWithTextBox = [];
         this._previousCenterCoordinates = [];
         this.planeDirection = 0;
         this.planeDirectionRadian = 0;
+        this.mapUpDirection = 0;
+        this.mapUpDirectionRadian = 0;
+        this.mapRightDirection = 0;
         this.planeAltitude = 0;
         this._ratio = 1;
         this._NMWidth = 100;
@@ -248,6 +260,39 @@ class SvgMap {
         this.planeDirectionRadian = -this.planeDirection / 180 * Math.PI;
         this.cosPlaneDirection = Math.cos(this.planeDirectionRadian);
         this.sinPlaneDirection = Math.sin(this.planeDirectionRadian);
+        switch (this.rotationMode) {
+            case EMapRotationMode.KeepCurrent:
+                break;
+            case EMapRotationMode.DTKUp:
+                this.mapUpDirection = SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degrees");
+                break;
+            case EMapRotationMode.HDGUp:
+                this.mapUpDirection = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
+                break;
+            case EMapRotationMode.TrackUp:
+                this.mapUpDirection = SimVar.GetSimVarValue("GPS GROUND TRUE TRACK", "degrees");
+                break;
+            case EMapRotationMode.NorthUp:
+            default:
+                this.mapUpDirection = 0;
+                break;
+        }
+        while (this.mapUpDirection < 0) {
+            this.mapUpDirection += 360;
+        }
+        while (this.mapUpDirection >= 360) {
+            this.mapUpDirection -= 360;
+        }
+        this.mapUpDirectionRadian = -this.mapUpDirection / 180 * Math.PI;
+        this.cosMapUpDirection = Math.cos(this.mapUpDirectionRadian);
+        this.sinMapUpDirection = Math.sin(this.mapUpDirectionRadian);
+        this.mapRightDirection = this.mapUpDirection - 90;
+        while (this.mapRightDirection < 0) {
+            this.mapRightDirection += 360;
+        }
+        let mapRightDirectionRadian = -this.mapRightDirection / 180 * Math.PI;
+        this.cosMapRightDirection = Math.cos(mapRightDirectionRadian);
+        this.sinMapRightDirection = Math.sin(mapRightDirectionRadian);
         this.planeAltitude = SimVar.GetSimVarValue("PLANE ALT ABOVE GROUND", "feet");
         let w = this.htmlRoot.getWidth();
         let h = this.htmlRoot.getHeight();
@@ -404,12 +449,8 @@ class SvgMap {
         this.svgHtmlElement.setAttribute("height", fastToFixed(max, 0) + "px");
         let top = "0px";
         let left = "0px";
-        if (h < max) {
-            top = fastToFixed((h - max) / 2, 0) + "px";
-        }
-        if (w < max) {
-            left = fastToFixed((w - max) / 2, 0) + "px";
-        }
+        top = fastToFixed(((h - max) - h * (1 - 1 / this.overdrawFactor)) / 2, 0) + "px";
+        left = fastToFixed(((w - max) - w * (1 - 1 / this.overdrawFactor)) / 2, 0) + "px";
         this.svgHtmlElement.style.top = top;
         this.svgHtmlElement.style.left = left;
         if (this.lineCanvas) {
@@ -470,9 +511,9 @@ class SvgMap {
         let y = -deltaLat * 1000;
         deltaLat += 0.5;
         let x = xNorth * deltaLat + xSouth * (1 - deltaLat);
-        if (this.rotateWithPlane) {
-            ref.x = x * this.cosPlaneDirection - y * this.sinPlaneDirection + 500;
-            ref.y = x * this.sinPlaneDirection + y * this.cosPlaneDirection + 500;
+        if (this.rotationMode != EMapRotationMode.NorthUp) {
+            ref.x = x * this.cosMapUpDirection - y * this.sinMapUpDirection + 500;
+            ref.y = x * this.sinMapUpDirection + y * this.cosMapUpDirection + 500;
         }
         else {
             ref.x = x + 500;
@@ -486,9 +527,9 @@ class SvgMap {
         let y = -deltaLat * 1000;
         deltaLat += 0.5;
         let x = xNorth * deltaLat + xSouth * (1 - deltaLat);
-        if (this.rotateWithPlane) {
-            ref.x = x * this.cosPlaneDirection - y * this.sinPlaneDirection + 500;
-            ref.y = x * this.sinPlaneDirection + y * this.cosPlaneDirection + 500;
+        if (this.rotationMode != EMapRotationMode.NorthUp) {
+            ref.x = x * this.cosMapUpDirection - y * this.sinMapUpDirection + 500;
+            ref.y = x * this.sinMapUpDirection + y * this.cosMapUpDirection + 500;
         }
         else {
             ref.x = x + 500;
@@ -502,9 +543,9 @@ class SvgMap {
         let y = -deltaLat * 1000;
         deltaLat += 0.5;
         let x = xNorth * deltaLat + xSouth * (1 - deltaLat);
-        if (this.rotateWithPlane) {
-            ref.x = x * this.cosPlaneDirection - y * this.sinPlaneDirection + 500;
-            ref.y = x * this.sinPlaneDirection + y * this.cosPlaneDirection + 500;
+        if (this.rotationMode != EMapRotationMode.NorthUp) {
+            ref.x = x * this.cosMapUpDirection - y * this.sinMapUpDirection + 500;
+            ref.y = x * this.sinMapUpDirection + y * this.cosMapUpDirection + 500;
         }
         else {
             ref.x = x + 500;
@@ -518,9 +559,9 @@ class SvgMap {
         let y = -deltaLat * 1000;
         deltaLat += 0.5;
         let x = xNorth * deltaLat + xSouth * (1 - deltaLat);
-        if (this.rotateWithPlane) {
-            ref.x = x * this.cosPlaneDirection - y * this.sinPlaneDirection + 500;
-            ref.y = x * this.sinPlaneDirection + y * this.cosPlaneDirection + 500;
+        if (this.rotationMode != EMapRotationMode.NorthUp) {
+            ref.x = x * this.cosMapUpDirection - y * this.sinMapUpDirection + 500;
+            ref.y = x * this.sinMapUpDirection + y * this.cosMapUpDirection + 500;
         }
         else {
             ref.x = x + 500;

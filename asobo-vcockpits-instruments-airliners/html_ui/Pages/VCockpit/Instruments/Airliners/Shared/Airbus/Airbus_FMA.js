@@ -829,10 +829,10 @@ var Airbus_FMA;
                         }
                     case Column2.ROW_1_STATE.FPA:
                         {
-                            var value = -Airbus_FMA.CurrentPlaneState.autoPilotFlightPathAngle;
+                            var value = SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD VAR:2", "feet per minute") / 600;
                             var sign = (value < 0) ? "-" : "+";
                             value = Math.min(Math.abs(value), 9.9);
-                            var str = sign + value.toFixed(2) + String.fromCharCode(176);
+                            var str = sign + value.toFixed(1) + String.fromCharCode(176);
                             this.setRowMultiText(0, "FPA", Airbus_FMA.MODE_STATE.ENGAGED, str, Airbus_FMA.MODE_STATE.ARMED);
                             break;
                         }
@@ -1071,11 +1071,11 @@ var Airbus_FMA;
             return false;
         }
         static GetModeState_GS() {
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && (!Simplane.getAutoPilotApproachLoaded() || Simplane.getAutoPilotApproachType() == 4)) {
+            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold()) {
                 if (Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive()) {
                     return Airbus_FMA.MODE_STATE.ENGAGED;
                 }
-                else {
+                else if (Simplane.getAutoPilotAPPRIsLocalizer() || Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                     return Airbus_FMA.MODE_STATE.ARMED;
                 }
             }
@@ -1131,7 +1131,7 @@ var Airbus_FMA;
             return false;
         }
         IsActive_FinalArmed() {
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && Simplane.getAutoPilotApproachType() == 10) {
+            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                 if (!Simplane.getAutoPilotGlideslopeActive() || !Simplane.getAutoPilotAPPRActive()) {
                     return true;
                 }
@@ -1353,11 +1353,13 @@ var Airbus_FMA;
             }
         }
         GetModeState_LOC() {
-            if (Simplane.getAutoPilotAPPRActive()) {
-                return Airbus_FMA.MODE_STATE.ENGAGED;
-            }
-            else if (Simplane.getAutoPilotAPPRArm()) {
-                return Airbus_FMA.MODE_STATE.ARMED;
+            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRIsLocalizer()) {
+                if (Simplane.getAutoPilotAPPRActive()) {
+                    return Airbus_FMA.MODE_STATE.ENGAGED;
+                }
+                else if (Simplane.getAutoPilotAPPRArm()) {
+                    return Airbus_FMA.MODE_STATE.ARMED;
+                }
             }
             return Airbus_FMA.MODE_STATE.NONE;
         }
@@ -1395,7 +1397,7 @@ var Airbus_FMA;
             return false;
         }
         GetModeState_APPNAV() {
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && (!Simplane.getAutoPilotApproachLoaded() || Simplane.getAutoPilotApproachType() != 4)) {
+            if (Simplane.getAutoPilotAPPRHold() && !Simplane.getAutoPilotAPPRIsLocalizer()) {
                 if (Simplane.getAutoPilotAPPRActive()) {
                     return Airbus_FMA.MODE_STATE.ENGAGED;
                 }
@@ -1795,7 +1797,7 @@ var Airbus_FMA;
             this._previousState = this.currentState;
         }
         static IsActive_FinalApp() {
-            return Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive() && Simplane.getAutoPilotApproachType() == 10;
+            return Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive() && Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV;
         }
         static IsActive_Any() {
             return Airbus_FMA.VerticalAndLateral.isActive;

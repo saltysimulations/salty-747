@@ -139,6 +139,51 @@ class Jet_PFD_NDCompass extends Jet_NDCompass {
                 }
                 this.rotatingCircle.appendChild(this.selectedTrackGroup);
             }
+            this.courseGroup = document.createElementNS(Avionics.SVG.NS, "g");
+            this.courseGroup.setAttribute("id", "CourseInfo");
+            this.rotatingCircle.appendChild(this.courseGroup);
+            {
+                let bearingScale = 0.8;
+                let bearingScaleCorrection = -((50 * bearingScale) - 50);
+                let bearing = document.createElementNS(Avionics.SVG.NS, "g");
+                bearing.setAttribute("id", "bearing");
+                bearing.setAttribute("transform", "translate(" + bearingScaleCorrection + " " + bearingScaleCorrection + ") scale(" + bearingScale + ")");
+                this.courseGroup.appendChild(bearing);
+                {
+                    this.bearing1_Vor = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.bearing1_Vor.setAttribute("d", "M60 -477 L50 -487 L40 -477 M50 -487 L50 -405 M70 -410 L30 -410     M50 510 L50 585 M65 585 L50 575 L35 585");
+                    this.bearing1_Vor.setAttribute("stroke-width", "3");
+                    this.bearing1_Vor.setAttribute("stroke", "green");
+                    this.bearing1_Vor.setAttribute("fill", "none");
+                    this.bearing1_Vor.setAttribute("id", "bearing1_Vor");
+                    this.bearing1_Vor.setAttribute("visibility", "hidden");
+                    bearing.appendChild(this.bearing1_Vor);
+                    this.bearing1_Adf = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.bearing1_Adf.setAttribute("d", "M60 -477 L50 -487 L40 -477 M50 -487 L50 -405 M70 -410 L30 -410     M50 510 L50 585 M65 585 L50 575 L35 585");
+                    this.bearing1_Adf.setAttribute("stroke-width", "3");
+                    this.bearing1_Adf.setAttribute("stroke", "cyan");
+                    this.bearing1_Adf.setAttribute("fill", "none");
+                    this.bearing1_Adf.setAttribute("id", "bearing1_Adf");
+                    this.bearing1_Adf.setAttribute("visibility", "hidden");
+                    bearing.appendChild(this.bearing1_Adf);
+                    this.bearing2_Vor = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.bearing2_Vor.setAttribute("d", "M60 -477 L50 -487 L40 -477 L40 -415 L30 -415 L30 -405 L70 -405 L70 -415 L60 -415 L60 -477        M65 585 L50 575 L35 585 L35 595 L50 585 L65 595 L65 585 M57 580 L57 517 L50 510 L43 517 L43 580");
+                    this.bearing2_Vor.setAttribute("stroke-width", "3");
+                    this.bearing2_Vor.setAttribute("stroke", "green");
+                    this.bearing2_Vor.setAttribute("fill", "none");
+                    this.bearing2_Vor.setAttribute("id", "bearing2_Vor");
+                    this.bearing2_Vor.setAttribute("visibility", "hidden");
+                    bearing.appendChild(this.bearing2_Vor);
+                    this.bearing2_Adf = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.bearing2_Adf.setAttribute("d", "M60 -477 L50 -487 L40 -477 L40 -415 L30 -415 L30 -405 L70 -405 L70 -415 L60 -415 L60 -477        M65 585 L50 575 L35 585 L35 595 L50 585 L65 595 L65 585 M57 580 L57 517 L50 510 L43 517 L43 580");
+                    this.bearing2_Adf.setAttribute("stroke-width", "3");
+                    this.bearing2_Adf.setAttribute("stroke", "cyan");
+                    this.bearing2_Adf.setAttribute("fill", "none");
+                    this.bearing2_Adf.setAttribute("id", "bearing2_Adf");
+                    this.bearing2_Adf.setAttribute("visibility", "hidden");
+                    bearing.appendChild(this.bearing2_Adf);
+                }
+            }
             viewBox.appendChild(this.rotatingCircle);
         }
         if (!this.isHud) {

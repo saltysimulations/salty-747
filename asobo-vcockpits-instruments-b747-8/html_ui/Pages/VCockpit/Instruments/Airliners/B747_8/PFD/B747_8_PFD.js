@@ -239,8 +239,8 @@ class B747_8_PFD_ILS extends NavSystemElement {
         }
         if (this.ils) {
             let showIls = false;
-            let localizer = this.gps.radioNav.getBestILSBeacon(false);
-            if ((localizer.id != 0 && this.altWentAbove500) || (this.gps.currFlightPlanManager.isActiveApproach() && Simplane.getAutoPilotApproachType() == 10)) {
+            let localizer = this.gps.radioNav.getBestILSBeacon(UseNavSource.YES_FALLBACK);
+            if ((localizer.id != 0 && this.altWentAbove500) || (this.gps.currFlightPlanManager.isActiveApproach() && Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV)) {
                 showIls = true;
             }
             this.ils.showLocalizer(showIls);

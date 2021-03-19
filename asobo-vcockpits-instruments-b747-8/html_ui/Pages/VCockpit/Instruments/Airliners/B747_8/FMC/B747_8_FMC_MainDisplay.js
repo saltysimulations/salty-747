@@ -464,15 +464,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (currentApMasterStatus != this._apMasterStatus) {
                 this._apMasterStatus = currentApMasterStatus;
                 this._forceNextAltitudeUpdate = true;
-                if (currentApMasterStatus) {
-                    if (this.flightPlanManager.hasFlightPlan()) {
-                        this.activateLNAV();
-                        this.activateVNAV();
-                    }
-                    else {
-                        this.activateFLCH();
-                    }
-                }
             }
             this._apHasDeactivated = !currentApMasterStatus && this._previousApMasterStatus;
             this._previousApMasterStatus = currentApMasterStatus;
@@ -485,9 +476,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let n1 = this.getThrustTakeOffLimit() / 100;
                 SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
-            }
-            if (!this.getIsAltitudeHoldActive()) {
-                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, Simplane.getAutoPilotDisplayedAltitudeLockValue(), this._forceNextAltitudeUpdate);
             }
             let vRef = 0;
             if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_DESCENT) {

@@ -3,6 +3,7 @@
 	<DefaultTemplateParameters>
 		<NODE_ID>ENGINE_Switch_AlternateAir_#ID#</NODE_ID>
 		<ANIM_NAME>ENGINE_Switch_AlternateAir_#ID#</ANIM_NAME>
+		<PART_ID>ENGINE_Switch_AlternateAir</PART_ID>
 		<Switch>
 			<Case Check="USE_DRAGGING_INTERACTION">
 				<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
@@ -250,7 +251,7 @@
 				<STATE_MAX_TIMER>1</STATE_MAX_TIMER>
 				<STATE0_TIMER>1</STATE0_TIMER>
 			</Case>
-			<Case Value="FA18E">
+			<Case Value="AS04F">
 				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_3States</TEMPLATE_TO_CALL>
 				<CODE_POS_0>
 					(A:GENERAL ENG STARTER:#ID1#, Bool) !

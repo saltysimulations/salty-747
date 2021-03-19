@@ -13,19 +13,19 @@ class SvgLatLonElement extends SvgMapElement {
         shapeLat.classList.add("map-lat-lon-lines");
         shapeLat.setAttribute("fill", "none");
         shapeLat.setAttribute("stroke", map.config.latLonStrokeColor);
-        shapeLat.setAttribute("stroke-width", fastToFixed(map.config.latLonStrokeWidth, 0));
+        shapeLat.setAttribute("stroke-width", fastToFixed(map.config.latLonStrokeWidth / map.overdrawFactor, 0));
         container.appendChild(shapeLat);
         let shapeLon = document.createElementNS(Avionics.SVG.NS, "polyline");
         shapeLon.classList.add("map-lat-lon-lines");
         shapeLon.setAttribute("fill", "none");
         shapeLon.setAttribute("stroke", map.config.latLonStrokeColor);
-        shapeLon.setAttribute("stroke-width", fastToFixed(map.config.latLonStrokeWidth, 0));
+        shapeLon.setAttribute("stroke-width", fastToFixed(map.config.latLonStrokeWidth / map.overdrawFactor, 0));
         container.appendChild(shapeLon);
         for (let i = 0; i < SvgLatLonElement.MAXLABELCOUNT; i++) {
             let label = document.createElementNS(Avionics.SVG.NS, "text");
             label.classList.add("map-lat-lon-label");
             label.setAttribute("font-family", map.config.latLonLabelFontFamily);
-            label.setAttribute("font-size", map.config.latLonLabelFontSize + "px");
+            label.setAttribute("font-size", map.config.latLonLabelFontSize / map.overdrawFactor + "px");
             label.setAttribute("fill", map.config.latLonLabelColor);
             label.setAttribute("stroke", map.config.latLonLabelStrokeColor);
             label.setAttribute("stroke-width", "10px");
@@ -73,7 +73,7 @@ class SvgLatLonElement extends SvgMapElement {
                     latLabel.textContent = fastToFixed(lla.lat, decimals);
                     latLabel.setAttribute("text-anchor", "start");
                     latLabel.setAttribute("x", "10");
-                    latLabel.setAttribute("y", fastToFixed((p.y + map.config.latLonLabelFontSize * 0.3), 0));
+                    latLabel.setAttribute("y", fastToFixed((p.y + map.config.latLonLabelFontSize / map.overdrawFactor * 0.3), 0));
                 }
             }
         }

@@ -35,7 +35,10 @@ class AirspeedIndicator extends HTMLElement {
             "true-airspeed",
             "reference-bugs",
             "display-ref-speed",
-            "ref-speed"
+            "ref-speed",
+            "ref-speed-mach",
+            "display-mach",
+            "mach-speed"
         ];
     }
     connectedCallback() {
@@ -67,7 +70,18 @@ class AirspeedIndicator extends HTMLElement {
             this.selectedSpeedText.setAttribute("font-family", "Roboto-Bold");
             this.selectedSpeedText.setAttribute("text-anchor", "start");
             this.selectedSpeedText.textContent = "---";
+            this.selectedSpeedText.setAttribute("display", "none");
             this.airspeedReferenceGroup.appendChild(this.selectedSpeedText);
+            this.selectedSpeedTextMach = document.createElementNS(Avionics.SVG.NS, "text");
+            this.selectedSpeedTextMach.setAttribute("x", "20");
+            this.selectedSpeedTextMach.setAttribute("y", "-10");
+            this.selectedSpeedTextMach.setAttribute("fill", "#36c8d2");
+            this.selectedSpeedTextMach.setAttribute("font-size", "45");
+            this.selectedSpeedTextMach.setAttribute("font-family", "Roboto-Bold");
+            this.selectedSpeedTextMach.setAttribute("text-anchor", "start");
+            this.selectedSpeedTextMach.textContent = "---";
+            this.selectedSpeedTextMach.setAttribute("display", "none");
+            this.airspeedReferenceGroup.appendChild(this.selectedSpeedTextMach);
         }
         {
             let background = document.createElementNS(Avionics.SVG.NS, "rect");
@@ -289,15 +303,15 @@ class AirspeedIndicator extends HTMLElement {
             this.bottomBackground.setAttribute("height", "50");
             this.bottomBackground.setAttribute("fill", "#1a1d21");
             this.root.appendChild(this.bottomBackground);
-            let tasTasText = document.createElementNS(Avionics.SVG.NS, "text");
-            tasTasText.setAttribute("x", "5");
-            tasTasText.setAttribute("y", "638");
-            tasTasText.setAttribute("fill", "white");
-            tasTasText.setAttribute("font-size", "35");
-            tasTasText.setAttribute("font-family", "Roboto-Bold");
-            tasTasText.setAttribute("text-anchor", "start");
-            tasTasText.textContent = "TAS";
-            this.root.appendChild(tasTasText);
+            this.tasTasText = document.createElementNS(Avionics.SVG.NS, "text");
+            this.tasTasText.setAttribute("x", "5");
+            this.tasTasText.setAttribute("y", "638");
+            this.tasTasText.setAttribute("fill", "white");
+            this.tasTasText.setAttribute("font-size", "35");
+            this.tasTasText.setAttribute("font-family", "Roboto-Bold");
+            this.tasTasText.setAttribute("text-anchor", "start");
+            this.tasTasText.textContent = "TAS";
+            this.root.appendChild(this.tasTasText);
             this.tasText = document.createElementNS(Avionics.SVG.NS, "text");
             this.tasText.setAttribute("x", "195");
             this.tasText.setAttribute("y", "638");
@@ -307,6 +321,16 @@ class AirspeedIndicator extends HTMLElement {
             this.tasText.setAttribute("text-anchor", "end");
             this.tasText.textContent = "0KT";
             this.root.appendChild(this.tasText);
+            this.machText = document.createElementNS(Avionics.SVG.NS, "text");
+            this.machText.setAttribute("x", "195");
+            this.machText.setAttribute("y", "638");
+            this.machText.setAttribute("fill", "white");
+            this.machText.setAttribute("font-size", "35");
+            this.machText.setAttribute("font-family", "Roboto-Bold");
+            this.machText.setAttribute("text-anchor", "end");
+            this.machText.textContent = "M .000";
+            this.machText.setAttribute("display", "none");
+            this.root.appendChild(this.machText);
         }
     }
     attributeChangedCallback(name, oldValue, newValue) {
@@ -492,12 +516,44 @@ class AirspeedIndicator extends HTMLElement {
                 }
                 break;
             case "display-ref-speed":
-                this.airspeedReferenceGroup.setAttribute("display", newValue == "True" ? "" : "none");
-                this.selectedSpeedBug.setAttribute("display", newValue == "True" ? "" : "none");
+                if (newValue == "True" || newValue == "Mach") {
+                    this.airspeedReferenceGroup.setAttribute("display", "");
+                    this.selectedSpeedBug.setAttribute("display", "");
+                    if (newValue == "True") {
+                        this.selectedSpeedTextMach.setAttribute("display", "none");
+                        this.selectedSpeedText.setAttribute("display", "");
+                    }
+                    else if (newValue == "Mach") {
+                        this.selectedSpeedTextMach.setAttribute("display", "");
+                        this.selectedSpeedText.setAttribute("display", "none");
+                    }
+                }
+                else {
+                    this.airspeedReferenceGroup.setAttribute("display", "none");
+                    this.selectedSpeedBug.setAttribute("display", "none");
+                }
                 break;
             case "ref-speed":
                 this.selectedSpeedBugValue = parseFloat(newValue);
-                this.selectedSpeedText.textContent = Math.round(parseFloat(newValue)).toString();
+                this.selectedSpeedText.textContent = newValue;
+                break;
+            case "ref-speed-mach":
+                this.selectedSpeedTextMach.textContent = newValue;
+                break;
+            case "display-mach":
+                if (newValue == "True") {
+                    this.machText.setAttribute("display", "");
+                    this.tasTasText.setAttribute("display", "none");
+                    this.tasText.setAttribute("display", "none");
+                }
+                else {
+                    this.machText.setAttribute("display", "none");
+                    this.tasTasText.setAttribute("display", "");
+                    this.tasText.setAttribute("display", "");
+                }
+                break;
+            case "mach-speed":
+                this.machText.textContent = newValue;
                 break;
         }
     }

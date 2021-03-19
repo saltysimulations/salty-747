@@ -42,6 +42,9 @@
 	</UseTemplate>
 	</Template>
 	<Template Name="ASOBO_DEICE_Switch_Pitot_Template">
+		<DefaultTemplateParameters>
+			<ID>1</ID>
+		</DefaultTemplateParameters>
 		<EditableTemplateParameters>
 			<AddParams>
 				<NUM_PITOTS></NUM_PITOTS>

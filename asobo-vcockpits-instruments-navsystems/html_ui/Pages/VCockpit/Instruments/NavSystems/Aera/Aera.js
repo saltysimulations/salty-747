@@ -252,9 +252,11 @@ class Aera_Map extends MapInstrumentElement {
         this.instrument.addEventListener("mousedown", this.moveMode.bind(this));
         this.instrument.supportMouseWheel(false);
     }
-    moveMode() {
-        this.instrument.setAttribute("bing-mode", "vfr");
-        this.mapCenter.setAttribute("state", "Active");
+    moveMode(_event) {
+        if (_event.button == 0) {
+            this.instrument.setAttribute("bing-mode", "vfr");
+            this.mapCenter.setAttribute("state", "Active");
+        }
     }
     centerOnPlane() {
         this.instrument.setCenteredOnPlane();

@@ -99,112 +99,112 @@
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:1" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:1" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="1"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump1"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:2" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:2" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="2"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump2"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:3" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:3" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="3"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump3"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:4" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:4" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="4"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump4"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:5" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:5" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="5"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump5"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:6" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:6" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="6"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump6"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:7" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:7" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="7"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump7"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:8" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:8" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="8"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump8"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:9" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:9" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="9"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump9"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:10" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:10" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="10"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump10"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:11" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:11" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="11"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump11"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:12" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:12" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="12"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump12"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:13" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:13" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="13"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump13"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:14" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:14" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="14"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump14"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:15" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:15" Units="Boolean"/>
 					</TestValue>
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="15"/>
 					<Instrument Id="AIRBUS_Push_Fuel_Pump15"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP ACTIVE:16" Units="Boolean"/>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:16" Units="Boolean"/>
 					</TestValue>
 					<Instrument Id="FUEL_Push_Pump"/><!-- Highlights all fuel pumps -->
 					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="16"/>

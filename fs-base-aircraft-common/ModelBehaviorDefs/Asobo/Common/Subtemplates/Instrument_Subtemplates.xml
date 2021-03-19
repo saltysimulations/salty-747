@@ -45,7 +45,7 @@
 		</UseTemplate>
 		<Condition Check="USE_TRUE_AIRSPEED_CALIBRATOR">
 			<Switch Param="USE_TRUE_AIRSPEED_CALIBRATOR">
-				<Case Value="SIMVAR_SET"><!-- let us bypass hardcoded limit of -27° and +27° -->
+				<Case Value="SIMVAR_SET"><!-- let us bypass hardcoded limit of -27Â° and +27Â° -->
 					<UseTemplate Name="ASOBO_GT_Update">
 						<UPDATE_ONCE>True</UPDATE_ONCE>
 						<UPDATE_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #CLAMP_VALUE# (&gt;A:AIRSPEED TRUE CALIBRATE, degrees)</UPDATE_CODE>
@@ -876,7 +876,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 		</Component>
 		<Component ID="#COMPASS_KNOB_NODE_ID#" Node="#COMPASS_KNOB_NODE_ID#">
 			<DefaultTemplateParameters>
-				<INCREMENT>1</INCREMENT> <!-- 1° increment -->
+				<INCREMENT>1</INCREMENT> <!-- 1Â° increment -->
 			</DefaultTemplateParameters>
 			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 				<Condition Check="DONT_FAIL_HEADING_INDICATOR_ANIMATION">
@@ -889,8 +889,8 @@ NO_CAGE: Remove the cage interaction & behaviour
 				<ANIMREF_ID>-1</ANIMREF_ID>
 				<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
 				<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
-				<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.DIRECTIONAL_GYRO_TUNING_L %((A:PLANE HEADING DEGREES GYRO, degrees))%!d!°)</ANIMTIP_0>
-				<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.DIRECTIONAL_GYRO_TUNING_R %((A:PLANE HEADING DEGREES GYRO, degrees))%!d!°)</ANIMTIP_1>
+				<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.DIRECTIONAL_GYRO_TUNING_L %((A:PLANE HEADING DEGREES GYRO, degrees))%!d!Â°)</ANIMTIP_0>
+				<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.DIRECTIONAL_GYRO_TUNING_R %((A:PLANE HEADING DEGREES GYRO, degrees))%!d!Â°)</ANIMTIP_1>
 				<CLOCKWISE_CODE_DEFAULT_IM>(&gt;K:GYRO_DRIFT_DEC)</CLOCKWISE_CODE_DEFAULT_IM>
 				<ANTICLOCKWISE_CODE_DEFAULT_IM>(&gt;K:GYRO_DRIFT_INC)</ANTICLOCKWISE_CODE_DEFAULT_IM>
 				<CLOCKWISE_CODE_DRAG_IM>-#INCREMENT# (&gt;K:GYRO_DRIFT_SET)</CLOCKWISE_CODE_DRAG_IM>
@@ -1396,7 +1396,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 					<ANIM_NAME>#KNOB_ANIM_NAME#</ANIM_NAME>
 					<HELPID>HELPID_GAUGE_VOR1_OBS </HELPID>
-					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.COURSE_SELECT (%((A:ADF CARD, Degrees))%!d!°) </TOOLTIPID> 
+					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.COURSE_SELECT (%((A:ADF CARD, Degrees))%!d!Â°) </TOOLTIPID> 
 					<CLOCKWISE_CODE>(&gt;K:ADF_CARD_INC)</CLOCKWISE_CODE>
 					<ANTICLOCKWISE_CODE>(&gt;K:ADF_CARD_DEC)</ANTICLOCKWISE_CODE>
 					<Condition Check="HIGHLIGHT_NODE_ID">
@@ -1769,6 +1769,49 @@ NO_CAGE: Remove the cage interaction & behaviour
 			<UseTemplate Name="ASOBO_GT_Highlight_Template">
 			</UseTemplate>
 		</Condition>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_INSTRUMENT_RCA2610_SubTemplate">
+	<DefaultTemplateParameters>
+		<NODE_ID_SCREEN>INSTRUMENT_Sreen_RCA2610#SUFFIX_ID#</NODE_ID_SCREEN>
+		<NODE_ID_DIM_LESS>INSTRUMENT_Push_RCA2610_DIM_Less#SUFFIX_ID#</NODE_ID_DIM_LESS>
+		<ANIM_NAME_DIM_LESS>INSTRUMENT_Push_RCA2610_DIM_Less#SUFFIX_ID#</ANIM_NAME_DIM_LESS>
+		<NODE_ID_DIM_MORE>INSTRUMENT_Push_RCA2610_DIM_More#SUFFIX_ID#</NODE_ID_DIM_MORE>
+		<ANIM_NAME_DIM_MORE>INSTRUMENT_Push_RCA2610_DIM_More#SUFFIX_ID#</ANIM_NAME_DIM_MORE>
+		<NODE_ID_PITCH_SYNC>INSTRUMENT_Push_RCA2610_Pitch_Sync#SUFFIX_ID#</NODE_ID_PITCH_SYNC>
+		<PART_ID>INSTRUMENT_Push_RCA2610</PART_ID>
+	</DefaultTemplateParameters>
+
+	<Component ID="INSTRUMENT_RCA2610#SUFFIX_ID#">
+		<Component ID="#NODE_ID_SCREEN#" Node="#NODE_ID_SCREEN#">
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(L:XMLVAR_RCA2610_Screen_Brightness)</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+
+    <Component ID="#NODE_ID_DIM_LESS#" Node="#NODE_ID_DIM_LESS#">
+      <UseTemplate Name="ASOBO_GT_Push_Button">
+        <ANIM_NAME>#ANIM_NAME_DIM_LESS#</ANIM_NAME>
+        <LEFT_SINGLE_CODE>(L:XMLVAR_RCA2610_Screen_Brightness) 0.03 - 0 max (&gt;L:XMLVAR_RCA2610_Screen_Brightness)</LEFT_SINGLE_CODE>
+        <TOOLTIPID>TT:COCKPIT.TOOLTIPS.DISPLAY_BRIGHTNESS_DEC</TOOLTIPID>
+      </UseTemplate>
+    </Component>
+
+    <Component ID="#NODE_ID_DIM_MORE#" Node="#NODE_ID_DIM_MORE#">
+      <UseTemplate Name="ASOBO_GT_Push_Button">
+        <ANIM_NAME>#ANIM_NAME_DIM_MORE#</ANIM_NAME>
+        <LEFT_SINGLE_CODE>(L:XMLVAR_RCA2610_Screen_Brightness) 0.03 + 1 min (&gt;L:XMLVAR_RCA2610_Screen_Brightness)</LEFT_SINGLE_CODE>
+        <TOOLTIPID>TT:COCKPIT.TOOLTIPS.DISPLAY_BRIGHTNESS_INC</TOOLTIPID>
+      </UseTemplate>
+    </Component>
+
+    <Component ID="#NODE_ID_PITCH_SYNC#" Node="#NODE_ID_PITCH_SYNC#">
+      <UseTemplate Name = "ASOBO_GT_Interaction_LeftSingle_Code">
+        <LEFT_SINGLE_CODE>(&gt;H:RCA2610_Pitch_Sync_Event)</LEFT_SINGLE_CODE>
+        <TOOLTIPID>%((L:XMLVAR_RCA2610_Pitch_Sync, Bool))%{if}TT:COCKPIT.TOOLTIPS.ATTITUDE_PITCH_SYNC_OFF%{else}TT:COCKPIT.TOOLTIPS.ATTITUDE_PITCH_SYNC_ON%{end}</TOOLTIPID>
+      </UseTemplate>
+		</Component>
 	</Component>
 </Template>
 </ModelBehaviors>

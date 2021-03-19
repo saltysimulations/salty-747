@@ -85,16 +85,24 @@ class AS3000_MFD_MapElement extends MapInstrumentElement {
             this.lastMapMode = mapMode;
             this.lastWeatherMapMode = weatherMapMode;
         }
+        let mapOrientation = SimVar.GetSimVarValue("L:AS3000_MFD_MapRotationMode", "number");
+        if (this.getRotationMode() != mapOrientation) {
+            this.setRotationMode(mapOrientation);
+        }
     }
 }
 class AS3000_MFD_MainMap extends NavSystemPage {
     constructor() {
-        super("NAVIGATION MAP", "Map", new NavSystemElementGroup([
-            new AS3000_MFD_MapElement(),
-            new MFD_WindData()
-        ]));
+        super("NAVIGATION MAP", "Map", null);
+        this.windData = new MFD_WindData();
+        this.map = new AS3000_MFD_MapElement();
+        this.element = new NavSystemElementGroup([
+            this.map,
+            this.windData
+        ]);
     }
     init() {
+        this.windData.relatedMap = this.map.instrument;
     }
 }
 class AS3000_MFD_NavInfos extends NavSystemElement {

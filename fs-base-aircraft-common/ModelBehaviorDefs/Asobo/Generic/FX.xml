@@ -16,6 +16,7 @@
 	<Template Name = "ASOBO_GT_FX">
 		<DefaultTemplateParameters>
 			<FX_GUID></FX_GUID>
+			<FX_CONTACT_POINT_ID>-1</FX_CONTACT_POINT_ID>
 			<FX_OFFSET_X>0.0</FX_OFFSET_X>
 			<FX_OFFSET_Y>0.0</FX_OFFSET_Y>
 			<FX_OFFSET_Z>0.0</FX_OFFSET_Z>
@@ -25,6 +26,7 @@
 		</DefaultTemplateParameters>
 		<EditableTemplateParameters>
 			<FX_GUID></FX_GUID>
+			<FX_CONTACT_POINT_ID></FX_CONTACT_POINT_ID>
 			<FX_CODE></FX_CODE>
 			<FX_OFFSET_X gizmo-node-relpos-x=""></FX_OFFSET_X>
 			<FX_OFFSET_Y gizmo-node-relpos-y=""></FX_OFFSET_Y>
@@ -48,6 +50,7 @@
 						<B>#FX_ROTATION_OFFSET_B#</B>
 						<H>#FX_ROTATION_OFFSET_H#</H>
 					</Offset>
+					<ContactPoint>#FX_CONTACT_POINT_ID#</ContactPoint>
 					<Code>#FX_CODE#</Code>
 				</FX>
 			</True>
