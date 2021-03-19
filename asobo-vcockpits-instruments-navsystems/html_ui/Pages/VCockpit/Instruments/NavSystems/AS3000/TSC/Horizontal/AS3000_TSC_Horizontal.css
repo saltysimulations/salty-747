@@ -103,7 +103,7 @@ as3000-tsc-horizontal-element {
       left: 0%;
       bottom: 0%;
       background-color: black; }
-      as3000-tsc-horizontal-element #Electricity #PagesDisplay #PFDHome, as3000-tsc-horizontal-element #Electricity #PagesDisplay #SpeedBugs, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Timers, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Minimums, as3000-tsc-horizontal-element #Electricity #PagesDisplay #PFDSettings, as3000-tsc-horizontal-element #Electricity #PagesDisplay #MFDHome, as3000-tsc-horizontal-element #Electricity #PagesDisplay #WeatherSelection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #DirectTo, as3000-tsc-horizontal-element #Electricity #PagesDisplay #ActiveFlightPlan, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NavComHome, as3000-tsc-horizontal-element #Electricity #PagesDisplay #WaypointsInfo, as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Nearest, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestAirport, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestIntersection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestVOR, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestNDB, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Procedures, as3000-tsc-horizontal-element #Electricity #PagesDisplay #DepartureSelection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #ArrivalSelection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #ApproachSelection {
+      as3000-tsc-horizontal-element #Electricity #PagesDisplay #PFDHome, as3000-tsc-horizontal-element #Electricity #PagesDisplay #SpeedBugs, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Timers, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Minimums, as3000-tsc-horizontal-element #Electricity #PagesDisplay #PFDSettings, as3000-tsc-horizontal-element #Electricity #PagesDisplay #MFDHome, as3000-tsc-horizontal-element #Electricity #PagesDisplay #MapSettings, as3000-tsc-horizontal-element #Electricity #PagesDisplay #WeatherSelection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #DirectTo, as3000-tsc-horizontal-element #Electricity #PagesDisplay #ActiveFlightPlan, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NavComHome, as3000-tsc-horizontal-element #Electricity #PagesDisplay #WaypointsInfo, as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Nearest, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestAirport, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestIntersection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestVOR, as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestNDB, as3000-tsc-horizontal-element #Electricity #PagesDisplay #Procedures, as3000-tsc-horizontal-element #Electricity #PagesDisplay #DepartureSelection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #ArrivalSelection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #ApproachSelection, as3000-tsc-horizontal-element #Electricity #PagesDisplay #AircraftSystems, as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs {
         display: none; }
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=NavComHome] #NavComHome,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=PFDHome] #PFDHome,
@@ -114,6 +114,7 @@ as3000-tsc-horizontal-element {
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=DirectTo] #DirectTo,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=ActiveFlightPlan] #ActiveFlightPlan,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=MFDHome] #MFDHome,
+      as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=MapSettings] #MapSettings,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=WeatherSelection] #WeatherSelection,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=WaypointsInfo] #WaypointsInfo,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=AirportInfo] #AirportInfo,
@@ -125,7 +126,9 @@ as3000-tsc-horizontal-element {
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=Procedures] #Procedures,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=DepartureSelection] #DepartureSelection,
       as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=ArrivalSelection] #ArrivalSelection,
-      as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=ApproachSelection] #ApproachSelection {
+      as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=ApproachSelection] #ApproachSelection,
+      as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=LightingConfigs] #LightingConfigs,
+      as3000-tsc-horizontal-element #Electricity #PagesDisplay[state=AircraftSystems] #AircraftSystems {
         display: block; }
       as3000-tsc-horizontal-element #Electricity #PagesDisplay #PFDHome {
         position: absolute;
@@ -139,6 +142,12 @@ as3000-tsc-horizontal-element {
           display: none; }
         as3000-tsc-horizontal-element #Electricity #PagesDisplay #MFDHome .gradientButton[state="Active"] .active, as3000-tsc-horizontal-element #Electricity #PagesDisplay #WeatherSelection .gradientButton[state="Active"] .active {
           display: inline-block; }
+      as3000-tsc-horizontal-element #Electricity #PagesDisplay #MapSettings #MapOrientationButton {
+        position: absolute;
+        top: 5vh;
+        left: 5vh;
+        height: 30vh;
+        width: 30vh; }
       as3000-tsc-horizontal-element #Electricity #PagesDisplay #SpeedBugs #SB_buttons {
         position: absolute;
         height: 85vh;
@@ -480,7 +489,7 @@ as3000-tsc-horizontal-element {
             position: relative;
             padding-right: 1.75%; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #ActiveFlightPlan #flightPlan #AFPL_WayPointsTable tbody::-webkit-scrollbar {
-              width: 0.5vw; }
+              width: 1.25vw; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #ActiveFlightPlan #flightPlan #AFPL_WayPointsTable tbody::-webkit-scrollbar-track {
               background: none; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #ActiveFlightPlan #flightPlan #AFPL_WayPointsTable tbody::-webkit-scrollbar-thumb {
@@ -1095,7 +1104,7 @@ as3000-tsc-horizontal-element {
             overflow-x: hidden;
             position: relative; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo .mainPart .CenterDisplay .Freqs::-webkit-scrollbar {
-              width: 0.5vw; }
+              width: 1.25vw; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo .mainPart .CenterDisplay .Freqs::-webkit-scrollbar-track {
               background: none; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo .mainPart .CenterDisplay .Freqs::-webkit-scrollbar-thumb {
@@ -1130,7 +1139,7 @@ as3000-tsc-horizontal-element {
             overflow-x: hidden;
             position: relative; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo .mainPart .CenterDisplay .Runways::-webkit-scrollbar {
-              width: 0.5vw; }
+              width: 1.25vw; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo .mainPart .CenterDisplay .Runways::-webkit-scrollbar-track {
               background: none; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay #AirportInfo .mainPart .CenterDisplay .Runways::-webkit-scrollbar-thumb {
@@ -1239,7 +1248,7 @@ as3000-tsc-horizontal-element {
             position: relative;
             padding-right: 1.75%; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay .NrstContainer .NearestList tbody::-webkit-scrollbar {
-              width: 0.5vw; }
+              width: 1.25vw; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay .NrstContainer .NearestList tbody::-webkit-scrollbar-track {
               background: none; }
             as3000-tsc-horizontal-element #Electricity #PagesDisplay .NrstContainer .NearestList tbody::-webkit-scrollbar-thumb {
@@ -1339,6 +1348,63 @@ as3000-tsc-horizontal-element {
           width: 20vw; }
         as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestNDB .NearestList thead tr th:nth-child(4), as3000-tsc-horizontal-element #Electricity #PagesDisplay #NearestNDB .NearestList tbody tr:first-child td:nth-child(4) {
           width: 20vw; }
+      as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master {
+        position: absolute;
+        top: 10%;
+        left: calc((100% - 80vh) / 2);
+        width: 80vh;
+        height: 30vh;
+        border: 0.4vh solid white; }
+        as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master .title {
+          position: absolute;
+          top: 2vh;
+          width: 100%;
+          font-size: 4vh;
+          color: white;
+          text-align: center; }
+        as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master #LightingMasterValue {
+          position: absolute;
+          top: 7vh;
+          width: 100%;
+          font-size: 3.5vh;
+          color: aqua;
+          text-align: center; }
+        as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master #MasterBacklightBgSVG {
+          position: absolute;
+          top: 13vh;
+          left: 20vh;
+          height: 12vh;
+          width: 40vh; }
+        as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master #MasterBacklightCursorSVG {
+          position: absolute;
+          top: 13vh;
+          left: 20vh;
+          height: 12vh;
+          width: 4vh; }
+        as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master #LightingMasterLess {
+          position: absolute;
+          top: 13vh;
+          left: 4vh;
+          width: 12vh;
+          height: 12vh; }
+          as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master #LightingMasterLess .image {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%; }
+        as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master #LightingMasterMore {
+          position: absolute;
+          top: 13vh;
+          right: 4vh;
+          width: 12vh;
+          height: 12vh; }
+          as3000-tsc-horizontal-element #Electricity #PagesDisplay #LightingConfigs .master #LightingMasterMore .image {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%; }
       as3000-tsc-horizontal-element #Electricity #PagesDisplay #NavComHome {
         position: absolute;
         width: 100%;
@@ -1559,7 +1625,7 @@ as3000-tsc-horizontal-element {
         height: 66vh;
         width: 100%; }
         as3000-tsc-horizontal-element #Electricity #AudioRadiosWindow #tabView table tbody::-webkit-scrollbar {
-          width: 0.5vw; }
+          width: 1.25vw; }
         as3000-tsc-horizontal-element #Electricity #AudioRadiosWindow #tabView table tbody::-webkit-scrollbar-track {
           background: black; }
         as3000-tsc-horizontal-element #Electricity #AudioRadiosWindow #tabView table tbody::-webkit-scrollbar-thumb {
@@ -1862,7 +1928,7 @@ as3000-tsc-horizontal-element {
       border-right: 0.4vh solid white;
       border-collapse: collapse; }
       as3000-tsc-horizontal-element #Electricity #insertBeforeWaypointWindow .Container::-webkit-scrollbar {
-        width: 0.5vw; }
+        width: 1.25vw; }
       as3000-tsc-horizontal-element #Electricity #insertBeforeWaypointWindow .Container::-webkit-scrollbar-track {
         background: none; }
       as3000-tsc-horizontal-element #Electricity #insertBeforeWaypointWindow .Container::-webkit-scrollbar-thumb {
@@ -1902,6 +1968,25 @@ as3000-tsc-horizontal-element {
             top: 0%; }
       as3000-tsc-horizontal-element #Electricity #insertBeforeWaypointWindow .Container .EndButtonLine {
         height: 17vh; }
+    as3000-tsc-horizontal-element #Electricity #MapOrientationPopup .WindowTitle {
+      background-color: black; }
+    as3000-tsc-horizontal-element #Electricity #MapOrientationPopup .Container {
+      position: absolute;
+      width: 50%;
+      left: 25%;
+      top: 15%;
+      background-color: black;
+      padding: 2%;
+      border: 0.4vh solid white; }
+      as3000-tsc-horizontal-element #Electricity #MapOrientationPopup .Container .gradientButton {
+        width: 100%; }
+        as3000-tsc-horizontal-element #Electricity #MapOrientationPopup .Container .gradientButton .mainValue {
+          color: white;
+          font-size: 5vh;
+          position: absolute;
+          top: 20%;
+          text-align: center;
+          width: 100%; }
     as3000-tsc-horizontal-element #Electricity #minimumSource .WindowTitle {
       background-color: black; }
     as3000-tsc-horizontal-element #Electricity #minimumSource .Container {
@@ -2073,7 +2158,7 @@ as3000-tsc-horizontal-element {
           position: relative;
           padding-right: 1.75%; }
           as3000-tsc-horizontal-element #Electricity #WaypointDuplicateWindow table tbody::-webkit-scrollbar {
-            width: 0.5vw; }
+            width: 1.25vw; }
           as3000-tsc-horizontal-element #Electricity #WaypointDuplicateWindow table tbody::-webkit-scrollbar-track {
             background: none; }
           as3000-tsc-horizontal-element #Electricity #WaypointDuplicateWindow table tbody::-webkit-scrollbar-thumb {
@@ -2160,7 +2245,7 @@ as3000-tsc-horizontal-element {
       overflow-y: scroll;
       overflow-x: hidden; }
       as3000-tsc-horizontal-element #Electricity #SelectionList .content::-webkit-scrollbar {
-        width: 0.5vw; }
+        width: 1.25vw; }
       as3000-tsc-horizontal-element #Electricity #SelectionList .content::-webkit-scrollbar-track {
         background: none; }
       as3000-tsc-horizontal-element #Electricity #SelectionList .content::-webkit-scrollbar-thumb {

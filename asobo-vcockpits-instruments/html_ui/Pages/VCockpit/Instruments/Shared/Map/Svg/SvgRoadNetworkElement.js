@@ -148,6 +148,7 @@ class RoadCanvas {
 class SvgRoadNetworkElement extends SvgMapElement {
     constructor() {
         super();
+        this.overdrawFactor = 1;
         this._hasNewRoads = false;
         this._iterator = Infinity;
         this._lastCoords = new LatLong();
@@ -235,12 +236,12 @@ class SvgRoadNetworkElement extends SvgMapElement {
             else
                 this._visibleCanvas.canvas.style.display = "none";
         }
-        this.parentWidth = map.htmlRoot.getWidth();
-        this.parentHeight = map.htmlRoot.getHeight();
+        this.parentWidth = map.htmlRoot.getWidth() / this.overdrawFactor;
+        this.parentHeight = map.htmlRoot.getHeight() / this.overdrawFactor;
         if (this.parentWidth * this.parentHeight < 1) {
             return;
         }
-        this.displayedSize = Math.max(this.parentWidth, this.parentHeight);
+        this.displayedSize = Math.max(this.parentWidth, this.parentHeight) * this.overdrawFactor;
         this.canvasSize = Math.min(SvgRoadNetworkElement.ROADS_CANVAS_OVERFLOW_FACTOR * this.displayedSize, SvgRoadNetworkElement.MAX_SIZE_ROADS_CANVAS);
         this.canvasOffset = (this.canvasSize - this.displayedSize) * 0.5;
         let thresholdLat = 0.25 * map.angularHeight;
@@ -306,7 +307,7 @@ class SvgRoadNetworkElement extends SvgMapElement {
             this._deprecatePointsIterator = 0;
             this._forcedCoords.lat = map.centerCoordinates.lat;
             this._forcedCoords.long = map.centerCoordinates.long;
-            this._forcedDirection = map.planeDirection;
+            this._forcedDirection = map.mapUpDirection;
             this._lastCoords.lat = map.centerCoordinates.lat;
             this._lastCoords.long = map.centerCoordinates.long;
             return;
@@ -318,7 +319,7 @@ class SvgRoadNetworkElement extends SvgMapElement {
                 visibleContext.drawImage(this._invisibleCanvases[this._activeInvisibleCanvasIndex].canvas, 0, 0, this.canvasSize, this.canvasSize);
                 this._lastCoords.lat = this._forcedCoords.lat;
                 this._lastCoords.long = this._forcedCoords.long;
-                this._forcedDirection = map.planeDirection;
+                this._forcedDirection = map.mapUpDirection;
                 this.onLatLongChanged(map, this._lastCoords);
             }
             if (this._hasNewRoads || diffLastLat > thresholdLat || diffLastLong > thresholdLong || Math.abs(this._forcedDirection - map.planeDirection) > 2) {
@@ -366,21 +367,21 @@ class SvgRoadNetworkElement extends SvgMapElement {
                         invisibleContext.stroke();
                         invisibleContext.strokeStyle = "gray";
                         invisibleContext.beginPath();
-                        invisibleContext.lineWidth = map.config.roadMotorWayWidth;
+                        invisibleContext.lineWidth = map.config.roadMotorWayWidth / map.overdrawFactor;
                         lastLinkType = link.type;
                     }
                     else if (link.type === 2) {
                         invisibleContext.stroke();
                         invisibleContext.strokeStyle = "gray";
                         invisibleContext.beginPath();
-                        invisibleContext.lineWidth = map.config.roadTrunkWidth;
+                        invisibleContext.lineWidth = map.config.roadTrunkWidth / map.overdrawFactor;
                         lastLinkType = link.type;
                     }
                     else if (link.type === 4) {
                         invisibleContext.stroke();
                         invisibleContext.strokeStyle = "gray";
                         invisibleContext.beginPath();
-                        invisibleContext.lineWidth = map.config.roadPrimaryWidth;
+                        invisibleContext.lineWidth = map.config.roadPrimaryWidth / map.overdrawFactor;
                         lastLinkType = link.type;
                     }
                     else if (link.type >= 100) {
@@ -477,6 +478,9 @@ class SvgRoadNetworkElement extends SvgMapElement {
         invisibleContext.stroke();
         this.onLatLongChanged(map, this._lastCoords);
     }
+    refreshRotation(map) {
+        this.onLatLongChanged(map, this._lastCoords);
+    }
     onLatLongChanged(_map, _coords) {
         let p = _map.coordinatesToXY(_coords);
         p.x -= this.svgMapSize * 0.5;
@@ -492,8 +496,8 @@ class SvgRoadNetworkElement extends SvgMapElement {
             left = Math.round((this.parentWidth - this.canvasSize) * 0.5 + p.x);
         }
         let deltaRotation = 0;
-        if (_map.rotateWithPlane) {
-            deltaRotation = this._forcedDirection - _map.planeDirection;
+        if (_map.rotationMode != EMapRotationMode.NorthUp && _map.rotationMode != EMapRotationMode.KeepCurrent) {
+            deltaRotation = this._forcedDirection - _map.mapUpDirection;
         }
         this.translateCanvas(this._visibleCanvas.canvas, left, top, deltaRotation);
     }

@@ -251,14 +251,18 @@
 				</Condition>
 			</Case>
 			<Case Value="MERGED"><!-- Each rudder pedal node is shared for pilot & copilot (L & R) -->
-				<UseTemplate Name="ASOBO_GT_Highlight_Template">
-					<HIGHLIGHT_NODE_ID>#NODE_ID_L_BRAKE#</HIGHLIGHT_NODE_ID>
-					<PART_ID>#PART_ID_BRAKES#</PART_ID>
-				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Highlight_Template">
-					<HIGHLIGHT_NODE_ID>#NODE_ID_R_BRAKE#</HIGHLIGHT_NODE_ID>
-					<PART_ID>#PART_ID_BRAKES#</PART_ID>
-				</UseTemplate>
+				<Condition Valid="NO_BRAKES">
+					<False>
+						<UseTemplate Name="ASOBO_GT_Highlight_Template">
+							<HIGHLIGHT_NODE_ID>#NODE_ID_L_BRAKE#</HIGHLIGHT_NODE_ID>
+							<PART_ID>#PART_ID_BRAKES#</PART_ID>
+						</UseTemplate>
+						<UseTemplate Name="ASOBO_GT_Highlight_Template">
+							<HIGHLIGHT_NODE_ID>#NODE_ID_R_BRAKE#</HIGHLIGHT_NODE_ID>
+							<PART_ID>#PART_ID_BRAKES#</PART_ID>
+						</UseTemplate>
+					</False>
+				</Condition>
 				<UseTemplate Name="ASOBO_GT_Highlight_Template">
 					<HIGHLIGHT_NODE_ID>#NODE_ID_L_RUDDER#</HIGHLIGHT_NODE_ID>
 					<PART_ID>#PART_ID_RUDDERS#</PART_ID>

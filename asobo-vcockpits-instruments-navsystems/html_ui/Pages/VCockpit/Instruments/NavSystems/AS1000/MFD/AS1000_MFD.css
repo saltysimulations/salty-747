@@ -126,8 +126,29 @@ as1000-mfd-element {
         width: 100%;
         height: 7.5%; }
         as1000-mfd-element #Mainframe #Electricity #NavBox #Left {
+          position: relative;
           width: 28%;
           height: 100%; }
+          as1000-mfd-element #Mainframe #Electricity #NavBox #Left #NavVolumePopup {
+            position: absolute;
+            width: 55%;
+            height: 55%;
+            background-color: #1a1d21;
+            font-size: calc( 2.6 * 1vh * var(--bodyHeightScale)); }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Left #NavVolumePopup[state=Inactive] {
+              display: none; }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Left #NavVolumePopup[state=Bottom] {
+              bottom: 0%; }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Left #NavVolumePopup #NavVolumeLabel {
+              position: absolute;
+              height: 100%;
+              text-align: left; }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Left #NavVolumePopup #NavVolumeValue {
+              position: absolute;
+              height: 100%;
+              right: 20%;
+              text-align: right;
+              color: aqua; }
           as1000-mfd-element #Mainframe #Electricity #NavBox #Left .ident {
             width: 15%; }
           as1000-mfd-element #Mainframe #Electricity #NavBox #Left #Nav1 {
@@ -164,8 +185,31 @@ as1000-mfd-element {
             text-align: center;
             font-size: calc( 2.5 * 1vh * var(--bodyHeightScale)); }
         as1000-mfd-element #Mainframe #Electricity #NavBox #Right {
+          position: relative;
           width: 25%;
           height: 100%; }
+          as1000-mfd-element #Mainframe #Electricity #NavBox #Right #ComVolumePopup {
+            position: absolute;
+            width: 55%;
+            height: 55%;
+            background-color: #1a1d21;
+            font-size: calc( 2.6 * 1vh * var(--bodyHeightScale));
+            right: 0%; }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Right #ComVolumePopup[state=Inactive] {
+              display: none; }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Right #ComVolumePopup[state=Bottom] {
+              bottom: 0%; }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Right #ComVolumePopup #ComVolumeLabel {
+              position: absolute;
+              height: 100%;
+              text-align: right;
+              right: 0%; }
+            as1000-mfd-element #Mainframe #Electricity #NavBox #Right #ComVolumePopup #ComVolumeValue {
+              position: absolute;
+              height: 100%;
+              left: 10%;
+              text-align: right;
+              color: aqua; }
           as1000-mfd-element #Mainframe #Electricity #NavBox #Right #Com1 {
             width: 100%;
             height: 50%;
@@ -283,6 +327,13 @@ as1000-mfd-element {
                 top: 0%;
                 width: 7%;
                 right: 10%; }
+              as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MainDisplayArea #RightInfos #Map #FuelRange {
+                position: absolute;
+                left: 0%;
+                top: 0%;
+                width: 100%; }
+                as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MainDisplayArea #RightInfos #Map #FuelRange[State=Inactive] {
+                  display: none; }
               as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MainDisplayArea #RightInfos #Map #MapRange {
                 position: absolute;
                 bottom: 0%;
@@ -306,10 +357,10 @@ as1000-mfd-element {
               as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MainDisplayArea #RightInfos #Map bing-map {
                 transform: rotateX(0);
                 position: absolute;
-                left: 0px;
-                top: 0px;
-                width: 100%;
-                height: 100%; }
+                left: -10%;
+                top: -10%;
+                right: -10%;
+                bottom: -10%; }
             as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MainDisplayArea #RightInfos #AirportInfos #Infos1, as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MainDisplayArea #RightInfos #AirportInfos #Infos2 {
               position: absolute;
               width: 100%;
@@ -943,6 +994,77 @@ as1000-mfd-element {
                 position: absolute;
                 bottom: 1vh;
                 left: 15vw; }
+        as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup {
+          transform: rotateX(0);
+          position: absolute;
+          background-color: #1a1d21;
+          right: 0%;
+          top: 0%;
+          width: 35%;
+          border: 0.5vh outset black;
+          font-size: calc( 2.7 * 1vh * var(--bodyHeightScale));
+          text-align: left; }
+          as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .Selectable[state="Selected"] {
+            background-color: #36c8d2;
+            color: #1a1d21; }
+          as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content {
+            width: 100%;
+            height: 100%; }
+            as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .title {
+              color: white;
+              text-align: center;
+              margin: calc( 1 * 1vh * var(--bodyHeightScale)); }
+            as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .topPart {
+              background-color: black;
+              width: 90%;
+              margin-left: 5.5%; }
+              as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .topPart .subTitle {
+                color: white;
+                background-color: #1a1d21;
+                font-size: calc( 2.3 * 1vh * var(--bodyHeightScale));
+                padding-left: 3vw; }
+              as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .topPart .elements {
+                color: #36c8d2;
+                width: 100%; }
+            as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .optionTitles {
+              width: 45%;
+              margin-left: 2vh;
+              margin-top: 4vh;
+              margin-bottom: 4vh;
+              font-size: 2.5vh; }
+            as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .optionValues {
+              position: absolute;
+              right: 2vh;
+              left: 50%;
+              top: 16vh;
+              background-color: black;
+              color: #36c8d2;
+              padding-left: 2vh; }
+              as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .optionValues .optionValue {
+                position: relative; }
+              as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .optionValues #MapSetup_FuelRngOnOff {
+                width: 40%; }
+              as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .content .optionValues #MapSetup_FuelRngReserve {
+                position: absolute;
+                top: 0%;
+                right: 2vh; }
+          as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .popupMenu {
+            position: absolute;
+            left: 55%;
+            background-color: #1a1d21;
+            border: 0.5vh outset black;
+            padding: 2vh;
+            color: #36c8d2; }
+            as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .popupMenu[state=Inactive] {
+              display: none; }
+          as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup #MapSetup_OrientationMenu {
+            top: 19vh; }
+          as1000-mfd-element #Mainframe #Electricity #CenterDisplay #MapSetup .subText {
+            width: 90%;
+            margin-left: 5.5%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+            text-align: center; }
         as1000-mfd-element #Mainframe #Electricity #CenterDisplay #PageSelection {
           position: absolute;
           bottom: 0%;
@@ -1635,16 +1757,19 @@ as1000-mfd-element {
             background-color: black;
             width: 90%;
             margin-left: 5.5%; }
-            as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #subTitle {
+            as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #SubTitle {
               color: white;
               background-color: #1a1d21;
               font-size: calc( 2.3 * 1vh * var(--bodyHeightScale));
               padding-left: 3vw; }
-            as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements {
-              color: #36c8d2;
-              width: 100%; }
-              as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements .ContextualMenuElement[state=Inactive] {
-                color: dimgray; }
+            as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List {
+              display: flex; }
+              as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements {
+                flex: 1;
+                color: #36c8d2;
+                width: 100%; }
+                as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements .ContextualMenuElement[state=Inactive] {
+                  color: dimgray; }
 
 @keyframes BlinkMenu {
   0%, 45% {
@@ -1653,8 +1778,18 @@ as1000-mfd-element {
   55%, 100% {
     background-color: black;
     color: #36c8d2; } }
-              as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements .ContextualMenuElement[state=Selected] {
-                animation: BlinkMenu 1s infinite; }
+                as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements .ContextualMenuElement[state=Selected] {
+                  animation: BlinkMenu 1s infinite; }
+              as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu {
+                flex: 0.03;
+                border: 2px solid white; }
+                as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu #SliderMenuCursor {
+                  background-color: white;
+                  position: relative; }
+                as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu[state=Active] {
+                  visibility: inherit; }
+                as1000-mfd-element #Mainframe #Electricity #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu[state=Inactive] {
+                  visibility: hidden; }
         as1000-mfd-element #Mainframe #Electricity #ContextualMenu #SubText {
           width: 90%;
           margin-left: 5.5%;

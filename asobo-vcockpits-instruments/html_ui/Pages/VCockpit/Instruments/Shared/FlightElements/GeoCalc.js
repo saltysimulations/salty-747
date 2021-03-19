@@ -15,6 +15,7 @@ class GeoCalcInfo {
                     if (this.useMagVar) {
                         this.bearing -= SimVar.GetSimVarValue("MAGVAR", "degree", instrId);
                     }
+                    this.bearing = (this.bearing + 360) % 360;
                     this.distance = SimVar.GetSimVarValue("C:fs9gps:GeoCalcDistance", "nautical miles", instrId);
                     this.loadState++;
                 }.bind(this));

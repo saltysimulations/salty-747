@@ -12,6 +12,7 @@
 		<JOYSTICK_LEFT_SINGLE_CODE/>
 		<JOYSTICK_RELEASE_CODE/>
 		<UPDATE_FREQUENCY>5</UPDATE_FREQUENCY>
+		<DOWN_TIME_BEFORE_REPEAT>0.5</DOWN_TIME_BEFORE_REPEAT>
 		<CENTER_RADIUS>0.0025</CENTER_RADIUS>
 		<JOYSTICK_X_CODE_LEFT></JOYSTICK_X_CODE_LEFT>
 		<JOYSTICK_X_CODE_RIGHT></JOYSTICK_X_CODE_RIGHT>
@@ -30,11 +31,11 @@
 	<Update frequency="#UPDATE_FREQUENCY#" InteractionModel="Default">
 			(I:#VAR_NAME#) if{
 			(I:#JOYSTICK_ID#Interacting_With_X_Axis) if{
-				(I:#JOYSTICK_ID#Can_Pan_On_X_Axis) if{
+				(I:#JOYSTICK_ID#Can_Pan_On_X_Axis) (I:#JOYSTICK_ID#Interacting_RepeatTime) (E:SIMULATION TIME, seconds) &lt; and if{
 					(I:#JOYSTICK_ID#Panning_X_Axis_Delta) 0 &lt; if{ #JOYSTICK_X_CODE_LEFT# } els{ #JOYSTICK_X_CODE_RIGHT# }
 					}
 				} els{
-				(I:#JOYSTICK_ID#Can_Pan_On_Y_Axis) if{
+				(I:#JOYSTICK_ID#Can_Pan_On_Y_Axis) (I:#JOYSTICK_ID#Interacting_RepeatTime) (E:SIMULATION TIME, seconds) &lt; and if{
 					(I:#JOYSTICK_ID#Panning_Y_Axis_Delta) 0 &lt; if{ #JOYSTICK_Y_CODE_DOWN# } els{ #JOYSTICK_Y_CODE_UP# }
 					}
 				}
@@ -44,6 +45,8 @@
 		<CALLBACKCODE_DEFAULT_IM>
 			(M:Event) 'LeftSingle'  scmi 0 == if{
 				1 (&gt;I:#VAR_NAME#)
+				(E:SIMULATION TIME, seconds) #DOWN_TIME_BEFORE_REPEAT# + (&gt;I:#JOYSTICK_ID#Interacting_RepeatTime)
+				1 sp0
 				#JOYSTICK_LEFT_SINGLE_CODE#
 				g1
 			} els{
@@ -62,7 +65,19 @@
 			(M:RelativeY) abs #CENTER_RADIUS# &gt; (&gt;I:#JOYSTICK_ID#Can_Pan_On_Y_Axis)
 			-1 1 (M:RelativeX) 0 &lt; ? (&gt;I:#JOYSTICK_ID#Panning_X_Axis_Delta)
 			-1 1 (M:RelativeY) 0 &lt; ? (&gt;I:#JOYSTICK_ID#Panning_Y_Axis_Delta)
-		</CALLBACKCODE>
+			
+			l0 if{
+				(I:#JOYSTICK_ID#Interacting_With_X_Axis) if{
+					(I:#JOYSTICK_ID#Can_Pan_On_X_Axis) if{
+						(I:#JOYSTICK_ID#Panning_X_Axis_Delta) 0 &lt; if{ #JOYSTICK_X_CODE_LEFT# } els{ #JOYSTICK_X_CODE_RIGHT# }
+						}
+					} els{
+					(I:#JOYSTICK_ID#Can_Pan_On_Y_Axis) if{
+						(I:#JOYSTICK_ID#Panning_Y_Axis_Delta) 0 &lt; if{ #JOYSTICK_Y_CODE_DOWN# } els{ #JOYSTICK_Y_CODE_UP# }
+						}
+					}
+			}
+		</CALLBACKCODE_DEFAULT_IM>
 		<Condition Valid="NO_DRAG_IM_INTERACTION">
 			<True>
 				<CALLBACKCODE_DRAG_IM>quit</CALLBACKCODE_DRAG_IM>
@@ -168,7 +183,7 @@
 	<Condition Valid="NO_ANIMATION">
 		<False>
 	<UseTemplate Name="ASOBO_GT_Anim_Code">
-				<ANIM_CODE>(I:#JOYSTICK_ID#Panning_X_Axis_Delta) (I:#JOYSTICK_ID#Can_Pan_On_X_Axis) * 50 * 50 +</ANIM_CODE>
+		<ANIM_CODE>(I:#JOYSTICK_ID#Panning_X_Axis_Delta) (I:#JOYSTICK_ID#Can_Pan_On_X_Axis) * 50 * 50 +</ANIM_CODE>
 		<ANIM_LENGTH>100</ANIM_LENGTH>
 		<ANIM_NAME>#ANIM_NAME_L_R#</ANIM_NAME>
 	</UseTemplate>

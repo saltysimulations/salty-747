@@ -7,6 +7,8 @@ class Jet_MFD_NDInfo extends HTMLElement {
         this._showILS = false;
         this._showET = false;
         this._dTime = 0;
+        this.forcedNavAid1 = undefined;
+        this.forcedNavAid2 = undefined;
         this._chronoValue = 0;
         this._chronoStarted = false;
         this._aircraft = Aircraft.A320_NEO;
@@ -100,6 +102,12 @@ class Jet_MFD_NDInfo extends HTMLElement {
                     this.approach.style.display = "block";
             }
         }
+    }
+    forceNavAid(_index, _state) {
+        if (_index == 1)
+            this.forcedNavAid1 = _state;
+        else if (_index == 2)
+            this.forcedNavAid2 = _state;
     }
     updateSpeeds() {
         this.setGroundSpeed(Math.round(Simplane.getGroundSpeed()));
@@ -249,8 +257,12 @@ class Jet_MFD_NDInfo extends HTMLElement {
                 case Jet_NDCompass_Navigation.NAV:
                     {
                         let ilsText = null;
-                        if (this._showILS)
-                            ilsText = this.getILSIdent();
+                        if (this._showILS) {
+                            let localizer = this.gps.radioNav.getBestILSBeacon();
+                            if (localizer && localizer.id > 0) {
+                                ilsText = localizer.name;
+                            }
+                        }
                         if (ilsText) {
                             this.topTitle.textContent = ilsText;
                             this.topTitle.setAttribute("state", "ils");
@@ -264,12 +276,18 @@ class Jet_MFD_NDInfo extends HTMLElement {
                 case Jet_NDCompass_Navigation.VOR:
                     {
                         this.topTitle.textContent = "VOR";
+                        if (Simplane.getAutoPilotAPPRHold()) {
+                            this.topTitle.textContent += " APP";
+                        }
                         this.topTitle.removeAttribute("state");
                         break;
                     }
                 case Jet_NDCompass_Navigation.ILS:
                     {
                         this.topTitle.textContent = "ILS";
+                        if (Simplane.getAutoPilotAPPRHold()) {
+                            this.topTitle.textContent += " APP";
+                        }
                         this.topTitle.removeAttribute("state");
                         break;
                     }
@@ -283,10 +301,10 @@ class Jet_MFD_NDInfo extends HTMLElement {
     }
     updateVOR() {
         if (this.VORLeft != null) {
-            this.VORLeft.update(this.gps, this.aircraft);
+            this.VORLeft.update(this.gps, this.aircraft, this.forcedNavAid1);
         }
         if (this.VORRight != null) {
-            this.VORRight.update(this.gps, this.aircraft);
+            this.VORRight.update(this.gps, this.aircraft, this.forcedNavAid2);
         }
     }
     updateApproach() {
@@ -318,7 +336,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
                         let ident = "";
                         if (vor.id > 0) {
                             freq = vor.freq.toFixed(2);
-                            course = Utils.leadingZeros(Math.round(vor.course), 3) + "°";
+                            course = Utils.leadingZeros(Math.round(vor.course % 360), 3) + "°";
                             ident = vor.ident;
                             if (this.aircraft == Aircraft.CJ4) {
                                 let hasLocalizer = SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + vor.id, "Bool");
@@ -363,7 +381,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
                         let ident = "";
                         if (ils.id > 0) {
                             freq = ils.freq.toFixed(2);
-                            course = Utils.leadingZeros(Math.round(ils.course), 3) + "°";
+                            course = Utils.leadingZeros(Math.round(ils.course % 360), 3) + "°";
                             ident = ils.name;
                         }
                         this.approachType.textContent = type + suffix;
@@ -416,13 +434,6 @@ class Jet_MFD_NDInfo extends HTMLElement {
             }
         }
     }
-    getILSIdent() {
-        let localizer = this.gps.radioNav.getBestILSBeacon();
-        if (localizer.id > 0) {
-            return localizer.name;
-        }
-        return null;
-    }
 }
 Jet_MFD_NDInfo.MIN_WIND_STRENGTH_FOR_ARROW_DISPLAY = 2;
 class VORDMENavAid {
@@ -435,32 +446,51 @@ class VORDMENavAid {
             this.modeText = _parent.querySelector("#Mode");
             this.distanceText = _parent.querySelector("#Distance");
             this.unitText = _parent.querySelector("#Unit");
-            this.arrowShape = _parent.querySelector("#Arrow");
+            this.arrowVOR = _parent.querySelector("#ArrowVor");
+            this.arrowADF = _parent.querySelector("#ArrowAdf");
         }
         this.setState(NAV_AID_STATE.OFF, true);
-        this.setIDValue(0, true);
+        this.setIDValue("---", true);
         this.setMode(NAV_AID_MODE.NONE, true);
-        this.setDistanceValue(0, true);
+        this.setDistanceValue(-1, true);
     }
-    update(_gps, _aircraft) {
+    update(_gps, _aircraft, _forcedNavAid) {
         this.gps = _gps;
         this.aircraft = _aircraft;
-        let state = Simplane.getAutoPilotNavAidState(1, this.index);
-        if (_aircraft == Aircraft.B747_8) {
-            state--;
-            if (state < 0)
-                state = 2;
-        }
+        let state = (_forcedNavAid != undefined) ? _forcedNavAid : Simplane.getAutoPilotNavAidState(_aircraft, 1, this.index);
         this.setState(state);
         if (this.currentState != NAV_AID_STATE.OFF) {
+            let idValue = "";
+            let distance = -1;
             if (this.currentState == NAV_AID_STATE.VOR) {
-                this.setIDValue(this.gps.radioNav.getVORActiveFrequency(this.index));
+                let vor = this.gps.radioNav.getVORBeacon(this.index);
+                if (vor.id > 0) {
+                    idValue = vor.ident;
+                }
+                else {
+                    let freq = this.gps.radioNav.getVORActiveFrequency(this.index);
+                    if (freq > 0) {
+                        idValue = freq.toFixed(2);
+                    }
+                }
+                if (idValue != "") {
+                    if (SimVar.GetSimVarValue("NAV HAS DME:" + this.index, "Bool")) {
+                        distance = SimVar.GetSimVarValue("NAV DME:" + this.index, "nautical miles");
+                    }
+                }
+                else {
+                    idValue = "---";
+                }
             }
             else {
-                this.setIDValue(this.gps.radioNav.getADFActiveFrequency(this.index));
+                let freq = this.gps.radioNav.getADFActiveFrequency(this.index);
+                if (freq > 0) {
+                    idValue = freq.toFixed(2);
+                }
             }
+            this.setIDValue(idValue);
             this.setMode(NAV_AID_MODE.MANUAL);
-            this.setDistanceValue(0);
+            this.setDistanceValue(distance);
         }
     }
     setState(_state, _force = false) {
@@ -478,6 +508,8 @@ class VORDMENavAid {
                             type += " L";
                         else
                             type += " R";
+                        this.arrowVOR.setAttribute("visibility", "hidden");
+                        this.arrowADF.setAttribute("visibility", "visible");
                         show = true;
                         break;
                     }
@@ -490,6 +522,8 @@ class VORDMENavAid {
                             type += " L";
                         else
                             type += " R";
+                        this.arrowVOR.setAttribute("visibility", "visible");
+                        this.arrowADF.setAttribute("visibility", "hidden");
                         show = true;
                         break;
                     }
@@ -506,10 +540,7 @@ class VORDMENavAid {
         if ((_value != this.idValue) || _force) {
             this.idValue = _value;
             if (this.idText != null) {
-                if (this.idValue == 0)
-                    this.idText.textContent = "---";
-                else
-                    this.idText.textContent = fastToFixed(this.idValue, 1);
+                this.idText.textContent = this.idValue;
             }
         }
     }
@@ -537,11 +568,11 @@ class VORDMENavAid {
     setDistanceValue(_value, _force = false) {
         if ((_value != this.distanceValue) || _force) {
             this.distanceValue = _value;
-            var showDistance = (this.distanceValue > 0);
+            var showDistance = (this.distanceValue >= 0);
             var displayStr = showDistance ? "block" : "none";
             if (this.distanceText != null) {
                 if (showDistance) {
-                    this.distanceText.textContent = fastToFixed(this.distanceValue, 0);
+                    this.distanceText.textContent = fastToFixed(this.distanceValue, 1);
                 }
                 this.distanceText.style.display = displayStr;
             }

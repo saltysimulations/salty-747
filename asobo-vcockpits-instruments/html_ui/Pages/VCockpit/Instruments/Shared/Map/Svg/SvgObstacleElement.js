@@ -38,8 +38,8 @@ class SvgObstacleElement extends SvgMapElement {
         this._image.setAttribute("height", "100%");
         this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + this.imageFileName());
         container.appendChild(this._image);
-        container.setAttribute("width", fastToFixed(map.config.cityIconSize, 0));
-        container.setAttribute("height", fastToFixed(map.config.cityIconSize, 0));
+        container.setAttribute("width", fastToFixed(map.config.cityIconSize / map.overdrawFactor, 0));
+        container.setAttribute("height", fastToFixed(map.config.cityIconSize / map.overdrawFactor, 0));
         return container;
     }
     updateDraw(map) {
@@ -65,8 +65,8 @@ class SvgObstacleElement extends SvgMapElement {
                 }
             }
             if (Math.abs(this.x - this._lastX) > 0.1 || Math.abs(this.y - this._lastY) > 0.1) {
-                this.svgElement.setAttribute("x", fastToFixed((this.x - map.config.cityIconSize * 0.5), 1));
-                this.svgElement.setAttribute("y", fastToFixed((this.y - map.config.cityIconSize * 0.5), 1));
+                this.svgElement.setAttribute("x", fastToFixed((this.x - map.config.cityIconSize / map.overdrawFactor * 0.5), 1));
+                this.svgElement.setAttribute("y", fastToFixed((this.y - map.config.cityIconSize / map.overdrawFactor * 0.5), 1));
                 this._lastX = this.x;
                 this._lastY = this.y;
             }

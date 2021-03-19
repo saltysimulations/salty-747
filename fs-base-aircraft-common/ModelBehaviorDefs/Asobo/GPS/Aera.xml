@@ -7,11 +7,6 @@
 		<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
 			<EMISSIVE_CODE>0.5</EMISSIVE_CODE>
 		</UseTemplate>
-		<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_Code">
-			<LEFT_SINGLE_CODE>0</LEFT_SINGLE_CODE>
-			<NO_HIGHLIGHT_NODE_ID>True</NO_HIGHLIGHT_NODE_ID>
-			<!-- <MOUSEFLAGS>WheelUp</MOUSEFLAGS> -->
-		</UseTemplate>
 	</Component>
 	
 	<Condition Valid="NO_BUTTONS">
@@ -61,11 +56,6 @@
 				<FAILURE>(A:CIRCUIT ON:#CIRCUIT_ID#, Bool)</FAILURE>
 			</Condition>
 			<EMISSIVE_CODE>0.5</EMISSIVE_CODE>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_Code">
-			<LEFT_SINGLE_CODE>0</LEFT_SINGLE_CODE>
-			<NO_HIGHLIGHT_NODE_ID>True</NO_HIGHLIGHT_NODE_ID>
-			<!--<MOUSEFLAGS>WheelUp</MOUSEFLAGS>-->
 		</UseTemplate>
 	</Component>
 	<Condition Check="USE_ON_OFF_SWITCH">

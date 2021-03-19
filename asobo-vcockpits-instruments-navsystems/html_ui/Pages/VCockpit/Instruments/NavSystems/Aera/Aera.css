@@ -261,7 +261,7 @@ aera-element {
             position: relative;
             padding-right: 1.75%; }
             aera-element #LeftDisplay #MFD #PagesContainer #FPL #flightPlan #AFPL_WayPointsTable tbody::-webkit-scrollbar {
-              width: 0.5vw; }
+              width: 1.25vw; }
             aera-element #LeftDisplay #MFD #PagesContainer #FPL #flightPlan #AFPL_WayPointsTable tbody::-webkit-scrollbar-track {
               background: none; }
             aera-element #LeftDisplay #MFD #PagesContainer #FPL #flightPlan #AFPL_WayPointsTable tbody::-webkit-scrollbar-thumb {
@@ -442,7 +442,7 @@ aera-element {
           position: relative;
           padding-right: 1.75%; }
           aera-element #LeftDisplay #MFD .NrstContainer .NearestList tbody::-webkit-scrollbar {
-            width: 0.5vw; }
+            width: 1.25vw; }
           aera-element #LeftDisplay #MFD .NrstContainer .NearestList tbody::-webkit-scrollbar-track {
             background: none; }
           aera-element #LeftDisplay #MFD .NrstContainer .NearestList tbody::-webkit-scrollbar-thumb {
@@ -780,6 +780,57 @@ aera-element {
         top: 0%;
         left: 30%;
         width: 39%; }
+    aera-element #LeftDisplay #MFD #altitudeKeyboard #TK_Bksp, aera-element #LeftDisplay #MFD #altitudeKeyboard #SK_Bksp, aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Bksp {
+      position: absolute;
+      width: 20%;
+      right: 5%; }
+    aera-element #LeftDisplay #MFD #altitudeKeyboard #TK_TimeDisplay, aera-element #LeftDisplay #MFD #altitudeKeyboard #SK_Display, aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Display {
+      position: absolute;
+      width: 30%;
+      left: 35%;
+      top: 10%;
+      background-color: grey;
+      margin: 0.6vh;
+      padding-top: 0.6vh;
+      text-align: center;
+      font-size: 4.2vh; }
+      aera-element #LeftDisplay #MFD #altitudeKeyboard #TK_TimeDisplay .Writed, aera-element #LeftDisplay #MFD #altitudeKeyboard #SK_Display .Writed, aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Display .Writed {
+        background-color: none;
+        color: aqua; }
+      aera-element #LeftDisplay #MFD #altitudeKeyboard #TK_TimeDisplay .ToWrite, aera-element #LeftDisplay #MFD #altitudeKeyboard #SK_Display .ToWrite, aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Display .ToWrite {
+        background-color: none;
+        color: dimgray; }
+      aera-element #LeftDisplay #MFD #altitudeKeyboard #TK_TimeDisplay .Writing, aera-element #LeftDisplay #MFD #altitudeKeyboard #SK_Display .Writing, aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Display .Writing {
+        animation: SelectedCharBlinkFreqEdit 1s infinite;
+        min-width: 0.5vw;
+        min-height: 3.6vh;
+        display: inline-block; }
+      aera-element #LeftDisplay #MFD #altitudeKeyboard #TK_TimeDisplay .Fixed, aera-element #LeftDisplay #MFD #altitudeKeyboard #SK_Display .Fixed, aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Display .Fixed {
+        background-color: aqua; }
+    aera-element #LeftDisplay #MFD #altitudeKeyboard #KeyBoard {
+      position: absolute;
+      top: 20%;
+      height: 60%;
+      width: 60%;
+      left: 23%; }
+      aera-element #LeftDisplay #MFD #altitudeKeyboard #KeyBoard .roundButton {
+        width: 9vh;
+        height: 9vh;
+        line-height: 9vh;
+        display: inline-block; }
+      aera-element #LeftDisplay #MFD #altitudeKeyboard #KeyBoard .gradientButton {
+        width: 9vh;
+        height: 9vh; }
+      aera-element #LeftDisplay #MFD #altitudeKeyboard #KeyBoard td {
+        width: 33.33%; }
+    aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Cancel {
+      position: absolute;
+      bottom: 2%;
+      left: 2%; }
+    aera-element #LeftDisplay #MFD #altitudeKeyboard #AK_Enter {
+      position: absolute;
+      bottom: 2%;
+      right: 2%; }
     aera-element #LeftDisplay #MFD #fullKeyboard {
       z-index: 2; }
       aera-element #LeftDisplay #MFD #fullKeyboard #Keyboard_LetterTable,
@@ -1037,7 +1088,7 @@ aera-element {
         position: relative;
         padding-right: 1.75%; }
         aera-element #WaypointDuplicateWindow table tbody::-webkit-scrollbar {
-          width: 0.5vw; }
+          width: 1.25vw; }
         aera-element #WaypointDuplicateWindow table tbody::-webkit-scrollbar-track {
           background: none; }
         aera-element #WaypointDuplicateWindow table tbody::-webkit-scrollbar-thumb {
@@ -1326,7 +1377,7 @@ aera-element {
     border-right: 0.4vh solid white;
     border-collapse: collapse; }
     aera-element #insertBeforeWaypointWindow .Container::-webkit-scrollbar {
-      width: 0.5vw; }
+      width: 1.25vw; }
     aera-element #insertBeforeWaypointWindow .Container::-webkit-scrollbar-track {
       background: none; }
     aera-element #insertBeforeWaypointWindow .Container::-webkit-scrollbar-thumb {

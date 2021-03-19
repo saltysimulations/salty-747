@@ -171,6 +171,8 @@ as1000-pfd-element {
         z-index: -3;
         display: none;
         /* Map position (left and top) is set in mapConfig.json file (see SvgMapConfig.ts) (makes it editable at runtime) */ }
+        as1000-pfd-element #Mainframe #HorizonContainer #SyntheticVision[state=Inactive] {
+          display: none; }
         as1000-pfd-element #Mainframe #HorizonContainer #SyntheticVision #MapSVG, as1000-pfd-element #Mainframe #HorizonContainer #SyntheticVision #road-network-canvas, as1000-pfd-element #Mainframe #HorizonContainer #SyntheticVision #MapRange, as1000-pfd-element #Mainframe #HorizonContainer #SyntheticVision #MapOrientation {
           transform: rotateX(0);
           display: none; }
@@ -420,10 +422,31 @@ as1000-pfd-element {
         width: 100%;
         height: 7.5%; }
         as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left {
+          position: relative;
           width: 29%;
           height: 100%; }
           as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left .ident {
             width: 15%; }
+          as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left #NavVolumePopup {
+            position: absolute;
+            width: 55%;
+            height: 55%;
+            background-color: #1a1d21;
+            font-size: calc( 2.6 * 1vh * var(--bodyHeightScale)); }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left #NavVolumePopup[state=Inactive] {
+              display: none; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left #NavVolumePopup[state=Bottom] {
+              bottom: 0%; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left #NavVolumePopup #NavVolumeLabel {
+              position: absolute;
+              height: 100%;
+              text-align: left; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left #NavVolumePopup #NavVolumeValue {
+              position: absolute;
+              height: 100%;
+              right: 20%;
+              text-align: right;
+              color: aqua; }
           as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Left #Nav1 {
             width: 98%;
             height: 50%;
@@ -530,8 +553,31 @@ as1000-pfd-element {
                 width: 30%;
                 text-align: center; }
         as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Right {
+          position: relative;
           min-width: 25%;
           height: 100%; }
+          as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Right #ComVolumePopup {
+            position: absolute;
+            width: 55%;
+            height: 55%;
+            background-color: #1a1d21;
+            font-size: calc( 2.6 * 1vh * var(--bodyHeightScale));
+            right: 0%; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Right #ComVolumePopup[state=Inactive] {
+              display: none; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Right #ComVolumePopup[state=Bottom] {
+              bottom: 0%; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Right #ComVolumePopup #ComVolumeLabel {
+              position: absolute;
+              height: 100%;
+              text-align: right;
+              right: 0%; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Right #ComVolumePopup #ComVolumeValue {
+              position: absolute;
+              height: 100%;
+              left: 10%;
+              text-align: right;
+              color: aqua; }
           as1000-pfd-element #Mainframe #InstrumentsContainer #NavBox #Right #Com1 {
             width: 100%;
             height: 50%;
@@ -1520,6 +1566,29 @@ as1000-pfd-element {
               position: absolute;
               background-color: white;
               width: 100%; }
+      as1000-pfd-element #Mainframe #InstrumentsContainer #PFDSetup {
+        position: absolute;
+        background-color: #1a1d21;
+        right: 0%;
+        bottom: 7%;
+        width: 29.8%;
+        font-size: calc( 2.6 * 1vh * var(--bodyHeightScale)); }
+        as1000-pfd-element #Mainframe #InstrumentsContainer #PFDSetup .title {
+          text-align: center;
+          color: #36c8d2;
+          border-bottom: 0.4vh solid #36c8d2; }
+        as1000-pfd-element #Mainframe #InstrumentsContainer #PFDSetup .line {
+          display: flex;
+          color: #36c8d2; }
+          as1000-pfd-element #Mainframe #InstrumentsContainer #PFDSetup .line .subTitle {
+            color: white;
+            width: 45%; }
+          as1000-pfd-element #Mainframe #InstrumentsContainer #PFDSetup .line div {
+            width: 25%;
+            text-align: center; }
+        as1000-pfd-element #Mainframe #InstrumentsContainer #PFDSetup .Blinking[state=Blink], as1000-pfd-element #Mainframe #InstrumentsContainer #PFDSetup .Blinking[state=Selected] {
+          background-color: aquamarine;
+          color: black; }
       as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu {
         position: absolute;
         background-color: #1a1d21;
@@ -1541,23 +1610,36 @@ as1000-pfd-element {
             width: 90%;
             margin-left: 5.5%;
             border: 1px solid white; }
-            as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #subTitle {
+            as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #SubTitle {
               color: white;
               background-color: dimgray;
               font-size: calc( 2.3 * 1vh * var(--bodyHeightScale));
               padding-left: 3vw; }
-            as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements {
-              color: aquamarine;
-              width: 100%; }
-              as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements .ContextualMenuElement[state=Inactive] {
-                color: dimgray; }
-              as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #ContextualMenuElements .ContextualMenuElement[state=Selected] {
-                background-color: aquamarine;
-                color: black; }
-        as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #SubText {
-          width: 90%;
-          margin-left: 5.5%;
-          margin-top: 2%;
-          margin-bottom: 2%;
-          text-align: center; }
+            as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List {
+              display: flex; }
+              as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements {
+                flex: 1;
+                color: aquamarine;
+                width: 100%; }
+                as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements .ContextualMenuElement[state=Inactive] {
+                  color: dimgray; }
+                as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #ContextualMenuElements .ContextualMenuElement[state=Selected] {
+                  background-color: aquamarine;
+                  color: black; }
+              as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu {
+                flex: 0.03;
+                border: 2px solid white; }
+                as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu #SliderMenuCursor {
+                  background-color: white;
+                  position: relative; }
+                as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu[state=Active] {
+                  visibility: inherit; }
+                as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #ContextualMenuMainArea #List #SliderMenu[state=Inactive] {
+                  visibility: hidden; }
+          as1000-pfd-element #Mainframe #InstrumentsContainer #ContextualMenu #ContextualMenuContent #SubText {
+            width: 90%;
+            margin-left: 5.5%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+            text-align: center; }
 

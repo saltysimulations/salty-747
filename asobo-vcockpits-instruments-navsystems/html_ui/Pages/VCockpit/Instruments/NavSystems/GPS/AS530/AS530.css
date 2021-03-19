@@ -107,11 +107,19 @@ as530-element {
           font-size: calc(5.1282051282vh); }
         as530-element #Electricity #TopDisplay #RadioPart #VorRad {
           border: calc(0.4273504274vh) solid #6ecdee; }
+          as530-element #Electricity #TopDisplay #RadioPart #VorRad[mode=LOC] #RAD #radTitle, as530-element #Electricity #TopDisplay #RadioPart #VorRad[mode=LOC] #RAD #radValue {
+            visibility: hidden; }
+          as530-element #Electricity #TopDisplay #RadioPart #VorRad[mode=VOR] #RAD #ILSAirportIdent {
+            display: none; }
           as530-element #Electricity #TopDisplay #RadioPart #VorRad #VOR, as530-element #Electricity #TopDisplay #RadioPart #VorRad #RAD {
             width: 100%;
             display: flex; }
             as530-element #Electricity #TopDisplay #RadioPart #VorRad #VOR div, as530-element #Electricity #TopDisplay #RadioPart #VorRad #RAD div {
               width: 49%; }
+            as530-element #Electricity #TopDisplay #RadioPart #VorRad #VOR #ILSAirportIdent, as530-element #Electricity #TopDisplay #RadioPart #VorRad #RAD #ILSAirportIdent {
+              position: absolute;
+              width: 100%;
+              text-align: center; }
         as530-element #Electricity #TopDisplay #RadioPart #VOR, as530-element #Electricity #TopDisplay #RadioPart #RAD, as530-element #Electricity #TopDisplay #RadioPart #DIS {
           color: white;
           font-size: 5vh;
@@ -126,6 +134,14 @@ as530-element {
             width: 45%; }
           as530-element #Electricity #TopDisplay #RadioPart #DIS .unit {
             width: 9%; }
+          as530-element #Electricity #TopDisplay #RadioPart #DIS #ILSRunway {
+            position: absolute;
+            width: 100%;
+            text-align: center; }
+          as530-element #Electricity #TopDisplay #RadioPart #DIS[mode=LOC] #disTitle, as530-element #Electricity #TopDisplay #RadioPart #DIS[mode=LOC] #disValue, as530-element #Electricity #TopDisplay #RadioPart #DIS[mode=LOC] .unit {
+            visibility: hidden; }
+          as530-element #Electricity #TopDisplay #RadioPart #DIS[mode=VOR] #ILSRunway {
+            display: none; }
         as530-element #Electricity #TopDisplay #RadioPart #BotRadioPartTop, as530-element #Electricity #TopDisplay #RadioPart #BotRadioPartMid, as530-element #Electricity #TopDisplay #RadioPart #BotRadioPartBot {
           background-color: black;
           border: calc(0.4273504274vh) solid #6ecdee;
@@ -1018,6 +1034,7 @@ as530-element {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
+          width: 65%;
           max-height: 100%;
           font-size: 5vh; }
           as530-element #Electricity #TopDisplay #GpsPart #ContextualMenu[state=Inactive] {

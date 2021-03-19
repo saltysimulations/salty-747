@@ -1788,6 +1788,10 @@ class GPS_DirectTo extends NavSystemElement {
                 this.gps.cursorIndex = 2;
             });
         }
+        else {
+            this.gps.ActiveSelection(this.defaultSelectables);
+            this.gps.cursorIndex = 2;
+        }
     }
     flightPlan_SelectionCallback(_event) {
         if (_event == "ENT_Push" || _event == "RightSmallKnob_Right" || _event == "RightSmallKnob_Left") {

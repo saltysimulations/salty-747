@@ -50,7 +50,7 @@ class AS1000_MFD extends BaseAS1000 {
     onEvent(_event) {
         super.onEvent(_event);
         let isGPSDrived = SimVar.GetSimVarValue("GPS DRIVES NAV1", "Bool");
-        let cdiSource = isGPSDrived ? 3 : SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "number");
+        let cdiSource = isGPSDrived ? 3 : Simplane.getAutoPilotSelectedNav();
         switch (_event) {
             case "CLR_Long":
                 this.currentInteractionState = 0;
@@ -242,11 +242,14 @@ class AS1000_MFD_PageNavigation extends NavSystemElement {
 }
 class AS1000_MFD_MainMap extends NavSystemPage {
     constructor() {
-        super("NAVIGATION MAP", "Map", new NavSystemElementGroup([
-            new AS1000_MFD_MainMapSlot(),
-            new MFD_WindData()
-        ]));
+        super("NAVIGATION MAP", "Map", null);
         this.mapMenu = new AS1000_MapMenu();
+        this.windData = new MFD_WindData();
+        this.map = new AS1000_MFD_MainMapSlot();
+        this.element = new NavSystemElementGroup([
+            this.map,
+            this.windData
+        ]);
     }
     init() {
         this.mapMenu.init(this, this.gps);
@@ -273,6 +276,111 @@ class AS1000_MFD_MainMap extends NavSystemPage {
             new SoftKeyElement("SHW CHRT", null),
             new SoftKeyElement("", null)
         ];
+        this.mapSetup = new NavSystemElementContainer("MapSetup", "MapSetup", new AS1000_MFD_MapSetup());
+        this.mapSetup.setGPS(this.gps);
+        this.defaultMenu = new ContextualMenu("PAGE MENU", [
+            new ContextualMenuElement("Map Setup", this.openMapSetup.bind(this))
+        ]);
+        this.windData.relatedMap = this.map.getMap();
+    }
+    openMapSetup() {
+        this.gps.switchToPopUpPage(this.mapSetup);
+    }
+}
+class AS1000_MFD_MapSetup extends NavSystemElement {
+    init(root) {
+        this.root = root;
+        this.orientationValue = this.gps.getChildById("MapSetup_Orientation");
+        this.FuelRangeOnOff = this.gps.getChildById("MapSetup_FuelRngOnOff");
+        this.FuelRangeReserve = this.gps.getChildById("MapSetup_FuelRngReserve");
+        this.defaultSelectables = [
+            new SelectableElement(this.gps, this.orientationValue, this.orientationMapCallback.bind(this)),
+            new SelectableElement(this.gps, this.FuelRangeOnOff, this.fuelRangeOnOffCallback.bind(this)),
+            new SelectableElement(this.gps, this.FuelRangeReserve, this.fuelRangeReserveCallback.bind(this))
+        ];
+        this.orientationSubMenu = this.gps.getChildById("MapSetup_OrientationMenu");
+        this.orientationMenuSelectables = [
+            new SelectableElement(this.gps, this.gps.getChildById("MapOrientation_North"), this.setOrientation.bind(this, EMapRotationMode.NorthUp)),
+            new SelectableElement(this.gps, this.gps.getChildById("MapOrientation_Track"), this.setOrientation.bind(this, EMapRotationMode.TrackUp)),
+            new SelectableElement(this.gps, this.gps.getChildById("MapOrientation_DTK"), this.setOrientation.bind(this, EMapRotationMode.DTKUp)),
+            new SelectableElement(this.gps, this.gps.getChildById("MapOrientation_HDG"), this.setOrientation.bind(this, EMapRotationMode.HDGUp))
+        ];
+        this.mapElement = this.gps.getElementOfType(MapInstrumentElement);
+    }
+    onEnter() {
+        this.root.setAttribute("state", "Active");
+        this.gps.ActiveSelection(this.defaultSelectables);
+    }
+    onExit() {
+        this.root.setAttribute("state", "Inactive");
+    }
+    onEvent(_event) {
+        switch (_event) {
+            case "NavigationPush":
+            case "CLR_Push":
+            case "MENU_Push":
+                this.gps.closePopUpElement();
+                break;
+        }
+    }
+    onUpdate(_deltaTime) {
+        switch (this.mapElement.getRotationMode()) {
+            case EMapRotationMode.NorthUp:
+                Avionics.Utils.diffAndSet(this.orientationValue, "North up");
+                break;
+            case EMapRotationMode.TrackUp:
+                Avionics.Utils.diffAndSet(this.orientationValue, "Track up");
+                break;
+            case EMapRotationMode.HDGUp:
+                Avionics.Utils.diffAndSet(this.orientationValue, "HDG up");
+                break;
+            case EMapRotationMode.DTKUp:
+                Avionics.Utils.diffAndSet(this.orientationValue, "DTK up");
+                break;
+        }
+        Avionics.Utils.diffAndSet(this.FuelRangeOnOff, this.mapElement.getFuelRangeActive() ? "On" : "Off");
+        let timeReserve = this.mapElement.getFuelRangeReserveMinute();
+        Avionics.Utils.diffAndSet(this.FuelRangeReserve, String(Math.floor(timeReserve / 60)).padStart(2, "0") + ":" + String(timeReserve % 60).padStart(2, "0"));
+    }
+    orientationMapCallback(_event) {
+        switch (_event) {
+            case "ENT_Push":
+                Avionics.Utils.diffAndSetAttribute(this.orientationSubMenu, "state", "Active");
+                this.gps.ActiveSelection(this.orientationMenuSelectables);
+                break;
+        }
+    }
+    fuelRangeOnOffCallback(_event) {
+        switch (_event) {
+            case "ENT_Push":
+                this.mapElement.setFuelRangeActive(!this.mapElement.getFuelRangeActive());
+                break;
+            case "NavigationSmallInc":
+                this.mapElement.setFuelRangeActive(true);
+                break;
+            case "NavigationSmallDec":
+                this.mapElement.setFuelRangeActive(false);
+                break;
+        }
+    }
+    fuelRangeReserveCallback(_event) {
+        switch (_event) {
+            case "NavigationSmallInc":
+                this.mapElement.setFuelRangeReserveMinute(Math.min(this.mapElement.getFuelRangeReserveMinute() + 1, 5999));
+                break;
+            case "NavigationSmallDec":
+                this.mapElement.setFuelRangeReserveMinute(Math.max(this.mapElement.getFuelRangeReserveMinute() - 1, 0));
+                break;
+        }
+    }
+    setOrientation(_newValue, _event) {
+        switch (_event) {
+            case "ENT_Push":
+                this.mapElement.setRotationMode(_newValue);
+                Avionics.Utils.diffAndSetAttribute(this.orientationSubMenu, "state", "Inactive");
+                this.gps.ActiveSelection(this.defaultSelectables);
+                break;
+        }
     }
 }
 class AS1000_MFD_MainMapSlot extends NavSystemElement {
@@ -289,6 +397,9 @@ class AS1000_MFD_MainMapSlot extends NavSystemElement {
     onExit() {
     }
     onEvent(_event) {
+    }
+    getMap() {
+        return this.map;
     }
 }
 class AS1000_MFD_WaypointLine extends MFD_WaypointLine {
@@ -572,7 +683,7 @@ class AS1000_MFD_AirportInfos1 extends NavSystemElement {
             }
             var frequencies = [];
             for (let i = 0; i < infos.frequencies.length; i++) {
-                frequencies.push('<div class="Freq"><div class="Name">' + infos.frequencies[i].name + '</div><div class="Value Blinking">' + infos.frequencies[i].mhValue.toFixed(3) + '</div></div>');
+                frequencies.push('<div class="Freq"><div class="Name">' + infos.frequencies[i].getTypeName() + '</div><div class="Value Blinking">' + infos.frequencies[i].mhValue.toFixed(3) + '</div></div>');
             }
             this.frequenciesSelectionGroup.setStringElements(frequencies);
             this.mapElement.setCenter(infos.coordinates);
@@ -935,6 +1046,23 @@ class AS1000_MFD_NearestIntersection_Element extends MFD_NearestIntersection_Ele
 class AS1000_MFD_SystemSetup extends NavSystemPage {
     constructor() {
         super("System Setup", "SystemSetup", new AS1000_MFD_SystemSetupElement());
+    }
+    init() {
+        this.softKeys = new SoftKeysMenu();
+        this.softKeys.elements = [
+            new SoftKeyElement("ENGINE", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null),
+            new SoftKeyElement("", null)
+        ];
     }
 }
 class AS1000_MFD_SystemSetupElement extends NavSystemElement {

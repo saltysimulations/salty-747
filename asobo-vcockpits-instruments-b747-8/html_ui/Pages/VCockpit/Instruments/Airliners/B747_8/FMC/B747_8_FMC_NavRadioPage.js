@@ -8,9 +8,30 @@ class B747_8_FMC_NavRadioPage {
         let vor1FrequencyCell = "";
         let vor1CourseCell = "";
         if (!radioOn) {
-            vor1FrequencyCell = "-----";
+            vor1FrequencyCell = "[]/";
+            if (fmc.vor1FrequencyIdent != "") {
+                vor1FrequencyCell = fmc.vor1FrequencyIdent + "/";
+            }
+            else {
+                let approach = fmc.flightPlanManager.getApproach();
+                if (approach && approach.name && approach.name.indexOf("VOR") !== -1) {
+                    if (approach.vorIdent != "") {
+                        fmc.vor1FrequencyIdent = approach.vorIdent;
+                        vor1FrequencyCell = approach.vorIdent + "/";
+                    }
+                    else {
+                        vor1FrequencyCell = Avionics.Utils.formatRunway(approach.name, true) + "/";
+                    }
+                }
+            }
             if (fmc.vor1Frequency > 0) {
-                vor1FrequencyCell = "/ " + fmc.vor1Frequency.toFixed(2);
+                vor1FrequencyCell += fmc.vor1Frequency.toFixed(2);
+            }
+            else {
+                vor1FrequencyCell += "[]";
+            }
+            if (vor1FrequencyCell == "[]/[]") {
+                vor1FrequencyCell = "-----";
             }
             fmc.onLeftInput[0] = () => {
                 let value = fmc.inOut;
@@ -35,6 +56,12 @@ class B747_8_FMC_NavRadioPage {
                 else if (value === FMCMainDisplay.clrValue) {
                     fmc.vor1Frequency = 0;
                     B747_8_FMC_NavRadioPage.ShowPage(fmc);
+                }
+                else if (Avionics.Utils.isIdent(value)) {
+                    fmc.vor1FrequencyIdent = value;
+                    fmc.requestCall(() => {
+                        B747_8_FMC_NavRadioPage.ShowPage(fmc);
+                    });
                 }
                 else {
                     fmc.showErrorMessage(fmc.defaultInputErrorMessage);
@@ -64,9 +91,18 @@ class B747_8_FMC_NavRadioPage {
         let vor2FrequencyCell = "";
         let vor2CourseCell = "";
         if (!radioOn) {
-            vor2FrequencyCell = "-----";
+            vor2FrequencyCell = "[]/";
+            if (fmc.vor2FrequencyIdent != "") {
+                vor2FrequencyCell = fmc.vor2FrequencyIdent + "/";
+            }
             if (fmc.vor2Frequency > 0) {
-                vor2FrequencyCell = "/ " + fmc.vor2Frequency.toFixed(2);
+                vor2FrequencyCell = "[]/" + fmc.vor2Frequency.toFixed(2);
+            }
+            else {
+                vor2FrequencyCell += "[]";
+            }
+            if (vor2FrequencyCell == "[]/[]") {
+                vor2FrequencyCell = "-----";
             }
             fmc.onRightInput[0] = () => {
                 let value = fmc.inOut;
@@ -91,6 +127,12 @@ class B747_8_FMC_NavRadioPage {
                 else if (value === FMCMainDisplay.clrValue) {
                     fmc.vor2Frequency = 0;
                     B747_8_FMC_NavRadioPage.ShowPage(fmc);
+                }
+                else if (Avionics.Utils.isIdent(value)) {
+                    fmc.vor2FrequencyIdent = value;
+                    fmc.requestCall(() => {
+                        B747_8_FMC_NavRadioPage.ShowPage(fmc);
+                    });
                 }
                 else {
                     fmc.showErrorMessage(fmc.defaultInputErrorMessage);
@@ -131,7 +173,7 @@ class B747_8_FMC_NavRadioPage {
                 let numValue = parseFloat(value);
                 fmc.clearUserInput();
                 if (isFinite(numValue) && numValue >= 100 && numValue <= 1699.9) {
-                    SimVar.SetSimVarValue("K:ADF_COMPLETE_SET", "Frequency ADF BCD32", Avionics.Utils.make_adf_bcd32(numValue * 1000)).then(() => {
+                    SimVar.SetSimVarValue("K:ADF_ACTIVE_SET", "Frequency ADF BCD32", Avionics.Utils.make_adf_bcd32(numValue * 1000)).then(() => {
                         fmc.adf1Frequency = numValue;
                         fmc.requestCall(() => {
                             B747_8_FMC_NavRadioPage.ShowPage(fmc);
@@ -151,7 +193,7 @@ class B747_8_FMC_NavRadioPage {
                 let numValue = parseFloat(value);
                 fmc.clearUserInput();
                 if (isFinite(numValue) && numValue >= 100 && numValue <= 1699.9) {
-                    SimVar.SetSimVarValue("K:ADF2_COMPLETE_SET", "Frequency ADF BCD32", Avionics.Utils.make_adf_bcd32(numValue * 1000)).then(() => {
+                    SimVar.SetSimVarValue("K:ADF2_ACTIVE_SET", "Frequency ADF BCD32", Avionics.Utils.make_adf_bcd32(numValue * 1000)).then(() => {
                         fmc.adf2Frequency = numValue;
                         fmc.requestCall(() => {
                             B747_8_FMC_NavRadioPage.ShowPage(fmc);
@@ -166,7 +208,7 @@ class B747_8_FMC_NavRadioPage {
             ilsCourseCell = "[]";
             let approach = fmc.flightPlanManager.getApproach();
             if (approach && approach.name && approach.name.indexOf("ILS") !== -1) {
-                ilsFrequencyCell = Avionics.Utils.formatRunway(approach.name) + "/ ";
+                ilsFrequencyCell = Avionics.Utils.formatRunway(approach.name, true) + "/ ";
                 let runway = fmc.flightPlanManager.getApproachRunway();
                 if (runway) {
                     ilsCourseCell = runway.direction.toFixed(0) + "°";

@@ -2838,16 +2838,16 @@
 						<NODE_ID>btn_rudder_01_SEQ2</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>Object001</NODE_ID>
+						<NODE_ID>btn_pedestal_TEST_decal</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>Object002</NODE_ID>
+						<NODE_ID>btn_pedestal_SLEW_decal</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>Object003</NODE_ID>
+						<NODE_ID>btn_pedestal_RESET_decal</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>Object004</NODE_ID>
+						<NODE_ID>btn_pedestal_PWR_decal</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>btn_cursor_control_sel_pilot_decal</NODE_ID>
@@ -3613,7 +3613,7 @@
 				<NODE_ID>cover_gears_altn_nose_body</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>gears_altn_nose_body</NODE_ID>
+				<NODE_ID>btn_gears_altn_nose_body2</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>cover_gears_altn_wing</NODE_ID>
@@ -3739,19 +3739,19 @@
 				<NODE_ID>atc_transponder_knob_abv_blw</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_1621</NODE_ID>
+				<NODE_ID>btn_pedestal_PWR</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_pedestal_1623</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_22</NODE_ID>
+				<NODE_ID>btn_pedestal_RESET</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_20</NODE_ID>
+				<NODE_ID>btn_pedestal_TEST</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_16</NODE_ID>
+				<NODE_ID>btn_pedestal_SLEW</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_pedestal_1624</NODE_ID>

@@ -59,6 +59,10 @@
 
                 <div id="NavBox">
                     <div id="Left">
+                        <div id="NavVolumePopup" state="Inactive">
+                            <div id="NavVolumeLabel">VOLUME</div>
+                            <div id="NavVolumeValue">100%</div>
+                        </div>
                         <div id="Nav1">
                             <div>NAV1</div>
                             <div class="Selectable" id="Nav1_StdBy">--</div>
@@ -107,6 +111,10 @@
                     </div>
 
                     <div id="Right">
+                        <div id="ComVolumePopup" state="Inactive">
+                            <div id="ComVolumeLabel">VOLUME</div>
+                            <div id="ComVolumeValue">100%</div>
+                        </div>
                         <div id="Com1">
                             <div id="Com1_Active">--</div>
                             <div id="Com1_DoubleArrow"><img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/DoubleArrow.svg" /></div>
@@ -508,8 +516,8 @@
                                 <div id="Departure_AirportType">UNKNOWN</div>
                             </div>
                             <div class="Blinking" id="Departure_AirportName">____________</div>
-                            <div class="elemGroup" id="Departure_ArrivalGroup">
-                                <div class="white" id="Departure_ArrivalTitle">Arrival</div>
+                            <div class="elemGroup" id="Departure_DepartureGroup">
+                                <div class="white" id="Departure_DepartureTitle">Departure</div>
                                 <div class="Blinking value" id="Departure_Departure">NONE</div>
                             </div>
                             <div class="elemGroup" id="Departure_TransitionGroup">
@@ -626,18 +634,36 @@
                     </div>
                 </div>
 
+                <div id="PFDSetup" class="PopupWindow" state="Inactive">
+                    <div class="title">PFD SETUP MENU</div>
+                    <div class="Content">
+                        <div class="line">
+                            <div class="subTitle">PFD DSPL</div>
+                            <div class="Blinking" id="PFDBackLightMode">AUTO</div>
+                            <div class="Blinking" id="PFDBackLightValue">100%</div>
+                        </div>
+                        <div class="line">
+                            <div class="subTitle">MFD DSPL</div>
+                            <div class="Blinking" id="MFDBackLightMode">AUTO</div>
+                            <div class="Blinking" id="MFDBackLightValue">100%</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="ContextualMenu" state="Inactive">
                     <div id="ContextualMenuContent">
                         <div id="ContextualMenuTitle">EXAMPLE MENU</div>
                         <div id="ContextualMenuMainArea">
-                            <div id="subTitle">OPTIONS</div>
-                            <div id="ContextualMenuElements">
-                                <div class="ContextualMenuElement" state="Inactive">Inactive?</div>
-                                <div class="ContextualMenuElement" state="Selected">Selected?</div>
-                                <div class="ContextualMenuElement" state="Unselected">Unselected?</div>
-                            </div>
-                            <div id="SliderMenu" state="Active">
-                                <div id="SliderMenuCursor"></div>
+                            <div id="SubTitle">OPTIONS</div>
+                            <div id="List">
+                                <div id="ContextualMenuElements">
+                                    <div class="ContextualMenuElement" state="Inactive">Inactive?</div>
+                                    <div class="ContextualMenuElement" state="Selected">Selected?</div>
+                                    <div class="ContextualMenuElement" state="Unselected">Unselected?</div>
+                                </div>
+                                <div id="SliderMenu" state="Active">
+                                    <div id="SliderMenuCursor"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

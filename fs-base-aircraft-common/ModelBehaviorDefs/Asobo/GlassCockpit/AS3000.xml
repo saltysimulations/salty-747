@@ -128,7 +128,7 @@
 		</Condition>
 			</False>
 		</Condition>
-		<SCREEN_EMISSIVE_CODE>(A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent over 100) #SCREEN_LIGHT_DIMMING_SCALE# * #MAX_EMISSIVE_PERCENT# #SCREEN_MIN_EMISSIVE_PERCENT# - * #SCREEN_MIN_EMISSIVE_PERCENT# +</SCREEN_EMISSIVE_CODE>
+		<SCREEN_EMISSIVE_CODE>(A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent over 100) (L:AS3000_Brightness, number) * #SCREEN_LIGHT_DIMMING_SCALE# * #MAX_EMISSIVE_PERCENT# #SCREEN_MIN_EMISSIVE_PERCENT# - * #SCREEN_MIN_EMISSIVE_PERCENT# +</SCREEN_EMISSIVE_CODE>
 		<Condition Check="CIRCUIT_ID">
 			<True>
 				<FAILURE>(A:CIRCUIT ON:#CIRCUIT_ID#, Bool)</FAILURE>
@@ -179,7 +179,7 @@
 	</UseTemplate>
 	<UseTemplate Name="ASOBO_AS3000_Screen_Template">
 		<Condition Check="USE_STATIC_SCREEN_EMISSIVE">
-				<SCREEN_EMISSIVE_CODE>#STATIC_SCREEN_EMISSIVE_VALUE#</SCREEN_EMISSIVE_CODE>
+				<SCREEN_EMISSIVE_CODE>#STATIC_SCREEN_EMISSIVE_VALUE# (L:AS3000_Brightness, number) *</SCREEN_EMISSIVE_CODE>
 		</Condition>
 	</UseTemplate>
 </Template>
@@ -226,16 +226,9 @@
 	<UseTemplate Name="ASOBO_AS3000_Screen_Template">
 		<DISPLAY>TSC</DISPLAY>
 		<Condition Check="USE_STATIC_SCREEN_EMISSIVE">
-				<SCREEN_EMISSIVE_CODE>#STATIC_SCREEN_EMISSIVE_VALUE#</SCREEN_EMISSIVE_CODE>
+				<SCREEN_EMISSIVE_CODE>#STATIC_SCREEN_EMISSIVE_VALUE# (L:AS3000_Brightness, number) *</SCREEN_EMISSIVE_CODE>
 		</Condition>
 	</UseTemplate>
-	<Component ID="#AS3000#_TSC_#ID#_PreventZoom" Node="#AS3000#_TSC_#ID#">
-		<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_Code">
-			<LEFT_SINGLE_CODE>0</LEFT_SINGLE_CODE>
-			<NO_HIGHLIGHT_NODE_ID>True</NO_HIGHLIGHT_NODE_ID>
-			<!-- <MOUSEFLAGS>WheelUp</MOUSEFLAGS> -->
-		</UseTemplate>
-	</Component>
 </Template>
 
 <!-- AS580 -->
@@ -273,13 +266,6 @@
 					<SCREEN_EMISSIVE_CODE>#STATIC_SCREEN_EMISSIVE_VALUE#</SCREEN_EMISSIVE_CODE>
 			</Condition>
 		</UseTemplate>
-		<Component ID="#AS3000#_TSC_#ID#_PreventZoom" Node="#NODE_ID_INTERACTION#">
-			<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_Code">
-				<LEFT_SINGLE_CODE>0</LEFT_SINGLE_CODE>
-				<NO_HIGHLIGHT_NODE_ID>True</NO_HIGHLIGHT_NODE_ID>
-				<!-- <MOUSEFLAGS>WheelUp</MOUSEFLAGS> -->
-			</UseTemplate>
-		</Component>
 	</Component>
 	<Component ID="#AS3000#_Knob_01_Small#SUFFIX_ID#" Node="#AS3000#_Knob_01_Small#SUFFIX_ID#">
 		<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push_Timed">

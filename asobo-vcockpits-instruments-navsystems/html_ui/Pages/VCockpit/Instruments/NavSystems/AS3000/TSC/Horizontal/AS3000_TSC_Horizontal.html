@@ -7,7 +7,7 @@
                 <div id="PFDHome">
                     <div class="line">
                         <div class="gradientButton" id="NavSourceButton">
-                            <div class="lowerValue">FMS</div>
+                            <div class="lowerValue">GPS</div>
                             <div class="upperTitle">NAV SOURCE</div>
                         </div>
                         <div class="gradientButton" id="OBSButton" state="Hidden">
@@ -226,6 +226,12 @@
                                 <div class="mainValue">25 kHz</div>
                             </div>
                         </div>
+                        <div class="line">
+                            <div class="lineTitle"><span>SVT Terrain</span></div>
+                            <div class="gradientButton" id="SvtTerrainButton">
+                                <div class="mainValue">On</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="SelectionMenu" id="AoaSelectionMenu" state="Inactive">
                         <div class="gradientButton" id="AoaOn">
@@ -301,7 +307,7 @@
                         </div>
                     </div>
                     <div class="line">
-                        <div class="gradientButton" id="AircraftSystemsButton" state="Hidden">
+                        <div class="gradientButton" id="AircraftSystemsButton">
                             <img class="img" src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_SMALL_SYSTEM_PROP_1.png" />
                             <div class="title">Aircraft Systems</div>
                         </div>
@@ -327,6 +333,12 @@
                             <img class="img" src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_NEAREST_MED_1.png" />
                             <div class="title">Nearest</div>
                         </div>
+                    </div>
+                </div>
+                <div id="MapSettings">
+                    <div class="gradientButton" id="MapOrientationButton">
+                        <div class="upperTitle">Orientation</div>
+                        <div class="lowerValue">North Up</div>
                     </div>
                 </div>
                 <div id="WeatherSelection">
@@ -1225,6 +1237,76 @@
                         </table>
                     </div>
                 </div>
+
+                <div id="AircraftSystems">
+                    <div class="line">
+                        <div class="gradientButton" id="LightingConfig">
+                            <div class="title">Lighting Config</div>
+                            <img class="img" src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_LIGHTING_CONFIG.png" />
+                        </div>
+                    </div>
+                </div>
+
+                <div id="LightingConfigs">
+                    <div class="master">
+                        <div class="title">Master</div>
+                        <div id="LightingMasterValue">50%</div>
+                        <div class="gradientButton" id="LightingMasterLess">
+                            <svg class="image" viewBox="0 0 50 50">
+                                <defs>
+                                    <linearGradient id="triangleGradient" x1="0" y1="0" x2="0" y2="100%">
+                                        <stop offset="0%" stop-color="aqua" />
+                                        <stop offset="50%" stop-color="white" />
+                                        <stop offset="100%" stop-color="aqua" />
+                                    </linearGradient>
+                                </defs>
+                                <polygon points="50,50 50,0 0,25" fill="url(#triangleGradient)" />
+                                <polygon points="15,23 45,23 45,27 15,27" fill="black" />
+                            </svg>
+                        </div>
+
+                        <svg id="MasterBacklightBgSVG" viewBox="0 0 100 30">
+                            <rect x="0" y="28" height="2" width="100" fill="grey"/>
+                            <polygon id="MasterBacklightTriangle" points="0,30 100,0 100,30" fill="aqua"/>
+                        </svg>
+
+                        <svg id="MasterBacklightCursorSVG" viewBox="0 0 10 30">
+                            <defs>
+                                <linearGradient id="cursorGradient" x1="0" y1="0" x2="0" y2="100%">
+                                    <stop offset="0%" stop-color="aqua" />
+                                    <stop offset="30%" stop-color="white" />
+                                    <stop offset="100%" stop-color="aqua" />
+                                </linearGradient>
+                                <linearGradient id="cursorLineGradient" x1="0" y1="0" x2="0" y2="100%">
+                                    <stop offset="0%" stop-color="aqua" />
+                                    <stop offset="100%" stop-color="#353535" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="0" y="0" height="30" width="10" fill="url(#cursorGradient)" stroke="#353535" stroke-width="2" rx="3"/>
+                            <rect x="1" y="3" height="2" width="8" fill="url(#cursorLineGradient)"/>
+                            <rect x="1" y="9" height="2" width="8" fill="url(#cursorLineGradient)"/>
+                            <rect x="1" y="15" height="2" width="8" fill="url(#cursorLineGradient)"/>
+                            <rect x="1" y="20" height="2" width="8" fill="url(#cursorLineGradient)"/>
+                            <rect x="1" y="25" height="2" width="8" fill="url(#cursorLineGradient)"/>
+                        </svg>
+
+                        <div class="gradientButton" id="LightingMasterMore">
+                            <svg class="image" viewBox="0 0 50 50">
+                                <defs>
+                                    <linearGradient id="triangleGradient" x1="0" y1="0" x2="0" y2="100%">
+                                        <stop offset="0%" stop-color="aqua" />
+                                        <stop offset="50%" stop-color="white" />
+                                        <stop offset="100%" stop-color="aqua" />
+                                    </linearGradient>
+                                </defs>
+                                <polygon points="0,50 0,0 50,25" fill="url(#triangleGradient)"/>
+                                <polygon points="5,23 16,23 16,12 20,12 20,23 31,23 31,27 20,27 20,38 16,38 16,27 5,27" fill="black"/>
+                            </svg>
+                        </div>
+
+                    </div>
+                </div>
+
                 <div id="NavComHome">
                     <table id="NavComLeft">
                         <tr>
@@ -2163,6 +2245,7 @@
                     </table>
                 </div>
             </div>
+
             <div class="PopUpWindow Transparent" id="minimumSource" state="Inactive">
                 <div class="WindowTitle">Minimum Source</div>
                 <div class="Container">
@@ -2184,6 +2267,27 @@
                     <div class="gradientButton" id="minSource_RadioAlt">
                         <div class="mainValue">
                             Radio Alt
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="PopUpWindow Transparent" id="MapOrientationPopup" state="Inactive">
+                <div class="WindowTitle">Map Orientation</div>
+                <div class="Container">
+                    <div class="gradientButton" id="mapOrientation_Heading">
+                        <div class="mainValue">
+                            Heading Up
+                        </div>
+                    </div>
+                    <div class="gradientButton" id="mapOrientation_Track">
+                        <div class="mainValue">
+                            Track Up
+                        </div>
+                    </div>
+                    <div class="gradientButton" id="mapOrientation_North">
+                        <div class="mainValue">
+                            North Up
                         </div>
                     </div>
                 </div>

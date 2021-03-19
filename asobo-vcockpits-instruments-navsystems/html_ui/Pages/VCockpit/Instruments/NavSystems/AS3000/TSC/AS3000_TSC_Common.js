@@ -68,6 +68,7 @@ class AS3000_TSC extends NavSystemTouch {
             ]),
             new NavSystemPageGroup("MFD", this, [
                 new NavSystemPage("MFD Home", "MFDHome", new AS3000_TSC_MFDHome()),
+                new NavSystemPage("Map Settings", "MapSettings", new AS3000_TSC_MapSettings()),
                 new NavSystemPage("Weather Selection", "WeatherSelection", new AS3000_TSC_WeatherSelection()),
                 new NavSystemPage("Direct To", "DirectTo", new AS3000_TSC_DirectTo()),
                 new NavSystemPage("Active Flight Plan", "ActiveFlightPlan", new AS3000_TSC_ActiveFPL()),
@@ -83,6 +84,8 @@ class AS3000_TSC extends NavSystemTouch {
                 new NavSystemPage("Nearest VOR", "NearestVOR", new AS3000_TSC_NRST_VOR()),
                 new NavSystemPage("Nearest NDB", "NearestNDB", new AS3000_TSC_NRST_NDB()),
                 new NavSystemPage("Speed Bugs", "SpeedBugs", this.speedBugs),
+                new NavSystemPage("Aircraft Systems", "AircraftSystems", new AS3000_TSC_AircraftSystems()),
+                new NavSystemPage("Lighting Configs", "LightingConfigs", new AS3000_TSC_LightingConfigs()),
             ]),
             new NavSystemPageGroup("NavCom", this, [
                 new NavSystemPage("NAV/COM Home", "NavComHome", new AS3000_TSC_NavComHome()),
@@ -114,6 +117,8 @@ class AS3000_TSC extends NavSystemTouch {
         this.insertBeforeWaypoint.setGPS(this);
         this.minimumSource = new NavSystemElementContainer("Minimums Source", "minimumSource", new AS3000_TSC_MinimumSource());
         this.minimumSource.setGPS(this);
+        this.mapOrientationPopup = new NavSystemElementContainer("Map Orientation", "MapOrientationPopup", new AS3000_TSC_MapOrientationPopup());
+        this.mapOrientationPopup.setGPS(this);
         this.duplicateWaypointSelection = new NavSystemElementContainer("Waypoint Duplicates", "WaypointDuplicateWindow", new AS3000_TSC_DuplicateWaypointSelection());
         this.duplicateWaypointSelection.setGPS(this);
         this.loadFrequencyWindow = new NavSystemElementContainer("Frequency Window", "LoadFrequencyPopup", new AS3000_TSC_LoadFrequencyWindow());
@@ -126,6 +131,7 @@ class AS3000_TSC extends NavSystemTouch {
         this.terrainAlerts = new AS3000_TSC_TerrainAlert();
         this.addIndependentElementContainer(new NavSystemElementContainer("Terrain Alert", "terrainAlert", this.terrainAlerts));
         this.addIndependentElementContainer(new NavSystemElementContainer("Confirmation Window", "ConfirmationWindow", this.confirmationWindow));
+        SimVar.SetSimVarValue("L:AS3000_Brightness_Manual", "number", 1);
     }
     parseXMLConfig() {
         super.parseXMLConfig();
@@ -148,6 +154,11 @@ class AS3000_TSC extends NavSystemTouch {
             this.pageTitle.innerHTML = title;
         }
         SimVar.SetSimVarValue("L:AS3000_" + this.urlConfig.index + "_Timer_Value", "number", this.timer.getCurrentDisplay());
+        let timeOfDay = SimVar.GetSimVarValue("E:TIME OF DAY", "number");
+        let autoBright = (timeOfDay == 1 ? 1 : timeOfDay == 3 ? 0.1 : 0.35);
+        let manualfactor = SimVar.GetSimVarValue("L:AS3000_Brightness_Manual", "number");
+        SimVar.SetSimVarValue("L:AS3000_Brightness", "number", 0.05 + 0.95 * Math.min(1, Math.max(0, autoBright * manualfactor)));
+        SimVar.SetSimVarValue("L:AS3000_Brightness_Auto", "number", autoBright);
     }
     onEvent(_event) {
         super.onEvent(_event);
@@ -286,10 +297,10 @@ class AS3000_TSC_PFDHome extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         if (SimVar.GetSimVarValue("GPS DRIVES NAV1", "Boolean")) {
-            Avionics.Utils.diffAndSet(this.NavSourceButton_Value, "FMS");
+            Avionics.Utils.diffAndSet(this.NavSourceButton_Value, "GPS");
         }
         else {
-            if (SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "number") == 1) {
+            if (Simplane.getAutoPilotSelectedNav() == 1) {
                 Avionics.Utils.diffAndSet(this.NavSourceButton_Value, "NAV1");
             }
             else {
@@ -359,6 +370,7 @@ class AS3000_TSC_MFDHome extends NavSystemElement {
         this.NearestButton = this.gps.getChildById("NearestButton");
         this.speedBugsButton = this.gps.getChildById("SpeedBugsButton_MFD");
         this.WaypointsInfoButton = this.gps.getChildById("WaypointInfoButton");
+        this.AircraftSystemsButton = this.gps.getChildById("AircraftSystemsButton");
         this.updateMapButtons();
         this.gps.makeButton(this.mapButton, this.mapSwitch.bind(this, 0));
         this.gps.makeButton(this.weatherButton, this.mapSwitch.bind(this, 2));
@@ -368,12 +380,14 @@ class AS3000_TSC_MFDHome extends NavSystemElement {
         this.gps.makeButton(this.NearestButton, this.gps.SwitchToPageName.bind(this.gps, "MFD", "Nearest"));
         this.gps.makeButton(this.speedBugsButton, this.gps.SwitchToPageName.bind(this.gps, "MFD", "Speed Bugs"));
         this.gps.makeButton(this.WaypointsInfoButton, this.gps.SwitchToPageName.bind(this.gps, "MFD", "Waypoint Info"));
+        this.gps.makeButton(this.AircraftSystemsButton, this.gps.SwitchToPageName.bind(this.gps, "MFD", "Aircraft Systems"));
     }
     mapSwitch(_mapIndex) {
         let currMap = SimVar.GetSimVarValue("L:AS3000_MFD_Current_Map", "number");
         if (currMap == _mapIndex) {
             switch (_mapIndex) {
                 case 0:
+                    this.gps.SwitchToPageName("MFD", "Map Settings");
                     break;
                 case 2:
                     this.gps.SwitchToPageName("MFD", "Weather Selection");
@@ -418,6 +432,88 @@ class AS3000_TSC_MFDHome extends NavSystemElement {
     onExit() {
     }
     onEvent(_event) {
+    }
+}
+class AS3000_TSC_MapSettings extends NavSystemElement {
+    init(root) {
+        this.mapOrientationButton = this.gps.getChildById("MapOrientationButton");
+        this.mapOrientationButtonValue = this.mapOrientationButton.getElementsByClassName("lowerValue")[0];
+        this.gps.makeButton(this.mapOrientationButton, this.openOrientationPopup.bind(this));
+    }
+    onEnter() {
+        this.gps.activateNavButton(1, "Back", this.back.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
+        this.gps.activateNavButton(2, "Home", this.backHome.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
+    }
+    onExit() {
+        this.gps.deactivateNavButton(1);
+        this.gps.deactivateNavButton(2);
+    }
+    onEvent(_event) {
+    }
+    onUpdate(_deltaTime) {
+        let rotationMode = SimVar.GetSimVarValue("L:AS3000_MFD_MapRotationMode", "number");
+        switch (rotationMode) {
+            case EMapRotationMode.NorthUp:
+                Avionics.Utils.diffAndSet(this.mapOrientationButtonValue, "North Up");
+                break;
+            case EMapRotationMode.TrackUp:
+                Avionics.Utils.diffAndSet(this.mapOrientationButtonValue, "Track Up");
+                break;
+            case EMapRotationMode.HDGUp:
+                Avionics.Utils.diffAndSet(this.mapOrientationButtonValue, "Heading Up");
+                break;
+        }
+    }
+    openOrientationPopup() {
+        this.gps.mapOrientationPopup.element.setContext(this.setMapOrientation.bind(this));
+        this.gps.switchToPopUpPage(this.gps.mapOrientationPopup);
+    }
+    setMapOrientation(_orientation) {
+        SimVar.SetSimVarValue("L:AS3000_MFD_MapRotationMode", "number", _orientation);
+    }
+    back() {
+        this.gps.goBack();
+    }
+    backHome() {
+        this.gps.SwitchToPageName("MFD", "MFD Home");
+    }
+}
+class AS3000_TSC_MapOrientationPopup extends NavSystemElement {
+    init(root) {
+        this.window = root;
+        this.orientation_Heading = this.gps.getChildById("mapOrientation_Heading");
+        this.orientation_Track = this.gps.getChildById("mapOrientation_Track");
+        this.orientation_North = this.gps.getChildById("mapOrientation_North");
+        this.gps.makeButton(this.orientation_North, this.buttonClick.bind(this, EMapRotationMode.NorthUp));
+        this.gps.makeButton(this.orientation_Heading, this.buttonClick.bind(this, EMapRotationMode.HDGUp));
+        this.gps.makeButton(this.orientation_Track, this.buttonClick.bind(this, EMapRotationMode.TrackUp));
+    }
+    onEnter() {
+        this.window.setAttribute("state", "Active");
+        this.gps.activateNavButton(1, "Back", this.back.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
+        this.gps.activateNavButton(2, "Home", this.backHome.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
+    }
+    onUpdate(_deltaTime) {
+    }
+    onExit() {
+        this.window.setAttribute("state", "Inactive");
+        this.gps.deactivateNavButton(1);
+        this.gps.deactivateNavButton(2);
+    }
+    onEvent(_event) {
+    }
+    setContext(_callback) {
+        this.callBack = _callback;
+    }
+    buttonClick(_rotationMode) {
+        this.callBack(_rotationMode);
+        this.gps.goBack();
+    }
+    back() {
+        this.gps.goBack();
+    }
+    backHome() {
+        this.gps.SwitchToPageName("MFD", "MFD Home");
     }
 }
 class AS3000_TSC_WeatherSelection extends NavSystemElement {
@@ -848,7 +944,7 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
                     }
                 }
                 this.frequencyElements[i].frequency = infos.frequencies[i];
-                this.frequencyElements[i].freqNameElem.textContent = this.frequencyElements[i].frequency.name;
+                this.frequencyElements[i].freqNameElem.textContent = this.frequencyElements[i].frequency.getTypeName();
                 this.frequencyElements[i].frequencyElem.textContent = this.frequencyElements[i].frequency.mhValue.toFixed(2);
                 this.frequencyElements[i].lineElem.style.display = "block";
             }
@@ -1376,6 +1472,112 @@ class AS3000_TSC_NRST_NDB extends NavSystemTouch_NRST_NDB {
         }
         else {
             this.scrollElement.scrollDown();
+        }
+    }
+}
+class AS3000_TSC_AircraftSystems extends NavSystemElement {
+    init(root) {
+        this.lightingConfigELement = this.gps.getChildById("LightingConfig");
+        this.gps.makeButton(this.lightingConfigELement, this.gps.SwitchToPageName.bind(this.gps, "MFD", "Lighting Configs"));
+    }
+    onEnter() {
+        this.gps.activateNavButton(1, "Back", this.back.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
+        this.gps.activateNavButton(2, "Home", this.backHome.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
+    }
+    onExit() {
+        this.gps.deactivateNavButton(1);
+        this.gps.deactivateNavButton(2);
+    }
+    backHome() {
+        this.gps.SwitchToPageName("MFD", "MFD Home");
+    }
+    back() {
+        this.gps.goBack();
+    }
+    onEvent(_event) {
+    }
+    onUpdate(_deltaTime) {
+    }
+}
+class AS3000_TSC_LightingConfigs extends NavSystemElement {
+    constructor() {
+        super(...arguments);
+        this.isCursorMoving = false;
+        this.cursorStartVH = 18;
+        this.cursorBGWidthVH = 40;
+    }
+    init(root) {
+        this.masterPercentText = this.gps.getChildById("LightingMasterValue");
+        this.masterBG = this.gps.getChildById("MasterBacklightBgSVG");
+        this.masterBGTriangle = this.gps.getChildById("MasterBacklightTriangle");
+        this.masterCursor = this.gps.getChildById("MasterBacklightCursorSVG");
+        this.buttonLess = this.gps.getChildById("LightingMasterLess");
+        this.buttonMore = this.gps.getChildById("LightingMasterMore");
+        this.gps.makeButton(this.buttonLess, this.onLessPress.bind(this));
+        this.gps.makeButton(this.buttonMore, this.onMorePress.bind(this));
+        if (this.masterCursor.hasAttribute("beginvh")) {
+            this.cursorStartVH = parseFloat(this.masterCursor.getAttribute("beginvh"));
+        }
+        if (this.masterCursor.hasAttribute("animwidthvh")) {
+            this.cursorBGWidthVH = parseFloat(this.masterCursor.getAttribute("animwidthvh"));
+        }
+        this.masterCursor.addEventListener("mousedown", this.cursorMouseDown.bind(this));
+        root.addEventListener("mouseup", this.cursorMouseUp.bind(this));
+        root.addEventListener("mouseleave", this.cursorMouseUp.bind(this));
+        root.addEventListener("mousemove", this.mouseMove.bind(this));
+    }
+    onEnter() {
+        this.gps.activateNavButton(1, "Back", this.back.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
+        this.gps.activateNavButton(2, "Home", this.backHome.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
+    }
+    onExit() {
+        this.gps.deactivateNavButton(1);
+        this.gps.deactivateNavButton(2);
+    }
+    backHome() {
+        this.gps.SwitchToPageName("MFD", "MFD Home");
+    }
+    back() {
+        this.gps.goBack();
+    }
+    onEvent(_event) {
+    }
+    onUpdate(_deltaTime) {
+        let backLightManual = SimVar.GetSimVarValue("L:AS3000_Brightness_Manual", "number");
+        let backLightAuto = SimVar.GetSimVarValue("L:AS3000_Brightness_Auto", "number");
+        let backLightValue = Math.min(1, Math.max(0, backLightManual * backLightAuto));
+        Avionics.Utils.diffAndSet(this.masterPercentText, (backLightValue * 100).toFixed(0));
+        let length = backLightValue * 100;
+        let height = backLightValue * 30;
+        Avionics.Utils.diffAndSetAttribute(this.masterBGTriangle, "points", "0,30 " + length + "," + (30 - height) + " " + length + ",30");
+        this.masterCursor.style.left = (this.cursorStartVH + (this.cursorBGWidthVH * backLightValue)) + "vh";
+    }
+    onLessPress() {
+        let auto = SimVar.GetSimVarValue("L:AS3000_Brightness_Auto", "number");
+        let manual = SimVar.GetSimVarValue("L:AS3000_Brightness_Manual", "number");
+        let target = Math.max(0, Math.min(1, (auto * manual) - 0.01));
+        SimVar.SetSimVarValue("L:AS3000_Brightness_Manual", "number", target / auto);
+    }
+    onMorePress() {
+        let auto = SimVar.GetSimVarValue("L:AS3000_Brightness_Auto", "number");
+        let manual = SimVar.GetSimVarValue("L:AS3000_Brightness_Manual", "number");
+        let target = Math.max(0, Math.min(1, (auto * manual) + 0.01));
+        SimVar.SetSimVarValue("L:AS3000_Brightness_Manual", "number", target / auto);
+    }
+    cursorMouseDown(event) {
+        this.isCursorMoving = true;
+        let clientRect = this.masterBG.getBoundingClientRect();
+        this.leftX = clientRect.left;
+        this.widthX = clientRect.width;
+    }
+    cursorMouseUp() {
+        this.isCursorMoving = false;
+    }
+    mouseMove(event) {
+        if (this.isCursorMoving) {
+            let pos = Math.max(0, Math.min(1, (event.clientX - this.leftX) / this.widthX));
+            let auto = SimVar.GetSimVarValue("L:AS3000_Brightness_Auto", "number");
+            SimVar.SetSimVarValue("L:AS3000_Brightness_Manual", "number", pos / auto);
         }
     }
 }
@@ -2739,6 +2941,8 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
         this.windValue = this.windButton.getElementsByClassName("mainValue")[0];
         this.comSpacingButton = this.gps.getChildById("ComSpacingButton");
         this.comSpacingValue = this.comSpacingButton.getElementsByClassName("mainValue")[0];
+        this.svtTerrainButton = this.gps.getChildById("SvtTerrainButton");
+        this.svtTerrainValue = this.svtTerrainButton.getElementsByClassName("mainValue")[0];
         this.aoaOn = this.gps.getChildById("AoaOn");
         this.aoaOff = this.gps.getChildById("AoaOff");
         this.aoaAuto = this.gps.getChildById("AoaAuto");
@@ -2754,6 +2958,7 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
         this.gps.makeButton(this.aoaButton, this.aoaPress.bind(this));
         this.gps.makeButton(this.windButton, this.windPress.bind(this));
         this.gps.makeButton(this.comSpacingButton, this.compSpacingPress.bind(this));
+        this.gps.makeButton(this.svtTerrainButton, this.svtTerrainPress.bind(this));
         this.gps.makeButton(this.aoaOn, this.aoaSetMode.bind(this, "On"));
         this.gps.makeButton(this.aoaOff, this.aoaSetMode.bind(this, "Off"));
         this.gps.makeButton(this.aoaAuto, this.aoaSetMode.bind(this, "Auto"));
@@ -2767,6 +2972,9 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
     aoaPress() {
         this.active = (this.active == 1 ? 0 : 1);
         this.updateDisplayedMenu();
+    }
+    svtTerrainPress() {
+        LaunchFlowEvent("ON_MOUSERECT_HTMLEVENT", this.gps.pfdPrefix + "_SVTTerrain_Toggle");
     }
     aoaSetMode(_mode) {
         LaunchFlowEvent("ON_MOUSERECT_HTMLEVENT", this.gps.pfdPrefix + "_AOA_" + _mode);
@@ -2809,6 +3017,7 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
         let aoa = SimVar.GetSimVarValue("L:Glasscockpit_AOA_Mode", "number");
         let wind = SimVar.GetSimVarValue("L:Glasscockpit_Wind_Mode", "number");
         let comSpacing = SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum");
+        let SVTTerrainActive = SimVar.GetSimVarValue("L:Glasscockpit_SVTTerrain", "number");
         if (aoa != this.aoaMode) {
             this.aoaMode = aoa;
             switch (aoa) {
@@ -2851,6 +3060,7 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
                     break;
             }
         }
+        Avionics.Utils.diffAndSet(this.svtTerrainValue, SVTTerrainActive ? "On" : "Off");
     }
     onExit() {
         this.gps.deactivateNavButton(1);

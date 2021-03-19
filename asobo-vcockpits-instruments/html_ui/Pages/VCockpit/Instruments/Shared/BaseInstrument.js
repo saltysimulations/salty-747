@@ -7,12 +7,15 @@ class BaseInstrument extends TemplateElement {
         this.highlightList = [];
         this.backgroundList = [];
         this._lastTime = 0;
+        this._deltaTime = 0;
+        this._frameLastTime = 0;
+        this._frameDeltaTime = 0;
         this._isConnected = false;
         this._isInitialized = false;
         this._quality = Quality.high;
         this._gameState = GameState.ingame;
-        this._deltaTime = 0;
         this._alwaysUpdate = false;
+        this._alwaysUpdateList = new Array();
         this._pendingCalls = [];
         this.dataMetaManager = new DataReadMetaManager();
     }
@@ -249,14 +252,16 @@ class BaseInstrument extends TemplateElement {
             this.setAttribute("instrumentstyle", this.urlConfig.style);
     }
     beforeUpdate() {
-        var curTime = Date.now();
-        this._deltaTime = curTime - this._lastTime;
-        this._lastTime = curTime;
-        this.updatePendingCalls();
+        let curTime = Date.now();
+        this._frameDeltaTime = curTime - this._frameLastTime;
+        this._frameLastTime = curTime;
     }
     Update() {
-        this.dataMetaManager.UpdateAll();
+        this.updateElectricity();
         this.updateHighlight();
+        if (this.dataMetaManager) {
+            this.dataMetaManager.UpdateAll();
+        }
         if (this._facilityLoader) {
             this._facilityLoader.update();
         }
@@ -268,10 +273,23 @@ class BaseInstrument extends TemplateElement {
     }
     doUpdate() {
         this.beforeUpdate();
-        this.Update();
+        if (this.canUpdate()) {
+            let curTime = Date.now();
+            this._deltaTime = curTime - this._lastTime;
+            this._lastTime = curTime;
+            this.updatePendingCalls();
+            this.Update();
+        }
+        else {
+            this.updateAlwaysList();
+        }
         this.afterUpdate();
     }
     CanUpdate() {
+        console.warn("Deprecated - You should not be calling this function anymore");
+        return false;
+    }
+    canUpdate() {
         var quality = this.getQuality();
         if (quality == Quality.ultra) {
             return true;
@@ -302,14 +320,12 @@ class BaseInstrument extends TemplateElement {
         return true;
     }
     updateElectricity() {
-        let powerOn = this.isElectricityAvailable();
         if (this.electricity) {
-            if (powerOn)
+            if (this.isElectricityAvailable())
                 this.electricity.setAttribute("state", "on");
             else
                 this.electricity.setAttribute("state", "off");
         }
-        return powerOn;
     }
     isElectricityAvailable() {
         if (this.electricalLogic) {
@@ -337,9 +353,7 @@ class BaseInstrument extends TemplateElement {
                 if (BaseInstrument.allInstrumentsLoaded && !this.xmlConfigLoading && SimVar.IsReady()) {
                     if (!this._isInitialized)
                         this.Init();
-                    this.beforeUpdate();
-                    this.Update();
-                    this.afterUpdate();
+                    this.doUpdate();
                 }
             }
             catch (Error) {
@@ -448,6 +462,28 @@ class BaseInstrument extends TemplateElement {
         }
         this._pendingCalls.splice(0, length);
     }
+    clearPendingCalls() {
+        this._pendingCalls.splice(0, length);
+    }
+    alwaysUpdate(_element, _val) {
+        for (var i = 0; i < this._alwaysUpdateList.length; i++) {
+            if (this._alwaysUpdateList[i] == _element) {
+                if (!_val)
+                    this._alwaysUpdateList.splice(i, 1);
+                return;
+            }
+        }
+        if (_val)
+            this._alwaysUpdateList.push(_element);
+    }
+    updateAlwaysList() {
+        for (var i = 0; i < this._alwaysUpdateList.length; i++) {
+            this._alwaysUpdateList[i].onUpdate(this._frameDeltaTime);
+        }
+    }
+    clearAlwaysList() {
+        this._alwaysUpdateList.splice(0, this._alwaysUpdateList.length);
+    }
 }
 BaseInstrument.allInstrumentsLoaded = false;
 BaseInstrument.useSvgImages = false;
@@ -470,6 +506,8 @@ var GameState;
     GameState[GameState["ingame"] = 3] = "ingame";
 })(GameState || (GameState = {}));
 class HighlightedElement {
+}
+class Updatable {
 }
 customElements.define("base-instrument", BaseInstrument);
 checkAutoload();

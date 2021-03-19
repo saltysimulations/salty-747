@@ -62,12 +62,12 @@ class SvgAirportElement extends SvgMapElement {
             let rectStroke = this.svgElement.children[i];
             if (!rectStroke) {
                 rectStroke = document.createElementNS(Avionics.SVG.NS, "rect");
-                rectStroke.setAttribute("stroke-width", fastToFixed(map.config.runwayStrokeWidth, 0));
+                rectStroke.setAttribute("stroke-width", fastToFixed(map.config.runwayStrokeWidth / map.overdrawFactor, 0));
                 this.svgElement.appendChild(rectStroke);
             }
             rectStroke.setAttribute("stroke", map.config.runwayStrokeColor);
-            rectStroke.setAttribute("rx", fastToFixed(map.config.runwayCornerRadius, 0));
-            rectStroke.setAttribute("ry", fastToFixed(map.config.runwayCornerRadius, 0));
+            rectStroke.setAttribute("rx", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
+            rectStroke.setAttribute("ry", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
         }
         for (let i = 0; i < this.runways.length; i++) {
             let runway = this.runways[i];
@@ -75,16 +75,16 @@ class SvgAirportElement extends SvgMapElement {
             let rectNoStroke = this.svgElement.children[i + this.runways.length];
             if (!rectNoStroke) {
                 rectNoStroke = document.createElementNS(Avionics.SVG.NS, "rect");
-                rectNoStroke.setAttribute("stroke-width", fastToFixed(map.config.runwayStrokeWidth, 0));
+                rectNoStroke.setAttribute("stroke-width", fastToFixed(map.config.runwayStrokeWidth / map.overdrawFactor, 0));
                 this.svgElement.appendChild(rectNoStroke);
             }
             rectNoStroke.setAttribute("fill", map.config.runwayFillColor);
             rectNoStroke.setAttribute("stroke", "none");
-            rectNoStroke.setAttribute("rx", fastToFixed(map.config.runwayCornerRadius, 0));
-            rectNoStroke.setAttribute("ry", fastToFixed(map.config.runwayCornerRadius, 0));
+            rectNoStroke.setAttribute("rx", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
+            rectNoStroke.setAttribute("ry", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
             map.coordinatesToXYToRef(new LatLongAlt(runway.latitude, runway.longitude), this._tmpCenter);
             let l = map.feetsToPixels(runway.length);
-            let w = Math.max(map.feetsToPixels(runway.width), map.config.runwayMinimalWidth);
+            let w = Math.max(map.feetsToPixels(runway.width), map.config.runwayMinimalWidth / map.overdrawFactor);
             let x = fastToFixed((this._tmpCenter.x - w * 0.5), 0);
             let y = fastToFixed((this._tmpCenter.y - l * 0.5), 0);
             let width = fastToFixed(w, 0);

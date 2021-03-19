@@ -17,10 +17,10 @@ class SvgAirplaneElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("x", fastToFixed(((1000 - map.config.airplaneIconSize) * 0.5), 0));
-        container.setAttribute("y", fastToFixed(((1000 - map.config.airplaneIconSize) * 0.5), 0));
-        container.setAttribute("width", fastToFixed(map.config.airplaneIconSize, 0));
-        container.setAttribute("height", fastToFixed(map.config.airplaneIconSize, 0));
+        container.setAttribute("x", fastToFixed(((1000 - map.config.airplaneIconSize / map.overdrawFactor) * 0.5), 0));
+        container.setAttribute("y", fastToFixed(((1000 - map.config.airplaneIconSize / map.overdrawFactor) * 0.5), 0));
+        container.setAttribute("width", fastToFixed(map.config.airplaneIconSize / map.overdrawFactor, 0));
+        container.setAttribute("height", fastToFixed(map.config.airplaneIconSize / map.overdrawFactor, 0));
         container.setAttribute("overflow", "visible");
         this._image = document.createElementNS(Avionics.SVG.NS, "image");
         this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", this.getIconPath(map));
@@ -35,25 +35,35 @@ class SvgAirplaneElement extends SvgMapElement {
     updateDraw(map) {
         let track = map.planeDirection;
         if (this._forcePosAndRot) {
-            let rotation = "rotate(" + fastToFixed(this._forcedRot, 1) + " " + fastToFixed((map.config.airplaneIconSize * 0.5), 1) + " " + fastToFixed((map.config.airplaneIconSize * 0.5), 1) + ")";
+            let rotation = "rotate(" + fastToFixed(this._forcedRot, 1) + " " + fastToFixed((map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1) + " " + fastToFixed((map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1) + ")";
             this.svgElement.children[0].setAttribute("transform", rotation);
         }
-        else if (!map.rotateWithPlane) {
+        else if (map.rotationMode == EMapRotationMode.NorthUp) {
             if (this._lastTrack !== track && isFinite(track)) {
                 if (this.svgElement.children[0]) {
                     this._lastTrack = track;
-                    let rotation = "rotate(" + fastToFixed(track, 1) + " " + fastToFixed((map.config.airplaneIconSize * 0.5), 1) + " " + fastToFixed((map.config.airplaneIconSize * 0.5), 1) + ")";
+                    let rotation = "rotate(" + fastToFixed(track, 1) + " " + fastToFixed((map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1) + " " + fastToFixed((map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1) + ")";
                     this.svgElement.children[0].setAttribute("transform", rotation);
                 }
             }
         }
-        else {
+        else if (map.rotationMode == EMapRotationMode.HDGUp) {
             this._lastTrack = NaN;
             this.svgElement.children[0].removeAttribute("transform");
         }
+        else {
+            track -= map.mapUpDirection;
+            if (this._lastTrack !== track && isFinite(track)) {
+                if (this.svgElement.children[0]) {
+                    this._lastTrack = track;
+                    let rotation = "rotate(" + fastToFixed(track, 1) + " " + fastToFixed((map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1) + " " + fastToFixed((map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1) + ")";
+                    this.svgElement.children[0].setAttribute("transform", rotation);
+                }
+            }
+        }
         if (this._forcePosAndRot) {
-            this.svgElement.setAttribute("x", fastToFixed(500 + this._forcedPos.x - map.config.airplaneIconSize * 0.5, 1));
-            this.svgElement.setAttribute("y", fastToFixed(500 + this._forcedPos.y - map.config.airplaneIconSize * 0.5, 1));
+            this.svgElement.setAttribute("x", fastToFixed(500 + this._forcedPos.x - map.config.airplaneIconSize / map.overdrawFactor * 0.5, 1));
+            this.svgElement.setAttribute("y", fastToFixed(500 + this._forcedPos.y - map.config.airplaneIconSize / map.overdrawFactor * 0.5, 1));
         }
         else {
             if (this._forceCoordinates) {
@@ -64,8 +74,8 @@ class SvgAirplaneElement extends SvgMapElement {
                 map.coordinatesToXYToRef(map.planeCoordinates, this._pos);
             }
             if (isFinite(this._pos.x) && isFinite(this._pos.y)) {
-                this.svgElement.setAttribute("x", fastToFixed((this._pos.x - map.config.airplaneIconSize * 0.5), 1));
-                this.svgElement.setAttribute("y", fastToFixed((this._pos.y - map.config.airplaneIconSize * 0.5), 1));
+                this.svgElement.setAttribute("x", fastToFixed((this._pos.x - map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1));
+                this.svgElement.setAttribute("y", fastToFixed((this._pos.y - map.config.airplaneIconSize / map.overdrawFactor * 0.5), 1));
             }
         }
     }
@@ -219,8 +229,8 @@ class SvgNPCAirplaneElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("width", fastToFixed(map.config.airplaneIconSize * 0.7, 0));
-        container.setAttribute("height", fastToFixed(map.config.airplaneIconSize * 0.7, 0));
+        container.setAttribute("width", fastToFixed(map.config.airplaneIconSize / map.overdrawFactor * 0.7, 0));
+        container.setAttribute("height", fastToFixed(map.config.airplaneIconSize / map.overdrawFactor * 0.7, 0));
         container.setAttribute("overflow", "visible");
         let iconPath = map.config.imagesDir;
         iconPath += map.config.airplaneIcon1;
@@ -230,8 +240,8 @@ class SvgNPCAirplaneElement extends SvgMapElement {
         this._image.setAttribute("height", "100%");
         this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", iconPath);
         container.appendChild(this._image);
-        container.setAttribute("x", fastToFixed(((1000 - map.config.airplaneIconSize * 0.7) * 0.5), 0));
-        container.setAttribute("y", fastToFixed(((1000 - map.config.airplaneIconSize * 0.7) * 0.5), 0));
+        container.setAttribute("x", fastToFixed(((1000 - map.config.airplaneIconSize / map.overdrawFactor * 0.7) * 0.5), 0));
+        container.setAttribute("y", fastToFixed(((1000 - map.config.airplaneIconSize / map.overdrawFactor * 0.7) * 0.5), 0));
         return container;
     }
     updateDraw(map) {
@@ -246,18 +256,18 @@ class SvgNPCAirplaneElement extends SvgMapElement {
                 if (this.svgElement.children[0]) {
                     this._lastHeading = this.heading;
                     let angle = this.heading;
-                    if (map.rotateWithPlane) {
-                        angle -= map.planeDirection;
+                    if (map.rotationMode != EMapRotationMode.NorthUp) {
+                        angle -= map.mapUpDirection;
                     }
-                    let rotation = "rotate(" + fastToFixed(angle, 1) + " " + fastToFixed((map.config.airplaneIconSize * 0.7 * 0.5), 1) + " " + fastToFixed((map.config.airplaneIconSize * 0.7 * 0.5), 1) + ")";
+                    let rotation = "rotate(" + fastToFixed(angle, 1) + " " + fastToFixed((map.config.airplaneIconSize / map.overdrawFactor * 0.7 * 0.5), 1) + " " + fastToFixed((map.config.airplaneIconSize * 0.7 * 0.5), 1) + ")";
                     this.svgElement.children[0].setAttribute("transform", rotation);
                 }
             }
         }
         map.coordinatesToXYToRef(new LatLong(this.lat, this.lon), this._pos);
         if (isFinite(this._pos.x) && isFinite(this._pos.y)) {
-            this.svgElement.setAttribute("x", fastToFixed((this._pos.x - map.config.airplaneIconSize * 0.7 * 0.5), 1));
-            this.svgElement.setAttribute("y", fastToFixed((this._pos.y - map.config.airplaneIconSize * 0.7 * 0.5), 1));
+            this.svgElement.setAttribute("x", fastToFixed((this._pos.x - map.config.airplaneIconSize / map.overdrawFactor * 0.7 * 0.5), 1));
+            this.svgElement.setAttribute("y", fastToFixed((this._pos.y - map.config.airplaneIconSize / map.overdrawFactor * 0.7 * 0.5), 1));
         }
         if (this.useTCAS) {
             let altitudeAGL = map.planeAltitude;

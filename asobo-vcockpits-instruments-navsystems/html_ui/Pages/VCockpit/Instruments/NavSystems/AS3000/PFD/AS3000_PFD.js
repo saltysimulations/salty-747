@@ -108,18 +108,20 @@ class AS3000_PFD_SoftKeyHtmlElement extends SoftKeyHtmlElement {
 class AS3000_PFD_MainPage extends NavSystemPage {
     constructor() {
         super("Main", "Mainframe", new AS3000_PFD_MainElement());
-        this.syntheticVision = false;
         this.rootMenu = new SoftKeysMenu();
         this.pfdMenu = new SoftKeysMenu();
+        this.attitudeOverlaysMenu = new SoftKeysMenu();
         this.otherPfdMenu = new SoftKeysMenu();
         this.windMenu = new SoftKeysMenu();
+        this.syntheticVision = true;
         this.annunciations = new PFD_Annunciations();
         this.attitude = new PFD_Attitude();
         this.mapInstrument = new MapInstrumentElement();
         this.aoaIndicator = new AS3000_PFD_AngleOfAttackIndicator();
+        this.airspeed = new PFD_Airspeed();
         this.element = new NavSystemElementGroup([
             this.attitude,
-            new PFD_Airspeed(),
+            this.airspeed,
             new PFD_Altimeter(),
             this.annunciations,
             new PFD_Compass(),
@@ -162,7 +164,7 @@ class AS3000_PFD_MainPage extends NavSystemPage {
             new AS3000_PFD_SoftKeyElement("")
         ];
         this.pfdMenu.elements = [
-            new AS3000_PFD_SoftKeyElement("Attitude Overlays"),
+            new AS3000_PFD_SoftKeyElement("Attitude Overlays", this.switchToMenu.bind(this, this.attitudeOverlaysMenu)),
             new AS3000_PFD_SoftKeyElement("PFD Mode", null, null, this.constElement.bind(this, "FULL")),
             new AS3000_PFD_SoftKeyElement(""),
             new AS3000_PFD_SoftKeyElement(""),
@@ -173,6 +175,20 @@ class AS3000_PFD_MainPage extends NavSystemPage {
             new AS3000_PFD_SoftKeyElement("Other PFD Settings", this.switchToMenu.bind(this, this.otherPfdMenu)),
             new AS3000_PFD_SoftKeyElement(""),
             new AS3000_PFD_SoftKeyElement("Back", this.switchToMenu.bind(this, this.rootMenu)),
+            new AS3000_PFD_SoftKeyElement("")
+        ];
+        this.attitudeOverlaysMenu.elements = [
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement("Synthetic Terrain", this.toggleSVT.bind(this), this.getSvtStatus.bind(this)),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement(""),
+            new AS3000_PFD_SoftKeyElement("Back", this.switchToMenu.bind(this, this.pfdMenu)),
             new AS3000_PFD_SoftKeyElement("")
         ];
         this.otherPfdMenu.elements = [
@@ -204,6 +220,8 @@ class AS3000_PFD_MainPage extends NavSystemPage {
             new AS3000_PFD_SoftKeyElement("")
         ];
         this.softKeys = this.rootMenu;
+        SimVar.SetSimVarValue("L:Glasscockpit_SVTTerrain", "number", (this.syntheticVision ? 1 : 0));
+        this.syntheticVisionElement = this.gps.getChildById("SyntheticVision");
     }
     reset() {
         if (this.annunciations)
@@ -247,6 +265,23 @@ class AS3000_PFD_MainPage extends NavSystemPage {
                 break;
             case 2:
                 return "AUTO";
+                break;
+        }
+    }
+    toggleSVT() {
+        this.syntheticVision = !this.syntheticVision;
+        Avionics.Utils.diffAndSetAttribute(this.attitude.svg, "background", (this.syntheticVision ? "false" : "true"));
+        this.syntheticVisionElement.style.display = (this.syntheticVision ? "Block" : "None");
+        SimVar.SetSimVarValue("L:Glasscockpit_SVTTerrain", "number", (this.syntheticVision ? 1 : 0));
+    }
+    getSvtStatus() {
+        return this.syntheticVision;
+    }
+    onEvent(_event) {
+        super.onEvent(_event);
+        switch (_event) {
+            case "SVTTerrain_Toggle":
+                this.toggleSVT();
                 break;
         }
     }
@@ -320,7 +355,7 @@ class AS3000_PFD_ActiveNav extends NavSystemElement {
     onUpdate(_deltaTime) {
         if (!SimVar.GetSimVarValue("GPS DRIVES NAV1", "Boolean")) {
             Avionics.Utils.diffAndSetAttribute(this.NavInfos, "state", "Visible");
-            let index = SimVar.GetSimVarValue("AUTOPILOT NAV SELECTED", "number");
+            let index = Simplane.getAutoPilotSelectedNav();
             Avionics.Utils.diffAndSet(this.ActiveNav, "NAV" + index);
             Avionics.Utils.diffAndSet(this.ActiveNavFreq, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:" + index, "MHz"), 2));
             Avionics.Utils.diffAndSet(this.ActiveNavName, SimVar.GetSimVarValue("NAV SIGNAL:" + index, "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:" + index, "string") : "");

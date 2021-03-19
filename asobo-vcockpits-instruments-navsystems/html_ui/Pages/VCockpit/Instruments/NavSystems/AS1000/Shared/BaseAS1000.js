@@ -21,6 +21,7 @@ var AS1000;
     class NavFrequencies extends NavSystemElement {
         constructor() {
             super(...arguments);
+            this.volumeDisplayStartTime = 0;
             this.wantedActiveIndex = 1;
             this.activeIndex = 0;
             this.nav1ActiveValue = "";
@@ -41,11 +42,14 @@ var AS1000;
             this.nav2ArrowElement = this.gps.getChildById("Nav2_DoubleArrow");
             this.nav2ActiveElement = this.gps.getChildById("Nav2_Active");
             this.nav2IdentElement = this.gps.getChildById("Nav2_Ident");
+            this.navVolumePopup = this.gps.getChildById("NavVolumePopup");
+            this.navVolumeValue = this.gps.getChildById("NavVolumeValue");
         }
         onEvent(_event) {
             switch (_event) {
                 case "NAV_Push":
                     this.wantedActiveIndex = (this.activeIndex == 1 ? 2 : 1);
+                    this.volumeDisplayStartTime = 0;
                     break;
                 case "NAV_Switch":
                     SimVar.SetSimVarValue("K:NAV" + this.activeIndex + "_RADIO_SWAP", "number", 0);
@@ -63,9 +67,11 @@ var AS1000;
                     SimVar.SetSimVarValue("K:NAV" + this.activeIndex + "_RADIO_FRACT_DEC", "number", 0);
                     break;
                 case "VOL_1_INC":
+                    this.volumeDisplayStartTime = Date.now();
                     SimVar.SetSimVarValue("K:NAV" + this.activeIndex + "_VOLUME_INC", "number", 0);
                     break;
                 case "VOL_1_DEC":
+                    this.volumeDisplayStartTime = Date.now();
                     SimVar.SetSimVarValue("K:NAV" + this.activeIndex + "_VOLUME_DEC", "number", 0);
                     break;
             }
@@ -125,6 +131,13 @@ var AS1000;
                     this.activeIndex = this.wantedActiveIndex;
                 }
             }
+            if (Date.now() - this.volumeDisplayStartTime < 3000) {
+                Avionics.Utils.diffAndSetAttribute(this.navVolumePopup, "state", this.activeIndex == 1 ? "" : "Bottom");
+                Avionics.Utils.diffAndSet(this.navVolumeValue, SimVar.GetSimVarValue("NAV VOLUME:" + this.activeIndex, "percent").toFixed(0) + "%");
+            }
+            else {
+                Avionics.Utils.diffAndSetAttribute(this.navVolumePopup, "state", "Inactive");
+            }
         }
         onExit() {
         }
@@ -147,6 +160,7 @@ var AS1000;
     class ComFrequencies extends NavSystemElement {
         constructor() {
             super(...arguments);
+            this.volumeDisplayStartTime = 0;
             this.wantedActiveIndex = 1;
             this.activeIndex = 0;
             this.com1ActiveValue = "";
@@ -166,6 +180,7 @@ var AS1000;
             switch (_event) {
                 case "COM_Push":
                     this.wantedActiveIndex = (this.activeIndex == 1 ? 2 : 1);
+                    this.volumeDisplayStartTime = 0;
                     break;
                 case "COM_Switch":
                     SimVar.SetSimVarValue("K:COM" + (this.activeIndex == 1 ? "_STBY" : "2") + "_RADIO_SWAP", "number", 0);
@@ -186,9 +201,11 @@ var AS1000;
                     SimVar.SetSimVarValue("K:COM" + (this.activeIndex == 1 ? "" : "2") + "_RADIO_FRACT_DEC", "number", 0);
                     break;
                 case "VOL_2_INC":
+                    this.volumeDisplayStartTime = Date.now();
                     SimVar.SetSimVarValue("K:COM" + this.activeIndex + "_VOLUME_INC", "number", 0);
                     break;
                 case "VOL_2_DEC":
+                    this.volumeDisplayStartTime = Date.now();
                     SimVar.SetSimVarValue("K:COM" + this.activeIndex + "_VOLUME_DEC", "number", 0);
                     break;
             }
@@ -201,6 +218,8 @@ var AS1000;
             this.com2SbyElement = this.gps.getChildById("Com2_StdBy");
             this.com2ArrowElement = this.gps.getChildById("Com2_DoubleArrow");
             this.com2ActiveElement = this.gps.getChildById("Com2_Active");
+            this.comVolumePopup = this.gps.getChildById("ComVolumePopup");
+            this.comVolumeValue = this.gps.getChildById("ComVolumeValue");
         }
         onEnter() {
         }
@@ -253,6 +272,13 @@ var AS1000;
                     }
                     this.activeIndex = this.wantedActiveIndex;
                 }
+            }
+            if (Date.now() - this.volumeDisplayStartTime < 3000) {
+                Avionics.Utils.diffAndSetAttribute(this.comVolumePopup, "state", this.activeIndex == 1 ? "" : "Bottom");
+                Avionics.Utils.diffAndSet(this.comVolumeValue, SimVar.GetSimVarValue("COM VOLUME:" + this.activeIndex, "percent").toFixed(0) + "%");
+            }
+            else {
+                Avionics.Utils.diffAndSetAttribute(this.comVolumePopup, "state", "Inactive");
             }
         }
         onExit() {
