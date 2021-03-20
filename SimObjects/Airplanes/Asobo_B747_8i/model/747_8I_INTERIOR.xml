@@ -1828,7 +1828,29 @@
 			</Component>
 
 			<Component ID="Misc">
-			<!-- TODO UNcomment when added
+			<!-- current ASOBO code
+				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+					<NODE_ID>btn_rudder_01_SEQ2</NODE_ID>
+				</UseTemplate>
+				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+					<NODE_ID>btn_pedestal_TEST_decal</NODE_ID>
+				</UseTemplate>
+				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+					<NODE_ID>btn_pedestal_SLEW_decal</NODE_ID>
+				</UseTemplate>
+				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+					<NODE_ID>btn_pedestal_RESET_decal</NODE_ID>
+				</UseTemplate>
+				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+					<NODE_ID>btn_pedestal_PWR_decal</NODE_ID>
+				</UseTemplate>
+				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+					<NODE_ID>btn_cursor_control_sel_pilot_decal</NODE_ID>
+				</UseTemplate>
+				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+					<NODE_ID>btn_cursor_control_sel_copilot_decal</NODE_ID>
+				</UseTemplate>
+			-->
 				<UseTemplate Name="ASOBO_GT_Anim">
 					<ANIM_NAME>switch_ovhd_misc_obs_audio_system</ANIM_NAME>
 					<ANIM_CODE>50</ANIM_CODE>
@@ -1841,7 +1863,6 @@
 					<ANIM_NAME>switch_ovhd_pass_voice_recorder</ANIM_NAME>
 					<ANIM_CODE>100</ANIM_CODE>
 				</UseTemplate>
-			-->
 			</Component>
 			<CameraTitle>Instruments08</CameraTitle>
 		</Component>
