@@ -13,9 +13,9 @@ for project_directory in project_directories:
             file_path = os.path.join(directory_path, file_name)
             file_size = os.path.getsize(file_path)
             if platform.system == "Windows":
-				file_date = 116444736000000000 + int(os.path.getmtime(file_path) * 10000000.0)
-			else:
-				file_date = int(os.path.getmtime(file_path) * 10000000.0)
+                file_date = 116444736000000000 + int(os.path.getmtime(file_path) * 10000000.0)
+            else:
+                file_date = int(os.path.getmtime(file_path) * 10000000.0)
 
             content_entry = {"path": file_path.replace(os.sep, "/"), "size": file_size, "date": file_date}
             content_entries.append(content_entry)
