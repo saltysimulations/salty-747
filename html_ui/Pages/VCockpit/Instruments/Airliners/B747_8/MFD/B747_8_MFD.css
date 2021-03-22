@@ -177,7 +177,7 @@ b747-8-mfd-element {
       b747-8-mfd-element #Mainframe #TopBox text.Units {
         font-size: 32px;
         fill: cyan; }
-  b747-8-mfd-element #MainFrame #VORDMENavaids{
+  b747-8-mfd-element #Mainframe #VORDMENavaids {
     font-family: "BoeingEICAS"; }
     b747-8-mfd-element #Mainframe #VORDMENavaids div {
       top: 86%;
@@ -202,13 +202,13 @@ b747-8-mfd-element {
       fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #ID {
       font-size: calc( 3 * 1vh * var(--bodyHeightScale));
-      fill: black; }
+      fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #Mode {
       font-size: calc( 3 * 1vh * var(--bodyHeightScale));
-      fill: black; }
+      fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #Distance {
       font-size: calc( 2.75 * 1vh * var(--bodyHeightScale));
-      fill: black; }
+      fill: lime; }
     b747-8-mfd-element #Mainframe #VORDMENavaids #Unit {
       font-size: calc( 2.75 * 1vh * var(--bodyHeightScale));
       fill: cyan; }
@@ -219,8 +219,7 @@ b747-8-mfd-element {
     b747-8-mdf-element #Mainframe #VORDMENavaids #ArrowAdf {
       fill: none;
       stroke: cyan;
-      stroke-width: 4px;
-    }
+      stroke-width: 4px; }
     b747-8-mfd-element #Mainframe #Symbols {
       top: 65%;
       left: 3%;

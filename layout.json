@@ -587,8 +587,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
-            "size": 10540,
-            "date": 16163535732692874
+            "size": 9978,
+            "date": 16163689878851900
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_NDCompass.js",
@@ -617,8 +617,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.css",
-            "size": 7450,
-            "date": 16163532541280870
+            "size": 7444,
+            "date": 16163697264206974
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/BoeingWaypoint.png",
@@ -702,8 +702,8 @@
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
-            "size": 186593,
-            "date": 16163455283226228
+            "size": 185759,
+            "date": 16163726275683964
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS",
