@@ -241,7 +241,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
         if (this._showILS) {
             if (this.ILSBeaconGroup && this.ILSOffscreenGroup) {
                 let localizer = this.gps.radioNav.getBestILSBeacon();
-                if (localizer.id > 0) {
+                if (localizer && localizer.id > 0) {
                     var delta = localizer.course - compass;
                     if (delta > 180)
                         delta = delta - 360;
