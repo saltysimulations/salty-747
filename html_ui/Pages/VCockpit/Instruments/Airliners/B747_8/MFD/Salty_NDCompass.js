@@ -221,17 +221,6 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                         this.courseFROMLine.setAttribute("stroke", this.courseColor.toString());
                         this.courseFROMLine.setAttribute("stroke-width", "1");
                         this.course.appendChild(this.courseFROMLine);
-                        let circlePosition = [-80, -40, 40, 80];
-                        for (let i = 0; i < circlePosition.length; i++) {
-                            let CDICircle = document.createElementNS(Avionics.SVG.NS, "circle");
-                            CDICircle.setAttribute("cx", (50 + circlePosition[i]).toString());
-                            CDICircle.setAttribute("cy", "50");
-                            CDICircle.setAttribute("r", "5");
-                            CDICircle.setAttribute("fill", "none");
-                            CDICircle.setAttribute("stroke", "white");
-                            CDICircle.setAttribute("stroke-width", "2");
-                            this.course.appendChild(CDICircle);
-                        }
                     }
                 }
                 this.selectedHeadingGroup = document.createElementNS(Avionics.SVG.NS, "g");
