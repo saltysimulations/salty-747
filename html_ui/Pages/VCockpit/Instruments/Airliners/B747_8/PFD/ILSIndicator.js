@@ -242,7 +242,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     }
                     this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
                 }
-                else if (localizer.id > 0 && SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + localizer.id, "Bool")) {
+                else if (localizer && localizer.id > 0 && SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + localizer.id, "Bool")) {
                     let gsi = -SimVar.GetSimVarValue("NAV GSI:" + localizer.id, "number") / 127.0;
                     let delta = (gsi + 1.0) * 0.5;
                     let y = this.gs_cursorMinY + (this.gs_cursorMaxY - this.gs_cursorMinY) * delta;
@@ -263,7 +263,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                 }
             }
             if (this.loc_cursorGroup && this.locVisible) {
-                if ((!isApproachLoaded || approachType != 10) && localizer.id > 0) {
+                if ((!isApproachLoaded || approachType != 10) && localizer && localizer.id > 0) {
                     let cdi = SimVar.GetSimVarValue("NAV CDI:" + localizer.id, "number") / 127.0;
                     let delta = (cdi + 1.0) * 0.5;
                     let x = this.loc_cursorMinX + (this.loc_cursorMaxX - this.loc_cursorMinX) * delta;
@@ -284,7 +284,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                 }
             }
             if (this.InfoGroup && this.infoVisible) {
-                if (localizer.id > 0) {
+                if (localizer && localizer.id > 0) {
                     this.InfoGroup.setAttribute("visibility", "visible");
                     if (this.ILSIdent) {
                         this.ILSIdent.textContent = localizer.ident;
