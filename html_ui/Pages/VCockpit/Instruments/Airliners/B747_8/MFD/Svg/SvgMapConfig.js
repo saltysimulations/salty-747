@@ -20,7 +20,7 @@ class SvgMapConfig {
         this.intersectionLabelColor = "cyan";
         this.intersectionLabelBackgroundPaddingLeft = 6;
         this.intersectionLabelBackgroundPaddingTop = 20;
-        this.vorLabelColor = "lime";
+        this.vorLabelColor = "cyan";
         this.vorLabelBackgroundPaddingLeft = 0;
         this.vorLabelBackgroundPaddingTop = 20;
         this.ndbLabelColor = "white";

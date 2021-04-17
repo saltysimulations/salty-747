@@ -297,7 +297,7 @@ class SvgWaypointElement extends SvgMapElement {
                 this._lastY = this.y;
                 let x = (this.x - map.config.waypointIconSize / map.overdrawFactor * 0.5 * (this.minimize ? 0.5 : 1));
                 let y = (this.y - map.config.waypointIconSize / map.overdrawFactor * 0.5 * (this.minimize ? 0.5 : 1));
-                this.svgElement.setAttribute("x", x - 7 + "");
+                this.svgElement.setAttribute("x", x + "");
                 this.svgElement.setAttribute("y", y + "");
                 if (this.source instanceof AirportInfo) {
                     let a = this.source.longestRunwayDirection;

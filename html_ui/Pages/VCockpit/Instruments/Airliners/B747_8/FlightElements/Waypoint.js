@@ -651,7 +651,7 @@ class VORInfo extends WayPointInfo {
             case 5:
                 fName = "ICON_MAP_VOR_VORTAC.svg";
             case 6:
-                fName = "ICON_MAP_VOR.svg";
+                fName = "ICON_MAP_VOR_VORTAC.svg";
         }
         if (BaseInstrument.useSvgImages) {
             return fName;

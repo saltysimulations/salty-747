@@ -11,7 +11,7 @@
   "waypointLabelBackgroundPadding": "25 5 5 3",
   "waypointLabelDistanceX": 30,
   "waypointLabelDistance": 25,
-  "waypointIconSize": 22,
+  "waypointIconSize": 30,
 
   "preventLabelOverlap": false,
 
