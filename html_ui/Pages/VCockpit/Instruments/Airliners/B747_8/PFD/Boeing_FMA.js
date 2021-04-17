@@ -226,7 +226,7 @@ var Boeing_FMA;
                 return -1;
             }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRActive()) {
-                if (Simplane.getAutoPilotApproachType() == 10) {
+                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                     return 1;
                 }
                 else {
@@ -302,7 +302,7 @@ var Boeing_FMA;
                 return -1;
             }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRArm()) {
-                if (Simplane.getAutoPilotApproachType() == 10) {
+                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                     return 1;
                 }
                 else {
@@ -375,7 +375,7 @@ var Boeing_FMA;
                 return -1;
             }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive()) {
-                if (Simplane.getAutoPilotApproachType() == 10) {
+                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                     return 5;
                 }
                 else {
@@ -446,7 +446,7 @@ var Boeing_FMA;
                 return -1;
             }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && !(Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive())) {
-                if (Simplane.getAutoPilotApproachType() == 10) {
+                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                     return 1;
                 }
                 else {
