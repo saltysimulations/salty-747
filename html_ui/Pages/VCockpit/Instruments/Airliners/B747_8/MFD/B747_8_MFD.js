@@ -196,9 +196,11 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             this.setMapMode(this.mapIsCentered, this.mapMode);
             if (this.terrainOn) {
                 this.mapConfigId = 1;
+                this.map.instrument.bingMap.setVisible(true);
             }
             else if (this.wxRadarOn) {
                 this.showWeather();
+                this.map.instrument.bingMap.setVisible(true);
             }
             else {
                 this.mapConfigId = 0;
@@ -215,7 +217,12 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.modeChangeMask.style.display = "block";
                 this.modeChangeTimer = 0.15;
             }
+        } else if (!this.wxRadarOn && !this.terrainOn && this.map.instrument.showAirports) {
+            this.map.instrument.bingMap.setVisible(true);
+        } else if (!this.wxRadarOn && !this.terrainOn && !this.map.instrument.showAirports) {
+            this.map.instrument.bingMap.setVisible(false);
         }
+        console.log(this.map.instrument.showBingMap);
         switch (this.mapConfigId) {
             case 0:
                 if (this.map.instrument.mapConfigId != 0) {
@@ -451,7 +458,7 @@ class B747_8_MFD_Map extends MapInstrumentElement {
         }
     }
     showWeather() {
-        this.instrument.showWeatherWithGPS(EWeatherRadar.HORIZONTAL, Math.PI * 2.0);
+        this.instrument.showWeatherWithGPS(EWeatherRadar.HORIZONTAL, Math.PI * 2);
         this.instrument.setBingMapStyle("2.25%", "4.0%", "92%", "92%");
     }
     hideWeather() {
