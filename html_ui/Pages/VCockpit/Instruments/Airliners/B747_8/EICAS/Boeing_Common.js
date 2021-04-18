@@ -9,8 +9,14 @@ var Boeing;
         }
         getText(phase, mode) {
             let text = "-";
+            let alt = Simplane.getAltitude();
+            let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
             if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
-                text = "TO";
+                if (alt <= thrRedAlt){
+                    text = "TO"
+                } else {
+                    text = "CLB";
+                }
                 if (mode === 1) {
                     text += " - 1";
                 }
@@ -35,7 +41,9 @@ var Boeing;
         update() {
             let phase = Simplane.getCurrentFlightPhase();
             let mode = 0;
-            if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+            let alt = Simplane.getAltitude();
+            let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
+            if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF && alt < thrRedAlt) {
                 mode = Simplane.getEngineThrustTakeOffMode(0);
             }
             else {
