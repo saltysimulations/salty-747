@@ -1949,7 +1949,7 @@
 						<NODE_ID>btn_afds_fpv_l1</NODE_ID>
 						<ANIM_NAME>afds_push_fpv_l</ANIM_NAME>
 						<ID>1</ID>
-						<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EFIS_PANEL_FPV_INFO_TURN_ON</TOOLTIPID>
+						<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EFIS_PANEL_FPV_INFO_TURN_ON</TOOLTIPID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_MTRS_Template">
 						<NODE_ID>btn_afds_mtrs_l</NODE_ID>

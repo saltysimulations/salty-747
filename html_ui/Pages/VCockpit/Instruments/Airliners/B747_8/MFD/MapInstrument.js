@@ -703,15 +703,7 @@ class MapInstrument extends ISvgMapRootElement {
                         let airport = this.airportLoader.waypoints[i];
                         if (airport && airport.infos instanceof AirportInfo) {
                             if (this.navMap.isLatLongInFrame(airport.infos.coordinates, margin)) {
-                                if (this.getDeclutteredRange() < this.smallAirportMaxRange) {
-                                    this.navMap.mapElements.push(airport.getSvgElement(this.navMap.index));
-                                }
-                                else if (this.getDeclutteredRange() < this.medAirportMaxRange) {
-                                    if (airport.infos.getClassSize() !== AirportSize.Small) {
-                                        this.navMap.mapElements.push(airport.getSvgElement(this.navMap.index));
-                                    }
-                                }
-                                else if (this.getDeclutteredRange() < this.largeAirportMaxRange) {
+                                if (this.getDeclutteredRange() < this.largeAirportMaxRange) {
                                     if (airport.infos.getClassSize() === AirportSize.Large) {
                                         this.navMap.mapElements.push(airport.getSvgElement(this.navMap.index));
                                     }
@@ -828,12 +820,12 @@ class MapInstrument extends ISvgMapRootElement {
                         this.navMap.mapElements.push(this.tmpDirectToElement);
                     }
                     this.navMap.mapElements.push(...this.backOnTracks);
-                    if ((SimVar.GetSimVarValue("L:FLIGHTPLAN_USE_DECEL_WAYPOINT", "number") === 1) && this.flightPlanManager.decelWaypoint) {
+                    /*if ((SimVar.GetSimVarValue("L:FLIGHTPLAN_USE_DECEL_WAYPOINT", "number") === 1) && this.flightPlanManager.decelWaypoint) {
                         this.navMap.mapElements.push(this.flightPlanManager.decelWaypoint.getSvgElement(this.navMap.index));
                     }
                     if (this.debugApproachFlightPlanElement) {
                         this.navMap.mapElements.push(this.debugApproachFlightPlanElement);
-                    }
+                    }*/
                 }
                 this.navMap.mapElements.push(...this.maskElements);
                 this.navMap.mapElements.push(...this.topOfCurveElements);

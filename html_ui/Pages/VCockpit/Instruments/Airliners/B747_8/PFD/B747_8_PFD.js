@@ -168,11 +168,11 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
                 this.altimeter.showMTRS(this.isMTRSActive);
                 break;
             case "Mins_INC":
-                this.minimumReference += 50;
+                this.minimumReference += 10;
                 this.altimeter.minimumReferenceValue = this.minimumReference;
                 break;
             case "Mins_DEC":
-                this.minimumReference -= 50;
+                this.minimumReference -= 10;
                 this.altimeter.minimumReferenceValue = this.minimumReference;
                 break;
             case "Mins_Press":
@@ -241,11 +241,11 @@ class B747_8_PFD_Compass extends NavSystemElement {
                 SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", 1);
                 break;
             case "Mins_INC":
-                this.minimumReference += 50;
+                this.minimumReference += 10;
                 this.svg.minimumReferenceValue = this.minimumReference;
                 break;
             case "Mins_DEC":
-                this.minimumReference -= 50;
+                this.minimumReference -= 10;
                 this.svg.minimumReferenceValue = this.minimumReference;
                 break;
             case "Mins_Press":
