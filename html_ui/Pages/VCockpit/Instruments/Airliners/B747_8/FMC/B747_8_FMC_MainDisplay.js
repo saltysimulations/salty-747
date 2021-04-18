@@ -836,7 +836,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                 }
                 //Triggers correct Autothrottle mode SPD when capturing in VNAV
-                if (Simplane.getAutoPilotAltitudeLockActive() && Simplane.getAutoPilotThrottleArmed()) {
+                if (Simplane.getAutoPilotAltitudeLockActive() && Simplane.getAutoPilotThrottleArmed() && !this.getIsSPDActive()) {
                     this.activateSPD();
                 }
             }
