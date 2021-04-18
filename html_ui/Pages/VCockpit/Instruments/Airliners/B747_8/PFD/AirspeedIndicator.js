@@ -1211,7 +1211,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         }
     }
     updateMarkerVRef(_marker, currentAirspeed) {
-        let vRefSpeed = Simplane.getREFAirspeed();
+        let vRefSpeed = SimVar.GetSimVarValue("L:AIRLINER_VREF_SPEED", "Knots");
         if (vRefSpeed > 0) {
             var posY = this.valueToSvg(currentAirspeed, vRefSpeed);
             if (posY > this.refHeight - 25 && (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B)) {
@@ -1258,7 +1258,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             if (this.aircraft == Aircraft.AS01B && markerHandleIndex == flapsHandleIndex) {
                 hideMarker = false;
             }
-            if (phase == FlightPhase.FLIGHT_PHASE_CLIMB || phase == FlightPhase.FLIGHT_PHASE_CRUISE) {
+            if (phase == FlightPhase.FLIGHT_PHASE_CLIMB || phase == FlightPhase.FLIGHT_PHASE_CRUISE || phase == FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 if (markerHandleIndex == (flapsHandleIndex - 1)) {
                     hideMarker = false;
                 }
@@ -1270,13 +1270,10 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             }
         }
         if (!hideMarker) {
-            let limitSpeed = 0;
             if (markerHandleIndex == 0) {
-                limitSpeed = Simplane.getFlapsLimitSpeed(this.aircraft, 1) + 20;
                 _marker.setText("UP");
             }
             else {
-                limitSpeed = Simplane.getFlapsLimitSpeed(this.aircraft, markerHandleIndex);
                 let degrees = 0;
                 if (this.gps.cockpitSettings && this.gps.cockpitSettings.FlapsLevels.initialised) {
                     degrees = this.gps.cockpitSettings.FlapsLevels.flapsAngle[markerHandleIndex];
@@ -1286,16 +1283,33 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 }
                 _marker.setText(degrees.toFixed(0));
             }
-            let speedBuffer = 50;
-            {
-                let weightRatio = Simplane.getWeight() / Simplane.getMaxWeight();
-                weightRatio = (weightRatio - 0.65) / (1 - 0.65);
-                weightRatio = 1.0 - Utils.Clamp(weightRatio, 0, 1);
-                let altitudeRatio = Simplane.getAltitude() / 30000;
-                altitudeRatio = 1.0 - Utils.Clamp(altitudeRatio, 0, 1);
-                speedBuffer *= (weightRatio * 0.7 + altitudeRatio * 0.3);
+            let vRef25 = SimVar.GetSimVarValue("L:SALTY_VREF25", "knots");
+            let vRef30 = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots");
+            let flapMarkerSpeed = 0;
+            switch (markerHandleIndex) {
+                case 0:
+                    flapMarkerSpeed = vRef30 + 80;
+                    break;
+                case 1:
+                    flapMarkerSpeed = vRef30 + 60;
+                    break;
+                case 2:
+                    flapMarkerSpeed = vRef30 + 40;
+                    break;   
+                case 3:
+                    flapMarkerSpeed = vRef30 + 20;
+                    break;   
+                case 4:
+                    flapMarkerSpeed = vRef30 + 10;
+                    break;   
+                case 5:
+                    flapMarkerSpeed = vRef25;
+                    break;
+                case 6:
+                    flapMarkerSpeed = vRef30;
+                    break;         
             }
-            var posY = this.valueToSvg(currentAirspeed, limitSpeed - speedBuffer);
+            var posY = this.valueToSvg(currentAirspeed, flapMarkerSpeed);
             _marker.svg.setAttribute("y", (posY - this.speedMarkersHeight * 0.5).toString());
             _marker.svg.setAttribute("visibility", "visible");
         }
