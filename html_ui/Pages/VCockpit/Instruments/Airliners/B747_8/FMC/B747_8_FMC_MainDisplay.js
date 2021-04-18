@@ -807,38 +807,33 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                     else {
                         SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 0);
-                    }             
-                }
-                //Sets autopilot capture altitude to closest of MCP alt or Leg Constraint/CRZ ALT to allow for VNAV ALT mode.
-                let selectedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue("feet");
-                let crzAlt = SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number");
-                if (isFinite(selectedAltitude) && isFinite(crzAlt)) {
-                    let currentAlt = Simplane.getAltitude();
-                    let mcpDelta = Math.abs(selectedAltitude - currentAlt);
-                    let crzAltDelta = Math.abs(crzAlt - currentAlt);
-                    //If in descent ignore CRZ alt
-                    if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_DESCENT) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                     }
-                    //MCP Alt is closest 
-                    else if (mcpDelta < crzAltDelta) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
-                    } 
-                    //CRZ Alt constraint is closest
-                    else {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, crzAlt, this._forceNextAltitudeUpdate);
+                    let selectedAltitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
+                    if (!this.flightPlanManager.getIsDirectTo() &&
+                        isFinite(nextWaypoint.legAltitude1) &&
+                        nextWaypoint.legAltitude1 < 20000 &&
+                        nextWaypoint.legAltitude1 > selectedAltitude &&
+                        Simplane.getAltitude() > nextWaypoint.legAltitude1 - 200) {
+                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
                     }
+                    else {
+                        let altitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
+                        if (isFinite(altitude)) {
+                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, this.cruiseFlightLevel * 100, this._forceNextAltitudeUpdate);
+                            this._forceNextAltitudeUpdate = false;
+                            SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
+                        }
+                    }
                 }
                 else {
-                    Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, selectedAltitude, this._forceNextAltitudeUpdate);
-                    this._forceNextAltitudeUpdate = false;
-                    SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
+                    let altitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
+                    if (isFinite(altitude)) {
+                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, this.cruiseFlightLevel * 100, this._forceNextAltitudeUpdate);
+                        this._forceNextAltitudeUpdate = false;
+                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
+                    }
                 }
                 //Triggers correct Autothrottle mode SPD when capturing in VNAV
                 if (Simplane.getAutoPilotAltitudeLockActive() && Simplane.getAutoPilotThrottleArmed()) {
