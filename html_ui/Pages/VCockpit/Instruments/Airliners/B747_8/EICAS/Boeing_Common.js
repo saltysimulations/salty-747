@@ -141,7 +141,7 @@ var Boeing;
                     barBottom = barTop + this.bar.height.baseVal.value;
                     barHeight = (barBottom - barTop);
                 }
-                var markerY = barTop + (barHeight * this.currentPercent);
+                var markerY = barTop + (barHeight * this.flapsAngleToPercentage(targetAngle));
                 var markerYStr = markerY.toString();
                 if (this.marker != null) {
                     this.marker.setAttribute("y1", markerYStr);
@@ -149,7 +149,7 @@ var Boeing;
                 }
                 if (this.valueText != null) {
                     this.valueText.textContent = (targetAngle <= 0) ? "UP" : targetAngle.toFixed(0);
-                    this.valueText.setAttribute("y", markerYStr);
+                    this.valueText.setAttribute("y", markerYStr - 2);
                 }
                 if (this.gauge != null) {
                     var height = barHeight * this.currentPercent;
@@ -169,6 +169,30 @@ var Boeing;
             }
             return Simplane.getFlapsHandleAngle(_leverPos);
         }
+        flapsAngleToPercentage(_angle) {
+            if (_angle == 0) {
+                return 0;
+            }
+            if (_angle == 1) {
+                return 0.033;
+            }
+            if (_angle == 5) {
+                return 0.167;
+            }
+            if (_angle == 10) {
+                return 0.333;
+            }
+            if (_angle == 20) {
+                return 0.667;
+            }
+            if (_angle == 25) {
+                return 0.833;
+            }
+            if (_angle == 30) {
+                return 1;
+            }
+            return;
+        }
     }
     FlapsDisplay.TIMEOUT_LENGTH = 3000;
     Boeing.FlapsDisplay = FlapsDisplay;
@@ -184,6 +208,8 @@ var Boeing;
             this.trimBand = null;
             this.maxValue = _maxValue;
             this.valueDecimals = _valueDecimals;
+            this.valueStroke = document.querySelector("#valueStroke");
+            this.decimalPoint = document.querySelector("#decimalPoint");
             if (_root != null) {
                 this.takeoffText = _root.querySelector(".takeoff");
                 this.valueText = _root.querySelector(".value");
@@ -191,7 +217,7 @@ var Boeing;
                 this.trimBand = _root.querySelector(".trimBand");
                 var bar = _root.querySelector(".bar");
                 if (bar != null) {
-                    var barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value;
+                    var barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value - 110.75;
                     this.valueToArrowY = (barHeight * 0.5) / this.maxValue;
                 }
                 if (this.takeoffText != null) {
@@ -200,20 +226,36 @@ var Boeing;
             }
             this.refreshValue(0, true);
         }
-        update(_deltaTime) {
+        update(_deltaTime, _isLowerEICAS) {
             this.refreshValue(SimVar.GetSimVarValue("ELEVATOR TRIM POSITION", "degree"));
+            //Hides Greenband and trim value if airborne.
+            if(!_isLowerEICAS) {
+                if (Simplane.getIsGrounded()) {
+                    this.valueText.style.display = "block";
+                    this.trimBand.style.display = "block";
+                    this.valueStroke.style.display = "block";
+                    this.decimalPoint.style.display = "block";
+                }
+                else {
+                    this.valueText.style.display = "none";
+                    this.trimBand.style.display = "none";
+                    this.valueStroke.style.display = "none";
+                    this.decimalPoint.style.display = "none";
+                }
+            }
         }
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
-                this.currentValue = Utils.Clamp(_value, 0, this.maxValue);
-                var displayValue = (this.currentValue + this.maxValue) * 0.5;
-                if (this.valueText != null) {
-                    this.valueText.textContent = displayValue.toFixed(this.valueDecimals);
+                var displayValue = ((_value * 3.75) + 75);
+                if (Math.round(displayValue) < 10) {
+                    this.valueText.textContent = "0" + displayValue.toFixed(0);
+                }
+                else {
+                    this.valueText.textContent = displayValue.toFixed(0);
                 }
                 if (this.arrow != null) {
-                    let clampedVal = Utils.Clamp(this.currentValue, -this.maxValue, this.maxValue);
-                    var arrowY = clampedVal * this.valueToArrowY;
-                    this.arrow.setAttribute("transform", "translate(0," + arrowY + ")");
+                    var arrowY = displayValue * this.valueToArrowY;
+                    this.arrow.setAttribute("transform", "translate(0," + (arrowY - 56) + ")");
                 }
             }
         }
@@ -515,6 +557,11 @@ var Boeing;
             if (this.parent != null) {
                 this.divMain = this.createDiv(this.divID);
                 this.parent.appendChild(this.divMain);
+                for (var i = 0; i < 32; ++i) {
+                    var newDiv = document.createElement("div");
+                    this.allDivs.push(newDiv);
+                    this.divMain.appendChild(newDiv);
+                }
             }
         }
         createDiv(_id, _class = "", _text = "") {
@@ -530,10 +577,38 @@ var Boeing;
             }
             return div;
         }
-        getNextAvailableDiv() {
-            for (var i = 0; i < this.allDivs.length; ++i) {
-                if (this.allDivs[i].textContent.length == 0) {
-                    return this.allDivs[i];
+        getNextAvailableDiv(_style) {
+            if(_style == Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION) {
+                for (var i = 10; i > 0; --i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        this.allDivs[i].style.visibility = "visible";
+                        return this.allDivs[i];
+                    }
+                }
+                for (var i = 21; i > 10; --i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        this.allDivs[i].style.visibility = "hidden";
+                        return this.allDivs[i];
+                    }
+                }
+                for (var i = 32; i > 21; --i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        this.allDivs[i].style.visibility = "hidden";
+                        return this.allDivs[i];
+                    }
+                }           
+            }
+            else {
+                for (var i = 0; i < this.allDivs.length; ++i) {
+                    if (this.allDivs[i].textContent.length == 0) {
+                        if (i > 10) {
+                            this.allDivs[i].style.visibility = "hidden";
+                        } 
+                        else {
+                            this.allDivs[i].style.visibility = "visible";
+                        }
+                        return this.allDivs[i];
+                    }
                 }
             }
             if (this.divMain != null) {
@@ -561,7 +636,7 @@ var Boeing;
             return "";
         }
         addMessage(_message, _style) {
-            var div = this.getNextAvailableDiv();
+            var div = this.getNextAvailableDiv(_style);
             if (div != null) {
                 div.textContent = _message;
                 div.className = this.getClassNameFromStyle(_style);

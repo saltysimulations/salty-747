@@ -8,10 +8,10 @@
   "waypointLabelBackgroundColor": "#ffffff",
   "waypointLabelBackgroundStrokeColor": "black",
   "waypointLabelBackgroundStrokeWidth": 0,
-  "waypointLabelBackgroundPadding": "5 5 5 5",
+  "waypointLabelBackgroundPadding": "25 5 5 3",
   "waypointLabelDistanceX": 30,
   "waypointLabelDistance": 25,
-  "waypointIconSize": 22,
+  "waypointIconSize": 30,
 
   "preventLabelOverlap": false,
 
@@ -33,7 +33,7 @@
   "airplaneIcon2": "ICON_MAP_PLANE_B747_02",
   "airplaneIcon3": "ICON_MAP_PLANE",
 
-  "imagesDir": "/Pages/VCockpit/Instruments/Airliners/Shared/MFD/Images/",
+  "imagesDir": "/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/",
 
   "runwayFillColor": "white",
   "runwayStrokeColor": "gray",

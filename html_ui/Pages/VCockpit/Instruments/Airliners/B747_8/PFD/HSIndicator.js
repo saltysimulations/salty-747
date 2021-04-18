@@ -163,8 +163,8 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                     this.minimumReferenceModeText = document.createElementNS(Avionics.SVG.NS, "text");
                 }
                 this.minimumReferenceModeText.textContent = "BARO";
-                this.minimumReferenceModeText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.775).toString());
-                this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1).toString());
+                this.minimumReferenceModeText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.65).toString());
+                this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.15).toString());
                 this.minimumReferenceModeText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
                 this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.275).toString());
                 this.minimumReferenceModeText.setAttribute("font-family", "BoeingEICAS");
@@ -174,10 +174,10 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                     this.minimumReferenceValueText = document.createElementNS(Avionics.SVG.NS, "text");
                 }
                 this.minimumReferenceValueText.textContent = "210";
-                this.minimumReferenceValueText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.775).toString());;
-                this.minimumReferenceValueText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.90).toString());
+                this.minimumReferenceValueText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.65).toString());;
+                this.minimumReferenceValueText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.05).toString());
                 this.minimumReferenceValueText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
-                this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize * 0.35).toString());
+                this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize * 0.33).toString());
                 this.minimumReferenceValueText.setAttribute("font-family", "BoeingEICAS");
                 this.minimumReferenceValueText.setAttribute("text-anchor", "end");
                 fixedElements.appendChild(this.minimumReferenceValueText);
@@ -241,7 +241,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
         if (this._showILS) {
             if (this.ILSBeaconGroup && this.ILSOffscreenGroup) {
                 let localizer = this.gps.radioNav.getBestILSBeacon();
-                if (localizer.id > 0) {
+                if (localizer && localizer.id > 0) {
                     var delta = localizer.course - compass;
                     if (delta > 180)
                         delta = delta - 360;
