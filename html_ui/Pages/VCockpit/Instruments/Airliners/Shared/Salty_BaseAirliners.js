@@ -228,7 +228,9 @@ var Airliners;
             var root = this.gps.getChildById(this.container.htmlElemId);
             if (root != null) {
                 this.page = root.querySelector(this.selector);
-                this.page.init(this.gps);
+                if (this.page) {
+                    this.page.init(this.gps);
+                }
             }
         }
         onEnter() {
