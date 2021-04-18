@@ -436,6 +436,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let speed = Math.min(340, machlimit);
         if (machlimit > 340) {
             SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+            SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
         }
         if (Simplane.getAltitude() < 10500) {
             speed = Math.min(speed, 240);
