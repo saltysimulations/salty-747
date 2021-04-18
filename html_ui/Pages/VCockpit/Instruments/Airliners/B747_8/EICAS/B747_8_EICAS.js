@@ -123,10 +123,10 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         return B747_8_EngineState.IDLE;
     }
     getN2IdleValue() {
-        return 60;
+        return 600;
     }
     getN2Value(_engineId) {
-        return SimVar.GetSimVarValue("ENG N2 RPM:" + _engineId, "percent");
+        return SimVar.GetSimVarValue("ENG N2 RPM:" + _engineId, "percent") * 10;
     }
     getFuelValveOpen(_engineId) {
         return SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:" + (4 + _engineId), "boolean");
