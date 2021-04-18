@@ -641,7 +641,7 @@ var Jet_PFD_FlightDirector;
                 this.pitchLine.setAttribute("transform", "translate(0, " + lineY + ")");
             }
         }
-        getLineLength() { return 160; }
+        getLineLength() { return 150; }
         getStrokeWidth() { return "4"; }
         getFDBankLimit() { return 30; }
         getFDBankDisplayLimit() { return 75; }

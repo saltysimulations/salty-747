@@ -1215,7 +1215,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         if (vRefSpeed > 0) {
             var posY = this.valueToSvg(currentAirspeed, vRefSpeed);
             if (posY > this.refHeight - 25 && (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B)) {
-                posY = this.refHeight - 25;
+                posY = this.refHeight - 45;
                 _marker.setOffscreen(true, Math.round(vRefSpeed));
             }
             else {

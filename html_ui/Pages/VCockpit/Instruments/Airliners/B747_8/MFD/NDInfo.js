@@ -95,7 +95,6 @@ class Jet_MFD_NDInfo extends HTMLElement {
                     this.waypointName.textContent = "";
                     this.waypointTrack.textContent = "";
                     this.waypointDistance.textContent = "";
-                    this.waypointTime.textContent = "";
                     this.waypoint.style.display = "none";
                 }
                 if (this.approach)

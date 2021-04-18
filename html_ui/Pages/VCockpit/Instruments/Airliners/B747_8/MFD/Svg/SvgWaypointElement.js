@@ -221,6 +221,7 @@ class SvgWaypointElement extends SvgMapElement {
         }
         else {
             context.fillStyle = "#D570FF";
+            context.strokeStyle = "#D570FF";
             leftPadding = map.config.waypointLabelBackgroundPaddingLeft;
             topPadding = map.config.waypointLabelBackgroundPaddingTop;
         }
