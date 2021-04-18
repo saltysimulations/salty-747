@@ -846,6 +846,11 @@
             "date": 16155813144522884
         },
         {
+            "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I.xml",
+            "size": 14689,
+            "date": 132568419780000000
+        },
+        {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
             "size": 189956,
             "date": 16186462800140268
