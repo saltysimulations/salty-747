@@ -13,7 +13,7 @@ class FMCSaltyOptions {
         fmc.setTemplate([
             ["SALTY OPTIONS"],
             ["", ""],
-            ["<IRS", ""],
+            ["<IRS", "UNITS>"],
             ["", ""],
             ["<METAR SRC", "ATIS SRC>"],
             ["", ""],
@@ -30,7 +30,10 @@ class FMCSaltyOptions {
         fmc.onLeftInput[0] = () => {
             FMCSaltyOptions_IrsStatus.ShowPage(fmc);
         }
-
+        /* RSK1 */
+        fmc.onRightInput[0] = () => {
+            FMCSaltyOptions_Units.ShowPage(fmc);
+        }
         /* LSK2 */
         fmc.onLeftInput[1] = () => {
              FMCSaltyOptions_Metar.ShowPage(fmc);

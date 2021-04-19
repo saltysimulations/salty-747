@@ -1,12 +1,13 @@
 class FMCApproachPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
+        let units = fmc.useLbs;
         let landingWeightCell = "";
         let flaps25Cell = "";
         let flaps30Cell = "";
         let flaps25VRefCell = "";
         let flaps30VRefCell = "";
-        let landingWeight = fmc.getWeight(true);
+        let landingWeight = fmc.getWeight(units);
         if (isFinite(landingWeight)) {
             landingWeightCell = landingWeight.toFixed(1);
             flaps25Cell = "25°";

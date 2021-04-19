@@ -70,6 +70,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._TORwyWindSpd = "";
         this.messages = [];
         this.sentMessages = [];
+        this.units;
+        this.useLbs;
         this.atcComm = {            
             estab: false,
             loggedTo: "",
@@ -150,6 +152,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
+        if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
+            this.units = true;
+            this.useLbs = false;
+        } else if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "LBS") {
+            this.units = false;
+            this.useLbs = true;
+        }
         this.onInit = () => {
             B747_8_FMC_InitRefIndexPage.ShowPage1(this);
         };
@@ -201,6 +210,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.updateVREF25();
         this.updateVREF30();
         this.saltyBase.update();
+        if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
+            this.units = true;
+            this.useLbs = false;
+        } else if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "LBS") {
+            this.units = false;
+            this.useLbs = true;
+        }
     }
     onInputAircraftSpecific(input) {
         console.log("B747_8_FMC_MainDisplay.onInputAircraftSpecific input = '" + input + "'");

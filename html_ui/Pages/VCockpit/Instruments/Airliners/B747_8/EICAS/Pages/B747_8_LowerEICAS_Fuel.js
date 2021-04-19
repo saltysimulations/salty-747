@@ -154,22 +154,26 @@ var B747_8_LowerEICAS_Fuel;
                 }
             }
             if (this.unitTextSVG) {
-                if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
+                if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
                     this.unitTextSVG.textContent = "KGS X 1000";
-                else
+                }
+                else {
                     this.unitTextSVG.textContent = "LBS X 1000";
+                }
             }
         }
         getTotalFuelInMegagrams() {
             let factor = this.gallonToMegapounds;
-            if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
+            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
                 factor = this.gallonToMegagrams;
+            }
             return (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * factor);
         }
         getMainTankFuelInMegagrams(_index) {
             let factor = this.gallonToMegapounds;
-            if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
+            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
                 factor = this.gallonToMegagrams;
+            }
             return (SimVar.GetSimVarValue("FUELSYSTEM TANK QUANTITY:" + _index, "gallons") * factor);
         }
     }

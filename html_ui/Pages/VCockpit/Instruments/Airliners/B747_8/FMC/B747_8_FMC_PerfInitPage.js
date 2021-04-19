@@ -2,6 +2,7 @@ class FMCPerfInitPage {
     static ShowPage1(fmc, store = {requestData: "<SEND", loadUplink: "", purgeUplink: "__FMCSEPARATOR", dataLink: "REQUEST", stepSizeLabel: "STEP SIZE", perfUplinkHeader: ""}) {
         fmc.updateFuelVars().then(() => {
             fmc.clearDisplay();
+            let units = fmc.useLbs;
             FMCPerfInitPage._timer = 0;
             fmc.pageUpdate = () => {
                 FMCPerfInitPage._timer++;
@@ -10,8 +11,8 @@ class FMCPerfInitPage {
                 }
             };
             let grossWeightCell = "□□□.□";
-            if (isFinite(fmc.getFuelVarsUpdatedGrossWeight(true))) {
-                grossWeightCell = fmc.getFuelVarsUpdatedGrossWeight(true).toFixed(1);
+            if (isFinite(fmc.getFuelVarsUpdatedGrossWeight(units))) {
+                grossWeightCell = fmc.getFuelVarsUpdatedGrossWeight(units).toFixed(1);
             }
             fmc.onLeftInput[0] = () => {
                 let value = fmc.inOut;
@@ -20,7 +21,7 @@ class FMCPerfInitPage {
                     if (result) {
                         FMCPerfInitPage.ShowPage1(fmc);
                     }
-                }, true);
+                }, units);
             };
             let crzAltCell = "□□□□□";
             if (isFinite(fmc.cruiseFlightLevel)) {
@@ -34,17 +35,17 @@ class FMCPerfInitPage {
                 }
             };
             let blockFuelCell = "□□□.□";
-            if (isFinite(fmc.getBlockFuel(true))) {
-                blockFuelCell = fmc.getBlockFuel(true).toFixed(1);
+            if (isFinite(fmc.getBlockFuel(units))) {
+                blockFuelCell = fmc.getBlockFuel(units).toFixed(1);
             }
             let zeroFuelWeightCell = "□□□.□";
-            if (isFinite(fmc.getZeroFuelWeight(true))) {
-                zeroFuelWeightCell = fmc.getZeroFuelWeight(true).toFixed(1);
+            if (isFinite(fmc.getZeroFuelWeight(units))) {
+                zeroFuelWeightCell = fmc.getZeroFuelWeight(units).toFixed(1);
             }
             fmc.onLeftInput[2] = () => {
                 let value = fmc.inOut;
                 fmc.clearUserInput();
-                if (fmc.trySetZeroFuelWeightZFWCG(value, true)) {
+                if (fmc.trySetZeroFuelWeightZFWCG(value, units)) {
                     FMCPerfInitPage.ShowPage1(fmc);
                 }
             };
@@ -67,7 +68,7 @@ class FMCPerfInitPage {
             fmc.onLeftInput[3] = () => {
                 let value = fmc.inOut;
                 fmc.clearUserInput();
-                if (fmc.setFuelReserves(value, true)) {
+                if (fmc.setFuelReserves(value, units)) {
                     FMCPerfInitPage.ShowPage1(fmc);
                 }
             };
@@ -160,7 +161,6 @@ class FMCPerfInitPage {
                 2. ACCEPT DATA
             */
             fmc.onRightInput[4] = () => {
-                console.log(fmc.simbrief.perfUplinkReady);
                 if (!fmc.simbrief.perfUplinkReady) {
                     let value = fmc.inOut;
                     if (value == "RVSM" || value == "ICAO") {
@@ -177,7 +177,6 @@ class FMCPerfInitPage {
                         value = parseInt(value);
                         value = (value / 100).toFixed(0);
                         value = value * 100;
-                        console.log(value);
                         SaltyDataStore.set("PERF_STEP_SIZE", value.toString());
                     }
                     else {
