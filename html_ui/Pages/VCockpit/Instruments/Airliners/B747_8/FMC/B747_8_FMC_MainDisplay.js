@@ -1047,6 +1047,19 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
 
     /* VISUALS */
 
+    _formatCell(str) {
+        return str
+            .replace(/{white}/g, "<span class='white'>")
+            .replace(/{blue}/g, "<span class='blue'>")
+            .replace(/{yellow}/g, "<span class='yellow'>")
+            .replace(/{green}/g, "<span class='green'>")
+            .replace(/{red}/g, "<span class='red'>")
+            .replace(/{inop}/g, "<span class='inop'>")
+            .replace(/{small}/g, "<span class='s-text'>")
+            .replace(/{sp}/g, "&nbsp;")
+            .replace(/{end}/g, "</span>");
+    }
+
     getTitle() {
         if (this._title === undefined) {
             this._title = this._titleElement.textContent;
@@ -1243,6 +1256,24 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.setInOut(template[13][0]);
         }
         SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
+        // Apply formatting helper to title page, lines and labels
+        if (this._titleElement !== null) {
+            this._titleElement.innerHTML = this._formatCell(this._titleElement.innerHTML);
+        }
+        this._lineElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
+        this._labelElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
     }
 }
 B747_8_FMC_MainDisplay._v1s = [
