@@ -23,7 +23,7 @@
         {
             "path": "html_ui/Pages/Salty/SaltyBase.js",
             "size": 239,
-            "date": 16188459597063088
+            "date": 16188502603918204
         },
         {
             "path": "html_ui/Pages/Salty/SaltyConnection.js",
@@ -43,7 +43,7 @@
         {
             "path": "html_ui/Pages/Salty/SaltyPilots.js",
             "size": 1026,
-            "date": 16188459597073098
+            "date": 16188502603928206
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.css",
@@ -52,18 +52,18 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.html",
-            "size": 3744,
-            "date": 16188459489188334
+            "size": 3750,
+            "date": 16188502516880916
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/B747_8_EICAS.js",
-            "size": 9090,
-            "date": 16188459489198346
+            "size": 9780,
+            "date": 16188502516890908
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Boeing_Common.js",
-            "size": 28659,
-            "date": 16188459489198346
+            "size": 28737,
+            "date": 16188502516900914
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_EICASGauge.js",
@@ -177,8 +177,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_UpperEICAS.css",
-            "size": 6278,
-            "date": 16188459489288362
+            "size": 6357,
+            "date": 16188502516910918
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_UpperEICAS.html",
@@ -203,7 +203,7 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC.html",
             "size": 11847,
-            "date": 16188459597083094
+            "date": 16188502603938202
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ApproachPage.js",
@@ -233,7 +233,7 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
             "size": 54963,
-            "date": 16188459597093088
+            "date": 16188502603948214
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplayPages.js",
@@ -513,12 +513,12 @@
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/OPTIONS/B747_8_FMC_Misc.js",
             "size": 3312,
-            "date": 16188459597093088
+            "date": 16188502603948214
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/OPTIONS/B747_8_FMC_SaltyOptions.js",
             "size": 1905,
-            "date": 16188459597103088
+            "date": 16188502603958210
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/OPTIONS/B747_8_FMC_Simbrief.js",
@@ -567,8 +567,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.html",
-            "size": 10590,
-            "date": 16188459489398388
+            "size": 10596,
+            "date": 16188502517000930
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js",
@@ -762,8 +762,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.html",
-            "size": 5994,
-            "date": 16188349829294390
+            "size": 6000,
+            "date": 16188502517040942
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/PFD/B747_8_PFD.js",
@@ -812,8 +812,13 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/Shared/Salty_BaseAirliners.js",
-            "size": 70619,
-            "date": 16188459489788468
+            "size": 70709,
+            "date": 16188502517060946
+        },
+        {
+            "path": "html_ui/Pages/VCockpit/Instruments/NavSystems/Shared/Salty_NavSystem.js",
+            "size": 126332,
+            "date": 16188502517080950
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/approach.FLT",
@@ -828,7 +833,7 @@
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/cameras.cfg",
             "size": 36586,
-            "date": 16188459596973064
+            "date": 16188502603738158
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/Climb.flt",
@@ -872,13 +877,13 @@
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
-            "size": 190661,
-            "date": 16188473129335018
+            "size": 191054,
+            "date": 16188502603758162
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD00.gltf",
             "size": 2312615,
-            "date": 16188459597063088
+            "date": 16188502603908202
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.cfg",
@@ -887,8 +892,8 @@
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.xml",
-            "size": 24398,
-            "date": 16188459489168332
+            "size": 27979,
+            "date": 16188502516790890
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS",
