@@ -121,11 +121,12 @@ var B747_8_LowerEICAS_Engine;
         createN2GaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.eicas.getN2Value.bind(this, this.engineId);
-            definition.maxValue = 110;
-            definition.valueBoxWidth = 80;
-            definition.valueTextPrecision = 1;
-            definition.barHeight = 60;
-            definition.addLineDefinition(110, 40, "gaugeMarkerDanger");
+            definition.maxValue = 1100;
+            definition.valueBoxWidth = 70;
+            definition.valueTextPrecision = 0;
+            definition.barHeight = 40;
+            definition.type = 2;
+            definition.addLineDefinition(1100, 32, "gaugeMarkerDanger");
             definition.addLineDefinition(0, 40, "gaugeMarkerNormal", this.eicas.getN2IdleValue.bind(this));
             return definition;
         }
@@ -133,15 +134,16 @@ var B747_8_LowerEICAS_Engine;
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getFFValue.bind(this);
             definition.maxValue = 1000;
-            definition.valueBoxWidth = 60;
-            definition.valueTextPrecision = 1;
+            definition.valueBoxWidth = 55;
+            definition.valueTextPrecision = 0;
+            definition.type = 3;
             return definition;
         }
         getFFValue() {
             if (SaltyDataStore.get("OPTIONS_UNITS", "KG")) {
-                return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 1000);
+                return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 100);
             }
-            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000);
+            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 100);
         }
         getOilPValue() {
             return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engineId, "psi");
@@ -153,7 +155,7 @@ var B747_8_LowerEICAS_Engine;
             return (SimVar.GetSimVarValue("ENG OIL QUANTITY:" + this.engineId, "percent scaler 16k") * 0.001);
         }
         getVIBValue() {
-            return SimVar.GetSimVarValue("ENG VIBRATION:" + this.engineId, "Number");
+            return Math.abs(SimVar.GetSimVarValue("ENG VIBRATION:" + this.engineId, "Number"));
         }
         refresh(_deltaTime) {
             let state = this.eicas.getEngineState(this.engineId);
@@ -183,7 +185,7 @@ var B747_8_LowerEICAS_Engine;
                 this.n2Gauge.refresh();
             }
             if (this.ffGauge != null) {
-                this.ffGauge.refresh();
+                this.ffGauge.refresh(false);
             }
         }
     }

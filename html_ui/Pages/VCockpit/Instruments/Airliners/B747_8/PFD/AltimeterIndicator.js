@@ -69,9 +69,9 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.rootSVG.setAttribute("id", "ViewBox");
         this.rootSVG.setAttribute("viewBox", "0 0 250 800");
         var posX = 100;
-        var posY = 0;
+        var posY = 14;
         var width = 105;
-        var height = 640;
+        var height = 610;
         var arcWidth = 70;
         this.refHeight = height;
         this.nbSecondaryGraduations = 1;
@@ -94,7 +94,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         posY += sideTextHeight * 0.5;
         this.targetAltitudeTextSVG1 = document.createElementNS(Avionics.SVG.NS, "text");
         this.targetAltitudeTextSVG1.setAttribute("x", "115");
-        this.targetAltitudeTextSVG1.setAttribute("y", (posY + 10 + sideTextHeight * 0.5).toString());
+        this.targetAltitudeTextSVG1.setAttribute("y", (posY + sideTextHeight * 0.5).toString());
         this.targetAltitudeTextSVG1.setAttribute("fill", "#D570FF");
         this.targetAltitudeTextSVG1.setAttribute("font-size", (this.fontSize * 1.6).toString());
         this.targetAltitudeTextSVG1.setAttribute("font-family", "BoeingEICAS");
@@ -104,7 +104,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.rootGroup.appendChild(this.targetAltitudeTextSVG1);
         this.targetAltitudeTextSVG2 = document.createElementNS(Avionics.SVG.NS, "text");
         this.targetAltitudeTextSVG2.setAttribute("x", "117");
-        this.targetAltitudeTextSVG2.setAttribute("y", (posY + 10 + sideTextHeight * 0.5).toString());
+        this.targetAltitudeTextSVG2.setAttribute("y", (posY + sideTextHeight * 0.5).toString());
         this.targetAltitudeTextSVG2.setAttribute("width", width.toString());
         this.targetAltitudeTextSVG2.setAttribute("fill", "#D570FF");
         this.targetAltitudeTextSVG2.setAttribute("font-size", (this.fontSize * 1.29).toString());
@@ -345,7 +345,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             {
                 this.mtrsSelectedSVGText = document.createElementNS(Avionics.SVG.NS, "text");
                 this.mtrsSelectedSVGText.setAttribute("x", "158");
-                this.mtrsSelectedSVGText.setAttribute("y", (sideTextHeight * 0.5).toString());
+                this.mtrsSelectedSVGText.setAttribute("y", (10 + sideTextHeight * 0.5).toString());
                 this.mtrsSelectedSVGText.setAttribute("fill", "#D570FF");
                 this.mtrsSelectedSVGText.setAttribute("font-size", (this.fontSize * 1.2).toString());
                 this.mtrsSelectedSVGText.setAttribute("font-family", "BoeingEICAS");
@@ -355,7 +355,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 var mtrsSelectedSVGUnit = document.createElementNS(Avionics.SVG.NS, "text");
                 mtrsSelectedSVGUnit.textContent = "M";
                 mtrsSelectedSVGUnit.setAttribute("x", "158");
-                mtrsSelectedSVGUnit.setAttribute("y", (sideTextHeight * 0.5).toString());
+                mtrsSelectedSVGUnit.setAttribute("y", (10 + sideTextHeight * 0.5).toString());
                 mtrsSelectedSVGUnit.setAttribute("fill", "cyan");
                 mtrsSelectedSVGUnit.setAttribute("font-size", (this.fontSize * 0.9).toString());
                 mtrsSelectedSVGUnit.setAttribute("font-family", "BoeingEICAS");
@@ -371,7 +371,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             this.mtrsCursorGroup = document.createElementNS(Avionics.SVG.NS, "svg");
             this.mtrsCursorGroup.setAttribute("id", "MetersCursorGroup");
             this.mtrsCursorGroup.setAttribute("x", mtrsCursorPosX.toString());
-            this.mtrsCursorGroup.setAttribute("y", (mtrsCursorPosY - mtrsCursorHeight * 0.5).toString());
+            this.mtrsCursorGroup.setAttribute("y", (16 + mtrsCursorPosY - mtrsCursorHeight * 0.5).toString());
             this.mtrsCursorGroup.setAttribute("width", mtrsCursorWidth.toString());
             this.mtrsCursorGroup.setAttribute("height", mtrsCursorHeight.toString());
             this.mtrsCursorGroup.setAttribute("viewBox", "0 0 " + mtrsCursorWidth + " " + mtrsCursorHeight);
@@ -437,6 +437,9 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         }
         else {
             selectedAltitude = Math.max(0, Simplane.getAutoPilotAltitudeLockValue());
+            if (selectedAltitude === 0) {
+                selectedAltitude = Math.max(0, Simplane.getAutoPilotDisplayedAltitudeLockValue());
+            }
         }
         this.updateGraduationScrolling(indicatedAltitude);
         this.updateCursorScrolling(indicatedAltitude);
@@ -451,7 +454,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             if (this.mtrsSelectedGroup) {
                 var APMode = this.getAutopilotMode();
                 if (APMode != AutopilotMode.MANAGED) {
-                    let meters = Math.round(_selected * 0.3048);
+                    let meters = Math.round(_selected * 0.03048) * 10;
                     this.mtrsSelectedSVGText.textContent = meters.toString();
                     this.mtrsSelectedGroup.setAttribute("visibility", "visible");
                 }

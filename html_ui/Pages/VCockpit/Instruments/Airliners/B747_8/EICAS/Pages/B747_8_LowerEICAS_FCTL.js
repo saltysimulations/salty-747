@@ -45,7 +45,7 @@ var B747_8_LowerEICAS_FCTL;
             this.rightpoilersOutbd_4 = this.querySelector("#reSpOutbdGauge-4");
 
             this.stab = new Boeing.StabDisplay(this.querySelector("#trim"), 15, 1);
-
+            this.stabDecimalPoint = this.querySelector("#stabDecimalPoint");
             this.isInitialised = true;
         }
         update(_deltaTime) {
@@ -129,15 +129,16 @@ var B747_8_LowerEICAS_FCTL;
             this.rightpoilersOutbd_4.setAttribute("d", "M0 " + (56 - rightFinalOutdb) + "L16 " + (56 - rightFinalOutdb) + "L16 56L0 56L0 " + (56 - rightFinalOutdb) + "Z");
 
             if (SimVar.GetSimVarValue("SIM ON GROUND", "bool")) {
-                this.querySelector("#trim").style.stroke = "Green";
-                this.querySelector(".value").style.fill = "Green";
+                this.querySelector("#trim").style.stroke = "lime";
+                this.querySelector(".value").style.fill = "lime";
             } else {
                 this.querySelector("#trim").style.stroke = "White";
                 this.querySelector(".value").style.fill = "White";
+                this.querySelector("#trim").style.display = "block";
             }
 
             if (this.stab != null) {
-                this.stab.update(_deltaTime);
+                this.stab.update(_deltaTime, 1);
             }
         }
     }

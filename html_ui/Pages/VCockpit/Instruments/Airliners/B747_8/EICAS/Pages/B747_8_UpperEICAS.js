@@ -4,6 +4,7 @@ var B747_8_UpperEICAS;
         constructor() {
             super();
             this.isInitialised = false;
+
             this.tmaDisplay = null;
             this.allValueComponents = new Array();
             this.allEngineInfos = new Array();
@@ -22,18 +23,18 @@ var B747_8_UpperEICAS;
         init(_eicas) {
             this.eicas = _eicas;
             this.unitTextSVG = this.querySelector("#TOTAL_FUEL_Units");
+            this.refThrust1 = this.querySelector("#THROTTLE1_Value");
+            this.refThrust2 = this.querySelector("#THROTTLE2_Value");
+            this.refThrust3 = this.querySelector("#THROTTLE3_Value");
+            this.refThrust4 = this.querySelector("#THROTTLE4_Value");
             this.tmaDisplay = new Boeing.ThrustModeDisplay(this.querySelector("#TMA_Value"));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TAT_Value"), Simplane.getTotalAirTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#SAT_Value"), Simplane.getAmbientTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#THROTTLE1_Value"), Simplane.getEngineThrottleMaxThrust.bind(this, 0), 1, Airliners.DynamicValueComponent.formatValueToThrottleDisplay));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#THROTTLE2_Value"), Simplane.getEngineThrottleMaxThrust.bind(this, 1), 1, Airliners.DynamicValueComponent.formatValueToThrottleDisplay));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#THROTTLE3_Value"), Simplane.getEngineThrottleMaxThrust.bind(this, 2), 1, Airliners.DynamicValueComponent.formatValueToThrottleDisplay));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#THROTTLE4_Value"), Simplane.getEngineThrottleMaxThrust.bind(this, 3), 1, Airliners.DynamicValueComponent.formatValueToThrottleDisplay));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#CAB_ALT_Value"), Simplane.getPressurisationCabinAltitude));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#RATE_Value"), Simplane.getPressurisationCabinAltitudeRate));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#DELTAP_Value"), Simplane.getPressurisationDifferential, 1, Airliners.DynamicValueComponent.formatValueToString));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#GROSS_WEIGHT_Value"), this.getGrossWeightInMegagrams.bind(this), 1));
-            this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TOTAL_FUEL_Value"), this.getTotalFuelInMegagrams.bind(this), 1));
+            this.cabinAlt = this.querySelector("#CAB_ALT_Value");
+            this.cabinRate = this.querySelector("#RATE_Value");
+            this.deltaP = this.querySelector("#DELTAP_Value");
+            this.grossWeight = this.querySelector("#GROSS_WEIGHT_Value");
+            this.totalFuel = this.querySelector("#TOTAL_FUEL_Value");
             var n1Parent = this.querySelector("#N1Gauges");
             var egtParent = this.querySelector("#EGTGauges");
             for (var engine = 1; engine <= Simplane.getEngineCount(); ++engine) {
@@ -68,6 +69,9 @@ var B747_8_UpperEICAS;
             if (!this.isInitialised) {
                 return;
             }
+            this.updateReferenceThrust();
+            this.updatePressurisationValues();
+            this.updateWeights();
             if (this.tmaDisplay) {
                 this.tmaDisplay.update();
             }
@@ -107,9 +111,34 @@ var B747_8_UpperEICAS;
                     this.unitTextSVG.textContent = "LBS X";
             }
         }
+        updateReferenceThrust() {
+            this.refThrust1.textContent = (Simplane.getEngineThrottleMaxThrust(0) * 10).toFixed(0);
+            this.refThrust2.textContent = (Simplane.getEngineThrottleMaxThrust(1) * 10).toFixed(0);
+            this.refThrust3.textContent = (Simplane.getEngineThrottleMaxThrust(2) * 10).toFixed(0);
+            this.refThrust4.textContent = (Simplane.getEngineThrottleMaxThrust(3) * 10).toFixed(0);
+            return;
+        }
+        updatePressurisationValues() {
+            this.cabinAlt.textContent = (Math.round(Simplane.getPressurisationCabinAltitude() / 100) * 100).toFixed(0);
+            this.cabinRate.textContent = (Math.round(Simplane.getPressurisationCabinAltitudeRate() / 100) * 100).toFixed(0);
+            let deltaPValue = Math.abs(Simplane.getPressurisationDifferential() * 10);
+            if (Math.round(deltaPValue) < 10) {
+                this.deltaP.textContent = "0" + deltaPValue.toFixed(0);
+            }
+            else {
+                this.deltaP.textContent = deltaPValue.toFixed(0);
+            }
+            return;
+        }
+        updateWeights() {
+            this.grossWeight.textContent = (this.getGrossWeightInMegagrams() * 10).toFixed(0);
+            this.totalFuel.textContent = (this.getTotalFuelInMegagrams() * 10).toFixed(0);
+            return;
+        }
         getGrossWeightInMegagrams() {
-            if (this.units)
+            if (this.units) {
                 return SimVar.GetSimVarValue("TOTAL WEIGHT", "kg") * 0.001;
+            }
             return SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs") * 0.001;
         }
         getTotalFuelInMegagrams() {
@@ -142,35 +171,37 @@ var B747_8_UpperEICAS;
         createN1GaugeDefinition(_engine) {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getN1Value.bind(this);
-            definition.maxValue = 110;
-            definition.valueBoxWidth = 80;
-            definition.valueTextPrecision = 1;
+            definition.maxValue = 1100;
+            definition.valueBoxWidth = 70;
+            definition.valueTextPrecision = 0;
             definition.barHeight = 80;
-            definition.addLineDefinition(110, 40, "gaugeMarkerDanger");
-            definition.addLineDefinition(100, 32, "gaugeMarkerWarning");
-            definition.addLineDefinition(0, 32, "gaugeMarkerCurrent", this.getN1CommandedValue.bind(this));
-            definition.addLineDefinition(0, 50, "gaugeMarkerNormal", this.getN1LimitValue.bind(this));
+            definition.type = 0;
+            definition.addLineDefinition(1100, 32, "gaugeMarkerDanger");
+            definition.addLineDefinition(1000, 22, "gaugeMarkerWarning");
+            definition.addLineDefinition(0, 22, "gaugeMarkerCurrent", this.getN1CommandedValue.bind(this));
+            definition.addLineDefinition(0, 40, "gaugeMarkerNormal", this.getN1LimitValue.bind(this));
             return definition;
         }
         getN1Value() {
-            return SimVar.GetSimVarValue("ENG N1 RPM:" + this.engine, "percent");
+            return SimVar.GetSimVarValue("ENG N1 RPM:" + this.engine, "percent") * 10;
         }
         getN1CommandedValue() {
-            return Math.abs(Simplane.getEngineThrottleCommandedN1(this.engine - 1));
+            return Math.abs(Simplane.getEngineThrottleCommandedN1(this.engine - 1)) * 10;
         }
         getN1LimitValue() {
-            return Math.abs(Simplane.getEngineThrottleMaxThrust(this.engine - 1));
+            return Math.abs(Simplane.getEngineThrottleMaxThrust(this.engine - 1)) * 10;
         }
         createEGTGaugeDefinition(_engine) {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getEGTValue.bind(this);
             definition.maxValue = 1000;
-            definition.valueBoxWidth = 60;
-            definition.barHeight = 60;
-            definition.addLineDefinition(1000, 40, "gaugeMarkerDanger");
-            definition.addLineDefinition(950, 32, "gaugeMarkerWarning");
+            definition.valueBoxWidth = 70;
+            definition.barHeight = 40;
+            definition.type = 1;
+            definition.addLineDefinition(1000, 32, "gaugeMarkerDanger");
+            definition.addLineDefinition(950, 22, "gaugeMarkerWarning");
             definition.addLineDefinition(0, 32, "gaugeMarkerDanger", this.getEGTLimitValue.bind(this));
-            definition.addLineDefinition(0, 32, "gaugeMarkerCurrent", this.getEGTValue.bind(this));
+            definition.addLineDefinition(0, 22, "gaugeMarkerCurrent", this.getEGTValue.bind(this));
             return definition;
         }
         getEGTValue() {
@@ -206,7 +237,7 @@ var B747_8_UpperEICAS;
                         egtLimit.line.setAttribute("display", "block");
                     }
                 }
-                this.egtGauge.refresh();
+                this.egtGauge.refresh(true);
             }
         }
     }
