@@ -76,12 +76,15 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                     let level = this.warnings.getCurrentWarningLevel();
                     switch (level) {
                         case 1:
-                            infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION);
+                            infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.MEMO);
                             break;
                         case 2:
-                            infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.CAUTION);
+                            infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.ADVISORY);
                             break;
                         case 3:
+                            infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.CAUTION);
+                            break;
+                        case 4:
                             infoPanelManager.addMessage(Airliners.EICAS_INFO_PANEL_ID.PRIMARY, text, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.WARNING);
                             break;
                     }
@@ -109,7 +112,15 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                         infoPanelManager.addMessage(
                             Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
                             this.annunciations.displayAdvisory[i].Text,
-                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION
+                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.ADVISORY
+                        );
+                }
+                for (let i = this.annunciations.displayMemo.length - 1; i >= 0; i--) {
+                    if (!this.annunciations.displayMemo[i].Acknowledged)
+                        infoPanelManager.addMessage(
+                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
+                            this.annunciations.displayMemo[i].Text,
+                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.MEMO
                         );
                 }
             }

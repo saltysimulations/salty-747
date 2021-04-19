@@ -197,8 +197,10 @@ b747-8-upper-eicas {
       font-size: 42px !important;
       text-align: left;
       color: red; }
-    b747-8-upper-eicas #InfoPanel .InfoIndication {
+    b747-8-upper-eicas #InfoPanel .InfoMemo {
       color: white; }
+    b747-8-upper-eicas #InfoPanel .InfoAdvisory {
+      color: rgb(255, 196, 0); }
     b747-8-upper-eicas #InfoPanel .InfoCaution {
       color: rgb(255, 196, 0); }
     b747-8-upper-eicas #InfoPanel .InfoWarning {

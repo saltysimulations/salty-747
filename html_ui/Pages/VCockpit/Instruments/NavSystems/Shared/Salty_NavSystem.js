@@ -2049,7 +2049,8 @@ var Annunciation_MessageType;
     Annunciation_MessageType[Annunciation_MessageType["WARNING"] = 0] = "WARNING";
     Annunciation_MessageType[Annunciation_MessageType["CAUTION"] = 1] = "CAUTION";
     Annunciation_MessageType[Annunciation_MessageType["ADVISORY"] = 2] = "ADVISORY";
-    Annunciation_MessageType[Annunciation_MessageType["SAFEOP"] = 3] = "SAFEOP";
+    Annunciation_MessageType[Annunciation_MessageType["MEMO"] = 3] = "MEMO";
+    Annunciation_MessageType[Annunciation_MessageType["SAFEOP"] = 4] = "SAFEOP";
 })(Annunciation_MessageType || (Annunciation_MessageType = {}));
 ;
 class Annunciation_Message {
@@ -2188,6 +2189,9 @@ class Annunciations extends NavSystemElement {
             case "Advisory":
                 msg.Type = Annunciation_MessageType.ADVISORY;
                 break;
+            case "Memo":
+                msg.Type = Annunciation_MessageType.MEMO;
+                break;
             case "SafeOp":
                 msg.Type = Annunciation_MessageType.SAFEOP;
                 break;
@@ -2231,6 +2235,7 @@ class Cabin_Annunciations extends Annunciations {
         this.displayWarning = [];
         this.displayCaution = [];
         this.displayAdvisory = [];
+        this.displayMemo = [];
         this.warningToneNameZ = new Name_Z("tone_warning");
         this.cautionToneNameZ = new Name_Z("tone_caution");
         this.warningTone = false;
@@ -2260,6 +2265,9 @@ class Cabin_Annunciations extends Annunciations {
                             break;
                         case Annunciation_MessageType.ADVISORY:
                             this.displayAdvisory.push(message);
+                            break;
+                        case Annunciation_MessageType.MEMO:
+                            this.displayMemo.push(message);
                             break;
                     }
                 }
@@ -2294,6 +2302,9 @@ class Cabin_Annunciations extends Annunciations {
                         case Annunciation_MessageType.ADVISORY:
                             this.displayAdvisory.push(message);
                             break;
+                        case Annunciation_MessageType.MEMO:
+                            this.displayMemo.push(message);
+                            break;
                     }
                 }
                 else {
@@ -2318,6 +2329,13 @@ class Cabin_Annunciations extends Annunciations {
                             for (let i = 0; i < this.displayAdvisory.length; i++) {
                                 if (this.displayAdvisory[i].Text == message.Text) {
                                     this.displayAdvisory.splice(i, 1);
+                                    break;
+                                }
+                            }
+                        case Annunciation_MessageType.MEMO:
+                            for (let i = 0; i < this.displayMemo.length; i++) {
+                                if (this.displayMemo[i].Text == message.Text) {
+                                    this.displayMemo.splice(i, 1);
                                     break;
                                 }
                             }
@@ -2350,6 +2368,9 @@ class Cabin_Annunciations extends Annunciations {
             }
             for (let i = this.displayAdvisory.length - 1; i >= 0; i--) {
                 messages += '<div class="Advisory">' + this.displayAdvisory[i].Text + "</div>";
+            }
+            for (let i = this.displayMemo.length - 1; i >= 0; i--) {
+                messages += '<div class="Memo">' + this.displayMemo[i].Text + "</div>";
             }
             this.warningTone = warningOn > 0;
             if (this.gps.isPrimary) {
@@ -2404,6 +2425,7 @@ class Cabin_Annunciations extends Annunciations {
         this.displayCaution = [];
         this.displayWarning = [];
         this.displayAdvisory = [];
+        this.displayMemo = [];
         if (!this.gps || this.gps.isPrimary) {
             SimVar.SetSimVarValue("L:Generic_Master_Warning_Active", "Bool", 0);
             SimVar.SetSimVarValue("L:Generic_Master_Caution_Active", "Bool", 0);
@@ -2795,12 +2817,14 @@ class Warnings extends NavSystemElement {
             }
         }
         if (!alertsFromXML) {
+            /*
             this.warnings.push(new Warning_Data("", "", "Garmin_Stall_f", 0, this.stallCallback.bind(this)));
             this.warnings.push(new Warning_Data("PULL UP", "PULL UP", "Garmin_Pull_Up_f", 3, this.pullUpCallback.bind(this)));
             this.warnings.push(new Warning_Data("TERRAIN", "SINK RATE", "Garmin_Sink_Rate_f", 2, this.sinkRateCallback.bind(this)));
             this.warnings.push(new Warning_Data("", "", "Garmin_landing_gear_f", 0, this.landingGearCallback.bind(this)));
             this.warnings.push(new Warning_Data("TAWS TEST", "", "", 1, this.tawsTestCallback.bind(this)));
             this.warnings.push(new Warning_Data("", "", "Garmin_TAWS_System_Test_OK_f", 0, this.tawsTestFinishedCallback.bind(this), true));
+            */
         }
         this.UID = parseInt(this.gps.getAttribute("Guid")) + 1;
         SimVar.SetSimVarValue("L:AS1000_Warnings_Master_Set", "number", 0);

@@ -578,7 +578,7 @@ var Boeing;
             return div;
         }
         getNextAvailableDiv(_style) {
-            if(_style == Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION) {
+            if(_style == Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.MEMO) {
                 for (var i = 10; i > 0; --i) {
                     if (this.allDivs[i].textContent.length == 0) {
                         this.allDivs[i].style.visibility = "visible";
@@ -629,7 +629,8 @@ var Boeing;
         }
         getClassNameFromStyle(_style) {
             switch (_style) {
-                case Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.INDICATION: return "InfoIndication";
+                case Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.MEMO: return "InfoMemo";
+                case Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.ADVISORY: return "InfoAdvisory";
                 case Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.CAUTION: return "InfoCaution";
                 case Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.WARNING: return "InfoWarning";
             }
