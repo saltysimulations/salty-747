@@ -120,7 +120,13 @@ class FMCTakeOffPage {
             trimCell = fmc.takeOffTrim.toFixed(1);
         }
         let taxiBurn = 2;
-        let grossWeight = fmc.getWeight(true);
+        let grossWeight;
+        if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+            grossWeight = fmc.getWeight(false);
+        }
+        else {
+            grossWeight = fmc.getWeight(true);
+        }
         let grossWeightCell = "\xa0\xa0" + grossWeight.toFixed(1);
         let takeoffGrossWeight = grossWeight - taxiBurn;
         let takeoffGrossWeightCell = takeoffGrossWeight.toFixed(1);
@@ -157,14 +163,16 @@ class FMCTakeOffPage {
         let oatCell = "--°C[color]inop";
         let windCell = "---°/--KT[color]inop";   
         let slopeCondCell = "U0.0/DRY[color]inop";
-        let limitTakeoffGrossWeightCell = "987.0[color]inop";
+        let limitTakeoffGrossWeightCell = "";
         
         //Acceleration Height Settable
         let accelHtCell = "";
         let airportElevation = 0;
         let origin = fmc.flightPlanManager.getOrigin();
-        if(isFinite(origin.altitudeinFP)) {
-            airportElevation = Math.round(origin.altitudeinFP / 10) * 10;
+        if (origin) {
+            if(origin.altitudeinFP) {
+                airportElevation = Math.round(origin.altitudeinFP / 10) * 10;
+            }
         }
         let accelHt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number") - airportElevation;
         if (accelHt) {

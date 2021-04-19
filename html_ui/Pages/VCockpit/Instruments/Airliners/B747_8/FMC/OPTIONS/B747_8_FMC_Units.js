@@ -5,12 +5,15 @@ class FMCSaltyOptions_Units {
         switch (storedUnits) {
             case "KG":
                 fmc.units = 1;
+                SimVar.SetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool", 1);
                 break;
             case "LBS":
                 fmc.units = 0;
+                SimVar.SetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool", 0);
                 break;
             default:
                 fmc.units = 1;
+                SimVar.SetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool", 1);
         }
 
         const updateView = () => {

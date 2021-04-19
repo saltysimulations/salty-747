@@ -140,7 +140,7 @@ var B747_8_LowerEICAS_Engine;
             return definition;
         }
         getFFValue() {
-            if (SaltyDataStore.get("OPTIONS_UNITS", "KG")) {
+            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
                 return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 100);
             }
             return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 100);
