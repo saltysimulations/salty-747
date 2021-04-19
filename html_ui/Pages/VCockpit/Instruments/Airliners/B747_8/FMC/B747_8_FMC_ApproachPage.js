@@ -11,14 +11,14 @@ class FMCApproachPage {
             landingWeightCell = landingWeight.toFixed(1);
             flaps25Cell = "25°";
             flaps30Cell = "30°";
-            let flaps25Speed = fmc.getSlatApproachSpeed(true);
+            let flaps25Speed = SimVar.GetSimVarValue("L:SALTY_VREF25", "knots");
             if (isFinite(flaps25Speed)) {
                 flaps25VRefCell = flaps25Speed.toFixed(0) + "KT";
                 fmc.onRightInput[0] = () => {
                     fmc.inOut = "25/" + flaps25Speed.toFixed(0);
                 };
             }
-            let flaps30Speed = fmc.getFlapApproachSpeed(true);
+            let flaps30Speed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots");
             if (isFinite(flaps30Speed)) {
                 flaps30VRefCell = flaps30Speed.toFixed(0) + "KT";
                 fmc.onRightInput[1] = () => {

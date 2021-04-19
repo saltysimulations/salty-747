@@ -141,7 +141,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 }
                 break;
             case "BTN_STA":
-                this.map.instrument.showNDBs = !this.map.instrument.showNDBs;
+                this.map.instrument.showVORs = !this.map.instrument.showVORs;
                 this._updateNDFiltersStatuses();
                 break;
             case "BTN_WPT":
@@ -157,8 +157,6 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this._updateNDFiltersStatuses();
                 break;
             case "BTN_POS":
-                this.map.instrument.showVORs = !this.map.instrument.showVORs;
-                this._updateNDFiltersStatuses();
                 break;
             case "BTN_TERR":
                 if (this.terrainOn) {
@@ -175,7 +173,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         SimVar.SetSimVarValue("L:BTN_CSTR_FILTER_ACTIVE", "number", this.map.instrument.showConstraints ? 1 : 0);
         SimVar.SetSimVarValue("L:BTN_VORD_FILTER_ACTIVE", "number", this.map.instrument.showVORs ? 1 : 0);
         SimVar.SetSimVarValue("L:BTN_WPT_FILTER_ACTIVE", "number", this.map.instrument.showIntersections ? 1 : 0);
-        SimVar.SetSimVarValue("L:BTN_NDB_FILTER_ACTIVE", "number", this.map.instrument.showNDBs ? 1 : 0);
+        SimVar.SetSimVarValue("L:BTN_NDB_FILTER_ACTIVE", "number", this.map.instrument.showVORs ? 1 : 0);
         SimVar.SetSimVarValue("L:BTN_ARPT_FILTER_ACTIVE", "number", this.map.instrument.showAirports ? 1 : 0);
     }
     updateMap(_deltaTime) {
@@ -198,9 +196,11 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             this.setMapMode(this.mapIsCentered, this.mapMode);
             if (this.terrainOn) {
                 this.mapConfigId = 1;
+                this.map.instrument.bingMap.setVisible(true);
             }
             else if (this.wxRadarOn) {
                 this.showWeather();
+                this.map.instrument.bingMap.setVisible(true);
             }
             else {
                 this.mapConfigId = 0;
@@ -217,7 +217,12 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.modeChangeMask.style.display = "block";
                 this.modeChangeTimer = 0.15;
             }
+        } else if (!this.wxRadarOn && !this.terrainOn && this.map.instrument.showAirports) {
+            this.map.instrument.bingMap.setVisible(true);
+        } else if (!this.wxRadarOn && !this.terrainOn && !this.map.instrument.showAirports) {
+            this.map.instrument.bingMap.setVisible(false);
         }
+        console.log(this.map.instrument.showBingMap);
         switch (this.mapConfigId) {
             case 0:
                 if (this.map.instrument.mapConfigId != 0) {
@@ -303,7 +308,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.info.showSymbol(B747_8_ND_Symbol.WXR, this.wxRadarOn);
         this.info.showSymbol(B747_8_ND_Symbol.WXRINFO, this.wxRadarOn);
         this.info.showSymbol(B747_8_ND_Symbol.TERR, this.terrainOn);
-        this.info.showSymbol(B747_8_ND_Symbol.STA, this.map.instrument.showNDBs);
+        this.info.showSymbol(B747_8_ND_Symbol.STA, this.map.instrument.showVORs);
         this.info.showSymbol(B747_8_ND_Symbol.WPT, this.map.instrument.showIntersections);
         this.info.showSymbol(B747_8_ND_Symbol.ARPT, this.map.instrument.showAirports);
     }
@@ -453,7 +458,7 @@ class B747_8_MFD_Map extends MapInstrumentElement {
         }
     }
     showWeather() {
-        this.instrument.showWeatherWithGPS(EWeatherRadar.HORIZONTAL, Math.PI * 2.0);
+        this.instrument.showWeatherWithGPS(EWeatherRadar.HORIZONTAL, Math.PI * 2);
         this.instrument.setBingMapStyle("2.25%", "4.0%", "92%", "92%");
     }
     hideWeather() {
