@@ -21,7 +21,7 @@ class FMCSaltyOptions {
             ["", ""],
             [`<SIMBRIEF`, ""],
             ["", ""],
-            ["<CPDLC[color]inop", ""],
+            ["<CPDLC[color]inop", "MISC>"],
             ["\xa0RETURN TO", ""],
             ["<INDEX", ""]
         ]);
@@ -51,6 +51,11 @@ class FMCSaltyOptions {
               FMCSaltyOptions_Simbrief.ShowPage(fmc);
         }
         
+        /* RSK5 */
+        fmc.onRightInput[4] = () => {
+              FMCSaltyOptions_Misc.ShowPage(fmc);
+        }
+
         /* LSK6 */
         fmc.onLeftInput[5] = () => {
               FMC_Menu.ShowPage(fmc);
