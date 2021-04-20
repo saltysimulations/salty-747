@@ -126,39 +126,39 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
             let N2Value = this.getN2Value(i + 1);
             switch (this.engines[i].currentState) {
                 case B747_8_EngineState.IDLE:
-                if (this.getFuelValveOpen(i + 1)) {
-                    if (N2Value >= this.getN2IdleValue()) {
-                        this.changeState(i, B747_8_EngineState.RUNNING);
+                    if (this.getFuelValveOpen(i + 1)) {
+                        if (N2Value >= this.getN2IdleValue()) {
+                            this.changeState(i, B747_8_EngineState.RUNNING);
+                        }
+                        else if (N2Value >= 0.05) {
+                            this.changeState(i, B747_8_EngineState.AUTOSTART);
+                        }
                     }
-                    else if (N2Value >= 0.05) {
-                        this.changeState(i, B747_8_EngineState.AUTOSTART);
-                    }
-                }
                 break;
                 case B747_8_EngineState.AUTOSTART:
-                if (this.getFuelValveOpen(i + 1)) {
-                    if (N2Value >= this.getN2IdleValue()) {
-                        this.changeState(i, B747_8_EngineState.RUNNING);
-                    }
-                }
-                else {
-                    this.changeState(i, B747_8_EngineState.DECELERATE);
-                }
-                break;
-                case B747_8_EngineState.RUNNING:
-                if (N2Value >= this.getN2IdleValue()) {
-                    if (this.engines[i].timeInState > 30) {
-                        this.changeState(i, B747_8_EngineState.READY);
+                    if (this.getFuelValveOpen(i + 1)) {
+                        if (N2Value >= this.getN2IdleValue()) {
+                            this.changeState(i, B747_8_EngineState.RUNNING);
+                        }
                     }
                     else {
                         this.changeState(i, B747_8_EngineState.DECELERATE);
                     }
-                }
+                break;
+                case B747_8_EngineState.RUNNING:
+                    if (N2Value >= this.getN2IdleValue()) {
+                        if (this.engines[i].timeInState > 30) {
+                            this.changeState(i, B747_8_EngineState.READY);
+                        }
+                        else {
+                            this.changeState(i, B747_8_EngineState.DECELERATE);
+                        }
+                    }
                 break;
                 case B747_8_EngineState.READY:
-                if (N2Value < this.getN2IdleValue()) {
-                    this.changeState(i, B747_8_EngineState.AUTORELIGHT);
-                }
+                    if (N2Value < this.getN2IdleValue()) {
+                        this.changeState(i, B747_8_EngineState.AUTORELIGHT);
+                    }
                 break;
                 case B747_8_EngineState.DECELERATE:
                     if (N2Value < this.getN2IdleValue() && this.getFuelValveOpen()) {
@@ -172,15 +172,15 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                     }
                 break;
                 case B747_8_EngineState.AUTORELIGHT:
-                if (N2Value >= this.getN2IdleValue()) {
-                    this.changeState(i, B747_8_EngineState.RUNNING);
-                }
-                else if (N2Value < 0.05) {
-                    this.changeState(i, B747_8_EngineState.IDLE);
-                }
-                else if (!this.getFuelValveOpen()) {
-                    this.changeState(i, B747_8_EngineState.DECELERATE);
-                }
+                    if (N2Value >= this.getN2IdleValue()) {
+                        this.changeState(i, B747_8_EngineState.RUNNING);
+                    }
+                    else if (N2Value < 0.05) {
+                        this.changeState(i, B747_8_EngineState.IDLE);
+                    }
+                    else if (!this.getFuelValveOpen()) {
+                        this.changeState(i, B747_8_EngineState.DECELERATE);
+                    }
                 break;
             }
             this.engines[i].timeInState += _deltaTime / 1000;
