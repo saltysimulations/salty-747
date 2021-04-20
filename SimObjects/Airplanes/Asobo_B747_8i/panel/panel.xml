@@ -285,6 +285,17 @@
 
 		<Annunciation>
 		  <Type>Memo</Type>
+		  <Text>SPEEDBRAKE ARMED</Text>
+		  <Condition>
+		  	<Equal>
+				<Simvar name="SPOILERS ARMED" unit="Boolean"/>
+				<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
 		  <Text>APU RUNNING</Text>
 		  <Condition>
 		    <GreaterEqual>
