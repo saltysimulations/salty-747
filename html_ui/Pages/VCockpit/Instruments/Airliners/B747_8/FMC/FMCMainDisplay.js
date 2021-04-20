@@ -2139,6 +2139,11 @@ class FMCMainDisplay extends BaseAirliners {
                 SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", this.accelerationAltitude);
             }
         }
+        else {
+            let altitude = Simplane.getAltitude();
+            SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", altitude + 1500);
+            SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", altitude + 3000);
+        }
         let destination = this.flightPlanManager.getDestination();
         if (destination) {
             if (destination.infos instanceof AirportInfo) {
