@@ -4,12 +4,12 @@
 		<!-- Highest LOD -->
 		<!-- minimum display size in % (should be bounding sphere vertical screen size, sphere will often be slightly larger than you expect) -->
 		<!-- default minSize is 0 -->
-		<LOD minSize="150" ModelFile="747_8I_LOD00.gltf"/>
-		<LOD minSize="110" ModelFile="747_8I_LOD01.gltf"/>
-		<LOD minSize="75" ModelFile="747_8I_LOD02.gltf"/>
-		<LOD minSize="30" ModelFile="747_8I_LOD03.gltf"/>
-		<LOD minSize="15" ModelFile="747_8I_LOD04.gltf"/>
-		<LOD minSize="5" ModelFile="747_8I_LOD05.gltf"/>
+		<LOD minSize="70" ModelFile="747_8I_LOD00.gltf"/>
+		<LOD minSize="40" ModelFile="747_8I_LOD01.gltf"/>
+		<LOD minSize="30" ModelFile="747_8I_LOD02.gltf"/>
+		<LOD minSize="18" ModelFile="747_8I_LOD03.gltf"/>
+		<LOD minSize="10" ModelFile="747_8I_LOD04.gltf"/>
+		<LOD minSize="4" ModelFile="747_8I_LOD05.gltf"/>
 		<LOD minSize="1" ModelFile="747_8I_LOD06.gltf"/>
 	</LODS>
 	<!-- Custom animation definition. -->
@@ -251,7 +251,7 @@
 		</UseTemplate>
 	</Component>
 		<Component ID="FX_TIRE_CONTACT">
-			<DefaultTemplateParameters> 
+			<DefaultTemplateParameters>
 				<FX_DURATION>5</FX_DURATION>
 				<FX_OFFSET_X>0</FX_OFFSET_X>
 				<FX_OFFSET_Y>0</FX_OFFSET_Y>
