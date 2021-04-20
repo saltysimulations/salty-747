@@ -2,11 +2,11 @@
     --eicasWhite: white;
     --eicasBlack: black;
     --eicasGrey: #c8c8c8;
-    --eicasBlue: #009696;
-    --eicasGreen: green;
+    --eicasBlue: cyan;
+    --eicasGreen: lime;
     --eicasOrange: #db7200;
     --eicasRed: red;
-    --eicasMagenta: magenta;
+    --eicasMagenta: #D570FF;
 }
 :root text {
     font-family: Roboto-Bold;
@@ -40,7 +40,10 @@ b747-8-lower-eicas-fctl #cursor {
     fill: var(--eicasWhite);
 }
 b747-8-lower-eicas-fctl #trim {
-    stroke-width: 4px;
+    stroke-width: 2px;
+    text-anchor: end !important;
+    letter-spacing: 2px;
+    stroke: var(--eicasGreen);
 }
 b747-8-lower-eicas-fctl .Gauge {
     fill: var(--eicasWhite);

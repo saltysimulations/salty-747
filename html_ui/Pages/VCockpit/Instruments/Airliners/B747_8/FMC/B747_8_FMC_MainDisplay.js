@@ -1,6 +1,7 @@
 class B747_8_FMC_MainDisplay extends Boeing_FMC {
     constructor() {
         super(...arguments);
+        this.activeSystem = "FMC";
         this._registered = false;
         this._lastActiveWP = 0;
         this._wasApproachActive = false;
@@ -48,8 +49,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             [83.4, 84.8, 861, 86.7, 87.3, 87.9, 88.6, 89.3, 90, 90.7, 91, 91.2, 91.5]
         ];
         this._takeOffN1TempRow = [70, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -10, -20, -30, -40, -50];
-        this._thrustTakeOffMode = 1;
-        this._thrustCLBMode = 1;
+        this._thrustTakeOffMode = 0;
+        this._thrustCLBMode = 0;
         this._thrustTakeOffTemp = 20;
         this._lastUpdateAPTime = NaN;
         this.refreshFlightPlanCooldown = 0;
@@ -63,6 +64,76 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
+
+        /* SALTY 747 VARS */
+        this._TORwyWindHdg = "";
+        this._TORwyWindSpd = "";
+        this.messages = [];
+        this.sentMessages = [];
+        this.units;
+        this.useLbs;
+        this.atcComm = {            
+            estab: false,
+            loggedTo: "",
+            nextCtr: "",
+            maxUlDelay: "",
+            ads: "",
+            adsEmerg: "",
+            dlnkStatus: "NO COMM",
+            uplinkPeding: false,
+            fltNo: "",
+            origin: "",
+            planDep: "",
+            dest: "",
+            eta: "",
+            altn: "",
+            company: ""
+        };
+        this.companyComm = {
+            estab: false,
+            company: "",
+        };
+        this.simbrief = {
+            route: "",
+            cruiseAltitude: "",
+            originIcao: "",
+            destinationIcao: "",
+            blockFuel: "",
+            payload: "",
+            estZfw: "",
+            costIndex: "",
+            navlog: "",
+            icao_airline: "",
+            flight_number: "",
+            alternateIcao: "",
+            avgTropopause: "",
+            ete: "",
+            blockTime: "",
+            outTime: "",
+            onTime: "",
+            inTime: "",
+            offTime: "",
+            taxiFuel: "",
+            tripFuel: "",
+            altnFuel: "",
+            finResFuel: "",
+            contFuel: "",
+            route_distance: "",
+            rteUplinkReady: false,            
+            perfUplinkReady: false
+        }
+        this.fixInfo = [];
+        this.pdc = {
+            fltNo: "",
+            dept: "",
+            atis: "",
+            stand: "",
+            acType: "",
+            dest: "",
+            freeText: "",
+            ats: "",
+            sendStatus: ""
+        }
     }
     get templateID() { return "B747_8_FMC"; }
     connectedCallback() {
@@ -81,17 +152,46 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
-        this.onInit = () => { B747_8_FMC_InitRefIndexPage.ShowPage1(this); };
-        this.onLegs = () => { B747_8_FMC_LegsPage.ShowPage1(this); };
-        this.onRte = () => { FMCRoutePage.ShowPage1(this); };
-        this.onDepArr = () => { B747_8_FMC_DepArrIndexPage.ShowPage1(this); };
-        this.onRad = () => { B747_8_FMC_NavRadioPage.ShowPage(this); };
-        this.onVNAV = () => { B747_8_FMC_VNAVPage.ShowPage1(this); };
-        this.onProg = () => { B747_8_FMC_ProgPage.ShowPage1(this); };
-        FMCIdentPage.ShowPage1(this);
-
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
+        if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
+            this.units = true;
+            this.useLbs = false;
+        } else if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "LBS") {
+            this.units = false;
+            this.useLbs = true;
+        }
+        this.onInit = () => {
+            B747_8_FMC_InitRefIndexPage.ShowPage1(this);
+        };
+        this.onLegs = () => {
+            B747_8_FMC_LegsPage.ShowPage1(this);
+        };
+        this.onRte = () => {
+            FMCRoutePage.ShowPage1(this);
+        };
+        this.onDepArr = () => {
+            B747_8_FMC_DepArrIndexPage.ShowPage1(this);
+        };
+        this.onRad = () => {
+            B747_8_FMC_NavRadioPage.ShowPage(this);
+        };
+        this.onVNAV = () => {
+            B747_8_FMC_VNAVPage.ShowPage1(this);
+        };
+        this.onProg = () => {
+            B747_8_FMC_ProgPage.ShowPage1(this);
+        };
+        this.onAtc = () => { 
+            FMC_ATC_Index.ShowPage(this);
+        };
+        this.onFmcComm = () => { 
+            FMC_COMM_Index.ShowPage(this);
+        };
+        this.onMenu = () => { 
+            FMC_Menu.ShowPage(this);
+        };
+        FMC_Menu.ShowPage(this);
     }
     onPowerOn() {
         super.onPowerOn();
@@ -107,7 +207,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.refreshPageCallback();
         }
         this.updateAutopilot();
+        this.updateVREF25();
+        this.updateVREF30();
         this.saltyBase.update();
+        if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
+            this.units = true;
+            this.useLbs = false;
+        } else if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "LBS") {
+            this.units = false;
+            this.useLbs = true;
+        }
     }
     onInputAircraftSpecific(input) {
         console.log("B747_8_FMC_MainDisplay.onInputAircraftSpecific input = '" + input + "'");
@@ -126,6 +235,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (input === "VNAV") {
             if (this.onVNAV) {
                 this.onVNAV();
+            }
+        }
+        if (input === "PROG") {
+            if (this.onProg) {
+                this.onProg();
+            }
+        }
+        if (input === "ATC") {
+            if (this.onAtc) {
+                this.onAtc();
+            }
+        }
+        if (input === "FMCCOMM") {
+            if (this.onFmcComm) {
+                this.onFmcComm();
+            }
+        }
+        if (input === "MENU") {
+            if (this.onMenu) {
+                this.onMenu();
             }
         }
         return false;
@@ -281,28 +410,52 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let dWeight = (this.getWeight(true) - 500) / (900 - 500);
         return 204 + 40 * dWeight;
     }
+    //VNAV climb speed commands 5 knots below current flap placard speed
     getClbManagedSpeed() {
-        let dCI = this.getCostIndexFactor();
-        let speed = 310 * (1 - dCI) + 330 * dCI;
-        if (Simplane.getAltitude() < 10000) {
-            speed = Math.min(speed, 250);
+        let flapsHandleIndex = Simplane.getFlapsHandleIndex();
+        let flapLimitSpeed = Simplane.getFlapsLimitSpeed(this.aircraft, flapsHandleIndex);
+        let alt = Simplane.getAltitude();
+        let speedTrans = 10000;
+        let speed = flapLimitSpeed - 5;
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        //When flaps 1 - commands UP + 20 or speed transition, whichever higher 
+        if (flapsHandleIndex <= 1 && alt <= speedTrans) {
+            speed = Math.max(flapsUPmanueverSpeed + 20, 250);
+        }
+        //Above 10000 commands lowest of UP + 100, 350kts or M.845
+        if (flapsHandleIndex <= 1 && alt >= speedTrans) {
+            let mach = 0.845;
+            let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+            speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+            if (speed == machlimit) {
+                SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
+            }
         }
         return speed;
     }
     getCrzManagedSpeed(highAltitude = false) {
-        let dCI = this.getCostIndexFactor();
-        dCI = dCI * dCI;
-        let speed = 310 * (1 - dCI) + 330 * dCI;
+        //Commands lowest of UP + 100, 350kts or M.845.
+        let mach = 0.845
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        //UP + 20 or 250 below 10000
         if (!highAltitude && Simplane.getAltitude() < 10000) {
-            speed = Math.min(speed, 250);
+            speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
         return speed;
     }
     getDesManagedSpeed() {
-        let dCI = this.getCostIndexFactor();
-        let speed = 240 * (1 - dCI) + 260 * dCI;
-        if (Simplane.getAltitude() < 10000) {
-            speed = Math.min(speed, 250);
+        //Commands lowest of 340kts or M.845 then 240 below 10000.
+        let mach = 0.845
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let speed = Math.min(340, machlimit);
+        if (machlimit > 340) {
+            SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+            SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
+        }
+        if (Simplane.getAltitude() < 10500) {
+            speed = Math.min(speed, 240);
         }
         return speed;
     }
@@ -339,18 +492,55 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         return min + (max - min) * dWeight;
     }
-    getManagedApproachSpeed(flapsHandleIndex = NaN, useCurrentWeight = true) {
-        return this.getVRef(flapsHandleIndex, useCurrentWeight) - 5;
+    getManagedApproachSpeed() {
+        if (SimVar.GetSimVarValue("L:AIRLINER_VREF_SPEED", "knots")) {
+            return SimVar.GetSimVarValue("L:AIRLINER_VREF_SPEED", "knots") + 5;
+        }
+        return SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 5;
     }
     getCleanApproachSpeed() {
-        let dWeight = (this.getWeight(true) - 258.4) / (447.5 - 258.4);
-        return 152 + 40 * dWeight;
+        let cleanApproachSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        return cleanApproachSpeed;
     }
-    getSlatApproachSpeed(useCurrentWeight = true) {
-        return this.getVRef(8, useCurrentWeight);
+    updateVREF25() {
+        //Polynomial regression derived from FCOM published VREF25
+        let coefficients = [
+           -1.5467919598658073e+003,
+            1.5106421359771541e-002,
+           -5.6968579138009758e-008,
+            1.1360121592598009e-013,
+           -1.2514991427515442e-019,
+            7.2184630711155283e-026,
+           -1.7036813116590257e-032
+         ];
+         let vRef25 = 0;
+         let grossWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
+         let i;
+         for (i = 0; i < coefficients.length; i++) {
+             let a = coefficients[i] * (Math.pow(grossWeight, i) );
+             vRef25 += a;
+         }
+         SimVar.SetSimVarValue("L:SALTY_VREF25", "knots", Math.round(vRef25));
     }
-    getFlapApproachSpeed(useCurrentWeight = true) {
-        return this.getVRef(9, useCurrentWeight);
+    updateVREF30() {
+        //Polynomial regression derived from FCOM published VREF30
+        let coefficients = [
+           -1.0271030433117912e+003,
+            1.0235086042112870e-002,
+           -3.8432475698588999e-008,
+            7.6704299010379434e-014,
+           -8.4569127892214961e-020,
+            4.8771524333784454e-026,
+           -1.1496146052268411e-032
+        ];
+        let vRef30 = 0;
+        let grossWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
+        let i;
+        for (i = 0; i < coefficients.length; i++) {
+            let a = coefficients[i] * (Math.pow(grossWeight, i) );
+            vRef30 += a;
+        }
+        SimVar.SetSimVarValue("L:SALTY_VREF30", "knots", Math.round(vRef30));
     }
     setSelectedApproachFlapSpeed(s) {
         let flap = NaN;
@@ -364,8 +554,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (isFinite(flap) && flap >= 0 && flap < 60) {
                 this.selectedApproachFlap = flap;
             }
-            if (isFinite(speed) && speed >= 10 && speed < 300) {
+            if (isFinite(speed) && speed >= 100 && speed < 300) {
                 this.selectedApproachSpeed = speed;
+                SimVar.SetSimVarValue("L:AIRLINER_VREF_SPEED", "Knots", speed);
             }
             return true;
         }
@@ -479,15 +670,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (currentApMasterStatus != this._apMasterStatus) {
                 this._apMasterStatus = currentApMasterStatus;
                 this._forceNextAltitudeUpdate = true;
-                if (currentApMasterStatus) {
-                    if (this.flightPlanManager.hasFlightPlan()) {
-                        this.activateLNAV();
-                        this.activateVNAV();
-                    }
-                    else {
-                        this.activateFLCH();
-                    }
-                }
             }
             this._apHasDeactivated = !currentApMasterStatus && this._previousApMasterStatus;
             this._previousApMasterStatus = currentApMasterStatus;
@@ -501,14 +683,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let n1 = this.getThrustTakeOffLimit() / 100;
                 SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
             }
-            if (!this.getIsAltitudeHoldActive()) {
-                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, Simplane.getAutoPilotDisplayedAltitudeLockValue(), this._forceNextAltitudeUpdate);
-            }
             let vRef = 0;
             if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_DESCENT) {
                 vRef = 1.3 * Simplane.getStallSpeed();
             }
-            SimVar.SetSimVarValue("L:AIRLINER_VREF_SPEED", "knots", vRef);
             if (this._apHasDeactivated) {
                 this.deactivateVNAV();
                 if (!this.getIsSPDActive()) {
@@ -674,6 +852,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                     }
                 }
+                //Triggers correct Autothrottle mode SPD when capturing in VNAV
+                if (Simplane.getAutoPilotAltitudeLockActive() && Simplane.getAutoPilotThrottleArmed() && !this.getIsSPDActive()) {
+                    this.activateSPD();
+                }
             }
             else if (!this.getIsFLCHActive() && this.getIsSPDActive()) {
                 this.setAPSpeedHoldMode();
@@ -719,36 +901,27 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getTakeOffManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
+                    //Sets CLB Thrust when passing thrust reduction altitude
+                    let alt = Simplane.getAltitude();
+                    let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
+                    let n1 = 100;
+                    if (alt > thrRedAlt) {
+                        n1 = this.getThrustClimbLimit() / 100;
+                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
+                        this.setThrottleMode(ThrottleMode.CLIMB);
+                    }
                 }
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getClbManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                    let altitude = Simplane.getAltitudeAboveGround();
-                    let n1 = 100;
-                    if (altitude < this.thrustReductionAltitude) {
-                        n1 = this.getThrustTakeOffLimit() / 100;
-                    }
-                    else {
-                        n1 = this.getThrustClimbLimit() / 100;
-                    }
-                    SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
                 }
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getCrzManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                    let altitude = Simplane.getAltitudeAboveGround();
-                    let n1 = 100;
-                    if (altitude < this.thrustReductionAltitude) {
-                        n1 = this.getThrustTakeOffLimit() / 100;
-                    }
-                    else {
-                        n1 = this.getThrustClimbLimit() / 100;
-                    }
-                    SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
                 }
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_DESCENT) {
@@ -759,7 +932,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
                 if (this.getIsVNAVActive()) {
-                    let speed = this.getManagedApproachSpeed();
+                    let speed = this.getDesManagedSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
                 }
                 if (Simplane.getAutoPilotThrottleActive()) {
@@ -773,6 +946,350 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
             this.updateAutopilotCooldown = this._apCooldown;
         }
+    }
+    static stringTohhmm(value) {
+        value = value.padStart(4, "0");
+        const h = parseInt(value.slice(0, 2));
+        const m = parseInt(value.slice(2, 4));
+        return h.toFixed(0).padStart(2, "0") + ":" + m.toFixed(0).padStart(2, "0");
+    }
+    
+    refreshGrossWeight(_force = false) {
+        let gw = 0;
+        let isInMetric = BaseAirliners.unitIsMetric(Aircraft.A320_NEO);
+        if (isInMetric) {
+            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "kg"));
+            if (this.gwUnit)
+                this.gwUnit.textContent = "KG";
+        }
+        else {
+            gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs"));
+            if (this.gwUnit)
+                this.gwUnit.textContent = "LBS";
+        }
+        if ((gw != this.currentGW) || _force) {
+            this.currentGW = gw;
+            if (this.gwValue != null) {
+                this.gwValue.textContent = this.currentGW.toString();
+            }
+        }
+    }
+
+    // SALTY 747 FUNCTIONS
+    // INCOMING AOC MESSAGES
+    getMessages() {
+        return this.messages;
+    }
+    getMessage(id, type) {
+        const messages = this.messages;
+        const currentMessageIndex = messages.findIndex(m => m["id"].toString() === id.toString());
+        if (type === 'previous') {
+            if (messages[currentMessageIndex - 1]) {
+                return messages[currentMessageIndex - 1];
+            }
+            return null;
+        } else if (type === 'next') {
+            if (messages[currentMessageIndex + 1]) {
+                return messages[currentMessageIndex + 1];
+            }
+            return null;
+        }
+        return messages[currentMessageIndex];
+    }
+    getMessageIndex(id) {
+        return this.messages.findIndex(m => m["id"].toString() === id.toString());
+    }
+    addMessage(message) {
+        this.messages.unshift(message);
+        const cMsgCnt = SimVar.GetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number");
+        SimVar.SetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number", cMsgCnt + 1);
+    }
+    deleteMessage(id) {
+        if (!this.messages[id]["opened"]) {
+            const cMsgCnt = SimVar.GetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number");
+            SimVar.SetSimVarValue("L:SALTY_747_COMPANY_MSG_COUNT", "Number", cMsgCnt <= 1 ? 0 : cMsgCnt - 1);
+        }
+        this.messages.splice(id, 1);
+    }
+
+    // OUTGOING/SENT AOC MESSAGES
+
+    /* Delay when uplinking data */
+    getUplinkDelay() {
+        return 1000 + 750 * Math.random();
+    }
+    /* Delay when inserting data */
+    getInsertDelay() {
+        return 650 + 500 * Math.random();
+    }
+    getSentMessages() {
+        return this.sentMessages;
+    }
+    getSentMessage(id, type) {
+        const messages = this.sentMessages;
+        const currentMessageIndex = messages.findIndex(m => m["id"].toString() === id.toString());
+        if (type === 'previous') {
+            if (messages[currentMessageIndex - 1]) {
+                return messages[currentMessageIndex - 1];
+            }
+            return null;
+        } else if (type === 'next') {
+            if (messages[currentMessageIndex + 1]) {
+                return messages[currentMessageIndex + 1];
+            }
+            return null;
+        }
+        return messages[currentMessageIndex];
+    }
+    getSentMessageIndex(id) {
+        return this.sentMessages.findIndex(m => m["id"].toString() === id.toString());
+    }
+    addSentMessage(message) {
+        this.sentMessages.unshift(message);
+    }
+    deleteSentMessage(id) {
+        this.sentMessages.splice(id, 1);
+    }
+    getTimeString(time) {
+        var hours = time.getUTCHours();
+        hours = hours.toString();
+        hours = hours.padStart(2, "0");
+        var minutes = time.getUTCMinutes();
+        minutes = minutes.toString();
+        minutes = minutes.padStart(2, "0");
+        var timeString = hours + minutes + "Z";
+        return timeString
+    }
+
+    /* VISUALS */
+
+    _formatCell(str) {
+        return str
+            .replace(/{white}/g, "<span class='white'>")
+            .replace(/{blue}/g, "<span class='blue'>")
+            .replace(/{yellow}/g, "<span class='yellow'>")
+            .replace(/{green}/g, "<span class='green'>")
+            .replace(/{red}/g, "<span class='red'>")
+            .replace(/{inop}/g, "<span class='inop'>")
+            .replace(/{small}/g, "<span class='s-text'>")
+            .replace(/{sp}/g, "&nbsp;")
+            .replace(/{end}/g, "</span>");
+    }
+
+    getTitle() {
+        if (this._title === undefined) {
+            this._title = this._titleElement.textContent;
+        }
+        return this._title;
+    }
+    setTitle(content) {
+        let color = content.split("[color]")[1];
+        if (!color) {
+            color = "white";
+        }
+        this._title = content.split("[color]")[0];
+        this._titleElement.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+        this._titleElement.classList.add(color);
+        this._titleElement.innerHTML = this._title;
+    }
+    getPageCurrent() {
+        if (this._pageCurrent === undefined) {
+            this._pageCurrent = parseInt(this._pageCurrentElement.textContent);
+        }
+        return this._pageCurrent;
+    }
+    setPageCurrent(value) {
+        if (typeof (value) === "number") {
+            this._pageCurrent = value;
+        }
+        else if (typeof (value) === "string") {
+            this._pageCurrent = parseInt(value);
+        }
+        this._pageCurrentElement.textContent = (this._pageCurrent > 0 ? this._pageCurrent : "") + "";
+    }
+    getPageCount() {
+        if (this._pageCount === undefined) {
+            this._pageCount = parseInt(this._pageCountElement.textContent);
+        }
+        return this._pageCount;
+    }
+    setPageCount(value) {
+        if (typeof (value) === "number") {
+            this._pageCount = value;
+        }
+        else if (typeof (value) === "string") {
+            this._pageCount = parseInt(value);
+        }
+        this._pageCountElement.textContent = (this._pageCount > 0 ? this._pageCount : "") + "";
+        if (this._pageCount === 0) {
+            this.getChildById("page-slash").textContent = "";
+        }
+        else {
+            this.getChildById("page-slash").textContent = "/";
+        }
+    }
+    getLabel(row, col = 0) {
+        if (!this._labels[row]) {
+            this._labels[row] = [];
+        }
+        return this._labels[row][col];
+    }
+    setLabel(label, row, col = -1) {
+        if (col >= this._labelElements[row].length) {
+            return;
+        }
+        if (!this._labels[row]) {
+            this._labels[row] = [];
+        }
+        if (!label) {
+            label = "";
+        }
+        if (col === -1) {
+            for (let i = 0; i < this._labelElements[row].length; i++) {
+                this._labels[row][i] = "";
+                this._labelElements[row][i].textContent = "";
+            }
+            col = 0;
+        }
+        if (label === "__FMCSEPARATOR") {
+            label = "------------------------";
+        }
+        if (label !== "") {
+            let color = label.split("[color]")[1];
+            if (!color) {
+                color = "white";
+            }
+            let e = this._labelElements[row][col];
+            e.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+            e.classList.add(color);
+            label = label.split("[color]")[0];
+        }
+        this._labels[row][col] = label;
+        this._labelElements[row][col].textContent = label;
+    }
+    getLine(row, col = 0) {
+        if (!this._lines[row]) {
+            this._lines[row] = [];
+        }
+        return this._lines[row][col];
+    }
+    setLine(content, row, col = -1) {
+        if (col >= this._lineElements[row].length) {
+            return;
+        }
+        if (!content) {
+            content = "";
+        }
+        if (!this._lines[row]) {
+            this._lines[row] = [];
+        }
+        if (col === -1) {
+            for (let i = 0; i < this._lineElements[row].length; i++) {
+                this._lines[row][i] = "";
+                this._lineElements[row][i].textContent = "";
+            }
+            col = 0;
+        }
+        if (content === "__FMCSEPARATOR") {
+            content = "------------------------";
+        }
+        if (content !== "") {
+            if (content.indexOf("[s-text]") !== -1) {
+                content = content.replace("[s-text]", "");
+                this._lineElements[row][col].classList.add("s-text");
+            }
+            else {
+                this._lineElements[row][col].classList.remove("s-text");
+            }
+            let color = content.split("[color]")[1];
+            if (!color) {
+                color = "white";
+            }
+            let e = this._lineElements[row][col];
+            e.classList.remove("white", "blue", "yellow", "green", "red", "magenta", "inop");
+            e.classList.add(color);
+            content = content.split("[color]")[0];
+        }
+        content = content.replace("\<", "&lt");
+        this._lines[row][col] = content;
+        this._lineElements[row][col].innerHTML = this._lines[row][col];
+    }
+    get inOut() {
+        return this.getInOut();
+    }
+    getInOut() {
+        if (this._inOut === undefined) {
+            this._inOut = this._inOutElement.textContent;
+        }
+        return this._inOut;
+    }
+    set inOut(v) {
+        this.setInOut(v);
+    }
+    setInOut(content) {
+        this._inOut = content;
+        this._inOutElement.textContent = this._inOut;
+        if (content === FMCMainDisplay.clrValue) {
+            this._inOutElement.style.paddingLeft = "8%";
+        }
+        else {
+            this._inOutElement.style.paddingLeft = "";
+        }
+    }
+    setTemplate(template) {
+        if (template[0]) {
+            this.setTitle(template[0][0]);
+            this.setPageCurrent(template[0][1]);
+            this.setPageCount(template[0][2]);
+        }
+        for (let i = 0; i < 6; i++) {
+            let tIndex = 2 * i + 1;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLabel(template[tIndex][0], i, 0);
+                    this.setLabel(template[tIndex][1], i, 1);
+                    this.setLabel(template[tIndex][2], i, 2);
+                    this.setLabel(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLabel(template[tIndex][0], i, -1);
+                }
+            }
+            tIndex = 2 * i + 2;
+            if (template[tIndex]) {
+                if (template[tIndex][1] !== undefined) {
+                    this.setLine(template[tIndex][0], i, 0);
+                    this.setLine(template[tIndex][1], i, 1);
+                    this.setLine(template[tIndex][2], i, 2);
+                    this.setLine(template[tIndex][3], i, 3);
+                }
+                else {
+                    this.setLine(template[tIndex][0], i, -1);
+                }
+            }
+        }
+        if (template[13]) {
+            this.setInOut(template[13][0]);
+        }
+        SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
+        // Apply formatting helper to title page, lines and labels
+        if (this._titleElement !== null) {
+            this._titleElement.innerHTML = this._formatCell(this._titleElement.innerHTML);
+        }
+        this._lineElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
+        this._labelElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
     }
 }
 B747_8_FMC_MainDisplay._v1s = [

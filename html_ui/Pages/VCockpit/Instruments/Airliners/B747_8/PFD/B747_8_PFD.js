@@ -168,11 +168,11 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
                 this.altimeter.showMTRS(this.isMTRSActive);
                 break;
             case "Mins_INC":
-                this.minimumReference += 50;
+                this.minimumReference += 10;
                 this.altimeter.minimumReferenceValue = this.minimumReference;
                 break;
             case "Mins_DEC":
-                this.minimumReference -= 50;
+                this.minimumReference -= 10;
                 this.altimeter.minimumReferenceValue = this.minimumReference;
                 break;
             case "Mins_Press":
@@ -223,6 +223,7 @@ class B747_8_PFD_Compass extends NavSystemElement {
         this.svg = this.gps.getChildById("Compass");
         this.svg.aircraft = Aircraft.B747_8;
         this.svg.gps = this.gps;
+        this.minimumReference = 200;
     }
     onEnter() {
     }
@@ -232,6 +233,26 @@ class B747_8_PFD_Compass extends NavSystemElement {
     onExit() {
     }
     onEvent(_event) {
+        switch (_event) {
+            case "BARO_INC":
+                SimVar.SetSimVarValue("K:KOHLSMAN_INC", "number", 1);
+                break;
+            case "BARO_DEC":
+                SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", 1);
+                break;
+            case "Mins_INC":
+                this.minimumReference += 10;
+                this.svg.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_DEC":
+                this.minimumReference -= 10;
+                this.svg.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_Press":
+                this.minimumReference = 200;
+                this.svg.minimumReferenceValue = this.minimumReference;
+                break;
+        }
     }
     showILS(_val) {
         if (this.svg) {
@@ -279,8 +300,8 @@ class B747_8_PFD_ILS extends NavSystemElement {
         }
         if (this.ils) {
             let showIls = false;
-            let localizer = this.gps.radioNav.getBestILSBeacon(false);
-            if ((localizer.id != 0 && this.altWentAbove500) || (this.gps.currFlightPlanManager.isActiveApproach() && Simplane.getAutoPilotApproachType() == 10)) {
+            let localizer = this.gps.radioNav.getBestILSBeacon(UseNavSource.YES_FALLBACK);
+            if ((localizer.id != 0 && this.altWentAbove500) || (this.gps.currFlightPlanManager.isActiveApproach() && Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV)) {
                 showIls = true;
             }
             this.ils.showLocalizer(showIls);

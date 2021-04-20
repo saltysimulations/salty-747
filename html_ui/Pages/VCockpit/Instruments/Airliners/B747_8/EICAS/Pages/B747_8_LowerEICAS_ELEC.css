@@ -2,13 +2,13 @@
     --eicasWhite: white;
     --eicasBlack: black;
     --eicasGrey: #c8c8c8;
-    --eicasBlue: #009696;
-    --eicasGreen: green;
+    --eicasBlue: cyan;
+    --eicasGreen: lime;
     --eicasOrange: #db7200;
     --eicasRed: red;
-    --eicasMagenta: magenta; }
+    --eicasMagenta: #D570FF; }
     :root text {
-      font-family: Roboto-Bold; }
+      font-family: "BoeingEICAS"; }
 
 b747-8-lower-eicas-elec {
   position: relative;

@@ -6,9 +6,15 @@
     --eicasGreen: green;
     --eicasOrange: #db7200;
     --eicasRed: red;
-    --eicasMagenta: magenta; }
+    --eicasMagenta: #D570FF; }
     :root text {
-      font-family: Roboto-Bold; }
+      font-family: "BoeingEICAS"; }
+
+@font-face {
+  font-family: "BoeingEICAS";
+  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
 
 b747-8-lower-eicas-drs {
   position: relative;
@@ -21,20 +27,20 @@ b747-8-lower-eicas-drs {
     width: 100%;
     height: 100%; }
   b747-8-lower-eicas-drs text {
-    fill: var(--eicasBlue);
+    fill: cyan;
     font-size: 17px; }
   b747-8-lower-eicas-drs rect {
     fill: black; }
   b747-8-lower-eicas-drs #aircraft-shape {
     stroke: #ffffff;
-    stroke-width: 1; }
+    stroke-width: 2; }
   b747-8-lower-eicas-drs #lines-l, b747-8-lower-eicas-drs #lines-r {
-    stroke: var(--eicasBlue);
-    stroke-width: 1.2; }
+    stroke: cyan;
+    stroke-width: 2; }
   b747-8-lower-eicas-drs #status-l text, b747-8-lower-eicas-drs #status-r text {
-    fill: var(--eicasGreen);
+    fill: lime;
     font-size: 17px; }
   b747-8-lower-eicas-drs #open-rects rect {
     stroke: var(--eicasOrange);
-    stroke-width: 1.5;
+    stroke-width: 2;
     visibility: hidden; }
