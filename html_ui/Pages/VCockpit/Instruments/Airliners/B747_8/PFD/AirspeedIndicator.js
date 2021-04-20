@@ -521,35 +521,17 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
     getStallSpeed1G() {
         let flapSetting = Simplane.getFlapsAngle() * 180 / Math.PI;
         let grossWeight = Math.round(Simplane.getWeight() / 1000);
+        let a = -0.0008 * grossWeight - 0.5617;
+        let b = 0.2237 * grossWeight + 75.764;
+        let c = 0.0326 * grossWeight + 25.248;
         if (flapSetting === 0) {
-            let stallSpeed1G = Math.round((0.2595 * grossWeight + 100.63));
+            let stallSpeed1G = a * flapSetting + b + c;
             return stallSpeed1G;
         }
-        else if (flapSetting === 1) {
-            let stallSpeed = Math.round((0.2294 * grossWeight + 73.855));
+        else {
+            let stallSpeed1G = a * flapSetting + b;
             return stallSpeed1G;
         }
-        else if (flapSetting === 5) {
-            let stallSpeed = Math.round((0.2236 * grossWeight + 71.791));
-            return stallSpeed1G;
-        }
-        else if (flapSetting === 10) {
-            let stallSpeed = Math.round((0.2091 * grossWeight + 71));
-            return stallSpeed1G;
-        }
-        else if (flapSetting === 20) {
-            let stallSpeed = Math.round((0.2 * grossWeight + 66));
-            return stallSpeed1G;
-        }
-        else if (flapSetting === 25) {
-            let stallSpeed = Math.round((0.2045 * grossWeight + 60));
-            return stallSpeed1G;
-        }
-        else if (flapSetting === 30) {
-            let stallSpeed = Math.round((0.2023 * grossWeight + 59.5));
-            return stallSpeed1G;
-        }
-
     }
     update(dTime) {
         let indicatedSpeed = Simplane.getIndicatedSpeed();
