@@ -152,6 +152,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
+        this.saltyBase = new SaltyBase();
+        this.saltyBase.init();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -190,8 +192,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             FMC_Menu.ShowPage(this);
         };
         FMC_Menu.ShowPage(this);
-        this.saltyBase = new SaltyBase();
-        this.saltyBase.init();
     }
     onPowerOn() {
         super.onPowerOn();
