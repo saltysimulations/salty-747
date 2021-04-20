@@ -2817,14 +2817,12 @@ class Warnings extends NavSystemElement {
             }
         }
         if (!alertsFromXML) {
-            /*
             this.warnings.push(new Warning_Data("", "", "Garmin_Stall_f", 0, this.stallCallback.bind(this)));
             this.warnings.push(new Warning_Data("PULL UP", "PULL UP", "Garmin_Pull_Up_f", 3, this.pullUpCallback.bind(this)));
             this.warnings.push(new Warning_Data("TERRAIN", "SINK RATE", "Garmin_Sink_Rate_f", 2, this.sinkRateCallback.bind(this)));
             this.warnings.push(new Warning_Data("", "", "Garmin_landing_gear_f", 0, this.landingGearCallback.bind(this)));
             this.warnings.push(new Warning_Data("TAWS TEST", "", "", 1, this.tawsTestCallback.bind(this)));
             this.warnings.push(new Warning_Data("", "", "Garmin_TAWS_System_Test_OK_f", 0, this.tawsTestFinishedCallback.bind(this), true));
-            */
         }
         this.UID = parseInt(this.gps.getAttribute("Guid")) + 1;
         SimVar.SetSimVarValue("L:AS1000_Warnings_Master_Set", "number", 0);
