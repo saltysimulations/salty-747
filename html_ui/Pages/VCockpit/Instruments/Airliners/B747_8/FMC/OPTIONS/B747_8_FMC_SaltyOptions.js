@@ -13,7 +13,7 @@ class FMCSaltyOptions {
         fmc.setTemplate([
             ["SALTY OPTIONS"],
             ["", ""],
-            ["<IRS", ""],
+            ["<IRS", "UNITS>"],
             ["", ""],
             ["<METAR SRC", "ATIS SRC>"],
             ["", ""],
@@ -21,7 +21,7 @@ class FMCSaltyOptions {
             ["", ""],
             [`<SIMBRIEF`, ""],
             ["", ""],
-            ["<CPDLC[color]inop", ""],
+            ["<CPDLC[color]inop", "MISC>"],
             ["\xa0RETURN TO", ""],
             ["<INDEX", ""]
         ]);
@@ -30,7 +30,10 @@ class FMCSaltyOptions {
         fmc.onLeftInput[0] = () => {
             FMCSaltyOptions_IrsStatus.ShowPage(fmc);
         }
-
+        /* RSK1 */
+        fmc.onRightInput[0] = () => {
+            FMCSaltyOptions_Units.ShowPage(fmc);
+        }
         /* LSK2 */
         fmc.onLeftInput[1] = () => {
              FMCSaltyOptions_Metar.ShowPage(fmc);
@@ -51,6 +54,11 @@ class FMCSaltyOptions {
               FMCSaltyOptions_Simbrief.ShowPage(fmc);
         }
         
+        /* RSK5 */
+        fmc.onRightInput[4] = () => {
+              FMCSaltyOptions_Misc.ShowPage(fmc);
+        }
+
         /* LSK6 */
         fmc.onLeftInput[5] = () => {
               FMC_Menu.ShowPage(fmc);

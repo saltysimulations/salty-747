@@ -86,6 +86,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
     construct_A320_Neo() {
     }
     construct_B747_8() {
+        SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 0);
         let pitchFactor = -6.5;
         this.pitchAngleFactor = pitchFactor;
         this.horizonAngleFactor = pitchFactor * 1.2;
@@ -614,7 +615,7 @@ var Jet_PFD_FlightDirector;
             if (this.headingLine != null) {
                 let currentPlaneBank = Simplane.getBank();
                 let currentFDBank = Simplane.getFlightDirectorBank();
-                let altAboveGround = Simplane.getAltitudeAboveGround();
+                let altAboveGround = Simplane.getAltitudeAboveGround();      
                 if (altAboveGround > 0 && altAboveGround < 10) {
                     currentFDBank = 0;
                 }
@@ -626,9 +627,24 @@ var Jet_PFD_FlightDirector;
                 let currentPlanePitch = Simplane.getPitch();
                 let currentFDPitch = Simplane.getFlightDirectorPitch();
                 let altAboveGround = Simplane.getAltitudeAboveGround();
+                let vertSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second") * 60;
+                let fdPhase = SimVar.GetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum");
                 let _bForcedFdPitchThisFrame = false;
-                if (altAboveGround > 0 && altAboveGround < 10 && Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
-                    currentFDPitch = -8;
+                //Special FD Takeoff Phase Logic
+                if (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+                    if (fdPhase < 1) {
+                        currentFDPitch = -8;
+                    }
+                    if (((fdPhase == 1) || altAboveGround > 5) && Simplane.getIndicatedSpeed() > 80) {
+                        currentFDPitch = -10 ;
+                        SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 1);
+                    }
+                    if ((vertSpeed >= 600 || fdPhase == 2) && altAboveGround > 10) {  
+                        SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
+                        let blendfactor = (vertSpeed) / 350;
+                        currentFDPitch = Math.min((Simplane.getFlightDirectorPitch() - 7 + blendfactor), Simplane.getFlightDirectorPitch());
+                        SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 2);
+                    }
                 }
                 if (this._pitchIsNotReadyYet) {
                     this._pitchIsNotReadyYet = Math.abs(currentFDPitch) < 2;

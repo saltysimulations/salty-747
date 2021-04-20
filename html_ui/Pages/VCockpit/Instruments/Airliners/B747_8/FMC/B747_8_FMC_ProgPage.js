@@ -40,7 +40,12 @@ class B747_8_FMC_ProgPage {
                 }
                 let fuelLeft = fmc.computeFuelLeft(waypointActiveDistance, speed, currentFuel, currentFuelFlow);
                 if (isFinite(fuelLeft)) {
-                    waypointActiveFuelCell = fuelLeft.toFixed(1);
+                    if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+                        waypointActiveFuelCell = (fuelLeft / 2.204).toFixed(1);
+                    }
+                    else {
+                        waypointActiveFuelCell = fuelLeft.toFixed(1);
+                    }
                 }
             }
         }
@@ -72,7 +77,12 @@ class B747_8_FMC_ProgPage {
                         }
                         let fuelLeft = fmc.computeFuelLeft(waypointActiveNextDistance, speed, currentFuel, currentFuelFlow);
                         if (isFinite(fuelLeft)) {
-                            waypointActiveNextFuelCell = fuelLeft.toFixed(1);
+                            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+                                waypointActiveNextFuelCell = (fuelLeft / 2.204).toFixed(1);
+                            }
+                            else {
+                                waypointActiveNextFuelCell = fuelLeft.toFixed(1);
+                            }
                         }
                     }
                 }
@@ -105,7 +115,12 @@ class B747_8_FMC_ProgPage {
                     }
                     let fuelLeft = fmc.computeFuelLeft(destinationDistance, speed, currentFuel, currentFuelFlow);
                     if (isFinite(fuelLeft)) {
-                        destinationFuelCell = fuelLeft.toFixed(1);
+                        if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+                            destinationFuelCell = (fuelLeft / 2.204).toFixed(1);
+                        }
+                        else {
+                            destinationFuelCell = fuelLeft.toFixed(1);
+                        }
                     }
                 }
             }
@@ -116,9 +131,10 @@ class B747_8_FMC_ProgPage {
             let crzMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
             var radixPos = crzMachNo.indexOf('.');
             crzSpeedCell = crzMachNo.slice(radixPos);
-            } else {
-                crzSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
-            }
+        } 
+        else {
+            crzSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
+        }
         fmc.setTemplate([
             [progressTitle],
             ["\xa0TO", "FUEL", "DTG\xa0\xa0ETA"],

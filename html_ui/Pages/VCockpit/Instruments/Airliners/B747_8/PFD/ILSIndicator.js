@@ -242,7 +242,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     }
                     this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
                 }
-                else if (localizer && localizer.id > 0 && SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + localizer.id, "Bool")) {
+                else if (localizer && localizer.id > 0 && (SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + localizer.id, "Bool") || (isApproachLoaded && approachType == 4))) {
                     let gsi = -SimVar.GetSimVarValue("NAV GSI:" + localizer.id, "number") / 127.0;
                     let delta = (gsi + 1.0) * 0.5;
                     let y = this.gs_cursorMinY + (this.gs_cursorMaxY - this.gs_cursorMinY) * delta;

@@ -142,6 +142,50 @@
 				</StateMachine>
 			</Condition>
 		</Annunciation>
+
+		<Annunciation>
+			<Type>Warning</Type>
+			<Text>OVERSPEED</Text>
+			<Condition>
+				<Equal>
+				<Simvar name="OVERSPEED WARNING" unit="bool"/>
+				<Constant>1</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Warning</Type>
+			<Text></Text>
+			<Condition>
+				<Simvar name="STALL WARNING" unit="Boolean"/>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>FUEL QTY LOW</Text>
+		  <Condition>
+			<Or>
+			  <Lower>
+				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+				<Constant>300</Constant>
+			  </Lower>
+			  <Lower>
+				<Simvar name="FUEL TANK LEFT AUX QUANTITY" unit="gallon"/>
+				<Constant>300</Constant>
+			  </Lower>
+			  <Lower>
+				<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+				<Constant>300</Constant>
+			  </Lower>
+			  <Lower>
+				<Simvar name="FUEL TANK RIGHT AUX QUANTITY" unit="gallon"/>
+				<Constant>300</Constant>
+			  </Lower>
+			</Or>
+		  </Condition>
+		</Annunciation>
 		
 		<Annunciation>
 			<Type>Caution</Type>
@@ -175,39 +219,169 @@
 				</StateMachine>
 			</Condition>
 		</Annunciation>
-		
+
 		<Annunciation>
-			<Type>Caution</Type>
-			<Text></Text>
-			<Condition>
-				<Simvar name="STALL WARNING" unit="Boolean"/>
-			</Condition>
-		</Annunciation>
-		
-		<Annunciation>
-		  <Type>Warning</Type>
-		  <Text>FUEL OFF</Text>
+		  <Type>Advisory</Type>
+		  <Text>\FUEL TANK/ENG</Text>
 		  <Condition>
-			<Equal>
-			  <Simvar name="FUEL TANK SELECTOR:1" unit="number"/>
-			  <Constant>0</Constant>
-			</Equal>
+			<And>
+				<Or>
+					<LowerEqual>
+						<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
+						<Add>
+							<Simvar name="FUEL TANK LEFT AUX QUANTITY" unit="gallon"/>
+							<Simvar name="FUEL TANK LEFT TIP QUANTITY" unit="gallon"/>
+						</Add>
+			  		</LowerEqual>
+			  		<LowerEqual>
+						<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
+						<Add>
+							<Simvar name="FUEL TANK RIGHT AUX QUANTITY" unit="gallon"/>
+							<Simvar name="FUEL TANK RIGHT TIP QUANTITY" unit="gallon"/>
+						</Add>
+			  		</LowerEqual>
+				</Or>
+				<Or>
+					<Equal>
+			  			<Simvar name="FUELSYSTEM VALVE OPEN:1" unit="Boolean"/>
+			  			<Constant>1</Constant>
+			  		</Equal>
+			  		<Equal>
+						<Simvar name="FUELSYSTEM VALVE OPEN:4" unit="Boolean"/>
+			 			<Constant>1</Constant>
+			  		</Equal>
+				</Or>
+		      </And>
 		  </Condition>
 		</Annunciation>
 
 		<Annunciation>
-		  <Type>Warning</Type>
-		  <Text>DOOR</Text>
+		  <Type>Advisory</Type>
+		  <Text>\DOOR ENTRY L 1</Text>
 		  <Condition>
 			<Greater>
-			  <Simvar name="EXIT OPEN:0" unit="percent"/>
-			  <Constant>0</Constant>
+			  <Simvar name="INTERACTIVE POINT OPEN:10" unit="percent"/>
+			  <Constant>40</Constant>
 			</Greater>
 		  </Condition>
 		</Annunciation>
 
 		<Annunciation>
 		  <Type>Advisory</Type>
+		  <Text>\DOOR ENTRY R 5</Text>
+		  <Condition>
+			<Greater>
+			  <Simvar name="INTERACTIVE POINT OPEN:1" unit="percent"/>
+			  <Constant>40</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+		
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\BLEED 1 OFF</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="BLEED AIR ENGINE:1" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+				<GreaterEqual>
+					<Simvar name="TURB ENG N2:1" unit="percent"/>
+					<Constant>55</Constant>
+				</GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\BLEED 2 OFF</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="BLEED AIR ENGINE:2" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+				<GreaterEqual>
+					<Simvar name="TURB ENG N2:2" unit="percent"/>
+					<Constant>55</Constant>
+				</GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\BLEED 3 OFF</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="BLEED AIR ENGINE:3" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+				<GreaterEqual>
+					<Simvar name="TURB ENG N2:3" unit="percent"/>
+					<Constant>55</Constant>
+				</GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\BLEED 4 OFF</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="BLEED AIR ENGINE:4" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+				<GreaterEqual>
+					<Simvar name="TURB ENG N2:4" unit="percent"/>
+					<Constant>55</Constant>
+				</GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\ICING</Text>
+		  <Condition>
+			<And>
+				<GreaterEqual>
+					<Simvar name="STRUCTURAL ICE PCT" unit="percent"/>
+					<Constant>5</Constant>
+				</GreaterEqual>
+				<Or>
+					<Equal>
+			  			<Simvar name="STRUCTURAL DEICE SWITCH" unit="Boolean"/>
+			  			<Constant>0</Constant>
+					</Equal>
+					<Equal>
+			  			<Simvar name="ENG ANTI ICE:1" unit="Boolean"/>
+			  			<Constant>0</Constant>
+					</Equal>
+					<Equal>
+			  			<Simvar name="ENG ANTI ICE:2" unit="Boolean"/>
+			  			<Constant>0</Constant>
+					</Equal>
+					<Equal>
+			  			<Simvar name="ENG ANTI ICE:3" unit="Boolean"/>
+			  			<Constant>0</Constant>
+					</Equal>
+					<Equal>
+			  			<Simvar name="ENG ANTI ICE:4" unit="Boolean"/>
+			  			<Constant>0</Constant>
+					</Equal>
+				</Or>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
 		  <Text>PARK BRAKE SET</Text>
 		  <Condition>
 			<Simvar name="BRAKE PARKING INDICATOR" unit="Bool"/>
@@ -215,7 +389,51 @@
 		</Annunciation>
 
 		<Annunciation>
-		  <Type>Advisory</Type>
+		  <Type>Memo</Type>
+		  <Text>IRS ALIGN MODE L</Text>
+		  <Condition>
+		  	<Equal>
+				<Simvar name="L:SALTY_IRS_STATE" unit="Enum"/>
+				<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
+		  <Text>IRS ALIGN MODE C</Text>
+		  <Condition>
+		  	<Equal>
+				<Simvar name="L:SALTY_IRS_STATE" unit="Enum"/>
+				<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
+		  <Text>IRS ALIGN MODE R</Text>
+		  <Condition>
+		  	<Equal>
+				<Simvar name="L:SALTY_IRS_STATE" unit="Enum"/>
+				<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
+		  <Text>SPEEDBRAKE ARMED</Text>
+		  <Condition>
+		  	<Equal>
+				<Simvar name="SPOILERS ARMED" unit="Boolean"/>
+				<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
 		  <Text>APU RUNNING</Text>
 		  <Condition>
 		    <GreaterEqual>
@@ -226,7 +444,7 @@
 		</Annunciation>
 
 		<Annunciation>
-		  <Type>Advisory</Type>
+		  <Type>Memo</Type>
 		  <Text>AUTOBRAKES</Text>
 		  <Condition Suffix=" RTO">
 		    <Equal>
@@ -265,119 +483,13 @@
 			</Equal>
 		  </Condition>
 		</Annunciation>
-
-		<Annunciation>
-		  <Type>Warning</Type>
-		  <Text>FIRE</Text>
-		  <Condition>
-			<Simvar name="ENG ON FIRE:1" unit="Bool"/>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Caution</Type>
-		  <Text>FUEL LOW </Text>
-		  <Condition Suffix="L-R">
-			<And>
-			  <Lower>
-				<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
-				<Constant>9</Constant>
-			  </Lower>
-			  <Lower>
-				<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
-				<Constant>9</Constant>
-			  </Lower>
-			</And>
-		  </Condition>
-		  <Condition Suffix="L">
-			<Lower>
-			  <Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
-			  <Constant>9</Constant>
-			</Lower>
-		  </Condition>
-		  <Condition Suffix="R">
-			<Lower>
-			  <Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
-			  <Constant>9</Constant>
-			</Lower>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Caution</Type>
-		  <Text>FUEL TANK/ENG</Text>
-		  <Condition>
-			<And>
-				<Or>
-					<LowerEqual>
-						<Simvar name="FUEL TANK LEFT MAIN QUANTITY" unit="gallon"/>
-						<Add>
-							<Simvar name="FUEL TANK LEFT AUX QUANTITY" unit="gallon"/>
-							<Simvar name="FUEL TANK LEFT TIP QUANTITY" unit="gallon"/>
-						</Add>
-			  		</LowerEqual>
-			  		<LowerEqual>
-						<Simvar name="FUEL TANK RIGHT MAIN QUANTITY" unit="gallon"/>
-						<Add>
-							<Simvar name="FUEL TANK RIGHT AUX QUANTITY" unit="gallon"/>
-							<Simvar name="FUEL TANK RIGHT TIP QUANTITY" unit="gallon"/>
-						</Add>
-			  		</LowerEqual>
-				</Or>
-				<Or>
-					<Equal>
-			  			<Simvar name="FUELSYSTEM VALVE OPEN:1" unit="Boolean"/>
-			  			<Constant>1</Constant>
-			  		</Equal>
-			  		<Equal>
-						<Simvar name="FUELSYSTEM VALVE OPEN:4" unit="Boolean"/>
-			 			<Constant>1</Constant>
-			  		</Equal>
-				</Or>
-		      </And>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Caution</Type>
-		  <Text>FUEL LOW CTR L</Text>
-		  <Condition>
-			<And>
-				<Equal>
-					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
-					<Constant>0</Constant>
-				</Equal>
-				<Equal>
-			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
-			  		<Constant>1</Constant>
-				</Equal>
-			</And>
-		  </Condition>
-		</Annunciation>
-
-		<Annunciation>
-		  <Type>Caution</Type>
-		  <Text>FUEL LOW CTR R</Text>
-		  <Condition>
-			<And>
-				<Equal>
-					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
-					<Constant>0</Constant>
-				</Equal>
-				<Equal>
-			  		<Simvar name="FUELSYSTEM PUMP SWITCH:2" unit="Boolean"/>
-			  		<Constant>1</Constant>
-				</Equal>
-			</And>
-		  </Condition>
-		</Annunciation>
-
-	</Annunciations>
-  
+		
+ 
 	<!-- Voices Alerts -->
   
 	<VoicesAlerts>
 		<Alert>
+		  <Type>Warning</Type>
 		  <SoundEvent>aural_landing_gear</SoundEvent>
 		  <ShortText>L/G GEAR NOT DOWN</ShortText>
 		  <LongText>L/G GEAR NOT DOWN</LongText>
@@ -452,6 +564,7 @@
 			</StateMachine>
 		  </Condition>
 		</Alert>
+		
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_5ft</SoundEvent>

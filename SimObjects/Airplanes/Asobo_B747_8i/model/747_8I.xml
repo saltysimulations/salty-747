@@ -159,6 +159,10 @@
 			<NORMALIZED_TIME_5>0.58</NORMALIZED_TIME_5>
 			<DIRECTION_5>Both</DIRECTION_5>
 		</UseTemplate>
+		<UseTemplate Name="ASOBO_HANDLING_Flaperons_Template">
+			<ANIM_NAME_LEFT>l_flaperon_percent_key</ANIM_NAME_LEFT>
+			<ANIM_NAME_RIGHT>r_flaperon_percent_key</ANIM_NAME_RIGHT>
+		</UseTemplate>
 		<UseTemplate Name="ASOBO_HANDLING_Slats_Template">
 			<ANIM_NAME_LEFT>l_slats</ANIM_NAME_LEFT>
 			<ANIM_NAME_RIGHT>r_slats</ANIM_NAME_RIGHT>

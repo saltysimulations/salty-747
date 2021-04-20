@@ -134,6 +134,7 @@ const getSimBriefPlan = (fmc, store, updateView) => {
 
     return SimBriefApi.getFltPlan(userid)
         .then(data => {
+            fmc.simbrief["units"] = data.params.units;
             fmc.simbrief["route"] = data.general.route;
             fmc.simbrief["cruiseAltitude"] = data.general.initial_altitude;
             fmc.simbrief["originIcao"] = data.origin.icao_code;
@@ -218,21 +219,34 @@ const insertRteUplink = (fmc, updateView) => {
     INSERTS ZFW, CRUISE LEVEL, COST INDEX AND RES FUEL INTO PERF INIT PAGE
 */
 const insertPerfUplink = (fmc, updateView) => {
+    let units;
+    if (fmc.simbrief.units == "kgs") {
+        units = false;
+    } else if (fmc.units == "lbs") {
+        units = true;
+    }
     const zfw = (fmc.simbrief.estZfw / 1000).toString();
     const crz = fmc.simbrief.cruiseAltitude;
     const costIndex = fmc.simbrief.costIndex.toString();
     const resFuel = (parseFloat(fmc.simbrief.finResFuel) + parseFloat(fmc.simbrief.altnFuel)).toFixed(1) / 1000;
-    fmc.trySetZeroFuelWeightZFWCG(zfw, (result) => {
-        if (result) {
+    fmc.trySetZeroFuelWeightZFWCG(zfw, units, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
         }
     });
-    fmc.tryUpdateCostIndex(costIndex, 9999);
-    fmc.setFuelReserves(resFuel, (result) => {
-        if (result) {
+    fmc.tryUpdateCostIndex(costIndex, 9999, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
+        }
+    });
+    fmc.setFuelReserves(resFuel, units, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
         }
     });
     fmc.setCruiseFlightLevelAndTemperature(crz, (result) => {
-        if (result) {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
         }
     });
 }
@@ -247,7 +261,7 @@ const addWaypointAsync = (fix, fmc, routeIdent, via) => {
                     res(true);
                 } else {
                     console.log('AWY/WPT MISMATCH ' + routeIdent + " via " + via);
-                    fmc.showErrorMessage("AWY/WPT MISMATCH");
+                    fmc.showErrorMessage("PARTIAL ROUTE 1 UPLINK");
                     res(false);
                 }
             });

@@ -122,8 +122,8 @@
 					<NODE_ID>lever_speed_brake</NODE_ID>
 					<ANIM_NAME>speed_brake_lever</ANIM_NAME>
 					<TYPE>AIRLINER</TYPE>
-					<IGNORE_GATE>1</IGNORE_GATE>
 					<PHYSICAL_AUTOSPOILER>True</PHYSICAL_AUTOSPOILER>
+					<RETRACT_ARMED_FULL>True</RETRACT_ARMED_FULL>
 					<STEPS_NUMBER>2</STEPS_NUMBER>
 					<DRAG_SPEED>10</DRAG_SPEED>
 					<DRAG_ANIMATION_VARIABLE_TYPE>O</DRAG_ANIMATION_VARIABLE_TYPE>
@@ -277,7 +277,8 @@
 					<FAILURE>(A:LIGHT PANEL ON:3, Bool)</FAILURE>
 					<DONT_OVERRIDE_BASE_EMISSIVE>False</DONT_OVERRIDE_BASE_EMISSIVE>
 					<BRT_DIM_SWITCH_DIRECTION>Horizontal</BRT_DIM_SWITCH_DIRECTION>
-					<BRT_DIM_INVERT_ANIM>True</BRT_DIM_INVERT_ANIM>
+					<NO_BRT_DIM_EMISSIVE_SEQ2>True</NO_BRT_DIM_EMISSIVE_SEQ2>
+					<SCREEN_ID>FMC</SCREEN_ID>
 				</DefaultTemplateParameters>
 				<Component ID="CDU_1">
 					<UseTemplate Name="ASOBO_FMC_B747">
@@ -1615,18 +1616,21 @@
 					<ANIM_NAME>ovhd_knob_irs_c</ANIM_NAME>
 					<ANIM_CODE>66</ANIM_CODE>
 					<ID>3</ID>
+					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AIRLINER_IRS_Knob_Template">
 					<NODE_ID>knob_ovhd_irs_l</NODE_ID>
 					<ANIM_NAME>ovhd_knob_irs_l</ANIM_NAME>
 					<ANIM_CODE>66</ANIM_CODE>
 					<ID>2</ID>
+					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AIRLINER_IRS_Knob_Template">
 					<NODE_ID>knob_ovhd_irs_r</NODE_ID>
 					<ANIM_NAME>ovhd_knob_irs_r</ANIM_NAME>
 					<ANIM_CODE>66</ANIM_CODE>
 					<ID>1</ID>
+					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				
 			<!-- 
@@ -1729,12 +1733,14 @@
 					<NODE_ID>knob_ovhd_air_cond_pass_temp</NODE_ID>
 					<ANIM_NAME>ovhd_knob_air_cond_pass_temp</ANIM_NAME>
 					<ANIM_CODE>50</ANIM_CODE>
+					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AIRLINER_Aircond_Knob_Template">
 					<ID>2</ID>
 					<NODE_ID>knob_ovhd_air_cond_flt_deck</NODE_ID>
 					<ANIM_NAME>ovhd_knob_air_cond_flt_deck</ANIM_NAME>
 					<ANIM_CODE>50</ANIM_CODE>
+					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
 					<NODE_ID>knob_ovhd_air_cond_altn_vent</NODE_ID>
@@ -1747,6 +1753,7 @@
 					<NODE_ID>push_ovhd_air_cond</NODE_ID>
 					<ANIM_NAME>ovhd_push_air_cond</ANIM_NAME>
 					<ANIM_CODE>50</ANIM_CODE>
+					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
 					<NODE_ID>knob_ovhd_air_cond_equip_cooling</NODE_ID>
@@ -1949,7 +1956,7 @@
 						<NODE_ID>btn_afds_fpv_l1</NODE_ID>
 						<ANIM_NAME>afds_push_fpv_l</ANIM_NAME>
 						<ID>1</ID>
-						<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EFIS_PANEL_FPV_INFO_TURN_ON</TOOLTIPID>
+						<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EFIS_PANEL_FPV_INFO_TURN_ON</TOOLTIPID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_MTRS_Template">
 						<NODE_ID>btn_afds_mtrs_l</NODE_ID>
@@ -2323,9 +2330,22 @@
 					</Component>
 				</Component>
 			</Component>
+				        
+			<Component ID="Cockpit_Pilots">
+	            <Component ID="PILOT_0" Node="PILOT_0">
+	                <UseTemplate Name="ASOBO_GT_Visibility_Code">
+	                    <VISIBILITY_CODE>(L:SALTY_VIS_PILOT_0) ! (A:CAMERA STATE, Enum) 2 != or</VISIBILITY_CODE>
+	                </UseTemplate>
+	            </Component>
+	            <Component ID="PILOT_1" Node="PILOT_1">
+	                <UseTemplate Name="ASOBO_GT_Visibility_Code">
+	                    <VISIBILITY_CODE>(L:SALTY_VIS_PILOT_1) ! (A:CAMERA STATE, Enum) 2 != or</VISIBILITY_CODE>
+	                </UseTemplate>
+	            </Component>
+	        </Component>
 			<Component ID="EICAS">
 				<!-- TODO - Glasscockpit ? -->
-				<!-- EICAS
+				<!-- EICAS --
 				eicas_push_canc_rcl
 				eicas_master_knob_eiu_sel
 				eicas_master_knob_fmc_master
@@ -2852,16 +2872,16 @@
 						<NODE_ID>btn_rudder_01_SEQ2</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>btn_pedestal_TEST_decal</NODE_ID>
+						<NODE_ID>Object001</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>btn_pedestal_SLEW_decal</NODE_ID>
+						<NODE_ID>Object002</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>btn_pedestal_RESET_decal</NODE_ID>
+						<NODE_ID>Object003</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-						<NODE_ID>btn_pedestal_PWR_decal</NODE_ID>
+						<NODE_ID>Object004</NODE_ID>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>btn_cursor_control_sel_pilot_decal</NODE_ID>
@@ -3616,7 +3636,7 @@
 				<NODE_ID>cover_gears_altn_nose_body</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>gears_altn_nose_body2</NODE_ID>
+				<NODE_ID>gears_altn_nose_body</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>cover_gears_altn_wing</NODE_ID>
@@ -3742,19 +3762,19 @@
 				<NODE_ID>atc_transponder_knob_abv_blw</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_PWR</NODE_ID>
+				<NODE_ID>btn_pedestal_1621</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_pedestal_1623</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_RESET</NODE_ID>
+				<NODE_ID>btn_pedestal_22</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_TEST</NODE_ID>
+				<NODE_ID>btn_pedestal_20</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_pedestal_SLEW</NODE_ID>
+				<NODE_ID>btn_pedestal_16</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_pedestal_1624</NODE_ID>
