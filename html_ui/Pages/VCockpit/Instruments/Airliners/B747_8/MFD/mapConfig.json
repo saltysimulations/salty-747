@@ -51,11 +51,11 @@
 
   "flightPlanActiveLegColor": "#D570FF",
   "flightPlanActiveLegWidth": 3,
-  "flightPlanActiveLegStrokeColor": "white",
+  "flightPlanActiveLegStrokeColor": "#D570FF",
   "flightPlanActiveLegStrokeWidth": 0,
   "flightPlanNonActiveLegColor": "#D570FF",
   "flightPlanNonActiveLegWidth": 3,
-  "flightPlanNonActiveLegStrokeColor": "white",
+  "flightPlanNonActiveLegStrokeColor": "#D570FF",
   "flightPlanNonActiveLegStrokeWidth": 0,
 
   "roadMotorWayColor": "#7a7a7a",
