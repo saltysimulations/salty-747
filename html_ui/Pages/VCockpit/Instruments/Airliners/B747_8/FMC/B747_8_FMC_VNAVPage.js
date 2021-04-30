@@ -33,8 +33,10 @@ class B747_8_FMC_VNAVPage {
         if (origin) {
             if (isFinite(origin.altitudeinFP)) {
                 let origin = fmc.flightPlanManager.getOrigin();
-                let transitionAltitude = origin.infos.transitionAltitude;
-                transAltCell = transitionAltitude.toFixed(0);
+                if (origin.infos.transitionAltitude) {
+                    let transitionAltitude = origin.infos.transitionAltitude;
+                    transAltCell = transitionAltitude.toFixed(0);
+                }
             }
         }
         let maxAngleCell = (flapsUPmanueverSpeed).toFixed(0);
