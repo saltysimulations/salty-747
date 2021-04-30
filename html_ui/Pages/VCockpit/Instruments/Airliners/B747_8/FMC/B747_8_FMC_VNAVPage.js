@@ -19,32 +19,39 @@ class B747_8_FMC_VNAVPage {
                 B747_8_FMC_VNAVPage.ShowPage1(fmc);
             }
         };
+        let clbSpeedCell = ""
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;      
+        clbSpeedCell = Math.min(flapsUPmanueverSpeed + 100, 350).toFixed(0);
         let speedTransCell = "---";
-        let speed = fmc.getCrzManagedSpeed();
-        if (isFinite(speed)) {
-            speedTransCell = speed.toFixed(0);
+        let transSpeed = Math.max(flapsUPmanueverSpeed + 20, 250); 
+        if (isFinite(transSpeed)) {
+            speedTransCell = transSpeed.toFixed(0);
+            speedTransCell += "/10000";
         }
-        speedTransCell += "/";
-        if (isFinite(fmc.transitionAltitude)) {
-            speedTransCell += fmc.transitionAltitude.toFixed(0);
+        let transAltCell = "";
+        let origin = fmc.flightPlanManager.getOrigin();
+        if (origin) {
+            if (isFinite(origin.altitudeinFP)) {
+                let origin = fmc.flightPlanManager.getOrigin();
+                let transitionAltitude = origin.infos.transitionAltitude;
+                transAltCell = transitionAltitude.toFixed(0);
+            }
         }
-        else {
-            speedTransCell += "-----";
-        }
+        let maxAngleCell = (flapsUPmanueverSpeed).toFixed(0);
         fmc.setTemplate([
-            ["CLB", "1", "3"],
-            ["CRZ ALT"],
+            ["ACT ECON CLB", "1", "3"],
+            ["\xa0CRZ ALT"],
             [crzAltCell],
-            ["ECON SPD"],
+            ["\xa0ECON SPD"],
+            [clbSpeedCell],
+            ["\xa0SPD TRANS", "TRANS ALT"],
+            [speedTransCell, transAltCell],
+            ["\xa0SPD RESTR", "MAX ANGLE"],
+            ["---/-----", maxAngleCell],
+            ["__FMCSEPARATOR"],
+            ["<ECON", "ENG OUT>"],
             [],
-            ["SPD TRANS", "TRANS ALT"],
-            [speedTransCell],
-            ["SPD RESTR"],
-            [],
-            [],
-            ["", "<ENG OUT"],
-            [],
-            []
+            ["", "CLB DIR>"]
         ]);
         fmc.onNextPage = () => { B747_8_FMC_VNAVPage.ShowPage2(fmc); };
     }
@@ -58,10 +65,10 @@ class B747_8_FMC_VNAVPage {
             }
         };        
         let crzPageTitle = "ACT ECON CRZ"
-        let crzSpeedMode = "ECON SPD"
+        let crzSpeedMode = "\xa0ECON SPD"
         if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") == 1) {
             crzPageTitle = "ACT MCP SPD CRZ"
-            crzSpeedMode = "SEL SPD"
+            crzSpeedMode = "\xa0SEL SPD"
         }
         let crzSpeedCell = ""
         let machMode = Simplane.getAutoPilotMachModeActive();
@@ -76,7 +83,7 @@ class B747_8_FMC_VNAVPage {
         if (fmc.cruiseFlightLevel) {
             crzAltCell = "FL" + fmc.cruiseFlightLevel;
         }  
-        fmc.onRightInput[0] = () => {
+        fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (fmc.setCruiseFlightLevelAndTemperature(value)) {
@@ -93,16 +100,16 @@ class B747_8_FMC_VNAVPage {
         let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
         let weightLimitedFltLevel = (((-0.02809 * currentWeight) + 56571.91142) / 100);
         let maxFltLevel = Math.min(431, weightLimitedFltLevel);
-
+        
         fmc.setTemplate([
             [crzPageTitle, "2", "3"],
-            ["CRZ ALT", "STEP TO"],
+            ["\xa0CRZ ALT", "STEP TO"],
             [crzAltCell],
             [crzSpeedMode, "AT"],
             [crzSpeedCell],
-            ["N1"],
+            ["\xa0N1"],
             [n1Cell],
-            ["STEP", "RECMD", "OPT\xa0\xa0\xa0MAX"],
+            ["\xa0STEP", "RECMD", "OPT\xa0\xa0\xa0MAX"],
             ["RVSM", "", "\xa0\xa0\xa0\xa0\xa0\xa0" + "FL" + maxFltLevel.toFixed(0)],
             ["__FMCSEPARATOR"],
             ["", "ENG OUT>"],
@@ -140,7 +147,7 @@ class B747_8_FMC_VNAVPage {
             ["PAUSE @ DIST FROM DEST"],
             ["OFF", "FORECAST>"],
             [],
-            ["<OFFPATH DES"]
+            ["\<OFFPATH DES"]
         ]);
         fmc.onPrevPage = () => { B747_8_FMC_VNAVPage.ShowPage2(fmc); };
     }

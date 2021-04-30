@@ -1,43 +1,35 @@
-class FMCSaltyOptions {
-    static ShowPage1(fmc) {
+class FMCSaltyOptions_IrsStatus {
+    static ShowPage(fmc) {
         fmc.clearDisplay();
 
         var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
         if (IRSState == 0) { IRSState = "NOT ALIGNED[color]red"; }
         if (IRSState == 1) { IRSState = "ALIGNING[color]yellow"; }
         if (IRSState == 2) { IRSState = "ALIGNED[color]green"; }
+
         fmc.setTemplate([
             ["SALTY OPTIONS"],
             [],
             ["IRS STATUS", IRSState],
-            [],
+            ["", ""],
             ["", "UPDATE IRS STATUS>"],
-            [],
-            ["<ECL BACK", "ECL FWD>"],
-            [],
-            ["<ECL SELECT"],
-            [],
-            [],
-            [],
+            ["", ""],
             ["<IRS INSTANT ALIGN", ""],
+            ["", ""],
+            ["<ECL BACK", "ECL FWD>"],
+            ["", ""],
+            ["", "ECL SELECT>"],
+            ["\xa0RETURN TO", ""],
+            ["<OPTIONS", ""]
         ]);
-        fmc.onRightInput[1] = () => { FMCSaltyOptions.ShowPage1(fmc); };
-        
-        fmc.onRightInput[2] = () => { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
-                                        cursorIndex++;
-                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
-                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 1);
-                                    };
-           
-        fmc.onLeftInput[2] = () =>  { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
-                                        cursorIndex--;
-                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
-                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 1);
-                                    };
 
-        fmc.onLeftInput[3] = () => { SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 1); };
-        
-        fmc.onLeftInput[5] = () => {
+        /* RSK2 */
+        fmc.onRightInput[1] = () => {
+          FMCSaltyOptions_IrsStatus.ShowPage(fmc);
+        };
+
+        /* LSK3 */
+        fmc.onLeftInput[2] = () => {
            if (SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum") == 1) {
                SimVar.SetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum", -1);
                SimVar.SetSimVarValue("L:SALTY_IRS_STATE", "Enum", 2);
@@ -47,6 +39,24 @@ class FMCSaltyOptions {
            }
         }
 
+        fmc.onRightInput[4] = () => { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
+                                        cursorIndex++;
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 1);
+                                    };
+           
+        fmc.onLeftInput[4] = () =>  { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
+                                        cursorIndex--;
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 1);
+                                    };
+
+        fmc.onRightInput[5] = () => { SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 1); };
+
+        /* LSK6 */
+        fmc.onLeftInput[5] = () => {
+            FMCSaltyOptions.ShowPage1(fmc);
+        }
     }
 }
 //# sourceMappingURL=B747_8_FMC_SaltyOptions.js.map

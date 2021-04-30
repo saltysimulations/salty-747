@@ -141,7 +141,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 }
                 break;
             case "BTN_STA":
-                this.map.instrument.showNDBs = !this.map.instrument.showNDBs;
+                this.map.instrument.showVORs = !this.map.instrument.showVORs;
                 this._updateNDFiltersStatuses();
                 break;
             case "BTN_WPT":
@@ -157,8 +157,6 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this._updateNDFiltersStatuses();
                 break;
             case "BTN_POS":
-                this.map.instrument.showVORs = !this.map.instrument.showVORs;
-                this._updateNDFiltersStatuses();
                 break;
             case "BTN_TERR":
                 if (this.terrainOn) {
@@ -175,7 +173,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         SimVar.SetSimVarValue("L:BTN_CSTR_FILTER_ACTIVE", "number", this.map.instrument.showConstraints ? 1 : 0);
         SimVar.SetSimVarValue("L:BTN_VORD_FILTER_ACTIVE", "number", this.map.instrument.showVORs ? 1 : 0);
         SimVar.SetSimVarValue("L:BTN_WPT_FILTER_ACTIVE", "number", this.map.instrument.showIntersections ? 1 : 0);
-        SimVar.SetSimVarValue("L:BTN_NDB_FILTER_ACTIVE", "number", this.map.instrument.showNDBs ? 1 : 0);
+        SimVar.SetSimVarValue("L:BTN_NDB_FILTER_ACTIVE", "number", this.map.instrument.showVORs ? 1 : 0);
         SimVar.SetSimVarValue("L:BTN_ARPT_FILTER_ACTIVE", "number", this.map.instrument.showAirports ? 1 : 0);
     }
     updateMap(_deltaTime) {
@@ -198,9 +196,11 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             this.setMapMode(this.mapIsCentered, this.mapMode);
             if (this.terrainOn) {
                 this.mapConfigId = 1;
+                this.map.instrument.bingMap.setVisible(true);
             }
             else if (this.wxRadarOn) {
                 this.showWeather();
+                this.map.instrument.bingMap.setVisible(true);
             }
             else {
                 this.mapConfigId = 0;
@@ -217,7 +217,12 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.modeChangeMask.style.display = "block";
                 this.modeChangeTimer = 0.15;
             }
+        } else if (!this.wxRadarOn && !this.terrainOn && this.map.instrument.showAirports) {
+            this.map.instrument.bingMap.setVisible(true);
+        } else if (!this.wxRadarOn && !this.terrainOn && !this.map.instrument.showAirports) {
+            this.map.instrument.bingMap.setVisible(false);
         }
+        console.log(this.map.instrument.showBingMap);
         switch (this.mapConfigId) {
             case 0:
                 if (this.map.instrument.mapConfigId != 0) {
@@ -303,7 +308,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.info.showSymbol(B747_8_ND_Symbol.WXR, this.wxRadarOn);
         this.info.showSymbol(B747_8_ND_Symbol.WXRINFO, this.wxRadarOn);
         this.info.showSymbol(B747_8_ND_Symbol.TERR, this.terrainOn);
-        this.info.showSymbol(B747_8_ND_Symbol.STA, this.map.instrument.showNDBs);
+        this.info.showSymbol(B747_8_ND_Symbol.STA, this.map.instrument.showVORs);
         this.info.showSymbol(B747_8_ND_Symbol.WPT, this.map.instrument.showIntersections);
         this.info.showSymbol(B747_8_ND_Symbol.ARPT, this.map.instrument.showAirports);
     }
@@ -359,22 +364,22 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             let distanceToLevelArc = Math.abs(((arcDeltaAltMagnitude / Math.tan(arcFPA)) * 0.000164579)); //Feet to Nautical Miles
             let arcYcoord = 600 - ((distanceToLevelArc / mapRange) * 600);
             //Check if map is centred - Translates arc in Y axis - corrected for usable compass height 414/215px with 56/90px offset for uncentred/centred map
-            if ((SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool")) == 0){
+            if (SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool") == 0) {
                 this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 414 / 600) + 56)})`);
             }           
-            else{
+            else {
                 this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 210 / 600) + 90)})`);
             }           
             //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
-            if((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 200) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))){
-                this.greenArc.style.visibility ="hidden";
+            if ((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 200) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))) {
+                this.greenArc.style.visibility = "hidden";
             }
-            else{ 
-                this.greenArc.style.visibility ="visible";
+            else { 
+                this.greenArc.style.visibility = "visible";
             }
         }
-        else{ 
-            this.greenArc.style.visibility ="hidden";
+        else { 
+            this.greenArc.style.visibility = "hidden";
         }
     }
 }
@@ -453,7 +458,7 @@ class B747_8_MFD_Map extends MapInstrumentElement {
         }
     }
     showWeather() {
-        this.instrument.showWeatherWithGPS(EWeatherRadar.HORIZONTAL, Math.PI * 2.0);
+        this.instrument.showWeatherWithGPS(EWeatherRadar.HORIZONTAL, Math.PI * 2);
         this.instrument.setBingMapStyle("2.25%", "4.0%", "92%", "92%");
     }
     hideWeather() {
@@ -512,6 +517,17 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
     }
     init(root) {
         this.ndInfo = this.gps.getChildById("NDInfo");
+        this.gs = this.ndInfo.querySelector("#GS_Value");
+        this.tasText = this.ndInfo.querySelector("#TAS_Text");
+        this.tasVal = this.ndInfo.querySelector("#TAS_Value");
+        this.windDirection = this.ndInfo.querySelector("#Wind_Direction");
+        this.windStrength = this.ndInfo.querySelector("#Wind_Strength");
+        this.windArrow = this.ndInfo.querySelector("#Wind_Arrow");
+        this.windSeperator = this.ndInfo.querySelector("#Wind_Separator");
+        this.wpData = this.ndInfo.querySelector("#WP_Data");
+        this.zuluETA = document.querySelector("#WP_ZuluTime");
+        this.zuluClock = document.querySelector("#ZuluClock_Time");
+        this.waypointDistance = document.querySelector("#WP_Distance_Value");
         this.ndInfo.aircraft = Aircraft.B747_8;
         this.ndInfo.gps = this.gps;
         this.allSymbols.push(this.ndInfo.querySelector("#ARPT"));
@@ -528,42 +544,28 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
             this.ndInfo.update(_deltaTime);
         }
 
-        var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
-        var showData; 
-        var groundSpeed = Math.round(Simplane.getGroundSpeed());
-        var gs = this.ndInfo.querySelector("#GS_Value");
-        const tas_text = this.ndInfo.querySelector("#TAS_Text");
-        var tas_val = this.ndInfo.querySelector("#TAS_Value");
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        const groundSpeed = Math.round(Simplane.getGroundSpeed());
+        const utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
+        let showData;
 
-        var wd = this.ndInfo.querySelector("#Wind_Direction");
-        var ws = this.ndInfo.querySelector("#Wind_Strength");
-        var wa = this.ndInfo.querySelector("#Wind_Arrow");
-        const sep = this.ndInfo.querySelector("#Wind_Separator");
-
-        //get waypoint track, name, dist, etc. 
-        var wpdata = this.ndInfo.querySelector("#WP_Data");
-        //get Waypoint ETA in Zulu
-        this.zuluETA = document.querySelector("#WP_ZuluTime");
         this.zuluETA.textContent = "------Z";
-        var utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
-        if (Simplane.getNextWaypointName() && (SimVar.GetSimVarValue("SIM ON GROUND", "bool") == 0)) {
-            var wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
-            var utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
+        if (Simplane.getNextWaypointName() && !SimVar.GetSimVarValue("SIM ON GROUND", "bool")) {
+            const wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
+            const utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
             const hours = Math.floor(utcETA / 3600);
             const minutes = Math.floor((utcETA % 3600) / 60);
             const tenths = Math.floor((utcETA % 3600) / 600);
             this.zuluETA.textContent = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}.${tenths.toString().padStart(1, "0")}Z`;
         }
-        //get Zulu Time
-        this.zuluClock = document.querySelector("#ZuluClock_Time");
-        var seconds = Number.parseInt(utcTime);
-        var time = Utils.SecondsToDisplayTime(seconds, true, true, false);
+        const seconds = Number.parseInt(utcTime);
+        const time = Utils.SecondsToDisplayTime(seconds, true, true, false);
+
         this.zuluClock.textContent = time.toString();
-        //get Distance to Waypoint
-        this.waypointDistance = document.querySelector("#WP_Distance_Value");
         this.waypointDistance.textContent = "---"
+
         if (Simplane.getNextWaypointName()) {
-            var nextWaypointDistance = Simplane.getNextWaypointDistance();
+            const nextWaypointDistance = Simplane.getNextWaypointDistance();
             if (nextWaypointDistance > 100) {
                 this.waypointDistance.textContent = nextWaypointDistance.toFixed(0);
             } else {
@@ -574,25 +576,24 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
             showData = false; 
         }
         else {
-           showData = true;
+            showData = true;
         }
 
-       tas_text.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       tas_val.setAttribute("visibility", (showData) ? "visible" : "hidden");
+        this.tasText.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.tasVal.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windSeperator.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windDirection.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windStrength.setAttribute("visibility", showData ? "visible" : "hidden");
+        this.windArrow.setAttribute("visibility", showData ? "visible" : "hidden");
 
-       sep.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       wd.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       ws.setAttribute("visibility", (showData) ? "visible" : "hidden");
-       wa.setAttribute("visibility", (showData) ? "visible" : "hidden");
-
-       if (IRSState != 2) {
-           gs.textContent = "---";
-           wpdata.setAttribute("visibility", "hidden");
-       }
-       else {
-           gs.textContent = groundSpeed.toString().padStart(3); 
-           wpdata.setAttribute("visibility", "visible"); 
-       }
+        if (IRSState != 2) {
+            this.gs.textContent = "---";
+            this.wpData.setAttribute("visibility", "hidden");
+        }
+        else {
+            this.gs.textContent = groundSpeed.toString().padStart(3); 
+            this.wpData.setAttribute("visibility", "visible"); 
+        }
     }
     onExit() {
     }

@@ -141,6 +141,7 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
     constructor() {
         super();
         this.isMTRSActive = false;
+        this.minimumReference = 200;
     }
     init(root) {
         this.altimeter = this.gps.getChildById("Altimeter");
@@ -166,6 +167,18 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
                 this.isMTRSActive = !this.isMTRSActive;
                 this.altimeter.showMTRS(this.isMTRSActive);
                 break;
+            case "Mins_INC":
+                this.minimumReference += 10;
+                this.altimeter.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_DEC":
+                this.minimumReference -= 10;
+                this.altimeter.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_Press":
+                this.minimumReference = 200;
+                this.altimeter.minimumReferenceValue = this.minimumReference;
+                break;
         }
     }
 }
@@ -186,7 +199,6 @@ class B747_8_PFD_Attitude extends NavSystemElement {
             this.hsi.update(_deltaTime);
             var xyz = Simplane.getOrientationAxis();
             if (xyz) {
-                this.hsi.setAttribute("horizon", (xyz.pitch / Math.PI * 180).toString());
                 this.hsi.setAttribute("pitch", (xyz.pitch / Math.PI * 180).toString());
                 this.hsi.setAttribute("bank", (xyz.bank / Math.PI * 180).toString());
             }
@@ -211,6 +223,7 @@ class B747_8_PFD_Compass extends NavSystemElement {
         this.svg = this.gps.getChildById("Compass");
         this.svg.aircraft = Aircraft.B747_8;
         this.svg.gps = this.gps;
+        this.minimumReference = 200;
     }
     onEnter() {
     }
@@ -220,6 +233,26 @@ class B747_8_PFD_Compass extends NavSystemElement {
     onExit() {
     }
     onEvent(_event) {
+        switch (_event) {
+            case "BARO_INC":
+                SimVar.SetSimVarValue("K:KOHLSMAN_INC", "number", 1);
+                break;
+            case "BARO_DEC":
+                SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", 1);
+                break;
+            case "Mins_INC":
+                this.minimumReference += 10;
+                this.svg.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_DEC":
+                this.minimumReference -= 10;
+                this.svg.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_Press":
+                this.minimumReference = 200;
+                this.svg.minimumReferenceValue = this.minimumReference;
+                break;
+        }
     }
     showILS(_val) {
         if (this.svg) {
@@ -247,6 +280,10 @@ class B747_8_PFD_FMA extends NavSystemElement {
     }
 }
 class B747_8_PFD_ILS extends NavSystemElement {
+    constructor() {
+        super(...arguments);
+        this.altWentAbove500 = false;
+    }
     init(root) {
         this.ils = this.gps.getChildById("ILS");
         this.ils.aircraft = Aircraft.B747_8;
@@ -256,10 +293,15 @@ class B747_8_PFD_ILS extends NavSystemElement {
     onEnter() {
     }
     onUpdate(_deltaTime) {
+        if (!this.altWentAbove500) {
+            let altitude = Simplane.getAltitudeAboveGround();
+            if (altitude >= 500)
+                this.altWentAbove500 = true;
+        }
         if (this.ils) {
             let showIls = false;
-            let localizer = this.gps.radioNav.getBestILSBeacon(false);
-            if (localizer.id != 0 || this.gps.currFlightPlanManager.isActiveApproach() && Simplane.getAutoPilotApproachType() == 10) {
+            let localizer = this.gps.radioNav.getBestILSBeacon(UseNavSource.YES_FALLBACK);
+            if ((localizer.id != 0 && this.altWentAbove500) || (this.gps.currFlightPlanManager.isActiveApproach() && Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV)) {
                 showIls = true;
             }
             this.ils.showLocalizer(showIls);

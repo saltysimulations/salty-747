@@ -1,5 +1,6 @@
 import os
 import json
+import platform
 
 project_directories = ["effects", "html_ui", "SimObjects", "ModelBehaviorDefs"]
 
@@ -11,7 +12,10 @@ for project_directory in project_directories:
         for file_name in file_names:
             file_path = os.path.join(directory_path, file_name)
             file_size = os.path.getsize(file_path)
-            file_date = 116444736000000000 + int(os.path.getmtime(file_path) * 10000000.0)
+            if platform.system == "Windows":
+                file_date = 116444736000000000 + int(os.path.getmtime(file_path) * 10000000.0)
+            else:
+                file_date = int(os.path.getmtime(file_path) * 10000000.0)
 
             content_entry = {"path": file_path.replace(os.sep, "/"), "size": file_size, "date": file_date}
             content_entries.append(content_entry)

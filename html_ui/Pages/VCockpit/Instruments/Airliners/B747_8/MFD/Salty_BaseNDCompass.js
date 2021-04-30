@@ -26,12 +26,15 @@ class Jet_NDCompass extends HTMLElement {
         this.lastSelectedHeading = -1;
         this.showSelectedHeadingTimer = 0;
         this.mapRanges = [];
+        this.bearing1_State = NAV_AID_STATE.OFF;
         this.isBearing1Displayed = false;
+        this.forcedNavAid1 = undefined;
+        this.bearing2_State = NAV_AID_STATE.OFF;
         this.isBearing2Displayed = false;
+        this.forcedNavAid2 = undefined;
         this._showILS = false;
         this._fullscreen = true;
-        this.logic_brg1Source = 0;
-        this.logic_brg2Source = 0;
+        this.isHud = false;
         this._displayMode = Jet_NDCompass_Display.NONE;
         this._navigationMode = Jet_NDCompass_Navigation.NONE;
         this._referenceMode = Jet_NDCompass_Reference.NONE;
@@ -60,7 +63,9 @@ class Jet_NDCompass extends HTMLElement {
         ];
     }
     static get observedAttributes() {
-        return this.dynamicAttributes.concat([]);
+        return this.dynamicAttributes.concat([
+            "hud"
+        ]);
     }
     get displayMode() {
         return this._displayMode;
@@ -106,6 +111,12 @@ class Jet_NDCompass extends HTMLElement {
             this._fullscreen = _val;
             this.construct();
         }
+    }
+    forceNavAid(_index, _state) {
+        if (_index == 1)
+            this.forcedNavAid1 = _state;
+        else if (_index == 2)
+            this.forcedNavAid2 = _state;
     }
     connectedCallback() {
         if (this.hasAttribute("display-mode")) {
@@ -179,8 +190,49 @@ class Jet_NDCompass extends HTMLElement {
         this.rotatingCircleTrs = "";
         this.graduations = null;
         this.mapRanges = [];
+        this.headingGroup = null;
+        this.headingBug = null;
+        this.headingLine = null;
+        this.trackingGroup = null;
+        this.trackingBug = null;
+        this.trackingLine = null;
+        this.ilsGroup = null;
+        this.selectedHeadingGroup = null;
+        this.selectedHeadingBug = null;
+        this.selectedHeadingLine = null;
+        this.selectedHeadingLeftText = null;
+        this.selectedHeadingRightText = null;
+        this.selectedTrackGroup = null;
+        this.selectedTrackBug = null;
+        this.selectedTrackLine = null;
+        this.currentRefGroup = null;
+        this.currentRefSelected = null;
+        this.currentRefMode = null;
+        this.currentRefType = null;
+        this.currentRefValue = null;
+        this.selectedRefGroup = null;
+        this.selectedRefMode = null;
+        this.selectedRefValue = null;
+        this.arcMaskGroup = null;
+        this.arcRangeGroup = null;
+        this.courseGroup = null;
+        this.course = null;
+        this.courseTO = null;
         this.courseTOLine = null;
+        this.courseDeviation = null;
+        this.courseFROM = null;
         this.courseFROMLine = null;
+        this.glideSlopeGroup = null;
+        this.glideSlopeCursor = null;
+        this.bearingCircle = null;
+        this.bearing1_State = NAV_AID_STATE.OFF;
+        this.bearing1_Vor = null;
+        this.bearing1_Adf = null;
+        this.isBearing1Displayed = false;
+        this.bearing2_State = NAV_AID_STATE.OFF;
+        this.bearing2_Vor = null;
+        this.bearing2_Adf = null;
+        this.isBearing2Displayed = false;
     }
     update(_deltaTime) {
         this.updateCompass(_deltaTime);
@@ -190,9 +242,15 @@ class Jet_NDCompass extends HTMLElement {
     }
     updateCompass(_deltaTime) {
         var simHeading = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degree");
-        var simSelectedHeading = SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR", "degree");
+        var simSelectedHeading = 0;
+        if (this.aircraft === Aircraft.B747_8 || this.aircraft === Aircraft.AS01B) {
+            simSelectedHeading = Simplane.getAutoPilotSelectedHeadingLockValue(false);
+        }
+        else {
+            simSelectedHeading = Simplane.getAutoPilotDisplayedHeadingValue(false);
+        }
         var simTrack = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degree");
-        var simSelectedTrack = SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degree");
+        var simSelectedTrack = Simplane.getAutoPilotDisplayedHeadingValue(false);
         var simGroundSpeed = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
         if (Simplane.getAutoPilotTRKModeActive() || Simplane.getAutoPilotTRKFPAModeActive())
             this._referenceMode = Jet_NDCompass_Reference.TRACK;
@@ -230,15 +288,17 @@ class Jet_NDCompass extends HTMLElement {
             if (this.currentRefGroup)
                 this.currentRefGroup.classList.toggle('hide', true);
         }
+        let showSelectedHeading = false;
+        let selectedHeading = 0;
         if (this.referenceMode == Jet_NDCompass_Reference.HEADING) {
             if (this.aircraft == Aircraft.A320_NEO) {
-                var selectedHeading = simSelectedHeading;
-                let showSelectedHeading = Simplane.getAutoPilotHeadingSelected();
+                selectedHeading = simSelectedHeading;
+                showSelectedHeading = Simplane.getAutoPilotHeadingSelected();
                 let showTrackLine = showSelectedHeading;
                 if (!showSelectedHeading) {
                     showSelectedHeading = SimVar.GetSimVarValue("L:A320_FCU_SHOW_SELECTED_HEADING", "number") === 1;
                     if (showSelectedHeading)
-                        selectedHeading = Simplane.getAutoPilotSelectedHeadingLockValue(false);
+                        selectedHeading = Simplane.getAutoPilotDisplayedHeadingValue(false);
                 }
                 var roundedSelectedHeading = fastToFixed(selectedHeading, 3);
                 this.setAttribute("selected_heading_bug_rotation", roundedSelectedHeading);
@@ -263,11 +323,11 @@ class Jet_NDCompass extends HTMLElement {
                     this.headingGroup.classList.toggle('hide', true);
             }
             else if (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
-                var selectedHeading = simSelectedHeading;
-                let showSelectedLine = Simplane.getAutoPilotHeadingLockActive();
-                if (!showSelectedLine) {
+                selectedHeading = simSelectedHeading;
+                showSelectedHeading = Simplane.getAutoPilotHeadingLockActive();
+                if (!showSelectedHeading) {
                     if (headingChanged) {
-                        showSelectedLine = true;
+                        showSelectedHeading = true;
                         this.showSelectedHeadingTimer = 5;
                     }
                     else if (this.showSelectedHeadingTimer > 0) {
@@ -275,7 +335,7 @@ class Jet_NDCompass extends HTMLElement {
                         if (this.showSelectedHeadingTimer <= 0)
                             this.showSelectedHeadingTimer = 0;
                         else
-                            showSelectedLine = true;
+                            showSelectedHeading = true;
                     }
                 }
                 else {
@@ -287,7 +347,7 @@ class Jet_NDCompass extends HTMLElement {
                     if (this.selectedHeadingGroup)
                         this.selectedHeadingGroup.classList.toggle('hide', false);
                     if (this.selectedHeadingLine)
-                        this.selectedHeadingLine.classList.toggle('hide', !showSelectedLine);
+                        this.selectedHeadingLine.classList.toggle('hide', !showSelectedHeading);
                 }
                 else {
                     if (this.selectedHeadingGroup)
@@ -302,7 +362,7 @@ class Jet_NDCompass extends HTMLElement {
                 }
             }
             else {
-                let showSelectedHeading = Simplane.getAutoPilotHeadingLockActive();
+                showSelectedHeading = Simplane.getAutoPilotHeadingLockActive();
                 if (!showSelectedHeading) {
                     if (headingChanged) {
                         showSelectedHeading = true;
@@ -320,9 +380,8 @@ class Jet_NDCompass extends HTMLElement {
                     this.showSelectedHeadingTimer = 0;
                 }
                 if (showSelectedHeading) {
-                    var selectedHeading = simSelectedHeading;
-                    var roundedSelectedHeading = fastToFixed(selectedHeading, 3);
-                    this.setAttribute("selected_heading_bug_rotation", roundedSelectedHeading);
+                    selectedHeading = simSelectedHeading;
+                    this.setAttribute("selected_heading_bug_rotation", fastToFixed(selectedHeading, 3));
                     if (this.navigationMode == Jet_NDCompass_Navigation.NAV) {
                         if (this.selectedHeadingGroup)
                             this.selectedHeadingGroup.classList.toggle('hide', false);
@@ -361,9 +420,9 @@ class Jet_NDCompass extends HTMLElement {
             }
         }
         else {
-            var selectedTrack = simSelectedTrack;
-            var roundedSelectedTrack = fastToFixed(selectedTrack, 3);
-            this.setAttribute("selected_tracking_bug_rotation", roundedSelectedTrack);
+            showSelectedHeading = true;
+            selectedHeading = simSelectedTrack;
+            this.setAttribute("selected_tracking_bug_rotation", fastToFixed(selectedHeading, 3));
             if (this.trackingLine)
                 this.trackingLine.classList.toggle('hide', false);
             if (this.selectedHeadingGroup)
@@ -372,11 +431,43 @@ class Jet_NDCompass extends HTMLElement {
                 this.selectedTrackGroup.classList.toggle('hide', false);
             if (this.selectedRefGroup) {
                 if (this.selectedRefValue)
-                    this.selectedRefValue.textContent = selectedTrack.toString();
+                    this.selectedRefValue.textContent = selectedHeading.toString();
                 this.selectedRefGroup.classList.toggle('hide', false);
             }
             if (this.headingGroup)
-                this.headingGroup.classList.toggle('hide', false);
+                this.headingGroup.classList.toggle('hide', true);
+        }
+        if (this.selectedHeadingLeftText || this.selectedHeadingRightText) {
+            if (this.displayMode == Jet_NDCompass_Display.ARC) {
+                if (showSelectedHeading) {
+                    let delta = selectedHeading - simHeading;
+                    if (Math.abs(delta) > 180)
+                        delta -= 360 * Math.sign(delta);
+                    if (delta > 45) {
+                        this.selectedHeadingLeftText.classList.toggle('hide', true);
+                        this.selectedHeadingRightText.classList.toggle('hide', false);
+                    }
+                    else if (delta < -45) {
+                        this.selectedHeadingLeftText.classList.toggle('hide', false);
+                        this.selectedHeadingRightText.classList.toggle('hide', true);
+                    }
+                    else {
+                        this.selectedHeadingLeftText.classList.toggle('hide', true);
+                        this.selectedHeadingRightText.classList.toggle('hide', true);
+                    }
+                    let text = selectedHeading.toFixed(0).padStart(3, "0");
+                    this.selectedHeadingLeftText.textContent = text;
+                    this.selectedHeadingRightText.textContent = text;
+                }
+                else {
+                    this.selectedHeadingLeftText.classList.toggle('hide', true);
+                    this.selectedHeadingRightText.classList.toggle('hide', true);
+                }
+            }
+            else {
+                this.selectedHeadingLeftText.classList.toggle('hide', true);
+                this.selectedHeadingRightText.classList.toggle('hide', true);
+            }
         }
         var heading = simHeading;
         var roundedHeading = fastToFixed(heading, 3);
@@ -388,7 +479,7 @@ class Jet_NDCompass extends HTMLElement {
         if (this.ilsGroup) {
             if (this._showILS || this.navigationMode == Jet_NDCompass_Navigation.ILS) {
                 let localizer = this.gps.radioNav.getBestILSBeacon();
-                if (localizer.id > 0) {
+                if (localizer && localizer.id > 0) {
                     var roundedCourse = fastToFixed(localizer.course, 3);
                     this.setAttribute("ils_bug_rotation", roundedCourse);
                     this.ilsGroup.classList.toggle('hide', false);
@@ -418,12 +509,9 @@ class Jet_NDCompass extends HTMLElement {
     }
     updateNavigationInfo() {
         if (this.courseGroup) {
-            if (this.navigationMode == Jet_NDCompass_Navigation.ILS || this.navigationMode == Jet_NDCompass_Navigation.VOR) {
-                this.courseGroup.classList.toggle('hide', false);
-                let compass = Number(this.getAttribute('rotation'));
-                let displayCourseDeviation = false;
-                let displayVerticalDeviation = false;
-                if (this.navigationMode == Jet_NDCompass_Navigation.ILS || this.navigationMode === Jet_NDCompass_Navigation.VOR) {
+            if (this.course) {
+                if (this.navigationMode == Jet_NDCompass_Navigation.ILS || this.navigationMode == Jet_NDCompass_Navigation.VOR) {
+                    let compass = Number(this.getAttribute('rotation'));
                     let beacon;
                     if (this.navigationMode == Jet_NDCompass_Navigation.ILS) {
                         beacon = this.gps.radioNav.getBestILSBeacon();
@@ -431,6 +519,8 @@ class Jet_NDCompass extends HTMLElement {
                     else if (this.navigationMode === Jet_NDCompass_Navigation.VOR) {
                         beacon = this.gps.radioNav.getBestVORBeacon();
                     }
+                    let displayCourseDeviation = false;
+                    let displayVerticalDeviation = false;
                     if (beacon.id > 0) {
                         displayCourseDeviation = true;
                         let deviation = (SimVar.GetSimVarValue("NAV CDI:" + beacon.id, "number") / 127);
@@ -448,128 +538,33 @@ class Jet_NDCompass extends HTMLElement {
                         this.setAttribute("course", compass.toString());
                         this.setAttribute("course_deviation", "0");
                     }
+                    this.setAttribute("display_course_deviation", displayCourseDeviation ? "True" : "False");
+                    this.setAttribute("display_vertical_deviation", displayVerticalDeviation ? "True" : "False");
+                    this.course.classList.toggle('hide', false);
                 }
-                this.setAttribute("display_course_deviation", displayCourseDeviation ? "True" : "False");
-                this.setAttribute("display_vertical_deviation", displayVerticalDeviation ? "True" : "False");
-                switch (this.logic_brg1Source) {
-                    case 1:
-                        {
-                            let hasNav = SimVar.GetSimVarValue("NAV HAS NAV:1", "boolean");
-                            if (hasNav) {
-                                this.setAttribute("bearing1_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:1", "degree")) % 360).toString());
-                            }
-                            else {
-                                this.setAttribute("bearing1_bearing", "");
-                            }
-                            break;
-                        }
-                    case 2:
-                        {
-                            let hasNav = SimVar.GetSimVarValue("NAV HAS NAV:2", "boolean");
-                            if (hasNav) {
-                                this.setAttribute("bearing1_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:2", "degree")) % 360).toString());
-                            }
-                            else {
-                                this.setAttribute("bearing1_bearing", "");
-                            }
-                            break;
-                        }
-                    case 3:
-                        {
-                            this.setAttribute("bearing1_bearing", SimVar.GetSimVarValue("GPS WP BEARING", "degree"));
-                            break;
-                        }
-                    case 4:
-                        {
-                            if (SimVar.GetSimVarValue("ADF SIGNAL:1", "number")) {
-                                this.setAttribute("bearing1_bearing", ((SimVar.GetSimVarValue("ADF RADIAL:1", "degree") + compass) % 360).toString());
-                            }
-                            else {
-                                this.setAttribute("bearing1_bearing", "");
-                            }
-                            break;
-                        }
-                }
-                switch (this.logic_brg2Source) {
-                    case 1:
-                        {
-                            let hasNav = SimVar.GetSimVarValue("NAV HAS NAV:1", "boolean");
-                            if (hasNav) {
-                                this.setAttribute("bearing2_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:1", "degree")) % 360).toString());
-                            }
-                            else {
-                                this.setAttribute("bearing2_bearing", "");
-                            }
-                            break;
-                        }
-                    case 2:
-                        {
-                            let hasNav = SimVar.GetSimVarValue("NAV HAS NAV:2", "boolean");
-                            if (hasNav) {
-                                this.setAttribute("bearing2_bearing", ((180 + SimVar.GetSimVarValue("NAV RADIAL:2", "degree")) % 360).toString());
-                            }
-                            else {
-                                this.setAttribute("bearing2_bearing", "");
-                            }
-                            break;
-                        }
-                    case 3:
-                        {
-                            this.setAttribute("bearing2_bearing", SimVar.GetSimVarValue("GPS WP BEARING", "degree"));
-                            break;
-                        }
-                    case 4:
-                        {
-                            if (SimVar.GetSimVarValue("ADF SIGNAL:1", "number")) {
-                                this.setAttribute("bearing2_bearing", ((SimVar.GetSimVarValue("ADF RADIAL:1", "degree") + compass) % 360).toString());
-                            }
-                            else {
-                                this.setAttribute("bearing2_bearing", "");
-                            }
-                            break;
-                        }
+                else {
+                    this.course.classList.toggle('hide', true);
                 }
             }
-            else {
-                this.courseGroup.classList.toggle('hide', true);
-            }
+            let state1 = (this.forcedNavAid1 != undefined) ? this.forcedNavAid1 : Simplane.getAutoPilotNavAidState(this.aircraft, 1, 1);
+            this.updateBearing(1, state1);
+            let state2 = (this.forcedNavAid2 != undefined) ? this.forcedNavAid2 : Simplane.getAutoPilotNavAidState(this.aircraft, 1, 2);
+            this.updateBearing(2, state2);
         }
     }
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case "toggle_bearing1":
-                this.isBearing1Displayed = !this.isBearing1Displayed;
-                if (this.bearingCircle) {
-                    if (this.isBearing1Displayed || this.isBearing2Displayed) {
-                        this.bearingCircle.setAttribute("visibility", "visible");
-                    }
-                    else {
-                        this.bearingCircle.setAttribute("visibility", "hidden");
-                    }
-                }
-                if (this.isBearing1Displayed) {
-                    this.bearing1.setAttribute("visibility", "visible");
-                }
-                else {
-                    this.bearing1.setAttribute("visibility", "hidden");
-                }
+                this.showBearing(1, !this.isBearing1Displayed);
                 break;
             case "toggle_bearing2":
-                this.isBearing2Displayed = !this.isBearing2Displayed;
-                if (this.bearingCircle) {
-                    if (this.isBearing1Displayed || this.isBearing2Displayed) {
-                        this.bearingCircle.setAttribute("visibility", "visible");
-                    }
-                    else {
-                        this.bearingCircle.setAttribute("visibility", "hidden");
-                    }
-                }
-                if (this.isBearing2Displayed) {
-                    this.bearing2.setAttribute("visibility", "visible");
-                }
-                else {
-                    this.bearing2.setAttribute("visibility", "hidden");
-                }
+                this.showBearing(2, !this.isBearing2Displayed);
+                break;
+            case "show_bearing1":
+                this.showBearing(1, (newValue == "true") ? true : false);
+                break;
+            case "show_bearing2":
+                this.showBearing(2, (newValue == "true") ? true : false);
                 break;
         }
         if (oldValue == newValue)
@@ -626,62 +621,105 @@ class Jet_NDCompass extends HTMLElement {
                         this.courseDeviation.setAttribute("transform", "translate(" + (Math.min(Math.max(parseFloat(newValue), -1), 1) * 20 * factor) + ")");
                 }
                 break;
-            case "show_bearing1":
-                this.isBearing1Displayed = newValue == "true";
-                if (this.bearingCircle) {
-                    if (this.isBearing1Displayed || this.isBearing2Displayed) {
-                        this.bearingCircle.setAttribute("visibility", "visible");
-                    }
-                    else {
-                        this.bearingCircle.setAttribute("visibility", "hidden");
-                    }
-                }
-                if (this.isBearing1Displayed) {
-                    this.bearing1.setAttribute("visibility", "visible");
-                }
-                else {
-                    this.bearing1.setAttribute("visibility", "hidden");
-                }
-                break;
-            case "show_bearing2":
-                this.isBearing2Displayed = newValue == "true";
-                if (this.bearingCircle) {
-                    if (this.isBearing1Displayed || this.isBearing2Displayed) {
-                        this.bearingCircle.setAttribute("visibility", "visible");
-                    }
-                    else {
-                        this.bearingCircle.setAttribute("visibility", "hidden");
-                    }
-                }
-                if (this.isBearing2Displayed) {
-                    this.bearing2.setAttribute("visibility", "visible");
-                }
-                else {
-                    this.bearing2.setAttribute("visibility", "hidden");
-                }
-                break;
             case "bearing1_bearing":
-                if (this.bearing1) {
-                    if (newValue != "") {
-                        this.bearing1.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
-                        this.bearing1.setAttribute("visibility", "visible");
-                    }
-                    else {
-                        this.bearing1.setAttribute("visibility", "hidden");
-                    }
+                if (newValue != "") {
+                    if (this.bearing1_Vor)
+                        this.bearing1_Vor.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
+                    if (this.bearing1_Adf)
+                        this.bearing1_Adf.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
                 }
                 break;
             case "bearing2_bearing":
-                if (this.bearing2) {
-                    if (newValue != "") {
-                        this.bearing2.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
-                        this.bearing2.setAttribute("visibility", "visible");
-                    }
-                    else {
-                        this.bearing2.setAttribute("visibility", "hidden");
-                    }
+                if (newValue != "") {
+                    if (this.bearing1_Vor)
+                        this.bearing2_Vor.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
+                    if (this.bearing1_Adf)
+                        this.bearing2_Adf.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
                 }
                 break;
+            case "hud":
+                this.isHud = newValue == "true";
+                break;
+        }
+    }
+    showBearing(_id, _show) {
+        if (_id == 1) {
+            this.isBearing1Displayed = _show;
+            if (this.bearingCircle) {
+                if (this.isBearing1Displayed || this.isBearing2Displayed) {
+                    this.bearingCircle.setAttribute("visibility", "visible");
+                }
+                else {
+                    this.bearingCircle.setAttribute("visibility", "hidden");
+                }
+            }
+            if (this.bearing1_Vor || this.bearing1_Adf) {
+                if (this.isBearing1Displayed && this.bearing1_State == NAV_AID_STATE.VOR) {
+                    this.bearing1_Vor.setAttribute("visibility", "visible");
+                    this.bearing1_Adf.setAttribute("visibility", "hidden");
+
+                }
+                else if (this.isBearing1Displayed && this.bearing1_State == NAV_AID_STATE.ADF) {
+                    this.bearing1_Vor.setAttribute("visibility", "hidden");
+                    this.bearing1_Adf.setAttribute("visibility", "visible");
+                }
+                else {
+                    this.bearing1_Vor.setAttribute("visibility", "hidden");
+                    this.bearing1_Adf.setAttribute("visibility", "hidden");
+                }
+            }
+        }
+        else if (_id == 2) {
+            this.isBearing2Displayed = _show;
+            if (this.bearingCircle) {
+                if (this.isBearing1Displayed || this.isBearing2Displayed) {
+                    this.bearingCircle.setAttribute("visibility", "visible");
+                }
+                else {
+                    this.bearingCircle.setAttribute("visibility", "hidden");
+                }
+            }
+            if (this.bearing2_Vor || this.bearing2_Adf) {
+                if (this.isBearing2Displayed && this.bearing2_State == NAV_AID_STATE.VOR) {
+                    this.bearing2_Vor.setAttribute("visibility", "visible");
+                    this.bearing2_Adf.setAttribute("visibility", "hidden");
+                }
+                else if (this.isBearing2Displayed && this.bearing2_State == NAV_AID_STATE.ADF) {
+                    this.bearing2_Vor.setAttribute("visibility", "hidden");
+                    this.bearing2_Adf.setAttribute("visibility", "visible");
+                }
+                else {
+                    this.bearing2_Vor.setAttribute("visibility", "hidden");
+                    this.bearing2_Adf.setAttribute("visibility", "hidden");
+                }
+            }
+        }
+    }
+    updateBearing(_index, _state) {
+        let wantedState = NAV_AID_STATE.OFF;
+        if (_state == NAV_AID_STATE.VOR) {
+            let beacon = this.gps.radioNav.getVORBeacon(_index);
+            if (beacon.id > 0) {
+                wantedState = NAV_AID_STATE.VOR;
+                let degree = (180 + beacon.radial) % 360;
+                this.setAttribute("bearing" + _index + "_bearing", degree.toString());
+            }
+        }
+        else if (_state == NAV_AID_STATE.ADF) {
+            let hasNav = SimVar.GetSimVarValue("ADF SIGNAL:" + _index, "number");
+            if (hasNav) {
+                wantedState = NAV_AID_STATE.ADF;
+                let degree = (180 + SimVar.GetSimVarValue("ADF RADIAL MAG:" + _index, "degree")) % 360;
+                this.setAttribute("bearing" + _index + "_bearing", degree.toString());
+            }
+        }
+        if (_index == 1 && wantedState != this.bearing1_State) {
+            this.bearing1_State = wantedState;
+            this.setAttribute("show_bearing1", (wantedState == NAV_AID_STATE.OFF) ? "false" : "true");
+        }
+        else if (_index == 2 && wantedState != this.bearing2_State) {
+            this.bearing2_State = wantedState;
+            this.setAttribute("show_bearing2", (wantedState == NAV_AID_STATE.OFF) ? "false" : "true");
         }
     }
     applyRotation() {
@@ -738,7 +776,7 @@ class Jet_NDCompass extends HTMLElement {
             range.text.setAttribute("y", _y.toString());
             range.text.setAttribute("fill", _color);
             range.text.setAttribute("font-size", _size.toString());
-            range.text.setAttribute("font-family", "Roboto-Light");
+            range.text.setAttribute("font-family", "BoeingEICAS");
             range.text.setAttribute("text-anchor", "middle");
             range.text.setAttribute("alignment-baseline", "central");
             range.factor = _rangeFactor;
