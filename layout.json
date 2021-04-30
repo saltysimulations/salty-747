@@ -231,11 +231,6 @@
             "date": 16189501534453194
         },
         {
-            "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_LegsPage.js",
-            "size": 12039,
-            "date": 16186080108334012
-        },
-        {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js",
             "size": 55572,
             "date": 16189564741302464
@@ -322,8 +317,8 @@
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/FMCMainDisplay.js",
-            "size": 100991,
-            "date": 16189576340841976
+            "size": 100738,
+            "date": 16189564741342442
         },
         {
             "path": "html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/ACMS/B747_8_FMC_ACMS_Index.js",
@@ -888,7 +883,7 @@
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I.xml",
             "size": 14886,
-            "date": 16191253071557420
+            "date": 16189565853901618
         },
         {
             "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",

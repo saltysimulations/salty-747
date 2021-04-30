@@ -78,7 +78,7 @@ class SvgMapConfig {
         this.flightPlanNonActiveLegWidth = 2;
         this.flightPlanNonActiveLegStrokeColor = "black";
         this.flightPlanNonActiveLegStrokeWidth = 2;
-        this.flightPlanDirectLegColor = "White";
+        this.flightPlanDirectLegColor = "MediumOrchid";
         this.flightPlanDirectLegWidth = 3;
         this.flightPlanDirectLegStrokeColor = "black";
         this.flightPlanDirectLegStrokeWidth = 3;
