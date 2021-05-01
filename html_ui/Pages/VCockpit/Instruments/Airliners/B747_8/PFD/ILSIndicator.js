@@ -219,7 +219,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             let isApproachLoaded = Simplane.getAutoPilotApproachLoaded();
             let approachType = Simplane.getAutoPilotApproachType();
             if (this.gs_cursorGroup && this.gsVisible) {
-                if (isApproachLoaded && approachType == 10) {
+                if (isApproachLoaded && (approachType == 10)) {
                     let gsi = -SimVar.GetSimVarValue("GPS VERTICAL ERROR", "meters");
                     let delta = 0.5 + (gsi / 150.0) / 2;
                     let y = this.gs_cursorMinY + (this.gs_cursorMaxY - this.gs_cursorMinY) * delta;
@@ -227,22 +227,19 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     this.gs_cursorGroup.setAttribute("transform", "translate(" + this.gs_cursorPosX + ", " + y + ")");
                     //Diamond Parked at top
                     if (delta >= 0.95) {
-                        this.gs_cursorShapeUp.setAttribute("visibility", "visible");
                         this.gs_cursorShapeUp.setAttribute("fill",  "transparent"); 
                     }
                     //Diamond Parked at bottom
                     else if (delta <= 0.05) {
-                        this.gs_cursorShapeUp.setAttribute("visibility", "visible");
                         this.gs_cursorShapeUp.setAttribute("fill",  "transparent"); 
                     }
                     //Diamond in normal range
                     else {
-                        this.gs_cursorShapeUp.setAttribute("visibility", "visible");
                         this.gs_cursorShapeUp.setAttribute("fill",  "#D570FF"); 
                     }
-                    this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
+                    this.gs_cursorShapeUp.setAttribute("visibility", "visible");
                 }
-                else if (localizer && localizer.id > 0 && (SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + localizer.id, "Bool") || (isApproachLoaded && (approachType == 4 || approachType == 10)))) {
+                else if (localizer && localizer.id > 0 && (SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + localizer.id, "Bool"))) {
                     let gsi = -SimVar.GetSimVarValue("NAV GSI:" + localizer.id, "number") / 127.0;
                     let delta = (gsi + 1.0) * 0.5;
                     let y = this.gs_cursorMinY + (this.gs_cursorMaxY - this.gs_cursorMinY) * delta;
@@ -257,6 +254,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                     else {
                         this.gs_cursorShapeUp.setAttribute("fill",  "#D570FF"); 
                     }
+                    this.gs_cursorShapeUp.setAttribute("visibility", "visible");
                 }
                 else {
                     this.gs_cursorShapeUp.setAttribute("visibility", "hidden");
