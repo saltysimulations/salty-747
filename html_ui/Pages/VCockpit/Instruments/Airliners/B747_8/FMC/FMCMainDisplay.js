@@ -56,7 +56,12 @@ class FMCMainDisplay extends BaseAirliners {
         this.perfApprMDA = NaN;
         this.perfApprDH = NaN;
         this._flightPhases = ["PREFLIGHT", "TAXI", "TAKEOFF", "CLIMB", "CRUISE", "DESCENT", "APPROACH", "GOAROUND"];
-        this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
+        if (!SimVar.GetSimVarValue("SIM ON GROUND","bool")) {
+            this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
+        }
+        else {
+            this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
+        }
         this._lockConnectIls = false;
         this._apNavIndex = 1;
         this._apLocalizerOn = false;
