@@ -1,0 +1,13 @@
+{
+  "name": "salty-747",
+  "version": "0.3.0",
+  "description": "An open-source modification for the default MSFS 747-8, aiming to improve the lacking features and realism of the default aircraft.",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "author": "Salty Simulations",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/saltysimulations/salty-747/issues"
+  }
+}

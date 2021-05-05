@@ -12,14 +12,12 @@
     "content_type": "AIRCRAFT",
     "title": "Salty 747-8",
     "manufacturer": "Boeing",
-    "creator": "Asobo Studio, Salty Simulations",
-    "package_version": "0.1.0",
+    "creator": "Salty Simulations",
     "minimum_game_version": "1.10.6",
     "release_notes": {
         "neutral": {
             "LastUpdate": "",
             "OlderHistory": ""
         }
-    },
-    "total_package_size": "00000000000013174662"
+    }
 }
