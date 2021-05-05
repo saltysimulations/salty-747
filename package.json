@@ -6,8 +6,5 @@
     "build": "node scripts/build.js"
   },
   "author": "Salty Simulations",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/saltysimulations/salty-747/issues"
-  }
+  "license": "MIT"
 }
