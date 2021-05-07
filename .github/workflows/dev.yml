@@ -39,7 +39,7 @@ jobs:
             curl --location --request GET \
               --url https://api.github.com/repos/${{ github.repository }}/releases/${{ env.MASTER_PRE_RELEASE_ID }}/assets
           )
-          assetId=$(echo $assets | jq '.[0].id')
+          assetId=$(echo $assets | jq '[0].id')
           echo 'deleting asset '$assetId
           curl --request DELETE \
             --url https://api.github.com/repos/${{ github.repository }}/releases/assets/$assetId \
