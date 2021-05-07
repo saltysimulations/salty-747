@@ -31,7 +31,7 @@ jobs:
       - name: Build ZIP files
         run: |
           mkdir ./${{ env.BUILD_DIR_NAME }}
-          zip -r ./${{ env.BUILD_DIR_NAME }}/${{ env.MASTER_ZIP_NAME }} ./flybywire-aircraft-a320-neo/
+          zip -r ./${{ env.BUILD_DIR_NAME }}/${{ env.MASTER_ZIP_NAME }} ./salty-747/
       - name: Get and delete master pre-release zip asset
         run: |
           echo 'checking for first release asset...'
