@@ -45,7 +45,6 @@ jobs:
           curl --request DELETE \
             --url https://api.github.com/repos/${{ github.repository }}/releases/assets/$assetId \
             --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
-          fi
       - name: Upload release binary
         uses: actions/upload-release-asset@v1.0.2
         env:
