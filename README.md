@@ -25,7 +25,7 @@ To install, simply copy the salty-747 folder to your community folder. Depending
 
 * Boxed - `C:\Users\<USERNAME>\AppData\Local\MSFSPackages\Community`
 
-* If you selected custom install location when installing MSFS2020 (regardless of version owned) - `{Install Folder - e.g. D:\MSFS2020install }\Packages\Community`
+* If you customized install location when installing MSFS2020 (regardless of version) - `{Install Folder, e.g. D:\MSFS2020install }\Community`
 
 ## License
 The Salty Simulations 747-8 is distributed under the MIT License. See [LICENSE](https://github.com/saltysimulations/salty-747/blob/master/LICENSE).
