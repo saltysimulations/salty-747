@@ -9,9 +9,6 @@ jobs:
     # Prevent running this on forks
     if: github.repository_owner == 'saltysimulations'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     env:
       SALTY_PRODUCTION_BUILD: 1
       MASTER_PRE_RELEASE_ID: 26278705
@@ -26,7 +23,7 @@ jobs:
       - name: Build Salty-747
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14
       - run: npm run build
       - name: Build ZIP files
         run: |
