@@ -112,10 +112,12 @@ var B747_8_UpperEICAS;
             }
         }
         updateReferenceThrust() {
-            this.refThrust1.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(0) * 10), 1060).toFixed(0);
-            this.refThrust2.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(1) * 10), 1060).toFixed(0);
-            this.refThrust3.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(2) * 10), 1060).toFixed(0);
-            this.refThrust4.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(3) * 10), 1060).toFixed(0);
+            var MAX_POSSIBLE_THRUST_DISP = 1060;
+
+            this.refThrust1.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(0) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+            this.refThrust2.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(1) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+            this.refThrust3.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(2) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+            this.refThrust4.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(3) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
             return;
         }
         updatePressurisationValues() {
