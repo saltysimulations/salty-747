@@ -79,6 +79,7 @@ var B747_8_EICAS_Common;
                 }
             }
         }
+
         createValueDisplay(_boxWidth, _valuePrecision, _type) {
             this.valuePrecision = _valuePrecision;
             if (this.rootSVG != null) {
@@ -95,14 +96,20 @@ var B747_8_EICAS_Common;
                 this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
                 this.rootSVG.appendChild(this.valueText);
 
+                if (_type !== 0 && _type !== 2 && _type !== 3) return;
+                
+                let tXOffset = 14;
+                if (_type === 0) tXOffset = 20;
+
                 this.decimalPoint = document.createElementNS(Avionics.SVG.NS, "text");
-                (_type === 0) ? this.decimalPoint.setAttribute("x", (textX - 20) + "%") : this.decimalPoint.setAttribute("x", (textX - 14) + "%");
+                this.decimalPoint.setAttribute("x", (textX - tXOffset) + "%");
                 this.decimalPoint.setAttribute("y", (textY + 1) + "%");
                 this.decimalPoint.style.fontSize = "24";
                 this.decimalPoint.textContent = "."
                 this.rootSVG.appendChild(this.decimalPoint);
             }
         }
+
         createGaugeDisplay(_barHeight) {
             if (this.rootSVG != null) {
                 var width = GaugeDefinition.GAUGE_WIDTH;
