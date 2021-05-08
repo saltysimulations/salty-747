@@ -305,44 +305,24 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             let arcVerticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
             let arcGroundSpeed = (SimVar.GetSimVarValue("GPS GROUND SPEED", "meters per second") * 3.28084);
             let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
-            switch(mapRange) {
-                case 0:
-                    mapRange = 0.25;
-                    break;
-                case 1:
-                    mapRange = 0.5;
-                    break;
-                case 2:
-                    mapRange = 1;
-                    break;
-                case 3:
-                    mapRange = 2;
-                    break;
-                case 4:
-                    mapRange = 5;
-                    break;
-                case 5:
-                    mapRange = 10;
-                    break;
-                case 6:
-                    mapRange = 20;
-                    break;
-                case 7:
-                    mapRange = 40;
-                    break;
-                case 8:
-                    mapRange = 80;
-                    break;
-                case 9:
-                    mapRange = 160;
-                    break;
-                case 10:
-                    mapRange = 320;
-                    break;
-                case 11:
-                    mapRange = 640;
-                    break;
-            }              
+
+            const mapRangeEnumToNM = {
+                0: 0.25,
+                1: 0.5,
+                2: 1,
+                3: 2,
+                4: 5,
+                5: 10,
+                6: 20,
+                7: 40,
+                8: 80,
+                9: 160,
+                10: 320,
+                11: 640
+            };
+
+            mapRange = mapRangeEnumToNM[mapRange];      
+
             //Calculate arc position and generate Y coord
             let arcFPA = Math.atan(arcVerticalSpeed / arcGroundSpeed);
             let distanceToLevelArc = Math.abs(((arcDeltaAltMagnitude / Math.tan(arcFPA)) * 0.000164579)); //Feet to Nautical Miles

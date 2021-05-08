@@ -192,31 +192,29 @@ var Boeing_FMA;
             }
             return 4;
         }
+
         getCurrentModeText() {
+            /*
+            this commented out block of code does nothing (empty if-else)
             var modeText = "";
             if (this.leftThrottleArmed && !this.rightThrottleArmed) {
             }
             else if (!this.leftThrottleArmed && this.rightThrottleArmed) {
             }
-            switch (this.currentMode) {
-                case 0:
-                    modeText += "HOLD";
-                    break;
-                case 1:
-                    modeText += "IDLE";
-                    break;
-                case 2:
-                    modeText += "SPD";
-                    break;
-                case 3:
-                    modeText += "THR";
-                    break;
-                case 4:
-                    modeText += "THR REF";
-                    break;
-                default: return "";
-            }
-            return modeText;
+            */
+
+            if (typeof this.currentMode !== "number" || this.currentMode < 0 || this.currentMode > 4)
+                return "";
+
+            const modeEnumToText = {
+                0: "HOLD",
+                1: "IDLE",
+                2: "SPD",
+                3: "THR",
+                4: "THR REF"
+            };
+
+            return modeEnumToText[this.currentMode];
         }
     }
     Boeing_FMA.Column1Top = Column1Top;

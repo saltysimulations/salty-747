@@ -61,7 +61,7 @@ class WayPoint {
             4: 'N',
             5: 'U',
             6: 'ATC'
-        }
+        };
 
         this.type = enumToType[_enum];
     }
