@@ -39,12 +39,15 @@ jobs:
             curl --location --request GET \
               --url https://api.github.com/repos/${{ github.repository }}/releases/${{ env.MASTER_PRE_RELEASE_ID }}/assets
           )
-          
-          assetId=$(jq '.[].id')
-          echo 'deleting asset '$assetId
-          curl --request DELETE \
-            --url https://api.github.com/repos/${{ github.repository }}/releases/assets/$assetId \
-            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
+          if [ $(echo $assets | jq '.[0].size') -eq '0' ]; then
+            echo 'no asset to delete'
+          else
+            assetId=$(echo $assets | jq '.[0].id')
+            echo 'deleting asset '$assetId
+            curl --request DELETE \
+              --url https://api.github.com/repos/${{ github.repository }}/releases/assets/$assetId \
+              --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
+          fi
       - name: Upload release binary
         uses: actions/upload-release-asset@v1.0.2
         env:
