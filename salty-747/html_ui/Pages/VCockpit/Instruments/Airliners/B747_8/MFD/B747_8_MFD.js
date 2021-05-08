@@ -248,57 +248,41 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             this.compass.svg.mapRange = this.map.zoomRanges[this.mapRange];
         }
     }
+    
     setMapMode(_centered, _mode) {
         SimVar.SetSimVarValue("L:B747_MAP_MODE", "number", _mode);
-        switch (_mode) {
-            case 0:
-                if (_centered) {
-                    this.compass.svg.setMode(Jet_NDCompass_Display.ROSE, Jet_NDCompass_Navigation.ILS);
-                    this.map.setMode(Jet_NDCompass_Display.ROSE);
-                }
-                else {
-                    this.compass.svg.setMode(Jet_NDCompass_Display.ARC, Jet_NDCompass_Navigation.ILS);
-                    this.map.setMode(Jet_NDCompass_Display.ARC);
-                }
-                this.info.setMode(Jet_NDCompass_Navigation.ILS);
-                break;
-            case 1:
-                if (_centered) {
-                    this.compass.svg.setMode(Jet_NDCompass_Display.ROSE, Jet_NDCompass_Navigation.VOR);
-                    this.map.setMode(Jet_NDCompass_Display.ROSE);
-                }
-                else {
-                    this.compass.svg.setMode(Jet_NDCompass_Display.ARC, Jet_NDCompass_Navigation.VOR);
-                    this.map.setMode(Jet_NDCompass_Display.ARC);
-                }
-                this.info.setMode(Jet_NDCompass_Navigation.VOR);
-                break;
-            case 2:
-                if (_centered) {
-                    this.compass.svg.setMode(Jet_NDCompass_Display.ROSE, Jet_NDCompass_Navigation.NAV);
-                    this.map.setMode(Jet_NDCompass_Display.ROSE);
-                }
-                else {
-                    this.compass.svg.setMode(Jet_NDCompass_Display.ARC, Jet_NDCompass_Navigation.NAV);
-                    this.map.setMode(Jet_NDCompass_Display.ARC);
-                }
-                this.info.setMode(Jet_NDCompass_Navigation.NAV);
-                break;
-            case 3:
-                this.compass.svg.setMode(Jet_NDCompass_Display.PLAN, Jet_NDCompass_Navigation.NAV);
-                this.map.setMode(Jet_NDCompass_Display.PLAN);
-                this.info.setMode(Jet_NDCompass_Navigation.NAV);
-                break;
-        }
-        if (_mode == 3)
+
+        const modeSwitch = {
+            0: Jet_NDCompass_Navigation.ILS,
+            1: Jet_NDCompass_Navigation.VOR,
+            2: Jet_NDCompass_Navigation.NAV,
+            3: Jet_NDCompass_Navigation.NAV
+        };
+
+        var navStyle = modeSwitch[_mode];
+
+        var compassStyle;
+
+        if (_mode === 3) {
+            compassStyle = Jet_NDCompass_Display.PLAN;
             this.gps.setAttribute("mapstyle", "plan");
-        else if (_centered)
+        } else if (_centered) {
+            compassStyle = Jet_NDCompass_Display.ROSE;
             this.gps.setAttribute("mapstyle", "rose");
-        else
+        } else {
+            compassStyle = Jet_NDCompass_Display.ARC;
             this.gps.setAttribute("mapstyle", "arc");
+        }
+
+        this.compass.svg.setMode(compassStyle, navStyle);
+        this.map.setMode(compassStyle);
+        this.info.setMode(navStyle);
+
+        
         this.compass.svg.showArcRange(false);
         SimVar.SetSimVarValue("L:FMC_UPDATE_CURRENT_PAGE", "number", 1);
     }
+
     showWeather() {
         this.setMapMode(this.mapIsCentered, this.mapMode);
         this.compass.svg.showArcRange(true);
