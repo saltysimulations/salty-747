@@ -25,7 +25,6 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         if (this.currentPage !== _event) {
             this.currentPage = _event;
         } else {
-            // if the event is happening on the same page, show blank for about half a second to make it look like the screen blinks before updating
             this.changePage("BLANK");
             this.currentPage = "blank";
             return;
@@ -33,7 +32,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
 
         var prefix = this.getLowerScreenChangeEventNamePrefix();
 
-        // if the event contains the prefix "EICAS_CHANGE_PAGE_{x}", the EICAS will display the page indicated by {x}; e.g. EICAS_CHANGE_PAGE_FUEL shows the fuel page
+        // if the event contains "EICAS_CHANGE_PAGE_{x}", the EICAS will display the page indicated by {x}; e.g. EICAS_CHANGE_PAGE_FUEL shows the fuel page
         if (_event.indexOf(prefix) >= 0) {
             var pageName = _event.replace(prefix, "");
             this.changePage(pageName);
