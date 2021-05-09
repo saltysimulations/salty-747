@@ -377,7 +377,7 @@ class AirportInfo extends WayPointInfo {
             var forwardY = -this.runways[i].cosDirection;
             var forwardX = this.runways[i].sinDirection;
             
-            var CONV_FT_TO_NM = 0.000164579;
+            const CONV_FT_TO_NM = 0.000164579;
 
             var beginX = centerX - (forwardX * ((this.runways[i].length / 2) * CONV_FT_TO_NM));
             var beginY = centerY - (forwardY * ((this.runways[i].length / 2) * CONV_FT_TO_NM));
