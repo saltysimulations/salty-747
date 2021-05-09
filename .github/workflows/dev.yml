@@ -1,0 +1,65 @@
+name: dev
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    # Prevent running this on forks
+    if: github.repository_owner == 'saltysimulations'
+    runs-on: ubuntu-latest
+    env:
+      SALTY_PRODUCTION_BUILD: 1
+      MASTER_PRE_RELEASE_ID: 26278705
+      MASTER_PRE_RELEASE_TAG: vdev
+      MASTER_ZIP_NAME: salty-747-dev.zip
+      BUILD_DIR_NAME: vdev
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+      - name: Set BUILT_DATE_TIME
+        run: echo "BUILT_DATE_TIME=$(date -u -Iseconds)" >> $GITHUB_ENV
+      - name: Build Salty-747
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm run build
+      - name: Build ZIP files
+        run: |
+          mkdir ./${{ env.BUILD_DIR_NAME }}
+          zip -r ./${{ env.BUILD_DIR_NAME }}/${{ env.MASTER_ZIP_NAME }} ./salty-747/
+      - name: Get and delete master pre-release zip asset
+        run: |
+          echo 'checking for first release asset...'
+          assets=$( \
+            curl --location --request GET \
+              --url https://api.github.com/repos/${{ github.repository }}/releases/${{ env.MASTER_PRE_RELEASE_ID }}/assets
+          )
+          if [ $(echo $assets | jq '.[0].size') -eq '0' ]; then
+            echo 'no asset to delete'
+          else
+            assetId=$(echo $assets | jq '.[0].id')
+            echo 'deleting asset '$assetId
+            curl --request DELETE \
+              --url https://api.github.com/repos/${{ github.repository }}/releases/assets/$assetId \
+              --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
+          fi
+      - name: Upload release binary
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ env.MASTER_PRE_RELEASE_ID }}/assets{?name,label}
+          asset_path: ./${{ env.BUILD_DIR_NAME }}/${{ env.MASTER_ZIP_NAME }}
+          asset_name: ${{ env.MASTER_ZIP_NAME }}
+          asset_content_type: application/zip
+      - name: Update master pre-release body
+        run: |
+          curl --request PATCH \
+            --url 'https://api.github.com/repos/${{ github.repository }}/releases/${{ env.MASTER_PRE_RELEASE_ID }}' \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+              "body": "This pre-release has its ${{ env.MASTER_ZIP_NAME }} asset updated on every commit to the master branch\nLast updated on ${{ env.BUILT_DATE_TIME }} from commit ${{ github.sha }}\nThis link will always point to the latest master build: https://github.com/${{ github.repository }}/releases/download/${{ env.MASTER_PRE_RELEASE_TAG }}/${{ env.MASTER_ZIP_NAME }}"
+            }'
