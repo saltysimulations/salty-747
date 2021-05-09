@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SALTY_PRODUCTION_BUILD: 1
-      MASTER_PRE_RELEASE_ID: 26278705
+      MASTER_PRE_RELEASE_ID: 42630416
       MASTER_PRE_RELEASE_TAG: vdev
       MASTER_ZIP_NAME: salty-747-dev.zip
       BUILD_DIR_NAME: vdev
