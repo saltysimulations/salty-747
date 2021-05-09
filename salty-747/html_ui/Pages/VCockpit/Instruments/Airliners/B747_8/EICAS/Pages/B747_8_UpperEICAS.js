@@ -112,7 +112,7 @@ var B747_8_UpperEICAS;
             }
         }
         updateReferenceThrust() {
-            var MAX_POSSIBLE_THRUST_DISP = 1060;
+            const MAX_POSSIBLE_THRUST_DISP = 1060;
 
             this.refThrust1.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(0) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
             this.refThrust2.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(1) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
