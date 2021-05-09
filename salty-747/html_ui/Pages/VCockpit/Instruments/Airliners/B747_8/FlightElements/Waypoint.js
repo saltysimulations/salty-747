@@ -54,26 +54,16 @@ class WayPoint {
         }
     }
     SetTypeFromEnum(_enum) {
-        switch (_enum) {
-            case 1:
-                this.type = 'A';
-                break;
-            case 2:
-                this.type = 'I';
-                break;
-            case 3:
-                this.type = 'V';
-                break;
-            case 4:
-                this.type = 'N';
-                break;
-            case 5:
-                this.type = 'U';
-                break;
-            case 6:
-                this.type = 'ATC';
-                break;
-        }
+        const enumToType = {
+            1: 'A',
+            2: 'I',
+            3: 'V',
+            4: 'N',
+            5: 'U',
+            6: 'ATC'
+        };
+
+        this.type = enumToType[_enum];
     }
     UpdateInfos(_CallBack = null, _LoadApproaches = true) {
         this.instrument.facilityLoader.getFacilityDataCB(this.icao, (data) => {
@@ -88,7 +78,13 @@ class WayPoint {
             this.infos.UpdateInfos(null, true);
         }
     }
+
     GetInfos() {
+        return this.infos;
+
+        /*
+        THE COMMENTED OUT CODE APPEARS TO BE POINTLESS ??? All paths return this.infos
+
         switch (this.type) {
             case 'A':
                 return this.infos;
@@ -102,7 +98,9 @@ class WayPoint {
             default:
                 return this.infos;
         }
+        */
     }
+
     SetICAO(_ICAO, _endLoadCallback = null, _LoadApproaches = true) {
         if (this.icao != _ICAO || this.infos.icao != _ICAO) {
             this.icao = _ICAO;
@@ -378,28 +376,35 @@ class AirportInfo extends WayPointInfo {
             var centerX = (this.runways[i].longitude - this.long) * latCos * 60;
             var forwardY = -this.runways[i].cosDirection;
             var forwardX = this.runways[i].sinDirection;
-            var beginX = centerX - (forwardX * ((this.runways[i].length / 2) * 0.000164579));
-            var beginY = centerY - (forwardY * ((this.runways[i].length / 2) * 0.000164579));
-            var endX = centerX + (forwardX * ((this.runways[i].length / 2) * 0.000164579));
-            var endY = centerY + (forwardY * ((this.runways[i].length / 2) * 0.000164579));
+            
+            const CONV_FT_TO_NM = 0.000164579;
+
+            var beginX = centerX - (forwardX * ((this.runways[i].length / 2) * CONV_FT_TO_NM));
+            var beginY = centerY - (forwardY * ((this.runways[i].length / 2) * CONV_FT_TO_NM));
+            var endX = centerX + (forwardX * ((this.runways[i].length / 2) * CONV_FT_TO_NM));
+            var endY = centerY + (forwardY * ((this.runways[i].length / 2) * CONV_FT_TO_NM));
+
             if (beginX < minX) {
                 minX = beginX;
             }
             if (endX < minX) {
                 minX = endX;
             }
+
             if (beginX > maxX) {
                 maxX = beginX;
             }
             if (endX > maxX) {
                 maxX = endX;
             }
+
             if (beginY < minY) {
                 minY = beginY;
             }
             if (endY < minY) {
                 minY = endY;
             }
+            
             if (beginY > maxY) {
                 maxY = beginY;
             }

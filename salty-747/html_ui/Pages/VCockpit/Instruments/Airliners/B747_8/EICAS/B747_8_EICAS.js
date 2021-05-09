@@ -3,6 +3,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         super(...arguments);
         this.engines = new Array();
     }
+
     Init() {
         super.Init();
         for (let i = 0; i < Simplane.getEngineCount(); i++) {
@@ -10,6 +11,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         }
         this.currentPage = "B747_8_EICAS_fuel";
     }
+
     reboot() {
         super.reboot();
         if (this.warnings)
@@ -17,6 +19,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         if (this.annunciations)
             this.annunciations.reset();
     }
+
     onEvent(_event) {
         super.onEvent(_event);
         if (this.currentPage !== _event) {
@@ -26,20 +29,26 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
             this.currentPage = "blank";
             return;
         }
+
         var prefix = this.getLowerScreenChangeEventNamePrefix();
+
+        // if the event contains "EICAS_CHANGE_PAGE_{x}", the EICAS will display the page indicated by {x}; e.g. EICAS_CHANGE_PAGE_FUEL shows the fuel page
         if (_event.indexOf(prefix) >= 0) {
             var pageName = _event.replace(prefix, "");
             this.changePage(pageName);
         }
         else {
+            // else the event is not a CHANGE_PAGE event, and therefore needs to be passed to the lower screen event handlers
             for (let i = 0; i < this.lowerScreenPages.length; i++) {
                 this.lowerScreenPages[i].onEvent(_event);
             }
         }
     }
+
     get templateID() {
         return "B747_8_EICAS";
     }
+
     createUpperScreenPage() {
         this.upperTopScreen = new Airliners.EICASScreen("TopScreen", "TopScreen", "b747-8-upper-eicas");
         this.annunciations = new Cabin_Annunciations();
@@ -48,6 +57,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.upperTopScreen.addIndependentElement(this.warnings);
         this.addIndependentElementContainer(this.upperTopScreen);
     }
+
     createLowerScreenPages() {
         this.createLowerScreenPage("FUEL", "BottomScreen", "b747-8-lower-eicas-fuel");
         this.createLowerScreenPage("ENG", "BottomScreen", "b747-8-lower-eicas-engine");
@@ -58,21 +68,25 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.createLowerScreenPage("GEAR", "BottomScreen", "b747-8-lower-eicas-gear");
         this.createLowerScreenPage("BLANK", "BottomScreen", "b747-8-lower-eicas-blank"); // To blank the bottom eicas when selecting same page again
     }
+
     getLowerScreenChangeEventNamePrefix() {
         return "EICAS_CHANGE_PAGE_";
     }
+
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
         this.updateAnnunciations();
         this.updateEngines(_deltaTime);
     }
+
     updateAnnunciations() {
         let infoPanelManager = this.upperTopScreen.getInfoPanelManager();
         if (infoPanelManager) {
             infoPanelManager.clearScreen(Airliners.EICAS_INFO_PANEL_ID.PRIMARY);
+
             if (this.warnings) {
                 let text = this.warnings.getCurrentWarningText();
-                if (text && text != "") {
+                if (text) {
                     let level = this.warnings.getCurrentWarningLevel();
                     switch (level) {
                         case 1:
@@ -90,42 +104,30 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                     }
                 }
             }
+
             if (this.annunciations) {
-                for (let i = this.annunciations.displayWarning.length - 1; i >= 0; i--) {
-                    if (!this.annunciations.displayWarning[i].Acknowledged)
-                        infoPanelManager.addMessage(
-                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
-                            this.annunciations.displayWarning[i].Text,
-                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.WARNING
-                        );
-                }
-                for (let i = this.annunciations.displayCaution.length - 1; i >= 0; i--) {
-                    if (!this.annunciations.displayCaution[i].Acknowledged)
-                        infoPanelManager.addMessage(
-                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
-                            this.annunciations.displayCaution[i].Text,
-                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.CAUTION
-                        );
-                }
-                for (let i = this.annunciations.displayAdvisory.length - 1; i >= 0; i--) {
-                    if (!this.annunciations.displayAdvisory[i].Acknowledged)
-                        infoPanelManager.addMessage(
-                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
-                            this.annunciations.displayAdvisory[i].Text,
-                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.ADVISORY
-                        );
-                }
-                for (let i = this.annunciations.displayMemo.length - 1; i >= 0; i--) {
-                    if (!this.annunciations.displayMemo[i].Acknowledged)
-                        infoPanelManager.addMessage(
-                            Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
-                            this.annunciations.displayMemo[i].Text,
-                            Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.MEMO
-                        );
-                }
+                // arrow function declared to DRY this section
+                let displayListAnnunc = (_annuncList, _infoMsgStyle) => {
+                    for (let i = _annuncList.length - 1; i >= 0; i--) {
+                        if (!_annuncList[i].Acknowledged)
+                            infoPanelManager.addMessage(
+                                Airliners.EICAS_INFO_PANEL_ID.PRIMARY,
+                                _annuncList[i].Text,
+                                _infoMsgStyle
+                            );
+                    }
+                };
+
+                // display WARNING, CAUTION, ADVISORY, and MEMO annunciations
+                displayListAnnunc(this.annunciations.displayWarning, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.WARNING);
+                displayListAnnunc(this.annunciations.displayCaution, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.CAUTION);
+                displayListAnnunc(this.annunciations.displayAdvisory, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.ADVISORY);
+                displayListAnnunc(this.annunciations.displayMemo, Airliners.EICAS_INFO_PANEL_MESSAGE_STYLE.MEMO);
+
             }
         }
     }
+
     getEngineState(_engineId) {
         let index = _engineId - 1;
         if (index >= 0 && index < this.engines.length) {
@@ -133,6 +135,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         }
         return B747_8_EngineState.IDLE;
     }
+    
     getN2IdleValue() {
         return 600;
     }
@@ -142,10 +145,12 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     getFuelValveOpen(_engineId) {
         return SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:" + (4 + _engineId), "boolean");
     }
+    
     updateEngines(_deltaTime) {
         for (var i = 0; i < this.engines.length; i++) {
             let N2Value = this.getN2Value(i + 1);
             switch (this.engines[i].currentState) {
+                
                 case B747_8_EngineState.IDLE:
                     if (this.getFuelValveOpen(i + 1)) {
                         if (N2Value >= this.getN2IdleValue())
@@ -154,27 +159,26 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
                             this.changeState(i, B747_8_EngineState.AUTOSTART);
                     }
                     break;
+
                 case B747_8_EngineState.AUTOSTART:
-                    if (this.getFuelValveOpen(i + 1)) {
-                        if (N2Value >= this.getN2IdleValue())
-                            this.changeState(i, B747_8_EngineState.RUNNING);
-                    }
-                    else {
+                    if (!this.getFuelValveOpen(i + 1))
                         this.changeState(i, B747_8_EngineState.DECELERATE);
-                    }
+                    else if (N2Value >= this.getN2IdleValue())
+                        this.changeState(i, B747_8_EngineState.RUNNING);
                     break;
+
                 case B747_8_EngineState.RUNNING:
-                    if (N2Value >= this.getN2IdleValue()) {
-                        if (this.engines[i].timeInState > 30)
-                            this.changeState(i, B747_8_EngineState.READY);
-                    }
-                    else
+                    if (N2Value < this.getN2IdleValue())
                         this.changeState(i, B747_8_EngineState.DECELERATE);
+                    else if (this.engines[i].timeInState > 30)
+                        this.changeState(i, B747_8_EngineState.READY);
                     break;
+
                 case B747_8_EngineState.READY:
                     if (N2Value < this.getN2IdleValue())
                         this.changeState(i, B747_8_EngineState.DECELERATE);
                     break;
+
                 case B747_8_EngineState.DECELERATE:
                     if (N2Value < 0.05)
                         this.changeState(i, B747_8_EngineState.IDLE);
