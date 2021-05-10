@@ -1,13 +1,9 @@
 const SaltyUtils =  {
 
-    setAttributes = (_elem, ..._attributes) => {
-
-        _attributes.forEach(attrib => {
-            if (attrib.length === 2) {
-                _elem.setAttribute(attrib[0], attrib[1]);
-            }
-        });
+    setAttributes : (_elem, _attributes) => {
+        for (const attr in _attributes) {
+            _elem.setAttribute(attr, _attributes[attr]);
+        }
     }
 
-    
 };
