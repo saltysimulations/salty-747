@@ -497,11 +497,11 @@
 					<State id="Under" value="0">
 						<Transition to="Over">
 							<GreaterEqual>
-								<Simvar name="PLANE ALTITUDE" unit="feet"/>
-									<Add>
-										<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
-										<Constant>55</Constant>
-									</Add>
+								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
+								<Add>
+									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
+									<Constant>55</Constant>
+								</Add>
 							</GreaterEqual>
 						</Transition>
 					</State>
@@ -516,6 +516,7 @@
 					<State id="Alerting" value="1">
 						<Transition to="Under">
 							<Lower>
+								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
 								<Subtract>
 									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
 									<Constant>1</Constant>
