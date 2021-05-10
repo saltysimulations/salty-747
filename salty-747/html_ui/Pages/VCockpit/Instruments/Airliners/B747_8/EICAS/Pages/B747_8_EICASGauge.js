@@ -127,11 +127,16 @@ var B747_8_EICAS_Common;
         }
         createRect(_x, _y, _width, _height, _class) {
             var rect = document.createElementNS(Avionics.SVG.NS, "rect");
-            rect.setAttribute("x", _x);
-            rect.setAttribute("y", _y);
-            rect.setAttribute("width", _width);
-            rect.setAttribute("height", _height);
-            rect.setAttribute("class", _class);
+
+            SaltyUtils.setAttributes(rect,
+                {
+                    'x': _x,
+                    'y': _y,
+                    'width': _width,
+                    'height': _height,
+                    'class': _class
+                });
+
             rect.style.strokeWidth = "2px";
             return rect;
         }
@@ -141,11 +146,16 @@ var B747_8_EICAS_Common;
             var y = this.valueToGaugePosY(_lineDef.value);
             var yStr = y + "%";
             var line = document.createElementNS(Avionics.SVG.NS, "line");
-            line.setAttribute("x1", x1 + "%");
-            line.setAttribute("x2", x2 + "%");
-            line.setAttribute("y1", yStr);
-            line.setAttribute("y2", yStr);
-            line.setAttribute("class", _lineDef.classStr);
+
+            SaltyUtils.setAttributes(line,
+                {
+                    'x1': x1 + '%',
+                    'x2': x2 + '%',
+                    'y1': yStr,
+                    'y2': yStr,
+                    'class': _lineDef.classStr
+                });
+
             if (_lineDef.getValue != null) {
                 this.dynamicLines.push(new GaugeDynamicLine(line, _lineDef.getValue));
             }
