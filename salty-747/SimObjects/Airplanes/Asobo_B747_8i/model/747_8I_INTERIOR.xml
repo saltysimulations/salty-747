@@ -2210,12 +2210,19 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>		
 					<TYPE>B747</TYPE>
 				</UseTemplate>
+
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Altitude_Template">
 					<NODE_ID>knob_autopilot_alt</NODE_ID>
 					<ANIM_NAME_KNOB>autopilot_knob_alt</ANIM_NAME_KNOB>
 					<ANIM_NAME_PUSH>knob_autopilot_alt_push</ANIM_NAME_PUSH>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
+
+				<UseTemplate Name="ASOBO_AIRLINER_Fuel_To_Remain_Knob_Template">
+					<NODE_ID>knob_ovhd_start_fuel_to_remain</NODE_ID>
+					<ANIM_NAME>knob_ovhd_start_fuel_to_remain</ANIM_NAME>
+				</UseTemplate>
+
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Heading_Template">
 					<NODE_ID>knob_autopilot_heading</NODE_ID>
 					<ANIM_NAME_KNOB>autopilot_knob_heading</ANIM_NAME_KNOB>
@@ -4128,10 +4135,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>handle_ovhd_fire_protect_apu</NODE_ID>
-			</UseTemplate>
-
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>knob_ovhd_start_fuel_to_remain</NODE_ID>
 			</UseTemplate>
 			
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
