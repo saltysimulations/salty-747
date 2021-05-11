@@ -1366,7 +1366,6 @@
 					<ANIM_NAME>ovhd_push_start_fuel_jettison_nozzle_l</ANIM_NAME>
 					<REVERSE_SEQ/>
 					<ID>24</ID>
-					<ONOFF_VARIABLE>L:747_FUEL_JETTISON_NOZZLE_L</ONOFF_VARIABLE>
 					<COVER_NODE_ID>push_ovhd_start_fuel_jettison_nozzle_l_cover</COVER_NODE_ID>
 					<COVER_ANIM_NAME>push_ovhd_start_fuel_jettison_nozzle_l_cover</COVER_ANIM_NAME>
 					<OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_L_JETTISON_TURN_ON</OFF_TOOLTIP>
@@ -1378,7 +1377,6 @@
 					<ANIM_NAME>ovhd_push_start_fuel_jettison_nozzle_r</ANIM_NAME>
 					<REVERSE_SEQ/>
 					<ID>25</ID>
-					<ONOFF_VARIABLE>L:747_FUEL_JETTISON_NOZZLE_R</ONOFF_VARIABLE>
 					<COVER_NODE_ID>push_ovhd_start_fuel_jettison_nozzle_r_cover</COVER_NODE_ID>
 					<COVER_ANIM_NAME>push_ovhd_start_fuel_jettison_nozzle_r_cover</COVER_ANIM_NAME>
 					<OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_R_JETTISON_TURN_ON</OFF_TOOLTIP>
