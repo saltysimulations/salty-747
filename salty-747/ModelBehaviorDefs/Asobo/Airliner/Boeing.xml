@@ -453,6 +453,32 @@
 		</Component>
 </Template>
 
+<Template Name="ASOBO_AIRLINER_Fuel_To_Remain_Knob_Template">
+<DefaultTemplateParameters>
+	<ID>1</ID>
+	<ANIM_NAME>ovhd_knob_start_fuel_to_remain</ANIM_NAME>
+	<ANIMREF_ID>-1</ANIMREF_ID>
+	<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
+	<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
+	<INCREMENTATION_INDEX>0</INCREMENTATION_INDEX>
+	<WWISE_EVENT>autopilot_altitude_knob</WWISE_EVENT>
+	<COUNT>36</COUNT>
+	<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+	<THRESHOLD_X_MOUSE>0.01</THRESHOLD_X_MOUSE>
+</DefaultTemplateParameters>
+
+<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+			<CLOCKWISE_CODE>
+				(L:747_FUEL_TO_REMAIN_DELTA) 1 + (&gt;L:747_FUEL_TO_REMAIN_DELTA)
+			</CLOCKWISE_CODE>
+			<ANTICLOCKWISE_CODE>
+				(L:747_FUEL_TO_REMAIN_DELTA) 1 - (&gt;L:747_FUEL_TO_REMAIN_DELTA)
+			</ANTICLOCKWISE_CODE>
+		</UseTemplate>
+	</Component>
+</Template>
+
 <Template Name="ASOBO_AIRLINER_IRS_Knob_Template">
 <DefaultTemplateParameters>
 		<ID>1</ID>
