@@ -1383,7 +1383,7 @@
 					<ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_R_JETTISON_TURN_OFF</ON_TOOLTIP>
 					<SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="ASOBO_AIRLINER_Jettison_Knob_Template">
 					<NODE_ID>knob_ovhd_start_fuel_jettison_sel</NODE_ID>
 					<ANIM_NAME>ovhd_knob_start_fuel_jettison_sel</ANIM_NAME>
 					<ANIM_CODE>50</ANIM_CODE>
@@ -4129,12 +4129,11 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>handle_ovhd_fire_protect_apu</NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>knob_ovhd_start_fuel_jettison_sel</NODE_ID>
-			</UseTemplate>
+
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_ovhd_start_fuel_to_remain</NODE_ID>
 			</UseTemplate>
+			
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_ant_iice_windshield_washer_l</NODE_ID>
 			</UseTemplate>
