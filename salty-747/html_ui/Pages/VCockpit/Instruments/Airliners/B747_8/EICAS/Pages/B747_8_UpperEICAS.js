@@ -38,6 +38,8 @@ var B747_8_UpperEICAS;
             this.deltaP = this.querySelector("#DELTAP_Value");
             this.grossWeight = this.querySelector("#GROSS_WEIGHT_Value");
             this.totalFuel = this.querySelector("#TOTAL_FUEL_Value");
+            this.ftrLabel = this.querySelector("#FTR_Label");
+            this.ftrValue = this.querySelector("#FTR_Value");
             var n1Parent = this.querySelector("#N1Gauges");
             var egtParent = this.querySelector("#EGTGauges");
             for (var engine = 1; engine <= Simplane.getEngineCount(); ++engine) {
@@ -75,6 +77,7 @@ var B747_8_UpperEICAS;
             this.updateReferenceThrust();
             this.updatePressurisationValues();
             this.updateWeights();
+            this.updateFTR();
             if (this.tmaDisplay) {
                 this.tmaDisplay.update();
             }
@@ -114,6 +117,21 @@ var B747_8_UpperEICAS;
                     this.unitTextSVG.textContent = "LBS X";
             }
         }
+
+        updateFTR() {
+            if (parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum")) != 2) {
+                this.ftrLabel.textContent = "TO REMAIN";
+                this.ftrValue.textContent = SimVar.GetSimVarValue("L:747_FUEL_TO_REMAIN", "Float").toFixed(1);
+                this.ftrValue.setAttribute("style", "fill: var(--eicasMagenta);"); 
+                // set colour to white or purple depending on situation, and flash?
+            } else {
+                this.ftrLabel.textContent = "";
+                this.ftrValue.textContent = "";
+                // set colour to white
+                this.ftrValue.setAttribute("style", "fill: var(--eicasWhite)"); 
+            }
+        }
+
         updateReferenceThrust() {
             const MAX_POSSIBLE_THRUST_DISP = 1060;
             for (var i = 1; i < 5; ++i) {
