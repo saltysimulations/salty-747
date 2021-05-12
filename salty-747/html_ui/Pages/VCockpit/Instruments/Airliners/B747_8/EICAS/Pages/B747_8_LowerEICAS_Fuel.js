@@ -161,6 +161,12 @@ var B747_8_LowerEICAS_Fuel;
                     this.unitTextSVG.textContent = "LBS X 1000";
                 }
             }
+
+            if (parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum")) != 2) {
+                this.querySelector("#JettisonLines").setAttribute("style", "opacity: 100;");
+            } else {
+                this.querySelector("#JettisonLines").setAttribute("style", "opacity: 0;");
+            }
         }
         getTotalFuelInMegagrams() {
             let factor = this.gallonToMegapounds;

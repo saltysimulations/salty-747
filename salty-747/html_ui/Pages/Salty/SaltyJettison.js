@@ -5,16 +5,20 @@ class SaltyJettison {
         this.nozzleValveOpenR = false;
         this.jettKnobPos = 2;
         this.saltyMLWFuel = null;
+        this.jettFuelTarget = null;
+        this.MAX_LANDING_WGT_PLUS_3_TON = 315;
+        this.JETTISON_RATE_PER_NOZZLE_IN_TON = 0.9;
 
         this.knobPosToAction = {
             2: (knobMoved) => { return;},
 
             1: (knobMoved) => {
-                if (knobMoved) {
-                    // WORK OUT ML+3 AND APPLY IT HERE
-                    if (!this.saltyMLWFuel) this.saltyMLWFuel = 120.3;
-                    SimVar.SetSimVarValue("L:747_FUEL_TO_REMAIN", "Float", this.saltyMLWFuel);
+                if (knobMoved && !this.saltyMLWFuel) {
+                    let totalWgt = SimVar.GetSimVarValue("TOTAL WEIGHT", "kg") * 0.001;
+                    this.saltyMLWFuel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") * 0.001 - (totalWgt - this.MAX_LANDING_WGT_PLUS_3_TON);                    
                 }
+
+                SimVar.SetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64", this.saltyMLWFuel);
 
                 // if fuel level less than or equal to MLW_FUEL+3 return here
                 // (ALSO minimum jett level)
@@ -25,14 +29,11 @@ class SaltyJettison {
             },
 
             0: (knobMoved) => {
-                /* if (knobMoved) {
-                    SetSimVar {FuelJettisonTargetSimVar} = {CurrentFuelLevelSimVar};
-                    return
+                 if (knobMoved) {
+                    this.jettFuelTarget = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") * 0.001;
+                    SimVar.SetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64", this.jettFuelTarget);
                 } 
-                */                
-
-                // var jettFuelTarget = {FuelJettisonTargetSimVar}
-
+                            
                 // if fuel level less than or equal to jettFuelTarget return here
                 // (ALSO minimum jett level)
 
@@ -58,7 +59,7 @@ class SaltyJettison {
         // jett fuel target needs to be moved from here
   
         
-        this.knobPosToAction[newKnobPos](this.jettKnobPos === newKnobPos);
+        this.knobPosToAction[newKnobPos](this.jettKnobPos !== newKnobPos);
 
         this.jettKnobPos = newKnobPos;
 
