@@ -470,10 +470,10 @@
 <Component ID="#NODE_ID#" Node="#NODE_ID#">
 		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 			<CLOCKWISE_CODE>
-				(L:747_FUEL_TO_REMAIN) 0.1 + (&gt;L:747_FUEL_TO_REMAIN)
+				(L:747_FUEL_TO_REMAIN) 0.5 + (&gt;L:747_FUEL_TO_REMAIN)
 			</CLOCKWISE_CODE>
 			<ANTICLOCKWISE_CODE>
-				(L:747_FUEL_TO_REMAIN) 0.1 - (&gt;L:747_FUEL_TO_REMAIN)
+				(L:747_FUEL_TO_REMAIN) 0.5 - (&gt;L:747_FUEL_TO_REMAIN)
 			</ANTICLOCKWISE_CODE>
 		</UseTemplate>
 	</Component>
