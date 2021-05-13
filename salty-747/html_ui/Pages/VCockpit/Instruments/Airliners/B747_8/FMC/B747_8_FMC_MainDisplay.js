@@ -154,6 +154,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
+        this.setEconClimbSpeed();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -418,20 +419,29 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let speedTrans = 10000;
         let speed = flapLimitSpeed - 5;
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        
         //When flaps 1 - commands UP + 20 or speed transition, whichever higher 
         if (flapsHandleIndex <= 1 && alt <= speedTrans) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
+        
         //Above 10000 commands lowest of UP + 100, 350kts or M.845
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         if (flapsHandleIndex <= 1 && alt >= speedTrans) {
-            let mach = 0.845;
-            let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
-            speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
-            if (speed == machlimit) {
-                SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
-            }
+            speed = SimVar.GetSimVarValue("L:SALTY_ECON_CLB_SPEED", "knots");
+        }
+        if (speed == machlimit) {
+            SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
         }
         return speed;
+    }
+    setEconClimbSpeed() {
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;      
+        let mach = 0.845;
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let clbSpeed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        SimVar.SetSimVarValue("L:SALTY_ECON_CLB_SPEED", "knots", clbSpeed);
+        SimVar.SetSimVarValue("L:SALTY_VNAV_CLB_MODE" , "Enum", 0);
     }
     getCrzManagedSpeed(highAltitude = false) {
         //Commands lowest of UP + 100, 350kts or M.845.
