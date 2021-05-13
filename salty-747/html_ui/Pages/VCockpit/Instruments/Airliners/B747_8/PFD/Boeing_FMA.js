@@ -172,6 +172,9 @@ var Boeing_FMA;
             if (Simplane.getAutoPilotFLCActive() && Simplane.getAutopilotThrottle(1) < 30) {
                 return 1;
             }
+            if (Simplane.getAutoPilotFLCActive() && Simplane.getVerticalSpeed() < -50) {
+                return 3;
+            }
             if (Simplane.getAutoPilotFLCActive() && Simplane.getVerticalSpeed() > 100) {
                 return 4;
             }

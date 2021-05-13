@@ -23,10 +23,13 @@ var B747_8_UpperEICAS;
         init(_eicas) {
             this.eicas = _eicas;
             this.unitTextSVG = this.querySelector("#TOTAL_FUEL_Units");
-            this.refThrust1 = this.querySelector("#THROTTLE1_Value");
-            this.refThrust2 = this.querySelector("#THROTTLE2_Value");
-            this.refThrust3 = this.querySelector("#THROTTLE3_Value");
-            this.refThrust4 = this.querySelector("#THROTTLE4_Value");
+            this.refThrust = [];
+            this.refThrustDecimal = [];
+            this.engRevStatus = [];
+            for (var i = 1; i < 5; ++i) {
+                this.refThrust[i] = this.querySelector("#THROTTLE" + i + "_Value");
+                this.refThrustDecimal[i] = this.querySelector("#THROTTLE" + i +"_Decimal");
+            }
             this.tmaDisplay = new Boeing.ThrustModeDisplay(this.querySelector("#TMA_Value"));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TAT_Value"), Simplane.getTotalAirTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#SAT_Value"), Simplane.getAmbientTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
@@ -131,11 +134,19 @@ var B747_8_UpperEICAS;
 
         updateReferenceThrust() {
             const MAX_POSSIBLE_THRUST_DISP = 1060;
-
-            this.refThrust1.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(0) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
-            this.refThrust2.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(1) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
-            this.refThrust3.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(2) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
-            this.refThrust4.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(3) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+            for (var i = 1; i < 5; ++i) {
+                this.engRevStatus[i] = SimVar.GetSimVarValue("TURB ENG REVERSE NOZZLE PERCENT:" + i, "percent");
+                if (this.engRevStatus[i] > 1) {
+                    this.refThrust[i].textContent = "REV";
+                    this.refThrust[i].setAttribute("x", (i * 15) - 2 + "%");
+                    this.refThrustDecimal[i].style.visibility = "hidden";
+                }
+                else {
+                    this.refThrust[i].textContent = Math.min((Simplane.getEngineThrottleMaxThrust(i - 1) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+                    this.refThrust[i].setAttribute("x", (i * 15) - 1 + "%");
+                    this.refThrustDecimal[i].style.visibility = "visible";
+                }
+            }
             return;
         }
         updatePressurisationValues() {
