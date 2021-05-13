@@ -419,19 +419,23 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let speedTrans = 10000;
         let speed = flapLimitSpeed - 5;
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
-        
+        let speedRestr = SimVar.GetSimVarValue("L:SALTY_SPEED_RESTRICTION", "knots");
+        let speedRestrAlt = SimVar.GetSimVarValue("L:SALTY_SPEED_RESTRICTION_ALT", "feet");
         //When flaps 1 - commands UP + 20 or speed transition, whichever higher 
         if (flapsHandleIndex <= 1 && alt <= speedTrans) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
-        
         //Above 10000 commands lowest of UP + 100, 350kts or M.845
+        let mach = 0.845;
         let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         if (flapsHandleIndex <= 1 && alt >= speedTrans) {
             speed = SimVar.GetSimVarValue("L:SALTY_ECON_CLB_SPEED", "knots");
         }
         if (speed == machlimit) {
             SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
+        }
+        if (alt < speedRestrAlt && speedRestrAlt !== 0) {
+            speed = Math.min(speed, speedRestr);
         }
         return speed;
     }
@@ -442,6 +446,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let clbSpeed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
         SimVar.SetSimVarValue("L:SALTY_ECON_CLB_SPEED", "knots", clbSpeed);
         SimVar.SetSimVarValue("L:SALTY_VNAV_CLB_MODE" , "Enum", 0);
+    }
+    setSpeedRestriction(_speed, _altitude) {
+        SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION", "knots", _speed);
+        SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION_ALT", "feet", _altitude);
     }
     getCrzManagedSpeed(highAltitude = false) {
         //Commands lowest of UP + 100, 350kts or M.845.
