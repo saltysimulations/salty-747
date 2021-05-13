@@ -207,6 +207,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.refreshPageCallback();
         }
         this.updateAutopilot();
+        this.updateAltitudeAlerting();
         this.updateVREF25();
         this.updateVREF30();
         this.saltyBase.update();
@@ -945,6 +946,28 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             this.updateAutopilotCooldown = this._apCooldown;
+        }
+    }
+    updateAltitudeAlerting() {
+        let alertState = SimVar.GetSimVarValue("L:SALTY_ALT_ALERT", "bool");
+        let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+        let alt = Simplane.getAltitude();
+        let vSpeed = Simplane.getVerticalSpeed();
+        let altHoldStatus = SimVar.GetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "bool");
+        if (vSpeed > 200 && altHoldStatus !== 1) {
+            if (mcpAlt - alt <= 900 && mcpAlt - alt >= 200) {
+                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+            } 
+        }
+        else if (vSpeed < 200 && altHoldStatus !== 1) {
+            if (alt - mcpAlt <= 900 && alt - mcpAlt >= 200) {
+                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+            }
+        }
+        if (alertState !== 0) {
+            if (Math.abs(mcpAlt - alt) < 200 || Math.abs(mcpAlt - alt) > 900) {
+                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 0);
+            }
         }
     }
     static stringTohhmm(value) {
