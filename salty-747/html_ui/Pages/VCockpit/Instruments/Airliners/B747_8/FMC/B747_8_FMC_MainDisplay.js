@@ -729,11 +729,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                 }
             }
+            if (!Simplane.getAutoPilotAltitudeLockActive() && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") !== 1) {
+                let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
+            }
             if (this.getIsFLCHActive() && !Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
-                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
-                let altitude = Simplane.getAltitude();
-                let deltaAltitude = Math.abs(targetAltitude - altitude);
-                if (deltaAltitude < 150) {
+                if (Simplane.getAutoPilotAltitudeLockActive()) {
                     this.activateAltitudeHold(true);
                 }
             }
