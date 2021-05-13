@@ -164,8 +164,14 @@ var B747_8_LowerEICAS_Fuel;
 
             if (parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum")) != 2) {
                 this.querySelector("#JettisonLines").setAttribute("style", "opacity: 100;");
+                this.querySelector("#JettisonFlowLines").setAttribute("style", "opacity: 100;");
+                this.querySelector('#JettNozzleL').setAttribute("style", "opacity: 100;");
+                this.querySelector('#JettNozzleR').setAttribute("style", "opacity: 100;");
             } else {
                 this.querySelector("#JettisonLines").setAttribute("style", "opacity: 0;");
+                this.querySelector("#JettisonFlowLines").setAttribute("style", "opacity: 0;");
+                this.querySelector('#JettNozzleL').setAttribute("style", "opacity: 0;");
+                this.querySelector('#JettNozzleR').setAttribute("style", "opacity: 0;");
             }
         }
         getTotalFuelInMegagrams() {

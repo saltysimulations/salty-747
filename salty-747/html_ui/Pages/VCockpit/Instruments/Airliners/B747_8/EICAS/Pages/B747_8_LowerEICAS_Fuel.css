@@ -96,6 +96,17 @@ b747-8-lower-eicas-fuel {
       stroke: var(--eicasOrange); }
     b747-8-lower-eicas-fuel #FlowLines .fuelline-inactive {
       stroke: none; }
+    b747-8-lower-eicas-fuel #FlowLines .fuelline-jett {
+      stroke: var(--eicasMagenta); }
+      
+    b747-8-lower-eicas-fuel #JettNozzles .jett-noz path {
+      fill: var(--eicasMagenta); 
+      stroke: none; }
+    
+    b747-8-lower-eicas-fuel #JettNozzles .jett-noz text {
+      fill: var(--eicasMagenta); 
+      stroke: none; }
+
   b747-8-lower-eicas-fuel #Engines {
     stroke-width: 2px;
     fill: var(--eicasBlack); }
