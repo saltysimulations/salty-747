@@ -972,13 +972,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
         let alt = Simplane.getAltitude();
         let vSpeed = Simplane.getVerticalSpeed();
-        let altHoldStatus = SimVar.GetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "bool");
-        if (vSpeed > 200 && altHoldStatus !== 1) {
+        if (vSpeed > 400) {
             if (mcpAlt - alt <= 900 && mcpAlt - alt >= 200) {
                 SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
             } 
         }
-        else if (vSpeed < 200 && altHoldStatus !== 1) {
+        else if (vSpeed < -400) {
             if (alt - mcpAlt <= 900 && alt - mcpAlt >= 200) {
                 SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
             }
