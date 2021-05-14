@@ -221,6 +221,10 @@ var B747_8_LowerEICAS_Fuel;
                     var className = this.isPumpSwitched ? "switched" : "notswitched";
                     if (this.isPumpActive) {
                         className += this.isLineActive ? "-active-withflow" : "-active";
+                        
+                        // if jettison active
+                        if(SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0.5 || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0.5)
+                            className+= "-jett";
                     }
                     else {
                         className += "-inactive";

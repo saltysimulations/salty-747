@@ -8,13 +8,14 @@ class SaltyJettison {
         this.minFuel = null;
         this.jettFuelTarget = null;
         this.MAX_LANDING_WGT_PLUS_3_MG = 315;
-        this.JETTISON_RATE_PER_NOZZLE_IN_MG = 0.6;
+        this.JETTISON_RATE_PER_NOZZLE_IN_MG_PER_MIN = 0.6;
+
+        this.lastTime = null;
+        this.deltaTime = null;
 
         this.gallonToMegagrams = null;
         
         this.currentFuelLevel = null;
-
-        this.jettisonActive = false;
 
         this.TANK_LOWER_LIMS = {
             CENTER: 1.0,
@@ -29,7 +30,7 @@ class SaltyJettison {
 
 
         this.knobPosToAction = {
-            2: (knobMoved) => { return;},
+            2: (knobMoved) => { return false;},
 
             1: (knobMoved) => {
                 if (knobMoved) {
@@ -41,10 +42,9 @@ class SaltyJettison {
 
                 SimVar.SetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64", this.mlwFuel);
 
-                if (this.currentFuelLevel <= this.mlwFuel) {this.jettisonActive = false; return false; }
+                if (this.currentFuelLevel <= this.mlwFuel) {return false; }
 
-                this.checkFuelPumpsAndJettison();
-
+                this.runJettison(true);
                 return true;
 
             },
@@ -63,10 +63,9 @@ class SaltyJettison {
 
                 SimVar.SetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64", this.jettFuelTarget);
         
-                if (this.currentFuelLevel <= this.jettFuelTarget) {this.jettisonActive = false; return false; }
+                if (this.currentFuelLevel <= this.jettFuelTarget) {return false; }
 
-                this.checkFuelPumpsAndJettison();
-
+                this.runJettison(false);
                 return true;
 
             },
@@ -104,6 +103,12 @@ class SaltyJettison {
 
         this.setMinFuel();
 
+        // Calculate deltatime
+        var timeNow = Date.now();
+        if (this.lastTime == null) this.lastTime = timeNow;
+        this.deltaTime = (timeNow - this.lastTime) / 1000;
+        this.lastTime = timeNow;
+
         var newKnobPos = parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum"));
 
         // jett fuel target needs to be moved from here
@@ -125,16 +130,17 @@ class SaltyJettison {
     }
 
     checkFuelPumpsAndJettison() {
-        //use timer delta to calculate how much fuel to decrease in tank        
-
+        
+        //use timer delta to calculate how much fuel to decrease in tank
         var maxJettisonFlow = 0;
-        if (this.nozzleValveOpenL) maxJettisonFlow += this.JETTISON_RATE_PER_NOZZLE_IN_MG;
-        if (this.nozzleValveOpenR) maxJettisonFlow += this.JETTISON_RATE_PER_NOZZLE_IN_MG;
-        if (!maxJettisonFlow) {this.jettisonActive = false; return; }
+        // TODO REMOVE 15 HERE!
+        var jettisonRateToFlow = 15 * this.JETTISON_RATE_PER_NOZZLE_IN_MG_PER_MIN * this.deltaTime / 60;
+        if (this.nozzleValveOpenL) maxJettisonFlow += jettisonRateToFlow;
+        if (this.nozzleValveOpenR) maxJettisonFlow += jettisonRateToFlow;
+        if (!maxJettisonFlow) {return maxJettisonFlow; }
 
         //ADD DELTA TIME IN HERE!!!!
-        var remainingFlow = maxJettisonFlow * 0.04; // * delta time
-        var changeOccured = 0;
+        var remainingFlow = maxJettisonFlow;
 
         
         const balancingJettison = (_leftTankLevel, _rightTankLevel, _leftTankLowerLim, _rightTankLowerLim, _remainingFlow) => {
@@ -197,52 +203,77 @@ class SaltyJettison {
             return [_tankLevel, _remainingFlow, changedTankLevels];
         };
 
+        const jettisonStage = (_simVars, _lowerLims, _remainingFlow) => {
+            let changeOccured = 0;
+            let tankLevels = [];
 
-        // this is where the fuel drain order and imbalance correction logic begins
+            if (_lowerLims.length === 2 && _simVars.length === 2) {
+                tankLevels[0] = SimVar.GetSimVarValue(_simVars[0], "gallons") * this.gallonToMegagrams;
+                tankLevels[1] = SimVar.GetSimVarValue(_simVars[1], "gallons") * this.gallonToMegagrams;
 
-        var m2Level = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons") * this.gallonToMegagrams;
-        var m3Level = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons") * this.gallonToMegagrams;        
-        [m2Level, m3Level, remainingFlow, changeOccured] = balancingJettison(m2Level, m3Level, this.TANK_LOWER_LIMS.MAIN_2, this.TANK_LOWER_LIMS.MAIN_3, remainingFlow);
-        if (changeOccured) {
-            SimVar.SetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallons", m2Level / this.gallonToMegagrams);
-            SimVar.SetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallons", m3Level / this.gallonToMegagrams);
-            changeOccured = 0;
+                [tankLevels[0], tankLevels[1], _remainingFlow, changeOccured] = balancingJettison(tankLevels[0], tankLevels[1], _lowerLims[0], _lowerLims[1], _remainingFlow);
+
+                if (changeOccured) {
+                    SimVar.SetSimVarValue(_simVars[0], "gallons", tankLevels[0]/ this.gallonToMegagrams);
+                    SimVar.SetSimVarValue(_simVars[1], "gallons", tankLevels[1] / this.gallonToMegagrams);
+                }
+            } else if (_lowerLims.length === 1 && _simVars.length === 1) {
+                tankLevels[0] = SimVar.GetSimVarValue(_simVars[0], "gallons") * this.gallonToMegagrams;
+
+                [tankLevels[0], _remainingFlow, changeOccured] = singleTankJettison(tankLevels[0], _lowerLims[0], _remainingFlow);
+                if (changeOccured) {
+                    SimVar.SetSimVarValue(_simVars[0], "gallons", tankLevels[0]/ this.gallonToMegagrams);
+                }
+            }
+
+            return _remainingFlow;
         }
-        if (!remainingFlow) return;
 
-        var centerLevel = SimVar.GetSimVarValue("FUEL TANK CENTER QUANTITY", "gallons") * this.gallonToMegagrams;
-        [centerLevel, remainingFlow, changeOccured] = singleTankJettison(centerLevel, this.TANK_LOWER_LIMS.CENTER, remainingFlow);
-        if (changeOccured) {
-            SimVar.SetSimVarValue("FUEL TANK CENTER QUANTITY", "gallons", centerLevel / this.gallonToMegagrams);
-            changeOccured = 0;
+
+        // The order in which jettison drains the fuel tanks:
+
+        remainingFlow = jettisonStage(["FUEL TANK CENTER QUANTITY"], [this.TANK_LOWER_LIMS.CENTER], remainingFlow );
+        if (!remainingFlow) return maxJettisonFlow;
+
+        remainingFlow = jettisonStage(["FUEL TANK CENTER2 QUANTITY"], [this.TANK_LOWER_LIMS.STAB], remainingFlow );
+        if (!remainingFlow) return maxJettisonFlow;
+
+        remainingFlow = jettisonStage(["FUEL TANK LEFT TIP QUANTITY", "FUEL TANK RIGHT TIP QUANTITY"], [this.TANK_LOWER_LIMS.RES_1, this.TANK_LOWER_LIMS.RES_4], remainingFlow );
+        if (!remainingFlow) return maxJettisonFlow;
+
+        remainingFlow = jettisonStage(["FUEL TANK LEFT MAIN QUANTITY", "FUEL TANK RIGHT MAIN QUANTITY"], [this.TANK_LOWER_LIMS.MAIN_2, this.TANK_LOWER_LIMS.MAIN_3], remainingFlow );
+        if (!remainingFlow) return maxJettisonFlow;        
+
+        remainingFlow = jettisonStage(["FUEL TANK LEFT AUX QUANTITY", "FUEL TANK RIGHT AUX QUANTITY"], [this.TANK_LOWER_LIMS.MAIN_1, this.TANK_LOWER_LIMS.MAIN_4], remainingFlow );
+        if (!remainingFlow) return maxJettisonFlow;
+
+        
+
+        return maxJettisonFlow - remainingFlow;
+    }
+
+    runJettison(jettType) {
+        var flowChanged = this.checkFuelPumpsAndJettison();
+
+        var flowRatePerMin = (flowChanged / this.deltaTime) * 60;
+
+        if(flowRatePerMin <= 0.000001) {
+            SimVar.SetSimVarValue("L:SALTY_JETTISON_MIN_REMAINING", "TYPE_FLOAT64", 999);
+            return;
         }
-        if (!remainingFlow) return;
 
-        var m1Level = SimVar.GetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "gallons") * this.gallonToMegagrams;
-        var m4Level = SimVar.GetSimVarValue("FUEL TANK RIGHT AUX QUANTITY", "gallons") * this.gallonToMegagrams;
-        [m1Level, m4Level, remainingFlow, changeOccured] = balancingJettison(m1Level, m4Level, this.TANK_LOWER_LIMS.MAIN_1, this.TANK_LOWER_LIMS.MAIN_4, remainingFlow);
-        if (changeOccured) {
-            SimVar.SetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "gallons", m1Level / this.gallonToMegagrams);
-            SimVar.SetSimVarValue("FUEL TANK RIGHT AUX QUANTITY", "gallons", m4Level / this.gallonToMegagrams);
-            changeOccured = 0;
-        }
-        if (!remainingFlow) return;
+        flowRatePerMin *= 1.4;
 
-        var stabLevel = SimVar.GetSimVarValue("FUEL TANK CENTER2 QUANTITY", "gallons") * this.gallonToMegagrams;
-        [stabLevel, remainingFlow, changeOccured] = singleTankJettison(stabLevel, this.TANK_LOWER_LIMS.STAB, remainingFlow);
-        if (changeOccured) {
-            SimVar.SetSimVarValue("FUEL TANK CENTER2 QUANTITY", "gallons", stabLevel / this.gallonToMegagrams);
-            changeOccured = 0;
-        }
-        if (!remainingFlow) return;        
 
-        var r1Level = SimVar.GetSimVarValue("FUEL TANK LEFT TIP QUANTITY", "gallons") * this.gallonToMegagrams;
-        var r4Level = SimVar.GetSimVarValue("FUEL TANK RIGHT TIP QUANTITY", "gallons") * this.gallonToMegagrams;
-        [r1Level, r4Level, remainingFlow, changeOccured] = balancingJettison(r1Level, r4Level, this.TANK_LOWER_LIMS.RES_1, this.TANK_LOWER_LIMS.RES_4, remainingFlow);
-        if (changeOccured) {
-            SimVar.SetSimVarValue("FUEL TANK LEFT TIP QUANTITY", "gallons", r1Level / this.gallonToMegagrams);
-            SimVar.SetSimVarValue("FUEL TANK RIGHT TIP QUANTITY", "gallons", r4Level / this.gallonToMegagrams);
-        }        
+        var minRemaining;
+        if (jettType)
+            minRemaining = (this.currentFuelLevel - this.mlwFuel) / flowRatePerMin;
+        else
+            minRemaining = (this.currentFuelLevel - this.jettFuelTarget) / flowRatePerMin;
+
+        SimVar.SetSimVarValue("L:SALTY_JETTISON_MIN_REMAINING", "TYPE_FLOAT64", Math.min(minRemaining, 999));
+
+        return;
     }
 
 

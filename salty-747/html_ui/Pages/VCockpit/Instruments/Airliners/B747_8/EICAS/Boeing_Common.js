@@ -343,6 +343,11 @@ var Boeing;
                 if (this.element != null) {
                     var className = this.isSwitched ? "switched" : "notswitched";
                     className += this.isActive ? "-active" : "-inactive";
+                    // if jettison active
+                    if (this.isSwitched && this.isActive && (this.element.id === "1" || this.element.id === "2" && SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0.5
+                    || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0.5))
+                        className+= "-jett";
+
                     this.element.setAttribute("class", "fuelpump-" + className);
                 }
             }
