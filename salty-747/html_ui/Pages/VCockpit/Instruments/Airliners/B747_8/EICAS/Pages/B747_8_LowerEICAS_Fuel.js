@@ -162,16 +162,32 @@ var B747_8_LowerEICAS_Fuel;
                 }
             }
 
-            if (parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum")) != 2) {
+            if ( SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0 || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0 ) {
                 this.querySelector("#JettisonLines").setAttribute("style", "opacity: 100;");
                 this.querySelector("#JettisonFlowLines").setAttribute("style", "opacity: 100;");
-                this.querySelector('#JettNozzleL').setAttribute("style", "opacity: 100;");
-                this.querySelector('#JettNozzleR').setAttribute("style", "opacity: 100;");
+
+                if (SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0)
+                    this.querySelector('#JettNozzleL').setAttribute("style", "opacity: 100;");
+                else
+                    this.querySelector('#JettNozzleL').setAttribute("style", "opacity: 0;");
+
+                    this.querySelector('#JettTime').setAttribute("style", "opacity: 100;");
+
+                    this.querySelector('#JettTimeValue').textContent = Math.ceil(SimVar.GetSimVarValue("L:SALTY_JETTISON_MIN_REMAINING", "TYPE_FLOAT64")).toFixed(0) + " MIN";
+                    this.querySelector('#JettTimeValue').setAttribute("style", "opacity: 100;");
+
+                if (SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0)
+                    this.querySelector('#JettNozzleR').setAttribute("style", "opacity: 100;");
+                else
+                    this.querySelector('#JettNozzleR').setAttribute("style", "opacity: 0;");
+
             } else {
                 this.querySelector("#JettisonLines").setAttribute("style", "opacity: 0;");
                 this.querySelector("#JettisonFlowLines").setAttribute("style", "opacity: 0;");
                 this.querySelector('#JettNozzleL').setAttribute("style", "opacity: 0;");
                 this.querySelector('#JettNozzleR').setAttribute("style", "opacity: 0;");
+                this.querySelector('#JettTime').setAttribute("style", "opacity: 0;");
+                this.querySelector('#JettTimeValue').setAttribute("style", "opacity: 0;");
             }
         }
         getTotalFuelInMegagrams() {
@@ -197,6 +213,7 @@ var B747_8_LowerEICAS_Fuel;
             this.isPumpActive = false;
             this.lineIndex = 0;
             this.isLineActive = false;
+            this.jettisonActive = false;
             this.lineIndex = _lineIndex;
             this.flowStabOutline = document.querySelector("#TransferStab");
             this.flowStab = document.querySelector("#FlowStab");
@@ -209,22 +226,25 @@ var B747_8_LowerEICAS_Fuel;
             this.refresh(false, false, false, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"), (SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:" + this.lineIndex, "number") > 0));
+                        
+            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"), (SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:" + this.lineIndex, "number") > 0), (SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0 || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0) );
             this.updateTransferArrows();
         }
-        refresh(_isPumpSwitched, _isPumpActive, _isLineActive, _force = false) {
-            if (_force || (this.isPumpSwitched != _isPumpSwitched) || (this.isPumpActive != _isPumpActive) || (this.isLineActive != _isLineActive)) {
+        refresh(_isPumpSwitched, _isPumpActive, _isLineActive, _jettisonActive, _force = false) {
+            if (_force || (this.isPumpSwitched != _isPumpSwitched) || (this.isPumpActive != _isPumpActive) || (this.isLineActive != _isLineActive) || (this.jettisonActive != _jettisonActive)) {
                 this.isPumpSwitched = _isPumpSwitched;
                 this.isPumpActive = _isPumpActive;
                 this.isLineActive = _isLineActive;
+                this.jettisonActive = _jettisonActive;
                 if (this.element != null) {
                     var className = this.isPumpSwitched ? "switched" : "notswitched";
                     if (this.isPumpActive) {
                         className += this.isLineActive ? "-active-withflow" : "-active";
                         
-                        // if jettison active
-                        if(SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0.5 || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0.5)
+                        if(this.jettisonActive) {
                             className+= "-jett";
+                        }
+                            
                     }
                     else {
                         className += "-inactive";

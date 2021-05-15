@@ -329,24 +329,26 @@ var Boeing;
             super(...arguments);
             this.isSwitched = false;
             this.isActive = false;
+            this.jettisonActive = false;
         }
         init() {
             this.refresh(false, false, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"));
+            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"), (SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0 || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0));
         }
-        refresh(_isSwitched, _isActive, _force = false) {
-            if (_force || (this.isSwitched != _isSwitched) || (this.isActive != _isActive)) {
+        refresh(_isSwitched, _isActive, _jettisonActive, _force = false) {
+            if (_force || (this.isSwitched != _isSwitched) || (this.isActive != _isActive) || (this.jettisonActive != _jettisonActive)) {
                 this.isSwitched = _isSwitched;
                 this.isActive = _isActive;
+                this.jettisonActive = _jettisonActive;
                 if (this.element != null) {
                     var className = this.isSwitched ? "switched" : "notswitched";
                     className += this.isActive ? "-active" : "-inactive";
-                    // if jettison active
-                    if (this.isSwitched && this.isActive && (this.element.id === "1" || this.element.id === "2" && SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0.5
-                    || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0.5))
+                    if (this.isSwitched && this.isActive && (this.index === 1 || this.index === 2) && this.jettisonActive) {
                         className+= "-jett";
+                    }
+                        
 
                     this.element.setAttribute("class", "fuelpump-" + className);
                 }
