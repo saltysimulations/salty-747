@@ -34,10 +34,8 @@ class SaltyJettison {
 
             1: (knobMoved) => {
                 if (knobMoved) {
-                    if (!this.mlwFuel) {
-                        let totalWgt = SimVar.GetSimVarValue("TOTAL WEIGHT", "kg") * 0.001;
-                        this.mlwFuel = this.currentFuelLevel - (totalWgt - this.MAX_LANDING_WGT_PLUS_3_MG);
-                    }
+                    let totalWgt = SimVar.GetSimVarValue("TOTAL WEIGHT", "kg") * 0.001;
+                    this.mlwFuel = this.currentFuelLevel - (totalWgt - this.MAX_LANDING_WGT_PLUS_3_MG);
                 }
 
                 SimVar.SetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64", this.mlwFuel);
