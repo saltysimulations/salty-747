@@ -108,8 +108,6 @@ class SaltyJettison {
         this.lastTime = timeNow;
 
         var newKnobPos = parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum"));
-
-        // jett fuel target needs to be moved from here
   
         let publishL = 0;
         let publishR = 0;
@@ -136,7 +134,6 @@ class SaltyJettison {
         if (this.nozzleValveOpenR) maxJettisonFlow += jettisonRateToFlow;
         if (!maxJettisonFlow) {return maxJettisonFlow; }
 
-        //ADD DELTA TIME IN HERE!!!!
         var remainingFlow = maxJettisonFlow;
 
         
