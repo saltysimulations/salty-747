@@ -70,8 +70,8 @@ class SaltyJettison {
 
             },
 
-            3: (knobMoved) => { this.knobPosToAction[1](knobMoved);},
-            4: (knobMoved) => { this.knobPosToAction[0](knobMoved);}
+            3: (knobMoved) => { return this.knobPosToAction[1](knobMoved);},
+            4: (knobMoved) => { return this.knobPosToAction[0](knobMoved);}
 
         };
     }
@@ -96,8 +96,8 @@ class SaltyJettison {
     update() {
         this.gallonToMegagrams = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") * 0.001;
 
-        this.nozzleValveOpenL = SimVar.GetSimVarValue("A:FUELSYSTEM VALVE SWITCH:24", "Enum") > 0.5;
-        this.nozzleValveOpenR = SimVar.GetSimVarValue("A:FUELSYSTEM VALVE SWITCH:25", "Enum") > 0.5;
+        this.nozzleValveOpenL = SimVar.GetSimVarValue("A:FUELSYSTEM VALVE SWITCH:24", "Enum") > 0;
+        this.nozzleValveOpenR = SimVar.GetSimVarValue("A:FUELSYSTEM VALVE SWITCH:25", "Enum") > 0;
 
         this.currentFuelLevel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * this.gallonToMegagrams;
 
@@ -133,8 +133,7 @@ class SaltyJettison {
         
         //use timer delta to calculate how much fuel to decrease in tank
         var maxJettisonFlow = 0;
-        // TODO REMOVE 15 HERE!
-        var jettisonRateToFlow = 15 * this.JETTISON_RATE_PER_NOZZLE_IN_MG_PER_MIN * this.deltaTime / 60;
+        var jettisonRateToFlow = this.JETTISON_RATE_PER_NOZZLE_IN_MG_PER_MIN * this.deltaTime / 60;
         if (this.nozzleValveOpenL) maxJettisonFlow += jettisonRateToFlow;
         if (this.nozzleValveOpenR) maxJettisonFlow += jettisonRateToFlow;
         if (!maxJettisonFlow) {return maxJettisonFlow; }
@@ -230,24 +229,53 @@ class SaltyJettison {
         }
 
 
+
         // The order in which jettison drains the fuel tanks:
-
-        remainingFlow = jettisonStage(["FUEL TANK CENTER QUANTITY"], [this.TANK_LOWER_LIMS.CENTER], remainingFlow );
+        var centreLim;
+        if (SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:1", "Bool") || SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:2", "Bool")) centreLim = this.TANK_LOWER_LIMS.CENTER;
+        else centreLim = 10000;
+        remainingFlow = jettisonStage(["FUEL TANK CENTER QUANTITY"], [centreLim], remainingFlow );
         if (!remainingFlow) return maxJettisonFlow;
 
-        remainingFlow = jettisonStage(["FUEL TANK CENTER2 QUANTITY"], [this.TANK_LOWER_LIMS.STAB], remainingFlow );
+        var stabLim;
+        if (SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:15", "Bool") || SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:16", "Bool")) stabLim = this.TANK_LOWER_LIMS.STAB;
+        else stabLim = 10000;
+        remainingFlow = jettisonStage(["FUEL TANK CENTER2 QUANTITY"], [stabLim], remainingFlow );
         if (!remainingFlow) return maxJettisonFlow;
 
-        remainingFlow = jettisonStage(["FUEL TANK LEFT TIP QUANTITY", "FUEL TANK RIGHT TIP QUANTITY"], [this.TANK_LOWER_LIMS.RES_1, this.TANK_LOWER_LIMS.RES_4], remainingFlow );
+        var res1Lim, main1Lim, main2Lim;
+        if (SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:7", "Bool") && SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:8", "Bool"))  {
+            res1Lim = this.TANK_LOWER_LIMS.RES_1;
+            main1Lim = this.TANK_LOWER_LIMS.MAIN_1;
+            main2Lim = this.TANK_LOWER_LIMS.MAIN_2;
+        }
+        else {
+            res1Lim = 10000;
+            main1Lim = 10000;
+            main2Lim = 10000;
+        }
+
+        var res4Lim, main3Lim, main4Lim;
+        if (SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:11", "Bool") && SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:12", "Bool"))  {
+            res4Lim = this.TANK_LOWER_LIMS.RES_4;
+            main3Lim = this.TANK_LOWER_LIMS.MAIN_3;
+            main4Lim = this.TANK_LOWER_LIMS.MAIN_4;
+        }
+        else {
+            res4Lim = 10000;
+            main3Lim = 10000;
+            main4Lim = 10000;
+        }
+
+
+        remainingFlow = jettisonStage(["FUEL TANK LEFT TIP QUANTITY", "FUEL TANK RIGHT TIP QUANTITY"], [res1Lim, res4Lim], remainingFlow );
         if (!remainingFlow) return maxJettisonFlow;
 
-        remainingFlow = jettisonStage(["FUEL TANK LEFT MAIN QUANTITY", "FUEL TANK RIGHT MAIN QUANTITY"], [this.TANK_LOWER_LIMS.MAIN_2, this.TANK_LOWER_LIMS.MAIN_3], remainingFlow );
+        remainingFlow = jettisonStage(["FUEL TANK LEFT MAIN QUANTITY", "FUEL TANK RIGHT MAIN QUANTITY"], [main2Lim, main3Lim], remainingFlow );
         if (!remainingFlow) return maxJettisonFlow;        
 
-        remainingFlow = jettisonStage(["FUEL TANK LEFT AUX QUANTITY", "FUEL TANK RIGHT AUX QUANTITY"], [this.TANK_LOWER_LIMS.MAIN_1, this.TANK_LOWER_LIMS.MAIN_4], remainingFlow );
-        if (!remainingFlow) return maxJettisonFlow;
-
-        
+        remainingFlow = jettisonStage(["FUEL TANK LEFT AUX QUANTITY", "FUEL TANK RIGHT AUX QUANTITY"], [main1Lim, main4Lim], remainingFlow );
+        if (!remainingFlow) return maxJettisonFlow;        
 
         return maxJettisonFlow - remainingFlow;
     }
@@ -274,9 +302,6 @@ class SaltyJettison {
         SimVar.SetSimVarValue("L:SALTY_JETTISON_MIN_REMAINING", "TYPE_FLOAT64", Math.min(minRemaining, 999));
 
         return;
-    }
-
-
-    
+    }    
 
 }

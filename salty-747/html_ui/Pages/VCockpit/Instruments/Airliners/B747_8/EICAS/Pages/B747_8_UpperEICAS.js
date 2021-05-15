@@ -121,9 +121,13 @@ var B747_8_UpperEICAS;
         updateFTR() {
             if (parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum")) != 2) {
                 this.ftrLabel.textContent = "TO REMAIN";
-                this.ftrValue.textContent = SimVar.GetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64").toFixed(1);
-                this.ftrValue.setAttribute("style", "fill: var(--eicasMagenta);"); 
-                // set colour to white or purple depending on situation, and flash?
+                var ftrNum = SimVar.GetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64");
+                this.ftrValue.textContent = ftrNum.toFixed(1);
+
+                if (this.getTotalFuelInMegagrams() > ftrNum)
+                    this.ftrValue.setAttribute("style", "fill: var(--eicasMagenta);");
+                else
+                    this.ftrValue.setAttribute("style", "fill: var(--eicasWhite);");
             } else {
                 this.ftrLabel.textContent = "";
                 this.ftrValue.textContent = "";
