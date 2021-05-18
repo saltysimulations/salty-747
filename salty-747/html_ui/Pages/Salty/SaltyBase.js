@@ -9,8 +9,9 @@ class SaltyBase {
         this.pilots.init();
         this.jettison.init();
     }
-    update() {
-        this.irs.update();
+    update(electricityIsAvail) {
+        // alternatively may be able to use this.isElectricityAvailable() SimVar.GetSimVarValue("CIRCUIT GENERAL PANEL ON", "Bool") to get electricity status
+        this.irs.update(electricityIsAvail);
         this.jettison.update();
     }
 }

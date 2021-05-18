@@ -184,7 +184,7 @@ class SaltyJettison {
                 changedTankLevels = 1;
             }
 
-            if (imbalance < 0.1 || (imbalance > -0.1 && _remainingFlow)) {
+            if (imbalance < 0.1 && imbalance > -0.1 && _remainingFlow) {
                 flow = Math.min(lRemainingChange, rRemainingChange, _remainingFlow / 2);
 
                 _rightTankLevel -= flow;
