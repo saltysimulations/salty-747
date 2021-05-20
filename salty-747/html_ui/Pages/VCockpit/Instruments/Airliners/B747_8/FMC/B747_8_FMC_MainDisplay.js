@@ -154,6 +154,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
+        this.setEconClimbSpeed();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -207,9 +208,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.refreshPageCallback();
         }
         this.updateAutopilot();
+        this.updateAltitudeAlerting();
         this.updateVREF25();
         this.updateVREF30();
-        this.saltyBase.update();
+        this.saltyBase.update(this.isElectricityAvailable());
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -418,20 +420,37 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let speedTrans = 10000;
         let speed = flapLimitSpeed - 5;
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        let speedRestr = SimVar.GetSimVarValue("L:SALTY_SPEED_RESTRICTION", "knots");
+        let speedRestrAlt = SimVar.GetSimVarValue("L:SALTY_SPEED_RESTRICTION_ALT", "feet");
         //When flaps 1 - commands UP + 20 or speed transition, whichever higher 
         if (flapsHandleIndex <= 1 && alt <= speedTrans) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
         //Above 10000 commands lowest of UP + 100, 350kts or M.845
+        let mach = 0.845;
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         if (flapsHandleIndex <= 1 && alt >= speedTrans) {
-            let mach = 0.845;
-            let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
-            speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
-            if (speed == machlimit) {
-                SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
-            }
+            speed = SimVar.GetSimVarValue("L:SALTY_ECON_CLB_SPEED", "knots");
+        }
+        if (speed == machlimit) {
+            SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
+        }
+        if (alt < speedRestrAlt && speedRestrAlt !== 0) {
+            speed = Math.min(speed, speedRestr);
         }
         return speed;
+    }
+    setEconClimbSpeed() {
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;      
+        let mach = 0.845;
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let clbSpeed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        SimVar.SetSimVarValue("L:SALTY_ECON_CLB_SPEED", "knots", clbSpeed);
+        SimVar.SetSimVarValue("L:SALTY_VNAV_CLB_MODE" , "Enum", 0);
+    }
+    setSpeedRestriction(_speed, _altitude) {
+        SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION", "knots", _speed);
+        SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION_ALT", "feet", _altitude);
     }
     getCrzManagedSpeed(highAltitude = false) {
         //Commands lowest of UP + 100, 350kts or M.845.
@@ -729,11 +748,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                 }
             }
+            if (!Simplane.getAutoPilotAltitudeLockActive() && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") !== 1) {
+                let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
+            }
             if (this.getIsFLCHActive() && !Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
-                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
-                let altitude = Simplane.getAltitude();
-                let deltaAltitude = Math.abs(targetAltitude - altitude);
-                if (deltaAltitude < 150) {
+                if (Simplane.getAutoPilotAltitudeLockActive()) {
                     this.activateAltitudeHold(true);
                 }
             }
@@ -945,6 +965,27 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             this.updateAutopilotCooldown = this._apCooldown;
+        }
+    }
+    updateAltitudeAlerting() {
+        let alertState = SimVar.GetSimVarValue("L:SALTY_ALT_ALERT", "bool");
+        let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+        let alt = Simplane.getAltitude();
+        let vSpeed = Simplane.getVerticalSpeed();
+        if (vSpeed > 400) {
+            if (mcpAlt - alt <= 900 && mcpAlt - alt >= 200) {
+                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+            } 
+        }
+        else if (vSpeed < -400) {
+            if (alt - mcpAlt <= 900 && alt - mcpAlt >= 200) {
+                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+            }
+        }
+        if (alertState !== 0) {
+            if (Math.abs(mcpAlt - alt) < 200 || Math.abs(mcpAlt - alt) > 900) {
+                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 0);
+            }
         }
     }
     static stringTohhmm(value) {

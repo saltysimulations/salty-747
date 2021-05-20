@@ -1,5 +1,6 @@
 ﻿<link rel="stylesheet" href="./B747_8_UpperEICAS.css" />
 
+<!-- TODO: investigate if we can replace fake decimal points with a forced monospace solution -->
 <script type="text/html" id="B747_8UpperEICASTemplate">
     <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
         <g id="TotalAirTemperature">
@@ -67,7 +68,9 @@
             <text id="TOTAL_FUEL_Units" class="ValueWhiteSmall" x="69%" y="92%" style="text-anchor:start">KGS X</text>
             <text class="ValueWhiteSmall" x="69%" y="94.5%" style="text-anchor:start">1000</text>
             <text class="Label" x="82%" y="92%">SAT</text>
-            <text id="SAT_Value" class="ValueWhite" x="94%" y="92%">-</text>
+            <text id="SAT_Value" class="ValueWhite" x="95%" y="92%">-</text>
+            <text id="FTR_Label" class="Label" x="72%" y="97%"></text>
+            <text id="FTR_Value" class="ValueWhiteLarge" x="96%" y="97%"></text>
             <text class="ValueWhiteSmall" x="65.9%" y="92.2%" style="font-size:18px">.</text>
             <text class="ValueWhiteSmall" x="65.9%" y="97.2%" style="font-size:18px">.</text>
             <!--<text class="Label" x="81%" y="95%">FUEL</text>-->

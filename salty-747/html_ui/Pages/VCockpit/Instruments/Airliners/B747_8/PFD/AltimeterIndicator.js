@@ -113,6 +113,17 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.targetAltitudeTextSVG2.setAttribute("alignment-baseline", "bottom");
         this.targetAltitudeTextSVG2.style.letterSpacing = "1px";
         this.rootGroup.appendChild(this.targetAltitudeTextSVG2);
+        this.targetAltitudeAlertBox = document.createElementNS(Avionics.SVG.NS, "rect");
+        this.targetAltitudeAlertBox.setAttribute("x", "68");
+        this.targetAltitudeAlertBox.setAttribute("y", "53");
+        this.targetAltitudeAlertBox.setAttribute("width", "105");
+        this.targetAltitudeAlertBox.setAttribute("height", "34");
+        this.targetAltitudeAlertBox.setAttribute("stroke", "white");
+        this.targetAltitudeAlertBox.setAttribute("stroke-width", "3");
+        this.targetAltitudeAlertBox.setAttribute("fill", "transparent");
+        this.rootGroup.appendChild(this.targetAltitudeAlertBox);
+
+
         posY += sideTextHeight * 0.835;
         if (!this.centerSVG) {
             this.centerSVG = document.createElementNS(Avionics.SVG.NS, "svg");
@@ -448,6 +459,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.updateBaroPressure(baroMode);
         this.updateMtrs(indicatedAltitude, selectedAltitude);
         this.updateMinimumReference(indicatedAltitude, this.minimumReferenceValue, Simplane.getMinimumReferenceMode());
+        this.updateAltitudeAlerting();
     }
     updateMtrs(_altitude, _selected) {
         if (this.mtrsVisible) {
@@ -744,6 +756,17 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         }
         this.minimumReferenceCursor.setAttribute("transform", "translate(0, " + currentY.toFixed(1) + ")");
         ;
+    }
+    updateAltitudeAlerting() {
+        let alertState = SimVar.GetSimVarValue("L:SALTY_ALT_ALERT", "bool");
+        if (alertState) {
+            this.cursorSVGShape.setAttribute("stroke-width", this.strokeSize * 3);
+            this.targetAltitudeAlertBox.setAttribute("stroke", "white");
+        }
+        else {
+            this.cursorSVGShape.setAttribute("stroke-width", this.strokeSize);
+            this.targetAltitudeAlertBox.setAttribute("stroke", "none");
+        }
     }
 }
 customElements.define("jet-pfd-altimeter-indicator", Jet_PFD_AltimeterIndicator);

@@ -83,10 +83,23 @@ b747-8-lower-eicas-fuel {
         stroke: none; }
     b747-8-lower-eicas-fuel #Pumps #MainPumps .fuelpump-switched-active {
       stroke: lime; }
+
+    b747-8-lower-eicas-fuel #Pumps #MainPumps .fuelpump-switched-active-jett {
+      stroke: var(--eicasMagenta);
+    }
+
     b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active, b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active {
       stroke: cyan; }
+
+    b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active-jett, b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active-withflow-jett,
+    b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active-jett, b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active-withflow-jett {
+      stroke: var(--eicasMagenta);
+    }
+
     b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active-withflow, b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active-withflow {
       stroke: lime; }
+
+
   b747-8-lower-eicas-fuel #FlowLines {
     stroke-width: 4px;
     fill: none; }
@@ -96,6 +109,13 @@ b747-8-lower-eicas-fuel {
       stroke: var(--eicasOrange); }
     b747-8-lower-eicas-fuel #FlowLines .fuelline-inactive {
       stroke: none; }
+    b747-8-lower-eicas-fuel #FlowLines .fuelline-jett {
+      stroke: var(--eicasMagenta); }
+      
+    b747-8-lower-eicas-fuel #JettNozzles .jett-noz path, b747-8-lower-eicas-fuel #JettNozzles .jett-noz text {
+      fill: var(--eicasMagenta); 
+      stroke: none; }
+
   b747-8-lower-eicas-fuel #Engines {
     stroke-width: 2px;
     fill: var(--eicasBlack); }

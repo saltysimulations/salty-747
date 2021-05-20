@@ -23,10 +23,13 @@ var B747_8_UpperEICAS;
         init(_eicas) {
             this.eicas = _eicas;
             this.unitTextSVG = this.querySelector("#TOTAL_FUEL_Units");
-            this.refThrust1 = this.querySelector("#THROTTLE1_Value");
-            this.refThrust2 = this.querySelector("#THROTTLE2_Value");
-            this.refThrust3 = this.querySelector("#THROTTLE3_Value");
-            this.refThrust4 = this.querySelector("#THROTTLE4_Value");
+            this.refThrust = [];
+            this.refThrustDecimal = [];
+            this.engRevStatus = [];
+            for (var i = 1; i < 5; ++i) {
+                this.refThrust[i] = this.querySelector("#THROTTLE" + i + "_Value");
+                this.refThrustDecimal[i] = this.querySelector("#THROTTLE" + i +"_Decimal");
+            }
             this.tmaDisplay = new Boeing.ThrustModeDisplay(this.querySelector("#TMA_Value"));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TAT_Value"), Simplane.getTotalAirTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#SAT_Value"), Simplane.getAmbientTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
@@ -35,6 +38,8 @@ var B747_8_UpperEICAS;
             this.deltaP = this.querySelector("#DELTAP_Value");
             this.grossWeight = this.querySelector("#GROSS_WEIGHT_Value");
             this.totalFuel = this.querySelector("#TOTAL_FUEL_Value");
+            this.ftrLabel = this.querySelector("#FTR_Label");
+            this.ftrValue = this.querySelector("#FTR_Value");
             var n1Parent = this.querySelector("#N1Gauges");
             var egtParent = this.querySelector("#EGTGauges");
             for (var engine = 1; engine <= Simplane.getEngineCount(); ++engine) {
@@ -72,6 +77,7 @@ var B747_8_UpperEICAS;
             this.updateReferenceThrust();
             this.updatePressurisationValues();
             this.updateWeights();
+            this.updateFTR();
             if (this.tmaDisplay) {
                 this.tmaDisplay.update();
             }
@@ -111,11 +117,40 @@ var B747_8_UpperEICAS;
                     this.unitTextSVG.textContent = "LBS X";
             }
         }
+
+        updateFTR() {
+            if (parseInt(SimVar.GetSimVarValue("L:747_JETTISON_KNOB_POS", "Enum")) != 2) {
+                this.ftrLabel.textContent = "TO REMAIN";
+                var ftrNum = SimVar.GetSimVarValue("L:747_FUEL_TO_REMAIN", "TYPE_FLOAT64");
+                this.ftrValue.textContent = ftrNum.toFixed(1);
+
+                if (this.getTotalFuelInMegagrams() > ftrNum)
+                    this.ftrValue.setAttribute("style", "fill: var(--eicasMagenta);");
+                else
+                    this.ftrValue.setAttribute("style", "fill: var(--eicasWhite);");
+            } else {
+                this.ftrLabel.textContent = "";
+                this.ftrValue.textContent = "";
+                // set colour to white
+                this.ftrValue.setAttribute("style", "fill: var(--eicasWhite)"); 
+            }
+        }
+
         updateReferenceThrust() {
-            this.refThrust1.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(0) * 10), 1060).toFixed(0);
-            this.refThrust2.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(1) * 10), 1060).toFixed(0);
-            this.refThrust3.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(2) * 10), 1060).toFixed(0);
-            this.refThrust4.textContent = Math.min((Simplane.getEngineThrottleMaxThrust(3) * 10), 1060).toFixed(0);
+            const MAX_POSSIBLE_THRUST_DISP = 1060;
+            for (var i = 1; i < 5; ++i) {
+                this.engRevStatus[i] = SimVar.GetSimVarValue("TURB ENG REVERSE NOZZLE PERCENT:" + i, "percent");
+                if (this.engRevStatus[i] > 1) {
+                    this.refThrust[i].textContent = "REV";
+                    this.refThrust[i].setAttribute("x", (i * 15) - 2 + "%");
+                    this.refThrustDecimal[i].style.visibility = "hidden";
+                }
+                else {
+                    this.refThrust[i].textContent = Math.min((Simplane.getEngineThrottleMaxThrust(i - 1) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+                    this.refThrust[i].setAttribute("x", (i * 15) - 1 + "%");
+                    this.refThrustDecimal[i].style.visibility = "visible";
+                }
+            }
             return;
         }
         updatePressurisationValues() {

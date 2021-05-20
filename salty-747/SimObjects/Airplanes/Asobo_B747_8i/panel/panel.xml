@@ -529,6 +529,78 @@
 		</Alert>
 
 		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>tone_altitude_alert_default</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Armed" value="0">
+						<Transition to="Alerting">
+			  				<Equal>
+								<Simvar name="L:SALTY_ALT_ALERT" unit="Boolean"/>
+			 					<Constant>1</Constant>
+			  				</Equal>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Disarmed">
+			  				<Equal>
+								<Simvar name="L:SALTY_ALT_ALERT" unit="Boolean"/>
+			 					<Constant>1</Constant>
+			  				</Equal>
+						</Transition>
+					</State>
+					<State id="Disarmed" value="0">
+						<Transition to="Armed">
+			  				<Equal>
+								<Simvar name="L:SALTY_ALT_ALERT" unit="Boolean"/>
+			 					<Constant>0</Constant>
+			  				</Equal>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>
+
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_minimums</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Under" value="0">
+						<Transition to="Over">
+							<GreaterEqual>
+								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
+								<Add>
+									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
+									<Constant>55</Constant>
+								</Add>
+							</GreaterEqual>
+						</Transition>
+					</State>
+					<State id="Over" value="0">
+						<Transition to="Alerting">
+							<LowerEqual>
+								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
+								<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
+							</LowerEqual>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Under">
+							<Lower>
+								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
+								<Subtract>
+									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
+									<Constant>1</Constant>
+								</Subtract>
+							</Lower>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>
+
+		<Alert>
 		  <Type>Warning</Type>
 		  <SoundEvent>aural_landing_gear</SoundEvent>
 		  <ShortText>L/G GEAR NOT DOWN</ShortText>

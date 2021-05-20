@@ -7,37 +7,20 @@ var Boeing;
             this.rootElement = _rootElement;
             this.refresh("", true);
         }
+
         getText(phase, mode) {
             let text = "-";
             let alt = Simplane.getAltitude();
             let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
-            if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
-                if (alt <= thrRedAlt){
-                    text = "TO"
-                } else {
-                    text = "CLB";
-                }
-                if (mode === 1) {
-                    text += " - 1";
-                }
-                if (mode === 2) {
-                    text += " - 2";
-                }
-            }
-            else if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB) {
-                text = "CLB";
-                if (mode === 1) {
-                    text += " - 1";
-                }
-                if (mode === 2) {
-                    text += " - 2";
-                }
-            }
-            else if (phase <= FlightPhase.FLIGHT_PHASE_CRUISE) {
-                text = "CRZ";
-            }
+
+            if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB) 
+                text = `${(alt <= thrRedAlt && phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) ? "TO" :  "CLB"}${(mode == 1 || mode == 2) ? " - " + mode : ""}`;
+            else if (phase <= FlightPhase.FLIGHT_PHASE_CRUISE)
+                text = `CRZ`;
+
             return text;
         }
+
         update() {
             let phase = Simplane.getCurrentFlightPhase();
             let mode = 0;
@@ -163,37 +146,29 @@ var Boeing;
                 }
             }
         }
+
         flapsLeverPositionToAngle(_leverPos) {
             if (this.cockpitSettings && this.cockpitSettings.FlapsLevels.initialised) {
                 return this.cockpitSettings.FlapsLevels.flapsAngle[_leverPos];
             }
             return Simplane.getFlapsHandleAngle(_leverPos);
         }
+
         flapsAngleToPercentage(_angle) {
-            if (_angle == 0) {
-                return 0;
-            }
-            if (_angle == 1) {
-                return 0.033;
-            }
-            if (_angle == 5) {
-                return 0.167;
-            }
-            if (_angle == 10) {
-                return 0.333;
-            }
-            if (_angle == 20) {
-                return 0.667;
-            }
-            if (_angle == 25) {
-                return 0.833;
-            }
-            if (_angle == 30) {
-                return 1;
-            }
-            return;
+            const angToPercent = {
+                0: 0,
+                1: 0.033,
+                5: 0.167,
+                10: 0.333,
+                20: 0.667,
+                25: 0.833,
+                30: 1
+            };
+
+            return angToPercent[_angle]; 
         }
     }
+
     FlapsDisplay.TIMEOUT_LENGTH = 3000;
     Boeing.FlapsDisplay = FlapsDisplay;
     class StabDisplay {
@@ -226,6 +201,7 @@ var Boeing;
             }
             this.refreshValue(0, true);
         }
+        
         update(_deltaTime, _isLowerEICAS) {
             this.refreshValue(SimVar.GetSimVarValue("ELEVATOR TRIM POSITION", "degree"));
             //Hides Greenband and trim value if airborne.
@@ -353,20 +329,27 @@ var Boeing;
             super(...arguments);
             this.isSwitched = false;
             this.isActive = false;
+            this.jettisonActive = false;
         }
         init() {
             this.refresh(false, false, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"));
+            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"), (SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0 || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0));
         }
-        refresh(_isSwitched, _isActive, _force = false) {
-            if (_force || (this.isSwitched != _isSwitched) || (this.isActive != _isActive)) {
+        refresh(_isSwitched, _isActive, _jettisonActive, _force = false) {
+            if (_force || (this.isSwitched != _isSwitched) || (this.isActive != _isActive) || (this.jettisonActive != _jettisonActive)) {
                 this.isSwitched = _isSwitched;
                 this.isActive = _isActive;
+                this.jettisonActive = _jettisonActive;
                 if (this.element != null) {
                     var className = this.isSwitched ? "switched" : "notswitched";
                     className += this.isActive ? "-active" : "-inactive";
+                    if (this.isSwitched && this.isActive && (this.index === 1 || this.index === 2) && this.jettisonActive) {
+                        className+= "-jett";
+                    }
+                        
+
                     this.element.setAttribute("class", "fuelpump-" + className);
                 }
             }

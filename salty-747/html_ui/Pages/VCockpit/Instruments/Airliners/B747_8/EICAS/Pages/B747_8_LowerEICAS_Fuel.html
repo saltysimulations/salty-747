@@ -65,6 +65,71 @@
                 <line x1="521px" y1="255px" x2="521px" y2="300px" />
                 <line x1="521px" y1="222px" x2="521px" y2="247px" />
             </g>
+
+            <g id="JettisonLines" >
+                <!-- left side -->
+                <!-- connects to Pump1  -->
+                <line x1="282px" y1="166px" x2="282px" y2="176px" />
+                <line x1="290px" y1="166px" x2="290px" y2="184px" />
+
+                <line x1="282px" y1="176px" x2="248px" y2="176px" />
+                <line x1="290px" y1="184px" x2="256px" y2="184px" />
+
+                <line x1="248px" y1="176px" x2="248px" y2="310px" />
+                <line x1="248px" y1="318px" x2="248px" y2="496px" />
+                <line x1="256px" y1="184px" x2="256px" y2="430px" />
+                <line x1="256px" y1="438px" x2="256px" y2="503px" />
+
+                <line x1="248px" y1="310px" x2="160px" y2="310px" />
+                <line x1="248px" y1="318px" x2="152px" y2="318px" />
+
+                <!-- connects to Pump8  -->
+                <line x1="160px" y1="310px" x2="160px" y2="303px" />
+                <line x1="152px" y1="318px" x2="152px" y2="303px" />
+
+                <line x1="248px" y1="496px" x2="90px" y2="532px" />
+                <line x1="256px" y1="503px" x2="92px" y2="539px" />
+                <!-- jettisons out here  -->
+                <line x1="90px" y1="532px" x2="96px" y2="553px" />
+                <line x1="90px" y1="532px" x2="84px" y2="553px" />
+                <line x1="84px" y1="553px" x2="96px" y2="553px" />
+
+                <!-- right side -->
+                <!-- connects to Pump2  -->
+                <line x1="319px" y1="166px" x2="319px" y2="176px" />
+                <line x1="311px" y1="166px" x2="311px" y2="184px" />
+                
+                <line x1="319px" y1="176px" x2="353px" y2="176px" />
+                <line x1="311px" y1="184px" x2="345px" y2="184px" />
+                
+                <line x1="353px" y1="176px" x2="353px" y2="310px" />
+                <line x1="353px" y1="318px" x2="353px" y2="496px" />
+                <line x1="345px" y1="184px" x2="345px" y2="430px" />
+                <line x1="345px" y1="438px" x2="345px" y2="503px" />
+
+                <line x1="353px" y1="310px" x2="441px" y2="310px" />
+                <line x1="353px" y1="318px" x2="449px" y2="318px" />
+
+                <!-- connects to Pump12  -->
+                <line x1="441px" y1="310px" x2="441px" y2="303px" />
+                <line x1="449px" y1="318px" x2="449px" y2="303px" />
+
+                <line x1="353px" y1="496px" x2="511px" y2="532px" />
+                <line x1="345px" y1="503px" x2="509px" y2="539px" />
+                <!-- jettisons out here  -->
+                <line x1="511px" y1="532px" x2="505px" y2="553px" />
+                <line x1="511px" y1="532px" x2="517px" y2="553px" />
+                <line x1="505px" y1="553px" x2="517px" y2="553px" />
+
+                <!-- connecting line -->
+                <line x1="256px" y1="430px" x2="345px" y2="430px" />
+                <line x1="256px" y1="438px" x2="297px" y2="438px" />
+                <line x1="306px" y1="438px" x2="345px" y2="438px" />
+
+                <line x1="297px" y1="438px" x2="297px" y2="457px" />
+                <line x1="306px" y1="438px" x2="306px" y2="457px" />
+                <line x1="297px" y1="457px" x2="306px" y2="457px" />
+            </g>
         </g>
 
         <g id="ValveTemplate">
@@ -102,8 +167,10 @@
 
         <g id="Pumps">
             <g id="MainPumps">
+                <!-- connects to Center tank -->
                 <g id="Pump1" transform="translate(273, 140)"></g>
                 <g id="Pump2" transform="translate(302, 140)"></g>
+
                 <g id="Pump3" transform="translate(62, 297)"></g>
                 <g id="Pump4" transform="translate(62, 330)"></g>
                 <g id="Pump5" transform="translate(201, 240)"></g>
@@ -115,8 +182,11 @@
             </g>
 
             <g id="OvrdPumps">
+                <!-- both connect to Main_2 tank -->
                 <g id="Pump7" transform="translate(141, 237)">FuelLine50</g>
                 <g id="Pump8" transform="translate(141, 273)">FuelLine52</g>
+
+                <!-- both connect to Main_3 tank -->
                 <g id="Pump11" transform="translate(429, 237)">FuelLine56</g>
                 <g id="Pump12" transform="translate(429, 273)">FuelLine58</g>
             </g>
@@ -128,6 +198,45 @@
         </g>
 
         <g id="FlowLines">
+            <g id="JettisonFlowLines">
+                <!-- left side -->
+                <line class="fuelline-jett" x1="286px" y1="166px" x2="286px" y2="180px" />
+                <line class="fuelline-jett" x1="288px" y1="180px" x2="250px" y2="180px" />
+                <line class="fuelline-jett" x1="252px" y1="180px" x2="252px" y2="500px" />
+                <line class="fuelline-jett" x1="252px" y1="314px" x2="154px" y2="314px" />
+                <!-- connects to pump 8-->
+                <line class="fuelline-jett" x1="156px" y1="314px" x2="156px" y2="303px" />
+
+                <line class="fuelline-jett" x1="253px" y1="499px" x2="92px" y2="535px" />
+
+                <!-- right side -->
+                <line class="fuelline-jett" x1="315px" y1="166px" x2="315px" y2="180px" />
+                <line class="fuelline-jett" x1="313px" y1="180px" x2="351px" y2="180px" />
+                <line class="fuelline-jett" x1="349px" y1="180px" x2="349px" y2="500px" />
+                <line class="fuelline-jett" x1="349px" y1="314px" x2="447px" y2="314px" />
+                <!-- connects to pump 12-->
+                <line class="fuelline-jett" x1="445px" y1="314px" x2="445px" y2="303px" />
+
+                <line class="fuelline-jett" x1="348px" y1="499px" x2="509px" y2="535px" />
+
+                <!-- connecting line -->
+                <line class="fuelline-jett" x1="252px" y1="434px" x2="349px" y2="434px" />
+                <line class="fuelline-jett" x1="301px" y1="434px" x2="301px" y2="455px" />
+                <line class="fuelline-jett" x1="302px" y1="434px" x2="302px" y2="455px" />
+            </g>
+
+            <g id="JettNozzles">
+                <g id="JettNozzleL" class="jett-noz">
+                    <path d="M90 536 L94 551 L86 551 Z" />
+                    <text x="88px" y="571px">JETT</text>
+                </g>
+
+                <g id="JettNozzleR" class="jett-noz">
+                    <path d="M511 536 L507 551 L515 551 Z" />
+                    <text x="509px" y="571px">JETT</text>
+                </g>
+            </g>
+
             <g id="MainPumpFlowLines">
                 <g id="FlowLine1" transform="translate(273, 140)"></g>
                 <g id="FlowLine2" transform="translate(302, 140)"></g>
@@ -231,6 +340,7 @@
 
         <g id="Labels">
             <text id="TotalFuel" x="48%" y="10.5%">TOTAL FUEL</text>
+            <text id="JettTime" x="75.5%" y="10.5%">JETTISON TIME</text>
 
             <text x="50%" y="33.5%">CENTER</text>
             <text x="50%" y="87.5%">STAB</text>
@@ -252,6 +362,9 @@
         <g id="Values">
             <text id="TotalFuelUnits" x="48%" y="13.5%">KGS X 1000</text>
             <text id="TotalFuelValue" x="62%" y="10.5%">0.0</text>
+
+            <text id="JettTimeValue" x="97%" y="10.5%">-</text>
+
 
             <rect id="CenterBox" x="44%" width="12%" y="34%" height="5.5%" />
             <text id="CenterValue" x="53%" y="38%">0.0</text>
