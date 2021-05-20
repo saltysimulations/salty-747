@@ -396,7 +396,7 @@
 			</And>
 		  </Condition>
 		  <Condition Suffix=" L">
-		    <Equal>
+		  	<Equal>
 			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
 			  	<Constant>1</Constant>
 			</Equal>
