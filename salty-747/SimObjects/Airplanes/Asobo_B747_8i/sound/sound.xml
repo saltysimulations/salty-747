@@ -59,8 +59,8 @@
   
   <MiscellaneousSounds>
     <Sound WwiseEvent="STALL_WARNING" WwiseData="true" />
-    <Sound WwiseEvent="OVERSPEED_WARNING_SOUND" WwiseData="true" />
-    <Sound WwiseEvent="GLIDESLOPE_WARNING_SOUND" WwiseData="true" />
+    <Sound WwiseEvent="OVERSPEED_WARNING_SOUND" WwiseData="false" FileName="siren"/>
+    <Sound WwiseEvent="GLIDESLOPE_WARNING_SOUND" WwiseData="true"/>
     <Sound WwiseEvent="SEATBELTS_ALERT" WwiseData="true" BreakOnStop="true"/>
   </MiscellaneousSounds>
   
@@ -252,7 +252,7 @@
 	<Sound WwiseData="true" WwiseEvent="aural_sink_rate" />	
 	<Sound WwiseData="true" WwiseEvent="aural_dont_sink" />	
 	<Sound WwiseData="true" WwiseEvent="aural_v1" />	
-	<Sound WwiseData="true" WwiseEvent="tone_altitude_alert_default" ViewPoint="Inside"/>	
+	<Sound WwiseData="true" WwiseEvent="tone_altitude_alert_default" ViewPoint="Inside"/>
   </AvionicSounds>
   
 <!-- AnimationSounds ======================================================================================== --> 
