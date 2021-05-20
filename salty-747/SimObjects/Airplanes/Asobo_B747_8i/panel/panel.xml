@@ -1097,7 +1097,7 @@
 		
 		<Alert>
 			<Type>SoundOnly</Type>
-			<SoundEvent>siren</SoundEvent>
+			<SoundEvent>OVERSPEED_WARNING_SOUND</SoundEvent>
 			<Condition>
 				<Simvar name="OVERSPEED WARNING" unit="bool"/>
 			</Condition>
