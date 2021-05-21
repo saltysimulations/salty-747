@@ -381,6 +381,35 @@
 		</Annunciation>
 
 		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\JETT NOZ ON</Text>
+		  <Condition Suffix="">
+		  	<And>
+				<Equal>
+					<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
+			  		<Constant>1</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_R" unit="Enum"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		  <Condition Suffix=" L">
+		  	<Equal>
+			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
+			  	<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		  <Condition Suffix=" R">
+			<Equal>
+			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_R" unit="Enum"/>
+			  	<Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
 		  <Type>Memo</Type>
 		  <Text>PARK BRAKE SET</Text>
 		  <Condition>
