@@ -20,6 +20,49 @@ class SvgFlightPlanElement extends SvgMapElement {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
         container.setAttribute("overflow", "visible");
+        this.trackLineGroup = document.createElementNS(Avionics.SVG.NS, "g");
+        container.appendChild(this.trackLineGroup); 
+        this.trackline = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackline.setAttribute("x1", "500");
+        this.trackline.setAttribute("x2", "500");
+        this.trackline.setAttribute("y1", "490");
+        this.trackline.setAttribute("y2", "0");
+        this.trackline.setAttribute("stroke", "white");
+        this.trackline.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackline);    
+        this.trackLineMarker1 = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackLineMarker1.setAttribute("x1", "494");
+        this.trackLineMarker1.setAttribute("x2", "506");
+        this.trackLineMarker1.setAttribute("y1", "139");
+        this.trackLineMarker1.setAttribute("y2", "139");
+        this.trackLineMarker1.setAttribute("stroke", "white");
+        this.trackLineMarker1.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackLineMarker1);
+        this.trackLineMarker2 = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackLineMarker2.setAttribute("x1", "494");
+        this.trackLineMarker2.setAttribute("x2", "506");
+        this.trackLineMarker2.setAttribute("y1", "254");
+        this.trackLineMarker2.setAttribute("y2", "254");
+        this.trackLineMarker2.setAttribute("stroke", "white");
+        this.trackLineMarker2.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackLineMarker2);
+        this.trackLineMarker3 = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackLineMarker3.setAttribute("x1", "494");
+        this.trackLineMarker3.setAttribute("x2", "506");
+        this.trackLineMarker3.setAttribute("y1", "370");
+        this.trackLineMarker3.setAttribute("y2", "370");
+        this.trackLineMarker3.setAttribute("stroke", "white");
+        this.trackLineMarker3.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackLineMarker3);
+        this.halfRangeText = document.createElementNS(Avionics.SVG.NS, "text");
+        this.halfRangeText.setAttribute("x", "490");
+        this.halfRangeText.setAttribute("y", "250");
+        this.halfRangeText.setAttribute("stroke", "white");
+        this.halfRangeText.setAttribute("fill", "white");
+        this.halfRangeText.setAttribute("font-size", "23px");
+        this.halfRangeText.setAttribute("text-anchor", "end");
+        this.halfRangeText.textContent = "80";
+        this.trackLineGroup.appendChild(this.halfRangeText);
         if (map.config.flightPlanNonActiveLegStrokeWidth > 0) {
             this._outlinePath = document.createElementNS(Avionics.SVG.NS, "path");
             this._outlinePath.setAttribute("stroke", map.config.flightPlanNonActiveLegStrokeColor);
@@ -461,6 +504,7 @@ class SvgFlightPlanElement extends SvgMapElement {
         if (this._transitionOutlinePath) {
             this._transitionOutlinePath.setAttribute("d", transitionPath);
         }
+        this.updateTrackLine();
     }
     setAsDashed(_val, _force = false) {
         if (_force || (_val != this._isDashed)) {
@@ -482,6 +526,49 @@ class SvgFlightPlanElement extends SvgMapElement {
                 }
             }
         }
+    }
+    updateTrackLine() {
+        let isInCTRmode = SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool");
+        let isInWXRmode = SimVar.GetSimVarValue("L:BTN_WX_ACTIVE", "bool");
+        let mapMode = SimVar.GetSimVarValue("L:B747_MAP_MODE", "Enum");
+        let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
+        const mapRangeEnumToHalfRangeText = {
+            0: "0.125",
+            1: "0.25",
+            2: "0.5",
+            3: "1",
+            4: "2.5",
+            5: "5",
+            6: "10",
+            7: "20",
+            8: "40",
+            9: "80",
+            10: "160",
+            11: "320"
+        };
+        mapRange = mapRangeEnumToHalfRangeText[mapRange];
+        if (!isInCTRmode && mapMode !== 3) {
+            this.trackLineGroup.style.visibility = "visible";
+            if (!isInWXRmode) {
+                this.halfRangeText.setAttribute("x", "490");
+                this.halfRangeText.setAttribute("y", "262");
+            }
+            else {
+                this.halfRangeText.setAttribute("x", "495");
+                this.halfRangeText.setAttribute("y", "250");
+            }
+            let track = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degrees");
+            let heading = SimVar.GetSimVarValue("HEADING INDICATOR", "degrees");
+            let drift = track - heading;
+            this.trackLineGroup.setAttribute("transform", "rotate(" + drift + " " + 500 + " " + 500 + ")");
+            this.halfRangeText.setAttribute("transform", "rotate(" + -drift + " " + 500 + " " + 250 + ")");
+            this.halfRangeText.textContent = mapRange;
+        } 
+        else {
+            this.trackLineGroup.style.visibility = "hidden";
+        }
+
+        return;
     }
 }
 class SvgBackOnTrackElement extends SvgMapElement {
