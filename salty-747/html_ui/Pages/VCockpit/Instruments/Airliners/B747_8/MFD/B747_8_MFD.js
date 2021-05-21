@@ -96,7 +96,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.updateAltitudeRangeArc(_deltaTime);
 
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
-        const IRSMinutesLeft = Math.floor(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60);
+        const IRSMinutesLeft = Math.ceil(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60); //Math.floor(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60);
 
         if (IRSState == 0) {
             this.mapBox.style.display = "";

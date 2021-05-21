@@ -14,6 +14,7 @@ class SaltyIRS {
         
         if (!electricityIsAvail) return;
 
+        var latitudeFactor = Math.sin(Math.abs(SimVar.GetSimVarValue("PLANE LATITUDE", "radians")));
         var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
         var isIRSOn = ((SimVar.GetSimVarValue("L:747_IRS_KNOB_1", "Enum") >= 1) && (SimVar.GetSimVarValue("L:747_IRS_KNOB_2", "Enum") >= 1) && (SimVar.GetSimVarValue("L:747_IRS_KNOB_3", "Enum") >= 1));
         var isSomeIRSOn = ((SimVar.GetSimVarValue("L:747_IRS_KNOB_1", "Enum") >= 1) || (SimVar.GetSimVarValue("L:747_IRS_KNOB_2", "Enum") >= 1) || (SimVar.GetSimVarValue("L:747_IRS_KNOB_3", "Enum") >= 1));
@@ -27,9 +28,7 @@ class SaltyIRS {
         if (isIRSOn && IRSState == 0) {
             SimVar.SetSimVarValue("L:SALTY_IRS_STATE", "Enum", 1);
             IRSState = 1;
-
-            // irs "TIME TO ALIGN" in seconds, default = 7 * 60 ... reduce this to a lower number whilst debugging to protect sanity.
-            this.irsTimer = 7 * 60;
+            this.irsTimer = 300 + 735 * latitudeFactor;
         }
 
         if (IRSState == 1) {
