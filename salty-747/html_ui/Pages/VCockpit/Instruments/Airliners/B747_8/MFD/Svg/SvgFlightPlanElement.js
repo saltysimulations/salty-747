@@ -20,6 +20,8 @@ class SvgFlightPlanElement extends SvgMapElement {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
         container.setAttribute("overflow", "visible");
+        
+        /* Construct Track Line */
         this.trackLineGroup = document.createElementNS(Avionics.SVG.NS, "g");
         container.appendChild(this.trackLineGroup); 
         this.trackline = document.createElementNS(Avionics.SVG.NS, "line");
@@ -63,6 +65,15 @@ class SvgFlightPlanElement extends SvgMapElement {
         this.halfRangeText.setAttribute("text-anchor", "end");
         this.halfRangeText.textContent = "80";
         this.trackLineGroup.appendChild(this.halfRangeText);
+
+        /* Construct Altitude Range Arc */
+        this.greenArc = document.createElementNS(Avionics.SVG.NS, "path");
+        this.greenArc.setAttribute("d", "M 425 510, Q 500 460, 575 510")
+        this.greenArc.setAttribute("stroke", "lime");
+        this.greenArc.setAttribute("stroke-width", "2.5px");
+        this.greenArc.setAttribute("fill", "transparent");
+        container.appendChild(this.greenArc);
+
         if (map.config.flightPlanNonActiveLegStrokeWidth > 0) {
             this._outlinePath = document.createElementNS(Avionics.SVG.NS, "path");
             this._outlinePath.setAttribute("stroke", map.config.flightPlanNonActiveLegStrokeColor);
@@ -504,7 +515,7 @@ class SvgFlightPlanElement extends SvgMapElement {
         if (this._transitionOutlinePath) {
             this._transitionOutlinePath.setAttribute("d", transitionPath);
         }
-        this.updateTrackLine();
+        this.updateTrackLineAndArc();
     }
     setAsDashed(_val, _force = false) {
         if (_force || (_val != this._isDashed)) {
@@ -527,11 +538,16 @@ class SvgFlightPlanElement extends SvgMapElement {
             }
         }
     }
-    updateTrackLine() {
+    updateTrackLineAndArc() {
+        /*Update Track Line*/
         let isInCTRmode = SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool");
         let isInWXRmode = SimVar.GetSimVarValue("L:BTN_WX_ACTIVE", "bool");
         let mapMode = SimVar.GetSimVarValue("L:B747_MAP_MODE", "Enum");
         let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
+        let speed = Simplane.getGroundSpeed();
+        let track = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degrees");
+        let heading = SimVar.GetSimVarValue("HEADING INDICATOR", "degrees");
+        let drift = track - heading;
         const mapRangeEnumToHalfRangeText = {
             0: "0.125",
             1: "0.25",
@@ -546,7 +562,7 @@ class SvgFlightPlanElement extends SvgMapElement {
             10: "160",
             11: "320"
         };
-        mapRange = mapRangeEnumToHalfRangeText[mapRange];
+        let mapHalfRange = mapRangeEnumToHalfRangeText[mapRange];
         if (!isInCTRmode && mapMode !== 3) {
             this.trackLineGroup.style.visibility = "visible";
             if (!isInWXRmode) {
@@ -557,18 +573,57 @@ class SvgFlightPlanElement extends SvgMapElement {
                 this.halfRangeText.setAttribute("x", "495");
                 this.halfRangeText.setAttribute("y", "250");
             }
-            let track = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degrees");
-            let heading = SimVar.GetSimVarValue("HEADING INDICATOR", "degrees");
-            let drift = track - heading;
-            this.trackLineGroup.setAttribute("transform", "rotate(" + drift + " " + 500 + " " + 500 + ")");
-            this.halfRangeText.setAttribute("transform", "rotate(" + -drift + " " + 500 + " " + 250 + ")");
-            this.halfRangeText.textContent = mapRange;
+            if (speed > 10){
+                this.trackLineGroup.setAttribute("transform", "rotate(" + drift + " " + 500 + " " + 500 + ")");
+                this.halfRangeText.setAttribute("transform", "rotate(" + -drift + " " + 500 + " " + 250 + ")");
+            }
+            this.halfRangeText.textContent = mapHalfRange;
         } 
         else {
             this.trackLineGroup.style.visibility = "hidden";
         }
-
-        return;
+        /*Update Range Arc*/
+        if ((mapMode == 2) && (SimVar.GetSimVarValue("RADIO HEIGHT", "feet") >= 100)){   
+            let arcDeltaAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue() - Simplane.getAltitude();
+            let arcDeltaAltAbs = Math.abs(arcDeltaAlt);
+            let verticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
+            const mapRangeEnumToNM = {
+                0: 0.25,
+                1: 0.5,
+                2: 1,
+                3: 2,
+                4: 5,
+                5: 10,
+                6: 20,
+                7: 40,
+                8: 80,
+                9: 160,
+                10: 320,
+                11: 640
+            };
+            mapRange = mapRangeEnumToNM[mapRange];      
+            let distanceToLevelArc = Math.abs(((arcDeltaAltAbs / (verticalSpeed / speed)) * 0.000164579)); //Feet to Nautical Miles
+            let arcYcoord = distanceToLevelArc / mapRange * 460;
+            let xError = (arcYcoord + 60) * Math.sin(drift * Math.PI / 180);
+            if (!isInCTRmode) {
+                this.greenArc.setAttribute("transform", `translate(${xError}, -${arcYcoord}) rotate(` + drift + " " + 500 + " " + 460 + ")");
+            }           
+            else {
+                this.greenArc.setAttribute("transform", `translate(0, -${arcYcoord * 0.5})`);
+            }
+            SimVar.SetSimVarValue("L:ARC_DELTA_ALT", "feet", arcDeltaAlt);
+            SimVar.SetSimVarValue("L:ARC_VERT_SPD", "feet", verticalSpeed / 60);              
+            //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
+            if ((arcYcoord > 460) || (arcDeltaAltAbs <= 200) || (((verticalSpeed < 0) && (arcDeltaAlt > 0)) || ((verticalSpeed > 0) && (arcDeltaAlt < 0)))) {
+                this.greenArc.style.visibility = "hidden";
+            }
+            else {
+                this.greenArc.style.visibility = "visible";
+            }
+        }
+        else { 
+            this.greenArc.style.visibility = "hidden";
+        }
     }
 }
 class SvgBackOnTrackElement extends SvgMapElement {
