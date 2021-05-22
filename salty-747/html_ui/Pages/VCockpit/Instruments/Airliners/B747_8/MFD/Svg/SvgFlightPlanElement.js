@@ -610,9 +610,7 @@ class SvgFlightPlanElement extends SvgMapElement {
             }           
             else {
                 this.greenArc.setAttribute("transform", `translate(0, -${arcYcoord * 0.5})`);
-            }
-            SimVar.SetSimVarValue("L:ARC_DELTA_ALT", "feet", arcDeltaAlt);
-            SimVar.SetSimVarValue("L:ARC_VERT_SPD", "feet", verticalSpeed / 60);              
+            }            
             //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
             if ((arcYcoord > 460) || (arcDeltaAltAbs <= 200) || (((verticalSpeed < 0) && (arcDeltaAlt > 0)) || ((verticalSpeed > 0) && (arcDeltaAlt < 0)))) {
                 this.greenArc.style.visibility = "hidden";
