@@ -12,7 +12,8 @@ class SaltyIRS {
         var deltaTime = timeNow - this.lastTime;
         this.lastTime = timeNow;
 
-        var latitudeFactor = Math.sin(Math.abs(SimVar.GetSimVarValue("PLANE LATITUDE", "radians")));
+        var latitude = Math.abs(SimVar.GetSimVarValue("PLANE LATITUDE", "radians") * 180 / Math.PI);
+        var latitudeFactor = Math.cos(Math.abs(SimVar.GetSimVarValue("PLANE LATITUDE", "radians")));
         var IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
         var isIRSOn = ((SimVar.GetSimVarValue("L:747_IRS_KNOB_1", "Enum") >= 1) && (SimVar.GetSimVarValue("L:747_IRS_KNOB_2", "Enum") >= 1) && (SimVar.GetSimVarValue("L:747_IRS_KNOB_3", "Enum") >= 1));
         var isSomeIRSOn = ((SimVar.GetSimVarValue("L:747_IRS_KNOB_1", "Enum") >= 1) || (SimVar.GetSimVarValue("L:747_IRS_KNOB_2", "Enum") >= 1) || (SimVar.GetSimVarValue("L:747_IRS_KNOB_3", "Enum") >= 1));
@@ -26,7 +27,15 @@ class SaltyIRS {
         if (isIRSOn && IRSState == 0) {
             SimVar.SetSimVarValue("L:SALTY_IRS_STATE", "Enum", 1);
             IRSState = 1;
-            this.irsTimer = 300 + 735 * latitudeFactor;
+            if (latitude < 70.2) {
+                this.irsTimer = 600;
+            }
+            else if (latitude >= 70.2 && latitude < 78.2) {
+                this.irsTimer = 1020;
+            }
+            else {
+                this.irsTimer = 1020 * (1 + (1 / latitudeFactor));
+            }
         }
 
         if (IRSState == 1) {
