@@ -318,7 +318,8 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 8: 80,
                 9: 160,
                 10: 320,
-                11: 640
+                11: 640,
+                12: 1280
             };
 
             mapRange = mapRangeEnumToNM[mapRange];      
