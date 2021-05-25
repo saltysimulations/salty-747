@@ -45,17 +45,9 @@ class FMC_COMM_RequestAtis {
         /* RSK4 */
         fmc.onRightInput[3] = () => {
             let icaos = [];
+            /* get departure airport */
             if (store.arpt1 != "") {
                 icaos.push(store.arpt1);
-            }
-            if (store.arpt2 != "") {
-                icaos.push(store.arpt2);
-            }
-            if (store.arpt3 != "") {
-                icaos.push(store.arpt3);
-            }
-            if (store.arpt4 != "") {
-                icaos.push(store.arpt4);
             }
             const lines = [];
             const newMessage = { "id": Date.now(), "time": '00:00', "opened": null, "type": 'D-ATIS', "content": lines, };
@@ -90,17 +82,9 @@ class FMC_COMM_RequestAtis {
         /* RSK5 */
         fmc.onRightInput[4] = () => {
             let icaos = [];
-            if (store.arpt1 != "") {
-                icaos.push(store.arpt1);
-            }
+            /* get arrival airport */
             if (store.arpt2 != "") {
                 icaos.push(store.arpt2);
-            }
-            if (store.arpt3 != "") {
-                icaos.push(store.arpt3);
-            }
-            if (store.arpt4 != "") {
-                icaos.push(store.arpt4);
             }
             const lines = [];
             const newMessage = { "id": Date.now(), "time": '00:00', "opened": null, "type": 'D-ATIS', "content": lines, };
