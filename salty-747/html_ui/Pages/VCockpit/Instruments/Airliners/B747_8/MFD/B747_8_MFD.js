@@ -93,7 +93,6 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         super.onUpdate(_deltaTime);
         this.updateMap(_deltaTime);
         this.updateNDInfo(_deltaTime);
-        this.updateAltitudeRangeArc(_deltaTime);
 
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
         const IRSMinutesLeft = Math.floor(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60);
@@ -295,56 +294,6 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.info.showSymbol(B747_8_ND_Symbol.STA, this.map.instrument.showVORs);
         this.info.showSymbol(B747_8_ND_Symbol.WPT, this.map.instrument.showIntersections);
         this.info.showSymbol(B747_8_ND_Symbol.ARPT, this.map.instrument.showAirports);
-    }
-    updateAltitudeRangeArc(_deltaTime) {
-        this.greenArc = document.querySelector("#altitudeRangeArc");
-        if (((SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") == 2)) && (SimVar.GetSimVarValue("RADIO HEIGHT", "feet") >= 100)){   
-            //Get SimVars for arc position calculation - speeds in feet per second
-            let arcDeltaAlt = (Simplane.getAutoPilotDisplayedAltitudeLockValue()) - (Simplane.getAltitude());
-            let arcDeltaAltMagnitude = Math.abs(arcDeltaAlt);
-            let arcVerticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
-            let arcGroundSpeed = (SimVar.GetSimVarValue("GPS GROUND SPEED", "meters per second") * 3.28084);
-            let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
-
-            const mapRangeEnumToNM = {
-                0: 0.25,
-                1: 0.5,
-                2: 1,
-                3: 2,
-                4: 5,
-                5: 10,
-                6: 20,
-                7: 40,
-                8: 80,
-                9: 160,
-                10: 320,
-                11: 640
-            };
-
-            mapRange = mapRangeEnumToNM[mapRange];      
-
-            //Calculate arc position and generate Y coord
-            let arcFPA = Math.atan(arcVerticalSpeed / arcGroundSpeed);
-            let distanceToLevelArc = Math.abs(((arcDeltaAltMagnitude / Math.tan(arcFPA)) * 0.000164579)); //Feet to Nautical Miles
-            let arcYcoord = 600 - ((distanceToLevelArc / mapRange) * 600);
-            //Check if map is centred - Translates arc in Y axis - corrected for usable compass height 414/215px with 56/90px offset for uncentred/centred map
-            if (SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool") == 0) {
-                this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 414 / 600) + 56)})`);
-            }           
-            else {
-                this.greenArc.setAttribute("transform", `translate(0, ${((arcYcoord * 210 / 600) + 90)})`);
-            }           
-            //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
-            if ((arcYcoord > 600) || (arcYcoord <= 1) || (arcDeltaAltMagnitude <= 200) || (((arcFPA > 0) && (arcDeltaAlt < 0)) || ((arcFPA < 0) && (arcDeltaAlt > 0)))) {
-                this.greenArc.style.visibility = "hidden";
-            }
-            else { 
-                this.greenArc.style.visibility = "visible";
-            }
-        }
-        else { 
-            this.greenArc.style.visibility = "hidden";
-        }
     }
 }
 class B747_8_MFD_Compass extends NavSystemElement {

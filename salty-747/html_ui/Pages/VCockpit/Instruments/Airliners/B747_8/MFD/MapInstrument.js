@@ -764,7 +764,7 @@ class MapInstrument extends ISvgMapRootElement {
                 }
                 if (this.flightPlanManager && this.bIsFlightPlanVisible) {
                     let l = this.flightPlanManager.getWaypointsCount();
-                    if (l > 1) {
+                    if (l > -1) {
                         if (SimVar.GetSimVarValue("L:MAP_SHOW_TEMPORARY_FLIGHT_PLAN", "number") === 1) {
                             this.navMap.mapElements.push(this.tmpFlightPlanElement);
                             let lTmpFlightPlan = this.flightPlanManager.getWaypointsCount(1);
