@@ -248,7 +248,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.selectedHeadingGroup.setAttribute("visibility", "hidden");
             }
         }
-        if (this.currentTrackGroup) {
+        if (this.currentTrackGroup && this.currentTrackCrossLine) {
             var delta = track - compass;
             if (delta > 180)
                 delta = delta - 360;
@@ -256,6 +256,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 delta = delta + 360;
             var posX = delta * this.graduationSpacing * (this.nbSecondaryGraduations + 1) / this.graduationScroller.increment;
             this.currentTrackGroup.setAttribute("transform", "translate(" + posX.toString() + " 0)");
+            this.currentTrackCrossLine.setAttribute("transform", "translate(" + posX.toString() + " 0)");
         }
         if (this._showILS) {
             if (this.ILSBeaconGroup && this.ILSOffscreenGroup) {
@@ -322,6 +323,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 track = compass;
             var delta = compass - track;
             this.currentTrackGroup.setAttribute("transform", "rotate(" + (-delta) + " " + this.rotatingCompassX + " " + this.rotatingCompassY + ")");
+            this.currentTrackCrossLine.setAttribute("transform", "rotate(" + (-delta) + " " + this.rotatingCompassX + " " + this.rotatingCompassY + ")");
         }
     }
     updateMinimumText(minimumAltitude, minimumMode) {
