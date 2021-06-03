@@ -261,23 +261,34 @@ class FMCMainDisplay extends BaseAirliners {
             this._inOutElement.style.paddingLeft = "";
         }
     }
-    setTemplate(template) {
+    setTemplate(template, large = false) {
         if (template[0]) {
             this.setTitle(template[0][0]);
             this.setPageCurrent(template[0][1]);
             this.setPageCount(template[0][2]);
+            this.setTitleLeft(template[0][3]);
         }
         for (let i = 0; i < 6; i++) {
             let tIndex = 2 * i + 1;
             if (template[tIndex]) {
-                if (template[tIndex][1] !== undefined) {
-                    this.setLabel(template[tIndex][0], i, 0);
-                    this.setLabel(template[tIndex][1], i, 1);
-                    this.setLabel(template[tIndex][2], i, 2);
-                    this.setLabel(template[tIndex][3], i, 3);
-                }
-                else {
-                    this.setLabel(template[tIndex][0], i, -1);
+                if (large) {
+                    if (template[tIndex][1] !== undefined) {
+                        this.setLine(template[tIndex][0], i, 0);
+                        this.setLine(template[tIndex][1], i, 1);
+                        this.setLine(template[tIndex][2], i, 2);
+                        this.setLine(template[tIndex][3], i, 3);
+                    } else {
+                        this.setLine(template[tIndex][0], i, -1);
+                    }
+                } else {
+                    if (template[tIndex][1] !== undefined) {
+                        this.setLabel(template[tIndex][0], i, 0);
+                        this.setLabel(template[tIndex][1], i, 1);
+                        this.setLabel(template[tIndex][2], i, 2);
+                        this.setLabel(template[tIndex][3], i, 3);
+                    } else {
+                        this.setLabel(template[tIndex][0], i, -1);
+                    }
                 }
             }
             tIndex = 2 * i + 2;
@@ -287,8 +298,7 @@ class FMCMainDisplay extends BaseAirliners {
                     this.setLine(template[tIndex][1], i, 1);
                     this.setLine(template[tIndex][2], i, 2);
                     this.setLine(template[tIndex][3], i, 3);
-                }
-                else {
+                } else {
                     this.setLine(template[tIndex][0], i, -1);
                 }
             }
@@ -297,7 +307,44 @@ class FMCMainDisplay extends BaseAirliners {
             this.setInOut(template[13][0]);
         }
         SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
+        // Apply formatting helper to title page, lines and labels
+        if (this._titleElement !== null) {
+            this._titleElement.innerHTML = this._formatCell(this._titleElement.innerHTML);
+        }
+        this._lineElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
+        this._labelElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
     }
+    _formatCell(str) {
+        return str
+            .replace(/{big}/g, "<span class='b-text'>")
+            .replace(/{small}/g, "<span class='s-text'>")
+            .replace(/{big}/g, "<span class='b-text'>")
+            .replace(/{amber}/g, "<span class='amber'>")
+            .replace(/{red}/g, "<span class='red'>")
+            .replace(/{green}/g, "<span class='green'>")
+            .replace(/{cyan}/g, "<span class='cyan'>")
+            .replace(/{white}/g, "<span class='white'>")
+            .replace(/{magenta}/g, "<span class='magenta'>")
+            .replace(/{yellow}/g, "<span class='yellow'>")
+            .replace(/{inop}/g, "<span class='inop'>")
+            .replace(/{sp}/g, "&nbsp;")
+            .replace(/{left}/g, "<span class='left'>")
+            .replace(/{right}/g, "<span class='right'>")
+            .replace(/{end}/g, "</span>");
+    }
+
     getNavDataDateRange() {
         return SimVar.GetGameVarValue("FLIGHT NAVDATA DATE RANGE", "string");
     }
