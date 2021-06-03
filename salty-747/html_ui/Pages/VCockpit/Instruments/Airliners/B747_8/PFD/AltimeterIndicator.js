@@ -343,12 +343,21 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.cursorSVGShapeMask.setAttribute("stroke-width", "7");
                 this.cursorSVG.appendChild(this.cursorSVGShapeMask);
                 if (!this.cursorSVGAltitudeLevelShape)
-                    this.cursorSVGAltitudeLevelShape = document.createElementNS(Avionics.SVG.NS, "rect");
-                this.cursorSVGAltitudeLevelShape.setAttribute("fill", "#24F000");
+                    this.cursorSVGAltitudeLevelShape = document.createElementNS(Avionics.SVG.NS, "text");
+
+                this.cursorSVGAltitudeLevelShapeMask = document.createElementNS(Avionics.SVG.NS, "rect");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("fill", "black");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("x", "23");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("y", ((cursorHeight * 0.57) * 0.5).toString());
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("width", "20");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("height", (cursorHeight * 0.43).toString());
+                this.cursorSVG.appendChild(this.cursorSVGAltitudeLevelShapeMask);
+                this.cursorSVGAltitudeLevelShape.setAttribute("stroke", "lime");
+                this.cursorSVGAltitudeLevelShape.setAttribute("fill", "lime");
                 this.cursorSVGAltitudeLevelShape.setAttribute("x", "23");
-                this.cursorSVGAltitudeLevelShape.setAttribute("y", ((cursorHeight * 0.57) * 0.5).toString());
-                this.cursorSVGAltitudeLevelShape.setAttribute("width", "20");
-                this.cursorSVGAltitudeLevelShape.setAttribute("height", (cursorHeight * 0.43).toString());
+                this.cursorSVGAltitudeLevelShape.setAttribute("font-size", "38");
+                this.cursorSVGAltitudeLevelShape.setAttribute("y", (cursorHeight * 0.67).toString());
+                this.cursorSVGAltitudeLevelShape.textContent = "@";
                 this.cursorSVG.appendChild(this.cursorSVGAltitudeLevelShape);
             }
             this.centerSVG.appendChild(this.cursorSVG);
@@ -608,6 +617,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         }
         if (this.cursorSVGAltitudeLevelShape)
             this.cursorSVGAltitudeLevelShape.classList.toggle('hide', _altitude >= 10000);
+            this.cursorSVGAltitudeLevelShapeMask.classList.toggle('hide', _altitude >= 10000);
     }
     valueToSvg(current, target) {
         var _top = 0;

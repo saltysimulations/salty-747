@@ -91,10 +91,10 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                             let fontSize = (this.fontSize * 0.243);
                             if (angle % 30 == 0) {
                                 fontSize = (this.fontSize * 0.3245);
-                                text.setAttribute("y", (this.rotatingCompassY - circleRadius + length + 5).toString());
+                                text.setAttribute("y", (this.rotatingCompassY - circleRadius + length + 4).toString());
                             }
                             else {
-                                text.setAttribute("y", (this.rotatingCompassY - circleRadius + length + 3).toString());
+                                text.setAttribute("y", (this.rotatingCompassY - circleRadius + length + 2.5).toString());
                             }
                             text.textContent = (angle / 10).toString();
                             text.setAttribute("x", this.rotatingCompassX.toString());
@@ -176,7 +176,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 topTriangle.setAttribute("d", "M " + this.rotatingCompassX + " " + (this.rotatingCompassY - circleRadius) + " l-3.5 -5.5 l7 0 Z");
                 topTriangle.setAttribute("fill", "transparent");
                 topTriangle.setAttribute("stroke", "white");
-                topTriangle.setAttribute("stroke-width", "1");
+                topTriangle.setAttribute("stroke-width", "0.85");
                 fixedElements.appendChild(topTriangle);
                 if (!this.minimumReferenceModeText) {
                     this.minimumReferenceModeText = document.createElementNS(Avionics.SVG.NS, "text");
