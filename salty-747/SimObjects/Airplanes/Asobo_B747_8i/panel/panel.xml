@@ -402,7 +402,7 @@
 			</Equal>
 		  </Condition>
 		  <Condition Suffix=" R">
-		    <Equal>
+			<Equal>
 			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_R" unit="Enum"/>
 			  	<Constant>1</Constant>
 			</Equal>
@@ -558,6 +558,115 @@
 		</Alert>
 
 		<Alert>
+			<Type>Warning</Type>
+			<Text></Text>
+			<SoundEvent>aural_pull_up</SoundEvent>
+			<Condition>
+				<And>
+					<LinearMultiPoint>
+						<Table>
+							<ReferencePoints>1160,2320,4930,12000</ReferencePoints>
+							<Maximums>0,1070,2380,4285</Maximums>
+						</Table>
+						<Param>
+							<Multiply>
+								<Simvar name="VERTICAL SPEED" unit="feet per minute"/>
+								<Constant>-1</Constant>
+							</Multiply>
+						</Param>
+						<Param>
+							<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+						</Param>
+					</LinearMultiPoint>
+					<Not>
+						<Simvar name="SIM ON GROUND" unit="bool"/>
+					</Not>
+				</And>
+			</Condition>
+		</Alert>
+
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_sink_rate</SoundEvent>
+			<Condition>
+				<And>
+					<LinearMultiPoint>
+						<Table>
+							<ReferencePoints>1160,2320,4930,12000</ReferencePoints>
+							<Minimums>0,1070,2380,4285</Minimums>
+							<Maximums>0,1460,2980,5360</Maximums>
+						</Table>
+						<Param>
+							<Multiply>
+								<Simvar name="VERTICAL SPEED" unit="feet per minute"/>
+								<Constant>-1</Constant>
+							</Multiply>
+						</Param>
+						<Param>
+							<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+						</Param>
+					</LinearMultiPoint>
+					<Not>
+						<Simvar name="SIM ON GROUND" unit="bool"/>
+					</Not>
+				</And>
+			</Condition>
+		</Alert>
+
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>aural_dont_sink</SoundEvent>
+			<Condition>
+				<And>
+					<Lower>
+						<DistanceFromOrigin/>
+						<Constant>5</Constant>
+					</Lower>
+					<Lower>
+						<HeadingChangeFromDeparture/>
+						<Constant>110</Constant>
+					</Lower>
+					<Or>
+						<LinearMultiPoint>
+							<Table>
+								<ReferencePoints>0,500,7000</ReferencePoints>
+								<Maximums>50,700,700</Maximums>
+								<Minimums>50,50,50</Minimums>
+							</Table>
+							<Param>
+								<Multiply>
+									<Simvar name="VERTICAL SPEED" unit="feet per minute"/>
+									<Constant>-1</Constant>
+								</Multiply>
+							</Param>
+							<Param>
+								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+							</Param>
+						</LinearMultiPoint>
+						<LinearMultiPoint>
+							<Table>
+								<ReferencePoints>10,70,150</ReferencePoints>
+								<Maximums>50,700,700</Maximums>
+								<Minimums>50,50,50</Minimums>
+							</Table>
+							<Param>
+								<Substract>
+									<MaxSinceStart>
+										<Simvar name="PLANE ALTITUDE" unit="feet"/>
+									</MaxSinceStart>
+									<Simvar name="PLANE ALTITUDE" unit="feet"/>
+								</Substract>
+							</Param>
+							<Param>
+								<Simvar name="PLANE ALT ABOVE GROUND" unit="feet"/>
+							</Param>
+						</LinearMultiPoint>
+					</Or>
+				</And>
+			</Condition>
+		</Alert>
+		
+		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>tone_altitude_alert_default</SoundEvent>
 			<Condition>
@@ -631,9 +740,8 @@
 
 		<Alert>
 		  <Type>Warning</Type>
-		  <SoundEvent>aural_landing_gear</SoundEvent>
-		  <ShortText>L/G GEAR NOT DOWN</ShortText>
-		  <LongText>L/G GEAR NOT DOWN</LongText>
+		  <SoundEvent>OVERSPEED_WARNING_SOUND</SoundEvent>
+		  <Text>CONFIG GEAR</Text>
 		  <Condition>
 			<StateMachine>
 				<State id="Under" value="0">
@@ -1166,7 +1274,7 @@
 		
 		<Alert>
 			<Type>SoundOnly</Type>
-			<SoundEvent>aural_overspeed</SoundEvent>
+			<SoundEvent>OVERSPEED_WARNING_SOUND</SoundEvent>
 			<Condition>
 				<Simvar name="OVERSPEED WARNING" unit="bool"/>
 			</Condition>
