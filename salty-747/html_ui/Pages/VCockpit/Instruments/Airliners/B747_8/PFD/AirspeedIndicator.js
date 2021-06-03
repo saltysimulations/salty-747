@@ -238,6 +238,12 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 42, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
                 this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 62, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
                 this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 83, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
+                this.cursorSVGShapeMask = document.createElementNS(Avionics.SVG.NS, "path");
+                this.cursorSVGShapeMask.setAttribute("fill", "transparent");
+                this.cursorSVGShapeMask.setAttribute("d", "M7 7 L71 7 L71 73 L7 73 Z");
+                this.cursorSVGShapeMask.setAttribute("stroke", "black");
+                this.cursorSVGShapeMask.setAttribute("stroke-width", "7");
+                this.cursorSVG.appendChild(this.cursorSVGShapeMask);
             }
             if (!this.speedTrendArrowSVG) {
                 this.speedTrendArrowSVG = document.createElementNS(Avionics.SVG.NS, "svg");

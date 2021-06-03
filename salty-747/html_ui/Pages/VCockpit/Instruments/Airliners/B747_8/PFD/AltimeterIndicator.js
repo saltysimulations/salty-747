@@ -333,9 +333,15 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.cursorSVGShape.setAttribute("stroke-width", this.strokeSize);
                 this.cursorSVG.appendChild(this.cursorSVGShape);
                 this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 22, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
-                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 44, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
-                this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX + 63, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
-                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 96, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
+                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 43, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
+                this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX + 60, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
+                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 94, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
+                this.cursorSVGShapeMask = document.createElementNS(Avionics.SVG.NS, "path");
+                this.cursorSVGShapeMask.setAttribute("fill", "transparent");
+                this.cursorSVGShapeMask.setAttribute("d", "M 21 5 L 117 5 L 117 75 L 21 75 Z");
+                this.cursorSVGShapeMask.setAttribute("stroke", "black");
+                this.cursorSVGShapeMask.setAttribute("stroke-width", "7");
+                this.cursorSVG.appendChild(this.cursorSVGShapeMask);
                 if (!this.cursorSVGAltitudeLevelShape)
                     this.cursorSVGAltitudeLevelShape = document.createElementNS(Avionics.SVG.NS, "rect");
                 this.cursorSVGAltitudeLevelShape.setAttribute("fill", "#24F000");
