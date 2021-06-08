@@ -543,7 +543,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.preSelectQNH.setAttribute("x", "195");
             }
             else {
-                this.preSelectQNH.textContent = (this.qnhPreSelectVal / 33.86).toFixed(2) + " IN";
+                this.preSelectQNH.textContent = (this.qnhPreSelectVal / 33.8638).toFixed(2) + " IN";
                 this.preSelectQNH.setAttribute("x", "185");
             }
             if (this.qnhIsPreSelected) {
