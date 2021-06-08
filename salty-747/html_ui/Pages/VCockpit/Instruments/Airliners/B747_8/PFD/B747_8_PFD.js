@@ -142,7 +142,6 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
         super();
         this.isMTRSActive = false;
         this.minimumReference = 200;
-        this.qnhPreSelectVal = 1013
     }
     init(root) {
         this.altimeter = this.gps.getChildById("Altimeter");
