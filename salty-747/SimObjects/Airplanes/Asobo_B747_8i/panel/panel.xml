@@ -385,9 +385,9 @@
 		  <Text>\JETT NOZ ON</Text>
 		  <Condition Suffix="">
 		  	<And>
-		    	<Equal>
-			  		<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
-			  		<Constant>1</Constant>
+				<Equal>
+					<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
+					<Constant>1</Constant>
 				</Equal>
 				<Equal>
 			  		<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_R" unit="Enum"/>
@@ -397,7 +397,7 @@
 		  </Condition>
 		  <Condition Suffix=" L">
 		    <Equal>
-			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
+				<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
 			  	<Constant>1</Constant>
 			</Equal>
 		  </Condition>
