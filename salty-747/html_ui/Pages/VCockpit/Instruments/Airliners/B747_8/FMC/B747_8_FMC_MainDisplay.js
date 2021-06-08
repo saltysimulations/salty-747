@@ -148,6 +148,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     Init() {
         super.Init();
+        this.timer = 0;
         let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
         this.aircraftType = Aircraft.B747_8;
@@ -209,8 +210,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         this.updateAutopilot();
         this.updateAltitudeAlerting();
-        this.updateVREF25();
-        this.updateVREF30();
+        if (this.timer == 1000) {
+            this.updateVREF25();
+            this.updateVREF30();
+            this.timer = 0;
+        }
+        this.timer ++;
         this.saltyBase.update(this.isElectricityAvailable());
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
@@ -738,16 +743,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this.doActivateVNAV();
                 }
             }
-            if (currentApMasterStatus && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
-                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
-                let altitude = Simplane.getAltitude();
-                let deltaAltitude = Math.abs(targetAltitude - altitude);
-                if (deltaAltitude > 1000) {
-                    if (!Simplane.getAutoPilotFLCActive()) {
-                        SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
-                    }
-                }
-            }
             if (!Simplane.getAutoPilotAltitudeLockActive() && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") !== 1) {
                 let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
@@ -865,9 +860,17 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                 }
                 else {
-                    let altitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
-                    if (isFinite(altitude)) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, this.cruiseFlightLevel * 100, this._forceNextAltitudeUpdate);
+                    let vertSpeed = Simplane.getVerticalSpeed();
+                    let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+                    let targetAlt = mcpAlt;
+                    if (vertSpeed > 50) {
+                        targetAlt = Math.min(this.cruiseFlightLevel * 100, mcpAlt);
+                    }
+                    if (vertSpeed < 50) {
+                        targetAlt = Math.max(this.cruiseFlightLevel * 100, mcpAlt);
+                    }
+                    if (isFinite(targetAlt) && Simplane.getAutoPilotFLCActive()) {
+                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, targetAlt, this._forceNextAltitudeUpdate);
                         this._forceNextAltitudeUpdate = false;
                         SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                     }
