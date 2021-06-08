@@ -863,11 +863,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     let vertSpeed = Simplane.getVerticalSpeed();
                     let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                     let targetAlt = mcpAlt;
-                    if (vertSpeed > 50) {
-                        targetAlt = Math.min(this.cruiseFlightLevel * 100, mcpAlt);
-                    }
-                    if (vertSpeed < 50) {
-                        targetAlt = Math.max(this.cruiseFlightLevel * 100, mcpAlt);
+                    if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_CRUISE){
+                        if (vertSpeed > 50) {
+                            targetAlt = Math.min(this.cruiseFlightLevel * 100, mcpAlt);
+                        }
+                        if (vertSpeed < 50) {
+                            targetAlt = Math.max(this.cruiseFlightLevel * 100, mcpAlt);
+                        }
                     }
                     if (isFinite(targetAlt) && Simplane.getAutoPilotFLCActive()) {
                         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, targetAlt, this._forceNextAltitudeUpdate);
