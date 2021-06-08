@@ -18,6 +18,8 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.hudAPAltitude = 0;
         this.isHud = false;
         this._aircraft = Aircraft.A320_NEO;
+        this.qnhIsPreSelected = false;
+        this.qnhPreSelectVal = 1013;
     }
     static get observedAttributes() {
         return ["hud"];
@@ -333,16 +335,31 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.cursorSVGShape.setAttribute("stroke-width", this.strokeSize);
                 this.cursorSVG.appendChild(this.cursorSVGShape);
                 this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 22, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
-                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 44, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
-                this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX + 63, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
-                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 96, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
+                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 43, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
+                this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX + 60, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
+                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 94, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
+                this.cursorSVGShapeMask = document.createElementNS(Avionics.SVG.NS, "path");
+                this.cursorSVGShapeMask.setAttribute("fill", "transparent");
+                this.cursorSVGShapeMask.setAttribute("d", "M 21 5 L 117 5 L 117 75 L 21 75 Z");
+                this.cursorSVGShapeMask.setAttribute("stroke", "black");
+                this.cursorSVGShapeMask.setAttribute("stroke-width", "7");
+                this.cursorSVG.appendChild(this.cursorSVGShapeMask);
                 if (!this.cursorSVGAltitudeLevelShape)
-                    this.cursorSVGAltitudeLevelShape = document.createElementNS(Avionics.SVG.NS, "rect");
-                this.cursorSVGAltitudeLevelShape.setAttribute("fill", "#24F000");
+                    this.cursorSVGAltitudeLevelShape = document.createElementNS(Avionics.SVG.NS, "text");
+
+                this.cursorSVGAltitudeLevelShapeMask = document.createElementNS(Avionics.SVG.NS, "rect");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("fill", "black");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("x", "23");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("y", ((cursorHeight * 0.57) * 0.5).toString());
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("width", "20");
+                this.cursorSVGAltitudeLevelShapeMask.setAttribute("height", (cursorHeight * 0.43).toString());
+                this.cursorSVG.appendChild(this.cursorSVGAltitudeLevelShapeMask);
+                this.cursorSVGAltitudeLevelShape.setAttribute("stroke", "lime");
+                this.cursorSVGAltitudeLevelShape.setAttribute("fill", "lime");
                 this.cursorSVGAltitudeLevelShape.setAttribute("x", "23");
-                this.cursorSVGAltitudeLevelShape.setAttribute("y", ((cursorHeight * 0.57) * 0.5).toString());
-                this.cursorSVGAltitudeLevelShape.setAttribute("width", "20");
-                this.cursorSVGAltitudeLevelShape.setAttribute("height", (cursorHeight * 0.43).toString());
+                this.cursorSVGAltitudeLevelShape.setAttribute("font-size", "38");
+                this.cursorSVGAltitudeLevelShape.setAttribute("y", (cursorHeight * 0.67).toString());
+                this.cursorSVGAltitudeLevelShape.textContent = "@";
                 this.cursorSVG.appendChild(this.cursorSVGAltitudeLevelShape);
             }
             this.centerSVG.appendChild(this.cursorSVG);
@@ -435,6 +452,17 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.pressureSVG.setAttribute("text-anchor", "end");
         this.pressureSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.pressureSVG);
+        if (!this.preSelectQNH)
+        this.preSelectQNH = document.createElementNS(Avionics.SVG.NS, "text");
+        this.preSelectQNH.textContent = "1009 HPA";
+        this.preSelectQNH.setAttribute("x", "198");
+        this.preSelectQNH.setAttribute("y", (posY + height + 30 + sideTextHeight * 0.5).toString());
+        this.preSelectQNH.setAttribute("fill", "white");
+        this.preSelectQNH.setAttribute("font-size", (this.fontSize * 0.9).toString());
+        this.preSelectQNH.setAttribute("font-family", "BoeingEICAS");
+        this.preSelectQNH.setAttribute("text-anchor", "end");
+        this.preSelectQNH.setAttribute("alignment-baseline", "central");
+        this.rootGroup.appendChild(this.preSelectQNH);
         this.rootSVG.appendChild(this.rootGroup);
         this.appendChild(this.rootSVG);
     }
@@ -488,49 +516,41 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         }
     }
     updateBaroPressure(_mode) {
+        var units = Simplane.getPressureSelectedUnits();
+        var pressure = Simplane.getPressureValue(units);
         if (this.pressureSVG) {
-            var units = Simplane.getPressureSelectedUnits();
-            var pressure = Simplane.getPressureValue(units);
             if (_mode == "STD") {
                 this.pressureSVG.textContent = "STD";
                 this.pressureSVG.setAttribute("x", "150");
                 this.pressureSVG.setAttribute("font-size", "40");
             }
             else {
-                if (this.aircraft == Aircraft.A320_NEO) {
-                    if (_mode == "QFE") {
-                        this.pressureSVG.textContent = "QFE ";
-                    }
-                    else {
-                        this.pressureSVG.textContent = "QNH ";
-                    }
-                    if (units == "millibar") {
-                        this.pressureSVG.textContent += pressure.toFixed(0);
-                    }
-                    else {
-                        this.pressureSVG.textContent += pressure.toFixed(2);
-                    }
-                }
-                else if (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
-                    if (units == "millibar") {
-                        this.pressureSVG.textContent = pressure.toFixed(0) + " HPA";
-                        this.pressureSVG.setAttribute("x", "190");
-                        this.pressureSVG.setAttribute("font-size", "30");
-                    }
-                    else {
-                        this.pressureSVG.textContent = pressure.toFixed(2) + " IN";
-                        this.pressureSVG.setAttribute("x", "190");
-                        this.pressureSVG.setAttribute("font-size", "30");
-                    }
+                if (units == "millibar") {
+                    this.pressureSVG.textContent = pressure.toFixed(0) + " HPA";
+                    this.pressureSVG.setAttribute("x", "190");
+                    this.pressureSVG.setAttribute("font-size", "30");
                 }
                 else {
-                    if (units == "millibar") {
-                        this.pressureSVG.textContent = pressure.toFixed(0) + " Hpa";
-                    }
-                    else {
-                        this.pressureSVG.textContent = pressure.toFixed(2) + " inHg";
-                    }
+                    this.pressureSVG.textContent = pressure.toFixed(2) + " IN";
+                    this.pressureSVG.setAttribute("x", "190");
+                    this.pressureSVG.setAttribute("font-size", "30");
                 }
+            }
+        }
+        if (this.preSelectQNH) {
+            if (units == "millibar") {
+                this.preSelectQNH.textContent = this.qnhPreSelectVal.toFixed(0) + " HPA";
+                this.preSelectQNH.setAttribute("x", "195");
+            }
+            else {
+                this.preSelectQNH.textContent = (this.qnhPreSelectVal / 33.8638).toFixed(2) + " IN";
+                this.preSelectQNH.setAttribute("x", "185");
+            }
+            if (this.qnhIsPreSelected) {
+                this.preSelectQNH.setAttribute("visibility", "visible");
+            }
+            else {
+                this.preSelectQNH.setAttribute("visibility", "hidden");
             }
         }
     }
@@ -602,6 +622,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         }
         if (this.cursorSVGAltitudeLevelShape)
             this.cursorSVGAltitudeLevelShape.classList.toggle('hide', _altitude >= 10000);
+            this.cursorSVGAltitudeLevelShapeMask.classList.toggle('hide', _altitude >= 10000);
     }
     valueToSvg(current, target) {
         var _top = 0;
@@ -755,7 +776,6 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             SimVar.SetSimVarValue("L:SALTY_MINIMUMS_ALT", "feet", minimumAltitude - Simplane.getAltitudeAboveGround() + indicatedAltitude);
         }
         this.minimumReferenceCursor.setAttribute("transform", "translate(0, " + currentY.toFixed(1) + ")");
-        ;
     }
     updateAltitudeAlerting() {
         let alertState = SimVar.GetSimVarValue("L:SALTY_ALT_ALERT", "bool");

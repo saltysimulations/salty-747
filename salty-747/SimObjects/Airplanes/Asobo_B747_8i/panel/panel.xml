@@ -387,7 +387,7 @@
 		  	<And>
 				<Equal>
 					<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
-			  		<Constant>1</Constant>
+					<Constant>1</Constant>
 				</Equal>
 				<Equal>
 			  		<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_R" unit="Enum"/>
@@ -396,8 +396,8 @@
 			</And>
 		  </Condition>
 		  <Condition Suffix=" L">
-		  	<Equal>
-			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
+		    <Equal>
+				<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
 			  	<Constant>1</Constant>
 			</Equal>
 		  </Condition>
@@ -517,6 +517,7 @@
 	<!-- Voices Alerts -->
   
 	<VoicesAlerts>
+
 		<Alert>
 			<Type>Warning</Type>
 			<Text></Text>

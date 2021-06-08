@@ -238,6 +238,12 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 42, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
                 this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 62, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
                 this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 83, _cursorPosY + 3, _width, "BoeingEICAS", this.fontSize * 1.5, "white");
+                this.cursorSVGShapeMask = document.createElementNS(Avionics.SVG.NS, "path");
+                this.cursorSVGShapeMask.setAttribute("fill", "transparent");
+                this.cursorSVGShapeMask.setAttribute("d", "M7 7 L71 7 L71 73 L7 73 Z");
+                this.cursorSVGShapeMask.setAttribute("stroke", "black");
+                this.cursorSVGShapeMask.setAttribute("stroke-width", "7");
+                this.cursorSVG.appendChild(this.cursorSVGShapeMask);
             }
             if (!this.speedTrendArrowSVG) {
                 this.speedTrendArrowSVG = document.createElementNS(Avionics.SVG.NS, "svg");
@@ -427,7 +433,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.createSpeedMarker("V1", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV1, 1.0, 1.0, "#24F000");
             this.createSpeedMarker("VR", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVR, 1.0, 1.0, "#24F000");
             this.createSpeedMarker("V2", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV2, 1.0, 1.0, "#24F000");
-            this.createSpeedMarker("REF", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVRef, 1.0, 1.0, "#24F000");
+            this.createSpeedMarker("REF", speedMarkersPosX + 6, speedMarkersPosY, this.updateMarkerVRef, 1.0, 1.0, "#24F000");
             this.centerSVG.appendChild(this.stripsSVG);
             this.centerSVG.appendChild(this.speedNotSetSVG);
             this.centerSVG.appendChild(this.speedMarkerSVG);
@@ -699,6 +705,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                     var radixPos = fixedMach.indexOf('.');
                     this.machPrefixSVG.textContent = ".";
                     this.machValueSVG.textContent = fixedMach.slice(radixPos + 1);
+                    this.machValueSVG.setAttribute("x", "85");
                     this.machVisible = true;
                 }
                 else {
@@ -706,14 +713,15 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                     this.machPrefixSVG.textContent = "GS";
 
                     if (groundSpeed < 10) {
-                        this.machValueSVG.textContent = "\xa0\xa0\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                        this.machValueSVG.textContent = "\xa0\xa0" + Utils.leadingZeros(groundSpeed, 0);
                     }
                     else if (groundSpeed < 100 && groundSpeed >= 10) {
-                        this.machValueSVG.textContent = "\xa0\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                        this.machValueSVG.textContent = "\xa0" + Utils.leadingZeros(groundSpeed, 0);
                     }  
                     else {
-                        this.machValueSVG.textContent = "\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                        this.machValueSVG.textContent = Utils.leadingZeros(groundSpeed, 0);
                     }
+                    this.machValueSVG.setAttribute("x", "90");
                     this.machVisible = true;
                 }
             }
