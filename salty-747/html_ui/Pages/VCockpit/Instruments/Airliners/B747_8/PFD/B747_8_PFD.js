@@ -142,6 +142,7 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
         super();
         this.isMTRSActive = false;
         this.minimumReference = 200;
+        this.qnhPreSelectVal = 1013
     }
     init(root) {
         this.altimeter = this.gps.getChildById("Altimeter");
@@ -156,12 +157,42 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
     onExit() {
     }
     onEvent(_event) {
+        let units = Simplane.getPressureSelectedUnits();
         switch (_event) {
             case "BARO_INC":
-                SimVar.SetSimVarValue("K:KOHLSMAN_INC", "number", 1);
+                if (Simplane.getPressureSelectedMode(this.altimeter.aircraft) == "STD") {
+                    this.altimeter.qnhIsPreSelected = true;
+                    if (units == "millibar") {
+                        this.altimeter.qnhPreSelectVal += 1;
+                    }
+                    else {
+                        this.altimeter.qnhPreSelectVal += 1 * 0.3386;
+                    }
+                    SimVar.SetSimVarValue("L:XMLVAR_Baro1_SavedPressure", units, this.altimeter.qnhPreSelectVal * 16);
+                }
+                else {
+                    SimVar.SetSimVarValue("K:KOHLSMAN_INC", "number", 1);
+                };
                 break;
             case "BARO_DEC":
-                SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", 1);
+                if (Simplane.getPressureSelectedMode(this.altimeter.aircraft) == "STD") {
+                    this.altimeter.qnhIsPreSelected = true;
+                    if (units == "millibar") {
+                        this.altimeter.qnhPreSelectVal -= 1;
+                    }
+                    else {
+                        this.altimeter.qnhPreSelectVal -= 1 * 0.3386;
+                    }
+                    SimVar.SetSimVarValue("L:XMLVAR_Baro1_SavedPressure", units, this.altimeter.qnhPreSelectVal * 16);
+                }
+                else {
+                    SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", 1);
+                };
+                break;
+            case "STD_PUSH":
+                if (Simplane.getPressureSelectedMode(this.altimeter.aircraft) !== "STD") {
+                    this.altimeter.qnhIsPreSelected = false;
+                }
                 break;
             case "MTRS":
                 this.isMTRSActive = !this.isMTRSActive;
@@ -234,12 +265,6 @@ class B747_8_PFD_Compass extends NavSystemElement {
     }
     onEvent(_event) {
         switch (_event) {
-            case "BARO_INC":
-                SimVar.SetSimVarValue("K:KOHLSMAN_INC", "number", 1);
-                break;
-            case "BARO_DEC":
-                SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", 1);
-                break;
             case "Mins_INC":
                 this.minimumReference += 10;
                 this.svg.minimumReferenceValue = this.minimumReference;

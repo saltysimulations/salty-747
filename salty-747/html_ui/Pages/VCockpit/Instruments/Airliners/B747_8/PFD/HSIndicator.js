@@ -53,11 +53,11 @@ class Jet_PFD_HSIndicator extends HTMLElement {
         this.rootSVG.setAttribute("id", "ViewBox");
         this.rootSVG.setAttribute("viewBox", "0 0 " + width + " " + height);
         {
-            let circleRadius = 110;
+            let circleRadius = 105;
             this.rotatingCompass = document.createElementNS(Avionics.SVG.NS, "g");
             this.rotatingCompass.setAttribute("id", "Circle");
             this.rootSVG.appendChild(this.rotatingCompass);
-            this.rootSVG.style.transform = "scale(0.78, 1)";
+            this.rootSVG.style.transform = "scale(0.85, 1.05)";
             {
                 this.rotatingCompassX = posX + width * 0.5;
                 this.rotatingCompassY = posY + height * 0.5;
@@ -107,7 +107,6 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                             graduationsGroup.appendChild(text);
                         }
                         angle += 360 / 72;
-                        //graduationsGroup.style.transform = "scale(1.4, 1)";
                     }
                 }
             }
@@ -151,26 +150,37 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             this.rootSVG.appendChild(fixedElements);
             {
                 this.selectedHeadingText = document.createElementNS(Avionics.SVG.NS, "text");
-                this.selectedHeadingText.textContent = "135H";
-                this.selectedHeadingText.setAttribute("x", (this.rotatingCompassX - circleRadius * 0.62).toString());
-                this.selectedHeadingText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.8).toString());
+                this.selectedHeadingText.textContent = "135";
+                this.selectedHeadingText.setAttribute("x", (this.rotatingCompassX - circleRadius * 0.61).toString());
+                this.selectedHeadingText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.74).toString());
                 this.selectedHeadingText.setAttribute("fill", "#D570FF");
-                this.selectedHeadingText.setAttribute("font-size", (this.fontSize * 0.25).toString());
+                this.selectedHeadingText.setAttribute("font-size", (this.fontSize * 0.27).toString());
                 this.selectedHeadingText.setAttribute("font-family", "BoeingEICAS");
                 this.selectedHeadingText.setAttribute("text-anchor", "start");
                 this.selectedHeadingText.setAttribute("alignment-baseline", "central");
-                this.selectedHeadingText.style.transform = "scale(1.28, 1)"
+                this.selectedHeadingText.style.transform = "scale(1.25, 0.952)";
                 fixedElements.appendChild(this.selectedHeadingText);
+                this.selectedHeadingMode = document.createElementNS(Avionics.SVG.NS, "text");
+                this.selectedHeadingMode.textContent = "H";
+                this.selectedHeadingMode.setAttribute("x", (this.rotatingCompassX - circleRadius * 0.51).toString());
+                this.selectedHeadingMode.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.745).toString());
+                this.selectedHeadingMode.setAttribute("fill", "#D570FF");
+                this.selectedHeadingMode.setAttribute("font-size", (this.fontSize * 0.22).toString());
+                this.selectedHeadingMode.setAttribute("font-family", "BoeingEICAS");
+                this.selectedHeadingMode.setAttribute("text-anchor", "start");
+                this.selectedHeadingMode.setAttribute("alignment-baseline", "central");
+                this.selectedHeadingMode.style.transform = "scale(1.25, 0.952)";
+                fixedElements.appendChild(this.selectedHeadingMode);
                 this.selectedHeadingTextRef = document.createElementNS(Avionics.SVG.NS, "text");
                 this.selectedHeadingTextRef.textContent = "MAG";
                 this.selectedHeadingTextRef.setAttribute("x", (this.rotatingCompassX - circleRadius * 0.18).toString());
-                this.selectedHeadingTextRef.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.8).toString());
+                this.selectedHeadingTextRef.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.745).toString());
                 this.selectedHeadingTextRef.setAttribute("fill", "lime");
-                this.selectedHeadingTextRef.setAttribute("font-size", (this.fontSize * 0.25).toString());
+                this.selectedHeadingTextRef.setAttribute("font-size", (this.fontSize * 0.22).toString());
                 this.selectedHeadingTextRef.setAttribute("font-family", "BoeingEICAS");
                 this.selectedHeadingTextRef.setAttribute("text-anchor", "end");
                 this.selectedHeadingTextRef.setAttribute("alignment-baseline", "central");
-                this.selectedHeadingTextRef.style.transform = "scale(1.28, 1)"
+                this.selectedHeadingTextRef.style.transform = "scale(1.25, 0.952)";
                 fixedElements.appendChild(this.selectedHeadingTextRef);
                 let topTriangle = document.createElementNS(Avionics.SVG.NS, "path");
                 topTriangle.setAttribute("d", "M " + this.rotatingCompassX + " " + (this.rotatingCompassY - circleRadius) + " l-3.5 -5.5 l7 0 Z");
@@ -183,24 +193,24 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 }
                 this.minimumReferenceModeText.textContent = "BARO";
                 this.minimumReferenceModeText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.07).toString());
-                this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.095).toString());
+                this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.05).toString());
                 this.minimumReferenceModeText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
                 this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.275).toString());
                 this.minimumReferenceModeText.setAttribute("font-family", "BoeingEICAS");
                 this.minimumReferenceModeText.setAttribute("text-anchor", "end");
-                this.minimumReferenceModeText.style.transform = "scale(1.28, 1)"
+                this.minimumReferenceModeText.style.transform = "scale(1.25, 0.952)";
                 fixedElements.appendChild(this.minimumReferenceModeText);
                 if (!this.minimumReferenceValueText) {
                     this.minimumReferenceValueText = document.createElementNS(Avionics.SVG.NS, "text");
                 }
                 this.minimumReferenceValueText.textContent = "210";
                 this.minimumReferenceValueText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.07).toString());;
-                this.minimumReferenceValueText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.02).toString());
+                this.minimumReferenceValueText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.975).toString());
                 this.minimumReferenceValueText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
                 this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize * 0.33).toString());
                 this.minimumReferenceValueText.setAttribute("font-family", "BoeingEICAS");
                 this.minimumReferenceValueText.setAttribute("text-anchor", "end");
-                this.minimumReferenceValueText.style.transform = "scale(1.28, 1)"
+                this.minimumReferenceValueText.style.transform = "scale(1.25, 0.952)";
                 fixedElements.appendChild(this.minimumReferenceValueText);
             }
         }
@@ -308,7 +318,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 var delta = compass - selectedHeading;
                 this.selectedHeadingGroup.setAttribute("transform", "rotate(" + (-delta) + " " + this.rotatingCompassX + " " + this.rotatingCompassY + ")");
                 this.selectedHeadingGroup.setAttribute("visibility", "visible");
-                this.selectedHeadingText.textContent = Utils.leadingZeros(roundedSelectedHeading % 360, 3, 0) + "H";
+                this.selectedHeadingText.textContent = Utils.leadingZeros(roundedSelectedHeading % 360, 3, 0);
                 let headingLocked = Simplane.getAutoPilotHeadingLockActive();
                 if (this.selectedHeadingLine)
                     this.selectedHeadingLine.classList.toggle('hide', headingLocked);

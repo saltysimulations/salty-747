@@ -705,6 +705,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                     var radixPos = fixedMach.indexOf('.');
                     this.machPrefixSVG.textContent = ".";
                     this.machValueSVG.textContent = fixedMach.slice(radixPos + 1);
+                    this.machValueSVG.setAttribute("x", "85");
                     this.machVisible = true;
                 }
                 else {
@@ -712,14 +713,15 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                     this.machPrefixSVG.textContent = "GS";
 
                     if (groundSpeed < 10) {
-                        this.machValueSVG.textContent = "\xa0\xa0\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                        this.machValueSVG.textContent = "\xa0\xa0" + Utils.leadingZeros(groundSpeed, 0);
                     }
                     else if (groundSpeed < 100 && groundSpeed >= 10) {
-                        this.machValueSVG.textContent = "\xa0\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                        this.machValueSVG.textContent = "\xa0" + Utils.leadingZeros(groundSpeed, 0);
                     }  
                     else {
-                        this.machValueSVG.textContent = "\xa0" + Utils.leadingZeros(groundSpeed, 0);
+                        this.machValueSVG.textContent = Utils.leadingZeros(groundSpeed, 0);
                     }
+                    this.machValueSVG.setAttribute("x", "90");
                     this.machVisible = true;
                 }
             }

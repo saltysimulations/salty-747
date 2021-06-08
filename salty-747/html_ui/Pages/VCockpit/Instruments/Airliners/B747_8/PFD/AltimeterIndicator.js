@@ -18,6 +18,8 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.hudAPAltitude = 0;
         this.isHud = false;
         this._aircraft = Aircraft.A320_NEO;
+        this.qnhIsPreSelected = false;
+        this.qnhPreSelectVal = 1013;
     }
     static get observedAttributes() {
         return ["hud"];
@@ -450,6 +452,17 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.pressureSVG.setAttribute("text-anchor", "end");
         this.pressureSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.pressureSVG);
+        if (!this.preSelectQNH)
+        this.preSelectQNH = document.createElementNS(Avionics.SVG.NS, "text");
+        this.preSelectQNH.textContent = "1009 HPA";
+        this.preSelectQNH.setAttribute("x", "185");
+        this.preSelectQNH.setAttribute("y", (posY + height + 30 + sideTextHeight * 0.5).toString());
+        this.preSelectQNH.setAttribute("fill", "white");
+        this.preSelectQNH.setAttribute("font-size", (this.fontSize * 0.9).toString());
+        this.preSelectQNH.setAttribute("font-family", "BoeingEICAS");
+        this.preSelectQNH.setAttribute("text-anchor", "end");
+        this.preSelectQNH.setAttribute("alignment-baseline", "central");
+        this.rootGroup.appendChild(this.preSelectQNH);
         this.rootSVG.appendChild(this.rootGroup);
         this.appendChild(this.rootSVG);
     }
@@ -503,49 +516,39 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         }
     }
     updateBaroPressure(_mode) {
+        var units = Simplane.getPressureSelectedUnits();
+        var pressure = Simplane.getPressureValue(units);
         if (this.pressureSVG) {
-            var units = Simplane.getPressureSelectedUnits();
-            var pressure = Simplane.getPressureValue(units);
             if (_mode == "STD") {
                 this.pressureSVG.textContent = "STD";
                 this.pressureSVG.setAttribute("x", "150");
                 this.pressureSVG.setAttribute("font-size", "40");
             }
             else {
-                if (this.aircraft == Aircraft.A320_NEO) {
-                    if (_mode == "QFE") {
-                        this.pressureSVG.textContent = "QFE ";
-                    }
-                    else {
-                        this.pressureSVG.textContent = "QNH ";
-                    }
-                    if (units == "millibar") {
-                        this.pressureSVG.textContent += pressure.toFixed(0);
-                    }
-                    else {
-                        this.pressureSVG.textContent += pressure.toFixed(2);
-                    }
-                }
-                else if (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
-                    if (units == "millibar") {
-                        this.pressureSVG.textContent = pressure.toFixed(0) + " HPA";
-                        this.pressureSVG.setAttribute("x", "190");
-                        this.pressureSVG.setAttribute("font-size", "30");
-                    }
-                    else {
-                        this.pressureSVG.textContent = pressure.toFixed(2) + " IN";
-                        this.pressureSVG.setAttribute("x", "190");
-                        this.pressureSVG.setAttribute("font-size", "30");
-                    }
+                if (units == "millibar") {
+                    this.pressureSVG.textContent = pressure.toFixed(0) + " HPA";
+                    this.pressureSVG.setAttribute("x", "190");
+                    this.pressureSVG.setAttribute("font-size", "30");
                 }
                 else {
-                    if (units == "millibar") {
-                        this.pressureSVG.textContent = pressure.toFixed(0) + " Hpa";
-                    }
-                    else {
-                        this.pressureSVG.textContent = pressure.toFixed(2) + " inHg";
-                    }
+                    this.pressureSVG.textContent = pressure.toFixed(2) + " IN";
+                    this.pressureSVG.setAttribute("x", "190");
+                    this.pressureSVG.setAttribute("font-size", "30");
                 }
+            }
+        }
+        if (this.preSelectQNH) {
+            if (units == "millibar") {
+                this.preSelectQNH.textContent = this.qnhPreSelectVal.toFixed(0) + " HPA";
+            }
+            else {
+                this.preSelectQNH.textContent = (this.qnhPreSelectVal / 33.86).toFixed(2) + " IN";
+            }
+            if (this.qnhIsPreSelected) {
+                this.preSelectQNH.setAttribute("visibility", "visible");
+            }
+            else {
+                this.preSelectQNH.setAttribute("visibility", "hidden");
             }
         }
     }
@@ -771,7 +774,6 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             SimVar.SetSimVarValue("L:SALTY_MINIMUMS_ALT", "feet", minimumAltitude - Simplane.getAltitudeAboveGround() + indicatedAltitude);
         }
         this.minimumReferenceCursor.setAttribute("transform", "translate(0, " + currentY.toFixed(1) + ")");
-        ;
     }
     updateAltitudeAlerting() {
         let alertState = SimVar.GetSimVarValue("L:SALTY_ALT_ALERT", "bool");
