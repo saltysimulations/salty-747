@@ -455,7 +455,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         if (!this.preSelectQNH)
         this.preSelectQNH = document.createElementNS(Avionics.SVG.NS, "text");
         this.preSelectQNH.textContent = "1009 HPA";
-        this.preSelectQNH.setAttribute("x", "185");
+        this.preSelectQNH.setAttribute("x", "198");
         this.preSelectQNH.setAttribute("y", (posY + height + 30 + sideTextHeight * 0.5).toString());
         this.preSelectQNH.setAttribute("fill", "white");
         this.preSelectQNH.setAttribute("font-size", (this.fontSize * 0.9).toString());
@@ -540,9 +540,11 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         if (this.preSelectQNH) {
             if (units == "millibar") {
                 this.preSelectQNH.textContent = this.qnhPreSelectVal.toFixed(0) + " HPA";
+                this.preSelectQNH.setAttribute("x", "195");
             }
             else {
                 this.preSelectQNH.textContent = (this.qnhPreSelectVal / 33.86).toFixed(2) + " IN";
+                this.preSelectQNH.setAttribute("x", "185");
             }
             if (this.qnhIsPreSelected) {
                 this.preSelectQNH.setAttribute("visibility", "visible");

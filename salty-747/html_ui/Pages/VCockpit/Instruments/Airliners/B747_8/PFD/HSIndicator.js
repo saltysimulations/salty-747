@@ -192,10 +192,10 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                     this.minimumReferenceModeText = document.createElementNS(Avionics.SVG.NS, "text");
                 }
                 this.minimumReferenceModeText.textContent = "BARO";
-                this.minimumReferenceModeText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.07).toString());
-                this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.05).toString());
+                this.minimumReferenceModeText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.0665).toString());
+                this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.0475).toString());
                 this.minimumReferenceModeText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
-                this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.275).toString());
+                this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.23).toString());
                 this.minimumReferenceModeText.setAttribute("font-family", "BoeingEICAS");
                 this.minimumReferenceModeText.setAttribute("text-anchor", "end");
                 this.minimumReferenceModeText.style.transform = "scale(1.25, 0.952)";
@@ -207,7 +207,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.minimumReferenceValueText.setAttribute("x", (this.rotatingCompassX + circleRadius * 0.07).toString());;
                 this.minimumReferenceValueText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.975).toString());
                 this.minimumReferenceValueText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
-                this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize * 0.33).toString());
+                this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize * 0.31).toString());
                 this.minimumReferenceValueText.setAttribute("font-family", "BoeingEICAS");
                 this.minimumReferenceValueText.setAttribute("text-anchor", "end");
                 this.minimumReferenceValueText.style.transform = "scale(1.25, 0.952)";

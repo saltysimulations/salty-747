@@ -433,7 +433,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.createSpeedMarker("V1", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV1, 1.0, 1.0, "#24F000");
             this.createSpeedMarker("VR", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVR, 1.0, 1.0, "#24F000");
             this.createSpeedMarker("V2", speedMarkersPosX, speedMarkersPosY, this.updateMarkerV2, 1.0, 1.0, "#24F000");
-            this.createSpeedMarker("REF", speedMarkersPosX, speedMarkersPosY, this.updateMarkerVRef, 1.0, 1.0, "#24F000");
+            this.createSpeedMarker("REF", speedMarkersPosX + 6, speedMarkersPosY, this.updateMarkerVRef, 1.0, 1.0, "#24F000");
             this.centerSVG.appendChild(this.stripsSVG);
             this.centerSVG.appendChild(this.speedNotSetSVG);
             this.centerSVG.appendChild(this.speedMarkerSVG);
