@@ -163,12 +163,10 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.attitude_pitch_grads.push(document.createElementNS(Avionics.SVG.NS, "g"));
                 pitchGraduations.appendChild(this.attitude_pitch_grads[0]);
                 let maxDash = 80;
-                let fullPrecisionLowerLimit = -20;
-                let fullPrecisionUpperLimit = 20;
+                let fullPrecisionLowerLimit = -80;
+                let fullPrecisionUpperLimit = 80;
                 let halfPrecisionLowerLimit = -30;
                 let halfPrecisionUpperLimit = 45;
-                let unusualAttitudeLowerLimit = -30;
-                let unusualAttitudeUpperLimit = 50;
                 let bigWidth = 110;
                 let bigHeight = 2;
                 let mediumWidth = 60;
@@ -242,26 +240,6 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                             rightText.setAttribute("font-family", "BoeingEICAS");
                             rightText.setAttribute("fill", "white");
                             this.attitude_pitch_grads[0].appendChild(rightText);
-                        }
-                        if (angle < unusualAttitudeLowerLimit) {
-                            let chevron = document.createElementNS(Avionics.SVG.NS, "path");
-                            let path = "M" + -smallWidth / 2 + " " + (pitchFactor * nextAngle - bigHeight / 2) + " l" + smallWidth + "  0 ";
-                            path += "L" + bigWidth / 2 + " " + (pitchFactor * angle - bigHeight / 2) + " l" + -smallWidth + " 0 ";
-                            path += "L0 " + (pitchFactor * nextAngle + 20) + " ";
-                            path += "L" + (-bigWidth / 2 + smallWidth) + " " + (pitchFactor * angle - bigHeight / 2) + " l" + -smallWidth + " 0 Z";
-                            chevron.setAttribute("d", path);
-                            chevron.setAttribute("fill", "red");
-                            this.attitude_pitch_grads[0].appendChild(chevron);
-                        }
-                        if (angle >= unusualAttitudeUpperLimit && nextAngle <= maxDash) {
-                            let chevron = document.createElementNS(Avionics.SVG.NS, "path");
-                            let path = "M" + -smallWidth / 2 + " " + (pitchFactor * angle - bigHeight / 2) + " l" + smallWidth + "  0 ";
-                            path += "L" + (bigWidth / 2) + " " + (pitchFactor * nextAngle + bigHeight / 2) + " l" + -smallWidth + " 0 ";
-                            path += "L0 " + (pitchFactor * angle - 20) + " ";
-                            path += "L" + (-bigWidth / 2 + smallWidth) + " " + (pitchFactor * nextAngle + bigHeight / 2) + " l" + -smallWidth + " 0 Z";
-                            chevron.setAttribute("d", path);
-                            chevron.setAttribute("fill", "red");
-                            this.attitude_pitch_grads[0].appendChild(chevron);
                         }
                     }
                     angle = nextAngle;

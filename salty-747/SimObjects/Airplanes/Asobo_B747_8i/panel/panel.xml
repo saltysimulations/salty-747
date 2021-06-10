@@ -385,9 +385,9 @@
 		  <Text>\JETT NOZ ON</Text>
 		  <Condition Suffix="">
 		  	<And>
-		    	<Equal>
-			  		<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
-			  		<Constant>1</Constant>
+				<Equal>
+					<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
+					<Constant>1</Constant>
 				</Equal>
 				<Equal>
 			  		<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_R" unit="Enum"/>
@@ -397,7 +397,7 @@
 		  </Condition>
 		  <Condition Suffix=" L">
 		    <Equal>
-			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
+				<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_L" unit="Enum"/>
 			  	<Constant>1</Constant>
 			</Equal>
 		  </Condition>
@@ -517,45 +517,6 @@
 	<!-- Voices Alerts -->
   
 	<VoicesAlerts>
-
-		<Alert>
-			<Type>SoundOnly</Type>
-			<SoundEvent>aural_minimums</SoundEvent>
-			<Condition>
-				<StateMachine>
-					<State id="Under" value="0">
-						<Transition to="Over">
-							<GreaterEqual>
-								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
-								<Add>
-									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
-									<Constant>55</Constant>
-								</Add>
-							</GreaterEqual>
-						</Transition>
-					</State>
-					<State id="Over" value="0">
-						<Transition to="Alerting">
-							<LowerEqual>
-								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
-								<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
-							</LowerEqual>
-						</Transition>
-					</State>
-					<State id="Alerting" value="1">
-						<Transition to="Under">
-							<Lower>
-								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
-								<Subtract>
-									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
-									<Constant>1</Constant>
-								</Subtract>
-							</Lower>
-						</Transition>
-					</State>
-				</StateMachine>
-			</Condition>
-		</Alert>
 
 		<Alert>
 			<Type>Warning</Type>
