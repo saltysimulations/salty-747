@@ -618,7 +618,9 @@ var Jet_PFD_FlightDirector;
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 1);
                     }
                     if ((vertSpeed >= 600 || fdPhase == 2) && altAboveGround > 10) {  
-                        SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
+                        if (!Simplane.getAutoPilotFLCActive()) {
+                            SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
+                        }
                         let blendfactor = (vertSpeed) / 350;
                         currentFDPitch = Math.min((Simplane.getFlightDirectorPitch() - 7 + blendfactor), Simplane.getFlightDirectorPitch());
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 2);
