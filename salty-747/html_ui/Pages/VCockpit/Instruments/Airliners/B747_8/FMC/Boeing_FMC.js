@@ -110,7 +110,10 @@ class Boeing_FMC extends FMCMainDisplay {
                 if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
                     this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
                 }
-                if (!Simplane.getAutoPilotFLCActive()) {
+                if (displayedAltitude == Math.round(altitude/100) * 100){
+
+                }
+                else if (!Simplane.getAutoPilotFLCActive()) {
                     if (displayedAltitude >= altitude + 2000) {
                         SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
                         this.setThrottleMode(ThrottleMode.CLIMB);
