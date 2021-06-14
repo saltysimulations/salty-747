@@ -575,24 +575,63 @@ class Boeing_FMC extends FMCMainDisplay {
         this._isRouteActivated = true;
         SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 1);
     }
-    setBoeingDirectTo(directToWaypointIdent, directToWaypointIndex, callback = EmptyCallback.Boolean) {
+    setBoeingDirectTo(directToWaypointIdent, directToWaypointIndex, isDepartureWaypoint, callback = EmptyCallback.Boolean) {
         let waypoints = this.flightPlanManager.getWaypoints();
         let waypointIndex = waypoints.findIndex(w => { return w.ident === directToWaypointIdent; });
-        if (waypointIndex === -1) {
-            waypoints = this.flightPlanManager.getApproachWaypoints();
-            if (waypoints) {
-                let waypoint = waypoints.find(w => { return w.ident === directToWaypointIdent; });
-                if (waypoint) {
-                    return this.flightPlanManager.activateDirectTo(waypoint.icao, () => {
-                        return callback(true);
-                    });
+
+        //is approach wp, they will all be grouped together as -1
+        if (waypointIndex === -1) 
+        {
+            let appWaypoints = this.flightPlanManager.getApproachWaypoints();
+            if(appWaypoints) 
+            {
+                let waypoint = appWaypoints.find(w => { return w.ident === directToWaypointIdent; });
+                if(waypoint) 
+                {
+                    SimVar.SetSimVarValue("C:fs9gps:FlightPlanIsActiveApproach", "Bool", true);
+                    this.flightPlanManager._activeWaypointHasChanged = true;
+                    this.flightPlanManager.activateDirectTo(waypoint.icao);
+                    this.flightPlanManager._gpsActiveWaypointIdent = directToWaypointIdent;
+                    this.flightPlanManager.updateWaypointIndex();
+                    this.flightPlanManager.updateCurrentApproach(); 
+                    return callback(true);
+
                 }
             }
         }
+        if (isDepartureWaypoint)
+        {
+            let depWaypoints = this.flightPlanManager.getDepartureWaypoints()
+            if(depWaypoints)
+            {
+                let waypoint = depWaypoints.find(w => { return w.ident === directToWaypointIdent; });
+                this.flightPlanManager._activeWaypointHasChanged = true;
+                this.flightPlanManager.activateDirectTo(waypoint.icao);
+                this.flightPlanManager._gpsActiveWaypointIdent = directToWaypointIdent;
+                //this.flightPlanManager.updateWaypointIndex();
+                return callback(true);
+            }
+            
+
+        } 
+        
         if (waypointIndex > -1) {
+            /*numDepWP = parseInt(this.flightPlanManager.getDepartureWaypointsCount());
+            if(numDepWP>0)
+            {
+                this.removeDeparture();
+                let prep = -1*numDepWP;
+
+            } else {
+                let prep = 0;
+                
+            }*/
+            this.flightPlanManager.removeDeparture();
             this.setDepartureIndex(-1, () => {
+                
                 let i = directToWaypointIndex;
                 let removeWaypointMethod = () => {
+                    //keep removing waypoints through recursion, untill selected index
                     if (i < waypointIndex) {
                         console.log("Remove Waypoint " + this.flightPlanManager.getWaypoints()[directToWaypointIndex].ident);
                         this.flightPlanManager.removeWaypoint(directToWaypointIndex, false, () => {
@@ -606,8 +645,7 @@ class Boeing_FMC extends FMCMainDisplay {
                 };
                 removeWaypointMethod();
             });
-        }
-        else {
+        } else {
             callback(false);
         }
     }

@@ -85,7 +85,7 @@ class B747_8_FMC_LegsPage {
                             }
                             else if (value.length > 0) {
                                 fmc.clearUserInput();
-                                fmc.setBoeingDirectTo(value, ii + 1, (result) => {
+                                fmc.setBoeingDirectTo(value, ii + 1, isDepartureWaypoint, (result) => {
                                     if (result) {
                                         fmc.activateRoute();
                                         B747_8_FMC_LegsPage.ShowPage1(fmc);
@@ -114,6 +114,18 @@ class B747_8_FMC_LegsPage {
                             }
                             else if (isApproachWaypoint) {
                                 rows[2 * i + 1][0] += " [AP]";
+                            }
+                            let fpWaypoints = fmc.flightPlanManager.getWaypoints();
+                            
+                            let waypointIndex = fpWaypoints.findIndex(w => { return w.ident === waypoint.ident; });
+
+                            if ( waypointIndex === undefined ) {
+
+                                rows[2 * i][0] += (" wp: "+ "no data");
+                            }
+                            else {
+
+                                rows[2 * i][0] += (" wp: "+ waypointIndex.toString());
                             }
                         }
                         if (isEnRouteWaypoint) {
@@ -224,6 +236,18 @@ class B747_8_FMC_LegsPage {
                 B747_8_FMC_LegsPage.ShowPage1(fmc, currentPage + 1);
             }
         };
+        //for debug deleting through inputs
+        if(B747_8_FMC_LegsPage.DEBUG_SHOW_WAYPOINT_PHASE)
+        {
+            fmc.onLeftInput[5] = () => {
+
+                //let index = parseInt(fmc.inOut);
+
+                //fmc.flightPlanManager.removeWaypoint(index);
+                fmc.removeDeparture();
+
+            };
+        }
     }
 }
 B747_8_FMC_LegsPage.DEBUG_SHOW_WAYPOINT_PHASE = false;
