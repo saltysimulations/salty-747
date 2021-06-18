@@ -1,4 +1,4 @@
-# Salty Simulations 747-8 Mod
+# <img src="https://user-images.githubusercontent.com/26278705/120645097-55d3de00-c478-11eb-8b9b-6ec866f6c882.png" width="300" />
 
 [![Discord](https://img.shields.io/discord/698720578055700650?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2&style=flat-square)](https://discord.gg/S4PJDwk)
 
