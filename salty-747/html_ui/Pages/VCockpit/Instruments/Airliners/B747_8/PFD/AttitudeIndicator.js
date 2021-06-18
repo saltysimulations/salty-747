@@ -346,6 +346,19 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.slipSkid.setAttribute("stroke-width", "1.5");
                 this.attitude_bank_root.appendChild(this.slipSkid);
             }
+            {
+                this.pitchLimitIndicatorGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                this.leftPLI = document.createElementNS(Avionics.SVG.NS, "path");
+                this.leftPLI.setAttribute("d", "M -70 -20 L -64 -20 L -70 -29 L -64 -20 L -58 -20 L -64 -29 L -58 -20 L -52 -20 L -58 -29 L -52 -20 L -46 -20 L -46 -14 L -46 -20 Z");
+                this.rightPLI = document.createElementNS(Avionics.SVG.NS, "path");
+                this.rightPLI.setAttribute("d", "M 70 -20 L 64 -20 L 70 -29 L 64 -20 L 58 -20 L 64 -29 L 58 -20 L 52 -20 L 58 -29 L 52 -20 L 46 -20 L 46 -14 L 46 -20 Z");
+                this.pitchLimitIndicatorGroup.setAttribute("stroke", "#ffc400");
+                this.pitchLimitIndicatorGroup.setAttribute("stroke-width", "2");
+                this.pitchLimitIndicatorGroup.setAttribute("stroke-opacity", "1.0");
+                this.pitchLimitIndicatorGroup.appendChild(this.leftPLI);
+                this.pitchLimitIndicatorGroup.appendChild(this.rightPLI);
+                this.attitude_bank_root.appendChild(this.pitchLimitIndicatorGroup);
+            }
             //New CenterRectGroup allows FD bars to be drawn correctly underneath center rect.
             {
                 let centerRectGroup = document.createElementNS(Avionics.SVG.NS, "g");
@@ -462,6 +475,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
             this.flightDirector.refresh(_deltaTime);
         }
         this.updateRadioAltitude(_deltaTime);
+        this.updatePLI();
     }
     updateRadioAltitude(_dt) {
         let val = Math.floor(this.radioAltitudeValue);
@@ -493,6 +507,25 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
         else {
             this.radioAltitudeGroup.setAttribute("visibility", "hidden");
             this.radioRefreshTimer = 0.0;
+        }
+    }
+    updatePLI() {
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        if (IRSState == 2) {
+            if ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "percent over 100") > 0) || Simplane.getIndicatedSpeed() < SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 60) {
+                let alpha = SimVar.GetSimVarValue("INCIDENCE ALPHA", "degrees");
+                if(Simplane.getGroundSpeed() < 5) {
+                    alpha = 0;
+                }
+                let stallAlpha = SimVar.GetSimVarValue("STALL ALPHA", "degrees");
+                let pitchDiff = stallAlpha - alpha;
+                let y = Utils.Clamp(pitchDiff * 6.5, -100, 100);
+                this.pitchLimitIndicatorGroup.setAttribute("transform", "translate(0, " + -y + ")");
+                this.pitchLimitIndicatorGroup.style.visibility = "visible";
+            }
+        }
+        else {
+            this.pitchLimitIndicatorGroup.style.visibility = "hidden";
         }
     }
 }
