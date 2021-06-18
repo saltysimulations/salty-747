@@ -510,16 +510,19 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
         }
     }
     updatePLI() {
-        if ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "percent over 100") > 0) || Simplane.getIndicatedSpeed() < SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 60) {
-            let alpha = SimVar.GetSimVarValue("INCIDENCE ALPHA", "degrees");
-            if(Simplane.getGroundSpeed() < 5) {
-                alpha = 0;
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        if (IRSState == 2) {
+            if ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "percent over 100") > 0) || Simplane.getIndicatedSpeed() < SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 60) {
+                let alpha = SimVar.GetSimVarValue("INCIDENCE ALPHA", "degrees");
+                if(Simplane.getGroundSpeed() < 5) {
+                    alpha = 0;
+                }
+                let stallAlpha = SimVar.GetSimVarValue("STALL ALPHA", "degrees");
+                let pitchDiff = stallAlpha - alpha;
+                let y = Utils.Clamp(pitchDiff * 6.5, -100, 100);
+                this.pitchLimitIndicatorGroup.setAttribute("transform", "translate(0, " + -y + ")");
+                this.pitchLimitIndicatorGroup.style.visibility = "visible";
             }
-            let stallAlpha = SimVar.GetSimVarValue("STALL ALPHA", "degrees");
-            let pitchDiff = stallAlpha - alpha;
-            let y = Utils.Clamp(pitchDiff * 6.5, -100, 100);
-            this.pitchLimitIndicatorGroup.setAttribute("transform", "translate(0, " + -y + ")");
-            this.pitchLimitIndicatorGroup.style.visibility = "visible";
         }
         else {
             this.pitchLimitIndicatorGroup.style.visibility = "hidden";
