@@ -156,6 +156,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
         this.setEconClimbSpeed();
+        this.setEconCruiseSpeed();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -455,6 +456,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         return speed;
     }
+
+    /* Calculate and set Econ Climb Speed - placeholder - needs real world data to refine */
     setEconClimbSpeed() {
         let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;      
         let mach = 0.845;
@@ -463,19 +466,35 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         SimVar.SetSimVarValue("L:SALTY_ECON_CLB_SPEED", "knots", clbSpeed);
         SimVar.SetSimVarValue("L:SALTY_VNAV_CLB_MODE" , "Enum", 0);
     }
+
+    /* Sets VNAV CLB speed restriction and altitude */
     setSpeedRestriction(_speed, _altitude) {
         SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION", "knots", _speed);
         SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION_ALT", "feet", _altitude);
     }
-    getCrzManagedSpeed(highAltitude = false) {
-        //Commands lowest of UP + 100, 350kts or M.845.
-        let mach = 0.845
-        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+
+    /* Calculate and set Econ Cruise Speed - placeholder - needs real world data to refine */
+    setEconCruiseSpeed() {
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;      
+        let mach = 0.845;
         let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
-        let speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        let crzSpeed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
         //UP + 20 or 250 below 10000
-        if (!highAltitude && Simplane.getAltitude() < 10000) {
-            speed = Math.max(flapsUPmanueverSpeed + 20, 250);
+        if (this.cruiseFlightLevel < 100) {
+            crzSpeed = Math.max(flapsUPmanueverSpeed + 20, 250);
+        }
+        SimVar.SetSimVarValue("L:SALTY_ECON_CRZ_SPEED", "knots", crzSpeed);
+        SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum", 0);
+    }
+    getCrzManagedSpeed() {
+        let crzMode = SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum");
+        let speed = 340;
+        if (crzMode == 0) {
+            speed = SimVar.GetSimVarValue("L:SALTY_ECON_CRZ_SPEED", "knots");
+        }
+        else if (crzMode == 4) {
+            let mach = SimVar.GetSimVarValue("L:SALTY_ECON_CRZ_MACH", "mach");
+            speed = SimVar.GetGameVarValue("FROM MACH TO KIAS", "knots", mach);
         }
         return speed;
     }
