@@ -481,15 +481,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let crzSpeed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
         //UP + 20 or 250 below 10000
         if (this.cruiseFlightLevel < 100) {
-            crzSpeed = Math.max(flapsUPmanueverSpeed + 20, 250);
+            crzSpeed = Math.max(flapsUPmanueverSpeed + 40, 250);
         }
         SimVar.SetSimVarValue("L:SALTY_ECON_CRZ_SPEED", "knots", crzSpeed);
         SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum", 0);
     }
+
+    /* Returns VNAV cruise speed target in accordance with active VNAV mode */
     getCrzManagedSpeed() {
+        let altitude = Simplane.getAltitude();
         let crzMode = SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum");
+        if (crzMode !== 2) {
+            if (altitude > 28000) {
+                this.managedMachOn();
+            }
+            else {
+                this.managedMachOff();
+            }
+        }
         let speed = 340;
-        if (crzMode == 0) {
+        if (crzMode == 0 || crzMode == 3) {
             speed = SimVar.GetSimVarValue("L:SALTY_ECON_CRZ_SPEED", "knots");
         }
         else if (crzMode == 4) {
@@ -555,8 +566,21 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let cleanApproachSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
         return cleanApproachSpeed;
     }
+
+    /* Turns off VNAV Mach speed mode */
+    managedMachOff() {
+        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+        SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
+    }
+
+    /* Turns on VNAV Mach speed mode */
+    managedMachOn() {
+        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
+        SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
+    }
+
+    /* Calculates VREF for Flap 25 using Polynomial regression derived from FCOM data */
     updateVREF25() {
-        //Polynomial regression derived from FCOM published VREF25
         let coefficients = [
            -1.5467919598658073e+003,
             1.5106421359771541e-002,
@@ -575,8 +599,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
          }
          SimVar.SetSimVarValue("L:SALTY_VREF25", "knots", Math.round(vRef25));
     }
+
+    /* Calculates VREF for Flap 30 using Polynomial regression derived from FCOM data */
     updateVREF30() {
-        //Polynomial regression derived from FCOM published VREF30
         let coefficients = [
            -1.0271030433117912e+003,
             1.0235086042112870e-002,

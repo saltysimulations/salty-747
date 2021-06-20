@@ -391,6 +391,8 @@ class Boeing_FMC extends FMCMainDisplay {
         SimVar.SetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number", 0);
         if (this.getIsVNAVActive()) {
             SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 2);
+            SimVar.SetSimVarValue("L:SALTY_VNAV_CLB_MODE", "Enum", 0);
+            SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE", "Enum", 0);
         }
     }
     activateTHRREFMode() {
