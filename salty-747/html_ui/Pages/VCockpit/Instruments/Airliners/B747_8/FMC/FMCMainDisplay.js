@@ -55,6 +55,8 @@ class FMCMainDisplay extends BaseAirliners {
         this.vApp = NaN;
         this.perfApprMDA = NaN;
         this.perfApprDH = NaN;
+        this.flightPhaseHasChangedToCruise = false;
+        this.flightPhaseHasChangedToDescent = false;
         this._flightPhases = ["PREFLIGHT", "TAXI", "TAKEOFF", "CLIMB", "CRUISE", "DESCENT", "APPROACH", "GOAROUND"];
         if (!SimVar.GetSimVarValue("SIM ON GROUND","bool")) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
@@ -177,7 +179,7 @@ class FMCMainDisplay extends BaseAirliners {
             col = 0;
         }
         if (label === "__FMCSEPARATOR") {
-            label = "------------------------";
+            label = "---------------------------";
         }
         if (label !== "") {
             let color = label.split("[color]")[1];
@@ -1731,6 +1733,7 @@ class FMCMainDisplay extends BaseAirliners {
                     if (altitude >= 0.98 * cruiseFlightLevel) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CRUISE;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+                        this.flightPhaseHasChangedToCruise = true;
                     }
                 }
             }
@@ -1741,6 +1744,7 @@ class FMCMainDisplay extends BaseAirliners {
                     if (altitude < 0.90 * cruiseFlightLevel) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+                        this.flightPhaseHasChangedToDescent = true;
                     }
                 }
                 //Force DESCENT flight phase if at approx TOD based on CRZ level

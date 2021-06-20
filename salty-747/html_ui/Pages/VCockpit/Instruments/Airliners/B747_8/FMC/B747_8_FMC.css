@@ -63,6 +63,11 @@ fmc-b747-8-main-display {
 .inop {
   color: #666666; }
 
+.magenta {
+  color: #FF00FF; }
+  
+  
+
 fmc-b747-8-main-display::before {
   content: " ";
   display: block;

@@ -1116,6 +1116,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             .replace(/{yellow}/g, "<span class='yellow'>")
             .replace(/{green}/g, "<span class='green'>")
             .replace(/{red}/g, "<span class='red'>")
+            .replace(/{magenta}/g, "<span class='magenta'>")
             .replace(/{inop}/g, "<span class='inop'>")
             .replace(/{small}/g, "<span class='s-text'>")
             .replace(/{sp}/g, "&nbsp;")
@@ -1134,7 +1135,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             color = "white";
         }
         this._title = content.split("[color]")[0];
-        this._titleElement.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+        this._titleElement.classList.remove("white", "blue", "yellow", "green", "red", "inop", "magenta");
         this._titleElement.classList.add(color);
         this._titleElement.innerHTML = this._title;
     }
@@ -1198,7 +1199,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             col = 0;
         }
         if (label === "__FMCSEPARATOR") {
-            label = "------------------------";
+            label = "---------------------------";
         }
         if (label !== "") {
             let color = label.split("[color]")[1];
@@ -1206,7 +1207,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 color = "white";
             }
             let e = this._labelElements[row][col];
-            e.classList.remove("white", "blue", "yellow", "green", "red", "inop");
+            e.classList.remove("white", "blue", "yellow", "green", "red", "inop", "magenta");
             e.classList.add(color);
             label = label.split("[color]")[0];
         }
