@@ -179,7 +179,17 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             B747_8_FMC_NavRadioPage.ShowPage(this);
         };
         this.onVNAV = () => {
-            B747_8_FMC_VNAVPage.ShowPage1(this);
+            if (Simplane.getCurrentFlightPhase() <= FlightPhase.FLIGHT_PHASE_CLIMB) {
+                B747_8_FMC_VNAVPage.ShowPage1(this);
+            }
+            else if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                B747_8_FMC_VNAVPage.ShowPage2(this);
+                this.flightPhaseHasChangedToCruise === false;
+            }
+            else {
+                B747_8_FMC_VNAVPage.ShowPage3(this);
+                this.flightPhaseHasChangedToDescent === false;
+            }
         };
         this.onProg = () => {
             B747_8_FMC_ProgPage.ShowPage1(this);

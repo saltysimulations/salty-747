@@ -11,15 +11,16 @@ class B747_8_FMC_VNAVPage {
                     fmc.setEconClimbSpeed();
                 }
                 if (fmc.flightPhaseHasChangedToCruise === true) {
-                    B747_8_FMC_VNAVPage.ShowPage2(fmc);
                     fmc.flightPhaseHasChangedToCruise === false;
+                    B747_8_FMC_VNAVPage.ShowPage2(fmc);
                 }
-                if (fmc.flightPhaseHasChangedToDescent === true) {
-                    B747_8_FMC_VNAVPage.ShowPage3(fmc);
+                else if (fmc.flightPhaseHasChangedToDescent === true) {
                     fmc.flightPhaseHasChangedToDescent === false;
+                    B747_8_FMC_VNAVPage.ShowPage3(fmc);
                 }
-
-                B747_8_FMC_VNAVPage.ShowPage1(fmc);
+                else {
+                    B747_8_FMC_VNAVPage.ShowPage1(fmc);
+                }
             }
         };
         
@@ -173,10 +174,16 @@ class B747_8_FMC_VNAVPage {
         B747_8_FMC_VNAVPage._timer = 0;
         fmc.pageUpdate = () => {
             B747_8_FMC_VNAVPage._timer++;
-            if (B747_8_FMC_VNAVPage._timer >= 100) {
-                B747_8_FMC_VNAVPage.ShowPage2(fmc);
+            if (B747_8_FMC_VNAVPage._timer >= 35) {
+                if (fmc.flightPhaseHasChangedToDescent === true) {
+                    fmc.flightPhaseHasChangedToDescent === false;
+                    B747_8_FMC_VNAVPage.ShowPage3(fmc);
+                }
+                else {
+                    B747_8_FMC_VNAVPage.ShowPage2(fmc);
+                }
             }
-        };        
+        };
         let crzPageTitle = "ACT ECON CRZ"
         let crzSpeedMode = "\xa0ECON SPD"
         if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") == 1) {
