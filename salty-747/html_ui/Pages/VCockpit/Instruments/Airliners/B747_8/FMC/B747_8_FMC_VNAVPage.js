@@ -290,13 +290,17 @@ class B747_8_FMC_VNAVPage {
                     SimVar.SetSimVarValue("L:SALTY_ECON_CRZ_MACH", "mach", value);
                     SimVar.SetSimVarValue("L:SALTY_ECON_CRZ_SPEED", "knots", speedFromMach);
                     SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum", 4);
-                    fmc.managedMachOn();
+                    if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                        fmc.managedMachOn();
+                    }
                 }
                 else if (150 < value && value < 360) {
                     value = parseFloat(value);
                     SimVar.SetSimVarValue("L:SALTY_ECON_CRZ_SPEED", "knots", value);
                     SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum", 3);
-                    fmc.managedMachOff();
+                    if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                        fmc.managedMachOff();
+                    }
                 }
                 else {
                     fmc.showErrorMessage("INVALID ENTRY");
