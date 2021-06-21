@@ -3,7 +3,7 @@ class B747_8_FMC_VNAVPage {
     /* PAGE 1 - VNAV CLIMB - */
     static ShowPage1(fmc) {
         
-        /* Climb Page Refresh Timer - Recalculates ECON speed if in use to account for weight change since last refresh */
+        /* Climb Page Refresh Timer */
         fmc.clearDisplay();
         B747_8_FMC_VNAVPage._timer = 0;
         fmc.pageUpdate = () => {
