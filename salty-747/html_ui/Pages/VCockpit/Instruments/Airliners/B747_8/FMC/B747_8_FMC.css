@@ -65,8 +65,6 @@ fmc-b747-8-main-display {
 
 .magenta {
   color: #FF00FF; }
-  
-  
 
 fmc-b747-8-main-display::before {
   content: " ";

@@ -548,6 +548,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let desMode = SimVar.GetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum");
         let speed = 340;
         if (altitude <= 10500) {
+            if (Simplane.getAutoPilotMachModeActive() && desMode !== 1) {
+                fmc.managedMachOff();
+            }
             return speed = 240;
         }
         if (desMode == 0 || desMode == 2) {

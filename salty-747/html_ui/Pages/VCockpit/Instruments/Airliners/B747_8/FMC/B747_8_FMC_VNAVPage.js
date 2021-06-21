@@ -436,13 +436,14 @@ class B747_8_FMC_VNAVPage {
             else {
                 fmc.clearUserInput();
                 if (value.charAt(0) == ".") {
-                    value = value.substring(0);
+                    /* value = value.substring(0);
                     value = parseFloat(value);
                     let speedFromMach = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", value);
                     SimVar.SetSimVarValue("L:SALTY_ECON_DES_MACH", "mach", value);
                     SimVar.SetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots", speedFromMach);
                     SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum", 3);
                     fmc.managedMachOn();
+                    */
                 }
                 else if (150 < value && value < 360) {
                     value = parseFloat(value);
