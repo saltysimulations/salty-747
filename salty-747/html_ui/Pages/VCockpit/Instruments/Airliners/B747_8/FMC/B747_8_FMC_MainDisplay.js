@@ -155,8 +155,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
         this.saltyBase.init();
-        this.setEconClimbSpeed();
-        this.setEconCruiseSpeed();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -164,6 +162,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.units = false;
             this.useLbs = true;
         }
+        this.updateVREF30();
         this.onInit = () => {
             B747_8_FMC_InitRefIndexPage.ShowPage1(this);
         };
@@ -226,7 +225,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.updateVREF30();
             this.timer = 0;
         }
-        this.timer ++;
         this.saltyBase.update(this.isElectricityAvailable());
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
@@ -235,6 +233,18 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.units = false;
             this.useLbs = true;
         }
+        if (this.timer == 100) {
+            if (SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_MODE" , "Enum") === 0) {
+                this.setEconClimbSpeed();
+            }
+            if (SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum") === 0) {
+                this.setEconCruiseSpeed();
+            }
+            if (SimVar.GetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum") === 0) {
+                this.setEconDescentSpeed();
+            }
+        }
+        this.timer ++;
     }
     onInputAircraftSpecific(input) {
         console.log("B747_8_FMC_MainDisplay.onInputAircraftSpecific input = '" + input + "'");
@@ -468,9 +478,15 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
 
     /* Sets VNAV CLB speed restriction and altitude */
-    setSpeedRestriction(_speed, _altitude) {
-        SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION", "knots", _speed);
-        SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION_ALT", "feet", _altitude);
+    setSpeedRestriction(_speed, _altitude, _isDescent) {
+        if (!_isDescent) {
+            SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION", "knots", _speed);
+            SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION_ALT", "feet", _altitude);
+        }
+        else {
+            SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION_DES", "knots", _speed);
+            SimVar.SetSimVarValue("L:SALTY_SPEED_RESTRICTION_DES_ALT", "feet", _altitude);
+        }
     }
 
     /* Calculate and set Econ Cruise Speed - placeholder - needs real world data to refine */
@@ -493,9 +509,27 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum", 0);
     }
 
+    /* Calculate and set Econ Descent Speed - placeholder - needs real world data to refine */
+    setEconDescentSpeed() {
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
+        let mach = 0.845;
+        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
+        let desSpeed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        if (desSpeed == machlimit) {
+            this.managedMachOn();
+        }
+        else {
+            this.managedMachOff();
+        }
+        if (this.cruiseFlightLevel < 105) {
+            desSpeed = 240;
+        }
+        SimVar.SetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots", desSpeed);
+        SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE", "Enum", 0);
+    }
+
     /* Returns VNAV cruise speed target in accordance with active VNAV mode */
     getCrzManagedSpeed() {
-        let altitude = Simplane.getAltitude();
         let crzMode = SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum");
         let speed = 340;
         if (crzMode == 0 || crzMode == 3) {
@@ -507,17 +541,21 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         return speed;
     }
+    
+    /* Returns VNAV descent speed target in accordance with active VNAV mode */
     getDesManagedSpeed() {
-        //Commands lowest of 340kts or M.845 then 240 below 10000.
-        let mach = 0.845
-        let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
-        let speed = Math.min(340, machlimit);
-        if (machlimit > 340) {
-            SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
-            SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
+        let altitude = Simplane.getAltitude();
+        let desMode = SimVar.GetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum");
+        let speed = 340;
+        if (altitude <= 10500) {
+            return speed = 240;
         }
-        if (Simplane.getAltitude() < 10500) {
-            speed = Math.min(speed, 240);
+        if (desMode == 0 || desMode == 2) {
+            speed = SimVar.GetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots");
+        }
+        else if (desMode == 3) {
+            let mach = SimVar.GetSimVarValue("L:SALTY_ECON_DES_MACH", "mach");
+            speed = SimVar.GetGameVarValue("FROM MACH TO KIAS", "knots", mach);
         }
         return speed;
     }
