@@ -479,6 +479,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let mach = 0.845;
         let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         let crzSpeed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        if (crzSpeed == machlimit) {
+            this.managedMachOn();
+        }
+        else {
+            this.managedMachOff();
+        }
         //UP + 20 or 250 below 10000
         if (this.cruiseFlightLevel < 100) {
             crzSpeed = Math.max(flapsUPmanueverSpeed + 40, 250);
@@ -491,14 +497,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     getCrzManagedSpeed() {
         let altitude = Simplane.getAltitude();
         let crzMode = SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum");
-        if (crzMode !== 2) {
-            if (altitude > 28000) {
-                this.managedMachOn();
-            }
-            else {
-                this.managedMachOff();
-            }
-        }
         let speed = 340;
         if (crzMode == 0 || crzMode == 3) {
             speed = SimVar.GetSimVarValue("L:SALTY_ECON_CRZ_SPEED", "knots");

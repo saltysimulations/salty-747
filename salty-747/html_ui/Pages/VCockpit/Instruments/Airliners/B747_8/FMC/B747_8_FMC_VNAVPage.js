@@ -54,7 +54,7 @@ class B747_8_FMC_VNAVPage {
         /* LSK 1L  - Cruise Level */
         let crzAltCell = "□□□□□";
         if (fmc.cruiseFlightLevel) {
-            crzAltCell = "FL" + fmc.cruiseFlightLevel + "[color]magenta";
+            crzAltCell = "FL" + fmc.cruiseFlightLevel;
             if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB) {
                 crzAltCell += "[color]magenta";
             }
