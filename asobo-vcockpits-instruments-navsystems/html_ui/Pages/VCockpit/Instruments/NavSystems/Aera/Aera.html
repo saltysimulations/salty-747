@@ -20,20 +20,23 @@
                         <glasscockpit-airspeed-indicator id="Airspeed" NoColor="True"></glasscockpit-airspeed-indicator>
                         <glasscockpit-horizontal-compass id="Compass"></glasscockpit-horizontal-compass>
                         <glasscockpit-cdi id="CDI"></glasscockpit-cdi>
+                        <glasscockpit-attitude-indicator id="Horizon" background="False"></glasscockpit-attitude-indicator>
                     </div>
                     <div id="Map" class="page">
                         <div id="Map_Elements">
                             <map-instrument id="MapInstrument" bing-id="MFD" config-path="/Pages/VCockpit/Instruments/NavSystems/AS1000/MFD/" show-flightplan="true" hide-flightplan-if-bushtrip="true"></map-instrument>
-                            <svg class="mapLess" viewBox="-2 -2 54 54">
-                                <circle r="25" cx="25" cy="25" fill="#bbbbbb" stroke="#444444" stroke-width="2" />
-                                <polygon points="45,22 45,28 5,28 5,22" fill="white" stroke="black" />
-                            </svg>
-                            <svg class="mapPlus" viewBox="-2 -2 54 54">
-                                <circle r="25" cx="25" cy="25" fill="#bbbbbb" stroke="#444444" stroke-width="2" />
-                                <polygon points="22,5 28,5 28,22 45,22 45,28 28,28 28,45 22,45 22,28 5,28 5,22 22,22" fill="white" stroke="black" />
-                            </svg>
-                            <div class="mapCenter">
-                                <img src="/Pages/VCockpit/Instruments/Shared/Map/Images/Outlined/ICON_MAP_PLANE.svg" />
+                            <div id="Interactions">
+                                <svg class="mapLess" viewBox="-2 -2 54 54">
+                                    <circle r="25" cx="25" cy="25" fill="#bbbbbb" stroke="#444444" stroke-width="2" />
+                                    <polygon points="45,22 45,28 5,28 5,22" fill="white" stroke="black" />
+                                </svg>
+                                <svg class="mapPlus" viewBox="-2 -2 54 54">
+                                    <circle r="25" cx="25" cy="25" fill="#bbbbbb" stroke="#444444" stroke-width="2" />
+                                    <polygon points="22,5 28,5 28,22 45,22 45,28 28,28 28,45 22,45 22,28 5,28 5,22 22,22" fill="white" stroke="black" />
+                                </svg>
+                                <div class="mapCenter">
+                                    <img src="/Pages/VCockpit/Instruments/Shared/Map/Images/Outlined/ICON_MAP_PLANE.svg" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -462,6 +465,65 @@
                                     </td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+                    <div id="LightingConfigs" class="page">
+                        <div class="master">
+                            <div class="title">Master</div>
+                            <div id="LightingMasterValue">50%</div>
+                            <div class="gradientButton" id="LightingMasterLess">
+                                <svg class="image" viewBox="0 0 50 50">
+                                    <defs>
+                                        <linearGradient id="triangleGradient" x1="0" y1="0" x2="0" y2="100%">
+                                            <stop offset="0%" stop-color="aqua" />
+                                            <stop offset="50%" stop-color="white" />
+                                            <stop offset="100%" stop-color="aqua" />
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon points="50,50 50,0 0,25" fill="url(#triangleGradient)" />
+                                    <polygon points="15,23 45,23 45,27 15,27" fill="black" />
+                                </svg>
+                            </div>
+
+                            <svg id="MasterBacklightBgSVG" viewBox="0 0 100 30">
+                                <rect x="0" y="28" height="2" width="100" fill="grey" />
+                                <polygon id="MasterBacklightTriangle" points="0,30 100,0 100,30" fill="aqua" />
+                            </svg>
+
+                            <svg id="MasterBacklightCursorSVG" viewBox="0 0 10 30">
+                                <defs>
+                                    <linearGradient id="cursorGradient" x1="0" y1="0" x2="0" y2="100%">
+                                        <stop offset="0%" stop-color="aqua" />
+                                        <stop offset="30%" stop-color="white" />
+                                        <stop offset="100%" stop-color="aqua" />
+                                    </linearGradient>
+                                    <linearGradient id="cursorLineGradient" x1="0" y1="0" x2="0" y2="100%">
+                                        <stop offset="0%" stop-color="aqua" />
+                                        <stop offset="100%" stop-color="#353535" />
+                                    </linearGradient>
+                                </defs>
+                                <rect x="0" y="0" height="30" width="10" fill="url(#cursorGradient)" stroke="#353535" stroke-width="2" rx="3" />
+                                <rect x="1" y="3" height="2" width="8" fill="url(#cursorLineGradient)" />
+                                <rect x="1" y="9" height="2" width="8" fill="url(#cursorLineGradient)" />
+                                <rect x="1" y="15" height="2" width="8" fill="url(#cursorLineGradient)" />
+                                <rect x="1" y="20" height="2" width="8" fill="url(#cursorLineGradient)" />
+                                <rect x="1" y="25" height="2" width="8" fill="url(#cursorLineGradient)" />
+                            </svg>
+
+                            <div class="gradientButton" id="LightingMasterMore">
+                                <svg class="image" viewBox="0 0 50 50">
+                                    <defs>
+                                        <linearGradient id="triangleGradient" x1="0" y1="0" x2="0" y2="100%">
+                                            <stop offset="0%" stop-color="aqua" />
+                                            <stop offset="50%" stop-color="white" />
+                                            <stop offset="100%" stop-color="aqua" />
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon points="0,50 0,0 50,25" fill="url(#triangleGradient)" />
+                                    <polygon points="5,23 16,23 16,12 20,12 20,23 31,23 31,27 20,27 20,38 16,38 16,27 5,27" fill="black" />
+                                </svg>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -1119,6 +1181,7 @@
             </div>
             <div id="RightMenu">
                 <div class="gradientButton" id="PFDButton">
+                    <img class="img" src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_SMALL_TERRAIN_1.png" />
                     <div class="title">3D Vision</div>
                 </div>
                 <div class="gradientButton" id="MapButton">
@@ -1138,6 +1201,7 @@
                     <div class="title">Flight Plan</div>
                 </div>
                 <div class="gradientButton" id="MenuButton">
+                    <img class="img" src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_BUTTONBAR_HOME.png" />
                     <div class="title">Main Menu</div>
                 </div>
             </div>

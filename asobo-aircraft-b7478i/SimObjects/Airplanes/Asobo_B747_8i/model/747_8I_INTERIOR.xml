@@ -118,12 +118,12 @@
 					<FRAME_FULL>9</FRAME_FULL>
 					<FRAME_COUNT>9</FRAME_COUNT>
 				</DefaultTemplateParameters>
-				<UseTemplate Name="ASOBO_HANDLING_Lever_Spoilers_Template">
+				<UseTemplate Name="ASOBO_HANDLING_Lever_Spoilers_Template">					
 					<NODE_ID>lever_speed_brake</NODE_ID>
 					<ANIM_NAME>speed_brake_lever</ANIM_NAME>
 					<TYPE>AIRLINER</TYPE>
-					<IGNORE_GATE>1</IGNORE_GATE>
 					<PHYSICAL_AUTOSPOILER>True</PHYSICAL_AUTOSPOILER>
+					<RETRACT_ARMED_FULL>True</RETRACT_ARMED_FULL>
 					<STEPS_NUMBER>2</STEPS_NUMBER>
 					<DRAG_SPEED>10</DRAG_SPEED>
 					<DRAG_ANIMATION_VARIABLE_TYPE>O</DRAG_ANIMATION_VARIABLE_TYPE>

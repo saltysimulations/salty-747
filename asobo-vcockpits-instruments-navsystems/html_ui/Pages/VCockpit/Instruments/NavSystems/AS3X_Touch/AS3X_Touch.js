@@ -610,10 +610,10 @@ class AS3X_Touch_TopBar extends NavSystemElement {
                 Avionics.Utils.diffAndSet(this.xpdrMode, "ALT");
                 break;
         }
-        let nextWaypoint = this.gps.currFlightPlanManager.getActiveWaypoint(false, true);
+        let nextWaypoint = this.gps.currFlightPlanManager.getActiveWaypoint(true);
         if (nextWaypoint) {
             Avionics.Utils.diffAndSet(this.wpt, nextWaypoint.ident);
-            Avionics.Utils.diffAndSet(this.brg, fastToFixed(this.gps.currFlightPlanManager.getBearingToActiveWaypoint(), 0) + "°m");
+            Avionics.Utils.diffAndSet(this.brg, fastToFixed(this.gps.currFlightPlanManager.getBearingToActiveWaypoint(true), 0) + "°m");
             Avionics.Utils.diffAndSet(this.dist, this.gps.currFlightPlanManager.getDistanceToActiveWaypoint().toFixed(1) + "nm");
             var ete = this.gps.currFlightPlanManager.getETEToActiveWaypoint();
             Avionics.Utils.diffAndSet(this.ete, ete >= 60 * 60 ? Math.floor(ete / 3600) + "+" + ((ete % 3600 / 60) < 10 ? "0" : "") + Math.floor(ete % 3600 / 60) : Math.floor(ete / 60) + ":" + (ete % 60 < 10 ? "0" : "") + ete % 60);

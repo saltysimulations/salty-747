@@ -666,24 +666,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
             }
             if (!this.flightPlanManager.isActiveApproach() && this.currentFlightPhase != FlightPhase.FLIGHT_PHASE_APPROACH) {
-                let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
-                let nextActiveWaypoint = this.flightPlanManager.getNextActiveWaypoint();
-                if (activeWaypoint && nextActiveWaypoint) {
-                    let pathAngle = nextActiveWaypoint.bearingInFP - activeWaypoint.bearingInFP;
-                    while (pathAngle < 180) {
-                        pathAngle += 360;
-                    }
-                    while (pathAngle > 180) {
-                        pathAngle -= 360;
-                    }
-                    let absPathAngle = 180 - Math.abs(pathAngle);
-                    let airspeed = Simplane.getIndicatedSpeed();
-                    if (airspeed < 400) {
-                        let turnRadius = airspeed * 360 / (1091 * 0.36 / airspeed) / 3600 / 2 / Math.PI;
-                        let activateDistance = Math.pow(90 / absPathAngle, 1.6) * turnRadius * 1.2;
-                        let distanceToActive = Avionics.Utils.computeGreatCircleDistance(planeCoordinates, activeWaypoint.infos.coordinates);
-                        if (distanceToActive < activateDistance) {
-                            this.flightPlanManager.setActiveWaypointIndex(this.flightPlanManager.getActiveWaypointIndex() + 1);
+                if (this.flightPlanManager.getWaypointsCount() > 3) {
+                    let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
+                    let nextActiveWaypoint = this.flightPlanManager.getNextActiveWaypoint();
+                    if (activeWaypoint && nextActiveWaypoint) {
+                        let pathAngle = nextActiveWaypoint.bearingInFP - activeWaypoint.bearingInFP;
+                        while (pathAngle < 180) {
+                            pathAngle += 360;
+                        }
+                        while (pathAngle > 180) {
+                            pathAngle -= 360;
+                        }
+                        let absPathAngle = 180 - Math.abs(pathAngle);
+                        let airspeed = Simplane.getIndicatedSpeed();
+                        if (airspeed < 400) {
+                            let turnRadius = airspeed * 360 / (1091 * 0.36 / airspeed) / 3600 / 2 / Math.PI;
+                            let activateDistance = Math.pow(90 / absPathAngle, 1.6) * turnRadius * 1.2;
+                            let distanceToActive = Avionics.Utils.computeGreatCircleDistance(planeCoordinates, activeWaypoint.infos.coordinates);
+                            if (distanceToActive < activateDistance) {
+                                this.flightPlanManager.setActiveWaypointIndex(this.flightPlanManager.getActiveWaypointIndex() + 1);
+                            }
                         }
                     }
                 }

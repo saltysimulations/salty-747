@@ -905,6 +905,7 @@ Required parameters:
 
 <Template Name="ASOBO_NavCom_Knob_Small_SubTemplate">
 	<DefaultTemplateParameters>
+		<ANIM_NAME>#ANIM_NAME_KNOB#</ANIM_NAME>
 		<IDSIMVAR></IDSIMVAR> <!-- To Remove once we use HTML Events - Only here to handle the fact that the key is named KEY_COM_RADIO_WHOLE_INC instead of KEY_COM1_RADIO_WHOLE_INC -->
 		<Switch Param="RADIO_TYPE">
 			<!-- NAV & COM don't operate in the same range of values, need different sensibility settings -->

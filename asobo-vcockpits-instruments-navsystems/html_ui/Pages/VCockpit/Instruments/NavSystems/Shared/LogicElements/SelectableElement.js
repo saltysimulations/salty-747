@@ -162,6 +162,7 @@ class SelectableElementSliderGroup extends SelectableElement {
     constructor(_gps, _elements, _slider, _cursor, _step = 1, _emptyLine = "") {
         super(_gps, null, null);
         this.stringElements = [];
+        this.dataElements = [];
         this.isDisplayLocked = false;
         this.callBack = this.onEvent.bind(this);
         this.elements = _elements;
@@ -174,14 +175,15 @@ class SelectableElementSliderGroup extends SelectableElement {
     }
     onEvent(_event) {
         var result;
-        if (this.stringElements.length > 0) {
+        let l = Math.max(this.stringElements.length, this.dataElements.length);
+        if (l > 0) {
             result = this.elements[this.index].SendEvent(_event, this.offset + this.index);
             if (!result) {
                 switch (_event) {
                     case "NavigationLargeInc":
                         do {
                             if (this.index == this.elements.length - 1) {
-                                if ((this.index + this.offset) < this.stringElements.length - 1) {
+                                if ((this.index + this.offset) < l - 1) {
                                     this.offset += this.step;
                                     this.index -= (this.step - 1);
                                     result = true;
@@ -191,7 +193,7 @@ class SelectableElementSliderGroup extends SelectableElement {
                                 }
                             }
                             else {
-                                if (this.index < Math.min(this.elements.length, this.stringElements.length) - 1) {
+                                if (this.index < Math.min(this.elements.length, l) - 1) {
                                     this.index++;
                                     result = true;
                                 }
@@ -219,7 +221,12 @@ class SelectableElementSliderGroup extends SelectableElement {
                 }
             }
         }
-        this.updateDisplay();
+        if (this.dataElements.length > this.stringElements.length) {
+            this.updateDisplayWithData();
+        }
+        else {
+            this.updateDisplay();
+        }
         return result;
     }
     GetElement() {
@@ -247,8 +254,29 @@ class SelectableElementSliderGroup extends SelectableElement {
     getStringElements() {
         return this.stringElements;
     }
+    setDataElements(_dataElements) {
+        this.dataElements = _dataElements;
+        if (this.index < 0) {
+            this.index = 0;
+        }
+        if (this.offset + this.index >= this.dataElements.length) {
+            this.offset = Math.max(0, this.dataElements.length - this.elements.length);
+            this.index = Math.min(this.dataElements.length, this.elements.length) - 1;
+        }
+        this.updateDisplayWithData();
+    }
     setStringElements(_sElements) {
-        this.stringElements = _sElements;
+        if (!this.stringElements) {
+            this.stringElements = [];
+        }
+        for (let i = 0; i < _sElements.length; i++) {
+            if (this.stringElements[i] != _sElements[i]) {
+                this.stringElements[i] = _sElements[i];
+            }
+        }
+        while (this.stringElements.length > _sElements.length && this.stringElements.length > 0) {
+            this.stringElements.pop();
+        }
         if (this.index < 0) {
             this.index = 0;
         }
@@ -260,10 +288,11 @@ class SelectableElementSliderGroup extends SelectableElement {
     }
     incrementIndex(_up = true) {
         let result;
+        let l = Math.max(this.stringElements.length, this.dataElements.length);
         if (_up) {
             do {
                 if (this.index == this.elements.length - 1) {
-                    if ((this.index + this.offset) < this.stringElements.length - 1) {
+                    if ((this.index + this.offset) < l - 1) {
                         this.offset += this.step;
                         this.index -= (this.step - 1);
                         result = true;
@@ -273,7 +302,7 @@ class SelectableElementSliderGroup extends SelectableElement {
                     }
                 }
                 else {
-                    if (this.index < Math.min(this.elements.length, this.stringElements.length) - 1) {
+                    if (this.index < Math.min(this.elements.length, l) - 1) {
                         this.index++;
                         result = true;
                     }
@@ -300,7 +329,8 @@ class SelectableElementSliderGroup extends SelectableElement {
         }
     }
     onSelection(_event) {
-        if (this.stringElements.length == 0) {
+        let l = Math.max(this.stringElements.length, this.dataElements.length);
+        if (l === 0) {
             return false;
         }
         if (_event == "NavigationLargeInc") {
@@ -308,10 +338,15 @@ class SelectableElementSliderGroup extends SelectableElement {
             this.index = 0;
         }
         else if (_event == "NavigationLargeDec") {
-            this.offset = Math.max(0, this.stringElements.length - this.elements.length);
-            this.index = Math.min(this.stringElements.length, this.elements.length) - 1;
+            this.offset = Math.max(0, l - this.elements.length);
+            this.index = Math.min(l, this.elements.length) - 1;
         }
-        this.updateDisplay();
+        if (this.dataElements.length > this.stringElements.length) {
+            this.updateDisplayWithData();
+        }
+        else {
+            this.updateDisplay();
+        }
         if (!this.elements[this.index].onSelection(_event)) {
             this.onEvent(_event);
         }
@@ -332,10 +367,65 @@ class SelectableElementSliderGroup extends SelectableElement {
             this.slider.setAttribute("state", "Inactive");
         }
         for (let i = 0; i < Math.min(this.elements.length, this.stringElements.length); i++) {
-            this.elements[i].GetLineElement().innerHTML = this.stringElements[this.offset + i];
+            if (this.elements[i].GetLineElement().innerHTML != this.stringElements[this.offset + i]) {
+                this.elements[i].GetLineElement().innerHTML = this.stringElements[this.offset + i];
+            }
         }
         for (let i = this.stringElements.length; i < this.elements.length; i++) {
-            this.elements[i].GetLineElement().innerHTML = this.emptyLine;
+            if (this.elements[i].GetLineElement().innerHTML != this.emptyLine) {
+                this.elements[i].GetLineElement().innerHTML = this.emptyLine;
+            }
+        }
+    }
+    updateDisplayWithData() {
+        if (this.isDisplayLocked) {
+            return;
+        }
+        var nbElements = this.dataElements.length;
+        var maxDisplayedElements = this.elements.length;
+        if (nbElements > maxDisplayedElements) {
+            this.slider.setAttribute("state", "Active");
+            this.sliderCursor.setAttribute("style", "height:" + (maxDisplayedElements * 100 / nbElements) +
+                "%;top:" + (this.offset * 100 / nbElements) + "%");
+        }
+        else {
+            this.slider.setAttribute("state", "Inactive");
+        }
+        for (let i = 0; i < Math.min(this.elements.length, this.dataElements.length); i++) {
+            let data = this.dataElements[this.offset + i];
+            let line = this.elements[i].GetLineElement();
+            let cells = line.children;
+            for (let j = 0; j < 5; j++) {
+                let cell = cells.item(j);
+                if (!cell) {
+                    cell = document.createElement("td");
+                    if (j === 1) {
+                        cell.classList.add("SelectableElement");
+                    }
+                    line.appendChild(cell);
+                }
+                if (cell instanceof HTMLElement) {
+                    if (j === 0) {
+                        if (data[j]) {
+                            if (cell.innerHTML != data[j]) {
+                                cell.innerHTML = data[j];
+                            }
+                            cell.style.visibility = "visible";
+                        }
+                        else if (data[j] === "") {
+                            cell.style.visibility = "hidden";
+                        }
+                    }
+                    else if (cell.innerHTML != data[j]) {
+                        cell.innerHTML = data[j];
+                    }
+                }
+            }
+        }
+        for (let i = this.dataElements.length; i < this.elements.length; i++) {
+            if (this.elements[i].GetLineElement().innerHTML != this.emptyLine) {
+                this.elements[i].GetLineElement().innerHTML = this.emptyLine;
+            }
         }
     }
     addElement(_elem) {

@@ -15,7 +15,7 @@ html {
   overflow: hidden; }
   html body {
     -webkit-user-select: none;
-    font-family: Roboto-Regular;
+    font-family: var(--font);
     font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100);
     color: white;
     height: 100%;
@@ -125,6 +125,7 @@ aera-element {
       aera-element #LeftDisplay #MFD #PagesContainer[state=NearestAirport] #NearestAirport,
       aera-element #LeftDisplay #MFD #PagesContainer[state=NearestVOR] #NearestVOR,
       aera-element #LeftDisplay #MFD #PagesContainer[state=NearestNDB] #NearestNDB,
+      aera-element #LeftDisplay #MFD #PagesContainer[state=LightingConfigs] #LightingConfigs,
       aera-element #LeftDisplay #MFD #PagesContainer[state=NearestIntersection] #NearestIntersection {
         display: block; }
       aera-element #LeftDisplay #MFD #PagesContainer #PFD #HorizonContainer {
@@ -190,6 +191,13 @@ aera-element {
         bottom: 0%;
         left: 32.64%;
         right: 32.64%;
+        width: auto; }
+      aera-element #LeftDisplay #MFD #PagesContainer #PFD #Horizon {
+        position: absolute;
+        height: 36vh;
+        bottom: 52%;
+        left: 10%;
+        right: 10%;
         width: auto; }
       aera-element #LeftDisplay #MFD #PagesContainer #Map #MapInstrument #MapOrientation {
         height: 5vh;
@@ -544,6 +552,63 @@ aera-element {
         width: 20vw; }
       aera-element #LeftDisplay #MFD #NearestNDB .NearestList thead tr th:nth-child(4), aera-element #LeftDisplay #MFD #NearestNDB .NearestList tbody tr:first-child td:nth-child(4) {
         width: 20vw; }
+    aera-element #LeftDisplay #MFD #LightingConfigs .master {
+      position: absolute;
+      top: 38%;
+      left: calc((100% - 80vh) / 2);
+      width: 80vh;
+      height: 30vh;
+      border: 0.4vh solid white; }
+      aera-element #LeftDisplay #MFD #LightingConfigs .master .title {
+        position: absolute;
+        top: 2vh;
+        width: 100%;
+        font-size: 4vh;
+        color: white;
+        text-align: center; }
+      aera-element #LeftDisplay #MFD #LightingConfigs .master #LightingMasterValue {
+        position: absolute;
+        top: 7vh;
+        width: 100%;
+        font-size: 3.5vh;
+        color: aqua;
+        text-align: center; }
+      aera-element #LeftDisplay #MFD #LightingConfigs .master #MasterBacklightBgSVG {
+        position: absolute;
+        top: 13vh;
+        left: 20vh;
+        height: 12vh;
+        width: 40vh; }
+      aera-element #LeftDisplay #MFD #LightingConfigs .master #MasterBacklightCursorSVG {
+        position: absolute;
+        top: 13vh;
+        left: 20vh;
+        height: 12vh;
+        width: 4vh; }
+      aera-element #LeftDisplay #MFD #LightingConfigs .master #LightingMasterLess {
+        position: absolute;
+        top: 13vh;
+        left: 4vh;
+        width: 12vh;
+        height: 12vh; }
+        aera-element #LeftDisplay #MFD #LightingConfigs .master #LightingMasterLess .image {
+          position: absolute;
+          width: 80%;
+          height: 80%;
+          top: 10%;
+          left: 10%; }
+      aera-element #LeftDisplay #MFD #LightingConfigs .master #LightingMasterMore {
+        position: absolute;
+        top: 13vh;
+        right: 4vh;
+        width: 12vh;
+        height: 12vh; }
+        aera-element #LeftDisplay #MFD #LightingConfigs .master #LightingMasterMore .image {
+          position: absolute;
+          width: 80%;
+          height: 80%;
+          top: 10%;
+          left: 10%; }
     aera-element #LeftDisplay #MFD .popup {
       position: absolute;
       top: 0%;
@@ -1289,41 +1354,44 @@ aera-element {
   aera-element #Map_Elements, aera-element #MainMFD_MapElements {
     position: absolute;
     height: 100%;
+    transform: rotateX(0);
     /* Map position (left and top) is set in mapConfig.json file (see SvgMapConfig.ts) (makes it editable at runtime) */
     /* Map position (left and top) is set in mapConfig.json file (see SvgMapConfig.ts) (makes it editable at runtime) */ }
-    aera-element #Map_Elements .mapLess, aera-element #MainMFD_MapElements .mapLess {
-      position: absolute;
-      right: 1vh;
-      top: 6vh;
-      height: 8vh;
-      width: 8vh; }
-      aera-element #Map_Elements .mapLess:Hover:Active circle, aera-element #MainMFD_MapElements .mapLess:Hover:Active circle {
-        fill: #0093d0; }
-    aera-element #Map_Elements .mapPlus, aera-element #MainMFD_MapElements .mapPlus {
-      position: absolute;
-      right: 1vh;
-      top: 15vh;
-      height: 8vh;
-      width: 8vh; }
-      aera-element #Map_Elements .mapPlus:Hover:Active circle, aera-element #MainMFD_MapElements .mapPlus:Hover:Active circle {
-        fill: #0093d0; }
-    aera-element #Map_Elements .mapCenter, aera-element #MainMFD_MapElements .mapCenter {
-      position: absolute;
-      right: 1vh;
-      top: 24vh;
-      height: 8vh;
-      width: 8vh;
-      background-color: rgba(20, 20, 20, 0.4);
-      border: 0.3vh solid #444444;
-      border-radius: 1vh;
-      display: none; }
-      aera-element #Map_Elements .mapCenter img, aera-element #MainMFD_MapElements .mapCenter img {
-        width: 100%;
-        height: 100%; }
-      aera-element #Map_Elements .mapCenter:Hover:Active, aera-element #MainMFD_MapElements .mapCenter:Hover:Active {
-        background-color: #0093d0; }
-      aera-element #Map_Elements .mapCenter[state=Active], aera-element #MainMFD_MapElements .mapCenter[state=Active] {
-        display: block; }
+    aera-element #Map_Elements #Interactions, aera-element #MainMFD_MapElements #Interactions {
+      transform: rotateX(0); }
+      aera-element #Map_Elements #Interactions .mapLess, aera-element #MainMFD_MapElements #Interactions .mapLess {
+        position: absolute;
+        right: 1vh;
+        top: 6vh;
+        height: 8vh;
+        width: 8vh; }
+        aera-element #Map_Elements #Interactions .mapLess:Hover:Active circle, aera-element #MainMFD_MapElements #Interactions .mapLess:Hover:Active circle {
+          fill: #0093d0; }
+      aera-element #Map_Elements #Interactions .mapPlus, aera-element #MainMFD_MapElements #Interactions .mapPlus {
+        position: absolute;
+        right: 1vh;
+        top: 15vh;
+        height: 8vh;
+        width: 8vh; }
+        aera-element #Map_Elements #Interactions .mapPlus:Hover:Active circle, aera-element #MainMFD_MapElements #Interactions .mapPlus:Hover:Active circle {
+          fill: #0093d0; }
+      aera-element #Map_Elements #Interactions .mapCenter, aera-element #MainMFD_MapElements #Interactions .mapCenter {
+        position: absolute;
+        right: 1vh;
+        top: 24vh;
+        height: 8vh;
+        width: 8vh;
+        background-color: rgba(20, 20, 20, 0.4);
+        border: 0.3vh solid #444444;
+        border-radius: 1vh;
+        display: none; }
+        aera-element #Map_Elements #Interactions .mapCenter img, aera-element #MainMFD_MapElements #Interactions .mapCenter img {
+          width: 100%;
+          height: 100%; }
+        aera-element #Map_Elements #Interactions .mapCenter:Hover:Active, aera-element #MainMFD_MapElements #Interactions .mapCenter:Hover:Active {
+          background-color: #0093d0; }
+        aera-element #Map_Elements #Interactions .mapCenter[state=Active], aera-element #MainMFD_MapElements #Interactions .mapCenter[state=Active] {
+          display: block; }
     aera-element #Map_Elements #MapOrientation, aera-element #MainMFD_MapElements #MapOrientation {
       position: absolute;
       top: 0%;
@@ -1456,6 +1524,12 @@ aera-element[state=vertical] #LeftDisplay {
     aera-element[state=vertical] #LeftDisplay #MFD #PagesContainer #PFD #CDI {
       width: 50vh;
       left: 25.5%; }
+    aera-element[state=vertical] #LeftDisplay #MFD .NrstContainer {
+      height: 98%; }
+      aera-element[state=vertical] #LeftDisplay #MFD .NrstContainer .NearestList tbody {
+        height: 94%; }
+    aera-element[state=vertical] #LeftDisplay #MFD #DirectTo {
+      top: 40%; }
 
 aera-element[state=vertical] #RightMenu {
   right: 0.4%;
@@ -1469,4 +1543,6 @@ aera-element[state=vertical] #RightMenu {
       margin-top: 0%; }
     aera-element[state=vertical] #RightMenu .gradientButton .title {
       bottom: 5%; }
+  aera-element[state=vertical] #RightMenu #MenuButton .title {
+    top: 50%; }
 

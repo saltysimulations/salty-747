@@ -109,7 +109,7 @@ class PFD_Airspeed extends NavSystemElement {
         if (crossSpeed != 0) {
             let cruiseMach = SimVar.GetGameVarValue("AIRCRAFT CRUISE MACH", "mach");
             let crossAltitude = Simplane.getCrossoverAltitude(crossSpeed, cruiseMach);
-            let crossSpeedFactor = Simplane.getCrossoverSpeedFactor(this.maxSpeed, cruiseMach);
+            let crossSpeedFactor = Simplane.getCrossoverSpeedFactor(crossSpeed, cruiseMach);
             this.airspeedElement.setAttribute("max-speed", (Math.min(crossSpeedFactor, 1) * this.maxSpeed).toString());
             let mach = Simplane.getMachSpeed();
             let altitude = Simplane.getAltitude();
@@ -1785,6 +1785,12 @@ class MFD_ApproachWaypointLine extends MFD_FlightPlanLine {
     onEvent(_subIndex, _event) {
         if (this.element.gps.popUpElement == null) {
             switch (_event) {
+                case "NavigationLargeInc":
+                case "NavigationLargeDec":
+                    if (_subIndex === 0 && this.waypoint) {
+                        this.element.gps.lastRelevantICAO = this.waypoint.icao;
+                    }
+                    break;
                 case "NavigationSmallInc":
                 case "NavigationSmallDec":
                     this.element.gps.switchToPopUpPage(this.element.waypointWindow, this.element.onWaypointSelectionEnd.bind(this.element));
@@ -2492,8 +2498,17 @@ class GlassCockpit_DirectTo extends NavSystemElement {
                         this.symbolElement.innerHTML = "";
                 }
                 if (infos.coordinates && infos.coordinates.lat && infos.coordinates.long) {
-                    this.bearingElement.textContent = fastToFixed(Avionics.Utils.computeGreatCircleHeading(new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")), infos.coordinates) - SimVar.GetSimVarValue("MAGVAR", "degrees"), 0) + "°";
-                    this.distanceElement.innerHTML = fastToFixed(Avionics.Utils.computeGreatCircleDistance(new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")), infos.coordinates), 1) + '<span class="unit">NM</span>';
+                    let lat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude");
+                    let long = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude");
+                    let latLong = new LatLong(lat, long);
+                    let magVar = 0;
+                    let waypoint = this.icaoSearchField.getWaypoint();
+                    if (waypoint)
+                        magVar = waypoint.magvar;
+                    else
+                        magVar = SimVar.GetSimVarValue("MAGVAR", "degrees");
+                    this.bearingElement.textContent = fastToFixed(Avionics.Utils.computeGreatCircleHeading(latLong, infos.coordinates) - magVar, 0) + "°";
+                    this.distanceElement.innerHTML = fastToFixed(Avionics.Utils.computeGreatCircleDistance(latLong, infos.coordinates), 1) + '<span class="unit">NM</span>';
                 }
             }
             else {
@@ -2620,13 +2635,19 @@ class MFD_NearestAirport_Element extends NavSystemElement {
     onUpdate(_deltaTime) {
         this.nearestAirportList.Update(25, 200);
         {
-            let elems = [];
+            let dataElems = [];
             for (let i = 0; i < this.nearestAirportList.airports.length; i++) {
                 let infos = this.nearestAirportList.airports[i];
                 let logo = infos.imageFileName();
-                elems.push("<td>" + (this.airportList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : "") + "</td><td class=SelectableElement>" + infos.ident + '</td><td><img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '"></td><td>' + fastToFixed(infos.bearing, 0) + '°</td><td>' + fastToFixed(infos.distance, 1) + 'NM</td>');
+                dataElems.push([
+                    (this.airportList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : ""),
+                    infos.ident,
+                    '<img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '">',
+                    fastToFixed(infos.bearing, 0) + "°",
+                    fastToFixed(infos.distance, 1) + "NM"
+                ]);
             }
-            this.airportList.setStringElements(elems);
+            this.airportList.setDataElements(dataElems);
         }
         if (this.nearestAirportList.airports.length > this.airportList.getIndex()) {
             let currentNearest = this.nearestAirportList.airports[this.airportList.getIndex()];
@@ -2654,14 +2675,14 @@ class MFD_NearestAirport_Element extends NavSystemElement {
             if (infos.frequencies) {
                 let elems = [];
                 for (let i = 0; i < infos.frequencies.length; i++) {
-                    elems.push("<td>" + infos.frequencies[i].getTypeName() + "</td><td class=SelectableElement>" + infos.frequencies[i].mhValue.toFixed(2) + '</td>');
+                    elems.push("<td>" + infos.frequencies[i].getTypeName() + "</td><td class=\"SelectableElement\">" + infos.frequencies[i].mhValue.toFixed(2) + '</td>');
                 }
                 this.frequenciesList.setStringElements(elems);
             }
             if (infos.approaches) {
                 let elems = [];
                 for (let i = 0; i < infos.approaches.length; i++) {
-                    elems.push("<td class=SelectableElement>" + infos.ident + "-" + infos.approaches[i].name + "</td>");
+                    elems.push("<td class=\"SelectableElement\">" + infos.ident + "-" + infos.approaches[i].name + "</td>");
                 }
                 this.approachesList.setStringElements(elems);
             }
@@ -2757,7 +2778,7 @@ class MFD_NearestVOR_Element extends NavSystemElement {
             for (let i = 0; i < this.nearestVorList.vors.length; i++) {
                 let infos = this.nearestVorList.vors[i];
                 let logo = infos.imageFileName();
-                elems.push("<td>" + (this.vorList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : "") + "</td><td class=SelectableElement>" + infos.ident + '</td><td><img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '"></td><td>' + fastToFixed(infos.bearing, 0) + '°</td><td>' + fastToFixed(infos.distance, 1) + 'NM</td>');
+                elems.push("<td>" + (this.vorList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : "") + "</td><td class=\"SelectableElement\">" + infos.ident + '</td><td><img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '"></td><td>' + fastToFixed(infos.bearing, 0) + '°</td><td>' + fastToFixed(infos.distance, 1) + 'NM</td>');
             }
             this.vorList.setStringElements(elems);
         }
@@ -2853,7 +2874,7 @@ class MFD_NearestNDB_Element extends NavSystemElement {
             for (let i = 0; i < this.nearestNbdList.ndbs.length; i++) {
                 let infos = this.nearestNbdList.ndbs[i];
                 let logo = infos.imageFileName();
-                elems.push("<td>" + (this.ndbList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : "") + "</td><td class=SelectableElement>" + infos.ident + '</td><td><img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '"></td><td>' + fastToFixed(infos.bearing, 0) + '°</td><td>' + fastToFixed(infos.distance, 1) + 'NM</td>');
+                elems.push("<td>" + (this.ndbList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : "") + "</td><td class=\"SelectableElement\">" + infos.ident + '</td><td><img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '"></td><td>' + fastToFixed(infos.bearing, 0) + '°</td><td>' + fastToFixed(infos.distance, 1) + 'NM</td>');
             }
             this.ndbList.setStringElements(elems);
         }
@@ -2933,7 +2954,7 @@ class MFD_NearestIntersection_Element extends NavSystemElement {
             for (let i = 0; i < this.nearestIntList.intersections.length; i++) {
                 let infos = this.nearestIntList.intersections[i];
                 let logo = infos.imageFileName();
-                elems.push("<td>" + (this.intList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : "") + "</td><td class=SelectableElement>" + infos.ident + '</td><td><img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '"></td><td>' + fastToFixed(infos.bearing, 0) + '°</td><td>' + fastToFixed(infos.distance, 1) + 'NM</td>');
+                elems.push("<td>" + (this.intList.getIndex() == i ? '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/WhiteArrow.svg">' : "") + "</td><td class=\"SelectableElement\">" + infos.ident + '</td><td><img src="' + (logo == "" ? "" : "/Pages/VCockpit/Instruments/Shared/Map/Images/" + logo) + '"></td><td>' + fastToFixed(infos.bearing, 0) + '°</td><td>' + fastToFixed(infos.distance, 1) + 'NM</td>');
             }
             this.intList.setStringElements(elems);
         }

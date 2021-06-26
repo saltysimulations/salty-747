@@ -11,13 +11,18 @@
       "pl-PL",
       "pt-BR",
       "ru-RU",
+      "ja-JP",
+      "nl-NL",
+      "nb-NO",
+      "sv-SE",
+      "fi-FI",
       "zh-CN"
     ],
     "Strings": {
       "AIRCRAFT.DESCRIPTION": {
         "UUID": "1711af40-4356-404e-afcc-e16843343984",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-03-18 12:01:31",
+        "LastModifiedBy": "jreynaud",
+        "LastModifiedDate": "2021-04-28 18:04:15",
         "LocalizationStatus": "TranslationNeeded",
         "Languages": {
           "en-US": {
@@ -50,13 +55,31 @@
           "ru-RU": {
             "Text": "Boeing 747 был создан в 1960-х годах на базе военно-транспортного самолёта, который компания Boeing разрабатывала для ВВС США. Boeing проиграла тендер компании Lockheed, однако авиакомпания Pan Am World Airways заинтересовалась проектом и предложила доработать его под свои требования. В 1970 году авиакомпания ввела B747 в эксплуатацию. Широкофюзеляжный коммерческий авиалайнер быстро получил прозвище «Джамбо джет» и в течение 37 лет удерживал рекорд по пассажировместимости.</br></br>Несколько десятилетий корпорация Boeing постепенно увеличивала вместимость «Джамбо джета», пока в 2004 году не представила версию 747 Advanced, или 747-8, которая отличалась от предшественников более длинным фюзеляжем. В октябре 2011 года поступила в эксплуатацию грузовая версия 747-8F, а первый пассажирский вариант для межконтинентальных перелётов 747-8I авиакомпания Lufthansa получила в июне 2012 года.</br></br>Модель 747-8 является прямым преемником 747-400, но во многом превосходит его. Позаимствованная у 787 Dreamliner авионика здорово осовременила 747-8, а обновлённые двигатели обладают большей экономичностью и технологичностью, производят намного меньше выбросов и шума. Изменённая конструкция крыла ещё больше снизила лобовое сопротивление и турбулентность в спутном следе, что помогло улучшить экономичность, аэродинамику и дальность самолёта.</br></br>Шесть десятилетий непрерывной эволюции отразились в 747-8: достаточно одного взгляда на узнаваемый силуэт этого двухпалубного красавца, чтобы понять, что 747 — уникальный самолёт, который невозможно перепутать ни с одним другим. Эта модель по-прежнему достойна своего прозвища «Королева небес».",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "747は、米空軍の超大型戦略輸送機リサーチに提案するための機体として、ボーイング社によって 1960 年代に初めて考案された。1970 年、最終的にこのワイドボディ商用旅客機は、パンアメリカン航空で一般向けに運航されることになり、業界初の「ジャンボ ジェット」と呼ばれた。そして、37 年間にわたって乗客定員数の記録を保持し続けた。</br></br>数十年かけて、より多くの乗客を収容できる機体を追求した末、2004年、ボーイング社は 747 アドバンスドを発表した。 翌年、747-8 という正式名称を与えられたこの拡張モデルには、2011 年 10 月に送り出されたフレイター型 (747-8F) と、2012 年 6 月にルフトハンザドイツ航空で就航した航空旅客用のインターコンチネンタル型 (747-8I) がある。</br></br>747-8 は、747-400 の進化形として、従来機のエンジンを改良し、アップグレードしているだけでなく、787 ドリームライナーに由来する総合的なコックピット技術をも活用している。その結果、性能の向上、騒音の削減、超低排出ガスを念頭に置いて設計された、低重量のハイテク航空機が生まれた。後方乱気流と抗力を低減し、燃料効率、航続距離、全体的な空力特性を向上させることのできる新構想のウィング システムにより、その設計はさらに改善されている。</br></br>スーパー ジャンボ ジェットにふさわしいサイズと 60 年間におよぶ円熟した運用によって、747-8 は、ともするとその原点からはかけ離れてしまったように見えるかもしれない。しかし、そのシルエットは明らかに 747 の系統を引継ぎ、初代に「空の女王」という美しい名前が贈られる由来ともなった、世界で最も有名なダブルデッカーの優雅な曲線を見てとることができる。",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nl-NL": {
+            "Text": "Het idee achter de 747 stamt uit de jaren 1960 en komt voort uit een bijdrage van Boeing aan een onderzoek van de Amerikaanse luchtmacht naar een groot strategisch transportvliegtuig. Uiteindelijk zou de widebody in 1970 als commercieel passagiersvliegtuig worden geïntroduceerd bij Pan Am World Airways, waar de naam 'Jumbo Jet' zijn oorsprong vond. Het vliegtuig zou 37 jaar lang recordhouder blijven op het gebied van passagierscapaciteit.</br></br>Nadat decennialang grotere versies waren onderzocht, kondigde Boeing in 2004 de 747 Advanced aan – een verlengd model dat een jaar later officieel 747-8 werd gedoopt, met een vrachtvariant (747-8F) die in oktober 2011 werd gelanceerd en een intercontinentale variant (747-8I) voor Lufthansa-passagiers die in juni 2012 verscheen.</br></br>De 747-8 is een doorontwikkeling van de 747-400 met verbeterde motoren, die tevens veel cockpittechnologie van de nieuwe 787 Dreamliner bevat. Het resultaat is een relatief lichte, hightech krachtpatser die betere prestaties, minder lawaai en ultralage emissies biedt. Het ontwerp is verder verfijnd met een geheel opnieuw ontworpen vleugelsysteem dat de zogturbulentie en luchtweerstand vermindert, zodat het brandstofverbruik, het bereik en de algehele aerodynamica worden verbeterd.</br></br>Met zijn formaat van een superjumbojet en 60 jaar engineeringhistorie heeft de 747-8 een lange weg afgelegd sinds het begin. Maar één blik op het silhouet laat geen enkele twijfel over zijn oorsprong bestaan. De elegante rondingen van de dubbeldekker maken de 747 tot een van de meest herkenbare vliegtuigen ter wereld en het verdient zonder meer de sierlijke bijnaam die het vliegtuig op zijn eerste route kreeg: 'Queen of the Skies'.",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nb-NO": {
+            "Text": "747 ble først skapt på 60-tallet, som Boeings foreslåtte bidrag til en studie gjennomført av det amerikanske flyvåpenet om overdimensjonerte, strategiske transportfly. Det kommersielle passasjerflyet med bred kropp endte opp i offentlig tjeneste hos Pan Am World Airways i 1970, hvor det ble kalt bransjens første «Jumbo Jet», og det skulle vise seg å beholde denne rekorden for antall passasjerer i hele 37 år.</br></br>Etter flere tiår med forskning på versjoner med enda større kapasitet, lanserte Boeing i 2004 flyet 747 Advanced – en forlenget modell som offisielt ble kalt 747-8 ett år senere, med en variant for fraktgods (747-8F) lansert i oktober 2011, og en interkontinental variant (747-8I) for passasjerer satt i drift for første gang hos Lufthansa i juni 2012.</br></br>Som en videreutvikling av 747-400, ble 747-8 sine motorer forbedret og oppgradert, samtidig som det ble benyttet omfattende cockpitteknologi fra 787 Dreamliner. Resultatet er et høyteknologisk fly med lav vekt og kraftige motorer, designet for økt ytelse, mindre støy og svært lave utslipp – et design som ytterligere forbedres av et nyutviklet vingesystem som reduserer kjølvannsturbulens og motstand, forbedrer drivstofføkonomien, rekkevidden og den generelle aerodynamikken.</br></br>Med sin super-jumbo-jet-størrelse og 60 år med ingeniørarbeid i bagasjen, kan 747-8 virke å være noe helt annet enn det opprinnelige flyet. Men tar man en titt på silhuetten, ser man tydelige trekk fra de eldre utgavene, blant annet i de elegante kurvene til dobbeltdekkerformen, som gjør det til et av de mest gjenkjennelige flyene i verden, som for alltid vil være verdig det grasiøse kallenavnet den første versjonen fikk: «Queen of the Skies»."
+          },
+          "sv-SE": {
+            "Text": "Idén om 747:an föddes på 1960-talet med Boeings förslag i en studie av amerikanska flygvapnet om extra stora strategiska transportflygplan. Det kommersiella bredkroppade trafikflygplanet hamnade så småningom i allmän tjänst hos Pan Am World Airways 1970, där det kallades branschens första ”jumbojet\" och skulle fortsätta hålla rekordet för passagerarkapacitet i 37 år.</br></br>Efter årtionden av försök att utveckla versioner med högre kapacitet presenterade Boeing 2004 747 Advanced – en förlängd modell som de ett år senare officiellt betecknade 747-8, med en Freighter-variant (747-8F) för transport som lanserades i oktober 2011, och en Intercontinental-variant (747-8I) för Lufthansas passagerare i juni 2012.</br></br>Som en utveckling av 747-400 förfinar och uppgraderar 747-8 sin föregångares motorer, samtidigt som den använder sig av omfattande cockpit-teknik från 787 Dreamliner. Resultatet är ett högteknologiskt, lättviktigt kraftpaket som utformats för ökad prestanda, minskat buller och extremt låga utsläpp – en design som ytterligare förbättras genom en grundligt omarbetat vingsystem som minskar ändvirveln och motståndet, förbättrar bränsleekonomin, räckvidden och den övergripande aerodynamiken.</br></br>Med sin superjumbojet-storlek och 60 år av teknisk mognad kan det verka som om 747-8 är ett långt steg från sitt ursprung. Men efter en snabb titt på dess silhuett lyser släktskapet igenom i de eleganta kurvorna på dubbeldäckarformen som gör det till ett av de mest kända flygplanen i världen, och fortfarande värdigt det graciösa smeknamnet som gavs till den första medlemmen i släktledet: \"Queen of the Skies\"."
+          },
+          "fi-FI": {
+            "Text": "747 suunniteltiin ensimmäisen kerran 1960-luvulla Boeingin ehdotukseksi Yhdysvaltain ilmavoimien tutkiessa mahdollisia jättikokoisia strategisia kuljetuskoneita. Leveärunkoinen kaupallinen lentokone siirtyisi lopulta julkiseen käyttöön Pan Am World Airwaysilla vuonna 1970, jolloin sitä kutsuttiin alan ensimmäiseksi jumbojetiksi ja joka piti matkustajakapasiteettiennätystä hallussaan 37 vuoden ajan.</br></br>Vuosikymmeniä kestäneiden suuremman kapasiteetin versioiden tutkimusten jälkeen julkisti Boeing vuonna 2004 747 Advanced -mallin. Se oli venytetty malli, joka vuotta myöhemmin virallisesti nimettiin 747-8:ksi ja josta lanseerattiin vielä rahtiversio (747-8F) lokakuussa 2011 ja mannertenväliseen matkustajaliikenteeseen versio (747-8I) Lufthansalle kesäkuussa 2012.</br></br>747-400:n kehittyneempänä versiona 747-8:ssa jalostettiin ja päivitettiin edeltäjän moottoreita ja samalla otettiin käyttöön kattavaa ohjaamoteknologiaa 787 Dreamlineristä. Tuloksena on huipputekninen, pienipainoinen voimanpesä, jossa on parantunut suorituskyky, vähentynyt melu ja erittäin alhaiset päästöt. Parannuksia korostaa täysin uusi siipijärjestelmä, joka pienentää jättöpyörrettä ja vastusta, tehostaa polttoainetaloudellisuutta ja parantaa kantamaa sekä aerodynamiikkaa.</br></br>Superjumbojetin kokoinen ja 60 vuoden insinöörityön tulos 747-8 vaikuttaisi olevan kaukana alkuperäisestä. Kuitenkin vilkaisu sen siluettiin riittää, ja sukulaisuus paistaa läpi kaksikerroksisen rungon eleganteissa muodoissa. Niiden ansiosta tämä onkin yksi maailman tunnistettavimmista lentokoneista ja ikuisesti ansaitsee kantaa jo ensimmäisen version saaneen hienostuneen lempinimen: Queen of the Skies, Taivaiden kuningatar."
           }
         }
       },
       "AIRCRAFT.UI_MANUFACTURER": {
         "UUID": "1f371424-e037-485c-b870-c02e304a9970",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-03-08 15:45:12",
+        "LastModifiedBy": "jreynaud",
+        "LastModifiedDate": "2021-04-28 18:04:15",
+        "LocalizationStatus": "TranslationNeeded",
         "Languages": {
           "en-US": {
             "Text": "Boeing"
@@ -81,13 +104,30 @@
           },
           "ru-RU": {
             "Text": "Boeing"
+          },
+          "ja-JP": {
+            "Text": "ボーイング",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nl-NL": {
+            "Text": "Boeing",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nb-NO": {
+            "Text": "Boeing"
+          },
+          "sv-SE": {
+            "Text": "Boeing"
+          },
+          "fi-FI": {
+            "Text": "Boeing"
           }
         }
       },
       "AIRCRAFT.UI_MODEL": {
         "UUID": "59243afd-8907-479c-95e6-ed977766dccb",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-04-08 23:48:08",
+        "LastModifiedBy": "jreynaud",
+        "LastModifiedDate": "2021-04-28 18:04:15",
         "LocalizationStatus": "TranslationNeeded",
         "Languages": {
           "en-US": {
@@ -114,13 +154,30 @@
           },
           "ru-RU": {
             "Text": "747-8 Intercontinental"
+          },
+          "ja-JP": {
+            "Text": "747-8 インターコンチネンタル",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nl-NL": {
+            "Text": "747-8 Intercontinental",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nb-NO": {
+            "Text": "747-8 Intercontinental"
+          },
+          "sv-SE": {
+            "Text": "747-8 Intercontinental"
+          },
+          "fi-FI": {
+            "Text": "747-8 Intercontinental"
           }
         }
       },
       "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": {
         "UUID": "dbc15493-8c6c-42a7-ba1f-0e1e68abf6bb",
-        "LastModifiedBy": "dmedina",
-        "LastModifiedDate": "2020-05-27 17:33:49",
+        "LastModifiedBy": "jreynaud",
+        "LastModifiedDate": "2021-04-28 18:04:15",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -151,6 +208,23 @@
           "ru-RU": {
             "Text": "Скорректировать заданный курс влево"
           },
+          "ja-JP": {
+            "Text": "選択した針路を左に調整する",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nl-NL": {
+            "Text": "Geselecteerde kop naar links aanpassen",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nb-NO": {
+            "Text": "Juster valgt kurs til venstre"
+          },
+          "sv-SE": {
+            "Text": "Justera den valda kursen åt vänster"
+          },
+          "fi-FI": {
+            "Text": "Säädä valittua ohjaussuuntaa vasemmalle"
+          },
           "zh-CN": {
             "Text": "向左调整所选航向",
             "LocalizationStatus": "TranslationNeeded"
@@ -159,8 +233,8 @@
       },
       "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": {
         "UUID": "de990f74-5d13-43a0-b4bd-40929dc37fcd",
-        "LastModifiedBy": "dmedina",
-        "LastModifiedDate": "2020-05-27 17:34:25",
+        "LastModifiedBy": "jreynaud",
+        "LastModifiedDate": "2021-04-28 18:04:15",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -190,6 +264,23 @@
           },
           "ru-RU": {
             "Text": "Скорректировать заданный курс вправо"
+          },
+          "ja-JP": {
+            "Text": "選択した針路を右に調整する",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nl-NL": {
+            "Text": "Geselecteerde kop naar rechts aanpassen  ",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "nb-NO": {
+            "Text": "Juster valgt kurs til høyre  "
+          },
+          "sv-SE": {
+            "Text": "Justera den valda kursen åt höger  "
+          },
+          "fi-FI": {
+            "Text": "Säädä valittua ohjaussuuntaa oikealle  "
           },
           "zh-CN": {
             "Text": "向右调整所选航向",

@@ -1674,6 +1674,22 @@
         <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUEL_SELECTOR_SET" EventParam="6"/>
       </Test>
     </Checkpoint>
+	
+	 <Checkpoint Id="Fuel_Selector_MAIN">
+		<Clue name="TT:CLUE.FUEL_SELECTOR_MAIN"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_MAIN"/>
+      <Test>
+        <TestValue>
+          <Operator OpType="EQUAL">
+            <Val SimVarName="RECIP ENG FUEL TANK SELECTOR:1" Units="number"/>
+            <Val Value="16"/>
+          </Operator>
+        </TestValue>
+        <Instrument Id="FUEL_Selector"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUEL_SELECTOR_SET" EventParam="16"/>
+      </Test>
+    </Checkpoint>
+	
     <Checkpoint Id="Fuel_Selector_Both">
       <Clue name="TT:CLUE.FUEL_TANK_SELECTOR_BOTH"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_BOTH"/>
@@ -2081,6 +2097,7 @@
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_ELECT_FUEL_PUMP1"/>
           <Instrument Id="FUEL_Switch_Pump1"/>
+		  <Instrument Id="HTML:ASVigilus:FuelPressGauge"/>
         </Test>
         <Test>
           <TestValue>
@@ -2090,6 +2107,7 @@
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_ELECT_FUEL_PUMP1"/>
           <Instrument Id="FUEL_Switch_Pump1"/>
+		  <Instrument Id="HTML:ASVigilus:FuelPressGauge"/>
         </Test>
       </Sequence>
     </Checkpoint>
@@ -3858,6 +3876,7 @@
         <Instrument Id="HTML:AS1000_MFD:Piston_RPMGauge"/>
         <Instrument Id="HTML:G1000_PFD:Piston_RPMGauge"/>
         <Instrument Id="HTML:AS1000_PFD:Piston_RPMGauge"/>
+		<Instrument Id="HTML:ASVigilus:RPMGauge"/>
         <Action Copilot="True" Condition="TestValueFalse" Once="false" Code="
 					(L:CheckListThrottle_NextKeySentTime) (E:SIMULATION TIME, seconds) &lt; if{
 						(L:IsFirstRPMAdjustment) if{
@@ -5187,18 +5206,19 @@
       <Instrument Id="TRANSPONDER_PUSH_ALT"/>
     </Checkpoint>
     <Checkpoint Id="Transponder_Off">
-      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TRANSPONDER" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
-      <Test>
-        <Instrument Id="TRANSPONDER_KNOB"/>
-        <Instrument Id="TRANSPONDER_PUSH_OFF"/>
-        <TestValue>
-          <Operator OpType="EQUAL">
-            <Val Code="(A:TRANSPONDER STATE:1, Enum)"/>
-            <Val Value="0"/>
-          </Operator>
-        </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="0 (&gt;A:TRANSPONDER STATE:1, Number)"/>
-      </Test>
+		<Clue name="TT:CLUE.DR400_TRANSPONDER_OFF"/>
+		<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TRANSPONDER" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
+		<Test>
+		<Instrument Id="TRANSPONDER_KNOB"/>
+		<Instrument Id="TRANSPONDER_PUSH_OFF"/>
+		<TestValue>
+		  <Operator OpType="EQUAL">
+			<Val Code="(A:TRANSPONDER STATE:1, Enum)"/>
+			<Val Value="0"/>
+		  </Operator>
+		</TestValue>
+		<Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="0 (&gt;A:TRANSPONDER STATE:1, Number)"/>
+		</Test>
     </Checkpoint>
     <Checkpoint Id="TRANSPONDER_ENTER_SQUAWK">
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TRANSPONDER" ExpectationTT="TT:GAME.CHECKLIST_ENTER_SQUAWK"/>
@@ -6138,6 +6158,7 @@
         <Instrument Id="HTML:AS1000_PFD:OilPsi_Gauge"/>
         <Instrument Id="HTML:AS1000_MFD:OilPsi_Gauge"/>
         <Instrument Id="HTML:AS3X_2:OilPsi_Gauge"/>
+		<Instrument Id="HTML:ASVigilus:OILGauge"/>
         <Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
       </Test>
     </Checkpoint>
@@ -6284,6 +6305,7 @@
         </TestValue>
         <Instrument Id="HIGHLIGHT_VACAMP"/>
         <Instrument Id="INSTRUMENT_Needle_Ammeter"/>
+		<Instrument Id="HTML:ASVigilus:AmpsGauge"/>
         <Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
       </Test>
     </Checkpoint>
@@ -9078,6 +9100,15 @@
         </Test>
       </Sequence>
     </Checkpoint>
+	
+	<Checkpoint Id="FLAPS_AS_DESIRED">
+		<Clue name="TT:CLUE.FLAPS_AS_DESIRED_LANDING"/>
+		<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="TT:GAME.CHECKLIST_AS_DESIRED"/>
+		<Test>
+		<Instrument Id="HANDLING_Lever_Flaps"/>
+		</Test>
+    </Checkpoint>
+	
     <Checkpoint Id="Flaps_As_Desired_0-10_below_110_KIAS">
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="TT:GAME.CHECKLIST_AS_DESIRED_REQUIRED"/>
       <Clue name="TT:CLUE.FLAPS_AS_DESIRED_0-10_BELOW_110_KIAS"/>

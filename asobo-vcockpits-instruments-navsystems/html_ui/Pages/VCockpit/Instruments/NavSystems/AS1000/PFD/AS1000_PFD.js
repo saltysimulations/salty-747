@@ -662,6 +662,12 @@ class AS1000_PFD_WaypointLine extends MFD_WaypointLine {
 class AS1000_PFD_ApproachWaypointLine extends MFD_ApproachWaypointLine {
     onEvent(_subIndex, _event) {
         switch (_event) {
+            case "NavigationLargeInc":
+            case "NavigationLargeDec":
+                if (_subIndex === 0 && this.waypoint) {
+                    this.element.gps.lastRelevantICAO = this.waypoint.icao;
+                }
+                break;
             case "NavigationSmallInc":
             case "NavigationSmallDec":
                 switch (_subIndex) {

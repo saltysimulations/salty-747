@@ -9,13 +9,13 @@
   "title": "",
   "manufacturer": "",
   "creator": "Asobo Studio",
-  "package_version": "0.1.102",
-  "minimum_game_version": "1.14.4",
+  "package_version": "0.1.123",
+  "minimum_game_version": "1.17.1",
   "release_notes": {
     "neutral": {
       "LastUpdate": "",
       "OlderHistory": ""
     }
   },
-  "total_package_size": "00000000000001845553"
+  "total_package_size": "00000000000001846142"
 }

@@ -143,7 +143,7 @@ class AS3000_MFD_NavInfos extends NavSystemElement {
             let min = ((ete % 3600) / 60);
             Avionics.Utils.diffAndSet(this.ETE, Math.floor(ete / 3600).toFixed(0) + (min < 10 ? "+0" : "+") + min.toFixed(0));
         }
-        Avionics.Utils.diffAndSet(this.BRG, fastToFixed(this.gps.currFlightPlanManager.getBearingToActiveWaypoint(), 0) + "°");
+        Avionics.Utils.diffAndSet(this.BRG, fastToFixed(this.gps.currFlightPlanManager.getBearingToActiveWaypoint(true), 0) + "°");
         Avionics.Utils.diffAndSet(this.DIS, fastToFixed(this.gps.currFlightPlanManager.getDistanceToActiveWaypoint(), 0) + "NM");
         Avionics.Utils.diffAndSet(this.MSA, "____FT");
         if (ete == 0) {

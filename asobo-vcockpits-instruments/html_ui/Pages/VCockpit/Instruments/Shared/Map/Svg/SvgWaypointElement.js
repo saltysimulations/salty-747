@@ -103,7 +103,7 @@ class SvgWaypointElement extends SvgMapElement {
         this._textWidth = ctx.measureText(text).width;
         this._textHeight = fontSize * 0.675;
         let ident;
-        let activeWaypoint = FlightPlanManager.DEBUG_INSTANCE.getActiveWaypoint(false, true);
+        let activeWaypoint = FlightPlanManager.DEBUG_INSTANCE.getActiveWaypoint(true);
         if (activeWaypoint) {
             ident = activeWaypoint.ident;
         }
@@ -193,7 +193,10 @@ class SvgWaypointElement extends SvgMapElement {
             this.x = pos.x;
             this.y = pos.y;
         }
-        let wp = FlightPlanManager.DEBUG_INSTANCE.getActiveWaypoint(false, true);
+        let wp;
+        if (this.source && this.source.instrument && this.source.instrument.flightPlanManager) {
+            this.source.instrument.flightPlanManager.getActiveWaypoint(true);
+        }
         let isActiveWaypoint = this.source === wp || (wp && wp.icao === this.source.icao);
         if (isActiveWaypoint != this._lastIsActiveWaypoint) {
             this._refreshLabel(map, isActiveWaypoint);

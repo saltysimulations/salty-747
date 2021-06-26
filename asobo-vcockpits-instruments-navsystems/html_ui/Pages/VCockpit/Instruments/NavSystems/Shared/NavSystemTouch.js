@@ -1887,90 +1887,95 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
             let symbol = originInfo.imageFileName();
             Avionics.Utils.diffAndSetAttribute(this.origin_wayPoint.identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
             for (let i = 0; i < departure.length; i++) {
+                let isNew = false;
                 if (this.departureWaypoints.length <= i) {
                     this.departureWaypoints.push(new NavSystemTouch_FPLWaypointLine());
-                    this.departureWaypoints[i].base = document.createElement("tr");
+                    isNew = true;
+                }
+                let wpLine = this.departureWaypoints[i];
+                if (isNew) {
+                    wpLine.base = document.createElement("tr");
                     {
                         let td1 = document.createElement("td");
                         {
-                            this.departureWaypoints[i].identButton = document.createElement("div");
+                            wpLine.identButton = document.createElement("div");
                             {
-                                Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].identButton, "class", "gradientButton Waypoint");
-                                this.departureWaypoints[i].identButton_Ident = document.createElement("div");
+                                Avionics.Utils.diffAndSetAttribute(wpLine.identButton, "class", "gradientButton Waypoint");
+                                wpLine.identButton_Ident = document.createElement("div");
                                 {
-                                    this.departureWaypoints[i].identButton_Ident.setAttribute("class", "mainValue");
+                                    wpLine.identButton_Ident.setAttribute("class", "mainValue");
                                 }
-                                this.departureWaypoints[i].identButton.appendChild(this.departureWaypoints[i].identButton_Ident);
-                                this.departureWaypoints[i].identButton_Name = document.createElement("div");
+                                wpLine.identButton.appendChild(wpLine.identButton_Ident);
+                                wpLine.identButton_Name = document.createElement("div");
                                 {
-                                    this.departureWaypoints[i].identButton_Name.setAttribute("class", "title");
+                                    wpLine.identButton_Name.setAttribute("class", "title");
                                 }
-                                this.departureWaypoints[i].identButton.appendChild(this.departureWaypoints[i].identButton_Name);
-                                this.departureWaypoints[i].identButton_Logo = document.createElement("img");
+                                wpLine.identButton.appendChild(wpLine.identButton_Name);
+                                wpLine.identButton_Logo = document.createElement("img");
                                 {
-                                    this.departureWaypoints[i].identButton_Logo.setAttribute("class", "symbol");
+                                    wpLine.identButton_Logo.setAttribute("class", "symbol");
                                 }
-                                this.departureWaypoints[i].identButton.appendChild(this.departureWaypoints[i].identButton_Logo);
+                                wpLine.identButton.appendChild(wpLine.identButton_Logo);
                             }
-                            td1.appendChild(this.departureWaypoints[i].identButton);
+                            td1.appendChild(wpLine.identButton);
                         }
-                        this.departureWaypoints[i].base.appendChild(td1);
+                        wpLine.base.appendChild(td1);
                         let td2 = document.createElement("td");
                         {
-                            this.departureWaypoints[i].altButton = document.createElement("div");
+                            wpLine.altButton = document.createElement("div");
                             {
-                                Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].altButton, "class", "gradientButton");
-                                this.departureWaypoints[i].altButton_Value = document.createElement("div");
+                                Avionics.Utils.diffAndSetAttribute(wpLine.altButton, "class", "gradientButton");
+                                wpLine.altButton_Value = document.createElement("div");
                                 {
-                                    Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].altButton_Value, "class", "mainValue");
-                                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].altButton_Value, "_____FT");
+                                    Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "class", "mainValue");
+                                    Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
                                 }
-                                this.departureWaypoints[i].altButton.appendChild(this.departureWaypoints[i].altButton_Value);
+                                wpLine.altButton.appendChild(wpLine.altButton_Value);
                             }
-                            td2.appendChild(this.departureWaypoints[i].altButton);
+                            td2.appendChild(wpLine.altButton);
                         }
-                        this.departureWaypoints[i].base.appendChild(td2);
+                        wpLine.base.appendChild(td2);
                         let td3 = document.createElement("td");
                         {
-                            this.departureWaypoints[i].dtk = document.createElement("div");
-                            Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].dtk, "class", "DTK");
-                            td3.appendChild(this.departureWaypoints[i].dtk);
-                            this.departureWaypoints[i].distance = document.createElement("div");
-                            Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].distance, "class", "DIS");
-                            td3.appendChild(this.departureWaypoints[i].distance);
+                            wpLine.dtk = document.createElement("div");
+                            Avionics.Utils.diffAndSetAttribute(wpLine.dtk, "class", "DTK");
+                            td3.appendChild(wpLine.dtk);
+                            wpLine.distance = document.createElement("div");
+                            Avionics.Utils.diffAndSetAttribute(wpLine.distance, "class", "DIS");
+                            td3.appendChild(wpLine.distance);
                         }
-                        this.departureWaypoints[i].base.appendChild(td3);
+                        wpLine.base.appendChild(td3);
                     }
-                    this.waypointsBody.insertBefore(this.departureWaypoints[i].base, this.enRoute);
-                    this.gps.makeButton(this.departureWaypoints[i].identButton, this.waypointClick.bind(this, i, 1));
-                    this.gps.makeButton(this.departureWaypoints[i].altButton, this.editAltitude.bind(this, i, 1));
+                    this.waypointsBody.insertBefore(wpLine.base, this.enRoute);
+                    this.gps.makeButton(wpLine.identButton, this.waypointClick.bind(this, i, 1));
+                    this.gps.makeButton(wpLine.altButton, this.editAltitude.bind(this, i, 1));
                 }
-                this.departureWaypoints[i].index = i + (origin ? 1 : 0);
-                if (!this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == this.departureWaypoints[i].index) {
-                    Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].base, "state", "CurrentLeg");
+                wpLine.index = i + (origin ? 1 : 0);
+                if (!this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == wpLine.index) {
+                    Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "CurrentLeg");
                 }
                 else {
-                    Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].base, "state", "Active");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "Active");
                 }
                 if (departure[i] && departure[i] != undefined) {
                     let infos = departure[i].infos;
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].identButton_Ident, infos.ident != "" ? infos.ident : departure[i].ident);
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].identButton_Name, infos.name);
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].altButton_Value, departure[i].altitudeinFP ? fastToFixed(Math.round(departure[i].altitudeinFP), 0) + "FT" : "_____FT");
-                    Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].altButton_Value, "altitudeMode", departure[i].altitudeModeinFP);
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Ident, infos.ident != "" ? infos.ident : departure[i].ident);
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Name, infos.name);
+                    Avionics.Utils.diffAndSet(wpLine.altButton_Value, departure[i].altitudeinFP ? fastToFixed(Math.round(departure[i].altitudeinFP), 0) + "FT" : "_____FT");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "altitudeMode", departure[i].altitudeModeinFP);
                     let symbol = infos.imageFileName();
-                    Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].dtk, fastToFixed(departure[i].bearingInFP, 0) + "°");
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].distance, fastToFixed(departure[i].distanceInFP, 0) + "NM");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
+                    Avionics.Utils.diffAndSet(wpLine.dtk, fastToFixed(departure[i].bearingInFP, 0) + "°");
+                    Avionics.Utils.diffAndSet(wpLine.distance, fastToFixed(departure[i].distanceInFP, 0) + "NM");
                 }
                 else {
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].identButton_Ident, "");
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].identButton_Name, "");
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].altButton_Value, "_____FT");
-                    Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].altButton_Value, "altitudeMode", "");
-                    Avionics.Utils.diffAndSetAttribute(this.departureWaypoints[i].identButton_Logo, "src", "");
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].dtk, "___°");
-                    Avionics.Utils.diffAndSet(this.departureWaypoints[i].distance, "_____NM");
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Ident, "");
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Name, "");
+                    Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "altitudeMode", "");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.identButton_Logo, "src", "");
+                    Avionics.Utils.diffAndSet(wpLine.dtk, "___°");
+                    Avionics.Utils.diffAndSet(wpLine.distance, "_____NM");
                 }
             }
         }
@@ -1989,90 +1994,95 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
             Avionics.Utils.diffAndSetAttribute(this.enRoute, "state", "Inactive");
         }
         for (let i = 0; i < enroute.length; i++) {
+            let isNew = false;
             if (this.enRouteWaypoints.length <= i) {
                 this.enRouteWaypoints.push(new NavSystemTouch_FPLWaypointLine());
-                this.enRouteWaypoints[i].base = document.createElement("tr");
+                isNew = true;
+            }
+            let wpLine = this.enRouteWaypoints[i];
+            if (isNew) {
+                wpLine.base = document.createElement("tr");
                 {
                     let td1 = document.createElement("td");
                     {
-                        this.enRouteWaypoints[i].identButton = document.createElement("div");
+                        wpLine.identButton = document.createElement("div");
                         {
-                            Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].identButton, "class", "gradientButton Waypoint");
-                            this.enRouteWaypoints[i].identButton_Ident = document.createElement("div");
+                            Avionics.Utils.diffAndSetAttribute(wpLine.identButton, "class", "gradientButton Waypoint");
+                            wpLine.identButton_Ident = document.createElement("div");
                             {
-                                this.enRouteWaypoints[i].identButton_Ident.setAttribute("class", "mainValue");
+                                wpLine.identButton_Ident.setAttribute("class", "mainValue");
                             }
-                            this.enRouteWaypoints[i].identButton.appendChild(this.enRouteWaypoints[i].identButton_Ident);
-                            this.enRouteWaypoints[i].identButton_Name = document.createElement("div");
+                            wpLine.identButton.appendChild(wpLine.identButton_Ident);
+                            wpLine.identButton_Name = document.createElement("div");
                             {
-                                this.enRouteWaypoints[i].identButton_Name.setAttribute("class", "title");
+                                wpLine.identButton_Name.setAttribute("class", "title");
                             }
-                            this.enRouteWaypoints[i].identButton.appendChild(this.enRouteWaypoints[i].identButton_Name);
-                            this.enRouteWaypoints[i].identButton_Logo = document.createElement("img");
+                            wpLine.identButton.appendChild(wpLine.identButton_Name);
+                            wpLine.identButton_Logo = document.createElement("img");
                             {
-                                this.enRouteWaypoints[i].identButton_Logo.setAttribute("class", "symbol");
+                                wpLine.identButton_Logo.setAttribute("class", "symbol");
                             }
-                            this.enRouteWaypoints[i].identButton.appendChild(this.enRouteWaypoints[i].identButton_Logo);
+                            wpLine.identButton.appendChild(wpLine.identButton_Logo);
                         }
-                        td1.appendChild(this.enRouteWaypoints[i].identButton);
+                        td1.appendChild(wpLine.identButton);
                     }
-                    this.enRouteWaypoints[i].base.appendChild(td1);
+                    wpLine.base.appendChild(td1);
                     let td2 = document.createElement("td");
                     {
-                        this.enRouteWaypoints[i].altButton = document.createElement("div");
+                        wpLine.altButton = document.createElement("div");
                         {
-                            Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].altButton, "class", "gradientButton");
-                            this.enRouteWaypoints[i].altButton_Value = document.createElement("div");
+                            Avionics.Utils.diffAndSetAttribute(wpLine.altButton, "class", "gradientButton");
+                            wpLine.altButton_Value = document.createElement("div");
                             {
-                                Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].altButton_Value, "class", "mainValue");
-                                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].altButton_Value, "_____FT");
+                                Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "class", "mainValue");
+                                Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
                             }
-                            this.enRouteWaypoints[i].altButton.appendChild(this.enRouteWaypoints[i].altButton_Value);
+                            wpLine.altButton.appendChild(wpLine.altButton_Value);
                         }
-                        td2.appendChild(this.enRouteWaypoints[i].altButton);
+                        td2.appendChild(wpLine.altButton);
                     }
-                    this.enRouteWaypoints[i].base.appendChild(td2);
+                    wpLine.base.appendChild(td2);
                     let td3 = document.createElement("td");
                     {
-                        this.enRouteWaypoints[i].dtk = document.createElement("div");
-                        Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].dtk, "class", "DTK");
-                        td3.appendChild(this.enRouteWaypoints[i].dtk);
-                        this.enRouteWaypoints[i].distance = document.createElement("div");
-                        Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].distance, "class", "DIS");
-                        td3.appendChild(this.enRouteWaypoints[i].distance);
+                        wpLine.dtk = document.createElement("div");
+                        Avionics.Utils.diffAndSetAttribute(wpLine.dtk, "class", "DTK");
+                        td3.appendChild(wpLine.dtk);
+                        wpLine.distance = document.createElement("div");
+                        Avionics.Utils.diffAndSetAttribute(wpLine.distance, "class", "DIS");
+                        td3.appendChild(wpLine.distance);
                     }
-                    this.enRouteWaypoints[i].base.appendChild(td3);
+                    wpLine.base.appendChild(td3);
                 }
-                this.waypointsBody.insertBefore(this.enRouteWaypoints[i].base, this.enRouteAdd);
-                this.gps.makeButton(this.enRouteWaypoints[i].identButton, this.waypointClick.bind(this, i, 2));
-                this.gps.makeButton(this.enRouteWaypoints[i].altButton, this.editAltitude.bind(this, i, 2));
+                this.waypointsBody.insertBefore(wpLine.base, this.enRouteAdd);
+                this.gps.makeButton(wpLine.identButton, this.waypointClick.bind(this, i, 2));
+                this.gps.makeButton(wpLine.altButton, this.editAltitude.bind(this, i, 2));
             }
-            this.enRouteWaypoints[i].index = i + departure.length + (origin ? 1 : 0);
-            if (!this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == this.enRouteWaypoints[i].index) {
-                Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].base, "state", "CurrentLeg");
+            wpLine.index = i + departure.length + (origin ? 1 : 0);
+            if (!this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == wpLine.index) {
+                Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "CurrentLeg");
             }
             else {
-                Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].base, "state", "Active");
+                Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "Active");
             }
             if (enroute[i] && enroute[i] != undefined) {
                 let infos = enroute[i].infos;
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].identButton_Ident, infos.ident != "" ? infos.ident : enroute[i].ident);
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].identButton_Name, infos.name);
+                Avionics.Utils.diffAndSet(wpLine.identButton_Ident, infos.ident != "" ? infos.ident : enroute[i].ident);
+                Avionics.Utils.diffAndSet(wpLine.identButton_Name, infos.name);
                 let symbol = infos.imageFileName();
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].altButton_Value, enroute[i].altitudeinFP ? fastToFixed(Math.round(enroute[i].altitudeinFP), 0) + "FT" : "_____FT");
-                Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].altButton_Value, "altitudeMode", enroute[i].altitudeModeinFP);
-                Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].dtk, fastToFixed(enroute[i].bearingInFP, 0) + "°");
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].distance, fastToFixed(enroute[i].distanceInFP, 0) + "NM");
+                Avionics.Utils.diffAndSet(wpLine.altButton_Value, enroute[i].altitudeinFP ? fastToFixed(Math.round(enroute[i].altitudeinFP), 0) + "FT" : "_____FT");
+                Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "altitudeMode", enroute[i].altitudeModeinFP);
+                Avionics.Utils.diffAndSetAttribute(wpLine.identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
+                Avionics.Utils.diffAndSet(wpLine.dtk, fastToFixed(enroute[i].bearingInFP, 0) + "°");
+                Avionics.Utils.diffAndSet(wpLine.distance, fastToFixed(enroute[i].distanceInFP, 0) + "NM");
             }
             else {
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].identButton_Ident, "");
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].identButton_Name, "");
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].altButton_Value, "_____FT");
-                Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].altButton_Value, "altitudeMode", "");
-                Avionics.Utils.diffAndSetAttribute(this.enRouteWaypoints[i].identButton_Logo, "src", "");
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].dtk, "___°");
-                Avionics.Utils.diffAndSet(this.enRouteWaypoints[i].distance, "_____NM");
+                Avionics.Utils.diffAndSet(wpLine.identButton_Ident, "");
+                Avionics.Utils.diffAndSet(wpLine.identButton_Name, "");
+                Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
+                Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "altitudeMode", "");
+                Avionics.Utils.diffAndSetAttribute(wpLine.identButton_Logo, "src", "");
+                Avionics.Utils.diffAndSet(wpLine.dtk, "___°");
+                Avionics.Utils.diffAndSet(wpLine.distance, "_____NM");
             }
         }
         for (let i = enroute.length; i < this.enRouteWaypoints.length; i++) {
@@ -2098,174 +2108,184 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
             let symbol = destinationInfo.imageFileName();
             Avionics.Utils.diffAndSetAttribute(this.destination_wayPoint.identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
             for (let i = 0; i < arrival.length; i++) {
+                let isNew = false;
                 if (this.arrivalWaypoints.length <= i) {
                     this.arrivalWaypoints.push(new NavSystemTouch_FPLWaypointLine());
-                    this.arrivalWaypoints[i].base = document.createElement("tr");
+                    isNew = true;
+                }
+                let wpLine = this.arrivalWaypoints[i];
+                if (isNew) {
+                    wpLine.base = document.createElement("tr");
                     {
                         let td1 = document.createElement("td");
                         {
-                            this.arrivalWaypoints[i].identButton = document.createElement("div");
+                            wpLine.identButton = document.createElement("div");
                             {
-                                Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].identButton, "class", "gradientButton Waypoint");
-                                this.arrivalWaypoints[i].identButton_Ident = document.createElement("div");
+                                Avionics.Utils.diffAndSetAttribute(wpLine.identButton, "class", "gradientButton Waypoint");
+                                wpLine.identButton_Ident = document.createElement("div");
                                 {
-                                    this.arrivalWaypoints[i].identButton_Ident.setAttribute("class", "mainValue");
+                                    wpLine.identButton_Ident.setAttribute("class", "mainValue");
                                 }
-                                this.arrivalWaypoints[i].identButton.appendChild(this.arrivalWaypoints[i].identButton_Ident);
-                                this.arrivalWaypoints[i].identButton_Name = document.createElement("div");
+                                wpLine.identButton.appendChild(wpLine.identButton_Ident);
+                                wpLine.identButton_Name = document.createElement("div");
                                 {
-                                    this.arrivalWaypoints[i].identButton_Name.setAttribute("class", "title");
+                                    wpLine.identButton_Name.setAttribute("class", "title");
                                 }
-                                this.arrivalWaypoints[i].identButton.appendChild(this.arrivalWaypoints[i].identButton_Name);
-                                this.arrivalWaypoints[i].identButton_Logo = document.createElement("img");
+                                wpLine.identButton.appendChild(wpLine.identButton_Name);
+                                wpLine.identButton_Logo = document.createElement("img");
                                 {
-                                    this.arrivalWaypoints[i].identButton_Logo.setAttribute("class", "symbol");
+                                    wpLine.identButton_Logo.setAttribute("class", "symbol");
                                 }
-                                this.arrivalWaypoints[i].identButton.appendChild(this.arrivalWaypoints[i].identButton_Logo);
+                                wpLine.identButton.appendChild(wpLine.identButton_Logo);
                             }
-                            td1.appendChild(this.arrivalWaypoints[i].identButton);
+                            td1.appendChild(wpLine.identButton);
                         }
-                        this.arrivalWaypoints[i].base.appendChild(td1);
+                        wpLine.base.appendChild(td1);
                         let td2 = document.createElement("td");
                         {
-                            this.arrivalWaypoints[i].altButton = document.createElement("div");
+                            wpLine.altButton = document.createElement("div");
                             {
-                                Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].altButton, "class", "gradientButton");
-                                this.arrivalWaypoints[i].altButton_Value = document.createElement("div");
+                                Avionics.Utils.diffAndSetAttribute(wpLine.altButton, "class", "gradientButton");
+                                wpLine.altButton_Value = document.createElement("div");
                                 {
-                                    Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].altButton_Value, "class", "mainValue");
-                                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].altButton_Value, "_____FT");
+                                    Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "class", "mainValue");
+                                    Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
                                 }
-                                this.arrivalWaypoints[i].altButton.appendChild(this.arrivalWaypoints[i].altButton_Value);
+                                wpLine.altButton.appendChild(wpLine.altButton_Value);
                             }
-                            td2.appendChild(this.arrivalWaypoints[i].altButton);
+                            td2.appendChild(wpLine.altButton);
                         }
-                        this.arrivalWaypoints[i].base.appendChild(td2);
+                        wpLine.base.appendChild(td2);
                         let td3 = document.createElement("td");
                         {
-                            this.arrivalWaypoints[i].dtk = document.createElement("div");
-                            Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].dtk, "class", "DTK");
-                            td3.appendChild(this.arrivalWaypoints[i].dtk);
-                            this.arrivalWaypoints[i].distance = document.createElement("div");
-                            Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].distance, "class", "DIS");
-                            td3.appendChild(this.arrivalWaypoints[i].distance);
+                            wpLine.dtk = document.createElement("div");
+                            Avionics.Utils.diffAndSetAttribute(wpLine.dtk, "class", "DTK");
+                            td3.appendChild(wpLine.dtk);
+                            wpLine.distance = document.createElement("div");
+                            Avionics.Utils.diffAndSetAttribute(wpLine.distance, "class", "DIS");
+                            td3.appendChild(wpLine.distance);
                         }
-                        this.arrivalWaypoints[i].base.appendChild(td3);
+                        wpLine.base.appendChild(td3);
                     }
-                    this.waypointsBody.insertBefore(this.arrivalWaypoints[i].base, this.destination_wayPoint.base);
-                    this.gps.makeButton(this.arrivalWaypoints[i].identButton, this.waypointClick.bind(this, i, 3));
-                    this.gps.makeButton(this.arrivalWaypoints[i].altButton, this.editAltitude.bind(this, i, 3));
+                    this.waypointsBody.insertBefore(wpLine.base, this.destination_wayPoint.base);
+                    this.gps.makeButton(wpLine.identButton, this.waypointClick.bind(this, i, 3));
+                    this.gps.makeButton(wpLine.altButton, this.editAltitude.bind(this, i, 3));
                 }
-                this.arrivalWaypoints[i].index = i + departure.length + (origin ? 1 : 0) + enroute.length;
-                if (!this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == this.arrivalWaypoints[i].index) {
-                    Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].base, "state", "CurrentLeg");
+                wpLine.index = i + departure.length + (origin ? 1 : 0) + enroute.length;
+                if (!this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == wpLine.index) {
+                    Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "CurrentLeg");
                 }
                 else {
-                    Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].base, "state", "Active");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "Active");
                 }
                 if (arrival[i] && arrival[i] != undefined) {
                     let infos = arrival[i].infos;
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].identButton_Ident, infos.ident != "" ? infos.ident : arrival[i].ident);
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].identButton_Name, infos.name);
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Ident, infos.ident != "" ? infos.ident : arrival[i].ident);
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Name, infos.name);
                     let symbol = infos.imageFileName();
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].altButton_Value, arrival[i].altitudeinFP ? fastToFixed(Math.round(arrival[i].altitudeinFP), 0) + "FT" : "_____FT");
-                    Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].altButton_Value, "altitudeMode", arrival[i].altitudeModeinFP);
-                    Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].dtk, fastToFixed(arrival[i].bearingInFP, 0) + "°");
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].distance, fastToFixed(arrival[i].distanceInFP, 0) + "NM");
+                    Avionics.Utils.diffAndSet(wpLine.altButton_Value, arrival[i].altitudeinFP ? fastToFixed(Math.round(arrival[i].altitudeinFP), 0) + "FT" : "_____FT");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "altitudeMode", arrival[i].altitudeModeinFP);
+                    Avionics.Utils.diffAndSetAttribute(wpLine.identButton_Logo, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
+                    Avionics.Utils.diffAndSet(wpLine.dtk, fastToFixed(arrival[i].bearingInFP, 0) + "°");
+                    Avionics.Utils.diffAndSet(wpLine.distance, fastToFixed(arrival[i].distanceInFP, 0) + "NM");
                 }
                 else {
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].identButton_Ident, "");
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].identButton_Name, "");
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].altButton_Value, "_____FT");
-                    Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].altButton_Value, "altitudeMode", "");
-                    Avionics.Utils.diffAndSetAttribute(this.arrivalWaypoints[i].identButton_Logo, "src", "");
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].dtk, "___°");
-                    Avionics.Utils.diffAndSet(this.arrivalWaypoints[i].distance, "_____NM");
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Ident, "");
+                    Avionics.Utils.diffAndSet(wpLine.identButton_Name, "");
+                    Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "altitudeMode", "");
+                    Avionics.Utils.diffAndSetAttribute(wpLine.identButton_Logo, "src", "");
+                    Avionics.Utils.diffAndSet(wpLine.dtk, "___°");
+                    Avionics.Utils.diffAndSet(wpLine.distance, "_____NM");
                 }
             }
             if (approach && approach.length > 0) {
                 Avionics.Utils.diffAndSet(this.approach_mainValue, "Approach - " + approachInfos.name);
                 for (let i = 0; i < approach.length; i++) {
+                    let isNew = false;
                     if (i >= this.approachWaypoints.length) {
                         this.approachWaypoints.push(new NavSystemTouch_FPLWaypointLine());
-                        this.approachWaypoints[i].base = document.createElement("tr");
+                        isNew = true;
+                    }
+                    let wpLine = this.approachWaypoints[i];
+                    if (isNew) {
+                        wpLine.base = document.createElement("tr");
                         {
                             let td1 = document.createElement("td");
                             {
-                                this.approachWaypoints[i].identButton = document.createElement("div");
+                                wpLine.identButton = document.createElement("div");
                                 {
-                                    Avionics.Utils.diffAndSetAttribute(this.approachWaypoints[i].identButton, "class", "gradientButton Waypoint");
-                                    this.approachWaypoints[i].identButton_Ident = document.createElement("div");
+                                    Avionics.Utils.diffAndSetAttribute(wpLine.identButton, "class", "gradientButton Waypoint");
+                                    wpLine.identButton_Ident = document.createElement("div");
                                     {
-                                        this.approachWaypoints[i].identButton_Ident.setAttribute("class", "mainValue");
+                                        wpLine.identButton_Ident.setAttribute("class", "mainValue");
                                     }
-                                    this.approachWaypoints[i].identButton.appendChild(this.approachWaypoints[i].identButton_Ident);
-                                    this.approachWaypoints[i].identButton_Name = document.createElement("div");
+                                    wpLine.identButton.appendChild(wpLine.identButton_Ident);
+                                    wpLine.identButton_Name = document.createElement("div");
                                     {
-                                        this.approachWaypoints[i].identButton_Name.setAttribute("class", "title");
+                                        wpLine.identButton_Name.setAttribute("class", "title");
                                     }
-                                    this.approachWaypoints[i].identButton.appendChild(this.approachWaypoints[i].identButton_Name);
-                                    this.approachWaypoints[i].identButton_Logo = document.createElement("img");
+                                    wpLine.identButton.appendChild(wpLine.identButton_Name);
+                                    wpLine.identButton_Logo = document.createElement("img");
                                     {
-                                        this.approachWaypoints[i].identButton_Logo.setAttribute("class", "symbol");
+                                        wpLine.identButton_Logo.setAttribute("class", "symbol");
                                     }
-                                    this.approachWaypoints[i].identButton.appendChild(this.approachWaypoints[i].identButton_Logo);
+                                    wpLine.identButton.appendChild(wpLine.identButton_Logo);
                                 }
-                                td1.appendChild(this.approachWaypoints[i].identButton);
+                                td1.appendChild(wpLine.identButton);
                             }
-                            this.approachWaypoints[i].base.appendChild(td1);
+                            wpLine.base.appendChild(td1);
                             let td2 = document.createElement("td");
                             {
-                                this.approachWaypoints[i].altButton = document.createElement("div");
+                                wpLine.altButton = document.createElement("div");
                                 {
-                                    Avionics.Utils.diffAndSetAttribute(this.approachWaypoints[i].altButton, "class", "gradientButton");
-                                    this.approachWaypoints[i].altButton_Value = document.createElement("div");
+                                    Avionics.Utils.diffAndSetAttribute(wpLine.altButton, "class", "gradientButton");
+                                    wpLine.altButton_Value = document.createElement("div");
                                     {
-                                        Avionics.Utils.diffAndSetAttribute(this.approachWaypoints[i].altButton_Value, "class", "mainValue");
-                                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].altButton_Value, "_____FT");
+                                        Avionics.Utils.diffAndSetAttribute(wpLine.altButton_Value, "class", "mainValue");
+                                        Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
                                     }
-                                    this.approachWaypoints[i].altButton.appendChild(this.approachWaypoints[i].altButton_Value);
+                                    wpLine.altButton.appendChild(wpLine.altButton_Value);
                                 }
-                                td2.appendChild(this.approachWaypoints[i].altButton);
+                                td2.appendChild(wpLine.altButton);
                             }
-                            this.approachWaypoints[i].base.appendChild(td2);
+                            wpLine.base.appendChild(td2);
                             let td3 = document.createElement("td");
                             {
-                                this.approachWaypoints[i].dtk = document.createElement("div");
-                                Avionics.Utils.diffAndSetAttribute(this.approachWaypoints[i].dtk, "class", "DTK");
-                                td3.appendChild(this.approachWaypoints[i].dtk);
-                                this.approachWaypoints[i].distance = document.createElement("div");
-                                Avionics.Utils.diffAndSetAttribute(this.approachWaypoints[i].distance, "class", "DIS");
-                                td3.appendChild(this.approachWaypoints[i].distance);
+                                wpLine.dtk = document.createElement("div");
+                                Avionics.Utils.diffAndSetAttribute(wpLine.dtk, "class", "DTK");
+                                td3.appendChild(wpLine.dtk);
+                                wpLine.distance = document.createElement("div");
+                                Avionics.Utils.diffAndSetAttribute(wpLine.distance, "class", "DIS");
+                                td3.appendChild(wpLine.distance);
                             }
-                            this.approachWaypoints[i].base.appendChild(td3);
+                            wpLine.base.appendChild(td3);
                         }
-                        this.waypointsBody.appendChild(this.approachWaypoints[i].base);
-                        this.gps.makeButton(this.approachWaypoints[i].identButton, this.waypointClick.bind(this, i, 5));
-                        this.gps.makeButton(this.approachWaypoints[i].altButton, this.editAltitude.bind(this, i, 5));
+                        this.waypointsBody.appendChild(wpLine.base);
+                        this.gps.makeButton(wpLine.identButton, this.waypointClick.bind(this, i, 5));
+                        this.gps.makeButton(wpLine.altButton, this.editAltitude.bind(this, i, 5));
                     }
-                    this.approachWaypoints[i].index = i;
-                    if (this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == this.approachWaypoints[i].index) {
-                        Avionics.Utils.diffAndSetAttribute(this.approachWaypoints[i].base, "state", "CurrentLeg");
+                    wpLine.index = i;
+                    if (this.gps.currFlightPlanManager.isActiveApproach() && this.gps.currFlightPlanManager.getActiveWaypointIndex() == wpLine.index) {
+                        Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "CurrentLeg");
                     }
                     else {
-                        Avionics.Utils.diffAndSetAttribute(this.approachWaypoints[i].base, "state", "Active");
+                        Avionics.Utils.diffAndSetAttribute(wpLine.base, "state", "Active");
                     }
                     if (approach[i] && approach[i] != undefined) {
                         let infos = approach[i];
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].identButton_Ident, infos.ident);
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].identButton_Name, infos.ident);
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].altButton_Value, approach[i].altitudeinFP ? fastToFixed(approach[i].altitudeinFP, 0) + "FT" : "_____FT");
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].dtk, infos.bearingInFP ? fastToFixed(infos.bearingInFP, 0) + "°" : "");
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].distance, infos.distanceInFP ? fastToFixed(infos.distanceInFP, 0) + "NM" : "");
+                        Avionics.Utils.diffAndSet(wpLine.identButton_Ident, infos.ident);
+                        Avionics.Utils.diffAndSet(wpLine.identButton_Name, infos.ident);
+                        Avionics.Utils.diffAndSet(wpLine.altButton_Value, approach[i].altitudeinFP ? fastToFixed(approach[i].altitudeinFP, 0) + "FT" : "_____FT");
+                        Avionics.Utils.diffAndSet(wpLine.dtk, infos.bearingInFP ? fastToFixed(infos.bearingInFP, 0) + "°" : "");
+                        Avionics.Utils.diffAndSet(wpLine.distance, infos.distanceInFP ? fastToFixed(infos.distanceInFP, 0) + "NM" : "");
                     }
                     else {
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].identButton_Ident, "");
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].identButton_Name, "");
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].altButton_Value, "_____FT");
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].dtk, "___°");
-                        Avionics.Utils.diffAndSet(this.approachWaypoints[i].distance, "_____NM");
+                        Avionics.Utils.diffAndSet(wpLine.identButton_Ident, "");
+                        Avionics.Utils.diffAndSet(wpLine.identButton_Name, "");
+                        Avionics.Utils.diffAndSet(wpLine.altButton_Value, "_____FT");
+                        Avionics.Utils.diffAndSet(wpLine.dtk, "___°");
+                        Avionics.Utils.diffAndSet(wpLine.distance, "_____NM");
                     }
                 }
                 for (let i = approach.length; i < this.approachWaypoints.length; i++) {
@@ -2294,22 +2314,22 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
         }
         if (this.gps.currFlightPlanManager.getActiveWaypointIndex() > 0) {
             let activeIndex = this.gps.currFlightPlanManager.getActiveWaypointIndex();
-            let beginElement = (this.gps.currFlightPlanManager.isActiveApproach() ? activeIndex > 0 ? this.approachWaypoints[activeIndex - 1].base : null :
-                activeIndex == 1 && origin ? this.origin_wayPoint.base :
-                    activeIndex <= departure.length + (origin ? 1 : 0) ? this.departureWaypoints[activeIndex - (origin ? 2 : 1)].base :
-                        activeIndex <= departure.length + enroute.length + (origin ? 1 : 0) ? this.enRouteWaypoints[activeIndex - departure.length - (origin ? 1 : 0) - 1].base :
-                            activeIndex <= departure.length + enroute.length + (origin ? 1 : 0) + arrival.length ? this.arrivalWaypoints[activeIndex - departure.length - (origin ? 1 : 0) - enroute.length - 1].base :
+            let beginElement = (this.gps.currFlightPlanManager.isActiveApproach() ? activeIndex > 0 ? this.approachWaypoints[activeIndex - 1] : null :
+                activeIndex == 1 && origin ? this.origin_wayPoint :
+                    activeIndex <= departure.length + (origin ? 1 : 0) ? this.departureWaypoints[activeIndex - (origin ? 2 : 1)] :
+                        activeIndex <= departure.length + enroute.length + (origin ? 1 : 0) ? this.enRouteWaypoints[activeIndex - departure.length - (origin ? 1 : 0) - 1] :
+                            activeIndex <= departure.length + enroute.length + (origin ? 1 : 0) + arrival.length ? this.arrivalWaypoints[activeIndex - departure.length - (origin ? 1 : 0) - enroute.length - 1] :
                                 null);
-            let endElement = (this.gps.currFlightPlanManager.isActiveApproach() ? this.approachWaypoints[activeIndex].base :
-                activeIndex < departure.length + (origin ? 1 : 0) ? this.departureWaypoints[activeIndex - (origin ? 1 : 0)].base :
-                    activeIndex < departure.length + enroute.length + (origin ? 1 : 0) ? this.enRouteWaypoints[activeIndex - departure.length - (origin ? 1 : 0)].base :
-                        activeIndex < departure.length + enroute.length + (origin ? 1 : 0) + arrival.length ? this.arrivalWaypoints[activeIndex - departure.length - (origin ? 1 : 0) - enroute.length].base :
-                            destination ? this.destination_wayPoint.base :
+            let endElement = (this.gps.currFlightPlanManager.isActiveApproach() ? this.approachWaypoints[activeIndex] :
+                activeIndex < departure.length + (origin ? 1 : 0) ? this.departureWaypoints[activeIndex - (origin ? 1 : 0)] :
+                    activeIndex < departure.length + enroute.length + (origin ? 1 : 0) ? this.enRouteWaypoints[activeIndex - departure.length - (origin ? 1 : 0)] :
+                        activeIndex < departure.length + enroute.length + (origin ? 1 : 0) + arrival.length ? this.arrivalWaypoints[activeIndex - departure.length - (origin ? 1 : 0) - enroute.length] :
+                            destination ? this.destination_wayPoint :
                                 null);
             if (beginElement && endElement) {
-                let x = beginElement.offsetLeft + this.arrowLeftOffset;
-                let y1 = beginElement.offsetTop + this.arrowTopOffset;
-                let y2 = endElement.offsetTop + this.arrowTopOffset;
+                let x = beginElement.base.offsetLeft + this.arrowLeftOffset;
+                let y1 = beginElement.base.offsetTop + this.arrowTopOffset;
+                let y2 = endElement.base.offsetTop + this.arrowTopOffset;
                 let lineWidth = this.arrowLineWidth;
                 let lineDistance = this.arrowLineDistance;
                 let headWidth = this.arrowHeadWidth;
@@ -2385,7 +2405,9 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                     this.selectedElement = this.approachWaypoints[_index];
                     break;
             }
-            this.selectedElement.identButton.setAttribute("state", "SelectedWP");
+            if (this.selectedElement) {
+                this.selectedElement.identButton.setAttribute("state", "SelectedWP");
+            }
             this.flightPlanDiv.setAttribute("displayedMenu", "Waypoint");
             this.currentMenu = 1;
             this.selectedWaypoint = _index;
@@ -2547,7 +2569,7 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
         }
     }
     removeWaypoint() {
-        this.gps.currFlightPlanManager.removeWaypoint(this.getSelectedIndex());
+        this.gps.currFlightPlanManager.removeWaypoint(this.getSelectedIndex(), true);
         this.closeMenu();
     }
     addEnroute() {
@@ -2590,7 +2612,8 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                             this.selectedGroup = 0;
                             this.selectedWaypoint = 0;
                             this.selectedElement = this.origin_wayPoint;
-                            this.origin_wayPoint.identButton.setAttribute("state", "SelectedWP");
+                            if (this.selectedElement)
+                                this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                             ok = true;
                             break;
                         case 2:
@@ -2599,7 +2622,8 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                             if (length > 0) {
                                 this.selectedWaypoint = length - 1;
                                 this.selectedElement = this.departureWaypoints[this.selectedWaypoint];
-                                this.departureWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
+                                if (this.selectedElement)
+                                    this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                                 ok = true;
                             }
                             break;
@@ -2609,7 +2633,8 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                             if (length > 0) {
                                 this.selectedWaypoint = length - 1;
                                 this.selectedElement = this.enRouteWaypoints[this.selectedWaypoint];
-                                this.enRouteWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
+                                if (this.selectedElement)
+                                    this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                                 ok = true;
                             }
                             break;
@@ -2619,7 +2644,8 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                             if (length > 0) {
                                 this.selectedWaypoint = length - 1;
                                 this.selectedElement = this.arrivalWaypoints[this.selectedWaypoint];
-                                this.arrivalWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
+                                if (this.selectedElement)
+                                    this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                                 ok = true;
                             }
                             break;
@@ -2628,7 +2654,8 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                             if (this.gps.currFlightPlanManager.getDestination()) {
                                 this.selectedWaypoint = 0;
                                 this.selectedElement = this.destination_wayPoint;
-                                this.destination_wayPoint.identButton.setAttribute("state", "SelectedWP");
+                                if (this.selectedElement)
+                                    this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                                 ok = true;
                             }
                             break;
@@ -2642,19 +2669,23 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                 switch (this.selectedGroup) {
                     case 1:
                         this.selectedElement = this.departureWaypoints[this.selectedWaypoint];
-                        this.departureWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
+                        if (this.selectedElement)
+                            this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                         break;
                     case 2:
                         this.selectedElement = this.enRouteWaypoints[this.selectedWaypoint];
-                        this.enRouteWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
+                        if (this.selectedElement)
+                            this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                         break;
                     case 3:
                         this.selectedElement = this.arrivalWaypoints[this.selectedWaypoint];
-                        this.arrivalWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
+                        if (this.selectedElement)
+                            this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                         break;
                     case 5:
                         this.selectedElement = this.approachWaypoints[this.selectedWaypoint];
-                        this.approachWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
+                        if (this.selectedElement)
+                            this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                         break;
                 }
             }
@@ -2677,7 +2708,8 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                             isOk = true;
                             this.selectedWaypoint = 0;
                             this.selectedElement = this.departureWaypoints[0];
-                            this.departureWaypoints[0].identButton.setAttribute("state", "SelectedWP");
+                            if (this.selectedElement)
+                                this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                         }
                         break;
                     case 1:
@@ -2688,13 +2720,15 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                                 isOk = true;
                                 this.selectedWaypoint = 0;
                                 this.selectedElement = this.enRouteWaypoints[0];
-                                this.enRouteWaypoints[0].identButton.setAttribute("state", "SelectedWP");
+                                if (this.selectedElement)
+                                    this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                             }
                         }
                         else {
                             this.selectedWaypoint++;
-                            this.departureWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
                             this.selectedElement = this.departureWaypoints[this.selectedWaypoint];
+                            if (this.selectedElement)
+                                this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                             isOk = true;
                         }
                         break;
@@ -2706,13 +2740,15 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                                 isOk = true;
                                 this.selectedWaypoint = 0;
                                 this.selectedElement = this.arrivalWaypoints[0];
-                                this.arrivalWaypoints[0].identButton.setAttribute("state", "SelectedWP");
+                                if (this.selectedElement)
+                                    this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                             }
                         }
                         else {
                             this.selectedWaypoint++;
-                            this.enRouteWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
                             this.selectedElement = this.enRouteWaypoints[this.selectedWaypoint];
+                            if (this.selectedElement)
+                                this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                             isOk = true;
                         }
                         break;
@@ -2724,13 +2760,15 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                                 isOk = true;
                                 this.selectedWaypoint = 0;
                                 this.selectedElement = this.destination_wayPoint;
-                                this.destination_wayPoint.identButton.setAttribute("state", "SelectedWP");
+                                if (this.selectedElement)
+                                    this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                             }
                         }
                         else {
                             this.selectedWaypoint++;
-                            this.arrivalWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
                             this.selectedElement = this.arrivalWaypoints[this.selectedWaypoint];
+                            if (this.selectedElement)
+                                this.selectedElement.identButton.setAttribute("state", "SelectedWP");
                             isOk = true;
                         }
                         break;
@@ -2740,17 +2778,19 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
                             isOk = true;
                             this.selectedWaypoint = 0;
                             this.selectedElement = this.approachWaypoints[0];
-                            this.destination_wayPoint.identButton.setAttribute("state", "SelectedWP");
+                            if (this.destination_wayPoint)
+                                this.destination_wayPoint.identButton.setAttribute("state", "SelectedWP");
                         }
                         break;
                     case 5:
                         length = this.gps.currFlightPlanManager.getApproachWaypoints().length;
                         if (!(this.selectedWaypoint == length - 1) && !(length == 0)) {
                             this.selectedWaypoint++;
-                            this.approachWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
                             this.selectedElement = this.arrivalWaypoints[this.selectedWaypoint];
-                            isOk = true;
+                            if (this.approachWaypoints[this.selectedWaypoint])
+                                this.approachWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "SelectedWP");
                         }
+                        isOk = true;
                         break;
                 }
             } while (!isOk);
@@ -2768,26 +2808,27 @@ class NavSystemTouch_ActiveFPL extends NavSystemElement {
     }
     unselectLastButton() {
         if (this.currentMenu == 1) {
+            let wpLine = null;
             if (this.selectedGroup == 0) {
-                this.origin_wayPoint.identButton.setAttribute("state", "None");
+                wpLine = this.origin_wayPoint;
             }
             else if (this.selectedGroup == 1) {
-                this.departureWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "None");
+                wpLine = this.departureWaypoints[this.selectedWaypoint];
             }
             else if (this.selectedGroup == 2) {
-                this.enRouteWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "None");
+                wpLine = this.enRouteWaypoints[this.selectedWaypoint];
             }
             else if (this.selectedGroup == 3) {
-                this.arrivalWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "None");
+                wpLine = this.arrivalWaypoints[this.selectedWaypoint];
             }
             else if (this.selectedGroup == 4) {
-                this.destination_wayPoint.identButton.setAttribute("state", "None");
+                wpLine = this.destination_wayPoint;
             }
             else if (this.selectedGroup == 5) {
-                this.approachWaypoints[this.selectedWaypoint].identButton.setAttribute("state", "None");
+                wpLine = this.approachWaypoints[this.selectedWaypoint];
             }
-            else {
-            }
+            if (wpLine)
+                wpLine.identButton.setAttribute("state", "None");
         }
         else if (this.currentMenu == 2) {
             this.destination.setAttribute("state", "");

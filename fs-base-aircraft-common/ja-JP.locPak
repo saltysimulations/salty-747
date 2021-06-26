@@ -1,0 +1,28 @@
+{
+  "LocalisationPackage": {
+    "Language": "ja-JP",
+    "Strings": {
+      "MODELBEHAVIOR.CDI.OPTIONS.NO_EMISSIVE_GPS": "エミッシブ GPS インジケーターの停止",
+      "MODELBEHAVIOR.CDI.OPTIONS.NO_EMISSIVE_NAV": "エミッシブ NAV インジケーターの停止",
+      "MODELBEHAVIOR.CDI.OPTIONS.NO_EMISSIVE_VLOC": "エミッシブ VLOC インジケーターの停止",
+      "MODELBEHAVIOR.CDI.OPTIONS.NO_FLAG_GLIDE": "グライド フラグの停止",
+      "MODELBEHAVIOR.CDI.OPTIONS.NO_FLAG_LOCALIZER": "ローカライザー フラグの停止",
+      "MODELBEHAVIOR.CDI.OPTIONS.NO_GLIDE_LOCALIZER_INIT_ANIMATION": "グライド ローカライザーの初期化アニメーションを停止します。",
+      "MODELBEHAVIOR.CDI.OPTIONS.NO_NEEDLE_GLIDE": "グライド ニードルの停止",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.COMPASS": "コンパスのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.COURSE_KNOB": "コース ノブのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_FROM": "フロム フラグのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_GLIDE": "グライド フラグのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_LOCALIZER": "ローカライザー フラグのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_OFF": "オフ フラグのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_TO": "トゥー フラグのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.NEEDLE_GLIDE": "グライド ニードルのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.NEEDLE_LOCALIZER": "ローカライザー ニードルのアニメーションの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.COURSE_KNOB": "コース ノブのノードの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.EMISSIVE_GPS": "GPS エミッシブ ブインジケーターのノードの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.EMISSIVE_NAV": "NAV エミッシブ インジケーターのノードの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.EMISSIVE_VLOC": "VLOC エミッシブ インジケーターのノードの名前",
+      "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.HIGHLIGHT": "ハイライトに使用されるノードの名前"
+    }
+  }
+}

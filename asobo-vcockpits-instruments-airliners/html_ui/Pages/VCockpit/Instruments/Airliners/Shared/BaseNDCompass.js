@@ -248,7 +248,7 @@ class Jet_NDCompass extends HTMLElement {
         else {
             simSelectedHeading = Simplane.getAutoPilotDisplayedHeadingValue(false);
         }
-        var simTrack = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degree");
+        var simTrack = Simplane.getTrackAngle();
         var simSelectedTrack = Simplane.getAutoPilotDisplayedHeadingValue(false);
         var simGroundSpeed = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
         if (Simplane.getAutoPilotTRKModeActive() || Simplane.getAutoPilotTRKFPAModeActive())

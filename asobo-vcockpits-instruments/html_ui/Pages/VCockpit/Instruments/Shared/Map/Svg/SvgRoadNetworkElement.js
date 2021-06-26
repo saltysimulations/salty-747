@@ -297,9 +297,10 @@ class SvgRoadNetworkElement extends SvgMapElement {
         this.onLatLongChanged(map, this._lastCoords);
         let diffLastLat = Math.abs(this._lastCoords.lat - map.centerCoordinates.lat);
         let diffLastLong = Math.abs(this._lastCoords.long - map.centerCoordinates.long);
-        if (this._lastRange !== map.NMWidth || resized) {
+        if (this._lastRange !== map.NMWidth || resized || this._lastOrientation != map.rotationMode) {
             this._iterator = 0;
             this._lastRange = map.NMWidth;
+            this._lastOrientation = map.rotationMode;
             this._visibleCanvas.context2D.clearRect(0, 0, this.canvasSize, this.canvasSize);
             invisibleContext.clearRect(0, 0, this.canvasSize, this.canvasSize);
             this._deprecatePoints = true;

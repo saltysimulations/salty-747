@@ -15,7 +15,7 @@ html {
   overflow: hidden; }
   html body {
     -webkit-user-select: none;
-    font-family: Roboto-Regular;
+    font-family: var(--font);
     font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100);
     color: white;
     height: 100%;
@@ -2151,9 +2151,11 @@ as3x-touch-element {
     as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements {
       transition: left 0.5s;
       left: -21.25vw; }
-      as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements .mapPlus, as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements .mapLess, as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements .mapCenter {
-        transition: right 0.5s;
-        right: 22.25vw; }
+      as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements #Interactions {
+        transform: rotateX(0); }
+        as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements #Interactions .mapPlus, as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements #Interactions .mapLess, as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements #Interactions .mapCenter {
+          transition: right 0.5s;
+          right: 22.25vw; }
       as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements #MapOrientation, as3x-touch-element #MainDisplay[state=Half] #MainMFD #MainMFD_MapElements #MapRange {
         transition: right 0.5s;
         right: 21.25vw; }
@@ -2175,8 +2177,10 @@ as3x-touch-element {
     as3x-touch-element #MainDisplay[state=Full] #MainMFD #MainMFD_MapElements {
       transition: left 0.5s;
       left: 0vh; }
-    as3x-touch-element #MainDisplay[state=Full] #MainMFD .mapPlus, as3x-touch-element #MainDisplay[state=Full] #MainMFD .mapLess, as3x-touch-element #MainDisplay[state=Full] #MainMFD .mapCenter {
-      transition: right 0.5s; }
+    as3x-touch-element #MainDisplay[state=Full] #MainMFD #Interactions {
+      transform: rotateX(0); }
+      as3x-touch-element #MainDisplay[state=Full] #MainMFD #Interactions .mapPlus, as3x-touch-element #MainDisplay[state=Full] #MainMFD #Interactions .mapLess, as3x-touch-element #MainDisplay[state=Full] #MainMFD #Interactions .mapCenter {
+        transition: right 0.5s; }
     as3x-touch-element #MainDisplay[state=Full] #MainMFD #MapOrientation, as3x-touch-element #MainDisplay[state=Full] #MainMFD #MapRange {
       transition: right 0.5s; }
   as3x-touch-element #MainDisplay[state=FullNoEngine] {

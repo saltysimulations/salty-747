@@ -46,6 +46,7 @@ class Aera extends NavSystemTouch {
             ], [
                 new Aera_MenuButton("Direct-To", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_DIRECT_TO_1.png", this.switchToPopUpPage.bind(this, this.directToWindow), true),
                 new Aera_MenuButton("Nearest", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_NEAREST_MED_1.png", this.SwitchToPageGroupMenu.bind(this, "NRST"), true),
+                new Aera_MenuButton("Tools", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_SMALL_SYSTEM_PROP_1.png", this.SwitchToPageGroupMenu.bind(this, "TOOLS"), true),
             ]),
             new Aera_PageGroup("NRST", this, [
                 new Aera_NavSystemPage("Nearest Airport", "NearestAirport", new Aera_NRST_Airport(), "Apt", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_AIRPORT.png"),
@@ -54,15 +55,21 @@ class Aera extends NavSystemTouch {
                 new Aera_NavSystemPage("Nearest Int", "NearestIntersection", new Aera_NRST_Intersection(), "INT", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_INT.png"),
             ], [
                 new Aera_MenuButton("Main Menu", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_BUTTONBAR_BACK_1.png", this.SwitchToPageGroupMenu.bind(this, "MFD"), true),
-            ])
+            ]),
+            new Aera_PageGroup("TOOLS", this, [
+                new Aera_NavSystemPage("Lighting Configs", "LightingConfigs", new Aera_LightingConfigs(), "LGT", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_LIGHTING_CONFIG.png"),
+            ], [
+                new Aera_MenuButton("Main Menu", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_BUTTONBAR_BACK_1.png", this.SwitchToPageGroupMenu.bind(this, "MFD"), true),
+            ]),
         ];
         this.makeButton(this.pfdButton, this.closePopupAndSwitchToPageName.bind(this, "MFD", "3D Vision"));
         this.makeButton(this.mapButton, this.closePopupAndSwitchToPageName.bind(this, "MFD", "Map"));
         this.makeButton(this.nearestButton, this.SwitchToPageGroupMenu.bind(this, "NRST"));
         this.makeButton(this.drctButton, this.switchToPopUpPage.bind(this, this.directToWindow));
         this.makeButton(this.fplButton, this.closePopupAndSwitchToPageName.bind(this, "MFD", "Active FPL"));
-        this.makeButton(this.menuButton, this.switchToPopUpPage.bind(this, this.pageMenu));
+        this.makeButton(this.menuButton, this.SwitchToPageGroupMenu.bind(this, "MFD"));
         this.maxUpdateBudget = 12;
+        SimVar.SetSimVarValue("L:Aera_Brightness_Manual", "number", 1);
     }
     closePopupAndSwitchToPageName(_menu, _page) {
         this.closePopUpElement();
@@ -83,6 +90,26 @@ class Aera extends NavSystemTouch {
     disconnectedCallback() {
         super.disconnectedCallback();
     }
+    onInteractionEvent(_args) {
+        let event;
+        if (_args[0].startsWith("INSTRUMENT_PUSH_")) {
+            event = _args[0].slice("INSTRUMENT_PUSH_".length);
+            switch (event) {
+                case "NRST":
+                    this.SwitchToPageGroupMenu("NRST");
+                    break;
+                case "DIRECTION":
+                    this.switchToPopUpPage(this.directToWindow);
+                    break;
+                case "RETURN":
+                    this.switchToPopUpPage(this.pageMenu);
+                    break;
+                case "MENU":
+                    this.SwitchToPageGroupMenu("MFD");
+                    break;
+            }
+        }
+    }
     getFullKeyboard() {
         return this.fullKeyboard;
     }
@@ -98,6 +125,11 @@ class Aera extends NavSystemTouch {
         let minutes = Math.floor((time / 60) % 60);
         let hours = Math.floor(Math.min(time / 3600, 99));
         Avionics.Utils.diffAndSet(this.topLineLocalTime, (hours < 10 ? "0" : "") + hours + (minutes < 10 ? ":0" : ":") + minutes + (seconds < 10 ? ":0" : ":") + seconds);
+        let timeOfDay = SimVar.GetSimVarValue("E:TIME OF DAY", "number");
+        let autoBright = (timeOfDay == 1 ? 1 : timeOfDay == 3 ? 0.1 : 0.35);
+        let manualfactor = SimVar.GetSimVarValue("L:Aera_Brightness_Manual", "number");
+        SimVar.SetSimVarValue("L:Aera_Brightness", "number", 0.05 + 0.95 * Math.min(1, Math.max(0, autoBright * manualfactor)));
+        SimVar.SetSimVarValue("L:Aera_Brightness_Auto", "number", autoBright);
     }
     heading_CB(_inc) {
         if (_inc) {
@@ -201,7 +233,7 @@ class Aera_NavSystemPage extends NavSystemPage {
 }
 class Aera_PFD extends Aera_NavSystemPage {
     constructor() {
-        super("3D Vision", "PFD", null, "3D Vision", "");
+        super("3D Vision", "PFD", null, "3D Vision", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_SMALL_TERRAIN_1.png");
         this.mapInstrument = new MapInstrumentElement();
         this.airspeed = new PFD_Airspeed();
         this.element = new NavSystemElementGroup([
@@ -210,6 +242,7 @@ class Aera_PFD extends Aera_NavSystemPage {
             new PFD_SimpleCompass(),
             new PFD_CDI(),
             this.mapInstrument,
+            new PFD_Attitude(),
             new PFD_AutopilotDisplay()
         ]);
         this.mapInstrument.setGPS(this.gps);
@@ -700,6 +733,78 @@ class Aera_InsertBeforeWaypoint extends NavSystemElement {
     }
     endButtonClick() {
         this.elementClick(this.elements.length);
+    }
+}
+class Aera_LightingConfigs extends NavSystemElement {
+    constructor() {
+        super(...arguments);
+        this.isCursorMoving = false;
+        this.cursorStartVH = 18;
+        this.cursorBGWidthVH = 40;
+    }
+    init(root) {
+        this.masterPercentText = this.gps.getChildById("LightingMasterValue");
+        this.masterBG = this.gps.getChildById("MasterBacklightBgSVG");
+        this.masterBGTriangle = this.gps.getChildById("MasterBacklightTriangle");
+        this.masterCursor = this.gps.getChildById("MasterBacklightCursorSVG");
+        this.buttonLess = this.gps.getChildById("LightingMasterLess");
+        this.buttonMore = this.gps.getChildById("LightingMasterMore");
+        this.gps.makeButton(this.buttonLess, this.onLessPress.bind(this));
+        this.gps.makeButton(this.buttonMore, this.onMorePress.bind(this));
+        if (this.masterCursor.hasAttribute("beginvh")) {
+            this.cursorStartVH = parseFloat(this.masterCursor.getAttribute("beginvh"));
+        }
+        if (this.masterCursor.hasAttribute("animwidthvh")) {
+            this.cursorBGWidthVH = parseFloat(this.masterCursor.getAttribute("animwidthvh"));
+        }
+        this.masterCursor.addEventListener("mousedown", this.cursorMouseDown.bind(this));
+        root.addEventListener("mouseup", this.cursorMouseUp.bind(this));
+        root.addEventListener("mouseleave", this.cursorMouseUp.bind(this));
+        root.addEventListener("mousemove", this.mouseMove.bind(this));
+    }
+    onEnter() {
+    }
+    onExit() {
+    }
+    onEvent(_event) {
+    }
+    onUpdate(_deltaTime) {
+        let backLightManual = SimVar.GetSimVarValue("L:Aera_Brightness_Manual", "number");
+        let backLightAuto = SimVar.GetSimVarValue("L:Aera_Brightness_Auto", "number");
+        let backLightValue = Math.min(1, Math.max(0, backLightManual * backLightAuto));
+        Avionics.Utils.diffAndSet(this.masterPercentText, (backLightValue * 100).toFixed(0));
+        let length = backLightValue * 100;
+        let height = backLightValue * 30;
+        Avionics.Utils.diffAndSetAttribute(this.masterBGTriangle, "points", "0,30 " + length + "," + (30 - height) + " " + length + ",30");
+        this.masterCursor.style.left = (this.cursorStartVH + (this.cursorBGWidthVH * backLightValue)) + "vh";
+    }
+    onLessPress() {
+        let auto = SimVar.GetSimVarValue("L:Aera_Brightness_Auto", "number");
+        let manual = SimVar.GetSimVarValue("L:Aera_Brightness_Manual", "number");
+        let target = Math.max(0, Math.min(1, (auto * manual) - 0.01));
+        SimVar.SetSimVarValue("L:Aera_Brightness_Manual", "number", target / auto);
+    }
+    onMorePress() {
+        let auto = SimVar.GetSimVarValue("L:Aera_Brightness_Auto", "number");
+        let manual = SimVar.GetSimVarValue("L:Aera_Brightness_Manual", "number");
+        let target = Math.max(0, Math.min(1, (auto * manual) + 0.01));
+        SimVar.SetSimVarValue("L:Aera_Brightness_Manual", "number", target / auto);
+    }
+    cursorMouseDown(event) {
+        this.isCursorMoving = true;
+        let clientRect = this.masterBG.getBoundingClientRect();
+        this.leftY = clientRect.bottom;
+        this.heightY = clientRect.height;
+    }
+    cursorMouseUp() {
+        this.isCursorMoving = false;
+    }
+    mouseMove(event) {
+        if (this.isCursorMoving) {
+            let pos = Math.max(0, Math.min(1, (this.leftY - event.clientY) / this.heightY));
+            let auto = SimVar.GetSimVarValue("L:Aera_Brightness_Auto", "number");
+            SimVar.SetSimVarValue("L:Aera_Brightness_Manual", "number", pos / auto);
+        }
     }
 }
 registerInstrument("aera-element", Aera);

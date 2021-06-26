@@ -11,13 +11,14 @@
       "pl-PL",
       "pt-BR",
       "ru-RU",
-      "zh-CN"
+      "zh-CN",
+      "ja-JP"
     ],
     "Strings": {
       "MODELBEHAVIOR.CDI.OPTIONS.NO_EMISSIVE_GPS": {
         "UUID": "09eec39f-a180-42c1-a336-768f1a420f76",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -57,13 +58,16 @@
           "zh-CN": {
             "Text": "中止GPS高亮指示显示",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "エミッシブ GPS インジケーターの停止"
           }
         }
       },
       "MODELBEHAVIOR.CDI.OPTIONS.NO_EMISSIVE_NAV": {
         "UUID": "e9d9b396-c840-4276-894c-2b43f73ff134",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -103,13 +107,16 @@
           "zh-CN": {
             "Text": "中止导航无线电高亮指示显示",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "エミッシブ NAV インジケーターの停止"
           }
         }
       },
       "MODELBEHAVIOR.CDI.OPTIONS.NO_EMISSIVE_VLOC": {
         "UUID": "915be141-04f0-4994-9e30-c41806ba3d23",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -149,13 +156,16 @@
           "zh-CN": {
             "Text": "中止全向无线电信标/航向台高亮指示显示",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "エミッシブ VLOC インジケーターの停止"
           }
         }
       },
       "MODELBEHAVIOR.CDI.OPTIONS.NO_FLAG_GLIDE": {
         "UUID": "f7159098-726e-444b-b026-3c197ab87ddf",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -195,13 +205,16 @@
           "zh-CN": {
             "Text": "中止下滑旗显示",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "グライド フラグの停止"
           }
         }
       },
       "MODELBEHAVIOR.CDI.OPTIONS.NO_FLAG_LOCALIZER": {
         "UUID": "76d4f7b0-2822-43ac-8f08-5b29b7809218",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -241,13 +254,16 @@
           "zh-CN": {
             "Text": "中止航向信标台旗显示",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "ローカライザー フラグの停止"
           }
         }
       },
       "MODELBEHAVIOR.CDI.OPTIONS.NO_GLIDE_LOCALIZER_INIT_ANIMATION": {
         "UUID": "82c796e6-03f1-499d-baa6-fd2e868e15d1",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -287,13 +303,16 @@
           "zh-CN": {
             "Text": "中止下滑信标台初始化动画。",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "グライド ローカライザーの初期化アニメーションを停止します。"
           }
         }
       },
       "MODELBEHAVIOR.CDI.OPTIONS.NO_NEEDLE_GLIDE": {
         "UUID": "94371a67-471c-4b2e-a3e7-e754b16e74d4",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -333,13 +352,16 @@
           "zh-CN": {
             "Text": "中止下滑指针显示",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "グライド ニードルの停止"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.COMPASS": {
         "UUID": "8a756243-831e-4392-a872-cffe416ad5be",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -379,13 +401,16 @@
           "zh-CN": {
             "Text": "罗盘动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "コンパスのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.COURSE_KNOB": {
         "UUID": "2b16e90a-4601-423e-967e-318a4dfca52a",
         "LastModifiedBy": "dmedina",
-        "LastModifiedDate": "2020-07-01 11:55:35",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -417,13 +442,16 @@
           },
           "zh-CN": {
             "Text": "航向旋钮动画名称"
+          },
+          "ja-JP": {
+            "Text": "コース ノブのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_FROM": {
         "UUID": "ef4739d1-782c-472a-a696-871520110cad",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -463,13 +491,16 @@
           "zh-CN": {
             "Text": "来自旗动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "フロム フラグのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_GLIDE": {
         "UUID": "7ec84357-19a2-4420-a86b-530b94cafa13",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -509,13 +540,16 @@
           "zh-CN": {
             "Text": "下滑旗动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "グライド フラグのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_LOCALIZER": {
         "UUID": "c9158746-5094-4821-855f-0b726b9300bc",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -555,13 +589,16 @@
           "zh-CN": {
             "Text": "航向信标台旗动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "ローカライザー フラグのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_OFF": {
         "UUID": "a0f76cd4-6a6c-448f-8aee-b6e29f36e929",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -601,13 +638,16 @@
           "zh-CN": {
             "Text": "出发旗动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "オフ フラグのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.FLAG_TO": {
         "UUID": "d197b0d4-3b8e-4aa2-b363-c8ac09046d49",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -647,13 +687,16 @@
           "zh-CN": {
             "Text": "飞往旗动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "トゥー フラグのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.NEEDLE_GLIDE": {
         "UUID": "1714fc95-b140-45af-b7d1-e6a1af2bb7b9",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -693,13 +736,16 @@
           "zh-CN": {
             "Text": "下滑指针动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "グライド ニードルのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.ANIM_NAME.NEEDLE_LOCALIZER": {
         "UUID": "fc1b3239-8f06-4a77-9c37-12374147078b",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -739,13 +785,16 @@
           "zh-CN": {
             "Text": "航向信标台指针动画名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "ローカライザー ニードルのアニメーションの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.COURSE_KNOB": {
         "UUID": "fc0743fa-4777-4f90-b7c9-a0490c73e533",
         "LastModifiedBy": "dmedina",
-        "LastModifiedDate": "2020-07-01 11:55:35",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -777,13 +826,16 @@
           },
           "zh-CN": {
             "Text": "航向旋钮节点名称"
+          },
+          "ja-JP": {
+            "Text": "コース ノブのノードの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.EMISSIVE_GPS": {
         "UUID": "9704c4b9-0118-41b0-be42-ff7cd460453e",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -823,13 +875,16 @@
           "zh-CN": {
             "Text": "GPS高亮指示节点名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "GPS エミッシブ ブインジケーターのノードの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.EMISSIVE_NAV": {
         "UUID": "bec534ea-8210-467b-8c25-83d5c6d610ae",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -869,13 +924,16 @@
           "zh-CN": {
             "Text": "导航无线电高亮指示节点名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "NAV エミッシブ インジケーターのノードの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.EMISSIVE_VLOC": {
         "UUID": "0448adac-1239-40b1-9b1b-bc18e3ff0c68",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -915,13 +973,16 @@
           "zh-CN": {
             "Text": "全向无线电信标/航向台高亮指示节点名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "VLOC エミッシブ インジケーターのノードの名前"
           }
         }
       },
       "MODELBEHAVIOR.CDI.PARAMS.NODE_ID.HIGHLIGHT": {
         "UUID": "2b21482d-480d-4cdc-9668-8aa3957e6efa",
-        "LastModifiedBy": "ajimeno",
-        "LastModifiedDate": "2020-02-17 13:57:12",
+        "LastModifiedBy": "dmedina",
+        "LastModifiedDate": "2021-02-23 14:05:41",
         "LocalizationStatus": "TranslationNeeded",
         "Tags": {
           "Locked": "False"
@@ -961,6 +1022,9 @@
           "zh-CN": {
             "Text": "高亮节点名称",
             "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "ハイライトに使用されるノードの名前"
           }
         }
       }

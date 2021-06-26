@@ -2,7 +2,6 @@ class BaseInstrument extends TemplateElement {
     constructor() {
         super();
         this.urlConfig = new URLConfig();
-        this.xmlConfigLoading = false;
         this.frameCount = 0;
         this.highlightList = [];
         this.backgroundList = [];
@@ -51,6 +50,8 @@ class BaseInstrument extends TemplateElement {
     }
     Init() {
         this._isInitialized = true;
+        if (this.xmlConfig)
+            this.parseXMLConfig();
         this.initTransponder();
     }
     setInstrumentIdentifier(_identifier) {
@@ -62,8 +63,8 @@ class BaseInstrument extends TemplateElement {
             }
         }
     }
-    setConfigFile(_path) {
-        this._xmlConfigPath = _path;
+    setConfigFile(_file) {
+        this._xmlConfigFile = _file;
     }
     getChildById(_selector) {
         if (_selector == "")
@@ -350,7 +351,7 @@ class BaseInstrument extends TemplateElement {
                 return;
             }
             try {
-                if (BaseInstrument.allInstrumentsLoaded && !this.xmlConfigLoading && SimVar.IsReady()) {
+                if (BaseInstrument.allInstrumentsLoaded && SimVar.IsReady()) {
                     if (!this._isInitialized)
                         this.Init();
                     this.doUpdate();
@@ -369,27 +370,8 @@ class BaseInstrument extends TemplateElement {
         this._isConnected = false;
     }
     loadXMLConfig() {
-        var xmlPath;
-        if (this.urlConfig.config) {
-            xmlPath = "/Pages/VCockpit/Instruments/Shared/Configs/" + this.urlConfig.config + ".xml";
-        }
-        else if (this._xmlConfigPath) {
-            xmlPath = "/VFS/" + this._xmlConfigPath.replace(/\\/g, "/");
-        }
-        if (xmlPath) {
-            this.xmlConfigLoading = true;
-            var xmlRequest = new XMLHttpRequest();
-            xmlRequest.onreadystatechange = function (_instrument) {
-                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                    _instrument.onXMLConfigLoaded(this);
-                }
-            }.bind(xmlRequest, this);
-            xmlRequest.open("GET", xmlPath, true);
-            xmlRequest.send();
-        }
-    }
-    onXMLConfigLoaded(_xml) {
-        this.xmlConfig = _xml.responseXML;
+        let xmlParser = new DOMParser();
+        this.xmlConfig = xmlParser.parseFromString(this._xmlConfigFile, "application/xml");
         if (this.xmlConfig) {
             let instruments = this.xmlConfig.getElementsByTagName("Instrument");
             for (let i = 0; i < instruments.length; i++) {
@@ -398,17 +380,11 @@ class BaseInstrument extends TemplateElement {
                     this.instrumentXmlConfig = instruments[i];
                 }
             }
-            this.parseXMLConfig();
         }
-        else {
-            console.error("XML Config file is not well-formatted");
-        }
-        this.xmlConfigLoading = false;
     }
     loadURLAttributes() {
         var parsedUrl = new URL(this.getAttribute("Url").toLowerCase());
         this.urlConfig.style = parsedUrl.searchParams.get("style");
-        this.urlConfig.config = parsedUrl.searchParams.get("config");
         let index = parsedUrl.searchParams.get("index");
         this.urlConfig.index = index == null ? null : parseInt(index);
         this.urlConfig.wasmModule = parsedUrl.searchParams.get("wasm_module");

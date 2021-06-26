@@ -207,7 +207,7 @@ class B747_8_FMC_NavRadioPage {
             ilsFrequencyCell = "[]/ ";
             ilsCourseCell = "[]";
             let approach = fmc.flightPlanManager.getApproach();
-            if (approach && approach.name && approach.name.indexOf("ILS") !== -1) {
+            if (approach && approach.name && approach.isLocalizer()) {
                 ilsFrequencyCell = Avionics.Utils.formatRunway(approach.name, true) + "/ ";
                 let runway = fmc.flightPlanManager.getApproachRunway();
                 if (runway) {

@@ -52,8 +52,72 @@
 					</Offset>
 					<ContactPoint>#FX_CONTACT_POINT_ID#</ContactPoint>
 					<Code>#FX_CODE#</Code>
+					<EnableEntries>
+						<Loop>
+							<Setup>
+								<Param>ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg NotEmpty="ENABLE_SURFACE_TYPE_#ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<SURFACE_TYPE_LABEL Process="Param">ENABLE_SURFACE_TYPE_#ID#</SURFACE_TYPE_LABEL>
+								</Parameters>
+								<SurfaceTypeEntry SurfaceType="#SURFACE_TYPE_LABEL#"/>
+							</Do>
+						</Loop>
+					</EnableEntries>
+					<DisableEntries>
+						<Loop>
+							<Setup>
+								<Param>ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg NotEmpty="DISABLE_SURFACE_TYPE_#ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<SURFACE_TYPE_LABEL Process="Param">DISABLE_SURFACE_TYPE_#ID#</SURFACE_TYPE_LABEL>
+								</Parameters>
+								<SurfaceTypeEntry SurfaceType="#SURFACE_TYPE_LABEL#"/>
+							</Do>
+						</Loop>
+					</DisableEntries>
+					<OverrideEntries>
+						<Loop>
+							<Setup>
+								<Param>ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<And>
+										<Arg NotEmpty="OVERRIDE_SURFACE_TYPE_#ID#"/>
+										<Arg NotEmpty="OVERRIDE_FX_SURFACE_TYPE_GUID_#ID#"/>
+									</And>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<SURFACE_TYPE_LABEL Process="Param">OVERRIDE_SURFACE_TYPE_#ID#</SURFACE_TYPE_LABEL>
+									<SURFACE_TYPE_FX_GUID Process="Param">OVERRIDE_FX_SURFACE_TYPE_GUID_#ID#</SURFACE_TYPE_FX_GUID>
+								</Parameters>
+								<SurfaceTypeFXEntry SurfaceType="#SURFACE_TYPE_LABEL#" FXGuid="#SURFACE_TYPE_FX_GUID#"/>
+							</Do>
+						</Loop>
+					</OverrideEntries>
 				</FX>
 			</True>
 		</Condition>
 	</Template>
+	
+	<!-- recognition issue   do not use -->
+	<Template Name = "ASOBO_LANDING_FX">
+
+	</Template>
+
 </ModelBehaviors>

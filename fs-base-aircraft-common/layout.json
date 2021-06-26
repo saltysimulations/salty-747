@@ -2,23 +2,23 @@
   "content": [
     {
       "path": "CheckpointsLibrary/Asobo_DefaultCheckpointLibrary.xml",
-      "size": 557418,
-      "date": 132569063890000000
+      "size": 558539,
+      "date": 132646110400000000
     },
     {
       "path": "de-DE.locPak",
       "size": 2117,
-      "date": 132544286777936213
+      "date": 132604533796153691
     },
     {
       "path": "en-US.locPak",
       "size": 2065,
-      "date": 132544286777896191
+      "date": 132604533796143694
     },
     {
       "path": "es-ES.locPak",
       "size": 2220,
-      "date": 132544286777876191
+      "date": 132604533796133709
     },
     {
       "path": "FlightStatesLibrary/airliner/approach.FLT",
@@ -263,12 +263,17 @@
     {
       "path": "fr-FR.locPak",
       "size": 2169,
-      "date": 132544286777936213
+      "date": 132604533796163711
     },
     {
       "path": "it-IT.locPak",
       "size": 2234,
-      "date": 132544286777946209
+      "date": 132604533796163711
+    },
+    {
+      "path": "ja-JP.locPak",
+      "size": 2426,
+      "date": 132604533796123694
     },
     {
       "path": "ModelBehaviorDefs/Asobo/Airliner/Airbus.xml",
@@ -402,8 +407,8 @@
     },
     {
       "path": "ModelBehaviorDefs/Asobo/Common/Subtemplates/Engine_Subtemplates.xml",
-      "size": 68307,
-      "date": 132581971130000000
+      "size": 68306,
+      "date": 132646913550000000
     },
     {
       "path": "ModelBehaviorDefs/Asobo/Common/Subtemplates/Fuel_Subtemplates.xml",
@@ -507,8 +512,8 @@
     },
     {
       "path": "ModelBehaviorDefs/Asobo/Generic/FX.xml",
-      "size": 1868,
-      "date": 132563131630000000
+      "size": 3756,
+      "date": 132651953380000000
     },
     {
       "path": "ModelBehaviorDefs/Asobo/Generic/Helpers.xml",
@@ -577,8 +582,8 @@
     },
     {
       "path": "ModelBehaviorDefs/Asobo/GPS/Aera.xml",
-      "size": 2885,
-      "date": 132545117030000000
+      "size": 3075,
+      "date": 132664298120000000
     },
     {
       "path": "ModelBehaviorDefs/Asobo/GPS/AS430.xml",
@@ -622,8 +627,8 @@
     },
     {
       "path": "ModelBehaviorDefs/Asobo/ModelBehavior.loc",
-      "size": 35716,
-      "date": 132380709480000000
+      "size": 38105,
+      "date": 132585591880000000
     },
     {
       "path": "ModelBehaviorDefs/Asobo/NAVCOM/ADF.xml",
@@ -642,8 +647,8 @@
     },
     {
       "path": "ModelBehaviorDefs/Asobo/NAVCOM/NavComSystem.xml",
-      "size": 97460,
-      "date": 132564027310000000
+      "size": 97503,
+      "date": 132594117830000000
     },
     {
       "path": "ModelBehaviorDefs/Asobo/Transponder/AS21.xml",
@@ -663,22 +668,22 @@
     {
       "path": "pl-PL.locPak",
       "size": 2028,
-      "date": 132544286777886191
+      "date": 132604533796133709
     },
     {
       "path": "pt-BR.locPak",
       "size": 2170,
-      "date": 132544286777866193
+      "date": 132604533796113969
     },
     {
       "path": "ru-RU.locPak",
       "size": 2880,
-      "date": 132544286777916183
+      "date": 132604533796153691
     },
     {
       "path": "zh-CN.locPak",
       "size": 1926,
-      "date": 132544286777896191
+      "date": 132604533796143694
     }
   ]
 }

@@ -7,20 +7,13 @@ class FlightPlanManager {
         this._activeWaypointIndex = 0;
         this._onFlightPlanUpdateCallbacks = [];
         this.decelPrevIndex = -1;
+        this._activeWaypointHasChanged = false;
         this._lastDistanceToPreviousActiveWaypoint = 0;
         this._isGoingTowardPreviousActiveWaypoint = false;
-        this._resetTimer = 0;
-        this._updateTimer = 0;
+        this._planeCoordinates = new LatLong(0, 0);
         this._isRegistered = false;
         this._isRegisteredAndLoaded = false;
         this._currentFlightPlanIndex = 0;
-        this._activeWaypointIdentHasChanged = false;
-        this._timeLastSimVarCall = 0;
-        this._gpsActiveWaypointIndexHasChanged = false;
-        this._timeLastActiveWaypointIndexSimVarCall = 0;
-        this._isLoadedApproachTimeLastSimVarCall = 0;
-        this._isActiveApproachTimeLastSimVarCall = 0;
-        this._approachActivated = false;
         FlightPlanManager.DEBUG_INSTANCE = this;
         this.instrument = _instrument;
         this.registerListener();
@@ -53,42 +46,50 @@ class FlightPlanManager {
             wp.legAltitude1 = 1900;
         }
     }
+    get planeCoordinates() { return this._planeCoordinates; }
     update(_deltaTime) {
-        if (this._resetTimer > 0) {
-            this._resetTimer -= _deltaTime;
-            if (this._resetTimer <= 0) {
-                this._resetTimer = 0;
-                this._activeWaypointIdentHasChanged = false;
-                this._gpsActiveWaypointIndexHasChanged = false;
-            }
+        this._planeCoordinates.lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
+        this._planeCoordinates.long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
+        this._activeWaypointHasChanged = false;
+        let activeWaypointIdent = SimVar.GetSimVarValue("GPS WP NEXT ID", "string");
+        if (this._gpsActiveWaypointIdent != activeWaypointIdent) {
+            this._activeWaypointHasChanged = true;
+            this._gpsActiveWaypointIdent = activeWaypointIdent;
         }
-        this._updateTimer += _deltaTime;
-        if (this._updateTimer >= 1000) {
-            this._updateTimer = 0;
-            let prevWaypoint = this.getPreviousActiveWaypoint();
-            if (prevWaypoint) {
-                let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
-                if (isFinite(planeCoordinates.lat) && isFinite(planeCoordinates.long)) {
-                    let dist = Avionics.Utils.computeGreatCircleDistance(planeCoordinates, prevWaypoint.infos.coordinates);
-                    if (isFinite(dist)) {
-                        if (dist < this._lastDistanceToPreviousActiveWaypoint && dist > 2) {
-                            this._isGoingTowardPreviousActiveWaypoint = true;
-                        }
-                        else {
-                            this._isGoingTowardPreviousActiveWaypoint = false;
-                        }
+        let gpsActiveWaypointIndex = this.computeActiveWaypointIndex();
+        if (this._gpsActiveWaypointIndex != gpsActiveWaypointIndex) {
+            this._activeWaypointHasChanged = true;
+            this._gpsActiveWaypointIndex = gpsActiveWaypointIndex;
+        }
+        let prevWaypoint = this.getPreviousActiveWaypoint();
+        if (prevWaypoint) {
+            if (isFinite(this._planeCoordinates.lat) && isFinite(this._planeCoordinates.long)) {
+                let dist = Avionics.Utils.computeGreatCircleDistance(this._planeCoordinates, prevWaypoint.infos.coordinates);
+                if (isFinite(dist)) {
+                    if (this._activeWaypointHasChanged) {
+                        this._isGoingTowardPreviousActiveWaypoint = true;
                         this._lastDistanceToPreviousActiveWaypoint = dist;
-                        if ((this._activeWaypointIdentHasChanged || this._gpsActiveWaypointIndexHasChanged) && this._resetTimer <= 0) {
-                            this._resetTimer = 3000;
+                    }
+                    else if (this._isGoingTowardPreviousActiveWaypoint) {
+                        if (dist < this._lastDistanceToPreviousActiveWaypoint) {
+                            this._lastDistanceToPreviousActiveWaypoint = dist;
                         }
-                        return;
+                        else if (dist > this._lastDistanceToPreviousActiveWaypoint + 0.1) {
+                            this._isGoingTowardPreviousActiveWaypoint = false;
+                            this._lastDistanceToPreviousActiveWaypoint = dist;
+                        }
+                    }
+                    else if (!this._isGoingTowardPreviousActiveWaypoint) {
+                        if (dist > this._lastDistanceToPreviousActiveWaypoint) {
+                            this._lastDistanceToPreviousActiveWaypoint = dist;
+                        }
+                        else if (dist < this._lastDistanceToPreviousActiveWaypoint - 0.1) {
+                            this._isGoingTowardPreviousActiveWaypoint = true;
+                            this._lastDistanceToPreviousActiveWaypoint = dist;
+                        }
                     }
                 }
             }
-            if ((this._activeWaypointIdentHasChanged || this._gpsActiveWaypointIndexHasChanged) && this._resetTimer <= 0) {
-                this._resetTimer = 3000;
-            }
-            this._isGoingTowardPreviousActiveWaypoint = false;
         }
     }
     onCurrentGameFlightLoaded(_callback) {
@@ -108,7 +109,6 @@ class FlightPlanManager {
         this._isRegistered = true;
         RegisterViewListener("JS_LISTENER_FLIGHTPLAN");
         setTimeout(() => {
-            Coherent.call("LOAD_CURRENT_GAME_FLIGHT");
             Coherent.call("LOAD_CURRENT_ATC_FLIGHTPLAN");
             setTimeout(() => {
                 this._isRegisteredAndLoaded = true;
@@ -127,8 +127,8 @@ class FlightPlanManager {
         let waypoints = [];
         let todo = data.length;
         let done = 0;
-        let activeWaypointIndex = this.getActiveWaypointIndex(false, true);
-        let isApproachActive = this.isActiveApproach(false);
+        let activeWaypointIndex = this.getActiveWaypointIndex(true);
+        let isApproachActive = this.isActiveApproach();
         let timenow = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
         for (let i = 0; i < data.length; i++) {
             let waypointData = data[i];
@@ -371,7 +371,12 @@ class FlightPlanManager {
             if (log) {
             }
             let index = flightPlanData.flightPlanIndex;
-            this._cruisingAltitude = flightPlanData.cruisingAltitude;
+            if (flightPlanData.cruisingAltitude != this._cruisingAltitude) {
+                this._cruisingAltitude = flightPlanData.cruisingAltitude;
+                if (this.onCruisingAltitudeChanged) {
+                    this.onCruisingAltitudeChanged();
+                }
+            }
             this._activeWaypointIndex = flightPlanData.activeWaypointIndex;
             this._departureWaypointSize = Math.max(0, flightPlanData.departureWaypointsSize);
             this._runwayIndex = flightPlanData.originRunwayIndex;
@@ -420,7 +425,7 @@ class FlightPlanManager {
             this._loadWaypoints(flightPlanData.waypoints, this._approachWaypoints, (wps) => {
                 this._approachWaypoints = wps;
                 let previousWaypoint = this.getWaypoint(this.getWaypointsCount() - 2);
-                let activeWaypoint = this.getActiveWaypoint(false, true);
+                let activeWaypoint = this.getActiveWaypoint(true);
                 for (let i = 0; i < this._approachWaypoints.length; i++) {
                     let waypoint = this._approachWaypoints[i];
                     if (waypoint) {
@@ -538,6 +543,12 @@ class FlightPlanManager {
                 console.log("FlightPlanManager now");
                 console.log(this);
             }
+            let isLoaded = SimVar.GetSimVarValue("C:fs9gps:FlightPlanIsLoadedApproach", "Bool");
+            let isActive = SimVar.GetSimVarValue("C:fs9gps:FlightPlanIsActiveApproach", "Bool");
+            if (isLoaded != this._isLoadedApproach)
+                this._isLoadedApproach = isLoaded;
+            if (isActive != this._isActiveApproach)
+                this._isActiveApproach = isActive;
             callback();
         });
     }
@@ -617,24 +628,32 @@ class FlightPlanManager {
             this.updateFlightPlan(callback);
         });
     }
-    getActiveWaypointIndex(forceSimVarCall = false, useCorrection = false) {
+    getActiveWaypointIdent() {
+        return this._gpsActiveWaypointIdent;
+    }
+    getActiveWaypointIndex(useCorrection = false) {
         if (useCorrection && this._isGoingTowardPreviousActiveWaypoint) {
-            return this.getActiveWaypointIndex(forceSimVarCall, false) - 1;
+            return this._gpsActiveWaypointIndex - 1;
         }
-        let ident = this.getActiveWaypointIdent(forceSimVarCall);
+        return this._gpsActiveWaypointIndex;
+    }
+    computeActiveWaypointIndex() {
+        let ident = this.getActiveWaypointIdent();
+        let waypointIndex = -1;
         if (this.isActiveApproach()) {
-            let waypointIndex = this.getApproachWaypoints().findIndex(w => { return w && w.ident === ident; });
-            return waypointIndex;
-        }
-        let waypointIndex = this.getWaypoints().findIndex(w => { return w && w.ident === ident; });
-        if (waypointIndex === -1) {
             waypointIndex = this.getApproachWaypoints().findIndex(w => { return w && w.ident === ident; });
-            if (!this._approachActivated) {
-                return this.getWaypointsCount() - 1;
-            }
         }
-        if (useCorrection && (this._activeWaypointIdentHasChanged || this._gpsActiveWaypointIndexHasChanged)) {
-            return waypointIndex - 1;
+        else {
+            waypointIndex = this.getWaypoints().findIndex(w => { return w && w.ident === ident; });
+            if (waypointIndex === -1) {
+                waypointIndex = this.getApproachWaypoints().findIndex(w => { return w && w.ident === ident; });
+                if (waypointIndex === -1) {
+                    if (this.getLastIndexBeforeApproach() >= 0)
+                        waypointIndex = this.getLastIndexBeforeApproach() + 1;
+                    else
+                        waypointIndex = this.getWaypointsCount() - 1;
+                }
+            }
         }
         return waypointIndex;
     }
@@ -644,145 +663,116 @@ class FlightPlanManager {
     recomputeActiveWaypointIndex(callback = EmptyCallback.Void) {
         Coherent.call("RECOMPUTE_ACTIVE_WAYPOINT_INDEX").then(callback);
     }
-    getPreviousActiveWaypoint(forceSimVarCall = false) {
-        let ident = this.getActiveWaypointIdent(forceSimVarCall);
+    getPreviousActiveWaypoint() {
+        let ident = this.getActiveWaypointIdent();
         if (this.isActiveApproach()) {
             let waypointIndex = this.getApproachWaypoints().findIndex(w => { return (w && w.ident === ident); });
             return this.getApproachWaypoints()[waypointIndex - 1];
         }
         let waypointIndex = this.getWaypoints().findIndex(w => { return (w && w.ident === ident); });
         if (waypointIndex === -1) {
+            if (!this.isActiveApproach()) {
+                if (this.getLastIndexBeforeApproach() >= 0)
+                    return this.getWaypoints()[this.getLastIndexBeforeApproach()];
+                else
+                    return this.getWaypoints()[this.getWaypointsCount() - 2];
+            }
             waypointIndex = this.getApproachWaypoints().findIndex(w => { return (w && w.ident === ident); });
+            if (waypointIndex > 0) {
+                return this.getApproachWaypoints()[waypointIndex - 1];
+            }
+            else if (waypointIndex == 0 && this._lastIndexBeforeApproach >= 0) {
+                return this.getWaypoints()[this._lastIndexBeforeApproach];
+            }
+            return null;
         }
         return this.getWaypoints()[waypointIndex - 1];
     }
-    getActiveWaypointIdent(forceSimVarCall = false) {
-        let doSimVarCall = false;
-        let t = 0;
-        if (forceSimVarCall || this._activeWaypointIdent === undefined) {
-            doSimVarCall = true;
-        }
-        else {
-            t = performance.now();
-            if (t - this._timeLastSimVarCall > 1000) {
-                doSimVarCall = true;
-            }
-        }
-        if (doSimVarCall) {
-            let activeWaypointIdent = SimVar.GetSimVarValue("GPS WP NEXT ID", "string");
-            if (this._activeWaypointIdent != activeWaypointIdent) {
-                this._activeWaypointIdentHasChanged = true;
-                this._activeWaypointIdent = activeWaypointIdent;
-            }
-            this._timeLastSimVarCall = t;
-        }
-        return this._activeWaypointIdent;
-    }
-    getGPSActiveWaypointIndex(forceSimVarCall = false) {
-        let doSimVarCall = false;
-        let t = 0;
-        if (forceSimVarCall || this._gpsActiveWaypointIndex === undefined) {
-            doSimVarCall = true;
-        }
-        else {
-            t = performance.now();
-            if (t - this._timeLastActiveWaypointIndexSimVarCall > 1000) {
-                doSimVarCall = true;
-            }
-        }
-        if (doSimVarCall) {
-            let gpsActiveWaypointIndex = SimVar.GetSimVarValue("C:fs9gps:FlightPlanActiveWaypoint", "number");
-            if (this._gpsActiveWaypointIndex != gpsActiveWaypointIndex) {
-                this._gpsActiveWaypointIndexHasChanged = true;
-                this._gpsActiveWaypointIndex = gpsActiveWaypointIndex;
-            }
-            this._timeLastActiveWaypointIndexSimVarCall = t;
-        }
-        return this._gpsActiveWaypointIndex;
-    }
-    getActiveWaypoint(forceSimVarCall = false, useCorrection = false) {
+    getActiveWaypoint(useCorrection = false) {
         if (this.getIsDirectTo()) {
             return this.getDirectToTarget();
         }
         if (useCorrection && this._isGoingTowardPreviousActiveWaypoint) {
-            return this.getPreviousActiveWaypoint(forceSimVarCall);
+            return this.getPreviousActiveWaypoint();
         }
         if (!this.isActiveApproach()) {
-            let index = this.getActiveWaypointIndex(forceSimVarCall);
+            let index = this.getActiveWaypointIndex();
             let waypoint = this.getWaypoints()[index];
             if (waypoint) {
-                if (useCorrection && (this._activeWaypointIdentHasChanged || this._gpsActiveWaypointIndexHasChanged)) {
-                    return this.getPreviousActiveWaypoint(forceSimVarCall);
-                }
                 return waypoint;
             }
         }
-        let ident = this.getActiveWaypointIdent(forceSimVarCall);
+        let ident = this.getActiveWaypointIdent();
         if (this.isActiveApproach()) {
             let waypoint = this.getApproachWaypoints().find(w => { return (w && w.ident === ident); });
             return waypoint;
         }
         let waypoint = this.getWaypoints().find(w => { return (w && w.ident === ident); });
         if (!waypoint) {
-            waypoint = this.getApproachWaypoints().find(w => { return (w && w.ident === ident); });
+            if (!this.isActiveApproach()) {
+                if (this.getLastIndexBeforeApproach() >= 0)
+                    waypoint = this.getWaypoints()[this.getLastIndexBeforeApproach() + 1];
+                else
+                    waypoint = this.getWaypoints()[this.getWaypointsCount() - 1];
+            }
+            else {
+                waypoint = this.getApproachWaypoints().find(w => { return (w && w.ident === ident); });
+            }
         }
         if (!waypoint && this._directToTarget && ident != "" && ident === this._directToTarget.ident) {
             waypoint = this._directToTarget;
         }
-        if (useCorrection && (this._activeWaypointIdentHasChanged || this._gpsActiveWaypointIndexHasChanged)) {
-            return this.getPreviousActiveWaypoint(forceSimVarCall);
-        }
         return waypoint;
     }
-    getNextActiveWaypoint(forceSimVarCall = false) {
-        let ident = this.getActiveWaypointIdent(forceSimVarCall);
+    getNextActiveWaypoint() {
+        let ident = this.getActiveWaypointIdent();
         if (this.isActiveApproach()) {
             let waypointIndex = this.getApproachWaypoints().findIndex(w => { return (w && w.ident === ident); });
             return this.getApproachWaypoints()[waypointIndex + 1];
         }
         let waypointIndex = this.getWaypoints().findIndex(w => { return (w && w.ident === ident); });
         if (waypointIndex === -1) {
-            waypointIndex = this.getApproachWaypoints().findIndex(w => { return (w && w.ident === ident); });
+            if (!this.isActiveApproach()) {
+                if (this.getLastIndexBeforeApproach() >= 0)
+                    return this.getWaypoints()[this.getLastIndexBeforeApproach() + 2];
+                else
+                    return null;
+            }
+            else {
+                waypointIndex = this.getApproachWaypoints().findIndex(w => { return (w && w.ident === ident); });
+                return this.getApproachWaypoints()[waypointIndex + 1];
+            }
         }
         return this.getWaypoints()[waypointIndex + 1];
     }
     getDistanceToActiveWaypoint() {
-        let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-        let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-        let ll = new LatLong(lat, long);
         let waypoint = this.getActiveWaypoint();
         if (waypoint && waypoint.infos) {
-            return Avionics.Utils.computeDistance(ll, waypoint.infos.coordinates);
+            return Avionics.Utils.computeDistance(this._planeCoordinates, waypoint.infos.coordinates);
         }
         return 0;
     }
     getDistanceToDirectToTarget() {
-        let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-        let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-        let ll = new LatLong(lat, long);
         let waypoint = this.getDirectToTarget();
         if (waypoint && waypoint.infos) {
-            return Avionics.Utils.computeDistance(ll, waypoint.infos.coordinates);
+            return Avionics.Utils.computeDistance(this._planeCoordinates, waypoint.infos.coordinates);
         }
         return 0;
     }
-    getBearingToActiveWaypoint() {
-        let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-        let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-        let ll = new LatLong(lat, long);
+    getBearingToActiveWaypoint(_magnetic) {
         let waypoint = this.getActiveWaypoint();
         if (waypoint && waypoint.infos) {
-            return Avionics.Utils.computeGreatCircleHeading(ll, waypoint.infos.coordinates);
+            let bearing = Avionics.Utils.computeGreatCircleHeading(this._planeCoordinates, waypoint.infos.coordinates);
+            if (_magnetic)
+                bearing = Avionics.Utils.clampAngle(bearing - waypoint.magvar);
+            return bearing;
         }
         return 0;
     }
     getETEToActiveWaypoint() {
-        let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-        let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-        let ll = new LatLong(lat, long);
         let waypoint = this.getActiveWaypoint();
         if (waypoint && waypoint.infos) {
-            let dist = Avionics.Utils.computeDistance(ll, waypoint.infos.coordinates);
+            let dist = Avionics.Utils.computeDistance(this._planeCoordinates, waypoint.infos.coordinates);
             let groundSpeed = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
             if (groundSpeed < 50) {
                 groundSpeed = 50;
@@ -1064,7 +1054,7 @@ class FlightPlanManager {
     getArrivalWaypointsCount() {
         return this._arrivalWaypointSize;
     }
-    getWaypoint(i, flightPlanIndex = NaN, considerApproachWaypoints) {
+    getWaypoint(i, flightPlanIndex = NaN, considerApproachWaypoints = false) {
         if (isNaN(flightPlanIndex)) {
             flightPlanIndex = this._currentFlightPlanIndex;
         }
@@ -1118,9 +1108,9 @@ class FlightPlanManager {
             if (runways && runways.length > 0) {
                 let direction = Simplane.getHeadingMagnetic();
                 let bestRunway = runways[0];
-                let bestDeltaAngle = Math.abs(Avionics.Utils.angleDiff(direction, bestRunway.direction));
+                let bestDeltaAngle = Math.abs(Avionics.Utils.diffAngle(direction, bestRunway.direction));
                 for (let i = 1; i < runways.length; i++) {
-                    let deltaAngle = Math.abs(Avionics.Utils.angleDiff(direction, runways[i].direction));
+                    let deltaAngle = Math.abs(Avionics.Utils.diffAngle(direction, runways[i].direction));
                     if (deltaAngle < bestDeltaAngle) {
                         bestDeltaAngle = deltaAngle;
                         bestRunway = runways[i];
@@ -1217,44 +1207,11 @@ class FlightPlanManager {
         SimVar.SetSimVarValue("C:fs9gps:FlightPlanNewApproachTransition", "number", transition);
         SimVar.SetSimVarValue("C:fs9gps:FlightPlanLoadApproach", "number", 1);
     }
-    isLoadedApproach(forceSimVarCall = false) {
-        let doSimVarCall = false;
-        let t = 0;
-        if (forceSimVarCall || this._isLoadedApproach === undefined) {
-            doSimVarCall = true;
-        }
-        else {
-            t = performance.now();
-            if (t - this._isLoadedApproachTimeLastSimVarCall > 1000) {
-                doSimVarCall = true;
-            }
-        }
-        if (doSimVarCall) {
-            this._isLoadedApproach = SimVar.GetSimVarValue("C:fs9gps:FlightPlanIsLoadedApproach", "Bool");
-            this._isLoadedApproachTimeLastSimVarCall = t;
-        }
+    isLoadedApproach() {
         return this._isLoadedApproach;
     }
-    isActiveApproach(forceSimVarCall = false) {
-        let doSimVarCall = false;
-        let t = 0;
-        if (forceSimVarCall || this._isActiveApproach === undefined) {
-            doSimVarCall = true;
-        }
-        else {
-            t = performance.now();
-            if (t - this._isActiveApproachTimeLastSimVarCall > 1000) {
-                doSimVarCall = true;
-            }
-        }
-        if (doSimVarCall) {
-            this._isActiveApproach = SimVar.GetSimVarValue("C:fs9gps:FlightPlanIsActiveApproach", "Bool");
-            this._isActiveApproachTimeLastSimVarCall = t;
-        }
+    isActiveApproach() {
         return this._isActiveApproach;
-    }
-    isApproachActivated() {
-        return SimVar.GetSimVarValue("L:FLIGHT_PLAN_MANAGER_APPROACH_ACTIVATED", "boolean");
     }
     activateApproach(callback = EmptyCallback.Void) {
         if (!this.isLoadedApproach()) {
@@ -1262,14 +1219,10 @@ class FlightPlanManager {
             return;
         }
         if (this.isActiveApproach()) {
-            this._approachActivated = true;
-            SimVar.SetSimVarValue("L:FLIGHT_PLAN_MANAGER_APPROACH_ACTIVATED", "boolean", true);
             callback();
             return;
         }
         Coherent.call("ACTIVATE_APPROACH").then(() => {
-            this._approachActivated = true;
-            SimVar.SetSimVarValue("L:FLIGHT_PLAN_MANAGER_APPROACH_ACTIVATED", "boolean", true);
             this.updateCurrentApproach(() => {
                 callback();
             });
@@ -1277,18 +1230,14 @@ class FlightPlanManager {
     }
     deactivateApproach() {
         Coherent.call("DEACTIVATE_APPROACH").then(() => {
-            this._approachActivated = false;
-            SimVar.SetSimVarValue("L:FLIGHT_PLAN_MANAGER_APPROACH_ACTIVATED", "boolean", false);
         });
     }
     tryAutoActivateApproach() {
         Coherent.call("TRY_AUTOACTIVATE_APPROACH").then(() => {
-            this._approachActivated = this._approachActivated || this.isActiveApproach();
-            SimVar.SetSimVarValue("L:FLIGHT_PLAN_MANAGER_APPROACH_ACTIVATED", "boolean", this._approachActivated);
         });
     }
     getApproachActiveWaypointIndex() {
-        return this._approachActivated ? this.getActiveWaypointIndex() : -1;
+        return this.isActiveApproach() ? this.getActiveWaypointIndex() : -1;
     }
     getApproach() {
         if (!this._approach) {
@@ -1388,9 +1337,8 @@ class FlightPlanManager {
         let prevWaypoint = this.getPreviousActiveWaypoint();
         let nextWaypoint = this.getActiveWaypoint();
         if (prevWaypoint && nextWaypoint) {
-            let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
-            let a = Avionics.Utils.computeGreatCircleDistance(planeCoordinates, prevWaypoint.infos.coordinates);
-            let b = Avionics.Utils.computeGreatCircleDistance(planeCoordinates, nextWaypoint.infos.coordinates);
+            let a = Avionics.Utils.computeGreatCircleDistance(this._planeCoordinates, prevWaypoint.infos.coordinates);
+            let b = Avionics.Utils.computeGreatCircleDistance(this._planeCoordinates, nextWaypoint.infos.coordinates);
             let f = a / (a + b);
             let dActiveLeg = (1 - f) * Avionics.Utils.computeGreatCircleDistance(prevWaypoint.infos.coordinates, nextWaypoint.infos.coordinates);
             if (distance <= dActiveLeg) {
