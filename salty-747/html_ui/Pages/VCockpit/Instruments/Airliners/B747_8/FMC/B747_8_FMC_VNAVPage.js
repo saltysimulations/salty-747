@@ -294,7 +294,7 @@ class B747_8_FMC_VNAVPage {
         else {
             crzSpeedCell = crzSpeed.toFixed(0);
         }
-        if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "bool")) {
+        if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "bool") && crzMode === 2) {
             let machMode = Simplane.getAutoPilotMachModeActive();
             if (machMode) {
                 let crzMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
@@ -303,10 +303,15 @@ class B747_8_FMC_VNAVPage {
             } else {
                 crzSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
             }
-            crzSpeedCell += "[color]magenta";
+        }
+        else if (crzMode === 3) {
+            crzSpeedCell = crzSpeed.toFixed(0);
         }
         else if (crzMode === 4) {
             crzSpeedCell = SimVar.GetSimVarValue("L:SALTY_CRZ_MACH", "mach").toFixed(3).substring(1);
+        }
+        if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+            crzSpeedCell += "[color]magenta";
         }
 
         fmc.onLeftInput[1] = () => {
@@ -366,7 +371,7 @@ class B747_8_FMC_VNAVPage {
         ]
         fmc.onLeftInput[4] = () => {
             if (crzMode !== 0 && crzMode !== 2) {
-                fmc.setEconCruiseSpeed();
+                SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE" , "Enum", 0);
                 B747_8_FMC_VNAVPage.ShowPage2(fmc);
             }
         };  
@@ -423,11 +428,11 @@ class B747_8_FMC_VNAVPage {
                 desSpeedModeCell = "\xa0SEL SPD";
                 break;
             case 2:
-                desPageTitle += SimVar.GetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots").toFixed(0) + "KT DES";
+                desPageTitle += SimVar.GetSimVarValue("L:SALTY_DES_SPEED", "knots").toFixed(0) + "KT DES";
                 desSpeedModeCell = "\xa0SEL SPD";
                 break;
             case 3:
-                let machString = SimVar.GetSimVarValue("L:SALTY_ECON_DES_MACH", "mach").toFixed(3);
+                let machString = SimVar.GetSimVarValue("L:SALTY_DES_MACH", "mach").toFixed(3);
                 desPageTitle += "M." + machString.slice(2, 5) + " DES";
                 desSpeedModeCell = "\xa0SEL SPD";
                 break;
@@ -442,9 +447,9 @@ class B747_8_FMC_VNAVPage {
         }
 
         /* LSK 2L  - Descent Speed */
-        let desSpeedCell = SimVar.GetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots").toFixed(0);
+        let desSpeedCell = SimVar.GetSimVarValue("L:SALTY_DES_SPEED", "knots").toFixed(0);
+        let machMode = Simplane.getAutoPilotMachModeActive();
         if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_DESCENT && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "bool") && desMode === 1) {
-            let machMode = Simplane.getAutoPilotMachModeActive();
             if (machMode) {
                 let desMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
                 var radixPos = desMachNo.indexOf('.');
@@ -456,13 +461,25 @@ class B747_8_FMC_VNAVPage {
             if (altitude > 10500) {
                 desSpeedCell += "[color]magenta";
             }
+        }
+        else if (fmc.getCrzMach() !== 1) {
+            if (Simplane.getAltitude() > 10000 && Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_DESCENT) {
+                if (machMode) {
+                    desSpeedCell = "{magenta}" + fmc.getCrzMach().toFixed(3).substring(1) + "{end}/" + fmc.getDesManagedSpeed(true).toFixed(0);
+                }
+                else {
+                    desSpeedCell = fmc.getCrzMach().toFixed(3).substring(1) + "/{magenta}" + fmc.getDesManagedSpeed(true).toFixed(0) + "{end}";
+                }
+            }
+            else {
+                desSpeedCell = fmc.getCrzMach().toFixed(3).substring(1) + "/" + fmc.getDesManagedSpeed(true).toFixed(0);
+            }
         } 
         else {
-            desSpeedCell = SimVar.GetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots").toFixed(0);
-            if (desMode === 3) {
-                let machString = SimVar.GetSimVarValue("L:SALTY_ECON_DES_MACH", "mach").toFixed(3);
-                desSpeedCell = machString.substring(1);
-            }
+            desSpeedCell = fmc.getDesManagedSpeed(true).toFixed(0);
+        }
+        if (desMode === 2) {
+            desSpeedCell = SimVar.GetSimVarValue("L:SALTY_DES_SPEED", "knots").toFixed(0);
         }
 
         fmc.onLeftInput[1] = () => {
@@ -472,24 +489,14 @@ class B747_8_FMC_VNAVPage {
             }
             else if (value === "DELETE" && !SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number")) {
                 fmc.inOut = "";
-                fmc.setEconDescentSpeed();
+                SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum", 0);
                 B747_8_FMC_VNAVPage.ShowPage3(fmc);
             }
             else {
                 fmc.clearUserInput();
-                if (value.charAt(0) == ".") {
-                    /* value = value.substring(0);
+                if (150 < value && value < 360) {
                     value = parseFloat(value);
-                    let speedFromMach = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", value);
-                    SimVar.SetSimVarValue("L:SALTY_ECON_DES_MACH", "mach", value);
-                    SimVar.SetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots", speedFromMach);
-                    SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum", 3);
-                    fmc.managedMachOn();
-                    */
-                }
-                else if (150 < value && value < 360) {
-                    value = parseFloat(value);
-                    SimVar.SetSimVarValue("L:SALTY_ECON_DES_SPEED", "knots", value);
+                    SimVar.SetSimVarValue("L:SALTY_DES_SPEED", "knots", value);
                     SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum", 2);
                     fmc.managedMachOff();
                 }
