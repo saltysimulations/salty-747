@@ -523,6 +523,9 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.pitchLimitIndicatorGroup.setAttribute("transform", "translate(0, " + -y + ")");
                 this.pitchLimitIndicatorGroup.style.visibility = "visible";
             }
+            else {
+                this.pitchLimitIndicatorGroup.style.visibility = "hidden";
+            }
         }
         else {
             this.pitchLimitIndicatorGroup.style.visibility = "hidden";
