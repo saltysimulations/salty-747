@@ -667,16 +667,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
 
     /* Turns off VNAV Mach speed mode */
     managedMachOff() {
-        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
         if (this.getIsVNAVActive()){
+            SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
             SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
         }
     }
 
     /* Turns on VNAV Mach speed mode */
     managedMachOn() {
-        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
         if (this.getIsVNAVActive()){
+            SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
             SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 1);
         }
     }
