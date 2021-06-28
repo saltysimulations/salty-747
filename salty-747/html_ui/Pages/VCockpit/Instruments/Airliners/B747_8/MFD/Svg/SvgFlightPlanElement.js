@@ -598,7 +598,7 @@ class SvgFlightPlanElement extends SvgMapElement {
                 first--;
                 continue;
             }
-            if (isFinite(firstWpt.latitudeFP) && isFinite(firstWpt.longitudeFP)) {
+            if (firstWpt.latitudeFP !== undefined && firstWpt.longitudeFP !== undefined) {
                 let p1 = _map.coordinatesToXY(new LatLong(firstWpt.latitudeFP, firstWpt.longitudeFP));
                 let p2 = _map.coordinatesToXY(new LatLong(nextWpt.latitudeFP, nextWpt.longitudeFP));
                 let ll = _map.coordinatesToXY(this.source.planeCoordinates);
