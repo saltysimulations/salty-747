@@ -11,6 +11,9 @@ class SvgFlightPlanElement extends SvgMapElement {
         this.hideReachedWaypoints = true;
         this._highlightedLegIndex = -1;
         this._isDashed = false;
+        this._lastAcknowledgedWaypoint = 0;
+        this._lastAcknowledgedWaypointTimer = 0;
+        this._isInApproach = false;
     }
     id(map) {
         return "flight-plan-" + this.flightPlanIndex + "-map-" + map.index;
@@ -137,8 +140,13 @@ class SvgFlightPlanElement extends SvgMapElement {
         let departureRunwayCase;
         let activeWaypointIndex = -1;
         if (this.source) {
+            if (this._lastAcknowledgedWaypointTimer > 0) {
+                this._lastAcknowledgedWaypointTimer -= this.source.instrument.deltaTime;
+                if (this._lastAcknowledgedWaypointTimer < 0)
+                    this._lastAcknowledgedWaypointTimer = 0;
+            }
             if (SimVar.GetSimVarValue("GPS OBS ACTIVE", "boolean")) {
-                activeWaypointIndex = this.source.getActiveWaypointIndex(false, true);
+                activeWaypointIndex = this.source.getActiveWaypointIndex(true);
                 let waypoint = this.source.getActiveWaypoint();
                 let magvar = SimVar.GetSimVarValue("MAGVAR", "degrees");
                 let dir = SimVar.GetSimVarValue("GPS OBS VALUE", "degree") + magvar;
@@ -160,10 +168,19 @@ class SvgFlightPlanElement extends SvgMapElement {
                 this.points.push(next);
             }
             else {
-                let l = this.source.getWaypointsCount();
-                activeWaypointIndex = this.source.getActiveWaypointIndex(false, true);
+                let nbWaypoints = this.source.getWaypointsCount();
+                activeWaypointIndex = this.source.getActiveWaypointIndex(true);
+                let isInApproach = false;
+                let approach = this.source.getApproach();
+                if (approach) {
+                    isInApproach = this.source.isActiveApproach();
+                }
+                if (isInApproach != this._isInApproach) {
+                    this._isInApproach = isInApproach;
+                    this._lastAcknowledgedWaypoint = 0;
+                }
                 let doLastLeg = true;
-                if (this.source.getApproach() && this.source.getApproach().transitions.length > 0) {
+                if (approach && approach.transitions.length > 0) {
                     doLastLeg = false;
                 }
                 if (!this.source.getIsDirectTo() && this.source.getWaypoint(0, this.flightPlanIndex)) {
@@ -172,7 +189,19 @@ class SvgFlightPlanElement extends SvgMapElement {
                         departureRunwayCase = this.source.getDepartureRunway();
                     }
                 }
-                let pIndex = 0;
+                let last = nbWaypoints - (doLastLeg ? 0 : 1);
+                let lastApproach = 0;
+                if (approach) {
+                    let lastIndex = this.source.getLastIndexBeforeApproach();
+                    if (lastIndex != -1) {
+                        last = lastIndex + 1;
+                        lastApproach = last;
+                        if (isInApproach) {
+                            last--;
+                            lastApproach = 0;
+                        }
+                    }
+                }
                 let first = 0;
                 let firstApproach = 0;
                 if (this.source.getIsDirectTo()) {
@@ -188,22 +217,24 @@ class SvgFlightPlanElement extends SvgMapElement {
                     }
                 }
                 else if (this.hideReachedWaypoints) {
-                    first = Math.max(0, activeWaypointIndex - 1);
+                    if (isInApproach) {
+                        first = Infinity;
+                        firstApproach = this.getFirstWaypointToDraw(map, activeWaypointIndex, this.source.getApproachWaypoints().length);
+                    }
+                    else {
+                        first = this.getFirstWaypointToDraw(map, activeWaypointIndex, last);
+                    }
                 }
-                let approach = this.source.getApproach();
-                let approachLast = (this.source.isActiveApproach() && approach) ? 0 : this.source.getLastIndexBeforeApproach();
-                let last = first;
-                if (approachLast != -1)
-                    last = approachLast + 1;
-                else
-                    last = l - (doLastLeg ? 0 : 1);
+                let pIndex = 0;
                 for (let i = first; i < last; i++) {
                     let waypoint = this.source.getWaypoint(i, this.flightPlanIndex);
                     if (waypoint) {
                         let wpPoints = [];
                         if (waypoint.transitionLLas) {
-                            for (let j = 0; j < waypoint.transitionLLas.length; j++) {
-                                wpPoints.push(waypoint.transitionLLas[i].toLatLong());
+                            if (i == 0 || i > first) {
+                                for (let j = 0; j < waypoint.transitionLLas.length; j++) {
+                                    wpPoints.push(waypoint.transitionLLas[i].toLatLong());
+                                }
                             }
                         }
                         wpPoints.push(waypoint.infos.coordinates.toLatLong());
@@ -292,24 +323,23 @@ class SvgFlightPlanElement extends SvgMapElement {
                         let waypoint = waypoints[i];
                         if (waypoint) {
                             let wpPoints = [];
-                            if (i > firstApproach || !this.source.getIsDirectTo()) {
-                                if (waypoints[i].transitionLLas) {
-                                    for (let j = 0; j < waypoints[i].transitionLLas.length; j++) {
-                                        wpPoints.push(waypoints[i].transitionLLas[j]);
+                            if (waypoint.transitionLLas) {
+                                if (i > firstApproach || (!this.source.getIsDirectTo() && i == 0)) {
+                                    for (let j = 0; j < waypoint.transitionLLas.length; j++) {
+                                        wpPoints.push(waypoint.transitionLLas[j]);
                                     }
                                 }
                             }
-                            wpPoints.push(new LatLongAlt(waypoints[i].latitudeFP, waypoints[i].longitudeFP, waypoints[i].altitudeinFP));
-                            for (let j = 0; j < wpPoints.length; j++) {
+                            wpPoints.push(new LatLongAlt(waypoint.latitudeFP, waypoint.longitudeFP, waypoint.altitudeinFP));                            for (let j = 0; j < wpPoints.length; j++) {
                                 if (this.points[pIndex]) {
                                     map.coordinatesToXYToRef(wpPoints[j], this.points[pIndex]);
-                                    this.points[pIndex].refWP = waypoints[i];
-                                    this.points[pIndex].refWPIndex = approachLast + i;
+                                    this.points[pIndex].refWP = waypoint;
+                                    this.points[pIndex].refWPIndex = lastApproach + i;
                                 }
                                 else {
                                     let p = map.coordinatesToXY(wpPoints[j]);
-                                    p.refWP = waypoints[i];
-                                    p.refWPIndex = approachLast + i;
+                                    p.refWP = waypoint;
+                                    p.refWPIndex = lastApproach + i;
                                     this.points.push(p);
                                 }
                                 pIndex++;
@@ -350,6 +380,10 @@ class SvgFlightPlanElement extends SvgMapElement {
                     xNext /= dNext;
                     yNext /= dNext;
                     let b = Math.min(dPrev / 3, dNext / 3, bevelAmount);
+                    let dot = Math.abs(xPrev * xNext + yPrev * yNext) / (dPrev / dNext);
+                    if (Math.abs(dot) > 0.99) {
+                        b = 10;
+                    }
                     let refWPIndex = p.refWPIndex + (((bevels === 1) && (i % 2 === 0)) ? 1 : 0);
                     let refWP = (((bevels === 1) && (i % 2 === 0)) ? pNext.refWP : p.refWP);
                     beveledPoints.push({
@@ -399,6 +433,7 @@ class SvgFlightPlanElement extends SvgMapElement {
         let s2 = new Vec2();
         let p1 = null;
         let p2 = null;
+        let indexToHighlight = activeWaypointIndex;
         for (let i = 0; i < this.points.length; i++) {
             let p = this.points[i];
             if (!p || isNaN(p.x) || isNaN(p.y)) {
@@ -417,13 +452,9 @@ class SvgFlightPlanElement extends SvgMapElement {
                     }
                 }
                 else if (!this._isDashed && this.highlightActiveLeg) {
-                    if (this.source.getActiveWaypoint(false, true)) {
-                        if (p2.refWP === this.source.getActiveWaypoint(false, true)) {
-                            isHighlit = true;
-                        }
-                    }
-                    else if (activeWaypointIndex <= 1 && p2.refWPIndex <= activeWaypointIndex) {
+                    if (p2.refWPIndex == indexToHighlight || (indexToHighlight == 0 && p1.refWPIndex == indexToHighlight)) {
                         isHighlit = true;
+                        indexToHighlight = p2.refWPIndex;
                     }
                 }
                 if (map.segmentVsFrame(p1, p2, s1, s2)) {
@@ -537,6 +568,61 @@ class SvgFlightPlanElement extends SvgMapElement {
                 }
             }
         }
+    }
+    getFirstWaypointToDraw(_map, _active, _last) {
+        let first = Math.max(0, _active - 1);
+        if (first < this._lastAcknowledgedWaypoint) {
+            this._lastAcknowledgedWaypoint = first;
+        }
+        if (first >= _last) {
+            first = _last - 1;
+        }
+        let min = this._lastAcknowledgedWaypoint + 1;
+        while (first >= min) {
+            let firstWpt;
+            let nextWpt;
+            if (this.source.getApproach() && this.source.isActiveApproach()) {
+                firstWpt = this.source.getApproachWaypoints()[first];
+                nextWpt = this.source.getApproachWaypoints()[first + 1];
+            }
+            else {
+                firstWpt = this.source.getWaypoint(first, this.flightPlanIndex);
+                if ((first + 1) < _last) {
+                    nextWpt = this.source.getWaypoint(first + 1, this.flightPlanIndex);
+                }
+                else if (this.source.getApproach()) {
+                    nextWpt = this.source.getApproachWaypoints()[0];
+                }
+            }
+            if (!nextWpt) {
+                first--;
+                continue;
+            }
+            if (isFinite(firstWpt.latitudeFP) && isFinite(firstWpt.longitudeFP)) {
+                let p1 = _map.coordinatesToXY(new LatLong(firstWpt.latitudeFP, firstWpt.longitudeFP));
+                let p2 = _map.coordinatesToXY(new LatLong(nextWpt.latitudeFP, nextWpt.longitudeFP));
+                let ll = _map.coordinatesToXY(this.source.planeCoordinates);
+                let v1 = Vec2.Delta(ll, p1);
+                let v2 = Vec2.Delta(p2, p1);
+                if (v1.GetNorm() < v2.GetNorm() * 0.1) {
+                    first--;
+                    continue;
+                }
+                v1.Normalize();
+                v2.Normalize();
+                let dot = v1.Dot(v2);
+                if (dot < 0.5) {
+                    first--;
+                    continue;
+                }
+                if (this._lastAcknowledgedWaypointTimer <= 0) {
+                    this._lastAcknowledgedWaypoint++;
+                    this._lastAcknowledgedWaypointTimer = 10000;
+                }
+                break;
+            }
+        }
+        return this._lastAcknowledgedWaypoint;
     }
     updateTrackLineAndArc() {
         /*Update Track Line*/

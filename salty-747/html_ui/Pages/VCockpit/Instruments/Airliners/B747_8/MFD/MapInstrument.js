@@ -591,7 +591,7 @@ class MapInstrument extends ISvgMapRootElement {
             this.scrollDisp.y = 0;
             if (this.bingMap) {
                 if (this.isDisplayingWeather()) {
-                    this.navMap.setRange(this.getWeatherRange());
+                    this.navMap.setRange(this.getWeatherRange() * this.overdrawFactor);
                 }
                 else {
                     this.navMap.setRange(this.getDisplayRange() * this.overdrawFactor);
