@@ -64,6 +64,15 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
+        this._pilotWaypoints = undefined;
+
+        /** @type {CJ4_FMC_MessageReceiver} */
+        this._fmcMsgReceiver = new CJ4_FMC_MessageReceiver();
+        MessageService.getInstance().registerReceiver(MESSAGE_TARGET.FMC, this._fmcMsgReceiver);
+        /** @type {CJ4_PFD_MessageReceiver} */
+
+        //Timer for periodic page refresh
+        this._pageRefreshTimer = null;
 
         /* SALTY 747 VARS */
         this._TORwyWindHdg = "";
@@ -204,6 +213,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             FMC_Menu.ShowPage(this);
         };
         FMC_Menu.ShowPage(this);
+        this._pilotWaypoints = new CJ4_FMC_PilotWaypoint_Manager(this);
+        this._pilotWaypoints.activate();
     }
     onPowerOn() {
         super.onPowerOn();
@@ -275,6 +286,61 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
         }
         return false;
+    }
+    /**
+     * Registers a periodic page refresh with the FMC display.
+     * @param {number} interval The interval, in ms, to run the supplied action.
+     * @param {function} action An action to run at each interval. Can return a bool to indicate if the page refresh should stop.
+     * @param {boolean} runImmediately If true, the action will run as soon as registered, and then after each
+     * interval. If false, it will start after the supplied interval.
+     */
+     registerPeriodicPageRefresh(action, interval, runImmediately) {
+        this.unregisterPeriodicPageRefresh();
+
+        const refreshHandler = () => {
+            const isBreak = action();
+            if (isBreak) {
+                return;
+            }
+            this._pageRefreshTimer = setTimeout(refreshHandler, interval);
+        };
+
+        if (runImmediately) {
+            refreshHandler();
+        } else {
+            this._pageRefreshTimer = setTimeout(refreshHandler, interval);
+        }
+    }
+
+    /**
+     * Unregisters a periodic page refresh with the FMC display.
+     */
+    unregisterPeriodicPageRefresh() {
+        if (this._pageRefreshTimer) {
+            clearInterval(this._pageRefreshTimer);
+        }
+    }
+    setMsg(value = "") {
+        this.userMsg = value;
+        if (value === "") {
+            this.setFmsMsg();
+        } else {
+            this._templateRenderer.setMsg(value);
+        }
+    }
+
+    setFmsMsg(value = "") {
+        if (value === "") {
+            if (this._fmcMsgReceiver.hasMsg()) {
+                value = this._fmcMsgReceiver.getMsgText();
+            }
+        }
+        if (value !== this._msg) {
+            this._msg = value;
+            if (this.userMsg === "") {
+                this._templateRenderer.setMsg(value);
+            }
+        }
     }
     _getIndexFromTemp(temp) {
         if (temp < -10)

@@ -549,12 +549,10 @@ class FMCMainDisplay extends BaseAirliners {
                 this.showErrorMessage("NOT IN DATABASE");
                 return callback(false);
             }
-            this.flightPlanManager.clearFlightPlan(() => {
-                this.flightPlanManager.setOrigin(airport.icao, () => {
-                    this.tmpOrigin = airport.ident;
-                    this.recalculateTHRRedAccTransAlt();
-                    callback(true);
-                });
+            this.flightPlanManager.setOrigin(airport.icao, () => {
+                this.tmpOrigin = airport.ident;
+                this.recalculateTHRRedAccTransAlt();
+                callback(true);
             });
         });
     }

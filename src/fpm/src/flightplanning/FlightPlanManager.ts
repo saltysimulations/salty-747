@@ -35,7 +35,7 @@ export class FlightPlanManager {
   constructor(public _parentInstrument: BaseInstrument) {
     this._loadFlightPlans();
 
-    if (_parentInstrument.instrumentIdentifier == "CJ4_FMC") {
+    if (_parentInstrument.instrumentIdentifier == " B747_8_FMC") {
       this._isMaster = true;
       _parentInstrument.addEventListener("FlightStart", async function () {
         const plan = new ManagedFlightPlan();

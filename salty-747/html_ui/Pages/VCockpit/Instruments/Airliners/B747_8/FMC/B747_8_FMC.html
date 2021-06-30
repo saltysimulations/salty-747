@@ -8,16 +8,22 @@
 </script>
 
 <script type="text/html" import-script="/JS/SimPlane.js"></script>
+<script type="text/html" import-script="/Pages/Salty/FPM/WT_SimPlaneMod.js"></script> <!-- WT -->
 <script type="text/html" import-script="/JS/dataStorage.js"></script>
+<script type="text/html" import-script="/Pages/Salty/FPM/DataStore.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/WTUtils.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/WT_ConvertUnit.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/WT_GCMath.js"></script> <!-- WT -->
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Runway.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Waypoint.js"></script>
+<script type="text/html" import-script="/Pages/Salty/FPM/Waypoint.js"></script> <!-- WT -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Approach.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlan.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/WaypointLoader.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlanManager.js"></script>
+<script type="text/html" import-script="/Pages/Salty/FPM/WaypointLoader.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/LzUtf8.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/wtsdk.js"></script> <!-- WT -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/GeoCalc.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
@@ -34,9 +40,10 @@
 <script type="text/html" import-script="/Pages/Salty/SaltyPilots.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/Salty_BaseAirliners.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/FMCMainDisplay.js"></script> <!--modified-->
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/Boeing_FMC.js"></script> <!--modified-->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/FMCMainDisplay.js"></script> <!-- modified -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/Boeing_FMC.js"></script> <!-- modified -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/FMC/FMCDataManager.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/WT_FMC_Renderer.js"></script> <!-- WT -->
 
 <!-- FMC -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js"></script>
@@ -65,6 +72,8 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_DeparturesPage.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_LegsPage.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ProgPage.js"></script>
+<script type="text/html" import-script="/Pages/Salty/FPM/CJ4_FMC_PilotWaypoint.js"></script> <!-- WT -->
+
 
 <!-- OPTIONS -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/OPTIONS/B747_8_FMC_SaltyOptions.js"></script>

@@ -5,33 +5,23 @@ class SvgMapConfig {
         this.waypointLabelColor = "white";
         this.waypointLabelStrokeColor = "black";
         this.waypointLabelStrokeWidth = 0;
-        this.waypointLabelUseBackground = true;
+        this.waypointLabelUseBackground = false;
         this.waypointLabelBackgroundColor = "white";
         this.waypointLabelBackgroundStrokeColor = "black";
         this.waypointLabelBackgroundStrokeWidth = 0;
         this.waypointLabelBackgroundPadding = "1 1 1 1";
-        this.waypointLabelBackgroundPaddingTop = 10;
+        this.waypointLabelBackgroundPaddingTop = 1;
         this.waypointLabelBackgroundPaddingRight = 1;
         this.waypointLabelBackgroundPaddingBottom = 1;
-        this.waypointLabelBackgroundPaddingLeft = 5;
+        this.waypointLabelBackgroundPaddingLeft = 1;
         this.waypointLabelDistanceX = 0;
         this.waypointLabelDistance = 0;
         this.waypointIconSize = 10;
-        this.intersectionLabelColor = "cyan";
-        this.intersectionLabelBackgroundPaddingLeft = 6;
-        this.intersectionLabelBackgroundPaddingTop = 20;
-        this.vorLabelColor = "cyan";
-        this.vorLabelBackgroundPaddingLeft = 0;
-        this.vorLabelBackgroundPaddingTop = 20;
+        this.intersectionLabelColor = "white";
+        this.vorLabelColor = "white";
         this.ndbLabelColor = "white";
-        this.ndbLabelBackgroundPaddingLeft = 1;
-        this.ndbLabelBackgroundPaddingTop = 1;
-        this.airportLabelColor = "cyan";
-        this.airportLabelBackgroundPaddingLeft = 1;
-        this.airportLabelBackgroundPaddingTop = 5;
+        this.airportLabelColor = "white";
         this.preventLabelOverlap = true;
-        this.destinationAirportLabelColor = "white";
-        this.waypointIntersectionLabelColor = "white";
         this.cityLabelFontSize = 10;
         this.cityLabelFontFamily = "Consolas";
         this.cityLabelColor = "white";
@@ -121,18 +111,8 @@ class SvgMapConfig {
             "c9a026",
             "c9a026"
         ];
-        this.netBingWaterColor1 = "#0000ff";
-        this.netBingHeightColor1 = [];
-        this.netBingSkyColor1 = "#000000";
-        this.netBingAltitudeColors2 = [];
-        this.netBingWaterColor2 = "#0000ff";
-        this.netBingHeightColor2 = [];
-        this.netBingSkyColor2 = "#000000";
-        this.netBingAltitudeColors3 = [];
-        this.netBingWaterColor3 = "#0000ff";
-        this.netBingHeightColor3 = [];
-        this.netBingSkyColor3 = "#000000";
     }
+
     load(path, callback) {
         let request = new XMLHttpRequest();
         request.overrideMimeType("application/json");
@@ -151,47 +131,38 @@ class SvgMapConfig {
                     this.cityLabelBackgroundPaddingRight = parseFloat(this.cityLabelBackgroundPadding.split(" ")[1]);
                     this.cityLabelBackgroundPaddingBottom = parseFloat(this.cityLabelBackgroundPadding.split(" ")[2]);
                     this.cityLabelBackgroundPaddingLeft = parseFloat(this.cityLabelBackgroundPadding.split(" ")[3]);
-                    if (this.netBingHeightColor1 && this.netBingHeightColor1.length > 0) {
-                        this.netBingAltitudeColors1[0] = this.netBingWaterColor1;
+
+                    let i = 1;
+                    let heightColors = this[SvgMapConfig.BING_HEIGHT_COLOR_ROOT + i];
+                    while (heightColors && heightColors.length > 0) {
+                        let skyColor = this[SvgMapConfig.BING_SKY_COLOR_ROOT + i];
+                        if (!skyColor) {
+                            skyColor = SvgMapConfig.BING_SKY_COLOR_DEFAULT;
+                            this[SvgMapConfig.BING_SKY_COLOR_ROOT + i] = skyColor;
+                        }
+                        let altitudeColors = this[SvgMapConfig.BING_ALTITUDE_COLOR_ROOT + i];
+                        if (!altitudeColors) {
+                            altitudeColors = [];
+                            this[SvgMapConfig.BING_ALTITUDE_COLOR_ROOT + i] = altitudeColors;
+                        }
+                        let waterColor = this[SvgMapConfig.BING_WATER_COLOR_ROOT + i];
+                        if (!waterColor) {
+                            waterColor = SvgMapConfig.BING_WATER_COLOR_DEFAULT;
+                            this[SvgMapConfig.BING_WATER_COLOR_ROOT + i] = waterColor;
+                        }
+                        altitudeColors[0] = waterColor;
+
                         let curve = new Avionics.Curve();
                         curve.interpolationFunction = Avionics.CurveTool.StringColorRGBInterpolation;
-                        for (let i = 0; i < this.netBingHeightColor1.length; i++) {
-                            let color = this.netBingHeightColor1[i].color;
-                            color = this.convertColor(color);
-                            curve.add(this.netBingHeightColor1[i].alt, color);
+                        for (let j = 0; j < heightColors.length; j++) {
+                            curve.add(heightColors[j].alt, heightColors[j].color);
                         }
-                        for (let i = 0; i < 60; i++) {
-                            let color = curve.evaluate(i * 30000 / 60);
-                            this.netBingAltitudeColors1[i + 1] = color;
+                        for (let j = 0; j < 60; j++) {
+                            let color = curve.evaluate(j * 30000 / 60);
+                            altitudeColors[j + 1] = color;
                         }
-                    }
-                    if (this.netBingHeightColor2 && this.netBingHeightColor2.length > 0) {
-                        this.netBingAltitudeColors2[0] = this.netBingWaterColor2;
-                        let curve = new Avionics.Curve();
-                        curve.interpolationFunction = Avionics.CurveTool.StringColorRGBInterpolation;
-                        for (let i = 0; i < this.netBingHeightColor2.length; i++) {
-                            let color = this.netBingHeightColor2[i].color;
-                            color = this.convertColor(color);
-                            curve.add(this.netBingHeightColor2[i].alt, color);
-                        }
-                        for (let i = 0; i < 60; i++) {
-                            let color = curve.evaluate(i * 30000 / 60);
-                            this.netBingAltitudeColors2[i + 1] = color;
-                        }
-                    }
-                    if (this.netBingHeightColor3 && this.netBingHeightColor3.length > 0) {
-                        this.netBingAltitudeColors3[0] = this.netBingWaterColor3;
-                        let curve = new Avionics.Curve();
-                        curve.interpolationFunction = Avionics.CurveTool.StringColorRGBInterpolation;
-                        for (let i = 0; i < this.netBingHeightColor3.length; i++) {
-                            let color = this.netBingHeightColor3[i].color;
-                            color = this.convertColor(color);
-                            curve.add(this.netBingHeightColor3[i].alt, color);
-                        }
-                        for (let i = 0; i < 60; i++) {
-                            let color = curve.evaluate(i * 30000 / 60);
-                            this.netBingAltitudeColors3[i + 1] = color;
-                        }
+
+                        heightColors = this[SvgMapConfig.BING_HEIGHT_COLOR_ROOT + (++i)];
                     }
                 }
                 if (callback) {
@@ -202,56 +173,21 @@ class SvgMapConfig {
         request.open("GET", path + "mapConfig.json");
         request.send();
     }
-    generateBing(_id) {
-        switch (_id) {
-            case 0:
-                if (this.netBingHeightColor1) {
-                    let config = new BingMapsConfig();
-                    if (this.netBingAltitudeColors1) {
-                        config.heightColors = [];
-                        for (let i = 0; i < this.netBingAltitudeColors1.length; i++) {
-                            config.heightColors[i] = this.hexaToRGB(this.netBingAltitudeColors1[i]);
-                        }
-                    }
-                    config.aspectRatio = 1;
-                    config.resolution = this.netBingTextureResolution;
-                    config.clearColor = this.hexaToRGB(this.netBingSkyColor1);
-                    return config;
-                }
-                break;
-            case 1:
-                if (this.netBingHeightColor2) {
-                    let config = new BingMapsConfig();
-                    if (this.netBingAltitudeColors2) {
-                        config.heightColors = [];
-                        for (let i = 0; i < this.netBingAltitudeColors2.length; i++) {
-                            config.heightColors[i] = this.hexaToRGB(this.netBingAltitudeColors2[i]);
-                        }
-                    }
-                    config.aspectRatio = 1;
-                    config.resolution = this.netBingTextureResolution;
-                    config.clearColor = this.hexaToRGB(this.netBingSkyColor2);
-                    return config;
-                }
-                break;
-            case 2:
-                if (this.netBingHeightColor3) {
-                    let config = new BingMapsConfig();
-                    if (this.netBingAltitudeColors3) {
-                        config.heightColors = [];
-                        for (let i = 0; i < this.netBingAltitudeColors3.length; i++) {
-                            config.heightColors[i] = this.hexaToRGB(this.netBingAltitudeColors3[i]);
-                        }
-                    }
-                    config.aspectRatio = 1;
-                    config.resolution = this.netBingTextureResolution;
-                    config.clearColor = this.hexaToRGB(this.netBingSkyColor3);
-                    return config;
-                }
-                break;
+
+    generateBing(id) {
+        if (this[`${SvgMapConfig.BING_HEIGHT_COLOR_ROOT}${id + 1}`]) {
+            let config = new BingMapsConfig();
+            if (this[`${SvgMapConfig.BING_ALTITUDE_COLOR_ROOT}${id + 1}`]) {
+                config.heightColors = this[`${SvgMapConfig.BING_ALTITUDE_COLOR_ROOT}${id + 1}`].map(hex => SvgMapConfig.hexaToRGB(hex));
+            }
+            config.aspectRatio = 1;
+            config.resolution = this.netBingTextureResolution;
+            config.clearColor = SvgMapConfig.hexaToRGB(this[`${SvgMapConfig.BING_SKY_COLOR_ROOT}${id + 1}`]);
+            return config;
         }
         return null;
     }
+
     convertColor(_color) {
         let r = parseInt(_color.substr(1, 2), 16) / 255;
         let g = parseInt(_color.substr(3, 2), 16) / 255;
@@ -330,7 +266,7 @@ class SvgMapConfig {
         color += newB.toString(16).padStart(2, "0");
         return color;
     }
-    hexaToRGB(_hexa) {
+    static hexaToRGB(_hexa) {
         let hexStringColor = _hexa;
         let offset = 0;
         if (hexStringColor[0] === "#") {
@@ -343,4 +279,9 @@ class SvgMapConfig {
         return rgb;
     }
 }
-//# sourceMappingURL=SvgMapConfig.js.map
+SvgMapConfig.BING_SKY_COLOR_ROOT = "netBingSkyColor";
+SvgMapConfig.BING_WATER_COLOR_ROOT = "netBingWaterColor";
+SvgMapConfig.BING_ALTITUDE_COLOR_ROOT = "netBingAltitudeColors";
+SvgMapConfig.BING_HEIGHT_COLOR_ROOT = "netBingHeightColor";
+SvgMapConfig.BING_WATER_COLOR_DEFAULT = "#0000ff";
+SvgMapConfig.BING_SKY_COLOR_DEFAULT = "#000000";
