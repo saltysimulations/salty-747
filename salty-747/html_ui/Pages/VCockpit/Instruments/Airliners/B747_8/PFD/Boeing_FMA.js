@@ -159,7 +159,7 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (this.flagTOGA && (Simplane.getIndicatedSpeed() < 80 && Simplane.getIndicatedSpeed() > 65)) || Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB) {
+            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (this.flagTOGA && (Simplane.getIndicatedSpeed() < 80 && Simplane.getIndicatedSpeed() > 65)) || (Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB && Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && !Simplane.getAutoPilotAltitudeLockActive())) {
                 this.flagTOGA = true;
                 return 4;
             }
@@ -385,8 +385,7 @@ var Boeing_FMA;
             }
             if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
                 if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    let altitude = Simplane.getAltitude();
-                    if (altitude > SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number") + 100) {
+                    if (Simplane.getAutoPilotAltitudeLockValue("feet") !== SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number")) {
                         return 9;
                     }
                     return 7;

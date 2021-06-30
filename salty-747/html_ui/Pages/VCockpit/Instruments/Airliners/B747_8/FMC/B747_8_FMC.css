@@ -28,37 +28,10 @@
   display: none; }
 
 @font-face {
-  font-family: "Roboto";
-  src: url("/Fonts/RobotoMono-Medium.ttf") format("truetype");
-  font-weight: normal;
+  font-family: "BoeingCDU";
+  src: url("/Fonts/BoeingCDU.ttf") format("truetype");
   font-style: normal; }
 
-@font-face {
-  font-family: "Roboto-Light";
-  src: url("/Fonts/RobotoMono-Light.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal; }
-
-@font-face {
-  font-family: "Roboto-Bold";
-  src: url("/Fonts/RobotoMono-Bold.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal; }
-
-@font-face {
-  font-family: "Consolas";
-  src: url("/Fonts/consola.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal; }
-
-/*
-@font-face {
-    font-family: "Not Courier Sans";
-    src: url("/Fonts/NotCourierSans.otf") format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
-*/
 span:empty:before {
   content: " "; }
 
@@ -68,7 +41,7 @@ fmc-b747-8-main-display {
   height: 100%;
   background-color: #0e0d08;
   color: white;
-  font-family: "Not Courier Sans", "Consolas";
+  font-family: "BoeingCDU";
   font-size: 6.46vw;
   color: white; }
 
@@ -89,6 +62,9 @@ fmc-b747-8-main-display {
 
 .inop {
   color: #666666; }
+
+.magenta {
+  color: #FF00FF; }
 
 fmc-b747-8-main-display::before {
   content: " ";

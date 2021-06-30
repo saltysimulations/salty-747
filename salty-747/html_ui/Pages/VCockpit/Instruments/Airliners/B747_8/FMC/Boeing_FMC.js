@@ -101,8 +101,34 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
             if (this.getIsVNAVActive()) {
+                let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+                let altitude = Simplane.getAltitude();
                 let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-                this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
+                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && displayedAltitude > this.cruiseFlightLevel * 100) {
+                    this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
+                }
+                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                    this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
+                }
+                if (displayedAltitude == Math.round(altitude/100) * 100){
+
+                }
+                else if (!Simplane.getAutoPilotFLCActive()) {
+                    if (displayedAltitude >= altitude + 2000) {
+                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
+                        this.setThrottleMode(ThrottleMode.CLIMB);
+                    }
+                    else if (displayedAltitude + 2000 <= altitude) {
+                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 25);
+                        this.setThrottleMode(ThrottleMode.CLIMB);
+                    }
+                    else {
+                        this.activateSPD();
+                    }
+                    Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, mcpAlt, this._forceNextAltitudeUpdate);
+                    SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
+                    this._forceNextAltitudeUpdate = false;
+                }
             }      
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
@@ -255,16 +281,24 @@ class Boeing_FMC extends FMCMainDisplay {
     doActivateFLCH() {
         this._pendingFLCHActivation = false;
         SimVar.SetSimVarValue("K:ALTITUDE_SLOT_INDEX_SET", "number", 1);
+        let altitude = Simplane.getAltitude();
         let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, displayedAltitude, this._forceNextAltitudeUpdate);
         if (!Simplane.getAutoPilotFLCActive()) {
             SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
         }
-        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
-        this.setThrottleMode(ThrottleMode.CLIMB);
-        if (this.aircraftType != Aircraft.AS01B) {
+        if (displayedAltitude >= altitude + 2000) {
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
+            this.setThrottleMode(ThrottleMode.CLIMB);
+        }
+        else if (displayedAltitude + 2000 <= altitude) {
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 25);
+            this.setThrottleMode(ThrottleMode.CLIMB);
+        }
+        else {
             this.activateSPD();
         }
+        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
     }
     deactivateFLCH() {
         this._isFLCHActive = false;
@@ -357,6 +391,9 @@ class Boeing_FMC extends FMCMainDisplay {
         SimVar.SetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number", 0);
         if (this.getIsVNAVActive()) {
             SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 2);
+            SimVar.SetSimVarValue("L:SALTY_VNAV_CLB_MODE", "Enum", 0);
+            SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE", "Enum", 0);
+            SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE", "Enum", 0);
         }
     }
     activateTHRREFMode() {

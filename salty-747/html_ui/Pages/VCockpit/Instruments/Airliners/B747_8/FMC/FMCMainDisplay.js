@@ -55,6 +55,8 @@ class FMCMainDisplay extends BaseAirliners {
         this.vApp = NaN;
         this.perfApprMDA = NaN;
         this.perfApprDH = NaN;
+        this.flightPhaseHasChangedToCruise = false;
+        this.flightPhaseHasChangedToDescent = false;
         this._flightPhases = ["PREFLIGHT", "TAXI", "TAKEOFF", "CLIMB", "CRUISE", "DESCENT", "APPROACH", "GOAROUND"];
         if (!SimVar.GetSimVarValue("SIM ON GROUND","bool")) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
@@ -84,6 +86,7 @@ class FMCMainDisplay extends BaseAirliners {
         this._pre2Frequency = 0;
         this._atc1Frequency = 0;
         this._radioNavOn = false;
+        this._approachInitialized = false;
         this._fuelVarsUpdatedGrossWeight = 0;
         this._fuelVarsUpdatedTripCons = 0;
         this._debug = 0;
@@ -177,7 +180,7 @@ class FMCMainDisplay extends BaseAirliners {
             col = 0;
         }
         if (label === "__FMCSEPARATOR") {
-            label = "------------------------";
+            label = "---------------------------";
         }
         if (label !== "") {
             let color = label.split("[color]")[1];
@@ -261,23 +264,34 @@ class FMCMainDisplay extends BaseAirliners {
             this._inOutElement.style.paddingLeft = "";
         }
     }
-    setTemplate(template) {
+    setTemplate(template, large = false) {
         if (template[0]) {
             this.setTitle(template[0][0]);
             this.setPageCurrent(template[0][1]);
             this.setPageCount(template[0][2]);
+            this.setTitleLeft(template[0][3]);
         }
         for (let i = 0; i < 6; i++) {
             let tIndex = 2 * i + 1;
             if (template[tIndex]) {
-                if (template[tIndex][1] !== undefined) {
-                    this.setLabel(template[tIndex][0], i, 0);
-                    this.setLabel(template[tIndex][1], i, 1);
-                    this.setLabel(template[tIndex][2], i, 2);
-                    this.setLabel(template[tIndex][3], i, 3);
-                }
-                else {
-                    this.setLabel(template[tIndex][0], i, -1);
+                if (large) {
+                    if (template[tIndex][1] !== undefined) {
+                        this.setLine(template[tIndex][0], i, 0);
+                        this.setLine(template[tIndex][1], i, 1);
+                        this.setLine(template[tIndex][2], i, 2);
+                        this.setLine(template[tIndex][3], i, 3);
+                    } else {
+                        this.setLine(template[tIndex][0], i, -1);
+                    }
+                } else {
+                    if (template[tIndex][1] !== undefined) {
+                        this.setLabel(template[tIndex][0], i, 0);
+                        this.setLabel(template[tIndex][1], i, 1);
+                        this.setLabel(template[tIndex][2], i, 2);
+                        this.setLabel(template[tIndex][3], i, 3);
+                    } else {
+                        this.setLabel(template[tIndex][0], i, -1);
+                    }
                 }
             }
             tIndex = 2 * i + 2;
@@ -287,8 +301,7 @@ class FMCMainDisplay extends BaseAirliners {
                     this.setLine(template[tIndex][1], i, 1);
                     this.setLine(template[tIndex][2], i, 2);
                     this.setLine(template[tIndex][3], i, 3);
-                }
-                else {
+                } else {
                     this.setLine(template[tIndex][0], i, -1);
                 }
             }
@@ -297,7 +310,44 @@ class FMCMainDisplay extends BaseAirliners {
             this.setInOut(template[13][0]);
         }
         SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", this.currentFlightPlanWaypointIndex);
+        // Apply formatting helper to title page, lines and labels
+        if (this._titleElement !== null) {
+            this._titleElement.innerHTML = this._formatCell(this._titleElement.innerHTML);
+        }
+        this._lineElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
+        this._labelElements.forEach((row) => {
+            row.forEach((column) => {
+                if (column !== null) {
+                    column.innerHTML = this._formatCell(column.innerHTML);
+                }
+            });
+        });
     }
+    _formatCell(str) {
+        return str
+            .replace(/{big}/g, "<span class='b-text'>")
+            .replace(/{small}/g, "<span class='s-text'>")
+            .replace(/{big}/g, "<span class='b-text'>")
+            .replace(/{amber}/g, "<span class='amber'>")
+            .replace(/{red}/g, "<span class='red'>")
+            .replace(/{green}/g, "<span class='green'>")
+            .replace(/{cyan}/g, "<span class='cyan'>")
+            .replace(/{white}/g, "<span class='white'>")
+            .replace(/{magenta}/g, "<span class='magenta'>")
+            .replace(/{yellow}/g, "<span class='yellow'>")
+            .replace(/{inop}/g, "<span class='inop'>")
+            .replace(/{sp}/g, "&nbsp;")
+            .replace(/{left}/g, "<span class='left'>")
+            .replace(/{right}/g, "<span class='right'>")
+            .replace(/{end}/g, "</span>");
+    }
+
     getNavDataDateRange() {
         return SimVar.GetGameVarValue("FLIGHT NAVDATA DATE RANGE", "string");
     }
@@ -638,7 +688,7 @@ class FMCMainDisplay extends BaseAirliners {
                 if (isFinite(frequency)) {	
                     let freq = Math.round(frequency * 100) / 100;	
                     let approach = this.flightPlanManager.getApproach();	
-                    if (approach && approach.name && approach.name.indexOf("ILS") !== -1) {	
+                    if (approach && approach.name && approach.isLocalizer()) {
                         if (this.connectIlsFrequency(freq)) {	
                             SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_ILS", "number", freq);	
                             let runway = this.flightPlanManager.getApproachRunway();	
@@ -1684,6 +1734,7 @@ class FMCMainDisplay extends BaseAirliners {
                     if (altitude >= 0.98 * cruiseFlightLevel) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CRUISE;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+                        this.flightPhaseHasChangedToCruise = true;
                     }
                 }
             }
@@ -1694,6 +1745,7 @@ class FMCMainDisplay extends BaseAirliners {
                     if (altitude < 0.90 * cruiseFlightLevel) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+                        this.flightPhaseHasChangedToDescent = true;
                     }
                 }
                 //Force DESCENT flight phase if at approx TOD based on CRZ level
@@ -2099,23 +2151,7 @@ class FMCMainDisplay extends BaseAirliners {
         this.flightPlanManager.onCurrentGameFlightLoaded(() => {
             this.flightPlanManager.updateFlightPlan(() => {
                 this.flightPlanManager.updateCurrentApproach(() => {
-                    let frequency = this.flightPlanManager.getApproachNavFrequency();
-                    if (isFinite(frequency)) {
-                        let freq = Math.round(frequency * 100) / 100;
-                        let approach = this.flightPlanManager.getApproach();	
-                        if (approach && approach.name && approach.name.indexOf("ILS") !== -1) {	
-                            if (this.connectIlsFrequency(freq)) {	
-                                SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_ILS", "number", freq);
-                                let runway = this.flightPlanManager.getApproachRunway();
-                                if (runway) {
-                                    SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_COURSE", "number", runway.direction);
-                                }
-                            }
-                        }
-                        else {	
-                            this.vor1Frequency = freq;	
-                        }
-                    }
+                    this.onApproachUpdated();
                     if (Simplane.getAltitude() > 1000) {
                         if (this.flightPlanManager.getWaypoints().length === 2) {
                             Coherent.call("GET_RUNWAY_ARRIVAL").then((runwayArrivalIndex) => {
@@ -2124,8 +2160,7 @@ class FMCMainDisplay extends BaseAirliners {
                                     let runwayArrival = destination.infos.unsortedOneWayRunways[runwayArrivalIndex];
                                     if (runwayArrival) {
                                         let ilsApproachIndex = destination.infos.approaches.findIndex(approach => {
-                                            return approach.name.indexOf("ILS") != -1 && approach.name.indexOf(runwayArrival.designation) != -1;
-                                        });
+                                            return approach.isLocalizer() && approach.name.indexOf(runwayArrival.designation) != -1;                                        });
                                         if (ilsApproachIndex) {
                                             this.setApproachIndex(ilsApproachIndex, () => {
                                                 this.insertTemporaryFlightPlan();
@@ -2159,6 +2194,30 @@ class FMCMainDisplay extends BaseAirliners {
             });
         });
         this.recalculateTHRRedAccTransAlt();
+    }
+    onApproachUpdated() {
+        if (this._approachInitialized) {
+            return;
+        }
+        let frequency = this.flightPlanManager.getApproachNavFrequency();
+        if (isFinite(frequency)) {
+            let freq = Math.round(frequency * 100) / 100;
+            let approach = this.flightPlanManager.getApproach();
+            if (approach && approach.name && approach.name.indexOf("ILS") != -1) {
+                if (this.connectIlsFrequency(freq)) {
+                    SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_ILS", "number", freq);
+                    let runway = this.flightPlanManager.getApproachRunway();
+                    if (runway) {
+                        SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_COURSE", "number", runway.direction);
+                    }
+                }
+            }
+            else {
+                console.log("FMCMainDisplay - Frequency is a VOR FREQUENCY");
+                this.vor1Frequency = freq;
+            }
+            this._approachInitialized = true;
+        }
     }
     onFMCFlightPlanLoaded() {
     }
@@ -2268,7 +2327,9 @@ class FMCMainDisplay extends BaseAirliners {
         if (this._checkFlightPlan <= 0) {
             this._checkFlightPlan = 60;
             this.flightPlanManager.updateFlightPlan();
-            this.flightPlanManager.updateCurrentApproach();
+            this.flightPlanManager.updateCurrentApproach(() => {
+                this.onApproachUpdated();
+            });
         }
         this._checkUpdateFuel -= _deltaTime / 1000;
         if (this._checkUpdateFuel <= 0) {

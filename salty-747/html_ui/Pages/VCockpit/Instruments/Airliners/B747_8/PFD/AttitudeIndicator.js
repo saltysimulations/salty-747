@@ -163,12 +163,10 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.attitude_pitch_grads.push(document.createElementNS(Avionics.SVG.NS, "g"));
                 pitchGraduations.appendChild(this.attitude_pitch_grads[0]);
                 let maxDash = 80;
-                let fullPrecisionLowerLimit = -20;
-                let fullPrecisionUpperLimit = 20;
+                let fullPrecisionLowerLimit = -80;
+                let fullPrecisionUpperLimit = 80;
                 let halfPrecisionLowerLimit = -30;
                 let halfPrecisionUpperLimit = 45;
-                let unusualAttitudeLowerLimit = -30;
-                let unusualAttitudeUpperLimit = 50;
                 let bigWidth = 110;
                 let bigHeight = 2;
                 let mediumWidth = 60;
@@ -242,26 +240,6 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                             rightText.setAttribute("font-family", "BoeingEICAS");
                             rightText.setAttribute("fill", "white");
                             this.attitude_pitch_grads[0].appendChild(rightText);
-                        }
-                        if (angle < unusualAttitudeLowerLimit) {
-                            let chevron = document.createElementNS(Avionics.SVG.NS, "path");
-                            let path = "M" + -smallWidth / 2 + " " + (pitchFactor * nextAngle - bigHeight / 2) + " l" + smallWidth + "  0 ";
-                            path += "L" + bigWidth / 2 + " " + (pitchFactor * angle - bigHeight / 2) + " l" + -smallWidth + " 0 ";
-                            path += "L0 " + (pitchFactor * nextAngle + 20) + " ";
-                            path += "L" + (-bigWidth / 2 + smallWidth) + " " + (pitchFactor * angle - bigHeight / 2) + " l" + -smallWidth + " 0 Z";
-                            chevron.setAttribute("d", path);
-                            chevron.setAttribute("fill", "red");
-                            this.attitude_pitch_grads[0].appendChild(chevron);
-                        }
-                        if (angle >= unusualAttitudeUpperLimit && nextAngle <= maxDash) {
-                            let chevron = document.createElementNS(Avionics.SVG.NS, "path");
-                            let path = "M" + -smallWidth / 2 + " " + (pitchFactor * angle - bigHeight / 2) + " l" + smallWidth + "  0 ";
-                            path += "L" + (bigWidth / 2) + " " + (pitchFactor * nextAngle + bigHeight / 2) + " l" + -smallWidth + " 0 ";
-                            path += "L0 " + (pitchFactor * angle - 20) + " ";
-                            path += "L" + (-bigWidth / 2 + smallWidth) + " " + (pitchFactor * nextAngle + bigHeight / 2) + " l" + -smallWidth + " 0 Z";
-                            chevron.setAttribute("d", path);
-                            chevron.setAttribute("fill", "red");
-                            this.attitude_pitch_grads[0].appendChild(chevron);
                         }
                     }
                     angle = nextAngle;
@@ -367,6 +345,19 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.slipSkid.setAttribute("stroke", "white");
                 this.slipSkid.setAttribute("stroke-width", "1.5");
                 this.attitude_bank_root.appendChild(this.slipSkid);
+            }
+            {
+                this.pitchLimitIndicatorGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                this.leftPLI = document.createElementNS(Avionics.SVG.NS, "path");
+                this.leftPLI.setAttribute("d", "M -70 -20 L -64 -20 L -70 -29 L -64 -20 L -58 -20 L -64 -29 L -58 -20 L -52 -20 L -58 -29 L -52 -20 L -46 -20 L -46 -14 L -46 -20 Z");
+                this.rightPLI = document.createElementNS(Avionics.SVG.NS, "path");
+                this.rightPLI.setAttribute("d", "M 70 -20 L 64 -20 L 70 -29 L 64 -20 L 58 -20 L 64 -29 L 58 -20 L 52 -20 L 58 -29 L 52 -20 L 46 -20 L 46 -14 L 46 -20 Z");
+                this.pitchLimitIndicatorGroup.setAttribute("stroke", "#ffc400");
+                this.pitchLimitIndicatorGroup.setAttribute("stroke-width", "2");
+                this.pitchLimitIndicatorGroup.setAttribute("stroke-opacity", "1.0");
+                this.pitchLimitIndicatorGroup.appendChild(this.leftPLI);
+                this.pitchLimitIndicatorGroup.appendChild(this.rightPLI);
+                this.attitude_bank_root.appendChild(this.pitchLimitIndicatorGroup);
             }
             //New CenterRectGroup allows FD bars to be drawn correctly underneath center rect.
             {
@@ -484,6 +475,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
             this.flightDirector.refresh(_deltaTime);
         }
         this.updateRadioAltitude(_deltaTime);
+        this.updatePLI();
     }
     updateRadioAltitude(_dt) {
         let val = Math.floor(this.radioAltitudeValue);
@@ -515,6 +507,28 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
         else {
             this.radioAltitudeGroup.setAttribute("visibility", "hidden");
             this.radioRefreshTimer = 0.0;
+        }
+    }
+    updatePLI() {
+        const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        if (IRSState == 2) {
+            if ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "percent over 100") > 0) || Simplane.getIndicatedSpeed() < SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 60) {
+                let alpha = SimVar.GetSimVarValue("INCIDENCE ALPHA", "degrees");
+                if(Simplane.getGroundSpeed() < 5) {
+                    alpha = 0;
+                }
+                let stallAlpha = SimVar.GetSimVarValue("STALL ALPHA", "degrees");
+                let pitchDiff = stallAlpha - alpha;
+                let y = Utils.Clamp(pitchDiff * 6.5, -100, 100);
+                this.pitchLimitIndicatorGroup.setAttribute("transform", "translate(0, " + -y + ")");
+                this.pitchLimitIndicatorGroup.style.visibility = "visible";
+            }
+            else {
+                this.pitchLimitIndicatorGroup.style.visibility = "hidden";
+            }
+        }
+        else {
+            this.pitchLimitIndicatorGroup.style.visibility = "hidden";
         }
     }
 }
@@ -640,7 +654,9 @@ var Jet_PFD_FlightDirector;
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 1);
                     }
                     if ((vertSpeed >= 600 || fdPhase == 2) && altAboveGround > 10) {  
-                        SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
+                        if (!Simplane.getAutoPilotFLCActive()) {
+                            SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
+                        }
                         let blendfactor = (vertSpeed) / 350;
                         currentFDPitch = Math.min((Simplane.getFlightDirectorPitch() - 7 + blendfactor), Simplane.getFlightDirectorPitch());
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 2);
