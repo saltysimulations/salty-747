@@ -35,6 +35,45 @@ class Boeing_FMC extends FMCMainDisplay {
                 }
             }
         };
+        this.onExecPage = undefined;
+        this.onExecDefault = () => {
+            if (this.getIsRouteActivated() && !this._activatingDirectTo) {
+                this.insertTemporaryFlightPlan(() => {
+                    this.copyAirwaySelections();
+                    this._isRouteActivated = false;
+                    this._activatingDirectToExisting = false;
+                    this.fpHasChanged = false;
+                    SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                    if (this.refreshPageCallback) {
+                        this.refreshPageCallback();
+                    }
+                });
+            } else if (this.getIsRouteActivated() && this._activatingDirectTo) {
+                const activeIndex = this.flightPlanManager.getActiveWaypointIndex();
+                this.insertTemporaryFlightPlan(() => {
+                    this.flightPlanManager.activateDirectToByIndex(activeIndex, () => {
+                        this.copyAirwaySelections();
+                        this._isRouteActivated = false;
+                        this._activatingDirectToExisting = false;
+                        this._activatingDirectTo = false;
+                        this.fpHasChanged = false;
+                        SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                        if (this.refreshPageCallback) {
+                            this.refreshPageCallback();
+                        }
+                    });
+                });
+            } else {
+                this.fpHasChanged = false;
+                this._isRouteActivated = false;
+                SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                if (this.refreshPageCallback) {
+                    this._activatingDirectTo = false;
+                    this.fpHasChanged = false;
+                    this.refreshPageCallback();
+                }
+            }
+        };
         this.onDel = () => {
             if (this.inOut.length === 0) {
                 this.inOut = "DELETE";
@@ -574,9 +613,15 @@ class Boeing_FMC extends FMCMainDisplay {
     getIsRouteActivated() {
         return this._isRouteActivated;
     }
-    activateRoute() {
+    activateRoute(directTo = false, callback = EmptyCallback.Void) {
+        if (directTo) {
+            this._activatingDirectTo = true;
+        }
         this._isRouteActivated = true;
+        this.fpHasChanged = true;
         SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 1);
+        this.setMsg();
+        callback();
     }
     setBoeingDirectTo(directToWaypointIdent, directToWaypointIndex, callback = EmptyCallback.Boolean) {
         let waypoints = this.flightPlanManager.getWaypoints();

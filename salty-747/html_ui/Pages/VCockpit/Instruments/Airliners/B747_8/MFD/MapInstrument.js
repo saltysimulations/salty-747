@@ -80,7 +80,7 @@ class MapInstrument extends ISvgMapRootElement {
         this.bShowAirplaneOnWeather = false;
         this.bShowOverlay = true;
         this.bRotateWithAirplane = false;
-        this.bEnableCenterOnFplnWaypoint = false;
+        this.bEnableCenterOnFplnWaypoint = true;
         this.bHideFlightPlanIfBushtrip = false;
         this.bIsFlightPlanVisible = false;
         this.maskElements = [];
@@ -595,7 +595,7 @@ class MapInstrument extends ISvgMapRootElement {
                 if (this.eBingMode === EBingMode.PLANE) {
                     needCenterOnPlane = true;
                     if (this.bEnableCenterOnFplnWaypoint) {
-                        const airlinerMcduCurrentFplnWaypointIndex = SimVar.GetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number");
+                        const airlinerMcduCurrentFplnWaypointIndex = SimVar.GetSimVarValue("L:SALTY_PLAN_VIEW_WAYPOINT", "number");
                         if (airlinerMcduCurrentFplnWaypointIndex >= 0) {
                             if (this.flightPlanManager) {
                                 const airlinerMcduCurrentFplnWaypoint = this.flightPlanManager.getWaypoint(airlinerMcduCurrentFplnWaypointIndex, NaN, true);
@@ -635,7 +635,7 @@ class MapInstrument extends ISvgMapRootElement {
                     this.bingMap.setParams({ lla: this.navMap.lastCenterCoordinates, radius: bingRadius });
                 }
             }
-            if (typeof CJ4_MFD === 'function' && planeLla && (this.drawCounter % 2 === 1)) {
+            if (typeof B747_8_MFD === 'function' && planeLla && (this.drawCounter % 2 === 1)) {
                 const centerCoordinates = planeLla;
                 if (this.showAirports) {
                     this.airportLoader.searchLat = centerCoordinates.lat;

@@ -115,11 +115,11 @@ class FMCRoutePage {
             }
         }
 
-        if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
+        if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1 && !this._fmc.getIsRouteActivated()) {
             this._fmc.fpHasChanged = true;
             this._lsk6Field = "<ERASE";
-            this._activateCell = "";
-        } else if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 0) {
+            this._activateCell = "ACTIVATE>";
+        } else {
             this._fmc.fpHasChanged = false;
             this._activateCell = "PERF INIT>";
             this._lsk6Field = "<RTE 2";
@@ -171,7 +171,7 @@ class FMCRoutePage {
 
     renderMainPage() {
         this._fmc.setTemplate([
-            [" " + this._modStr + " RTE 1", "1/" + this._pageCount],
+            [" " + this._modStr + " RTE 1", 1, this._pageCount],
             ["\xa0ORIGIN", "DEST"],
             [this._originCell, this._destinationCell],
             ["\xa0RUNWAY", "FLT NO"],
@@ -191,7 +191,7 @@ class FMCRoutePage {
         const idx = this._offset;
 
         this._fmc.setTemplate([
-            [" " + this._modStr + " RTE 1", (this._currentPage + 1) + "/" + this._pageCount],
+            [" " + this._modStr + " RTE 1", (this._currentPage + 1), this._pageCount],
             ["VIA", "TO"],
             this._rows[idx] ? this._rows[idx].getTemplate()[0] : [""],
             this._rows[idx] ? this._rows[idx].getTemplate()[1] : [""],
@@ -271,7 +271,7 @@ class FMCRoutePage {
 
         // exec stuff
         this._fmc.onLeftInput[5] = () => {
-            if (this._lsk6Field === "<CANCEL MOD") {
+            if (this._lsk6Field === "<ERASE") {
                 if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
                     this._airwayInput = "";
                     this._airwayIndex = -1;
@@ -285,7 +285,11 @@ class FMCRoutePage {
 
         this._fmc.onRightInput[5] = () => {
             if (this._activateCell == "PERF INIT>") {
-                CJ4_FMC_PerfInitPage.ShowPage2(this._fmc);
+                FMCPerfInitPage.ShowPage1(this._fmc);
+            }
+            else if (this._activateCell == "ACTIVATE>") {
+                this._fmc.activateRoute();
+                this.update(true);
             }
         };
 
@@ -327,7 +331,7 @@ class FMCRoutePage {
                             const airway = lastWaypoint.infos.airways.find(a => {
                                 return a.name === value;
                             });
-                            this._fmc.setMsg();
+                            //this._fmc.setMsg();
                             if (airway) {
                                 this._airwayInput = airway.name;
                                 this._airwayIndex = lastWpIdx;
@@ -348,7 +352,7 @@ class FMCRoutePage {
             const row = this._rows[idx + this._offset];
             const wpIdx = row.fpIdx;
 
-            if (value === FMCMainDisplay.clrValue) {
+            if (value === "DELETE") {
                 this._fmc.clearUserInput();
                 this._fmc.removeWaypoint(wpIdx, () => {
                     //this._fmc.setMsg();
@@ -651,14 +655,9 @@ class FpRow {
         } else {
             row1tmpl = [this._airwayIn, this._ident];
             if (this._ident === "-----") {
-                row1tmpl[1] = "□□□□□[s-text]";
-                row2tmpl = ["----[s-text]", "----[s-text]", "DISCONTINUITY[s-text]"];
+                row1tmpl[1] = "□□□□□";
+                row2tmpl = ["----", "----", "DISCONTINUITY"];
             }
-        }
-
-        if (this._isActive) {
-            row1tmpl[0] += "[magenta]";
-            row1tmpl[1] += "[magenta]";
         }
 
         return [row1tmpl, row2tmpl];

@@ -2451,6 +2451,9 @@ class FMCMainDisplay extends BaseAirliners {
         this.onNextPage = undefined;
         this.pageUpdate = undefined;
         this.refreshPageCallback = undefined;
+        this.onPrevPage = EmptyCallback.Void;
+        this.onNextPage = EmptyCallback.Void;
+        this.unregisterPeriodicPageRefresh();
     }
     generateHTMLLayout(parent) {
         while (parent.children.length > 0) {
@@ -2619,6 +2622,6 @@ FMCMainDisplay.approachTypes = [
     "MLS",
     "ILS"
 ];
-FMCMainDisplay.clrValue = " CLR ";
+FMCMainDisplay.clrValue = "DELETE";
 FMCMainDisplay._AvailableKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 //# sourceMappingURL=FMCMainDisplay.js.map

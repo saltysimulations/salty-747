@@ -65,6 +65,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
         this._pilotWaypoints = undefined;
+        this._currentVerticalAutopilot = undefined;
+        this._vnav = undefined;
+        this._lnav = undefined;
 
         /** @type {CJ4_FMC_MessageReceiver} */
         this._fmcMsgReceiver = new CJ4_FMC_MessageReceiver();
@@ -182,7 +185,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             FMCRoutePage.ShowPage1(this);
         };
         this.onDepArr = () => {
-            B747_8_FMC_DepArrIndexPage.ShowPage1(this);
+            B747_8_FMC_DepArrIndexPage.ShowIndexPage(this);
         };
         this.onRad = () => {
             B747_8_FMC_NavRadioPage.ShowPage(this);
@@ -325,7 +328,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (value === "") {
             this.setFmsMsg();
         } else {
-            this._templateRenderer.setMsg(value);
+            this.showErrorMessage(value);
         }
     }
 
@@ -338,7 +341,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (value !== this._msg) {
             this._msg = value;
             if (this.userMsg === "") {
-                this._templateRenderer.setMsg(value);
+                this.showErrorMessage(value);
             }
         }
     }
@@ -900,6 +903,47 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         return this.getClimbThrustN1(temperature, altitude) - this.getThrustCLBMode() * 8.6;
     }
+    //function added to set departure enroute transition index
+    setDepartureEnrouteTransitionIndex(departureEnrouteTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            this.flightPlanManager.setDepartureEnRouteTransitionIndex(departureEnrouteTransitionIndex, () => {
+                callback(true);
+            });
+        });
+    }
+    //function added to set arrival runway transition index
+    setArrivalRunwayTransitionIndex(arrivalRunwayTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            this.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayTransitionIndex, () => {
+                callback(true);
+            });
+        });
+    }
+    //function added to set arrival and runway transition
+    setArrivalAndRunwayIndex(arrivalIndex, enrouteTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            let landingRunway = this.vfrLandingRunway;
+            if (landingRunway === undefined) {
+                landingRunway = this.flightPlanManager.getApproachRunway();
+            }
+            this.flightPlanManager.setArrivalProcIndex(arrivalIndex, () => {
+                this.flightPlanManager.setArrivalEnRouteTransitionIndex(enrouteTransitionIndex, () => {
+                    if (landingRunway) {
+                        const arrival = this.flightPlanManager.getArrival();
+                        const arrivalRunwayIndex = arrival.runwayTransitions.findIndex(t => {
+                            return t.name.indexOf(landingRunway.designation) != -1;
+                        });
+                        if (arrivalRunwayIndex >= -1) {
+                            return this.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayIndex, () => {
+                                return callback(true);
+                            });
+                        }
+                    }
+                    return callback(true);
+                });
+            });
+        });
+    }
     updateAutopilot() {
         let now = performance.now();
         let dt = now - this._lastUpdateAPTime;
@@ -929,6 +973,44 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let n1 = this.getThrustTakeOffLimit() / 100;
                 SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
             }
+            if (!this._navModeSelector) {
+                this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
+            }
+            //RUN VNAV ALWAYS
+            if (this._vnav === undefined) {
+                this._vnav = new WT_BaseVnav(this.flightPlanManager, this);
+                this._vnav.activate();
+            } else {
+                try {
+                    this._vnav.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            //RUN LNAV ALWAYS
+            if (this._lnav === undefined) {
+                this._lnav = new LNavDirector(this.flightPlanManager, this._navModeSelector);
+            } else {
+                try {
+                    this._lnav.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            //RUN VERTICAL AP ALWAYS
+            if (this._currentVerticalAutopilot === undefined) {
+                this._currentVerticalAutopilot = new WT_VerticalAutopilot(this._vnav, this._navModeSelector);
+                this._currentVerticalAutopilot.activate();
+            } else {
+                try {
+                    this._currentVerticalAutopilot.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
             let vRef = 0;
             if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_DESCENT) {
                 vRef = 1.3 * Simplane.getStallSpeed();

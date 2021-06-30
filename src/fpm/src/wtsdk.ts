@@ -19,5 +19,6 @@ export * from "./cj4/fmc/CJ4_FMC_MessageReceiver";
 
 
 export * from "./cj4/fmc/CJ4_FMC_PilotWaypointParser";
+export * from "./cj4/CJ4_MapSymbols";
 
 export * from "./utils/SimVarCache";
