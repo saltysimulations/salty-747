@@ -144,7 +144,7 @@ class B747_8_FMC_LegsPage {
         this._lsk6Field = "";
         if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
             this._fmc.fpHasChanged = true;
-            this._lsk6Field = "<CANCEL MOD";
+            this._lsk6Field = "<ERASE";
         }
         this._rsk6Field = "RTE DATA>";
         let isMapModePlan = SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") === 3;
@@ -556,7 +556,7 @@ class B747_8_FMC_LegsPage {
 
             if (this._isAddingHold) {
                 this.addHold();
-            } else if (this._lsk6Field == "<CANCEL MOD") {
+            } else if (this._lsk6Field == "<ERASE") {
                 if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
                     this._fmc.fpHasChanged = false;
                     this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.NONE;
@@ -606,20 +606,22 @@ class B747_8_FMC_LegsPage {
 
         this._fmc.onPrevPage = () => {
             if (this._currentPage > 1) {
-                this.updateStep(true);
                 this._currentPage--;
+                this.updateStep(true);
                 this.update(true);
             } else {
+                this.updateStep(true);
                 this._currentPage = this._pageCount;
                 this.update(true);
             }
         };
         this._fmc.onNextPage = () => {
             if (this._currentPage < this._pageCount) {
-                this.updateStep(true);
                 this._currentPage++;
+                this.updateStep(true);
                 this.update(true);
             } else {
+                this.updateStep(true);
                 this._currentPage = 1;
                 this.update(true);
             }
@@ -631,6 +633,7 @@ class B747_8_FMC_LegsPage {
         }
         const offset = Math.floor((this._currentPage - 1) * 5);
         let activeWaypointIndex = this._fmc.flightPlanManager.getActiveWaypointIndex();
+        console.log("Index " + activeWaypointIndex + " Step " + this.step + " Offset " + offset);
         SimVar.SetSimVarValue("L:SALTY_PLAN_VIEW_WAYPOINT", "number", activeWaypointIndex + this.step + offset);
     }
     addHold() {
