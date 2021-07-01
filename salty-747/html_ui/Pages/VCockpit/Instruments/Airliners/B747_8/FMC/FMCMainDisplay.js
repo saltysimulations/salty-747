@@ -1930,46 +1930,41 @@ class FMCMainDisplay extends BaseAirliners {
             }
         }
     }
+    //Overwrite of FMCMainDisplay to disable always settings nav hold to GPS mode
     updateRadioNavState() {
         if (this.isPrimary) {
-            let radioNavOn = this.isRadioNavActive();
+            const radioNavOn = this.isRadioNavActive();
             if (radioNavOn != this._radioNavOn) {
                 this._radioNavOn = radioNavOn;
-                if (!radioNavOn)
+                if (!radioNavOn) {
                     this.initRadioNav(false);
-                if (this.refreshPageCallback)
+                }
+                if (this.refreshPageCallback) {
                     this.refreshPageCallback();
+                }
             }
             let apNavIndex = 1;
-            let gpsDriven = true;
-            if (this.canSwitchToNav()) {
-                let navid = 0;
-                let ils = this.radioNav.getBestILSBeacon();
-                if (ils.id > 0) {
-                    navid = ils.id;
-                }
-                else {
-                    let vor = this.radioNav.getBestVORBeacon();
-                    if (vor.id > 0) {
-                        navid = vor.id;
+            const apprHold = SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "Bool");
+            if (apprHold) {
+                if (this.canSwitchToNav()) {
+                    let navid = 0;
+                    const ils = this.radioNav.getBestILSBeacon();
+                    if (ils.id > 0) {
+                        navid = ils.id;
+                    } else {
+                        const vor = this.radioNav.getBestVORBeacon();
+                        if (vor.id > 0) {
+                            navid = vor.id;
+                        }
                     }
-                }
-                if (navid > 0) {
-                    apNavIndex = navid;
-                    let hasFlightplan = Simplane.getAutopilotGPSActive();
-                    let apprCaptured = Simplane.getAutoPilotAPPRCaptured();
-                    if (apprCaptured || !hasFlightplan) {
-                        gpsDriven = false;
+                    if (navid > 0) {
+                        apNavIndex = navid;
                     }
                 }
             }
             if (apNavIndex != this._apNavIndex) {
-                Simplane.setAutoPilotSelectedNav(apNavIndex);
+                SimVar.SetSimVarValue("K:AP_NAV_SELECT_SET", "number", apNavIndex);
                 this._apNavIndex = apNavIndex;
-            }
-            let curState = SimVar.GetSimVarValue("GPS DRIVES NAV1", "Bool");
-            if (curState != gpsDriven) {
-                SimVar.SetSimVarValue("K:TOGGLE_GPS_DRIVES_NAV1", "Bool", 0);
             }
         }
     }

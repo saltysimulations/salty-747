@@ -90,6 +90,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         //Timer for periodic page refresh
         this._pageRefreshTimer = null;
 
+        // load persisted heading
+        const hdg = WTDataStore.get("AP_HEADING", 0);
+        Coherent.call("HEADING_BUG_SET", 1, hdg);
+
         /* SALTY 747 VARS */
         this._TORwyWindHdg = "";
         this._TORwyWindSpd = "";
@@ -252,6 +256,14 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._pilotWaypoints = new CJ4_FMC_PilotWaypoint_Manager(this);
         this._pilotWaypoints.activate();
     }
+    onInteractionEvent(args) {
+        super.onInteractionEvent(args);
+
+        const apPrefix = "B747_8_AP_";
+        if (args[0].startsWith(apPrefix)) {
+            this._navModeSelector.onNavChangedEvent(args[0].substring(apPrefix.length));
+        }
+    }
     onPowerOn() {
         super.onPowerOn();
         this.deactivateLNAV();
@@ -260,13 +272,18 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
-        if (this.refreshPageCallback && this._lastActiveWP != this.currFlightPlanManager.getActiveWaypointIndex() || this._wasApproachActive != this.currFlightPlanManager.isActiveApproach()) {
-            this._lastActiveWP = this.currFlightPlanManager.getActiveWaypointIndex();
-            this._wasApproachActive = this.currFlightPlanManager.isActiveApproach();
-            this.refreshPageCallback();
-        }
-        this.updateAutopilot();
+
+        const now = performance.now();
+        const dt = now - this._lastUpdateTime;
+        this._lastUpdateTime = now;
+
+        this.updateAutopilot(dt);
+        this.updateNearestAirports(dt);
         this.updateAltitudeAlerting();
+        this._frameUpdates++;
+        if (this._frameUpdates > 64000) {
+            this._frameUpdates = 0;
+        }
         if (this.timer == 1000) {
             this.updateVREF25();
             this.updateVREF30();
@@ -977,10 +994,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             });
         });
     }
-    updateAutopilot() {
-        let now = performance.now();
-        let dt = now - this._lastUpdateAPTime;
-        this._lastUpdateAPTime = now;
+    updateAutopilot(dt) {
         if (isFinite(dt)) {
             this.updateAutopilotCooldown -= dt;
         }
@@ -989,19 +1003,20 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.updateAutopilotCooldown = -1;
         }
         if (this.updateAutopilotCooldown < 0) {
-            let currentApMasterStatus = SimVar.GetSimVarValue("AUTOPILOT MASTER", "boolean");
+            const currentApMasterStatus = SimVar.GetSimVarValue("AUTOPILOT MASTER", "boolean");
             if (currentApMasterStatus != this._apMasterStatus) {
                 this._apMasterStatus = currentApMasterStatus;
-                this._forceNextAltitudeUpdate = true;
             }
             this._apHasDeactivated = !currentApMasterStatus && this._previousApMasterStatus;
             this._previousApMasterStatus = currentApMasterStatus;
+
             let currentAThrMasterStatus = Simplane.getAutoPilotThrottleActive(1);
             if (currentAThrMasterStatus != this._aThrStatus) {
                 this._aThrStatus = currentAThrMasterStatus;
             }
             this._aThrHasActivated = currentAThrMasterStatus && !this._previousAThrStatus;
             this._previousAThrStatus = currentAThrMasterStatus;
+
             if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let n1 = this.getThrustTakeOffLimit() / 100;
                 SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
@@ -1009,6 +1024,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (!this._navModeSelector) {
                 this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
             }
+
+            if (!this._navToNavTransfer) {
+                this._navToNavTransfer = new NavToNavTransfer(this.flightPlanManager, this._navRadioSystem, this._navModeSelector);
+            }
+
+            this._navToNavTransfer.update(dt);
+
             //RUN VNAV ALWAYS
             if (this._vnav === undefined) {
                 this._vnav = new WT_BaseVnav(this.flightPlanManager, this);
@@ -1032,6 +1054,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
 
+            this._navModeSelector.generateInputDataEvents();
+            this._navModeSelector.processEvents();
+
             //RUN VERTICAL AP ALWAYS
             if (this._currentVerticalAutopilot === undefined) {
                 this._currentVerticalAutopilot = new WT_VerticalAutopilot(this._vnav, this._navModeSelector);
@@ -1044,271 +1069,97 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
 
-            let vRef = 0;
-            if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_DESCENT) {
-                vRef = 1.3 * Simplane.getStallSpeed();
-            }
-            if (this._apHasDeactivated) {
-                this.deactivateVNAV();
-                if (!this.getIsSPDActive()) {
-                    this.activateSPD();
+            /* NOT USED YET
+            // RUN SPEED RESTRICTION OBSERVER
+            if (this._speedObs === undefined) {
+                this._speedObs = new CJ4_SpeedObserver(this.flightPlanManager);
+            } else {
+                try {
+                    this._speedObs.update();
+                } catch (error) {
+                    console.error(error);
                 }
             }
-            if (this._aThrHasActivated) {
-                if (this.getIsSPDActive()) {
-                    this.activateSPD();
-                }
-            }
-            if (this._pendingLNAVActivation) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 50) {
-                    this._pendingLNAVActivation = false;
-                    this.doActivateLNAV();
-                }
-            }
-            if (this._isLNAVActive) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 50) {
-                    this._pendingLNAVActivation = false;
-                    this.doActivateLNAV();
-                }
-            }
-            if (this._pendingVNAVActivation) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 400) {
-                    this._pendingVNAVActivation = false;
-                    this.doActivateVNAV();
-                }
-            }
-            if (!Simplane.getAutoPilotAltitudeLockActive() && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") !== 1) {
-                let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
-            }
-            if (this.getIsFLCHActive() && !Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
-                if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    this.activateAltitudeHold(true);
-                }
-            }
-            if (this.getIsVSpeedActive()) {
-                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
-                let altitude = Simplane.getAltitude();
-                let deltaAltitude = Math.abs(targetAltitude - altitude);
-                if (deltaAltitude < 150) {
-                    this.activateAltitudeHold(true);
-                }
-            }
-            if (this._pendingHeadingSelActivation) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 400) {
-                    this._pendingHeadingSelActivation = false;
-                    this.doActivateHeadingSel();
-                }
-            }
-            if (this._pendingSPDActivation) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 400) {
-                    this._pendingSPDActivation = false;
-                    this.doActivateSPD();
-                }
-            }
-            if (Simplane.getAutoPilotGlideslopeActive()) {
-                if (this.getIsVNAVActive()) {
-                    this.deactivateVNAV();
-                }
-                if (this.getIsVSpeedActive()) {
-                    this.deactivateVSpeed();
-                }
-                if (this.getIsAltitudeHoldActive()) {
-                    this.deactivateAltitudeHold();
-                }
-                if (!this.getIsSPDActive()) {
-                    this.activateSPD();
-                }
-            }
+            */
+
             SimVar.SetSimVarValue("SIMVAR_AUTOPILOT_AIRSPEED_MIN_CALCULATED", "knots", Simplane.getStallProtectionMinSpeed());
-            SimVar.SetSimVarValue("SIMVAR_AUTOPILOT_AIRSPEED_MAX_CALCULATED", "knots", Simplane.getMaxSpeed(Aircraft.B747_8));
-            let currentAltitude = Simplane.getAltitude();
-            let groundSpeed = Simplane.getGroundSpeed();
-            let apTargetAltitude = Simplane.getAutoPilotAltitudeLockValue("feet");
-            let planeHeading = Simplane.getHeadingMagnetic();
-            let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
-            if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_CLIMB) {
-                let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
-                if (activeWaypoint != this._activeWaypoint) {
-                    console.log("Update FMC Active Waypoint");
-                    if (this._activeWaypoint) {
-                        this._activeWaypoint.altitudeWasReached = Simplane.getAltitudeAboveGround();
-                        this._activeWaypoint.timeWasReached = SimVar.GetGlobalVarValue("LOCAL TIME", "seconds");
-                        this._activeWaypoint.fuelWasReached = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms") / 1000;
-                    }
-                    this._activeWaypoint = activeWaypoint;
-                }
+            SimVar.SetSimVarValue("SIMVAR_AUTOPILOT_AIRSPEED_MAX_CALCULATED", "knots", Simplane.getMaxSpeed(Aircraft.CJ4));
+
+            //TAKEOFF MODE HEADING SET (constant update to current heading when on takeoff roll)
+            if (this._navModeSelector.currentLateralActiveState === LateralNavModeState.TO && Simplane.getIsGrounded()) {
+                Coherent.call("HEADING_BUG_SET", 2, SimVar.GetSimVarValue('PLANE HEADING DEGREES MAGNETIC', 'Degrees'));
             }
-            if (this.getIsVNAVActive()) {
-                let prevWaypoint = this.flightPlanManager.getPreviousActiveWaypoint();
-                let nextWaypoint = this.flightPlanManager.getActiveWaypoint();
-                if (nextWaypoint && (nextWaypoint.legAltitudeDescription === 3 || nextWaypoint.legAltitudeDescription === 4)) {
-                    let targetAltitude = nextWaypoint.legAltitude1;
-                    if (nextWaypoint.legAltitudeDescription === 4) {
-                        targetAltitude = Math.max(nextWaypoint.legAltitude1, nextWaypoint.legAltitude2);
-                    }
-                    let showTopOfDescent = false;
-                    let topOfDescentLat;
-                    let topOfDescentLong;
-                    this._hasReachedTopOfDescent = true;
-                    if (currentAltitude > targetAltitude + 40) {
-                        let vSpeed = 3000;
-                        let descentDuration = Math.abs(targetAltitude - currentAltitude) / vSpeed / 60;
-                        let descentDistance = descentDuration * groundSpeed;
-                        let distanceToTarget = Avionics.Utils.computeGreatCircleDistance(prevWaypoint.infos.coordinates, nextWaypoint.infos.coordinates);
-                        showTopOfDescent = true;
-                        let f = 1 - descentDistance / distanceToTarget;
-                        topOfDescentLat = Avionics.Utils.lerpAngle(planeCoordinates.lat, nextWaypoint.infos.lat, f);
-                        topOfDescentLong = Avionics.Utils.lerpAngle(planeCoordinates.long, nextWaypoint.infos.long, f);
-                        if (distanceToTarget + 1 > descentDistance) {
-                            this._hasReachedTopOfDescent = false;
-                        }
-                    }
-                    if (showTopOfDescent) {
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 1);
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_LAT_TOP_DSCNT", "number", topOfDescentLat);
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_LONG_TOP_DSCNT", "number", topOfDescentLong);
-                    }
-                    else {
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 0);
-                    }
-                    let selectedAltitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
-                    if (!this.flightPlanManager.getIsDirectTo() &&
-                        isFinite(nextWaypoint.legAltitude1) &&
-                        nextWaypoint.legAltitude1 < 20000 &&
-                        nextWaypoint.legAltitude1 > selectedAltitude &&
-                        Simplane.getAltitude() > nextWaypoint.legAltitude1 - 200) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
-                    }
-                    else {
-                        let altitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
-                        if (isFinite(altitude)) {
-                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, this.cruiseFlightLevel * 100, this._forceNextAltitudeUpdate);
-                            this._forceNextAltitudeUpdate = false;
-                            SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
-                        }
-                    }
-                }
-                else {
-                    let vertSpeed = Simplane.getVerticalSpeed();
-                    let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-                    let targetAlt = mcpAlt;
-                    if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_CRUISE){
-                        if (vertSpeed > 50) {
-                            targetAlt = Math.min(this.cruiseFlightLevel * 100, mcpAlt);
-                        }
-                        if (vertSpeed < 50) {
-                            targetAlt = Math.max(this.cruiseFlightLevel * 100, mcpAlt);
-                        }
-                    }
-                    if (isFinite(targetAlt) && Simplane.getAutoPilotFLCActive()) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, targetAlt, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
-                    }
-                }
-                //Triggers correct Autothrottle mode SPD when capturing in VNAV
-                if (Simplane.getAutoPilotAltitudeLockActive() && Simplane.getAutoPilotThrottleArmed() && !this.getIsSPDActive()) {
-                    this.activateSPD();
-                }
-            }
-            else if (!this.getIsFLCHActive() && this.getIsSPDActive()) {
-                this.setAPSpeedHoldMode();
-            }
-            if (this.getIsVNAVArmed() && !this.getIsVNAVActive()) {
-                if (Simplane.getAutoPilotThrottleArmed()) {
-                    if (!this._hasSwitchedToHoldOnTakeOff) {
-                        let speed = Simplane.getIndicatedSpeed();
-                        if (speed > 65) {
-                            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
-                            this._hasSwitchedToHoldOnTakeOff = true;
-                        }
-                    }
-                }
-            }
-            if (this._isHeadingHoldActive) {
-                Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
-            }
-            if (!this.flightPlanManager.isActiveApproach() && this.currentFlightPhase != FlightPhase.FLIGHT_PHASE_APPROACH) {
-                if (this.flightPlanManager.getWaypointsCount() > 3) {
-                    let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
-                    let nextActiveWaypoint = this.flightPlanManager.getNextActiveWaypoint();
-                    if (activeWaypoint && nextActiveWaypoint) {
-                        let pathAngle = nextActiveWaypoint.bearingInFP - activeWaypoint.bearingInFP;
-                        while (pathAngle < 180) {
-                            pathAngle += 360;
-                        }
-                        while (pathAngle > 180) {
-                            pathAngle -= 360;
-                        }
-                        let absPathAngle = 180 - Math.abs(pathAngle);
-                        let airspeed = Simplane.getIndicatedSpeed();
-                        if (airspeed < 400) {
-                            let turnRadius = airspeed * 360 / (1091 * 0.36 / airspeed) / 3600 / 2 / Math.PI;
-                            let activateDistance = Math.pow(90 / absPathAngle, 1.6) * turnRadius * 1.2;
-                            let distanceToActive = Avionics.Utils.computeGreatCircleDistance(planeCoordinates, activeWaypoint.infos.coordinates);
-                            if (distanceToActive < activateDistance) {
-                                this.flightPlanManager.setActiveWaypointIndex(this.flightPlanManager.getActiveWaypointIndex() + 1);
-                            }
-                        }
-                    }
-                }
-            }
-            if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
-                if (this.getIsVNAVActive()) {
-                    let speed = this.getTakeOffManagedSpeed();
-                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                    //Sets CLB Thrust when passing thrust reduction altitude
-                    let alt = Simplane.getAltitude();
-                    let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
-                    let n1 = 100;
-                    if (alt > thrRedAlt) {
-                        n1 = this.getThrustClimbLimit() / 100;
-                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
-                        this.setThrottleMode(ThrottleMode.CLIMB);
-                    }
-                }
-            }
-            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
-                if (this.getIsVNAVActive()) {
-                    let speed = this.getClbManagedSpeed();
-                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                }
-            }
-            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
-                if (this.getIsVNAVActive()) {
-                    let speed = this.getCrzManagedSpeed();
-                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                }
-            }
-            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_DESCENT) {
-                if (this.getIsVNAVActive()) {
-                    let speed = this.getDesManagedSpeed();
-                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                }
-            }
-            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
-                if (this.getIsVNAVActive()) {
-                    let speed = this.getDesManagedSpeed();
-                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
-                }
-                if (Simplane.getAutoPilotThrottleActive()) {
-                    let altitude = Simplane.getAltitudeAboveGround();
-                    if (altitude < 25) {
-                        if (Simplane.getEngineThrottleMode(0) != ThrottleMode.IDLE) {
-                            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.IDLE);
-                        }
-                    }
-                }
+
+            //CHECK FOR ALT set >45000
+            if (SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR:1", "feet") > 45000) {
+                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, 45000, true);
             }
             this.updateAutopilotCooldown = this._apCooldown;
+        }
+    }
+    /**
+    * NOT USED YET
+    * Method to maintain a nearest airport list - this method is called in the update loop and calls the CJ4_FMC_Nearest class.
+    */
+     updateNearestAirports(dt) {
+        return;
+        /*
+        if (this._nearest === undefined) {
+            this._nearest = new CJ4_FMC_Nearest(this);
+            this._nearest.activate();
+            this._nearest.nearestCooldown = this._nearest._nearestCooldownTimer;
+            this._nearest._ranGetRunways = false;
+        }
+        if (isFinite(dt)) {
+            this._nearest.nearestCooldown -= dt;
+        }
+        if (this._nearest.nearestCooldown < 0) {
+            this._nearest.update();
+            this._nearest.nearestCooldown = this._nearest._nearestCooldownTimer;
+            this._nearest._ranGetRunways = false;
+        } else if (this._nearest.nearestCooldown < 24500 && !this._nearest._ranGetRunways) {
+            this._nearest.getRunways();
+            this._nearest._ranGetRunways = true;
+        }
+        */
+    }
+    //add new method to find correct runway designation (with leading 0)
+    getRunwayDesignation(selectedRunway) {
+        if (selectedRunway) {
+            const selectedRunwayDesignation = new String(selectedRunway.designation);
+            const selectedRunwayMod = new String(selectedRunwayDesignation.slice(-1));
+            if (selectedRunwayMod == "L" || selectedRunwayMod == "C" || selectedRunwayMod == "R") {
+                if (selectedRunwayDesignation.length == 2) {
+                    this.selectedRunwayOutput = "0" + selectedRunwayDesignation;
+                } else {
+                    this.selectedRunwayOutput = selectedRunwayDesignation;
+                }
+            } else {
+                if (selectedRunwayDesignation.length == 2) {
+                    this.selectedRunwayOutput = selectedRunwayDesignation;
+                } else {
+                    this.selectedRunwayOutput = "0" + selectedRunwayDesignation;
+                }
+            }
+        }
+        return this.selectedRunwayOutput;
+    }
+    //end of new method to find runway designation
+
+    // Copy airway selections from temporary to active flightplan
+    copyAirwaySelections() {
+        const temporaryFPWaypoints = this.flightPlanManager.getWaypoints(1);
+        const activeFPWaypoints = this.flightPlanManager.getWaypoints(0);
+        for (let i = 0; i < activeFPWaypoints.length; i++) {
+            if (activeFPWaypoints[i].infos && temporaryFPWaypoints[i] && activeFPWaypoints[i].icao === temporaryFPWaypoints[i].icao && temporaryFPWaypoints[i].infos) {
+                activeFPWaypoints[i].infos.airwayIn = temporaryFPWaypoints[i].infos.airwayIn;
+                activeFPWaypoints[i].infos.airwayOut = temporaryFPWaypoints[i].infos.airwayOut;
+            }
+        }
+    }
+    updatePersistentHeading() {
+        if (this._frameUpdates % 500 == 499) {
+            WTDataStore.set("AP_HEADING", SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR:1", "degree"));
         }
     }
     updateAltitudeAlerting() {
