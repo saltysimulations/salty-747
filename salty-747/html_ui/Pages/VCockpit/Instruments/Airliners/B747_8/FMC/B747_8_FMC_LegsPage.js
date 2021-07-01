@@ -50,6 +50,14 @@ class B747_8_FMC_LegsPage {
         if (this._isDirty || forceUpdate) {
             this.invalidate();
         }
+        //Check if plan mode has been selected and refresh if needed
+        this.isMapModePlan = SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") === 3;
+        if (this.isMapModePlan && this._rsk6Field == "RTE DATA>") {
+            this.invalidate();
+        }
+        else if (!this.isMapModePlan && this._rsk6Field == "STEP>") {
+            this.invalidate();
+        }
         // register refresh and bind to update which will only render on changes
         this._fmc.registerPeriodicPageRefresh(() => {
             this.update();
@@ -99,9 +107,9 @@ class B747_8_FMC_LegsPage {
                 let fpaText = "  ";
 
                 if (waypoint.isMissedApproachStart) {
-                    fpaText = ' MISSED APPR[white]';
+                    fpaText = ' MISSED APPR';
                 } else if (waypointFPA) {
-                    fpaText = waypointFPA > 0 ? "  " + waypointFPA.toFixed(1) + "°[green]" : "";
+                    fpaText = waypointFPA > 0 ? "  " + waypointFPA.toFixed(1) + "°" : "";
                 }
 
                 // format distance
@@ -140,15 +148,13 @@ class B747_8_FMC_LegsPage {
     }
 
     render() {
-
         this._lsk6Field = "";
         if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
             this._fmc.fpHasChanged = true;
             this._lsk6Field = "<ERASE";
         }
         this._rsk6Field = "RTE DATA>";
-        let isMapModePlan = SimVar.GetSimVarValue("L:B747_MAP_MODE", "number") === 3;
-        if (isMapModePlan) {
+        if (this.isMapModePlan) {
             this._rsk6Field = "STEP>";
             if (this._rows[2 * this.step + 1][0] != "") {
                 if (!this._rows[2 * this.step + 1][1]) {
@@ -172,7 +178,7 @@ class B747_8_FMC_LegsPage {
         this._fmc.setTemplate([
             [modStr + " RTE 1 LEGS", this._currentPage, + Math.max(1, this._pageCount)],
             ...this._rows,
-            [`${this._isAddingHold ? '---------HOLD AT--------' : holdExiting ? '-------EXIT ARMED-------' : '------------------------'}`],
+            [`${this._isAddingHold ? '-----------HOLD AT----------' : holdExiting ? '---------EXIT ARMED---------' : '__FMCSEPARATOR'}`],
             [`${this._isAddingHold ? '□□□□□' : holdExiting ? '<CANCEL EXIT' : holdActive ? '<EXIT HOLD' : this._lsk6Field}`, this._rsk6Field]
         ]);
     }
@@ -263,18 +269,16 @@ class B747_8_FMC_LegsPage {
 
                 const value = this._fmc.inOut;
                 let selectedWpIndex = waypoint.index;
+                this.step = 0;
 
                 // Mode evaluation
                 if (value == "") {
                     this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.NONE;
                 } else if (value === FMCMainDisplay.clrValue) {
-                    this.step = 0;
                     this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.DELETE;
                 } else if (value.includes("/") && this._fmc.selectMode === B747_8_FMC_LegsPage.SELECT_MODE.EXISTING) { // looks like user waypoint, go to new
-                    this.step = 0;
                     this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.NEW;
                 } else if (value.length > 0 && this._fmc.selectMode !== B747_8_FMC_LegsPage.SELECT_MODE.EXISTING) { // scratchpad not empty, nothing selected, must be new wpt
-                    this.step = 0;
                     this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.NEW;
                 }
 
@@ -525,20 +529,36 @@ class B747_8_FMC_LegsPage {
     bindEvents() {
         this._fmc.onRightInput[5] = () => {
             const offset = Math.floor((this._currentPage - 1) * 5);
-            const waypoint = this._wayPointsToRender[this.step + 2 + offset];
-            if (!waypoint) {
-                return;
-            }
+            const nextWaypoint = this._wayPointsToRender[this.step + 1 + offset];
             if (this._rsk6Field == "STEP>") {
-                this.step ++;
+                this.disconsJumped = 0;
+                let disconWasJumped = false;
+                if (!nextWaypoint) {
+                    return;
+                }
+				for(let i = 0; i <= offset + this.step; i++){
+					if(this._wayPointsToRender[i] && this._wayPointsToRender[i].fix.icao === '$DISCO'){
+						this.disconsJumped++;
+					}
+				}
+
+
+                if (nextWaypoint.fix.icao == '$DISCO') {
+                    console.log("double step");
+                    this.step = this.step + 2;
+                    disconWasJumped = true;
+                }
+                else {
+                    this.step ++;
+                }
                 if (this.step > 4) {
                     this.step = 0;
                     if (this._currentPage < this._pageCount) {
                         this._currentPage ++;
                     }
-                    this.updateStep(true);
+                    this.updateStep(true, disconWasJumped);
                 }
-                this.updateStep();
+                this.updateStep(false, disconWasJumped);
                 this.update(true);
             }
         };
@@ -627,14 +647,18 @@ class B747_8_FMC_LegsPage {
             }
         };
     }
-    updateStep(forceZero) {
+    updateStep(forceZero, disconWasJumped) {
         if (forceZero) {
             this.step = 0;
         }
         const offset = Math.floor((this._currentPage - 1) * 5);
         let activeWaypointIndex = this._fmc.flightPlanManager.getActiveWaypointIndex();
-        console.log("Index " + activeWaypointIndex + " Step " + this.step + " Offset " + offset);
-        SimVar.SetSimVarValue("L:SALTY_PLAN_VIEW_WAYPOINT", "number", activeWaypointIndex + this.step + offset);
+        if (disconWasJumped) {
+            SimVar.SetSimVarValue("L:SALTY_PLAN_VIEW_WAYPOINT", "number", activeWaypointIndex + this.step + offset - this.disconsJumped - 1);
+        }
+        else {
+            SimVar.SetSimVarValue("L:SALTY_PLAN_VIEW_WAYPOINT", "number", activeWaypointIndex + this.step + offset - this.disconsJumped);
+        }
     }
     addHold() {
         /** @type {{waypoint: WayPoint, index: number}} */
