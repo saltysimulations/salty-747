@@ -223,106 +223,38 @@ var Boeing_FMA;
     Boeing_FMA.Column1Top = Column1Top;
     class Column2Top extends Annunciation {
         getActiveMode() {
-            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
-                return -1;
-            }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRActive()) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 1;
-                }
-                else {
-                    return 6;
-                }
-            }
-            if (ApproachStatus.isRolloutActive) {
-                return 7;
-            }
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number" ) === 0) {
-                return 8;
-            }
-            if (SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 1) {
-                return 5;
-            }
-            if (Simplane.getAutoPilotHeadingLockActive()) {
-                if (SimVar.GetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number") === 1) {
-                    return 2;
-                }
-                else {
-                    return 3;
-                }
-            }
-            if (Simplane.getAutoPilotActive()) {
-                if (Simplane.getAutoPilotHeadingLockActive()) {
-                    if (this.fma.aircraft == Aircraft.B747_8) {
-                        return 3;
-                    }
-                    else {
-                        return (Simplane.getAutoPilotTRKModeActive() ? 10 : 3);
-                    }
-                }
-                else {
-                    if (this.fma.aircraft == Aircraft.B747_8) {
-                        return 2;
-                    }
-                    else {
-                        return (Simplane.getAutoPilotTRKModeActive() ? 9 : 2);
-                    }
-                }
-            }
-            if (this.fma.aircraft == Aircraft.AS01B) {
-            }
-            if (this.fma.aircraft == Aircraft.B747_8) {
-            }
-            return -1;
+            let activeMode = SimVar.GetSimVarValue("L:SALTY_FMA_ACTIVE_ROLL", "Enum");
+            return activeMode;
         }
         getCurrentModeText() {
+            if(!Simplane.getAutoPilotFlightDirectorActive(1)){
+                return "";
+            }
             switch (this.currentMode) {
-                case 0: return "B/CRS";
-                case 1: return "FAC";
-                case 2: return "HDG HOLD";
-                case 3: return "HDG SEL";
-                case 4: return "HUD TO/GA";
-                case 5: return "LNAV";
-                case 6: return "LOC";
-                case 7: return "ROLLOUT";
-                case 8: return "TO/GA";
-                case 9: return "TRK HOLD";
-                case 10: return "TRK SEL";
-                case 11: return "ATT";
-                default: return "";
+                case 1: return "HDG HOLD";
+                case 2: return "HDG SEL";
+                case 3: return "TO";
+                case 4: return "GA";
+                case 5: return "NAV";
+                case 6: return "LNAV";
+                case 7: return "APPR";
             }
         }
     }
     Boeing_FMA.Column2Top = Column2Top;
     class Column2Middle extends Annunciation {
         getActiveMode() {
-            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
-                return -1;
-            }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRArm()) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 1;
-                }
-                else {
-                    return 3;
-                }
-            }
-            if (SimVar.GetSimVarValue("L:AP_LNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 0) {
-                return 2;
-            }
-            if (ApproachStatus.isRolloutArmed) {
-                return 4;
-            }
-            return -1;
+            let activeMode = SimVar.GetSimVarValue("L:SALTY_FMA_ARMED_ROLL", "Enum");
+            return activeMode;
         }
         getCurrentModeText() {
+            if(!Simplane.getAutoPilotFlightDirectorActive(1)){
+                return "";
+            }
             switch (this.currentMode) {
-                case 0: return "B/CRS";
-                case 1: return "FAC";
-                case 2: return "LNAV";
-                case 3: return "LOC";
-                case 4: return "ROLLOUT";
-                default: return "";
+                case 1: return "";
+                case 2: return "APPR";
+                case 3: return "LNAV";
             }
         }
     }
@@ -369,66 +301,28 @@ var Boeing_FMA;
     Boeing_FMA.Column2Bottom = Column2Bottom;
     class Column3Top extends Annunciation {
         getActiveMode() {
-            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
-                return -1;
-            }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive()) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 5;
-                }
-                else {
-                    return 4;
-                }
-            }
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number" ) === 0) {
-                return 6;
-            }
-            if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
-                if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    if (Simplane.getAutoPilotAltitudeLockValue("feet") !== SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number")) {
-                        return 9;
-                    }
-                    return 7;
-                }
-                return 8;
-            }
-            if (SimVar.GetSimVarValue("L:AP_FLCH_ACTIVE", "number") === 1) {
-                return 2;
-            }
-            if (SimVar.GetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number") === 1) {
-                return 0;
-            }
-            if (ApproachStatus.isFlareActive) {
-                return 1;
-            }
-            if (Simplane.getAutoPilotActive()) {
-                if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    return 0;
-                }
-                else if (Simplane.getAutoPilotVerticalSpeedHoldActive()) {
-                    if (this.fma.aircraft == Aircraft.B747_8) {
-                        return 10;
-                    }
-                    else {
-                        return (Simplane.getAutoPilotFPAModeActive() ? 3 : 10);
-                    }
-                }
-            }
-            return -1;
+            let activeMode = SimVar.GetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum");
+            return activeMode;
         }
         getCurrentModeText() {
+            if(!Simplane.getAutoPilotFlightDirectorActive(1)){
+                return "";
+            }
             switch (this.currentMode) {
-                case 0: return "ALT";
-                case 1: return "FLARE";
-                case 2: return "FLCH SPD";
-                case 3: return "FPA";
-                case 4: return "G/S";
-                case 5: return "G/P";
-                case 6: return "TO/GA";
-                case 7: return "VNAV PTH";
-                case 8: return "VNAV SPD";
-                case 9: return "VNAV ALT";
-                case 10: return "V/S";
+                case 1: return "TO";
+                case 2: return "GA";
+                case 3: return "PTCH";
+                case 4: return "FLCH SPD";
+                case 5: return "ALT";
+                case 6: return "VNAV ALT";
+                case 7: return "ALT";
+                case 8: return "VNAV ALT";
+                case 9: return "ALT";
+                case 10: return "ALT";
+                case 11: return "GS";
+                case 12: return "PATH";
+                case 13: return "GP";
+                case 14: return "V/S";
                 default: return "";
             }
         }
@@ -436,31 +330,28 @@ var Boeing_FMA;
     Boeing_FMA.Column3Top = Column3Top;
     class Column3Middle extends Annunciation {
         getActiveMode() {
-            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
-                return -1;
-            }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && !(Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive())) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 1;
-                }
-                else {
-                    return 2;
-                }
-            }
-            if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 0) {
-                return 3;
-            }
-            if (ApproachStatus.isFlareArmed) {
-                return 0;
-            }
-            return -1;
+            let activeMode = SimVar.GetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum");
+            return activeMode;
         }
         getCurrentModeText() {
+            if(!Simplane.getAutoPilotFlightDirectorActive(1)){
+                return "";
+            }
             switch (this.currentMode) {
-                case 0: return "FLARE";
-                case 1: return "G/P";
-                case 2: return "G/S";
-                case 3: return "VNAV";
+                case 1: return "TO";
+                case 2: return "GA";
+                case 3: return "PTCH";
+                case 4: return "FLCH SPD";
+                case 5: return "ALTCAP";
+                case 6: return "ALTVCAP";
+                case 7: return "ALTSCAP";
+                case 8: return "ALTV";
+                case 9: return "ALTS";
+                case 10: return "ALT";
+                case 11: return "GS";
+                case 12: return "PATH";
+                case 13: return "GP";
+                case 14: return "VS";
                 default: return "";
             }
         }

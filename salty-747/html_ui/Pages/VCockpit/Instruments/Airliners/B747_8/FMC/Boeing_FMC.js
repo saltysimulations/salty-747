@@ -103,19 +103,24 @@ class Boeing_FMC extends FMCMainDisplay {
         super.onEvent(_event);
         console.log("B747_8_FMC_MainDisplay onEvent " + _event);
         if (_event.indexOf("AP_LNAV") != -1) {
-            this._navModeSelector.onNavChangedEvent('LNAV_PRESSED');
+            this._navModeSelector.onNavChangedEvent('NAV_PRESSED');
         }
         else if (_event.indexOf("AP_VNAV") != -1) {
-            this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+            this.toggleVNAV();
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
             this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
+            this.setThrottleMode(ThrottleMode.AUTO);
         }
         else if (_event.indexOf("AP_HEADING_HOLD") != -1) {
-            this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
+            this.activateHeadingHold();
         }
         else if (_event.indexOf("AP_HEADING_SEL") != -1) {
-            this.activateHeadingSel();
+            if (this._isHeadingHoldActive = true) {
+                SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
+                this._isHeadingHoldActive = false;
+            }
+            this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
         }
         else if (_event.indexOf("AP_SPD") != -1) {
             if (SimVar.GetSimVarValue("AUTOPILOT THROTTLE ARM", "Bool")) {
@@ -461,7 +466,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
     }
     activateHeadingHold() {
-        this.deactivateLNAV();
         this._isHeadingHoldActive = true;
         if (!SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "Boolean")) {
             SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "Number", 1);
@@ -470,6 +474,7 @@ class Boeing_FMC extends FMCMainDisplay {
         this._headingHoldValue = Simplane.getHeadingMagnetic();
         SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
         Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
+        this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
     }
     deactivateHeadingHold() {
         this._isHeadingHoldActive = false;
