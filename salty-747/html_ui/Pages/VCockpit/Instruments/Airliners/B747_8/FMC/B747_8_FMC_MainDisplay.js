@@ -1418,6 +1418,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             case LateralNavModeState.APPR:
                 SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_ROLL", "Enum", 7);
                 break;
+            case LateralNavModeState.HDGHOLD:
+                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_ROLL", "Enum", 8);
+                break;
         }
         let armedRollMode = this._navModeSelector.currentLateralArmedState;
         switch (armedRollMode) {
@@ -1446,21 +1449,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 4);
                 break;
             case VerticalNavModeState.ALTCAP:
+            case VerticalNavModeState.ALTS:
+            case VerticalNavModeState.ALTSCAP:
+            case VerticalNavModeState.ALT:
                 SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 5);
                 break;
             case VerticalNavModeState.ALTVCAP:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 6);
-                break;
-            case VerticalNavModeState.ALTSCAP:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 7);
-                break;
             case VerticalNavModeState.ALTV:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 8);
-                break;
-            case VerticalNavModeState.ALTS:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 9);
-                break;
-            case VerticalNavModeState.ALT:
                 SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 10);
                 break;
             case VerticalNavModeState.GS:
@@ -1491,21 +1486,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 SimVar.SetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum", 4);
                 break;
             case VerticalNavModeState.ALTCAP:
+            case VerticalNavModeState.ALTS:
+            case VerticalNavModeState.ALTSCAP:
+            case VerticalNavModeState.ALT:
                 SimVar.SetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum", 5);
                 break;
             case VerticalNavModeState.ALTVCAP:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum", 6);
-                break;
-            case VerticalNavModeState.ALTSCAP:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum", 7);
-                break;
             case VerticalNavModeState.ALTV:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum", 8);
-                break;
-            case VerticalNavModeState.ALTS:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum", 9);
-                break;
-            case VerticalNavModeState.ALT:
                 SimVar.SetSimVarValue("L:SALTY_FMA_ARMED_PITCH", "Enum", 10);
                 break;
             case VerticalNavModeState.GS:

@@ -231,13 +231,14 @@ var Boeing_FMA;
                 return "";
             }
             switch (this.currentMode) {
-                case 1: return "HDG HOLD";
+                case 1: return "ROLL";
                 case 2: return "HDG SEL";
                 case 3: return "TO";
                 case 4: return "GA";
                 case 5: return "NAV";
                 case 6: return "LNAV";
                 case 7: return "APPR";
+                case 8: return "HDG HOLD";
             }
         }
     }
@@ -313,12 +314,12 @@ var Boeing_FMA;
                 case 2: return "GA";
                 case 3: return "PTCH";
                 case 4: return "FLCH SPD";
-                case 5: return "ALT";
-                case 6: return "VNAV ALT";
-                case 7: return "ALT";
-                case 8: return "VNAV ALT";
-                case 9: return "ALT";
-                case 10: return "ALT";
+                case 5:
+                case 6:
+                case 7:
+                case 8: return "ALT";
+                case 9:
+                case 10: return "VNAV ALT";
                 case 11: return "GS";
                 case 12: return "PATH";
                 case 13: return "GP";
@@ -342,16 +343,16 @@ var Boeing_FMA;
                 case 2: return "GA";
                 case 3: return "PTCH";
                 case 4: return "FLCH SPD";
-                case 5: return "ALTCAP";
-                case 6: return "ALTVCAP";
-                case 7: return "ALTSCAP";
-                case 8: return "ALTV";
-                case 9: return "ALTS";
-                case 10: return "ALT";
+                case 5:
+                case 6:
+                case 7:
+                case 8: return "ALT";
+                case 9:
+                case 10: return "VNAV ALT";
                 case 11: return "GS";
                 case 12: return "PATH";
                 case 13: return "GP";
-                case 14: return "VS";
+                case 14: return "V/S";
                 default: return "";
             }
         }

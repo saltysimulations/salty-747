@@ -113,7 +113,7 @@ class Boeing_FMC extends FMCMainDisplay {
             this.setThrottleMode(ThrottleMode.AUTO);
         }
         else if (_event.indexOf("AP_HEADING_HOLD") != -1) {
-            this.activateHeadingHold();
+            this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
         }
         else if (_event.indexOf("AP_HEADING_SEL") != -1) {
             if (this._isHeadingHoldActive = true) {
@@ -472,9 +472,9 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 1);
         this._headingHoldValue = Simplane.getHeadingMagnetic();
-        SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
-        Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
-        this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
+        SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 3);
+        Coherent.call("HEADING_BUG_SET", 3, this._headingHoldValue);
+        //this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
     }
     deactivateHeadingHold() {
         this._isHeadingHoldActive = false;
