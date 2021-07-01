@@ -804,6 +804,7 @@ class B747_8_FMC_LegsPage {
 
         // create page instance and init
         LegsPageInstance = new B747_8_FMC_LegsPage(fmc, isAddingHold);
+        LegsPageInstance.updateStep(true);
         LegsPageInstance.update();
     }
 

@@ -68,11 +68,24 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._currentVerticalAutopilot = undefined;
         this._vnav = undefined;
         this._lnav = undefined;
+        this._fpHasChanged = false;
+        this._activatingDirectTo = false;
+        this._activatingDirectToExisting = false;
+        this.vfrLandingRunway = undefined;
+        this.vfrRunwayExtension = undefined;
+        this.modVfrRunway = false;
+        this.deletedVfrLandingRunway = undefined;
+        this.selectedWaypoint = undefined;
+        this._currentVerticalAutopilot = undefined;
 
+        /** @type {CJ4_FMC_NavigationService} */
+        this._navigationService = new CJ4_FMC_NavigationService(this);
         /** @type {CJ4_FMC_MessageReceiver} */
         this._fmcMsgReceiver = new CJ4_FMC_MessageReceiver();
         MessageService.getInstance().registerReceiver(MESSAGE_TARGET.FMC, this._fmcMsgReceiver);
         /** @type {CJ4_PFD_MessageReceiver} */
+
+        this._navRadioSystem = new CJ4_NavRadioSystem();
 
         //Timer for periodic page refresh
         this._pageRefreshTimer = null;
@@ -148,18 +161,38 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
     }
     get templateID() { return "B747_8_FMC"; }
+
+    // Property for EXEC handling
+    get fpHasChanged() {
+        return this._fpHasChanged;
+    }
+    set fpHasChanged(value) {
+        this._fpHasChanged = value;
+    }
+
     connectedCallback() {
         super.connectedCallback();
-        RegisterViewListener("JS_LISTENER_KEYEVENT", () => {
-            console.log("JS_LISTENER_KEYEVENT registered.");
-            RegisterViewListener("JS_LISTENER_FACILITY", () => {
-                console.log("JS_LISTENER_FACILITY registered.");
-                this._registered = true;
+        this.radioNav.init(NavMode.TWO_SLOTS);
+        if (!this._registered) {
+            RegisterViewListener("JS_LISTENER_KEYEVENT", () => {
+                console.log("JS_LISTENER_KEYEVENT registered.");
+                RegisterViewListener("JS_LISTENER_FACILITY", () => {
+                    console.log("JS_LISTENER_FACILITY registered.");
+                    this._registered = true;
+                });
             });
-        });
+
+            this.addEventListener("FlightStart", async function () {
+                if (localStorage.length > 0) {
+                    localStorage.clear();
+                }
+            }.bind(this));
+        }
     }
     Init() {
         super.Init();
+        // Maybe this gets rid of slowdown on first fpln mod
+        this.flightPlanManager.copyCurrentFlightPlanInto(1);
         this.timer = 0;
         let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;

@@ -15,10 +15,12 @@ export * from "./messages/Message";
 export * from "./messages/MessageDefinition";
 
 export * from "./cj4/CJ4_MessageDefinitions";
-export * from "./cj4/fmc/CJ4_FMC_MessageReceiver";
-
-
-export * from "./cj4/fmc/CJ4_FMC_PilotWaypointParser";
 export * from "./cj4/CJ4_MapSymbols";
+export * from "./cj4/fmc/CJ4_FMC_MessageReceiver";
+export * from "./cj4/fmc/CJ4_FMC_Page";
+export * from "./cj4/fmc/CJ4_FMC_NavigationService";
+export * from "./cj4/fmc/CJ4_FMC_PilotWaypointParser";
+export * from "./cj4/fmc/navradio/CJ4_NavRadioSystem";
+export * from "./cj4/fmc/navradio/CJ4_NearestVORSearch";
 
 export * from "./utils/SimVarCache";
