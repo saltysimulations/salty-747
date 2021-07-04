@@ -3,6 +3,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         super(...arguments);
         this.activeSystem = "FMC";
         this._registered = false;
+        this.FMAtimer = 0;
         this._lastActiveWP = 0;
         this._wasApproachActive = false;
         this.selectedApproachFlap = NaN;
@@ -1395,6 +1396,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
     }
     updateFMA() {
+        if (this.FMAtimer == 10) {
+            console.log("VNAV ON: " + this._navModeSelector.isVNAVOn);
+            console.log("ACTIVE VERTICAL STATE: " + this._navModeSelector.currentVerticalActiveState);
+            console.log("ARMED ALTITUDE STATE: " + this._navModeSelector.currentArmedAltitudeState);
+            console.log("ARMED VNAV STATE: " + this._navModeSelector.currentArmedVnavState);
+            console.log("CURRENT CONSTRAINT: " + this._vnav._activeConstraint);
+            console.log("VNAV PATH STATUS: " + this._vnavPathStatus);
+            this.FMAtimer = 0;
+        }
+        this.FMAtimer ++;
         let activeRollMode = this._navModeSelector.currentLateralActiveState;
         switch (activeRollMode) {
             case LateralNavModeState.ROLL:
@@ -1435,41 +1446,56 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 break;
         }
         let activePitchMode = this._navModeSelector.currentVerticalActiveState;
-        switch (activePitchMode) {
-            case VerticalNavModeState.TO:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 1);
-                break;
-            case VerticalNavModeState.GA:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 2);
-                break;
-            case VerticalNavModeState.PTCH:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 3);
-                break;
-            case VerticalNavModeState.FLC:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 4);
-                break;
-            case VerticalNavModeState.ALTCAP:
-            case VerticalNavModeState.ALTS:
-            case VerticalNavModeState.ALTSCAP:
-            case VerticalNavModeState.ALT:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 5);
-                break;
-            case VerticalNavModeState.ALTVCAP:
-            case VerticalNavModeState.ALTV:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 10);
-                break;
-            case VerticalNavModeState.GS:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 11);
-                break;
-            case VerticalNavModeState.PATH:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 12);
-                break;
-            case VerticalNavModeState.GP:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 13);
-                break;
-            case VerticalNavModeState.VS:
-                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 14);
-                break;
+        if (SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "number") === 1) {
+            if (activePitchMode == VerticalNavModeState.ALTSCAP || activePitchMode == VerticalNavModeState.ALTS
+            || activePitchMode == VerticalNavModeState.ALTVCAP || activePitchMode == VerticalNavModeState.ALTV
+            || activePitchMode == VerticalNavModeState.ALT || activePitchMode == VerticalNavModeState.ALTCAP) {
+                if (this._currentVerticalAutopilot.managedAltitude !== SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number")) {
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 10);
+                }
+                else {
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 12);
+                }
+            }
+            else {
+                SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 15);
+            }
+        }
+        else {
+            switch (activePitchMode) {
+                case VerticalNavModeState.TO:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 1);
+                    break;
+                case VerticalNavModeState.GA:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 2);
+                    break;
+                case VerticalNavModeState.PTCH:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 3);
+                    break;
+                case VerticalNavModeState.FLC:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 4);
+                    break;
+                case VerticalNavModeState.ALTCAP:
+                case VerticalNavModeState.ALTS:
+                case VerticalNavModeState.ALTSCAP:
+                case VerticalNavModeState.ALT:
+                case VerticalNavModeState.ALTVCAP:
+                case VerticalNavModeState.ALTV:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 5);
+                    break;
+                case VerticalNavModeState.GS:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 11);
+                    break;
+                case VerticalNavModeState.PATH:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 12);
+                    break;
+                case VerticalNavModeState.GP:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 13);
+                    break;
+                case VerticalNavModeState.VS:
+                    SimVar.SetSimVarValue("L:SALTY_FMA_ACTIVE_PITCH", "Enum", 14);
+                    break;
+            }
         }
         let armedPitchMode = this._navModeSelector.currentVerticalArmedState;
         switch (armedPitchMode) {

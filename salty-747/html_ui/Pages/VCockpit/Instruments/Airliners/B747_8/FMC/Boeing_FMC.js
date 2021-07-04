@@ -106,7 +106,7 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('NAV_PRESSED');
         }
         else if (_event.indexOf("AP_VNAV") != -1) {
-            this.toggleVNAV();
+            this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
             this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
@@ -137,8 +137,8 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('VS_PRESSED');
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
-            if (this.getIsVNAVActive()) {
-                let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+            if (SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 1)) {
+                this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
                 let altitude = Simplane.getAltitude();
                 let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && displayedAltitude > this.cruiseFlightLevel * 100) {
@@ -162,8 +162,6 @@ class Boeing_FMC extends FMCMainDisplay {
                     else {
                         this.activateSPD();
                     }
-                    Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, mcpAlt, this._forceNextAltitudeUpdate);
-                    SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
                     this._forceNextAltitudeUpdate = false;
                 }
             }      

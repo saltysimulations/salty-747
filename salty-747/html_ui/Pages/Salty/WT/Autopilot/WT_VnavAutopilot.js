@@ -1318,8 +1318,8 @@ class WT_VerticalAutopilot {
 
     setPriorVerticalModeState() {
         if (this._priorVerticalModeState === undefined || this._priorVerticalModeState.mode === undefined) {
-            this.verticalMode = VerticalNavModeState.PTCH;
-            this._navModeSelector.engagePitch;
+            this.verticalMode = VerticalNavModeState.FLC;
+            this._navModeSelector.engageFlightLevelChange();
             return;
         } else {
             switch(this._priorVerticalModeState.mode) {
@@ -1334,7 +1334,7 @@ class WT_VerticalAutopilot {
                 case VerticalNavModeState.PTCH:
                 case VerticalNavModeState.PATH:
                     this.verticalMode = VerticalNavModeState.PTCH;
-                    this._navModeSelector.engagePitch();
+                    this._navModeSelector.engageFlightLevelChange();
                     break;
             }
         }

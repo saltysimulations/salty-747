@@ -591,6 +591,8 @@
     if (this.currentVerticalActiveState !== VerticalNavModeState.GP || this.currentVerticalActiveState !== VerticalNavModeState.GS) {
       this.isVNAVOn = !this.isVNAVOn;
       SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", this.isVNAVOn ? 1 : 0);
+      SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", this.isVNAVOn ? 1 : 0);
+      SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", this.isVNAVOn ? 1 : 0);
 
       if (!this.isVNAVOn) {
         if (this.currentVerticalActiveState === VerticalNavModeState.PATH) {

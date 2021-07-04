@@ -321,9 +321,10 @@ var Boeing_FMA;
                 case 9:
                 case 10: return "VNAV ALT";
                 case 11: return "GS";
-                case 12: return "PATH";
+                case 12: return "VNAV PTH";
                 case 13: return "GP";
                 case 14: return "V/S";
+                case 15: return "VNAV SPD";
                 default: return "";
             }
         }
