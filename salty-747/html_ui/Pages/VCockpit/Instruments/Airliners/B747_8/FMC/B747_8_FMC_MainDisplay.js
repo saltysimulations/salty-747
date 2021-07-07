@@ -177,7 +177,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
 
     connectedCallback() {
         super.connectedCallback();
-        this.radioNav.init(NavMode.TWO_SLOTS);
+        this.radioNav.init(NavMode.FOUR_SLOTS);
         if (!this._registered) {
             RegisterViewListener("JS_LISTENER_KEYEVENT", () => {
                 console.log("JS_LISTENER_KEYEVENT registered.");
@@ -1044,6 +1044,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     console.error(error);
                 }
             }
+            
+            //CHECK IF APPR IS ARMED
+            if (SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "bool") === 1 && this._navModeSelector.currentLateralActiveState !== LateralNavModeState.APPR) {
+                if (this._navModeSelector.currentLateralArmedState !== LateralNavModeState.APPR) {
+                    this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
+                }
+            } 
+            else if (SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "bool") === 0 && this._navModeSelector.currentLateralActiveState == LateralNavModeState.APPR) {
+                this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
+            }
 
             //RUN LNAV ALWAYS
             if (this._lnav === undefined) {
@@ -1059,13 +1069,15 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this._navModeSelector.generateInputDataEvents();
             this._navModeSelector.processEvents();
 
+            /* NOT USED YET
             //RUN VERTICAL AP ALWAYS
+            */
             if (this._currentVerticalAutopilot === undefined) {
                 this._currentVerticalAutopilot = new WT_VerticalAutopilot(this._vnav, this._navModeSelector);
                 this._currentVerticalAutopilot.activate();
             } else {
                 try {
-                    this._currentVerticalAutopilot.update();
+                    //this._currentVerticalAutopilot.update();
                 } catch (error) {
                     console.error(error);
                 }
@@ -1318,11 +1330,38 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                 }
             }
-            //TAKEOFF MODE HEADING SET (constant update to current heading when on takeoff roll)
-            if (this._navModeSelector.currentLateralActiveState === LateralNavModeState.TO && Simplane.getIsGrounded()) {
-                Coherent.call("HEADING_BUG_SET", 2, SimVar.GetSimVarValue('PLANE HEADING DEGREES MAGNETIC', 'Degrees'));
+            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
+                if (this.getIsVNAVActive()) {
+                    let speed = this.getClbManagedSpeed();
+                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
+                }
             }
-
+            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                if (this.getIsVNAVActive()) {
+                    let speed = this.getCrzManagedSpeed();
+                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
+                }
+            }
+            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_DESCENT) {
+                if (this.getIsVNAVActive()) {
+                    let speed = this.getDesManagedSpeed();
+                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
+                }
+            }
+            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
+                if (this.getIsVNAVActive()) {
+                    let speed = this.getDesManagedSpeed();
+                    this.setAPManagedSpeed(speed, Aircraft.B747_8);
+                }
+                if (Simplane.getAutoPilotThrottleActive()) {
+                    let altitude = Simplane.getAltitudeAboveGround();
+                    if (altitude < 25) {
+                        if (Simplane.getEngineThrottleMode(0) != ThrottleMode.IDLE) {
+                            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.IDLE);
+                        }
+                    }
+                }
+            }
             //CHECK FOR ALT set >45000
             if (SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR:1", "feet") > 45000) {
                 Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, 45000, true);

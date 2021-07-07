@@ -106,11 +106,10 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('NAV_PRESSED');
         }
         else if (_event.indexOf("AP_VNAV") != -1) {
-            this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+            this.toggleVNAV();
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
-            this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
-            this.setThrottleMode(ThrottleMode.AUTO);
+            this.toggleFLCH();
         }
         else if (_event.indexOf("AP_HEADING_HOLD") != -1) {
             this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
@@ -134,11 +133,11 @@ class Boeing_FMC extends FMCMainDisplay {
             this.toggleSpeedIntervention();
         }
         else if (_event.indexOf("AP_VSPEED") != -1) {
-            this._navModeSelector.onNavChangedEvent('VS_PRESSED');
+            this.toggleVSpeed();
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
-            if (SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 1)) {
-                this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
+            if (this.getIsVNAVActive()) {
+                let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
                 let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && displayedAltitude > this.cruiseFlightLevel * 100) {
@@ -148,7 +147,6 @@ class Boeing_FMC extends FMCMainDisplay {
                     this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
                 }
                 if (displayedAltitude == Math.round(altitude/100) * 100){
-
                 }
                 else if (!Simplane.getAutoPilotFLCActive()) {
                     if (displayedAltitude >= altitude + 2000) {
@@ -162,6 +160,8 @@ class Boeing_FMC extends FMCMainDisplay {
                     else {
                         this.activateSPD();
                     }
+                    Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, mcpAlt, this._forceNextAltitudeUpdate);
+                    SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
                     this._forceNextAltitudeUpdate = false;
                 }
             }      

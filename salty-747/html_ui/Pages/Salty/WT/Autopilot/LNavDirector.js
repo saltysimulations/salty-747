@@ -363,6 +363,7 @@ class LNavDirector {
       }
 
       if (Math.abs(xtk) < activationXtk) {
+        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 1);
         this.navModeSelector.queueEvent(NavModeEvent.LNAV_ACTIVE);
       }
     }

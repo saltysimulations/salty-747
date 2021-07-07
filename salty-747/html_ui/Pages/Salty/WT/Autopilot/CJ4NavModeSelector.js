@@ -814,6 +814,7 @@
         SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 1);
         this.currentLateralActiveState = LateralNavModeState.HDG;
         SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
+        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
         break;
       case LateralNavModeState.LNAV:
       case LateralNavModeState.TO:
@@ -826,6 +827,7 @@
         SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 1);
         this.currentLateralActiveState = LateralNavModeState.HDG;
         SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
+        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
         break;
       case LateralNavModeState.HDG:
       case LateralNavModeState.HDGHOLD:
@@ -860,6 +862,7 @@
         Coherent.call("HEADING_BUG_SET", 3, this._headingHoldValue);
         SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 1);
         SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
+        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
         this.currentLateralActiveState = LateralNavModeState.HDGHOLD;
         break;
       case LateralNavModeState.LNAV:
@@ -874,6 +877,7 @@
         Coherent.call("HEADING_BUG_SET", 3, this._headingHoldValue);
         SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 1);
         SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
+        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
         this.currentLateralActiveState = LateralNavModeState.HDGHOLD;
         break;
       case LateralNavModeState.HDGHOLD:
