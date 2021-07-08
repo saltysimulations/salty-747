@@ -593,12 +593,16 @@ class MapInstrument extends ISvgMapRootElement {
                     this.flightPlanManager.recomputeActiveWaypointIndex();
                 }
                 if (this.eBingMode === EBingMode.PLANE) {
+                    let viewingTempFP = NaN;
+                    if (SimVar.GetSimVarValue("L:FMC_FLIGHT_PLAN_IS_TEMPORARY", "bool") === 1) {
+                        viewingTempFP = 1;
+                    } 
                     needCenterOnPlane = true;
                     if (this.bEnableCenterOnFplnWaypoint) {
                         const airlinerMcduCurrentFplnWaypointIndex = SimVar.GetSimVarValue("L:SALTY_PLAN_VIEW_WAYPOINT", "number");
                         if (airlinerMcduCurrentFplnWaypointIndex >= 0) {
                             if (this.flightPlanManager) {
-                                const airlinerMcduCurrentFplnWaypoint = this.flightPlanManager.getWaypoint(airlinerMcduCurrentFplnWaypointIndex, NaN, true);
+                                const airlinerMcduCurrentFplnWaypoint = this.flightPlanManager.getWaypoint(airlinerMcduCurrentFplnWaypointIndex, viewingTempFP, true);
                                 if (airlinerMcduCurrentFplnWaypoint && airlinerMcduCurrentFplnWaypoint.infos.coordinates) {
                                     this.setNavMapCenter(airlinerMcduCurrentFplnWaypoint.infos.coordinates);
                                     needCenterOnPlane = false;
