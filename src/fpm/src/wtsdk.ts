@@ -10,4 +10,6 @@ export * from "./flightplanning/WaypointBuilder";
 export * from "./flightplanning/ProcedureDetails";
 export * from "./flightplanning/DirectTo";
 
+export * from "./cj4/CJ4_MapSymbols";
+
 export * from "./utils/SimVarCache";
