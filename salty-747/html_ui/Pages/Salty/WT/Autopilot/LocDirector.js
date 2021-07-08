@@ -34,12 +34,15 @@ class LocDirector {
     switch (this.state) {
       case LocDirectorState.NONE:
         this.handleNone();
+        console.log("LOC DIRECTOR OFF");
         break;
       case LocDirectorState.ARMED:
         this.handleArmed(radioState);
+        console.log("LOC DIRECTOR ARMED");
         break;
       case LocDirectorState.ACTIVE:
         this.handleActive(radioState);
+        console.log("LOC DIRECTOR ACTIVE");
         break;
     }
   }
@@ -96,6 +99,9 @@ class LocDirector {
       this.previousTime = now;
 
       LNavDirector.setCourse(setCourse, LNavDirector.getAircraftState());
+      if (SimVar.GetSimVarValue("L:SALTY_LOC_DIRECTOR_ACTIVE", "bool") === 0) {
+        SimVar.SetSimVarValue("L:SALTY_LOC_DIRECTOR_ACTIVE", "bool", 1);
+      }
     }
     else {
       this.state = LocDirectorState.NONE;

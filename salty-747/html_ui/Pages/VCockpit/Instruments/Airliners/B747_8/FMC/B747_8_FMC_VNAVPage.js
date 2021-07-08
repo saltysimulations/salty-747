@@ -463,7 +463,7 @@ class B747_8_FMC_VNAVPage {
             }
         }
         else if (fmc.getCrzMach() !== 1) {
-            if (Simplane.getAltitude() > 10000 && Simplane.getCurrentFlightPhase() >= FlightPhase.FLIGHT_PHASE_DESCENT) {
+            if (Simplane.getAltitude() > 10500 && Simplane.getCurrentFlightPhase() >= FlightPhase.FLIGHT_PHASE_DESCENT) {
                 if (machMode) {
                     desSpeedCell = "{magenta}" + fmc.getCrzMach().toFixed(3).substring(1) + "{end}/" + fmc.getDesManagedSpeed(true).toFixed(0);
                 }

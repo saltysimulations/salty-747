@@ -288,6 +288,7 @@
       }
 
       SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
+      SimVar.SetSimVarValue("AUTOPILOT APPROACH ACTIVE", "bool", 1);
     }
   }
 

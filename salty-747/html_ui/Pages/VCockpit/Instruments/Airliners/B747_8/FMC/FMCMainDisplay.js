@@ -1916,7 +1916,7 @@ class FMCMainDisplay extends BaseAirliners {
                     this.refreshPageCallback();
                 }
             }
-            let apNavIndex = 1;
+            let apNavIndex = 3;
             const apprHold = SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "Bool");
             if (apprHold) {
                 if (this.canSwitchToNav()) {
@@ -1936,7 +1936,7 @@ class FMCMainDisplay extends BaseAirliners {
                 }
             }
             if (apNavIndex != this._apNavIndex) {
-                SimVar.SetSimVarValue("K:AP_NAV_SELECT_SET", "number", apNavIndex);
+                Simplane.setAutoPilotSelectedNav(apNavIndex);
                 this._apNavIndex = apNavIndex;
             }
         }

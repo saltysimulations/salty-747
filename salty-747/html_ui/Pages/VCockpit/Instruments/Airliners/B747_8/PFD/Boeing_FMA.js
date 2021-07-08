@@ -226,7 +226,7 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRActive()) {
+            if (SimVar.GetSimVarValue("L:SALTY_LOC_DIRECTOR_ACTIVE", "bool") === 1) {
                 if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                     return 1;
                 }
@@ -299,7 +299,7 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRArm()) {
+            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRArm() && SimVar.GetSimVarValue("L:SALTY_LOC_DIRECTOR_ACTIVE", "bool") !== 1) {
                 if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
                     return 1;
                 }

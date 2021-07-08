@@ -167,7 +167,7 @@ class Boeing_FMC extends FMCMainDisplay {
             }      
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
-            this._navModeSelector.onNavChangedEvent('ALT_PRESSED');
+            this.toggleAltitudeHold();
         }
         else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
             this.setAPSpeedHoldMode();
@@ -472,7 +472,6 @@ class Boeing_FMC extends FMCMainDisplay {
         this._headingHoldValue = Simplane.getHeadingMagnetic();
         SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 3);
         Coherent.call("HEADING_BUG_SET", 3, this._headingHoldValue);
-        //this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
     }
     deactivateHeadingHold() {
         this._isHeadingHoldActive = false;

@@ -80,13 +80,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._currentVerticalAutopilot = undefined;
 
         /** @type {CJ4_FMC_NavigationService} */
-        this._navigationService = new CJ4_FMC_NavigationService(this);
+        //this._navigationService = new CJ4_FMC_NavigationService(this);
         /** @type {CJ4_FMC_MessageReceiver} */
         this._fmcMsgReceiver = new CJ4_FMC_MessageReceiver();
         MessageService.getInstance().registerReceiver(MESSAGE_TARGET.FMC, this._fmcMsgReceiver);
         /** @type {CJ4_PFD_MessageReceiver} */
 
-        this._navRadioSystem = new CJ4_NavRadioSystem();
+        //this._navRadioSystem = new CJ4_NavRadioSystem();
 
         //Timer for periodic page refresh
         this._pageRefreshTimer = null;
@@ -1028,32 +1028,30 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
 
             if (!this._navToNavTransfer) {
-                this._navToNavTransfer = new NavToNavTransfer(this.flightPlanManager, this._navRadioSystem, this._navModeSelector);
+                //this._navToNavTransfer = new NavToNavTransfer(this.flightPlanManager, this._navRadioSystem, this._navModeSelector);
             }
 
-            this._navToNavTransfer.update(dt);
+            //this._navToNavTransfer.update(dt);
 
             //RUN VNAV ALWAYS
             if (this._vnav === undefined) {
                 this._vnav = new WT_BaseVnav(this.flightPlanManager, this);
-                this._vnav.activate();
+                //this._vnav.activate();
             } else {
                 try {
-                    this._vnav.update();
+                    //this._vnav.update();
                 } catch (error) {
                     console.error(error);
                 }
             }
             
             //CHECK IF APPR IS ARMED
-            if (SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "bool") === 1 && this._navModeSelector.currentLateralActiveState !== LateralNavModeState.APPR) {
+            if (SimVar.GetSimVarValue("AUTOPILOT APPROACH ARM", "bool") === 1 && this._navModeSelector.currentLateralActiveState !== LateralNavModeState.APPR) {
                 if (this._navModeSelector.currentLateralArmedState !== LateralNavModeState.APPR) {
-                    this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
+                    this._navModeSelector.currentLateralArmedState = LateralNavModeState.APPR;
                 }
-            } 
-            else if (SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "bool") === 0 && this._navModeSelector.currentLateralActiveState == LateralNavModeState.APPR) {
-                this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
             }
+
 
             //RUN LNAV ALWAYS
             if (this._lnav === undefined) {
@@ -1074,7 +1072,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             */
             if (this._currentVerticalAutopilot === undefined) {
                 this._currentVerticalAutopilot = new WT_VerticalAutopilot(this._vnav, this._navModeSelector);
-                this._currentVerticalAutopilot.activate();
+                //this._currentVerticalAutopilot.activate();
             } else {
                 try {
                     //this._currentVerticalAutopilot.update();
@@ -1437,8 +1435,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     updateFMA() {
         if (this.FMAtimer == 10) {
             console.log("VNAV ON: " + this._navModeSelector.isVNAVOn);
-            console.log("ACTIVE VERTICAL STATE: " + this._navModeSelector.currentVerticalActiveState);
-            console.log("ARMED ALTITUDE STATE: " + this._navModeSelector.currentArmedAltitudeState);
+            console.log("ACTIVE LATERAL STATE: " + this._navModeSelector.currentLateralActiveState);
+            console.log("ARMED LATERAL STATE: " + this._navModeSelector.currentArmedLateralState);
             console.log("ARMED VNAV STATE: " + this._navModeSelector.currentArmedVnavState);
             console.log("CURRENT CONSTRAINT: " + this._vnav._activeConstraint);
             console.log("VNAV PATH STATUS: " + this._vnavPathStatus);
