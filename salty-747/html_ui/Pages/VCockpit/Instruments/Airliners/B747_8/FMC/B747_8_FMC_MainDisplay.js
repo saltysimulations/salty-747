@@ -64,6 +64,19 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._aThrHasActivated = false;
         this._hasReachedTopOfDescent = false;
         this._apCooldown = 500;
+        this._pilotWaypoints = undefined;
+        this._lnav = undefined;
+        this._fpHasChanged = false;
+        this._activatingDirectTo = false;
+        this._activatingDirectToExisting = false;
+        this.vfrLandingRunway = undefined;
+        this.vfrRunwayExtension = undefined;
+        this.modVfrRunway = false;
+        this.deletedVfrLandingRunway = undefined;
+        this.selectedWaypoint = undefined;
+
+        //Timer for periodic page refresh
+        this._pageRefreshTimer = null;
 
         /* SALTY 747 VARS */
         this._TORwyWindHdg = "";
@@ -136,18 +149,36 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
     }
     get templateID() { return "B747_8_FMC"; }
+    // Property for EXEC handling
+    get fpHasChanged() {
+        return this._fpHasChanged;
+    }
+    set fpHasChanged(value) {
+        this._fpHasChanged = value;
+    }
+
     connectedCallback() {
         super.connectedCallback();
-        RegisterViewListener("JS_LISTENER_KEYEVENT", () => {
-            console.log("JS_LISTENER_KEYEVENT registered.");
-            RegisterViewListener("JS_LISTENER_FACILITY", () => {
-                console.log("JS_LISTENER_FACILITY registered.");
-                this._registered = true;
+        if (!this._registered) {
+            RegisterViewListener("JS_LISTENER_KEYEVENT", () => {
+                console.log("JS_LISTENER_KEYEVENT registered.");
+                RegisterViewListener("JS_LISTENER_FACILITY", () => {
+                    console.log("JS_LISTENER_FACILITY registered.");
+                    this._registered = true;
+                });
             });
-        });
+
+            this.addEventListener("FlightStart", async function () {
+                if (localStorage.length > 0) {
+                    localStorage.clear();
+                }
+            }.bind(this));
+        }
     }
     Init() {
         super.Init();
+        // Maybe this gets rid of slowdown on first fpln mod
+        this.flightPlanManager.copyCurrentFlightPlanInto(1);
         this.timer = 0;
         let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
@@ -204,6 +235,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             FMC_Menu.ShowPage(this);
         };
         FMC_Menu.ShowPage(this);
+        this._pilotWaypoints = new CJ4_FMC_PilotWaypoint_Manager(this);
+        this._pilotWaypoints.activate();
+    }
+    onInteractionEvent(args) {
+        super.onInteractionEvent(args);
+
+        const apPrefix = "B747_8_AP_";
+        if (args[0].startsWith(apPrefix)) {
+            this._navModeSelector.onNavChangedEvent(args[0].substring(apPrefix.length));
+        }
     }
     onPowerOn() {
         super.onPowerOn();
@@ -275,6 +316,61 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
         }
         return false;
+    }
+    /**
+ * Registers a periodic page refresh with the FMC display.
+ * @param {number} interval The interval, in ms, to run the supplied action.
+ * @param {function} action An action to run at each interval. Can return a bool to indicate if the page refresh should stop.
+ * @param {boolean} runImmediately If true, the action will run as soon as registered, and then after each
+ * interval. If false, it will start after the supplied interval.
+ */
+    registerPeriodicPageRefresh(action, interval, runImmediately) {
+        this.unregisterPeriodicPageRefresh();
+
+        const refreshHandler = () => {
+            const isBreak = action();
+            if (isBreak) {
+                return;
+            }
+            this._pageRefreshTimer = setTimeout(refreshHandler, interval);
+        };
+
+        if (runImmediately) {
+            refreshHandler();
+        } else {
+            this._pageRefreshTimer = setTimeout(refreshHandler, interval);
+        }
+    }
+
+    /**
+     * Unregisters a periodic page refresh with the FMC display.
+     */
+    unregisterPeriodicPageRefresh() {
+        if (this._pageRefreshTimer) {
+            clearInterval(this._pageRefreshTimer);
+        }
+    }
+    setMsg(value = "") {
+        this.userMsg = value;
+        if (value === "") {
+            this.setFmsMsg();
+        } else {
+            this.showErrorMessage(value);
+        }
+    }
+
+    setFmsMsg(value = "") {
+        if (value === "") {
+            if (this._fmcMsgReceiver.hasMsg()) {
+                value = this._fmcMsgReceiver.getMsgText();
+            }
+        }
+        if (value !== this._msg) {
+            this._msg = value;
+            if (this.userMsg === "") {
+                this.showErrorMessage(value);
+            }
+        }
     }
     _getIndexFromTemp(temp) {
         if (temp < -10)
@@ -867,6 +963,36 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_DESCENT) {
                 vRef = 1.3 * Simplane.getStallSpeed();
             }
+            if (!this._navModeSelector) {
+                this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
+            }
+            
+            //RUN LNAV ALWAYS
+            if (this._lnav === undefined) {
+                this._lnav = new LNavDirector(this.flightPlanManager, this._navModeSelector);
+            } else {
+                try {
+                    this._lnav.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            //RUN VERTICAL AP ALWAYS
+            if (this._currentVerticalAutopilot === undefined) {
+                this._currentVerticalAutopilot = new WT_VerticalAutopilot(this._vnav, this._navModeSelector);
+                //this._currentVerticalAutopilot.activate();
+            } else {
+                try {
+                    //this._currentVerticalAutopilot.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            this._navModeSelector.generateInputDataEvents();
+            this._navModeSelector.processEvents();
+
             if (this._apHasDeactivated) {
                 this.deactivateVNAV();
                 if (!this.getIsSPDActive()) {
