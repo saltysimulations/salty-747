@@ -211,10 +211,8 @@ class FMCRoutePage {
         if (this._currentPage == 0) {
             // main page
             this._fmc.onLeftInput[0] = () => {
-                //this._fmc.setMsg("Working...");
                 const value = this._fmc.inOut;
                 if (value == "") {
-                    //this._fmc.setMsg();
                     if (this._fmc.flightPlanManager.getOrigin()) {
                         this._fmc.inOut = this._fmc.flightPlanManager.getOrigin().ident;
                     }
@@ -225,10 +223,8 @@ class FMCRoutePage {
             };
 
             this._fmc.onRightInput[0] = () => {
-                //this._fmc.setMsg("Working...");
                 const value = this._fmc.inOut;
                 if (value == "") {
-                    //this._fmc.setMsg();
                     if (this._fmc.flightPlanManager.getDestination()) {
                         this._fmc.inOut = this._fmc.flightPlanManager.getDestination().ident;
                     }
@@ -305,7 +301,6 @@ class FMCRoutePage {
             } else {
                 this._fmc._isRouteActivated = false;
                 this._fmc.fpHasChanged = false;
-                //this._fmc.setMsg();
                 this._fmc._activatingDirectTo = false;
             }
         };
@@ -318,7 +313,6 @@ class FMCRoutePage {
     bindRowEvents(lskIdx) {
         if (this._currentPage > 0) {
             this._fmc.onLeftInput[lskIdx] = () => {
-                //this._fmc.setMsg("Working...");
                 const value = this._fmc.inOut;
                 this._fmc.clearUserInput();
                 this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
@@ -331,7 +325,6 @@ class FMCRoutePage {
                             const airway = lastWaypoint.infos.airways.find(a => {
                                 return a.name === value;
                             });
-                            //this._fmc.setMsg();
                             if (airway) {
                                 this._airwayInput = airway.name;
                                 this._airwayIndex = lastWpIdx;
@@ -346,7 +339,6 @@ class FMCRoutePage {
         }
 
         this._fmc.onRightInput[lskIdx] = () => {
-            //this._fmc.setMsg("Working...");
             const value = this._fmc.inOut;
             const idx = (this._currentPage > 0) ? lskIdx : 0;
             const row = this._rows[idx + this._offset];
@@ -355,7 +347,6 @@ class FMCRoutePage {
             if (value === "DELETE") {
                 this._fmc.clearUserInput();
                 this._fmc.removeWaypoint(wpIdx, () => {
-                    //this._fmc.setMsg();
                     this.update(true);
                 });
             } else if (value.length > 0) {
@@ -373,8 +364,6 @@ class FMCRoutePage {
                                 if (result) {
                                     this._airwayInput = "";
                                     this._airwayIndex = -1;
-                                    //this._fmc.setMsg();
-                                    // console.log("added " + wpt.ident);
                                     this.update(true);
                                 } else {
                                     this._fmc.showErrorMessage("NOT ON AIRWAY");
@@ -389,7 +378,6 @@ class FMCRoutePage {
                         this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
                             this._fmc.flightPlanManager.addUserWaypoint(pilotWaypointObject, wpIdx, () => {
                                 this._fmc.activateRoute(false, () => {
-                                    //this._fmc.setMsg();
                                     this.update(true);
                                 });
                             });
@@ -397,14 +385,12 @@ class FMCRoutePage {
                     } else {
                         this._fmc.insertWaypoint(value, wpIdx, (isSuccess) => {
                             if (isSuccess) {
-                                //this._fmc.setMsg();
                                 this.update(true);
                             }
                         });
                     }
                 }
             } else {
-                //this._fmc.setMsg();
             }
         };
     }
@@ -415,7 +401,6 @@ class FMCRoutePage {
                 this._fmc.flightPlanManager.setApproachTransitionIndex(-1, () => {
                     this._fmc.flightPlanManager.setArrivalProcIndex(-1, () => {
                         this._fmc.flightPlanManager.setApproachIndex(-1, () => {
-                            //this._fmc.setMsg();
                             this._fmc.fpHasChanged = true;
                             this.update(true);
                         });
@@ -435,7 +420,6 @@ class FMCRoutePage {
         this._fmc.flightPlanManager.createNewFlightPlan(() => {
             this._fmc.updateRouteOrigin(icao, (result) => {
                 if (result) {
-                    //this._fmc.setMsg();
                     this._fmc.fpHasChanged = true;
                     SimVar.SetSimVarValue("L:WT_CJ4_INHIBIT_SEQUENCE", "number", 0);
                     this._fmc.resetVspeeds();

@@ -267,7 +267,6 @@ class LNavDirector {
       if (currentWaypoint && currentWaypoint.endsInDiscontinuity) {
         this.state = LNavState.IN_DISCONTINUITY;
         SimVar.SetSimVarValue("L:WT_CJ4_IN_DISCONTINUITY", "number", 1);
-        MessageService.getInstance().post(FMS_MESSAGE_ID.FPLN_DISCO, () => this.state !== LNavState.IN_DISCONTINUITY);
 
         this.sequencingMode = FlightPlanSequencing.INHIBIT;
         LNavDirector.setCourse(SimVar.GetSimVarValue('PLANE HEADING DEGREES TRUE', 'Radians') * Avionics.Utils.RAD2DEG, planeState);
@@ -316,24 +315,7 @@ class LNavDirector {
    * @param {number} navSensitivity The current nav sensitivity.
    */
   postDisplayedNavSensitivity(navSensitivity) {
-    if (navSensitivity !== this.currentNavSensitivity) {
-      this.currentNavSensitivity = navSensitivity;
 
-      switch (this.currentNavSensitivity) {
-        case NavSensitivity.TERMINAL:
-          MessageService.getInstance().post(FMS_MESSAGE_ID.TERM, () => this.currentNavSensitivity !== NavSensitivity.TERMINAL);
-          break;
-        case NavSensitivity.TERMINALLPV:
-          MessageService.getInstance().post(FMS_MESSAGE_ID.TERM_LPV, () => this.currentNavSensitivity !== NavSensitivity.TERMINALLPV);
-          break;
-        case NavSensitivity.APPROACH:
-          MessageService.getInstance().post(FMS_MESSAGE_ID.APPR, () => this.currentNavSensitivity !== NavSensitivity.APPROACH);
-          break;
-        case NavSensitivity.APPROACHLPV:
-          MessageService.getInstance().post(FMS_MESSAGE_ID.APPR_LPV, () => this.currentNavSensitivity !== NavSensitivity.APPROACHLPV);
-          break;
-      }
-    }
   }
 
   /**

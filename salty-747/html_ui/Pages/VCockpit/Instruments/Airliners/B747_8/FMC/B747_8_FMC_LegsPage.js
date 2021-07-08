@@ -306,8 +306,6 @@ class B747_8_FMC_LegsPage {
                     }
                     case B747_8_FMC_LegsPage.SELECT_MODE.EXISTING: {
                         if ((i >= 0 && this._currentPage == 1) || this._currentPage > 1) {
-
-                            this._fmc.setMsg("Working...");
                             let scratchPadWaypointIndex = this._fmc.selectedWaypoint.index;
 
                             // MOVE EXISTING WAYPOINT WITH LEGS AFTER
@@ -363,7 +361,6 @@ class B747_8_FMC_LegsPage {
                             const scratchPadWaypointIndex = this._fmc.selectedWaypoint.index;
                             // console.log("modifying from line");
                             // console.log("scratchPadWaypointIndex: " + scratchPadWaypointIndex);
-                            this._fmc.setMsg("Working...");
                             this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
                                 this._fmc.flightPlanManager.setActiveWaypointIndex(scratchPadWaypointIndex + 1, () => {
                                     this._fmc.activateRoute(false, () => {
@@ -376,7 +373,6 @@ class B747_8_FMC_LegsPage {
                     }
                     case B747_8_FMC_LegsPage.SELECT_MODE.NEW: {
                         if ((i >= 0 && this._currentPage == 1) || this._currentPage > 1) {
-                            this._fmc.setMsg("Working...");
                             if (waypoint && waypoint.fix) {
                                 if (waypoint.fix.icao === "$EMPTY") {
                                     selectedWpIndex = Infinity;
@@ -387,7 +383,6 @@ class B747_8_FMC_LegsPage {
                                         selectedWpIndex += 1;
                                     } else {
                                         this._fmc.showErrorMessage("INVALID DELETE");
-                                        this._fmc.setMsg();
                                         return;
                                     }
                                 }
@@ -398,14 +393,12 @@ class B747_8_FMC_LegsPage {
                                 const databaseDuplicate = await this._fmc._pilotWaypoints.checkDatabaseDuplicates(userWaypoint.wpt.ident);
                                 if (databaseDuplicate) {
                                     this._fmc.showErrorMessage("DUPLICATE IDENT");
-                                    this._fmc.setMsg();
                                     return;
                                 }
                                 let insertIndex = selectedWpIndex;
                                 if (userWaypoint.offset > 0) {
                                     if (scratchPadWaypointIndex !== selectedWpIndex || (i == 1 && this._currentPage == 1 && userWaypoint.offset <= 0)) {
                                         this._fmc.showErrorMessage("WPT NOT MATCHED");
-                                        this._fmc.setMsg();
                                         return;
                                     } else {
                                         insertIndex = userWaypoint.offset >= 0 ? selectedWpIndex + 1 : selectedWpIndex;
@@ -467,7 +460,6 @@ class B747_8_FMC_LegsPage {
                                             } else {
                                                 this._fmc.fpHasChanged = false;
                                                 this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.NONE;
-                                                this._fmc.setMsg();
                                                 this._fmc.eraseTemporaryFlightPlan(() => {
                                                     this.resetAfterOp();
                                                 });
@@ -484,7 +476,6 @@ class B747_8_FMC_LegsPage {
                     case B747_8_FMC_LegsPage.SELECT_MODE.DELETE: {
                         // DELETE WAYPOINT
                         if ((i > 0 && this._currentPage == 1) || this._currentPage > 1) {
-                            this._fmc.setMsg("Working...");
                             this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
                                 if (waypoint.fix.icao === '$DISCO') {
                                     if (waypoint.fix.isRemovable) {
@@ -520,7 +511,6 @@ class B747_8_FMC_LegsPage {
 
     resetAfterOp() {
         this._fmc.clearUserInput();
-        this._fmc.setMsg();
         this._fmc.selectedWaypoint = undefined;
         this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.NONE;
         this.update(true);

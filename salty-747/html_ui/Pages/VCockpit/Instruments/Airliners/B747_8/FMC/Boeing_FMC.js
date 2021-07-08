@@ -35,6 +35,45 @@ class Boeing_FMC extends FMCMainDisplay {
                 }
             }
         };
+        this.onExecPage = undefined;
+        this.onExecDefault = () => {
+            if (this.getIsRouteActivated() && !this._activatingDirectTo) {
+                this.insertTemporaryFlightPlan(() => {
+                    this.copyAirwaySelections();
+                    this._isRouteActivated = false;
+                    this._activatingDirectToExisting = false;
+                    this.fpHasChanged = false;
+                    SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                    if (this.refreshPageCallback) {
+                        this.refreshPageCallback();
+                    }
+                });
+            } else if (this.getIsRouteActivated() && this._activatingDirectTo) {
+                const activeIndex = this.flightPlanManager.getActiveWaypointIndex();
+                this.insertTemporaryFlightPlan(() => {
+                    this.flightPlanManager.activateDirectToByIndex(activeIndex, () => {
+                        this.copyAirwaySelections();
+                        this._isRouteActivated = false;
+                        this._activatingDirectToExisting = false;
+                        this._activatingDirectTo = false;
+                        this.fpHasChanged = false;
+                        SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                        if (this.refreshPageCallback) {
+                            this.refreshPageCallback();
+                        }
+                    });
+                });
+            } else {
+                this.fpHasChanged = false;
+                this._isRouteActivated = false;
+                SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                if (this.refreshPageCallback) {
+                    this._activatingDirectTo = false;
+                    this.fpHasChanged = false;
+                    this.refreshPageCallback();
+                }
+            }
+        };
         this.onDel = () => {
             if (this.inOut.length === 0) {
                 this.inOut = "DELETE";
@@ -64,7 +103,7 @@ class Boeing_FMC extends FMCMainDisplay {
         super.onEvent(_event);
         console.log("B747_8_FMC_MainDisplay onEvent " + _event);
         if (_event.indexOf("AP_LNAV") != -1) {
-            this.toggleLNAV();
+            this._navModeSelector.onNavChangedEvent('NAV_PRESSED');
         }
         else if (_event.indexOf("AP_VNAV") != -1) {
             this.toggleVNAV();
@@ -73,24 +112,21 @@ class Boeing_FMC extends FMCMainDisplay {
             this.toggleFLCH();
         }
         else if (_event.indexOf("AP_HEADING_HOLD") != -1) {
-            this.toggleHeadingHold();
+            this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
         }
         else if (_event.indexOf("AP_HEADING_SEL") != -1) {
-            this.activateHeadingSel();
+            if (this._isHeadingHoldActive = true) {
+                SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
+                this._isHeadingHoldActive = false;
+            }
+            this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
         }
         else if (_event.indexOf("AP_SPD") != -1) {
-            if (this.aircraftType === Aircraft.AS01B) {
-                if (SimVar.GetSimVarValue("AUTOPILOT THROTTLE ARM", "Bool")) {
-                    this.activateSPD();
-                }
-                else {
-                    this.deactivateSPD();
-                }
+            if (SimVar.GetSimVarValue("AUTOPILOT THROTTLE ARM", "Bool")) {
+                this.activateSPD();
             }
             else {
-                if ((this.getIsAltitudeHoldActive() || this.getIsVSpeedActive()) && this.getIsTHRActive()) {
-                    this.toggleSPD();
-                }
+                this.deactivateSPD();
             }
         }
         else if (_event.indexOf("AP_SPEED_INTERVENTION") != -1) {
@@ -111,7 +147,6 @@ class Boeing_FMC extends FMCMainDisplay {
                     this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
                 }
                 if (displayedAltitude == Math.round(altitude/100) * 100){
-
                 }
                 else if (!Simplane.getAutoPilotFLCActive()) {
                     if (displayedAltitude >= altitude + 2000) {
@@ -136,8 +171,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
             this.setAPSpeedHoldMode();
-            if (this.aircraftType == Aircraft.AS01B)
-                this.deactivateSPD();
             this.setThrottleMode(ThrottleMode.TOGA);
             if (Simplane.getIndicatedSpeed() > 80) {
                 this.deactivateLNAV();
@@ -431,15 +464,14 @@ class Boeing_FMC extends FMCMainDisplay {
         }
     }
     activateHeadingHold() {
-        this.deactivateLNAV();
         this._isHeadingHoldActive = true;
         if (!SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "Boolean")) {
             SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "Number", 1);
         }
         SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 1);
         this._headingHoldValue = Simplane.getHeadingMagnetic();
-        SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
-        Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
+        SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 3);
+        Coherent.call("HEADING_BUG_SET", 3, this._headingHoldValue);
     }
     deactivateHeadingHold() {
         this._isHeadingHoldActive = false;
@@ -574,9 +606,14 @@ class Boeing_FMC extends FMCMainDisplay {
     getIsRouteActivated() {
         return this._isRouteActivated;
     }
-    activateRoute() {
+    activateRoute(directTo = false, callback = EmptyCallback.Void) {
+        if (directTo) {
+            this._activatingDirectTo = true;
+        }
         this._isRouteActivated = true;
+        this.fpHasChanged = true;
         SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 1);
+        callback();
     }
     setBoeingDirectTo(directToWaypointIdent, directToWaypointIndex, callback = EmptyCallback.Boolean) {
         let waypoints = this.flightPlanManager.getWaypoints();

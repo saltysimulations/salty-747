@@ -111,7 +111,6 @@ class B747_8_FMC_DepArrIndexPage {
                 fmc.setRunwayIndex(-1, () => {
                     fmc.setDepartureIndex(-1, () => {
                         fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc, currentPage);
                     });
                 });
@@ -159,13 +158,11 @@ class B747_8_FMC_DepArrIndexPage {
                 fmc.onRightInput[i] = () => {
                     if (fmc.flightPlanManager.getDepartureProcIndex() === -1) {
                         fmc.setOriginRunwayIndex(runwayIndex, () => {
-                            fmc.setMsg();
                             B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc, undefined);
                         });
                     }
                     else {
                         fmc.setRunwayIndex(runwayIndex, () => {
-                            fmc.setMsg();
                             B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc, undefined);
                         });
                     }
@@ -180,7 +177,6 @@ class B747_8_FMC_DepArrIndexPage {
                 fmc.setRunwayIndex(-1, () => {
                     fmc.setDepartureIndex(-1, () => {
                         fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc, currentPage);
                     });
                 });
@@ -192,7 +188,6 @@ class B747_8_FMC_DepArrIndexPage {
                 rows[2][0] = selectedDpEnrouteTransition.name.trim();
                 fmc.onLeftInput[1] = () => {
                     fmc.setDepartureEnrouteTransitionIndex(-1, () => {
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc, currentPage);
                     });
                 };
@@ -209,7 +204,6 @@ class B747_8_FMC_DepArrIndexPage {
                         rows[2 * (i + 1)][0] = enrouteDpTransitionName;
                         fmc.onLeftInput[i + 1] = () => {
                             fmc.setDepartureEnrouteTransitionIndex(enrouteDpTransitionIndex, () => {
-                                fmc.setMsg();
                                 B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc);
                             });
                         };
@@ -263,7 +257,6 @@ class B747_8_FMC_DepArrIndexPage {
                     fmc.flightPlanManager.pauseSync();
                     fmc.setDepartureIndex(departureIndex, () => {
                         fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg();
                         //fmc.flightPlanManager.setDepartureEnRouteTransitionIndex(-1, () => {B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc);});
                         B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc);
                     });
@@ -398,7 +391,6 @@ class B747_8_FMC_DepArrIndexPage {
                 fmc.flightPlanManager.pauseSync();
                 fmc.setApproachIndex(-1, () => {
                     fmc.flightPlanManager.resumeSync();
-                    fmc.setMsg();
                     B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc, currentPage);
                 });
             };
@@ -411,7 +403,6 @@ class B747_8_FMC_DepArrIndexPage {
                     fmc.flightPlanManager.pauseSync();
                     fmc.setApproachTransitionIndex(-1, () => {
                         fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc, currentPage);
                     });
                 };
@@ -430,7 +421,6 @@ class B747_8_FMC_DepArrIndexPage {
                             fmc.flightPlanManager.pauseSync();
                             fmc.setApproachTransitionIndex(transitionIndex, () => {
                                 fmc.flightPlanManager.resumeSync();
-                                fmc.setMsg();
                                 B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                             });
                         };
@@ -451,7 +441,6 @@ class B747_8_FMC_DepArrIndexPage {
                     fmc.modVfrRunway = true;
                     fmc.flightPlanManager.setDestinationRunwayIndex(-1, -1, () => {
                         fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc, currentPage);
                     });
                 });
@@ -469,7 +458,6 @@ class B747_8_FMC_DepArrIndexPage {
                     let runwayIndex = fmc.flightPlanManager.getFlightPlan(1).procedureDetails.destinationRunwayIndex;
                     fmc.flightPlanManager.setDestinationRunwayIndex(runwayIndex, fmc.vfrRunwayExtension, () => {
                         fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg();
                         fmc.inOut = '';
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc, currentPage);
                     });
@@ -588,14 +576,12 @@ class B747_8_FMC_DepArrIndexPage {
                                     console.log("arrivalRunwayIndex " + arrivalRunwayIndex);
                                     if (arrivalRunwayIndex >= -1) {
                                         fmc.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayIndex, () => {
-                                            fmc.setMsg();
                                             fmc.flightPlanManager.resumeSync();
                                             B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                                         });
                                     }
                                 }
                             }
-                            fmc.setMsg();
                             fmc.flightPlanManager.resumeSync();
                             B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                         });
@@ -621,7 +607,6 @@ class B747_8_FMC_DepArrIndexPage {
                                         });
                                         if (arrivalRunwayIndex >= -1) {
                                             fmc.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayIndex, () => {
-                                                fmc.setMsg();
                                                 fmc.inOut = '';
                                                 fmc.flightPlanManager.resumeSync();
                                                 B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
@@ -631,7 +616,6 @@ class B747_8_FMC_DepArrIndexPage {
                                 }
                                 console.log("completed setting vfrLandingRunway");
                                 fmc.flightPlanManager.resumeSync();
-                                fmc.setMsg();
                                 B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                             });
                         });
@@ -654,7 +638,6 @@ class B747_8_FMC_DepArrIndexPage {
                 fmc.flightPlanManager.pauseSync();
                 fmc.setArrivalProcIndex(-1, () => {
                     fmc.flightPlanManager.resumeSync();
-                    fmc.setMsg();
                     B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc, currentPage);
                 });
             };
@@ -666,7 +649,6 @@ class B747_8_FMC_DepArrIndexPage {
                 rows[2][0] = selectedEnrouteTransition.name.trim();
                 fmc.onLeftInput[1] = () => {
                     fmc.setArrivalAndRunwayIndex(selectedArrivalIndex, -1, () => {
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc, currentPage);
                     });
                 };
@@ -684,7 +666,6 @@ class B747_8_FMC_DepArrIndexPage {
                         fmc.onLeftInput[i + 1] = () => {
                             fmc.flightPlanManager.pauseSync();
                             fmc.setArrivalAndRunwayIndex(selectedArrivalIndex, enrouteTransitionIndex, () => {
-                                fmc.setMsg();
                                 fmc.flightPlanManager.resumeSync();
                                 B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                             });
@@ -753,7 +734,6 @@ class B747_8_FMC_DepArrIndexPage {
                     fmc.setArrivalAndRunwayIndex(arrivalIndex, -1, () => {
                         console.log("Setting Arrival and Runway Index");
                         fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                     });
                 };
@@ -817,13 +797,11 @@ class B747_8_FMC_DepArrIndexPage {
                         fmc.vfrLandingRunway = fmc.vfrLandingRunway == undefined ? fmc.deletedVfrLandingRunway : undefined;
                         fmc.modVfrRunway = false;
                         fmc.fpHasChanged = false;
-                        fmc.setMsg();
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                     });
                 }
                 else if (fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
                     fmc.eraseTemporaryFlightPlan(() => {
-                        fmc.setMsg();
                         fmc.fpHasChanged = false;
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc);
                     });

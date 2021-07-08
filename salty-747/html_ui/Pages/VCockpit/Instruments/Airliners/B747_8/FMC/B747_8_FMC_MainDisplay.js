@@ -967,6 +967,18 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
             }
             
+            //RUN VNAV ALWAYS
+            if (this._vnav === undefined) {
+                this._vnav = new WT_BaseVnav(this.flightPlanManager, this);
+                this._vnav.activate();
+            } else {
+                try {
+                    //this._vnav.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
             //RUN LNAV ALWAYS
             if (this._lnav === undefined) {
                 this._lnav = new LNavDirector(this.flightPlanManager, this._navModeSelector);
@@ -981,7 +993,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             //RUN VERTICAL AP ALWAYS
             if (this._currentVerticalAutopilot === undefined) {
                 this._currentVerticalAutopilot = new WT_VerticalAutopilot(this._vnav, this._navModeSelector);
-                //this._currentVerticalAutopilot.activate();
+                this._currentVerticalAutopilot.activate();
             } else {
                 try {
                     //this._currentVerticalAutopilot.update();

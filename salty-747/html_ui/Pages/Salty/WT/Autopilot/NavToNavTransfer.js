@@ -91,7 +91,6 @@ class NavToNavTransfer {
 
     if (isNaN(frequency)) {
       if (!hasLoc) {
-        MessageService.getInstance().post(FMS_MESSAGE_ID.CHECK_LOC_TUNING, () => this.transferState === NavToNavTransfer.ARMED);
       }
       else {
         this.transferState = NavToNavTransfer.ARMED;
@@ -99,7 +98,6 @@ class NavToNavTransfer {
     }
     else {
       if (this.navRadioSystem.radioStates[1].frequency !== frequency) {
-        MessageService.getInstance().post(FMS_MESSAGE_ID.CHECK_LOC_TUNING, () => this.transferState === NavToNavTransfer.ARMED);
       }
       else {
         this.transferState = NavToNavTransfer.ARMED;
@@ -141,7 +139,6 @@ class NavToNavTransfer {
    */
   tryTuneLocalizer() {
     if (this.navRadioSystem.radioStates[1].mode !== NavRadioMode.Auto) {
-      MessageService.getInstance().post(FMS_MESSAGE_ID.LOC_WILL_BE_TUNED, () => this.transferState !== NavToNavTransfer.TUNE_PENDING);
       this.termTimestamp = Date.now();
     }
 
