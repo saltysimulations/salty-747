@@ -117,11 +117,11 @@ class B747_8_FMC_LegsPage {
 
                 if (isActWpt) {
                     if (waypoint.fix.icao === '$DISCO') {
-                        this._rows[2 * i] = [" THEN[color]"];
-                        this._rows[2 * i + 1] = ["□□□□□ - DISCONTINUITY -[magenta]"];
+                        this._rows[2 * i] = [" THEN"];
+                        this._rows[2 * i + 1] = ["□□□□□ - DISCONTINUITY -"];
                     } else if (waypoint.fix.hasHold) {
-                        this._rows[2 * i] = [" HOLD AT[magenta]"];
-                        this._rows[2 * i + 1] = [`${waypoint.fix.ident != "" ? waypoint.fix.ident : "USR"}[magenta]`];
+                        this._rows[2 * i] = [" HOLD AT"];
+                        this._rows[2 * i + 1] = [`${waypoint.fix.ident != "" ? waypoint.fix.ident : "USR"}[color]magenta`];
                     } else {
                         this._rows[2 * i] = [" " + bearing.padStart(3, "0") + " " + distance.padStart(4, " ") + "NM" + fpaText];
                         this._rows[2 * i + 1] = [waypoint.fix.ident != "" ? waypoint.fix.ident + "[color]magenta" : "USR[color]magenta"];
@@ -602,6 +602,7 @@ class B747_8_FMC_LegsPage {
                     this.resetAfterOp();
                 }; // TODO this seems annoying, but this is how stuff works in cj4_fmc right now
                 this._fmc.onExecDefault();
+                this._fmc.fpHasChanged = false;
             } else if (this._fmc.fpHasChanged) {
                 this._fmc.fpHasChanged = false;
                 this._fmc.activateRoute(() => {

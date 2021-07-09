@@ -26,13 +26,14 @@ class Boeing_FMC extends FMCMainDisplay {
         this.maxCruiseFL = 450;
         this.cruiseFlightLevel = 100;
         this.onExec = () => {
-            if (this.getIsRouteActivated()) {
-                this.insertTemporaryFlightPlan();
+            if (this.onExecPage) {
+                console.log("if this.onExecPage");
+                this.onExecPage();
+            }
+            else {
                 this._isRouteActivated = false;
-                SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
-                if (this.refreshPageCallback) {
-                    this.refreshPageCallback();
-                }
+                this._activatingDirectToExisting = false;
+                this.fpHasChanged = false;
             }
         };
         this.onExecPage = undefined;
@@ -52,7 +53,7 @@ class Boeing_FMC extends FMCMainDisplay {
                 const activeIndex = this.flightPlanManager.getActiveWaypointIndex();
                 this.insertTemporaryFlightPlan(() => {
                     this.flightPlanManager.activateDirectToByIndex(activeIndex, () => {
-                        this.copyAirwaySelections();
+                        this.synchronizeTemporaryAndActiveFlightPlanWaypoints();
                         this._isRouteActivated = false;
                         this._activatingDirectToExisting = false;
                         this._activatingDirectTo = false;

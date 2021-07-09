@@ -297,6 +297,7 @@ class FMCRoutePage {
                     this._fmc.activateRoute();
                 }
                 this._fmc.refreshPageCallback = () => this.update(true); // TODO see why this would be needed
+                this._fmc._isRouteActivated = false;
                 this._fmc.onExecDefault();
             } else {
                 this._fmc._isRouteActivated = false;

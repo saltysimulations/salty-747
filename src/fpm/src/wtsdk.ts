@@ -11,5 +11,6 @@ export * from "./flightplanning/ProcedureDetails";
 export * from "./flightplanning/DirectTo";
 
 export * from "./cj4/CJ4_MapSymbols";
+export * from "./cj4/fmc/CJ4_FMC_PilotWaypointParser";
 
 export * from "./utils/SimVarCache";

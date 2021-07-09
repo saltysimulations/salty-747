@@ -149,12 +149,18 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
     }
     get templateID() { return "B747_8_FMC"; }
+    
     // Property for EXEC handling
     get fpHasChanged() {
         return this._fpHasChanged;
     }
     set fpHasChanged(value) {
         this._fpHasChanged = value;
+        if (this._fpHasChanged) {
+            SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 1);
+        } else {
+            SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+        }
     }
 
     connectedCallback() {
@@ -233,6 +239,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         };
         this.onMenu = () => { 
             FMC_Menu.ShowPage(this);
+        };
+        this.onHold = () => {
+            B747_8_FMC_HoldsPage.handleHoldPressed(this);
         };
         FMC_Menu.ShowPage(this);
         this._pilotWaypoints = new CJ4_FMC_PilotWaypoint_Manager(this);
