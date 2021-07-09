@@ -266,7 +266,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (this.refreshPageCallback && this._lastActiveWP != this.currFlightPlanManager.getActiveWaypointIndex() || this._wasApproachActive != this.currFlightPlanManager.isActiveApproach()) {
             this._lastActiveWP = this.currFlightPlanManager.getActiveWaypointIndex();
             this._wasApproachActive = this.currFlightPlanManager.isActiveApproach();
-            this.refreshPageCallback();
+            //this.refreshPageCallback();
         }
         this.updateAutopilot();
         this.updateAltitudeAlerting();

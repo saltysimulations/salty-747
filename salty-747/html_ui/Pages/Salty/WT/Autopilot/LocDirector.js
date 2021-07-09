@@ -99,9 +99,6 @@ class LocDirector {
       this.previousTime = now;
 
       LNavDirector.setCourse(setCourse, LNavDirector.getAircraftState());
-      if (SimVar.GetSimVarValue("L:SALTY_LOC_DIRECTOR_ACTIVE", "bool") === 0) {
-        SimVar.SetSimVarValue("L:SALTY_LOC_DIRECTOR_ACTIVE", "bool", 1);
-      }
     }
     else {
       this.state = LocDirectorState.NONE;

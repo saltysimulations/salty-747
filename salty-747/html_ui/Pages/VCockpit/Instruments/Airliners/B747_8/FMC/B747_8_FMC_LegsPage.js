@@ -107,7 +107,7 @@ class B747_8_FMC_LegsPage {
                 let fpaText = "  ";
 
                 if (waypoint.isMissedApproachStart) {
-                    fpaText = ' MISSED APPR';
+                    fpaText = '';
                 } else if (waypointFPA) {
                     fpaText = waypointFPA > 0 ? "  " + waypointFPA.toFixed(1) + "°" : "";
                 }
@@ -598,11 +598,12 @@ class B747_8_FMC_LegsPage {
         // EXEC
         this._fmc.onExecPage = () => {
             if (this._fmc.fpHasChanged && this._fmc._isRouteActivated) {
+                this._fmc.fpHasChanged = false;
                 this._fmc.refreshPageCallback = () => {
                     this.resetAfterOp();
                 }; // TODO this seems annoying, but this is how stuff works in cj4_fmc right now
                 this._fmc.onExecDefault();
-                this._fmc.fpHasChanged = false;
+                console.log("A")
             } else if (this._fmc.fpHasChanged) {
                 this._fmc.fpHasChanged = false;
                 this._fmc.activateRoute(() => {
@@ -611,6 +612,7 @@ class B747_8_FMC_LegsPage {
                         this.resetAfterOp();
                     }; // TODO this seems annoying, but this is how stuff works in cj4_fmc right now
                     this._fmc.onExecDefault();
+                    console.log("B")
                 });
             }
         };

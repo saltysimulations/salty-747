@@ -350,6 +350,8 @@ class B747_8_FMC_HoldsPage {
       this._state.isModifying = false;
       
       this._fmc.activateRoute(false, () => {
+          this._fmc._fpHasChanged = false;
+          this._state.isModifying = false;
           this.update();
           this._fmc.onExecDefault();
       });

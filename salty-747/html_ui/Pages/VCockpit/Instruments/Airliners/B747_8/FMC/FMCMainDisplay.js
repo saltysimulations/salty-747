@@ -2453,8 +2453,6 @@ class FMCMainDisplay extends BaseAirliners {
         this.onNextPage = undefined;
         this.pageUpdate = undefined;
         this.refreshPageCallback = undefined;
-        this.onPrevPage = EmptyCallback.Void;
-        this.onNextPage = EmptyCallback.Void;
         this.unregisterPeriodicPageRefresh();
     }
     generateHTMLLayout(parent) {
