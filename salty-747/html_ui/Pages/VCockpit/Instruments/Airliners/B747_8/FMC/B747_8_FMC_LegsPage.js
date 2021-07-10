@@ -566,6 +566,7 @@ class B747_8_FMC_LegsPage {
 
             if (this._isAddingHold) {
                 this.addHold();
+                this.update(true);
             } else if (this._lsk6Field == "<ERASE") {
                 if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
                     this._fmc.fpHasChanged = false;
@@ -668,7 +669,7 @@ class B747_8_FMC_LegsPage {
                 this._fmc.fpHasChanged = true;
 
                 this._fmc.inOut = '';
-                CJ4_FMC_HoldsPage.showHoldPage(this._fmc, holdWaypoint.waypoint.ident);
+                B747_8_FMC_HoldsPage.showHoldPage(this._fmc, holdWaypoint.waypoint.ident);
             });
         } else {
             this._fmc.showErrorMessage('INVALID ENTRY');

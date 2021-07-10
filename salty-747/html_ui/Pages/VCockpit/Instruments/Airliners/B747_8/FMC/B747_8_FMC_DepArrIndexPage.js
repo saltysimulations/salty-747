@@ -287,8 +287,8 @@ class B747_8_FMC_DepArrIndexPage {
                     fmc.activateRoute();
                 }
                 fmc.onExecDefault();
-                this._fmc._isRouteActivated = false;
-                this._fmc.fpHasChanged = false;
+                fmc._isRouteActivated = false;
+                fmc.fpHasChanged = false;
             }
         };
 

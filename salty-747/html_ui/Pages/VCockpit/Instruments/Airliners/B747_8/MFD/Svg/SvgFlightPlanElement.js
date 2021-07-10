@@ -73,8 +73,8 @@ class SvgFlightPlanElement extends SvgMapElement {
                     }
 
                     //Missed approach preview
-                    if (missedSegment.offset > -1 && CJ4_MapSymbols.hasSymbol(CJ4_MapSymbol.MISSEDAPPR)) {
-                        this.buildPathFromWaypoints(waypoints, missedSegment.offset - 1, waypoints.length - 1, map, 'cyan', (index !== 0));
+                    if (missedSegment.offset > -1) {
+                        this.buildPathFromWaypoints(waypoints, missedSegment.offset - 1, waypoints.length - 1, map, '#D570FF', (index !== 0));
                     }
 
                     //Remainder of plan

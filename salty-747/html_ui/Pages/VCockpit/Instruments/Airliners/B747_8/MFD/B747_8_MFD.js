@@ -152,8 +152,8 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this._updateNDFiltersStatuses();
                 break;
             case "BTN_DATA":
-                this.map.instrument.showConstraints = !this.map.instrument.showConstraints;
-                this._updateNDFiltersStatuses();
+                //this.map.instrument.showConstraints = !this.map.instrument.showConstraints;
+                //this._updateNDFiltersStatuses();
                 break;
             case "BTN_POS":
                 break;
@@ -217,11 +217,10 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.modeChangeTimer = 0.15;
             }
         } else if (!this.wxRadarOn && !this.terrainOn && this.map.instrument.showAirports) {
-            this.map.instrument.bingMap.setVisible(true);
+            //this.map.instrument.bingMap.setVisible(true);
         } else if (!this.wxRadarOn && !this.terrainOn && !this.map.instrument.showAirports) {
             this.map.instrument.bingMap.setVisible(false);
         }
-        console.log(this.map.instrument.showBingMap);
         switch (this.mapConfigId) {
             case 0:
                 if (this.map.instrument.mapConfigId != 0) {
@@ -449,6 +448,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         this.allSymbols.push(this.ndInfo.querySelector("#TERR"));
         this.allSymbols.push(this.ndInfo.querySelector("#WXR"));
         this.allSymbols.push(this.ndInfo.querySelector("#WXRInfo"));
+        this.greenArc = document.querySelector("#greenArc");
     }
     onEnter() {
     }
@@ -464,7 +464,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
 
         this.zuluETA.textContent = "------Z";
         if (Simplane.getNextWaypointName() && !SimVar.GetSimVarValue("SIM ON GROUND", "bool")) {
-            const wpETE = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
+            const wpETE = Simplane.getNextWaypointETA();
             const utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
             const hours = Math.floor(utcETA / 3600);
             const minutes = Math.floor((utcETA % 3600) / 60);
@@ -508,6 +508,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
             this.wpData.setAttribute("visibility", "visible"); 
         }
     }
+
     onExit() {
     }
     onEvent(_event) {

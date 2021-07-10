@@ -60,6 +60,61 @@ class SvgMap {
         this.svgHtmlElement.appendChild(this.cityLayer);
         this.svgLayersToUpdate.push(this.cityLayer);
 
+        /* Construct Altitude Range Arc */
+        this.greenArc = document.createElementNS(Avionics.SVG.NS, "path");
+        this.greenArc.setAttribute("d", "M 425 510, Q 500 460, 575 510")
+        this.greenArc.setAttribute("stroke", "lime");
+        this.greenArc.setAttribute("stroke-width", "2.5px");
+        this.greenArc.setAttribute("fill", "transparent");
+        this.svgHtmlElement.appendChild(this.greenArc);
+
+        /* Construct Track Line */
+        this.trackLineGroup = document.createElementNS(Avionics.SVG.NS, "g");
+        this.svgHtmlElement.appendChild(this.trackLineGroup);
+        this.trackline = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackline.setAttribute("x1", "500");
+        this.trackline.setAttribute("x2", "500");
+        this.trackline.setAttribute("y1", "490");
+        this.trackline.setAttribute("y2", "0");
+        this.trackline.setAttribute("stroke", "white");
+        this.trackline.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackline);
+        this.trackLineMarker1 = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackLineMarker1.setAttribute("x1", "494");
+        this.trackLineMarker1.setAttribute("x2", "506");
+        this.trackLineMarker1.setAttribute("y1", "139");
+        this.trackLineMarker1.setAttribute("y2", "139");
+        this.trackLineMarker1.setAttribute("stroke", "white");
+        this.trackLineMarker1.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackLineMarker1);
+        this.trackLineMarker2 = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackLineMarker2.setAttribute("x1", "494");
+        this.trackLineMarker2.setAttribute("x2", "506");
+        this.trackLineMarker2.setAttribute("y1", "254");
+        this.trackLineMarker2.setAttribute("y2", "254");
+        this.trackLineMarker2.setAttribute("stroke", "white");
+        this.trackLineMarker2.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackLineMarker2);
+        this.trackLineMarker3 = document.createElementNS(Avionics.SVG.NS, "line");
+        this.trackLineMarker3.setAttribute("x1", "494");
+        this.trackLineMarker3.setAttribute("x2", "506");
+        this.trackLineMarker3.setAttribute("y1", "370");
+        this.trackLineMarker3.setAttribute("y2", "370");
+        this.trackLineMarker3.setAttribute("stroke", "white");
+        this.trackLineMarker3.setAttribute("stroke-width", "2.5px");
+        this.trackLineGroup.appendChild(this.trackLineMarker3);
+        this.halfRangeText = document.createElementNS(Avionics.SVG.NS, "text");
+        this.halfRangeText.setAttribute("x", "490");
+        this.halfRangeText.setAttribute("y", "250");
+        this.halfRangeText.setAttribute("stroke", "white");
+        this.halfRangeText.setAttribute("fill", "white");
+        this.halfRangeText.setAttribute("font-size", "23px");
+        this.halfRangeText.setAttribute("text-anchor", "end");
+        this.halfRangeText.textContent = "80";
+        this.trackLineGroup.appendChild(this.halfRangeText);
+
+        /* End Salty Mods */
+
         this.flightPlanLayer = document.createElementNS(Avionics.SVG.NS, "svg");
         this.svgHtmlElement.appendChild(this.flightPlanLayer);
         this.svgLayersToUpdate.push(this.flightPlanLayer);
@@ -392,6 +447,7 @@ class SvgMap {
                 SvgMapElement.logPerformances();
             }
         }
+        this.updateTrackLineAndArc();
     }
 
     appendChild(_svgElement, _svgLayer = null) {
@@ -575,6 +631,91 @@ class SvgMap {
         let lat = this.planeCoordinates.lat - ((transformed.y - 500) / 1000) * this._angularHeight;
         let long = this.planeCoordinates.long + ((transformed.x - 500) / 1000) * this._angularWidth;
         return new LatLongAlt(lat, long);
+    }
+    updateTrackLineAndArc() {
+        /*Update Track Line*/
+        let isInCTRmode = SimVar.GetSimVarValue("L:BTN_CTR_ACTIVE", "bool");
+        let isInWXRmode = SimVar.GetSimVarValue("L:BTN_WX_ACTIVE", "bool");
+        let mapMode = SimVar.GetSimVarValue("L:B747_MAP_MODE", "Enum");
+        let mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
+        let speed = Simplane.getGroundSpeed();
+        let track = SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degrees");
+        let heading = SimVar.GetSimVarValue("HEADING INDICATOR", "degrees");
+        let drift = track - heading;
+        const mapRangeEnumToHalfRangeText = {
+            0: "0.125",
+            1: "0.25",
+            2: "0.5",
+            3: "1",
+            4: "2.5",
+            5: "5",
+            6: "10",
+            7: "20",
+            8: "40",
+            9: "80",
+            10: "160",
+            11: "320"
+        };
+        let mapHalfRange = mapRangeEnumToHalfRangeText[mapRange];
+        if (!isInCTRmode && mapMode !== 3) {
+            this.trackLineGroup.style.visibility = "visible";
+            if (!isInWXRmode) {
+                this.halfRangeText.setAttribute("x", "490");
+                this.halfRangeText.setAttribute("y", "262");
+            }
+            else {
+                this.halfRangeText.setAttribute("x", "495");
+                this.halfRangeText.setAttribute("y", "250");
+            }
+            if (speed > 10){
+                this.trackLineGroup.setAttribute("transform", "rotate(" + drift + " " + 500 + " " + 500 + ")");
+                this.halfRangeText.setAttribute("transform", "rotate(" + -drift + " " + 500 + " " + 250 + ")");
+            }
+            this.halfRangeText.textContent = mapHalfRange;
+        } 
+        else {
+            this.trackLineGroup.style.visibility = "hidden";
+        }
+        /*Update Range Arc*/
+        if ((mapMode == 2) && (SimVar.GetSimVarValue("RADIO HEIGHT", "feet") >= 100)){   
+            let arcDeltaAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue() - Simplane.getAltitude();
+            let arcDeltaAltAbs = Math.abs(arcDeltaAlt);
+            let verticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
+            const mapRangeEnumToNM = {
+                0: 0.25,
+                1: 0.5,
+                2: 1,
+                3: 2,
+                4: 5,
+                5: 10,
+                6: 20,
+                7: 40,
+                8: 80,
+                9: 160,
+                10: 320,
+                11: 640
+            };
+            mapRange = mapRangeEnumToNM[mapRange];      
+            let distanceToLevelArc = Math.abs(((arcDeltaAltAbs / (verticalSpeed / speed)) * 0.000164579)); //Feet to Nautical Miles
+            let arcYcoord = distanceToLevelArc / mapRange * 460;
+            let xError = (arcYcoord + 60) * Math.sin(drift * Math.PI / 180);
+            if (!isInCTRmode) {
+                this.greenArc.setAttribute("transform", `translate(${xError}, -${arcYcoord}) rotate(` + drift + " " + 500 + " " + 460 + ")");
+            }           
+            else {
+                this.greenArc.setAttribute("transform", `translate(0, -${arcYcoord * 0.5})`);
+            }            
+            //Hide arc if out of compass bounds or aircraft considered at desired level or on non-intercepting flight path
+            if ((arcYcoord > 460) || (arcDeltaAltAbs <= 200) || (((verticalSpeed < 0) && (arcDeltaAlt > 0)) || ((verticalSpeed > 0) && (arcDeltaAlt < 0)))) {
+                this.greenArc.style.visibility = "hidden";
+            }
+            else {
+                this.greenArc.style.visibility = "visible";
+            }
+        }
+        else { 
+            this.greenArc.style.visibility = "hidden";
+        }
     }
 }
 SvgMap.Index = 0;

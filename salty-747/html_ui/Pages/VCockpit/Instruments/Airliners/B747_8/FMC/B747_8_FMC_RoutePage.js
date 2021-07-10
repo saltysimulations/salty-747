@@ -423,8 +423,8 @@ class FMCRoutePage {
                 if (result) {
                     this._fmc.fpHasChanged = true;
                     SimVar.SetSimVarValue("L:WT_CJ4_INHIBIT_SEQUENCE", "number", 0);
-                    this._fmc.resetVspeeds();
-                    this._fmc.resetFuelUsed();
+                    //this._fmc.resetVspeeds();
+                    //this._fmc.resetFuelUsed();
                     this.update(true);
                 }
             });
@@ -504,12 +504,16 @@ class FMCRoutePage {
         if (flightPlanManager) {
             const departure = flightPlanManager.getDeparture();
             if (departure) {
+                console.log("A")
                 const departureWaypoints = flightPlanManager.getDepartureWaypointsMap();
                 const lastDepartureIdx = departureWaypoints.length - 1;
                 lastDepartureWaypoint = departureWaypoints[lastDepartureIdx];
                 if (lastDepartureWaypoint) {
+                    console.log("B")
                     foundActive = flightPlanManager.getActiveWaypointIndex() <= lastDepartureIdx;
+                    console.log("C")
                     allRows.push(new FpRow(lastDepartureWaypoint.ident, lastDepartureIdx + 1, departure.name, undefined, foundActive));
+                    console.log("D")
                 }
             }
             const fpIndexes = [];

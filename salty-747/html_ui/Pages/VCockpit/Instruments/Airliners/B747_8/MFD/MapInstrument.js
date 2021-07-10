@@ -118,8 +118,9 @@ class MapInstrument extends ISvgMapRootElement {
         this.showRangeCompass = false;
         this.showTrackVector = false;
         this.showFuelRing = false;
-        this.showAltitudeIntercept = false;
-        this.showMissedAppr = false;
+        this.showAltitudeIntercept = true;
+        this.showMissedAppr = true;
+
 
         this.airspaceMaxRange = MapInstrument.AIRSPACE_RANGE_DEFAULT;
         this.roadHighwayMaxRange = MapInstrument.ROAD_HIGHWAY_RANGE_DEFAULT;
@@ -215,7 +216,7 @@ class MapInstrument extends ISvgMapRootElement {
             "hide-flightplan-if-bushtrip",
             "show-waypoints",
             "show-obstacles",
-            "show-constraints",
+            //"show-constraints",
             "show-vors",
             "show-intersections",
             "show-termwpts",
@@ -487,6 +488,7 @@ class MapInstrument extends ISvgMapRootElement {
         }
         this.cursorSvg = this.querySelector("#MapCursor");
         this.weatherSVG = this.querySelector("#WeatherSVG");
+        this.greenArc = this.querySelector("#greenArc");
         window.document.addEventListener("OnVCockpitPanelAttributesChanged", this.updateVisibility.bind(this));
         this.bIsInit = true;
     }
@@ -1125,6 +1127,9 @@ class MapInstrument extends ISvgMapRootElement {
             if (this.roadNetwork) {
                 this.roadNetwork.setVisible(false);
             }
+            if (this.greenArc) {
+                this.greenArc.setVisible(true);
+            }
             return;
         }
         if (this.quality == Quality.ultra || this.quality == Quality.high) {
@@ -1657,11 +1662,11 @@ class MapInstrument extends ISvgMapRootElement {
     }
 
     set smallAirportMaxRangeIndex(_index) {
-        this.airportMaxRanges[AirportSize.Small] = this._ranges[Math.min(Math.max(_index, 0), this._ranges.length - 1)];
+        this.airportMaxRanges[AirportSize.Small] = 0;
     }
 
     set medAirportMaxRangeIndex(_index) {
-        this.airportMaxRanges[AirportSize.Medium] = this._ranges[Math.min(Math.max(_index, 0), this._ranges.length - 1)];
+        this.airportMaxRanges[AirportSize.Medium] = 0;
     }
 
     set largeAirportMaxRangeIndex(_index) {
@@ -1736,7 +1741,7 @@ MapInstrument.VOR_RANGE_DEFAULT = 200;
 MapInstrument.VOR_RANGE_MIN_DEFAULT = 0;
 MapInstrument.NDB_RANGE_DEFAULT = 4;
 MapInstrument.NDB_RANGE_MIN_DEFAULT = 0;
-MapInstrument.AIRPORT_RANGES_DEFAULT = [35, 100, Infinity];
+MapInstrument.AIRPORT_RANGES_DEFAULT = [0, 0, Infinity];
 MapInstrument.CITY_RANGES_DEFAULT = [1500, 200, 100];
 MapInstrument.PLANE_RANGE_DEFAULT = 60;
 MapInstrument.AIRSPACE_RANGE_DEFAULT = Infinity;

@@ -652,5 +652,57 @@ class Boeing_FMC extends FMCMainDisplay {
             callback(false);
         }
     }
+    // Copy airway selections from temporary to active flightplan
+    copyAirwaySelections() {
+        const temporaryFPWaypoints = this.flightPlanManager.getWaypoints(1);
+        const activeFPWaypoints = this.flightPlanManager.getWaypoints(0);
+        for (let i = 0; i < activeFPWaypoints.length; i++) {
+            if (activeFPWaypoints[i].infos && temporaryFPWaypoints[i] && activeFPWaypoints[i].icao === temporaryFPWaypoints[i].icao && temporaryFPWaypoints[i].infos) {
+                activeFPWaypoints[i].infos.airwayIn = temporaryFPWaypoints[i].infos.airwayIn;
+                activeFPWaypoints[i].infos.airwayOut = temporaryFPWaypoints[i].infos.airwayOut;
+            }
+        }
+    }
+    //function added to set departure enroute transition index
+    setDepartureEnrouteTransitionIndex(departureEnrouteTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            this.flightPlanManager.setDepartureEnRouteTransitionIndex(departureEnrouteTransitionIndex, () => {
+                callback(true);
+            });
+        });
+    }
+    //function added to set arrival runway transition index
+    setArrivalRunwayTransitionIndex(arrivalRunwayTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            this.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayTransitionIndex, () => {
+                callback(true);
+            });
+        });
+    }
+    //function added to set arrival and runway transition
+    setArrivalAndRunwayIndex(arrivalIndex, enrouteTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            let landingRunway = this.vfrLandingRunway;
+            if (landingRunway === undefined) {
+                landingRunway = this.flightPlanManager.getApproachRunway();
+            }
+            this.flightPlanManager.setArrivalProcIndex(arrivalIndex, () => {
+                this.flightPlanManager.setArrivalEnRouteTransitionIndex(enrouteTransitionIndex, () => {
+                    if (landingRunway) {
+                        const arrival = this.flightPlanManager.getArrival();
+                        const arrivalRunwayIndex = arrival.runwayTransitions.findIndex(t => {
+                            return t.name.indexOf(landingRunway.designation) != -1;
+                        });
+                        if (arrivalRunwayIndex >= -1) {
+                            return this.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayIndex, () => {
+                                return callback(true);
+                            });
+                        }
+                    }
+                    return callback(true);
+                });
+            });
+        });
+    }
 }
 //# sourceMappingURL=Boeing_FMC.js.map

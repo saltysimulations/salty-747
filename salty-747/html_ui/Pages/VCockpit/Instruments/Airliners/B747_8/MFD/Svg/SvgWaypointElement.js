@@ -383,7 +383,7 @@ class SvgWaypointTextElement extends SvgMapElement {
                 context.fillStyle = map.config.waypointLabelColor;
             }
         } else {
-            context.fillStyle = "magenta";
+            context.fillStyle = "#D570FF";
         }
         context.textAlign = "start";
         context.font = fontSize + "px " + map.config.waypointLabelFontFamily;

@@ -6,7 +6,7 @@
     "outlineWidth": "4"
   },
 
-  "waypointLabelFontSize": 24,
+  "waypointLabelFontSize": 18,
   "waypointLabelFontFamily": "BoeingEICAS",
   "waypointLabelColor": "white",
   "waypointLabelStrokeColor": "#3f3f3f",
@@ -16,8 +16,8 @@
   "waypointLabelBackgroundStrokeColor": "black",
   "waypointLabelBackgroundStrokeWidth": 0,
   "waypointLabelBackgroundPadding": "2 2 2 2",
-  "waypointLabelDistanceX": 43,
-  "waypointLabelDistance": 0,
+  "waypointLabelDistanceX": 34,
+  "waypointLabelDistance": -20,
   "waypointIconSize": 28,
 
   "vorLabelColor": "cyan",
