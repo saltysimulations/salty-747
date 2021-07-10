@@ -221,7 +221,7 @@ class LNavDirector {
    */
   getAnticipationDistance(planeState, turnAngle) {
     const headwind = AutopilotMath.windComponents(planeState.trueHeading, planeState.windDirection, planeState.windSpeed).headwind;
-    const turnRadius = AutopilotMath.turnRadius(planeState.trueAirspeed - headwind, this.options.maxBankAngle);
+    const turnRadius = 1.5 * AutopilotMath.turnRadius(planeState.trueAirspeed - headwind, this.options.maxBankAngle);
 
     const bankDiff = (Math.sign(turnAngle) * this.options.maxBankAngle) - planeState.bankAngle;
     const enterBankDistance = (Math.abs(bankDiff) / this.options.bankRate) * ((planeState.trueAirspeed - headwind) / 3600);
@@ -573,13 +573,13 @@ class LNavDirectorOptions {
     this.maxBankAngle = 30;
 
     /** The rate of bank in degrees per second. */
-    this.bankRate = 5;
+    this.bankRate = 8;
 
     /** The maximum turn angle in degrees to calculate turn anticipation to. */
     this.maxTurnAnticipationAngle = 110;
 
     /** A function that returns the maximum turn anticipation distance. */
-    this.maxTurnAnticipationDistance = (planeState) => planeState.trueAirspeed < 350 ? 7 : 10;
+    this.maxTurnAnticipationDistance = (planeState) => planeState.trueAirspeed < 350 ? 7 : 15;
 
     /** The number of degrees left in the turn that turn completion will stop and rollout/tracking will begin. */
     this.degreesRollout = 15;

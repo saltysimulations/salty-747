@@ -488,7 +488,6 @@ class MapInstrument extends ISvgMapRootElement {
         }
         this.cursorSvg = this.querySelector("#MapCursor");
         this.weatherSVG = this.querySelector("#WeatherSVG");
-        this.greenArc = this.querySelector("#greenArc");
         window.document.addEventListener("OnVCockpitPanelAttributesChanged", this.updateVisibility.bind(this));
         this.bIsInit = true;
     }
@@ -1127,9 +1126,6 @@ class MapInstrument extends ISvgMapRootElement {
             if (this.roadNetwork) {
                 this.roadNetwork.setVisible(false);
             }
-            if (this.greenArc) {
-                this.greenArc.setVisible(true);
-            }
             return;
         }
         if (this.quality == Quality.ultra || this.quality == Quality.high) {
@@ -1142,7 +1138,7 @@ class MapInstrument extends ISvgMapRootElement {
             if (this.roadNetwork) {
                 this.roadNetwork.setVisible(true);
             }
-            this.bingMap.setVisible(this.showBingMap);
+            this.bingMap.setVisible(false);
         } else if (this.quality == Quality.medium) {
             if (this.navMap && this.navMap.svgHtmlElement) {
                 this.navMap.svgHtmlElement.style.display = "block";
@@ -1153,7 +1149,7 @@ class MapInstrument extends ISvgMapRootElement {
             if (this.roadNetwork) {
                 this.roadNetwork.setVisible(false);
             }
-            this.bingMap.setVisible(this.showBingMap);
+            this.bingMap.setVisible(false);
         } else {
             if (this.navMap && this.navMap.svgHtmlElement) {
                 this.navMap.svgHtmlElement.style.display = "none";
@@ -1165,7 +1161,7 @@ class MapInstrument extends ISvgMapRootElement {
                 this.roadNetwork.setVisible(false);
             }
             if (this.quality == Quality.low || this.quality == Quality.hidden) {
-                this.bingMap.setVisible(this.showBingMap);
+                this.bingMap.setVisible(false);
             } else {
                 this.bingMap.setVisible(false);
             }

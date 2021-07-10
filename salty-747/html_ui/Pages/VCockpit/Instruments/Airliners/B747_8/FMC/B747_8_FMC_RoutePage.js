@@ -24,6 +24,15 @@ class FMCRoutePage {
         this._airwayIndex = "";
 
         this._rows = [];
+
+        //SIMBRIEF
+        this.store = {
+            requestData: "<SEND",
+            routeUplinkSeparator: "",
+            loadUplink: "",
+            purgeUplink: "",
+            rteUplinkReady: false
+        }
     }
 
     set currentPage(value) {
@@ -111,15 +120,15 @@ class FMCRoutePage {
             }
             this._coRouteCell = "--------";
             if (this._fmc.simbrief.originIcao && this._fmc.simbrief.destinationIcao) {
-                this._coRouteCell = fmc.simbrief.originIcao + fmc.simbrief.destinationIcao;
+                this._coRouteCell = this._fmc.simbrief.originIcao + this._fmc.simbrief.destinationIcao;
             }
         }
 
-        if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1 && !this._fmc.getIsRouteActivated()) {
+        if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
             this._fmc.fpHasChanged = true;
             this._lsk6Field = "<ERASE";
             this._activateCell = "ACTIVATE>";
-        } else {
+        } else if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 0) {
             this._fmc.fpHasChanged = false;
             this._activateCell = "PERF INIT>";
             this._lsk6Field = "<RTE 2";
@@ -170,18 +179,40 @@ class FMCRoutePage {
     }
 
     renderMainPage() {
+        if (this._fmc.simbrief.rteUplinkReady) {
+            this.store.uplinkSeparator = " ----- ROUTE UPLINK ----- ";
+            this.store.loadUplink = "<LOAD";
+            this.store.purgeUplink = "PURGE>";
+            if (this._fmc.simbrief.originIcao) {
+                this._originCell = this._fmc.simbrief.originIcao;
+            }
+            if (this._fmc.simbrief.destinationIcao) {
+                this._destinationCell = this._fmc.simbrief.destinationIcao;
+            }
+            if (this._fmc.simbrief.flight_number) {
+                this._flightNoCell = this._fmc.simbrief.icao_airline + this._fmc.simbrief.flight_number;
+            }
+            if (this._fmc.simbrief.originIcao) {
+                this._coRouteCell = this._fmc.simbrief.originIcao + this._fmc.simbrief.destinationIcao;
+            }
+        } else if (!this._fmc.simbrief.rteUplinkReady) {
+            this.store.uplinkSeparator = "";
+            this.store.loadUplink = "";
+            this.store.purgeUplink = "";
+        }
+
         this._fmc.setTemplate([
             [" " + this._modStr + " RTE 1", 1, this._pageCount],
             ["\xa0ORIGIN", "DEST"],
             [this._originCell, this._destinationCell],
             ["\xa0RUNWAY", "FLT NO"],
             [this._depRwyCell, this._flightNoCell],
-            ["", "CO ROUTE"],
-            ["", this._coRouteCell],
-            [""],
-            [""],
+            ["\xa0REQUEST", "CO ROUTE"],
+            [`${this.store.requestData}`, this._coRouteCell],
+            ["", "", `${this.store.routeUplinkSeparator}`],
+            [`${this.store.loadUplink}`, `${this.store.purgeUplink}`],
             ["__FMCSEPARATOR"],
-            ["", ],
+            ["", "ALTN>"],
             [""],
             [this._lsk6Field, this._activateCell]
         ]);
@@ -219,7 +250,6 @@ class FMCRoutePage {
                 } else {
                     this._fmc.clearUserInput();
                     this.setOrigin(value.padEnd(4));
-                    this.update(true);
                 }
             };
 
@@ -235,7 +265,7 @@ class FMCRoutePage {
                 }
             };
 
-            this._fmc.onRightInput[4] = () => {
+            this._fmc.onRightInput[1] = () => {
                 const value = this._fmc.inOut;
                 this._fmc.clearUserInput();
                 this._fmc.updateFlightNo(value, (result) => {
@@ -243,6 +273,58 @@ class FMCRoutePage {
                         this.update(true);
                     }
                 });
+            };
+
+            /* 
+            3L
+            REQUEST DATA
+            */
+            this._fmc.onLeftInput[2] = () => {
+                this.store.requestData = "\xa0SENDING";
+                this.update(true);
+                const getInfo = async () => {
+                    getSimBriefPlan(this._fmc, this.store, this.update(true));
+                };
+                this.update(true);
+
+                getInfo()
+                    .then(() => {
+                        setTimeout( () => this.store.requestData = "<SEND", this._fmc.getInsertDelay());
+                        setTimeout( () => this._fmc.showErrorMessage("ROUTE 1 UPLINK READY"), this._fmc.getInsertDelay());
+                        setTimeout( () => this.update(true), this._fmc.getInsertDelay());
+                    });
+            };
+
+            /*
+                4L
+                LOAD DATA
+            */
+            this._fmc.onLeftInput[3] = () => {
+                if (this._fmc.simbrief.rteUplinkReady) {
+                    this._fmc.simbrief.rteUplinkReady = false;
+                    this.store.uplinkSeparator = "";
+                    this.store.loadUplink = "";
+                    this.store.purgeUplink = "";
+                    const insertInfo = async () => {
+                        insertRteUplink(this._fmc, this.update(true));
+                    };
+
+                    insertInfo()
+                        .then(() => {
+                            setTimeout( () => this.update(true), this._fmc.getInsertDelay());
+                        }
+                    );
+                }
+            };
+            this._fmc.onRightInput[3] = () => {
+                if (this._fmc.simbrief.rteUplinkReady) {
+                    this._fmc.simbrief.rteUplinkReady = false;
+                    this.store.uplinkSeparator = "";
+                    this.store.loadUplink = "";
+                    this.store.purgeUplink = "";
+                }
+                this.update(true);
+                console.log("A")
             };
 
             if (this._fmc.flightPlanManager.getCurrentFlightPlan().findSegmentByWaypointIndex(this._rows[0].fpIdx) !== SegmentType.Departure) {
@@ -337,63 +419,62 @@ class FMCRoutePage {
                     }
                 });
             };
-        }
-
-        this._fmc.onRightInput[lskIdx] = () => {
-            const value = this._fmc.inOut;
-            const idx = (this._currentPage > 0) ? lskIdx : 0;
-            const row = this._rows[idx + this._offset];
-            const wpIdx = row.fpIdx;
-
-            if (value === "DELETE") {
-                this._fmc.clearUserInput();
-                this._fmc.removeWaypoint(wpIdx, () => {
-                    this.update(true);
-                });
-            } else if (value.length > 0) {
-                this._fmc.clearUserInput();
-                if (this._airwayInput !== "") {
-                    this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
-                        this._fmc.getOrSelectWaypointByIdent(value, (wpt) => {
-                            if (!wpt) {
-                                this._fmc.showErrorMessage("NOT IN DATABASE");
-                            }
-                            const lastWpIdx = this._rows[idx + this._offset - 1].fpIdx;
-                            const lastWaypoint = this._fmc.flightPlanManager.getWaypoints()[lastWpIdx];
-                            lastWaypoint.infos.airwayOut = this._airwayInput;
-                            FMCRoutePage.insertWaypointsAlongAirway(this._fmc, wpt.ident, lastWpIdx, this._airwayInput, (result) => {
-                                if (result) {
-                                    this._airwayInput = "";
-                                    this._airwayIndex = -1;
-                                    this.update(true);
-                                } else {
-                                    this._fmc.showErrorMessage("NOT ON AIRWAY");
-                                }
-                            });
-                        });
+            this._fmc.onRightInput[lskIdx] = () => {
+                const value = this._fmc.inOut;
+                const idx = (this._currentPage > 0) ? lskIdx : 0;
+                const row = this._rows[idx + this._offset];
+                const wpIdx = row.fpIdx;
+    
+                if (value === "DELETE") {
+                    this._fmc.clearUserInput();
+                    this._fmc.removeWaypoint(wpIdx, () => {
+                        this.update(true);
                     });
-                } else {
-                    const pilotWaypoint = this._fmc._pilotWaypoints._pilotWaypointArray.find(w => w.id == value);
-                    if (pilotWaypoint) {
-                        const pilotWaypointObject = CJ4_FMC_PilotWaypointParser.buildPilotWaypointFromExisting(pilotWaypoint.id, parseFloat(pilotWaypoint.la), parseFloat(pilotWaypoint.lo), this._fmc);
+                } else if (value.length > 0) {
+                    this._fmc.clearUserInput();
+                    if (this._airwayInput !== "") {
                         this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
-                            this._fmc.flightPlanManager.addUserWaypoint(pilotWaypointObject, wpIdx, () => {
-                                this._fmc.activateRoute(false, () => {
-                                    this.update(true);
+                            this._fmc.getOrSelectWaypointByIdent(value, (wpt) => {
+                                if (!wpt) {
+                                    this._fmc.showErrorMessage("NOT IN DATABASE");
+                                }
+                                const lastWpIdx = this._rows[idx + this._offset - 1].fpIdx;
+                                const lastWaypoint = this._fmc.flightPlanManager.getWaypoints()[lastWpIdx];
+                                lastWaypoint.infos.airwayOut = this._airwayInput;
+                                FMCRoutePage.insertWaypointsAlongAirway(this._fmc, wpt.ident, lastWpIdx, this._airwayInput, (result) => {
+                                    if (result) {
+                                        this._airwayInput = "";
+                                        this._airwayIndex = -1;
+                                        this.update(true);
+                                    } else {
+                                        this._fmc.showErrorMessage("NOT ON AIRWAY");
+                                    }
                                 });
                             });
                         });
                     } else {
-                        this._fmc.insertWaypoint(value, wpIdx, (isSuccess) => {
-                            if (isSuccess) {
-                                this.update(true);
-                            }
-                        });
+                        const pilotWaypoint = this._fmc._pilotWaypoints._pilotWaypointArray.find(w => w.id == value);
+                        if (pilotWaypoint) {
+                            const pilotWaypointObject = CJ4_FMC_PilotWaypointParser.buildPilotWaypointFromExisting(pilotWaypoint.id, parseFloat(pilotWaypoint.la), parseFloat(pilotWaypoint.lo), this._fmc);
+                            this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
+                                this._fmc.flightPlanManager.addUserWaypoint(pilotWaypointObject, wpIdx, () => {
+                                    this._fmc.activateRoute(false, () => {
+                                        this.update(true);
+                                    });
+                                });
+                            });
+                        } else {
+                            this._fmc.insertWaypoint(value, wpIdx, (isSuccess) => {
+                                if (isSuccess) {
+                                    this.update(true);
+                                }
+                            });
+                        }
                     }
+                } else {
                 }
-            } else {
-            }
-        };
+            };
+        }
     }
 
     setDestination(icao) {
@@ -504,16 +585,12 @@ class FMCRoutePage {
         if (flightPlanManager) {
             const departure = flightPlanManager.getDeparture();
             if (departure) {
-                console.log("A")
                 const departureWaypoints = flightPlanManager.getDepartureWaypointsMap();
                 const lastDepartureIdx = departureWaypoints.length - 1;
                 lastDepartureWaypoint = departureWaypoints[lastDepartureIdx];
                 if (lastDepartureWaypoint) {
-                    console.log("B")
                     foundActive = flightPlanManager.getActiveWaypointIndex() <= lastDepartureIdx;
-                    console.log("C")
                     allRows.push(new FpRow(lastDepartureWaypoint.ident, lastDepartureIdx + 1, departure.name, undefined, foundActive));
-                    console.log("D")
                 }
             }
             const fpIndexes = [];

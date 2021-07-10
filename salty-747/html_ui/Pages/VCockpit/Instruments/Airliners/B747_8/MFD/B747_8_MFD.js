@@ -76,8 +76,8 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.map.instrument.intersectionMaxRange = Infinity;
         this.map.instrument.vorMaxRange = Infinity;
         this.map.instrument.ndbMaxRange = Infinity;
-        this.map.instrument.smallAirportMaxRange = Infinity;
-        this.map.instrument.medAirportMaxRange = Infinity;
+        this.map.instrument.smallAirportMaxRange = 0;
+        this.map.instrument.medAirportMaxRange = 0;
         this.map.instrument.largeAirportMaxRange = Infinity;
         SimVar.SetSimVarValue("L:B747_8_MFD_NAV_MODE", "number", 2);
 
@@ -218,7 +218,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
             }
         } else if (!this.wxRadarOn && !this.terrainOn && this.map.instrument.showAirports) {
             //this.map.instrument.bingMap.setVisible(true);
-        } else if (!this.wxRadarOn && !this.terrainOn && !this.map.instrument.showAirports) {
+        } else if (!this.wxRadarOn && !this.terrainOn) {
             this.map.instrument.bingMap.setVisible(false);
         }
         switch (this.mapConfigId) {
