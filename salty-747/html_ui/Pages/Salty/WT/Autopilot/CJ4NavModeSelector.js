@@ -979,7 +979,6 @@
         if (activateHeadingHold) {
           SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 1);
         }
-
         this.currentLateralActiveState = LateralNavModeState.LNAV;
       } else {
         this.currentLateralArmedState = LateralNavModeState.LNAV;
@@ -1197,10 +1196,14 @@
           }
           break;
         case LateralNavModeState.LNAV:
-          SimVar.SetSimVarValue('K:AP_PANEL_HEADING_HOLD', 'number', 1);
+          if (SimVar.GetSimVarValue("AUTOPILOT APPROACH ARM", "bool") !== 1 && SimVar.GetSimVarValue("AUTOPILOT GLIDESLOPE ARM", "bool") !== 1) {
+            SimVar.SetSimVarValue('K:AP_PANEL_HEADING_HOLD', 'number', 1);
+          }
           break;
         case LateralNavModeState.HDG:
-          SimVar.SetSimVarValue('K:AP_PANEL_HEADING_HOLD', 'number', 1);
+          if (SimVar.GetSimVarValue("AUTOPILOT APPROACH ARM", "bool") !== 1 && SimVar.GetSimVarValue("AUTOPILOT GLIDESLOPE ARM", "bool") !== 1) {
+            SimVar.SetSimVarValue('K:AP_PANEL_HEADING_HOLD', 'number', 1);
+          }
           break;
       }
     }
