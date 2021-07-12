@@ -8,16 +8,22 @@
 </script>
 
 <script type="text/html" import-script="/JS/SimPlane.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/WT_SimPlaneMod.js"></script> <!-- WT -->
 <script type="text/html" import-script="/JS/dataStorage.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/DataStore.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WTUtils.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WT_ConvertUnit.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WT_GCMath.js"></script> <!-- WT -->
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Runway.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Waypoint.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Waypoint.js"></script> <!-- WT -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Approach.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlan.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/WaypointLoader.js"></script>
-<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlanManager.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/WaypointLoader.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/fpm/LzUtf8.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/fpm/wtsdk.js"></script> <!-- WT -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/GeoCalc.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
@@ -37,6 +43,16 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/FMCMainDisplay.js"></script> <!--modified-->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/Boeing_FMC.js"></script> <!--modified-->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/FMC/FMCDataManager.js"></script>
+
+<!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/NavToNavTransfer.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/CJ4NavModeSelector.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/WT_BaseVnav.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/AutopilotMath.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/HoldsDirector.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/LocDirector.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/LNavDirector.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/WT_VnavAutopilot.js"></script>
 
 <!-- FMC -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_MainDisplay.js"></script>
@@ -65,6 +81,8 @@
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_DeparturesPage.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_LegsPage.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_ProgPage.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/B747_8_FMC_HoldPage.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/CJ4_FMC_PilotWaypoint.js"></script> <!-- WT -->
 
 <!-- OPTIONS -->
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/FMC/OPTIONS/B747_8_FMC_SaltyOptions.js"></script>

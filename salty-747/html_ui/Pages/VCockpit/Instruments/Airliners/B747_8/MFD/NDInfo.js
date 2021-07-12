@@ -223,9 +223,17 @@ class Jet_MFD_NDInfo extends HTMLElement {
                                 this.waypointDistance.textContent = this.currentWaypointDistance.toFixed(0);
                         }
                     }
-                    if ((_eta != this.currentWaypointTimeETA) || _force) {
+                    let groundSpeed = Simplane.getGroundSpeed();
+                    if (groundSpeed < 10) {
+                        if (this.waypointTime != null) {
+                            this.waypointTime.textContent = "--:--";
+                        }
+                    }
+                    else if ((_eta != this.currentWaypointTimeETA) || _force) {
                         this.currentWaypointTimeETA = _eta;
                         let localETA = _eta;
+                        let timeZoneOffset = Simplane.getCurrentTimeDeviation();
+                        localETA += timeZoneOffset;
                         if (this.waypointTime != null) {
                             var hours = Math.floor(localETA / 3600);
                             var minutes = Math.floor((localETA - (hours * 3600)) / 60);

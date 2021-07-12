@@ -1,5 +1,8 @@
+node_modules/
 .vscode/tasks.json
 .vscode/launch.json
 .vscode/settings.json
 salty-747/manifest.json
 salty-747/layout.json
+salty-747/html_ui/Pages/Salty/fpm
+src/fpm/dist

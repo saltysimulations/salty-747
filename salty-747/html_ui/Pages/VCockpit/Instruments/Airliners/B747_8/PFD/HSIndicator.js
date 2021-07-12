@@ -313,7 +313,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
         if (this.selectedHeadingGroup) {
             var autoPilotActive = true;
             if (autoPilotActive) {
-                var selectedHeading = SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR", "Degree");
+                var selectedHeading = Simplane.getAutoPilotSelectedHeadingLockValue(false);
                 var roundedSelectedHeading = Math.round(selectedHeading);
                 var delta = compass - selectedHeading;
                 this.selectedHeadingGroup.setAttribute("transform", "rotate(" + (-delta) + " " + this.rotatingCompassX + " " + this.rotatingCompassY + ")");

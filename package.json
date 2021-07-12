@@ -1,10 +1,24 @@
 {
-  "name": "salty-747",
-  "version": "0.3.0",
-  "description": "An open-source modification for the default MSFS 747-8, aiming to improve the lacking features and realism of the default aircraft.",
-  "scripts": {
-    "build": "node scripts/build.js"
-  },
-  "author": "Salty Simulations",
-  "license": "MIT"
+    "name": "salty-747",
+    "version": "0.3.0",
+    "description": "An open-source modification for the default MSFS 747-8, aiming to improve the lacking features and realism of the default aircraft.",
+    "scripts": {
+        "build": "node scripts/build.js",
+        "build:fpm": "cd src/fpm && tsc --module commonjs && rollup -c rollup.config.ts"
+    },
+    "author": "Salty Simulations",
+    "license": "MIT",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^4.14.0",
+        "@typescript-eslint/parser": "^4.14.0",
+        "eslint": "^7.18.0",
+        "rollup": "^2.37.1",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-copy": "^3.3.0",
+        "rollup-plugin-json": "^4.0.0",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "rollup-plugin-typescript2": "^0.29.0",
+        "typescript": "^4.1.3"
+    }
 }
