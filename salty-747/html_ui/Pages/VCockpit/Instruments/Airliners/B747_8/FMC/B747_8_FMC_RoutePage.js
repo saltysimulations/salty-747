@@ -44,9 +44,9 @@ class FMCRoutePage {
         }
 
         if (this._currentPage == 0) {
-            this._offset = 0;
+            this._offset = -1;
         } else {
-            this._offset = ((this._currentPage - 1) * 5) + 1;
+            this._offset = ((this._currentPage - 1) * 5);
         }
     }
 
@@ -164,7 +164,7 @@ class FMCRoutePage {
             }
         }
 
-        this._pageCount = Math.max(2, (Math.ceil((this._rows.length - 1) / 5) + 1));
+        this._pageCount = Math.max(2, (Math.ceil((this._rows.length) / 5) + 1));
 
         this._modStr = this._fmc.fpHasChanged ? "MOD" : "ACT";
     }
@@ -220,7 +220,6 @@ class FMCRoutePage {
 
     renderRoutePage() {
         const idx = this._offset;
-
         this._fmc.setTemplate([
             [" " + this._modStr + " RTE 1", (this._currentPage + 1), this._pageCount],
             ["VIA", "TO"],
