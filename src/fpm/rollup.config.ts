@@ -14,7 +14,7 @@ const libraryName = 'wtsdk'
 export default {
     input: `./src/${libraryName}.ts`,
     output: [
-        { file: `..\\..\\salty-747\\html_ui\\Pages\\Salty\\fpm\\${libraryName}.js`, format: 'umd', sourcemap: false, extend: true, name: 'window' }
+        { file: `../../salty-747/html_ui/Pages/Salty/fpm/${libraryName}.js`, format: 'umd', sourcemap: false, extend: true, name: 'window' }
     ],
     // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
     external: [],
@@ -37,7 +37,7 @@ export default {
         sourceMaps(),
         copy({
             targets: [
-                { src: 'src/utils/LzUtf8.js', dest: '..\\..\\salty-747\\html_ui\\Pages\\Salty\\fpm' }
+                { src: 'src/utils/LzUtf8.js', dest: '../../salty-747/html_ui/Pages/Salty/fpm' }
             ]
         })
     ],
