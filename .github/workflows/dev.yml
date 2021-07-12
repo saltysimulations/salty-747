@@ -27,7 +27,7 @@ jobs:
       - run: |
           npm i
           npm run build
-      - run: ls *
+      - run: ls -R
       - name: Build ZIP files
         run: |
           mkdir ./${{ env.BUILD_DIR_NAME }}
