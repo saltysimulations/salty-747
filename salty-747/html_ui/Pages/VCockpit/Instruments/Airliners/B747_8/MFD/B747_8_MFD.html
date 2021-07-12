@@ -9,14 +9,14 @@
             </div>
             <div id="map-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
                 <svg viewBox="0 0 600 600">
-                    <rect fill="transpartent" x="283" y="317" width="35px" height="20px" stroke="#db8e00" stroke-width="3" id="map-rect"></rect>
+                    <rect fill="transparent" x="283" y="317" width="35px" height="20px" stroke="#db8e00" stroke-width="3" id="map-rect"></rect>
                     <text x="300" y="334" style="text-anchor:middle;fill:#db8e00;font-size:17px;">MAP</text>     
                 </svg>
             </div>
             <jet-mfd-nd-compass id="Compass"></jet-mfd-nd-compass>
             <div id="trk-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
                 <svg viewBox="0 0 600 600">
-                    <rect fill="transpartent" x="283" y="37" width="35px" height="20px" stroke="#db8e00" stroke-width="2" id="trk-rect"></rect>
+                    <rect fill="transparent" x="283" y="37" width="35px" height="20px" stroke="#db8e00" stroke-width="2" id="trk-rect"></rect>
                     <text x="300" y="54" style="text-anchor:middle;fill:#db8e00;font-size:17px;">TRK</text>     
                 </svg>
             </div>
@@ -119,15 +119,22 @@
 </script>
 
 <script type="text/html" import-script="/JS/SimPlane.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/WT_SimPlaneMod.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/DataStore.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WT_ConvertUnit.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WT_GCMath.js"></script> <!-- WT -->
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/AutopilotMath.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/HoldsDirector.js"></script> <!-- WT -->
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Templates/Highlight/Highlight.js"></script>
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SelectableElement.js"></script>
 
-<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.html"></script> <!-- Modified -->
+
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/MapInstrument.html"></script> <!-- WT -->
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Salty_NavSystem.js"></script>
 
@@ -136,5 +143,9 @@
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Salty_NDCompass.js"></script>
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/NDInfo.js"></script> <!-- Modified -->
+
+<script type="text/html" import-script="/Pages/Salty/WT/DataStore.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/LzUtf8.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/wtsdk.js"></script> <!-- WT -->
 
 <script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/B747_8_MFD.js"></script>

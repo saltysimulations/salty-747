@@ -26,11 +26,51 @@ class Boeing_FMC extends FMCMainDisplay {
         this.maxCruiseFL = 450;
         this.cruiseFlightLevel = 100;
         this.onExec = () => {
-            if (this.getIsRouteActivated()) {
-                this.insertTemporaryFlightPlan();
+            if (this.onExecPage) {
+                console.log("if this.onExecPage");
+                this.onExecPage();
+            }
+            else {
+                this._isRouteActivated = false;
+                this._activatingDirectToExisting = false;
+                this.fpHasChanged = false;
+            }
+        };
+        this.onExecPage = undefined;
+        this.onExecDefault = () => {
+            if (this.getIsRouteActivated() && !this._activatingDirectTo) {
+                this.insertTemporaryFlightPlan(() => {
+                    this.copyAirwaySelections();
+                    this._isRouteActivated = false;
+                    this._activatingDirectToExisting = false;
+                    this.fpHasChanged = false;
+                    SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                    if (this.refreshPageCallback) {
+                        this.refreshPageCallback();
+                    }
+                });
+            } else if (this.getIsRouteActivated() && this._activatingDirectTo) {
+                const activeIndex = this.flightPlanManager.getActiveWaypointIndex();
+                this.insertTemporaryFlightPlan(() => {
+                    this.flightPlanManager.activateDirectToByIndex(activeIndex, () => {
+                        this.synchronizeTemporaryAndActiveFlightPlanWaypoints();
+                        this._isRouteActivated = false;
+                        this._activatingDirectToExisting = false;
+                        this._activatingDirectTo = false;
+                        this.fpHasChanged = false;
+                        SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
+                        if (this.refreshPageCallback) {
+                            this.refreshPageCallback();
+                        }
+                    });
+                });
+            } else {
+                this.fpHasChanged = false;
                 this._isRouteActivated = false;
                 SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 0);
                 if (this.refreshPageCallback) {
+                    this._activatingDirectTo = false;
+                    this.fpHasChanged = false;
                     this.refreshPageCallback();
                 }
             }
@@ -64,7 +104,7 @@ class Boeing_FMC extends FMCMainDisplay {
         super.onEvent(_event);
         console.log("B747_8_FMC_MainDisplay onEvent " + _event);
         if (_event.indexOf("AP_LNAV") != -1) {
-            this.toggleLNAV();
+            this._navModeSelector.onNavChangedEvent('NAV_PRESSED');
         }
         else if (_event.indexOf("AP_VNAV") != -1) {
             this.toggleVNAV();
@@ -73,24 +113,21 @@ class Boeing_FMC extends FMCMainDisplay {
             this.toggleFLCH();
         }
         else if (_event.indexOf("AP_HEADING_HOLD") != -1) {
-            this.toggleHeadingHold();
+            this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
         }
         else if (_event.indexOf("AP_HEADING_SEL") != -1) {
-            this.activateHeadingSel();
+            if (this._isHeadingHoldActive = true) {
+                SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
+                this._isHeadingHoldActive = false;
+            }
+            this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
         }
         else if (_event.indexOf("AP_SPD") != -1) {
-            if (this.aircraftType === Aircraft.AS01B) {
-                if (SimVar.GetSimVarValue("AUTOPILOT THROTTLE ARM", "Bool")) {
-                    this.activateSPD();
-                }
-                else {
-                    this.deactivateSPD();
-                }
+            if (SimVar.GetSimVarValue("AUTOPILOT THROTTLE ARM", "Bool")) {
+                this.activateSPD();
             }
             else {
-                if ((this.getIsAltitudeHoldActive() || this.getIsVSpeedActive()) && this.getIsTHRActive()) {
-                    this.toggleSPD();
-                }
+                this.deactivateSPD();
             }
         }
         else if (_event.indexOf("AP_SPEED_INTERVENTION") != -1) {
@@ -111,7 +148,6 @@ class Boeing_FMC extends FMCMainDisplay {
                     this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
                 }
                 if (displayedAltitude == Math.round(altitude/100) * 100){
-
                 }
                 else if (!Simplane.getAutoPilotFLCActive()) {
                     if (displayedAltitude >= altitude + 2000) {
@@ -136,8 +172,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
             this.setAPSpeedHoldMode();
-            if (this.aircraftType == Aircraft.AS01B)
-                this.deactivateSPD();
             this.setThrottleMode(ThrottleMode.TOGA);
             if (Simplane.getIndicatedSpeed() > 80) {
                 this.deactivateLNAV();
@@ -431,15 +465,14 @@ class Boeing_FMC extends FMCMainDisplay {
         }
     }
     activateHeadingHold() {
-        this.deactivateLNAV();
         this._isHeadingHoldActive = true;
         if (!SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "Boolean")) {
             SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "Number", 1);
         }
         SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 1);
         this._headingHoldValue = Simplane.getHeadingMagnetic();
-        SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
-        Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
+        SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 3);
+        Coherent.call("HEADING_BUG_SET", 3, this._headingHoldValue);
     }
     deactivateHeadingHold() {
         this._isHeadingHoldActive = false;
@@ -574,9 +607,14 @@ class Boeing_FMC extends FMCMainDisplay {
     getIsRouteActivated() {
         return this._isRouteActivated;
     }
-    activateRoute() {
+    activateRoute(directTo = false, callback = EmptyCallback.Void) {
+        if (directTo) {
+            this._activatingDirectTo = true;
+        }
         this._isRouteActivated = true;
+        this.fpHasChanged = true;
         SimVar.SetSimVarValue("L:FMC_EXEC_ACTIVE", "number", 1);
+        callback();
     }
     setBoeingDirectTo(directToWaypointIdent, directToWaypointIndex, callback = EmptyCallback.Boolean) {
         let waypoints = this.flightPlanManager.getWaypoints();
@@ -613,6 +651,58 @@ class Boeing_FMC extends FMCMainDisplay {
         else {
             callback(false);
         }
+    }
+    // Copy airway selections from temporary to active flightplan
+    copyAirwaySelections() {
+        const temporaryFPWaypoints = this.flightPlanManager.getWaypoints(1);
+        const activeFPWaypoints = this.flightPlanManager.getWaypoints(0);
+        for (let i = 0; i < activeFPWaypoints.length; i++) {
+            if (activeFPWaypoints[i].infos && temporaryFPWaypoints[i] && activeFPWaypoints[i].icao === temporaryFPWaypoints[i].icao && temporaryFPWaypoints[i].infos) {
+                activeFPWaypoints[i].infos.airwayIn = temporaryFPWaypoints[i].infos.airwayIn;
+                activeFPWaypoints[i].infos.airwayOut = temporaryFPWaypoints[i].infos.airwayOut;
+            }
+        }
+    }
+    //function added to set departure enroute transition index
+    setDepartureEnrouteTransitionIndex(departureEnrouteTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            this.flightPlanManager.setDepartureEnRouteTransitionIndex(departureEnrouteTransitionIndex, () => {
+                callback(true);
+            });
+        });
+    }
+    //function added to set arrival runway transition index
+    setArrivalRunwayTransitionIndex(arrivalRunwayTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            this.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayTransitionIndex, () => {
+                callback(true);
+            });
+        });
+    }
+    //function added to set arrival and runway transition
+    setArrivalAndRunwayIndex(arrivalIndex, enrouteTransitionIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            let landingRunway = this.vfrLandingRunway;
+            if (landingRunway === undefined) {
+                landingRunway = this.flightPlanManager.getApproachRunway();
+            }
+            this.flightPlanManager.setArrivalProcIndex(arrivalIndex, () => {
+                this.flightPlanManager.setArrivalEnRouteTransitionIndex(enrouteTransitionIndex, () => {
+                    if (landingRunway) {
+                        const arrival = this.flightPlanManager.getArrival();
+                        const arrivalRunwayIndex = arrival.runwayTransitions.findIndex(t => {
+                            return t.name.indexOf(landingRunway.designation) != -1;
+                        });
+                        if (arrivalRunwayIndex >= -1) {
+                            return this.flightPlanManager.setArrivalRunwayIndex(arrivalRunwayIndex, () => {
+                                return callback(true);
+                            });
+                        }
+                    }
+                    return callback(true);
+                });
+            });
+        });
     }
 }
 //# sourceMappingURL=Boeing_FMC.js.map
