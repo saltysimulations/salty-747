@@ -87,8 +87,8 @@ class B747_8_FMC_HoldsPage {
     
     this._fmc.onRightInput[2] = () => this.changeEFCTime(currentHold);
 
-    if (numHolds < 6) {
-      this._fmc.onRightInput[5] = () => B747_8_FMC_LegsPage.ShowPage1(this._fmc, true);
+    if (numHolds < 6 && !this._state.isModifying) {
+      this._fmc.onLeftInput[5] = () => B747_8_FMC_LegsPage.ShowPage1(this._fmc, true);
     }
 
     if (this.isHoldActive(currentHold)) {

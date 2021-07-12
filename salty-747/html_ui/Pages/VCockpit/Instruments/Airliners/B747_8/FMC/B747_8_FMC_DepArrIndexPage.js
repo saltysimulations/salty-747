@@ -185,7 +185,7 @@ class B747_8_FMC_DepArrIndexPage {
             let selectedDpEnrouteTransitionIndex = fmc.flightPlanManager.getDepartureEnRouteTransitionIndex();
             let selectedDpEnrouteTransition = selectedDeparture.enRouteTransitions[selectedDpEnrouteTransitionIndex];
             if (selectedDpEnrouteTransition) {
-                rows[2][0] = selectedDpEnrouteTransition.name.trim();
+                rows[2][0] = selectedDpEnrouteTransition.name.trim() + "<SEL>";
                 fmc.onLeftInput[1] = () => {
                     fmc.setDepartureEnrouteTransitionIndex(-1, () => {
                         B747_8_FMC_DepArrIndexPage.ShowDeparturePage(fmc, currentPage);
@@ -400,7 +400,7 @@ class B747_8_FMC_DepArrIndexPage {
             let selectedTransitionIndex = fmc.flightPlanManager.getApproachTransitionIndex();
             let selectedTransition = selectedApproach.transitions[selectedTransitionIndex];
             if (selectedTransition) {
-                rows[2] = ["", selectedTransition.name.trim()];
+                rows[2] = ["", "<SEL>" + selectedTransition.name.trim()];
                 fmc.onRightInput[1] = () => {
                     fmc.flightPlanManager.pauseSync();
                     fmc.setApproachTransitionIndex(-1, () => {
@@ -648,7 +648,7 @@ class B747_8_FMC_DepArrIndexPage {
             let selectedEnrouteTransitionIndex = fmc.flightPlanManager.getArrivalTransitionIndex();
             let selectedEnrouteTransition = selectedArrival.enRouteTransitions[selectedEnrouteTransitionIndex];
             if (selectedEnrouteTransition) {
-                rows[2][0] = selectedEnrouteTransition.name.trim();
+                rows[2][0] = selectedEnrouteTransition.name.trim() + "<SEL>";
                 fmc.onLeftInput[1] = () => {
                     fmc.setArrivalAndRunwayIndex(selectedArrivalIndex, -1, () => {
                         B747_8_FMC_DepArrIndexPage.ShowArrivalPage(fmc, currentPage);

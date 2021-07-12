@@ -114,6 +114,36 @@ class B747_8_FMC_LegsPage {
 
                 // format distance
                 distance = distance.toFixed(0);
+                
+                //Get and Format FMC CRZ speed
+                let crzMode = SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE", "Enum");
+                let crzSpeedCell = ""
+                let crzSpeed = this._fmc.getCrzManagedSpeed();
+                let crzMach = this._fmc.getCrzMach();
+                if (crzMach !== 1) {
+                    crzSpeedCell = crzMach.toFixed(3).substring(1);
+                }
+                else {
+                    crzSpeedCell = crzSpeed.toFixed(0);
+                }
+                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "bool") && crzMode === 2) {
+                    let machMode = Simplane.getAutoPilotMachModeActive();
+                    if (machMode) {
+                        let crzMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
+                        var radixPos = crzMachNo.indexOf('.');
+                        crzSpeedCell = crzMachNo.slice(radixPos);
+                    } else {
+                        crzSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
+                    }
+                }
+                else if (crzMode === 3) {
+                    crzSpeedCell = crzSpeed.toFixed(0);
+                }
+                else if (crzMode === 4) {
+                    crzSpeedCell = SimVar.GetSimVarValue("L:SALTY_CRZ_MACH", "mach").toFixed(3).substring(1);
+                }
+
+                let currentSegment = this._fmc.flightPlanManager.getSegmentFromWaypoint(waypoint.fix);
 
                 if (isActWpt) {
                     if (waypoint.fix.icao === '$DISCO') {
@@ -140,10 +170,9 @@ class B747_8_FMC_LegsPage {
                 }
 
                 if (waypoint.fix.icao !== '$DISCO') {
-                    this._rows[2 * i + 1][1] = this.getAltSpeedRestriction(waypoint.fix);
+                    this._rows[2 * i + 1][1] = (SegmentType.Enroute === currentSegment.type ? crzSpeedCell + "/" + (this._fmc.cruiseFlightLevel ? 'FL' + this._fmc.cruiseFlightLevel : '-----') : this.getAltSpeedRestriction(waypoint.fix));
                 }
             }
-
         }
     }
 
@@ -282,10 +311,6 @@ class B747_8_FMC_LegsPage {
                     this._fmc.selectMode = B747_8_FMC_LegsPage.SELECT_MODE.NEW;
                 }
 
-                // only allow insert new on add line
-                if (waypoint.fix === "$EMPTY" && this._fmc.selectMode !== B747_8_FMC_LegsPage.SELECT_MODE.NEW) {
-                    return;
-                }
                 switch (this._fmc.selectMode) {
                     case B747_8_FMC_LegsPage.SELECT_MODE.NONE: {
                         if (((i >= 0 && this._currentPage == 1) || (this._currentPage > 1))) {

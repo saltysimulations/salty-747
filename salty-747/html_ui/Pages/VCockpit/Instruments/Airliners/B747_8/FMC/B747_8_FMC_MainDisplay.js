@@ -1202,7 +1202,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this._isHeadingHoldActive) {
                 Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
             }
-            if (!this.flightPlanManager.isActiveApproach() && this.currentFlightPhase != FlightPhase.FLIGHT_PHASE_APPROACH) {
+            /*if (!this.flightPlanManager.isActiveApproach() && this.currentFlightPhase != FlightPhase.FLIGHT_PHASE_APPROACH) {
                 if (this.flightPlanManager.getWaypointsCount() > 3) {
                     let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
                     let nextActiveWaypoint = this.flightPlanManager.getNextActiveWaypoint();
@@ -1226,7 +1226,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         }
                     }
                 }
-            }
+            }*/
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getTakeOffManagedSpeed();
