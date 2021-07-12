@@ -24,8 +24,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14
-      - run: npm i
-      - run: npm run build
+      - run: |
+          npm i
+          npm run build
       - name: Build ZIP files
         run: |
           mkdir ./${{ env.BUILD_DIR_NAME }}
