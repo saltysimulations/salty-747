@@ -418,7 +418,6 @@ class FMCRoutePage {
                                 const lastWpIdx = this._rows[idx + this._offset - 1].fpIdx;
                                 const lastWaypoint = this._fmc.flightPlanManager.getWaypoints()[lastWpIdx];
                                 lastWaypoint.infos.airwayOut = this._airwayInput;
-                                console.log("ident: " + wpt.ident + "lastWpIdx: " + lastWpIdx + "awInput: " + this._airwayInput + "lastwp: " + lastWaypoint.ident);
                                 FMCRoutePage.insertWaypointsAlongAirway(this._fmc, wpt.ident, lastWpIdx, this._airwayInput, (result) => {
                                     if (result) {
                                         this._airwayInput = "";
@@ -498,12 +497,10 @@ class FMCRoutePage {
 
     static async insertWaypointsAlongAirway(fmc, lastWaypointIdent, index, airwayName, callback = EmptyCallback.Boolean) {
         const referenceWaypoint = fmc.flightPlanManager.getWaypoint(index);
-        console.log("sdasdasdasdasd" + referenceWaypoint.ident);
         if (referenceWaypoint) {
             const infos = referenceWaypoint.infos;
             if (infos instanceof WayPointInfo) {
                 const airway = infos.airways.find(a => {
-                    console.log("asdiuhboasdiohas  fdsf " + a.name);
                     return a.name === airwayName;
                 });
                 if (airway) {
