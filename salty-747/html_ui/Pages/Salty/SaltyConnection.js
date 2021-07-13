@@ -38,7 +38,7 @@ function fetchTimeValue() {
     return null;
 }
 
-const getMETAR = async (icaos, lines, store, updateView) => {    
+const getMETAR = async (icaos, lines, store, updateView) => {
     const storedMetarSrc = SaltyDataStore.get("OPTIONS_METAR_SRC", "MSFS");
     for (const icao of icaos) {
         if (icao !== "") {
@@ -175,166 +175,11 @@ const getSimBriefPlan = (fmc, store, updateView) => {
         });
 }
 
-/*
-    INSERTS ORIGIN, DESTINATION, FLIGHT NUMBER AND CO ROUTE DATA FROM SIMBRIEF INTO FMC
-*/
-const insertRteUplink = (fmc, updateView) => {
-    const origin = fmc.simbrief.originIcao;
-    const destination = fmc.simbrief.destinationIcao;
-    const coRoute = fmc.simbrief.originIcao + fmc.simbrief.destinationIcao;
-    const fltNbr = fmc.simbrief.icao_airline + fmc.simbrief.flight_number;
-
-    fmc.showErrorMessage(fmc.simbrief.uplinkReady);
-
-    fmc.updateRouteOrigin(origin.toString(), (result) => {
-        if (result) {
-            fmc.updateRouteDestination(destination.toString(), (result) => {
-                if (result) {
-                    setTimeout(async () => {
-                        await uplinkRoute(fmc)
-                            .then(() => {
-                                fmc.showErrorMessage("PERF INIT UPLINK");
-                            })
-                        ;
-                    }, fmc.getInsertDelay());
-                    fmc.updateFlightNo(fltNbr, (result) => {
-                        if (result) {
-                            fmc.updateCoRoute(coRoute, (result) => {
-                                if (result) {
-                                    if (fmc._pageCurrent == "RTE 1") {
-                                        updateView();
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-}
-
-
-/*
-    INSERTS ZFW, CRUISE LEVEL, COST INDEX AND RES FUEL INTO PERF INIT PAGE
-*/
-const insertPerfUplink = (fmc, updateView) => {
-    let units;
-    if (fmc.simbrief.units == "kgs") {
-        units = false;
-    } else if (fmc.units == "lbs") {
-        units = true;
-    }
-    const zfw = (fmc.simbrief.estZfw / 1000).toString();
-    const crz = fmc.simbrief.cruiseAltitude;
-    const costIndex = fmc.simbrief.costIndex.toString();
-    const resFuel = (parseFloat(fmc.simbrief.finResFuel) + parseFloat(fmc.simbrief.altnFuel)).toFixed(1) / 1000;
-    fmc.trySetZeroFuelWeightZFWCG(zfw, units, (result) => {
-        if (!result) {
-            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
-        }
-    });
-    fmc.tryUpdateCostIndex(costIndex, 9999, (result) => {
-        if (!result) {
-            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
-        }
-    });
-    fmc.setFuelReserves(resFuel, units, (result) => {
-        if (!result) {
-            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
-        }
-    });
-    fmc.setCruiseFlightLevelAndTemperature(crz, (result) => {
-        if (!result) {
-            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
-        }
-    });
-}
-
-const addWaypointAsync = (fix, fmc, routeIdent, via) => {
-    const wpIndex = fmc.flightPlanManager.getWaypointsCount() - 1;
-    if (via) {
-        return new Promise((res, rej) => {
-            fmc.insertWaypointsAlongAirway(routeIdent, wpIndex, via, (result) => {
-                if (result) {
-                    console.log("Inserted waypoint: " + routeIdent + " via " + via);
-                    res(true);
-                } else {
-                    console.log('AWY/WPT MISMATCH ' + routeIdent + " via " + via);
-                    fmc.showErrorMessage("PARTIAL ROUTE 1 UPLINK");
-                    res(false);
-                }
-            });
-        });
-    } else {
-        return new Promise((res, rej) => {
-            const coords = {
-                lat: fix.pos_lat,
-                long: fix.pos_long
-            };
-            getWaypointByIdentAndCoords(fmc, routeIdent, coords, (waypoint) => {
-                if (waypoint) {
-                    fmc.flightPlanManager.addWaypoint(waypoint.icao, wpIndex, () => {
-                        console.log("Inserted waypoint: " + routeIdent);
-                        res(true);
-                    });
-                } else {
-                    console.log('NOT IN DATABASE ' + routeIdent);
-                    fmc.showErrorMessage("NOT IN DATABASE");
-                    res(false);
-                }
-            });
-        });
-    }
-};
-
-const uplinkRoute = async (fmc) => {
-    const {navlog} = fmc.simbrief;
-    console.log("navlog: " + navlog);
-
-    const procedures = new Set(navlog.filter(fix => fix.is_sid_star === "1").map(fix => fix.via_airway));
-
-    for (let i = 0; i < navlog.length; i++) {
-        const fix = navlog[i];
-        const nextFix = navlog[i + 1];
-
-        if (fix.is_sid_star === '1') {
-            continue;
-        }
-        if (["TOP OF CLIMB", "TOP OF DESCENT"].includes(fix.name)) {
-            continue;
-        }
-
-        console.log('---- ' + fix.ident + ' ----');
-
-        // Last SID fix - either it's airway is in the list of procedures, or
-        // this is the very first fix in the route (to deal with procedures
-        // that only have an exit fix, which won't be caught when filtering)
-        if (procedures.has(fix.via_airway) || (i == 0)) {
-            console.log("Inserting waypoint last of DEP: " + fix.ident);
-            await addWaypointAsync(fix, fmc, fix.ident);
-            continue;
-        } else {
-            if (fix.via_airway === 'DCT') {
-                console.log("Inserting waypoint: " + fix.ident);
-                await addWaypointAsync(fix, fmc, fix.ident);
-                continue;
-            }
-            if (nextFix.via_airway !== fix.via_airway) {
-                // last fix of airway
-                console.log("Inserting waypoint: " + fix.ident + " via " + fix.via_airway);
-                await addWaypointAsync(fix, fmc, fix.ident, fix.via_airway);
-                continue;
-            }
-        }
-    }
-};
-
 /**
  * Convert unsupported coordinate formats in a waypoint ident to supported ones
  * @param {string} ident Waypoint ident
  */
- function convertWaypointIdentCoords(ident) {
+const convertWaypointIdentCoords = (ident) => {
     // SimBrief formats coordinate waypoints differently to MSFS:
     //  - 60N045W = 60* 00'N 045* 00'W
     //  - 3050N12022W = 30* 50'N 120* 22'W
@@ -379,26 +224,182 @@ const uplinkRoute = async (fmc) => {
     }
 }
 
-/**
- * Get the waypoint by ident and coords whitin the threshold
- * @param {string} ident Waypoint ident
- * @param {object} coords Waypoint coords
- * @param {function} callback Return waypoint
- */
- function getWaypointByIdentAndCoords(fmc, ident, coords, callback) {
-    const DISTANCE_THRESHOLD = 1;
-    ident = convertWaypointIdentCoords(ident);
-    fmc.dataManager.GetWaypointsByIdent(ident).then((waypoints) => {
-        if (!waypoints || waypoints.length === 0) {
-            return callback(undefined);
+const getFplnFromSimBrief = async (fmc) => {
+    const url = "http://www.simbrief.com/api/xml.fetcher.php?json=1&userid=" + SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
+    let json = "";
+
+    const parseAirport = (icao) => {
+        if ((/K.*\d.*/.test(icao))) {
+            icao = icao.substring(1).padEnd(4, " ");
         }
 
-        for (waypoint of waypoints) {
-            const distanceToTarget = Avionics.Utils.computeGreatCircleDistance(coords, waypoint.infos.coordinates);
-            if (distanceToTarget < DISTANCE_THRESHOLD) {
-                return callback(waypoint);
+        return icao;
+    };
+
+    // HINT: defining these methods here in the order they will be called by the callbacks
+    const updateFrom = () => {
+        console.log("UPDATE FROMTO");
+        const from = json.origin.icao_code;
+        // fmc.tryUpdateFromTo(json.origin.icao_code + "/" + json.destination.icao_code, updateRunways);
+        fmc.flightPlanManager.setActiveWaypointIndex(0, () => {
+            fmc.eraseTemporaryFlightPlan(() => {
+                fmc.flightPlanManager.clearFlightPlan(() => {
+                    fmc.ensureCurrentFlightPlanIsTemporary(() => {
+                        fmc.updateRouteOrigin(parseAirport(from), updateRunways);
+                    });
+                });
+            });
+        });
+    };
+
+    const updateRunways = () => {
+        console.log("UPDATE RUNWAY");
+        const rwy = json.origin.plan_rwy;
+        fmc.setOriginRunway(rwy, updateDestination);
+    };
+
+    const updateDestination = () => {
+        console.log("UPDATE DESTINATION");
+        const dest = json.destination.icao_code;
+        fmc.updateRouteDestination(parseAirport(dest), updateRoute);
+    };
+
+    const updateRoute = () => {
+        const routeArr = json.general.route.split(' ');
+        console.log("UPDATE ROUTE");
+        let idx = 0; // TODO starting from 1 to skip departure trans for now
+
+        console.log(routeArr)
+
+        const addWaypoint = async () => {
+            if (idx >= routeArr.length - 1) {
+                // DONE
+                fmc.flightPlanManager.resumeSync();
+                fmc.flightPlanManager.setActiveWaypointIndex(1);
+                SimVar.SetSimVarValue("L:WT_CJ4_INHIBIT_SEQUENCE", "number", 0);
+                FMCRoutePage.ShowPage1(fmc);
+                return;
             }
+            let icao = routeArr[idx];
+
+            if (idx == 0 && icao !== "DCT") {
+                // if first waypoint is no dct it must be a departure
+                icao = "DCT";
+            }
+
+            // let isWaypoint = await fmc.dataManager.IsWaypointValid(icao);
+            idx++;
+
+            const wptIndex = fmc.flightPlanManager.getWaypointsCount() - 1;
+            console.log("MOD INDEX " + wptIndex);
+
+            if (icao === "DCT" || convertWaypointIdentCoords(icao) !== icao) {
+                // should be a normal waypoint then
+                icao = convertWaypointIdentCoords(routeArr[idx]);
+                console.log("adding as waypoint " + icao);
+                fmc.insertWaypoint(icao, wptIndex, (res) => {
+                    idx++;
+                    if (res) {
+                        addWaypoint();
+                    }
+                    else {
+                        fmc.flightPlanManager.resumeSync();
+                        fmc.setMsg("ERROR WPT " + icao);
+                    }
+
+                });
+            } else {
+                // probably an airway
+                console.log("adding as airway " + icao);
+                const exitWpt = routeArr[idx];
+
+                // try preloading data like tscharlii seems to do
+                const lastWaypoint = fmc.flightPlanManager.getWaypoints()[fmc.flightPlanManager.getEnRouteWaypointsLastIndex()];
+                if (lastWaypoint.infos instanceof WayPointInfo) {
+                    lastWaypoint.infos.UpdateAirway(icao).then(() => {
+                        const airway = lastWaypoint.infos.airways.find(a => { return a.name === icao; });
+                        if (airway) {	                                    // Load the fixes of the selected airway and their infos.airways
+                            // set the outgoing airway of the last enroute or departure waypoint of the flightplan
+                            lastWaypoint.infos.airwayOut = airway.name;
+                            FMCRoutePage.insertWaypointsAlongAirway(fmc, exitWpt, wptIndex - 1, icao, (res) => {
+                                idx++;
+                                if (res) {
+                                    addWaypoint();
+                                } else {
+                                    fmc.flightPlanManager.resumeSync();
+                                    fmc.setMsg("ERROR AIRWAY " + icao);
+                                }
+                            });
+                        }
+                        else {
+                            // TODO hmm, so if no airway found, just continue and add exit as wpt?
+                            addWaypoint();
+                        }
+                    });
+                }
+            }
+        };
+        addWaypoint();
+    };
+
+    WTUtils.loadFile(url, (r) => {
+        json = JSON.parse(r);
+        if (!json || json === "") {
+            fmc.setMsg("NO DATA[red]");
+            return;
         }
-        return callback(undefined);
+        //else if (json.indexOf("Error") > -1) {
+        //    fmc.showErrorMessage("WRONG PILOTID");
+        //    return;
+        //}
+        let flightNo = json.general.flight_number;
+        if (typeof json.general.icao_airline === "string") {
+            flightNo = `${json.general.icao_airline}${flightNo}`;
+        }
+        fmc.updateFlightNo(flightNo);
+        const crz = json.general.initial_altitude;
+        fmc.setCruiseFlightLevelAndTemperature(crz);
+        fmc.flightPlanManager.pauseSync();
+        updateFrom();
+    }, () => {
+        // wrong pilot id is the most obvious error here, so lets show that
+        fmc.setMsg("WRONG PILOT ID");
+        return;
+    });
+}
+
+/*
+    INSERTS ZFW, CRUISE LEVEL, COST INDEX AND RES FUEL INTO PERF INIT PAGE
+*/
+const insertPerfUplink = (fmc, updateView) => {
+    let units;
+    if (fmc.simbrief.units == "kgs") {
+        units = false;
+    } else if (fmc.units == "lbs") {
+        units = true;
+    }
+    const zfw = (fmc.simbrief.estZfw / 1000).toString();
+    const crz = fmc.simbrief.cruiseAltitude;
+    const costIndex = fmc.simbrief.costIndex.toString();
+    const resFuel = (parseFloat(fmc.simbrief.finResFuel) + parseFloat(fmc.simbrief.altnFuel)).toFixed(1) / 1000;
+    fmc.trySetZeroFuelWeightZFWCG(zfw, units, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
+        }
+    });
+    fmc.tryUpdateCostIndex(costIndex, 9999, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
+        }
+    });
+    fmc.setFuelReserves(resFuel, units, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
+        }
+    });
+    fmc.setCruiseFlightLevelAndTemperature(crz, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
+        }
     });
 }
