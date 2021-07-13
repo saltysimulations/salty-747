@@ -33,6 +33,8 @@ class FMCRoutePage {
             purgeUplink: "",
             rteUplinkReady: false
         }
+
+        this.rteUplinkReady = false;
     }
 
     set currentPage(value) {
@@ -179,23 +181,11 @@ class FMCRoutePage {
     }
 
     renderMainPage() {
-        if (this._fmc.simbrief.rteUplinkReady) {
+        if (this.rteUplinkReady) {
             this.store.uplinkSeparator = " ----- ROUTE UPLINK ----- ";
             this.store.loadUplink = "<LOAD";
             this.store.purgeUplink = "PURGE>";
-            if (this._fmc.simbrief.originIcao) {
-                this._originCell = this._fmc.simbrief.originIcao;
-            }
-            if (this._fmc.simbrief.destinationIcao) {
-                this._destinationCell = this._fmc.simbrief.destinationIcao;
-            }
-            if (this._fmc.simbrief.flight_number) {
-                this._flightNoCell = this._fmc.simbrief.icao_airline + this._fmc.simbrief.flight_number;
-            }
-            if (this._fmc.simbrief.originIcao) {
-                this._coRouteCell = this._fmc.simbrief.originIcao + this._fmc.simbrief.destinationIcao;
-            }
-        } else if (!this._fmc.simbrief.rteUplinkReady) {
+        } else {
             this.store.uplinkSeparator = "";
             this.store.loadUplink = "";
             this.store.purgeUplink = "";
@@ -274,24 +264,19 @@ class FMCRoutePage {
                 });
             };
 
-            /* 
+            /*
             3L
             REQUEST DATA
             */
             this._fmc.onLeftInput[2] = () => {
                 this.store.requestData = "\xa0SENDING";
                 this.update(true);
-                const getInfo = async () => {
-                    getSimBriefPlan(this._fmc, this.store, this.update(true));
-                };
-                this.update(true);
-
-                getInfo()
-                    .then(() => {
-                        setTimeout( () => this.store.requestData = "<SEND", this._fmc.getInsertDelay());
-                        setTimeout( () => this._fmc.showErrorMessage("ROUTE 1 UPLINK READY"), this._fmc.getInsertDelay());
-                        setTimeout( () => this.update(true), this._fmc.getInsertDelay());
-                    });
+                setTimeout(() => {
+                    this.store.requestData = "<SEND";
+                    this.rteUplinkReady = true;
+                    this._fmc.showErrorMessage("ROUTE 1 UPLINK READY");
+                    this.update(true)
+                }, this._fmc.getInsertDelay())
             };
 
             /*
@@ -299,20 +284,13 @@ class FMCRoutePage {
                 LOAD DATA
             */
             this._fmc.onLeftInput[3] = () => {
-                if (this._fmc.simbrief.rteUplinkReady) {
-                    this._fmc.simbrief.rteUplinkReady = false;
+                if (this.rteUplinkReady) {
+                    this.rteUplinkReady = false;
                     this.store.uplinkSeparator = "";
                     this.store.loadUplink = "";
                     this.store.purgeUplink = "";
-                    const insertInfo = async () => {
-                        insertRteUplink(this._fmc, this.update(true));
-                    };
-
-                    insertInfo()
-                        .then(() => {
-                            setTimeout( () => this.update(true), this._fmc.getInsertDelay());
-                        }
-                    );
+                    getFplnFromSimBrief(this._fmc);
+                    setTimeout(() => this.update(true), this._fmc.getInsertDelay());
                 }
             };
             this._fmc.onRightInput[3] = () => {
@@ -423,7 +401,7 @@ class FMCRoutePage {
                 const idx = (this._currentPage > 0) ? lskIdx : 0;
                 const row = this._rows[idx + this._offset];
                 const wpIdx = row.fpIdx;
-    
+
                 if (value === "DELETE") {
                     this._fmc.clearUserInput();
                     this._fmc.removeWaypoint(wpIdx, () => {
@@ -440,6 +418,7 @@ class FMCRoutePage {
                                 const lastWpIdx = this._rows[idx + this._offset - 1].fpIdx;
                                 const lastWaypoint = this._fmc.flightPlanManager.getWaypoints()[lastWpIdx];
                                 lastWaypoint.infos.airwayOut = this._airwayInput;
+                                console.log("ident: " + wpt.ident + "lastWpIdx: " + lastWpIdx + "awInput: " + this._airwayInput + "lastwp: " + lastWaypoint.ident);
                                 FMCRoutePage.insertWaypointsAlongAirway(this._fmc, wpt.ident, lastWpIdx, this._airwayInput, (result) => {
                                     if (result) {
                                         this._airwayInput = "";
@@ -519,10 +498,12 @@ class FMCRoutePage {
 
     static async insertWaypointsAlongAirway(fmc, lastWaypointIdent, index, airwayName, callback = EmptyCallback.Boolean) {
         const referenceWaypoint = fmc.flightPlanManager.getWaypoint(index);
+        console.log("sdasdasdasdasd" + referenceWaypoint.ident);
         if (referenceWaypoint) {
             const infos = referenceWaypoint.infos;
             if (infos instanceof WayPointInfo) {
                 const airway = infos.airways.find(a => {
+                    console.log("asdiuhboasdiohas  fdsf " + a.name);
                     return a.name === airwayName;
                 });
                 if (airway) {
@@ -561,18 +542,23 @@ class FMCRoutePage {
                             return;
                         }
                         fmc.showErrorMessage("2ND INDEX NOT FOUND");
+                        console.log("2ND INDEX NOT FOUND")
                         return callback(false);
                     }
                     fmc.showErrorMessage("1ST INDEX NOT FOUND");
+                    console.log("1ND INDEX NOT FOUND")
                     return callback(false);
                 }
                 fmc.showErrorMessage("NO REF WAYPOINT");
+                console.log("NO REF WAYPOINT")
                 return callback(false);
             }
             fmc.showErrorMessage("NO WAYPOINT INFOS");
+            console.log("NO WAYPOINT INFOS")
             return callback(false);
         }
         fmc.showErrorMessage("NO REF WAYPOINT");
+        console.log("NO REF WAYPOIN")
         return callback(false);
     }
 
