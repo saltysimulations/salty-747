@@ -1742,7 +1742,7 @@ class FMCMainDisplay extends BaseAirliners {
                 let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel * 100;
                 if (isFinite(cruiseFlightLevel)) {
-                    if (altitude < 0.90 * cruiseFlightLevel) {
+                    if (altitude < 0.90 * cruiseFlightLevel && !this._isStepClimbing) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                         this.flightPhaseHasChangedToDescent = true;
