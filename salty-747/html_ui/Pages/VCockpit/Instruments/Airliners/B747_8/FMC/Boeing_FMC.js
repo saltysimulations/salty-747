@@ -20,6 +20,7 @@ class Boeing_FMC extends FMCMainDisplay {
         this._altitudeHoldValue = 0;
         this._onAltitudeHoldDeactivate = EmptyCallback.Void;
         this._isRouteActivated = false;
+        this._isStepClimbing = false;
     }
     Init() {
         super.Init();
@@ -140,21 +141,23 @@ class Boeing_FMC extends FMCMainDisplay {
             if (this.getIsVNAVActive()) {
                 let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
-                let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && displayedAltitude > this.cruiseFlightLevel * 100) {
-                    this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
+                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && mcpAlt > this.cruiseFlightLevel * 100) {
+                    this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
                 if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
-                    this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
+                    if (mcpAlt > this.cruiseFlightLevel * 100) {
+                        this._isStepClimbing = true;
+                    }
+                    this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
-                if (displayedAltitude == Math.round(altitude/100) * 100){
+                if (mcpAlt == Math.round(altitude/100) * 100){
                 }
                 else if (!Simplane.getAutoPilotFLCActive()) {
-                    if (displayedAltitude >= altitude + 2000) {
+                    if (mcpAlt >= altitude + 2000) {
                         SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
                         this.setThrottleMode(ThrottleMode.CLIMB);
                     }
-                    else if (displayedAltitude + 2000 <= altitude) {
+                    else if (mcpAlt + 2000 <= altitude) {
                         SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 25);
                         this.setThrottleMode(ThrottleMode.CLIMB);
                     }
