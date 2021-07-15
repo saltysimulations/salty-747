@@ -396,7 +396,7 @@ class FMCRoutePage {
                     }
                 });
             };
-            this._fmc.onRightInput[lskIdx] = () => {
+            this._fmc.onRightInput[lskIdx] = async () => {
                 const value = this._fmc.inOut;
                 const idx = (this._currentPage > 0) ? lskIdx : 0;
                 const row = this._rows[idx + this._offset];
@@ -436,6 +436,16 @@ class FMCRoutePage {
                             this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
                                 this._fmc.flightPlanManager.addUserWaypoint(pilotWaypointObject, wpIdx, () => {
                                     this._fmc.activateRoute(false, () => {
+                                        this.update(true);
+                                    });
+                                });
+                            });
+                        }
+                        const userWaypoint = await CJ4_FMC_PilotWaypointParser.parseInput(value, wpIdx, this._fmc);
+                        if (userWaypoint) {
+                            this._fmc.ensureCurrentFlightPlanIsTemporary(() => {
+                                this._fmc.flightPlanManager.addUserWaypoint(userWaypoint.wpt, wpIdx, () => {
+                                    this._fmc.activateRoute(true, () => {
                                         this.update(true);
                                     });
                                 });

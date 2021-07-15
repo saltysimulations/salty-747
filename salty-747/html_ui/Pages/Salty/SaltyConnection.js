@@ -293,7 +293,20 @@ const getFplnFromSimBrief = async (fmc) => {
             const wptIndex = fmc.flightPlanManager.getWaypointsCount() - 1;
             console.log("MOD INDEX " + wptIndex);
 
-            if (icao === "DCT" || convertWaypointIdentCoords(icao) !== icao) {
+            icao = convertWaypointIdentCoords(icao);
+
+            const userWaypoint = await CJ4_FMC_PilotWaypointParser.parseInput(icao, idx, fmc);
+
+            if (userWaypoint) {
+                fmc.ensureCurrentFlightPlanIsTemporary(() => {
+                    fmc.flightPlanManager.addUserWaypoint(userWaypoint.wpt, idx, () => {
+                        this._fmc.activateRoute(true);
+                        idx++;
+                    });
+                });
+            }
+
+            if (icao === "DCT") {
                 // should be a normal waypoint then
                 icao = convertWaypointIdentCoords(routeArr[idx]);
                 console.log("adding as waypoint " + icao);
