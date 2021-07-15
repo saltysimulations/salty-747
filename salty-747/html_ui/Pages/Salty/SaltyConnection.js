@@ -302,6 +302,7 @@ const getFplnFromSimBrief = async (fmc) => {
                     fmc.flightPlanManager.addUserWaypoint(userWaypoint.wpt, idx, () => {
                         this._fmc.activateRoute(true);
                         idx++;
+                        addWaypoint();
                     });
                 });
             }
@@ -321,7 +322,8 @@ const getFplnFromSimBrief = async (fmc) => {
                     }
 
                 });
-            } else {
+            } else if (userWaypoint) addWaypoint();
+            else {
                 // probably an airway
                 console.log("adding as airway " + icao);
                 const exitWpt = routeArr[idx];
