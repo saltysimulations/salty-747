@@ -69,7 +69,7 @@ class SvgFlightPlanElement extends SvgMapElement {
 
                     //Active leg
                     if (waypoints[activeWaypointIndex] && waypoints[activeWaypointIndex - 1]) {
-                        this.buildPathFromWaypoints(waypoints, activeWaypointIndex - 1, activeWaypointIndex + 1, map, '#D570FF', false);
+                        this.buildPathFromWaypoints(waypoints, activeWaypointIndex - 1, activeWaypointIndex + 1, map, '#D570FF', (index !== 0));
                     }
 
                     //Missed approach preview
@@ -98,7 +98,7 @@ class SvgFlightPlanElement extends SvgMapElement {
         context.strokeStyle = style;
         if (isDashed === true) {
             context.strokeStyle = "white";
-            context.setLineDash([10, 5]);
+            context.setLineDash([20, 20]);
         } else {
             context.setLineDash([]);
         }
