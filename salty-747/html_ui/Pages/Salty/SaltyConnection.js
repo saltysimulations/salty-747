@@ -227,6 +227,29 @@ const convertWaypointIdentCoords = (ident) => {
 const getFplnFromSimBrief = async (fmc) => {
     const url = "http://www.simbrief.com/api/xml.fetcher.php?json=1&userid=" + SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
     let json = "";
+    let routeArr;
+
+    const isCoordinate = async (icao) => {
+        if (await CJ4_FMC_PilotWaypointParser.parseInput(convertWaypointIdentCoords(icao), 0, fmc)) {
+            return true;
+        }
+        return false;
+    }
+
+    const cleanSimBriefRoute = async () => {
+        routeArr = json.general.route.split(' ');
+        let cleanedRoute = [];
+
+        // Inserting DCT between coordinates
+        for (let i = 0; i < routeArr.length; i++) {
+            if (await isCoordinate(routeArr[i]) && routeArr[i - 1] !== "DCT") {
+                cleanedRoute.push("DCT", routeArr[i]);
+            } else {
+                cleanedRoute.push(routeArr[i]);
+            }
+        }
+        routeArr = cleanedRoute;
+    }
 
     const parseAirport = (icao) => {
         if ((/K.*\d.*/.test(icao))) {
@@ -265,7 +288,6 @@ const getFplnFromSimBrief = async (fmc) => {
     };
 
     const updateRoute = () => {
-        const routeArr = json.general.route.split(' ');
         console.log("UPDATE ROUTE");
         let idx = 0; // TODO starting from 1 to skip departure trans for now
 
@@ -293,37 +315,35 @@ const getFplnFromSimBrief = async (fmc) => {
             const wptIndex = fmc.flightPlanManager.getWaypointsCount() - 1;
             console.log("MOD INDEX " + wptIndex);
 
-            icao = convertWaypointIdentCoords(icao);
-
-            const userWaypoint = await CJ4_FMC_PilotWaypointParser.parseInput(icao, idx, fmc);
-
-            if (userWaypoint) {
-                fmc.ensureCurrentFlightPlanIsTemporary(() => {
-                    fmc.flightPlanManager.addUserWaypoint(userWaypoint.wpt, idx, () => {
-                        this._fmc.activateRoute(true);
-                        idx++;
-                        addWaypoint();
-                    });
-                });
-            }
-
             if (icao === "DCT") {
-                // should be a normal waypoint then
                 icao = convertWaypointIdentCoords(routeArr[idx]);
-                console.log("adding as waypoint " + icao);
-                fmc.insertWaypoint(icao, wptIndex, (res) => {
-                    idx++;
-                    if (res) {
-                        addWaypoint();
-                    }
-                    else {
-                        fmc.flightPlanManager.resumeSync();
-                        fmc.setMsg("ERROR WPT " + icao);
-                    }
 
-                });
-            } else if (userWaypoint) addWaypoint();
-            else {
+                const userWaypoint = await CJ4_FMC_PilotWaypointParser.parseInput(icao, idx, fmc);
+                if (userWaypoint) {
+                    console.log("adding as user waypoint " + icao);
+                    fmc.ensureCurrentFlightPlanIsTemporary(() => {
+                        fmc.flightPlanManager.addUserWaypoint(userWaypoint.wpt, idx, () => {
+                            this._fmc.activateRoute(true);
+                            idx++;
+                        });
+                    });
+                    addWaypoint();
+                } else {
+                    // should be a normal waypoint then
+                    console.log("adding as waypoint " + icao);
+                    fmc.insertWaypoint(icao, wptIndex, (res) => {
+                        idx++;
+                        if (res) {
+                            addWaypoint();
+                        }
+                        else {
+                            fmc.flightPlanManager.resumeSync();
+                            fmc.setMsg("ERROR WPT " + icao);
+                        }
+
+                    });
+                }
+            } else {
                 // probably an airway
                 console.log("adding as airway " + icao);
                 const exitWpt = routeArr[idx];
@@ -353,6 +373,7 @@ const getFplnFromSimBrief = async (fmc) => {
                     });
                 }
             }
+
         };
         addWaypoint();
     };
@@ -375,6 +396,7 @@ const getFplnFromSimBrief = async (fmc) => {
         const crz = json.general.initial_altitude;
         fmc.setCruiseFlightLevelAndTemperature(crz);
         fmc.flightPlanManager.pauseSync();
+        cleanSimBriefRoute();
         updateFrom();
     }, () => {
         // wrong pilot id is the most obvious error here, so lets show that
