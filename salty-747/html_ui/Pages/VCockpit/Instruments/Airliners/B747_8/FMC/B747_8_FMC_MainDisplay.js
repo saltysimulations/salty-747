@@ -1143,46 +1143,29 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     else {
                         SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 0);
                     }
-                    let selectedAltitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
-                    if (!this.flightPlanManager.getIsDirectTo() &&
-                        isFinite(nextWaypoint.legAltitude1) &&
-                        nextWaypoint.legAltitude1 < 20000 &&
-                        nextWaypoint.legAltitude1 > selectedAltitude &&
-                        Simplane.getAltitude() > nextWaypoint.legAltitude1 - 200) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, nextWaypoint.legAltitude1, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 1);
+                }
+                let vertSpeed = Simplane.getVerticalSpeed();
+                let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+                let targetAlt = mcpAlt;
+                if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_CRUISE) {
+                    if (vertSpeed > 50) {
+                        targetAlt = Math.min(this.cruiseFlightLevel * 100, mcpAlt);
                     }
-                    else {
-                        let altitude = Simplane.getAutoPilotSelectedAltitudeLockValue("feet");
-                        if (isFinite(altitude)) {
-                            Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, this.cruiseFlightLevel * 100, this._forceNextAltitudeUpdate);
-                            this._forceNextAltitudeUpdate = false;
-                            SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
-                        }
+                    if (vertSpeed < 50) {
+                        targetAlt = Math.max(this.cruiseFlightLevel * 100, mcpAlt);
                     }
                 }
-                else {
-                    let vertSpeed = Simplane.getVerticalSpeed();
-                    let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-                    let targetAlt = mcpAlt;
-                    if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_CRUISE){
-                        if (vertSpeed > 50) {
-                            targetAlt = Math.min(this.cruiseFlightLevel * 100, mcpAlt);
-                        }
-                        if (vertSpeed < 50) {
-                            targetAlt = Math.max(this.cruiseFlightLevel * 100, mcpAlt);
-                        }
-                    }
-                    if (isFinite(targetAlt) && Simplane.getAutoPilotFLCActive()) {
-                        Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, targetAlt, this._forceNextAltitudeUpdate);
-                        this._forceNextAltitudeUpdate = false;
-                        SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
-                    }
+                if (isFinite(targetAlt) && Simplane.getAutoPilotFLCActive()) {
+                    Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, targetAlt, this._forceNextAltitudeUpdate);
+                    this._forceNextAltitudeUpdate = false;
+                    SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
                 }
-                //Triggers correct Autothrottle mode SPD when capturing in VNAV
-                if (Simplane.getAutoPilotAltitudeLockActive() && Simplane.getAutoPilotThrottleArmed() && !this.getIsSPDActive()) {
-                    this.activateSPD();
+                //Triggers correct Autothrottle mode SPD when capturing in VNAV and cancels Step Climb active flag
+                if (Simplane.getAutoPilotAltitudeLockActive()) {
+                    this._isStepClimbing = false;
+                    if (Simplane.getAutoPilotThrottleArmed() && !this.getIsSPDActive()) {
+                        this.activateSPD();
+                    }
                 }
             }
             else if (!this.getIsFLCHActive() && this.getIsSPDActive()) {
