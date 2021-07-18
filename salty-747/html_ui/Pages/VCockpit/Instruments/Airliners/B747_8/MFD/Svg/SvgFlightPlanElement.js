@@ -69,7 +69,7 @@ class SvgFlightPlanElement extends SvgMapElement {
 
                     //Active leg
                     if (waypoints[activeWaypointIndex] && waypoints[activeWaypointIndex - 1]) {
-                        this.buildPathFromWaypoints(waypoints, activeWaypointIndex - 1, activeWaypointIndex + 1, map, '#D570FF', false);
+                        this.buildPathFromWaypoints(waypoints, activeWaypointIndex - 1, activeWaypointIndex + 1, map, '#D570FF', (index !== 0));
                     }
 
                     //Missed approach preview
@@ -98,7 +98,7 @@ class SvgFlightPlanElement extends SvgMapElement {
         context.strokeStyle = style;
         if (isDashed === true) {
             context.strokeStyle = "white";
-            context.setLineDash([10, 5]);
+            context.setLineDash([20, 20]);
         } else {
             context.setLineDash([]);
         }
@@ -107,31 +107,47 @@ class SvgFlightPlanElement extends SvgMapElement {
         for (let i = startIndex; i < endIndex; i++) {
             const waypoint = waypoints[i];
             const pos = map.coordinatesToXY(waypoint.infos.coordinates);
-
-            if (i === startIndex || (prevWaypoint && prevWaypoint.endsInDiscontinuity)) {
-                context.moveTo(pos.x, pos.y);
-            }
-            else {
-                //Draw great circle segments if more than 2 degrees longitude difference
-                const longDiff = Math.abs(waypoint.infos.coordinates.long - prevWaypoint.infos.coordinates.long);
-                if (longDiff > 2) {
-                    const numSegments = Math.floor(longDiff / 2);
-                    const startingLatLon = new LatLon(prevWaypoint.infos.coordinates.lat, prevWaypoint.infos.coordinates.long);
-                    const endingLatLon = new LatLon(waypoint.infos.coordinates.lat, waypoint.infos.coordinates.long);
-
-                    const segmentPercent = 1 / numSegments;
-                    for (let j = 0; j <= numSegments; j++) {
-                        const segmentEnd = startingLatLon.intermediatePointTo(endingLatLon, j * segmentPercent);
-                        const segmentEndVec = map.coordinatesToXY(new LatLongAlt(segmentEnd.lat, segmentEnd.lon));
-
-                        context.lineTo(segmentEndVec.x, segmentEndVec.y);
+            const nextWaypoint = waypoints[i + 1];
+            let nextPos;
+            let prevPos;
+            let shouldSkipDraw = false;
+            if (i > startIndex + 1) {
+                prevPos = map.coordinatesToXY(prevWaypoint.infos.coordinates);
+                if (i < endIndex - 1) {
+                    nextPos = map.coordinatesToXY(nextWaypoint.infos.coordinates);
+                }
+                if (nextPos && prevPos) {
+                    if (!this.isWaypointOnScreen(prevPos) && !this.isWaypointOnScreen(nextPos) && !this.isWaypointOnScreen(pos)) {
+                        //DO NOT DRAW IF OFF MAP
+                        shouldSkipDraw = true;
                     }
                 }
+            }
+            if (!shouldSkipDraw) {
+                if (i === startIndex || (prevWaypoint && prevWaypoint.endsInDiscontinuity)) {
+                    context.moveTo(pos.x, pos.y);
+                }
                 else {
-                    context.lineTo(pos.x, pos.y);
+                    //Draw great circle segments if more than 2 degrees longitude difference
+                    const longDiff = Math.abs(waypoint.infos.coordinates.long - prevWaypoint.infos.coordinates.long);
+                    if (longDiff > 2) {
+                        const numSegments = Math.floor(longDiff / 2);
+                        const startingLatLon = new LatLon(prevWaypoint.infos.coordinates.lat, prevWaypoint.infos.coordinates.long);
+                        const endingLatLon = new LatLon(waypoint.infos.coordinates.lat, waypoint.infos.coordinates.long);
+    
+                        const segmentPercent = 1 / numSegments;
+                        for (let j = 0; j <= numSegments; j++) {
+                            const segmentEnd = startingLatLon.intermediatePointTo(endingLatLon, j * segmentPercent);
+                            const segmentEndVec = map.coordinatesToXY(new LatLongAlt(segmentEnd.lat, segmentEnd.lon));
+    
+                            context.lineTo(segmentEndVec.x, segmentEndVec.y);
+                        }
+                    }
+                    else {
+                        context.lineTo(pos.x, pos.y);
+                    }
                 }
             }
-
             prevWaypoint = waypoint;
         }
 
@@ -158,7 +174,13 @@ class SvgFlightPlanElement extends SvgMapElement {
 
         context.stroke();
     }
-
+    isWaypointOnScreen(pos) {
+        const coordLimit = 1024;
+        if (pos.x > coordLimit || pos.x < 0 || pos.y > coordLimit || pos.y < 0) {
+            return false;
+        }
+        return true;
+    }
     /**
      * 
      * @param {Vec2} p1 

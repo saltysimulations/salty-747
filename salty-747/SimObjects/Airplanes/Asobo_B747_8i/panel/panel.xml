@@ -257,6 +257,140 @@
 
 		<Annunciation>
 		  <Type>Advisory</Type>
+		  <Text>\FUEL LOW CTR L</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:1" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\FUEL LOW CTR R</Text>
+		  <Condition>
+			<And>
+				<Equal>
+					<Simvar name="FUEL TANK CENTER QUANTITY" unit="gallon"/>
+					<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="FUELSYSTEM PUMP SWITCH:2" unit="Boolean"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\FUEL PMP STB L</Text>
+		  <Condition>
+			<Or>
+				<And>
+					<GreaterEqual>
+						<Simvar name="FUELSYSTEM TANK WEIGHT:8" unit="kilo"/>
+			  			<Constant>500</Constant>
+			  		</GreaterEqual>
+			  		<GreaterEqual>
+						<Simvar name="L:AIRLINER_FLIGHT_PHASE" unit="enum"/>
+			  			<Constant>4</Constant>
+			  		</GreaterEqual>
+					<Equal>
+						<Simvar name="FUELSYSTEM PUMP SWITCH:15" unit="bool"/>
+			  			<Constant>0</Constant>
+					</Equal>
+				</And>
+				<And>
+					<Equal>
+						<Simvar name="FUELSYSTEM PUMP SWITCH:15" unit="bool"/>
+			  			<Constant>1</Constant>
+			  		</Equal>
+			  		<Equal>
+						<Simvar name="SIM ON GROUND" unit="Boolean"/>
+			 			<Constant>1</Constant>
+			  		</Equal>
+				</And>
+		      </Or>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\FUEL PMP STB R</Text>
+		  <Condition>
+			<Or>
+				<And>
+					<GreaterEqual>
+						<Simvar name="FUELSYSTEM TANK WEIGHT:8" unit="kilo"/>
+			  			<Constant>500</Constant>
+			  		</GreaterEqual>
+			  		<GreaterEqual>
+						<Simvar name="L:AIRLINER_FLIGHT_PHASE" unit="enum"/>
+			  			<Constant>4</Constant>
+			  		</GreaterEqual>
+					<Equal>
+						<Simvar name="FUELSYSTEM PUMP SWITCH:16" unit="bool"/>
+			  			<Constant>0</Constant>
+					</Equal>
+				</And>
+				<And>
+					<Equal>
+						<Simvar name="FUELSYSTEM PUMP SWITCH:16" unit="bool"/>
+			  			<Constant>1</Constant>
+			  		</Equal>
+			  		<Equal>
+						<Simvar name="SIM ON GROUND" unit="Boolean"/>
+			 			<Constant>1</Constant>
+			  		</Equal>
+				</And>
+		      </Or>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\FUEL PRES STB L</Text>
+		  <Condition>
+			<And>
+				<LowerEqual>
+					<Simvar name="FUELSYSTEM TANK WEIGHT:8" unit="kilo"/>
+			  		<Constant>10</Constant>
+			  	</LowerEqual>
+				<Equal>
+					<Simvar name="FUELSYSTEM PUMP ACTIVE:15" unit="bool"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\FUEL PRES STB R</Text>
+		  <Condition>
+			<And>
+				<LowerEqual>
+					<Simvar name="FUELSYSTEM TANK WEIGHT:8" unit="kilo"/>
+			  		<Constant>10</Constant>
+			  	</LowerEqual>
+				<Equal>
+					<Simvar name="FUELSYSTEM PUMP ACTIVE:16" unit="bool"/>
+			  		<Constant>1</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
 		  <Text>\DOOR ENTRY L 1</Text>
 		  <Condition>
 			<Greater>
