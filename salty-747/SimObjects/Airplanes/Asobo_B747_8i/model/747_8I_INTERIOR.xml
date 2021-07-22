@@ -607,6 +607,12 @@
             <DefaultTemplateParameters>
                 <SIMVAR_POWER_SETTING>LIGHT PANEL POWER SETTING:3</SIMVAR_POWER_SETTING>
             </DefaultTemplateParameters>
+            <Component ID="STATIC_INTENSITY_SCREENS">
+                <UseTemplate Name="ASOBO_GT_Screen_Template">
+                    <NODE_ID>SCREEN_RUDDER</NODE_ID>
+                    <SCREEN_ID>RUDDER</SCREEN_ID>
+                </UseTemplate>
+            </Component>
             <Component ID="HANDLING_Trims">
                 <DefaultTemplateParameters>
                     <USE_DEFAULT_VARIABLE_SPEED_TRIM>True</USE_DEFAULT_VARIABLE_SPEED_TRIM>
@@ -3150,10 +3156,6 @@
                     <OverrideTemplateParameters>
                         <POTENTIOMETER>50</POTENTIOMETER>
                     </OverrideTemplateParameters>
-                    <UseTemplate Name="ASOBO_GT_Screen_Template">
-                        <NODE_ID>SCREEN_RUDDER</NODE_ID>
-                        <SCREEN_ID>RUDDER</SCREEN_ID>
-                    </UseTemplate>	
                     <UseTemplate Name="ASOBO_GT_Screen_Template">
                         <NODE_ID>SCREEN_TCI</NODE_ID>
                         <SCREEN_ID>ATC</SCREEN_ID>
