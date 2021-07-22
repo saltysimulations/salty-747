@@ -1244,6 +1244,12 @@
                     <TANK_ID>1</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_L_CTR_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_L_CTR_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_ctr_tank_pump_r</NODE_ID>
@@ -1252,6 +1258,12 @@
                     <TANK_ID>1</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_R_CTR_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_R_CTR_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_01_fwd</NODE_ID>
@@ -1260,6 +1272,12 @@
                     <TANK_ID>2</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_1_FWD_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_1_FWD_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_01_aft</NODE_ID>
@@ -1268,6 +1286,12 @@
                     <TANK_ID>2</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_1_AFT_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_1_AFT_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_02_fwd</NODE_ID>
@@ -1276,6 +1300,12 @@
                     <TANK_ID>3</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_2_FWD_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_2_FWD_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_02_aft</NODE_ID>
@@ -1284,6 +1314,12 @@
                     <TANK_ID>3</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_2_AFT_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_2_AFT_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_03_fwd</NODE_ID>
@@ -1292,6 +1328,12 @@
                     <TANK_ID>4</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_3_FWD_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_3_FWD_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_03_aft</NODE_ID>
@@ -1300,6 +1342,12 @@
                     <TANK_ID>4</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_3_AFT_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_3_AFT_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_04_fwd</NODE_ID>
@@ -1308,6 +1356,12 @@
                     <TANK_ID>5</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_4_FWD_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_4_FWD_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_main_04_aft</NODE_ID>
@@ -1316,6 +1370,12 @@
                     <TANK_ID>5</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_4_AFT_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_MAIN_4_AFT_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_ovrd_pump_02_fwd</NODE_ID>
@@ -1324,6 +1384,12 @@
                     <TANK_ID>3</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_2_FWD_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_2_FWD_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_ovrd_pump_02_aft</NODE_ID>
@@ -1332,6 +1398,12 @@
                     <TANK_ID>3</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_2_AFT_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_2_AFT_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_ovrd_pump_03_fwd</NODE_ID>
@@ -1340,6 +1412,12 @@
                     <TANK_ID>4</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_3_FWD_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_3_FWD_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_ovrd_pump_03_aft</NODE_ID>
@@ -1348,6 +1426,12 @@
                     <TANK_ID>4</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_3_AFT_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_OVRD_3_AFT_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_stab_tank_pump_l</NODE_ID>
@@ -1356,6 +1440,12 @@
                     <TANK_ID>8</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_L_STAB_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_L_STAB_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Pump_Template">
                     <NODE_ID>push_ovhd_fuel_stab_tank_pump_r</NODE_ID>
@@ -1364,6 +1454,12 @@
                     <TANK_ID>8</TANK_ID>
                     <OFF_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_R_STAB_TURN_ON</OFF_TOOLTIP>
                     <ON_TOOLTIP>COCKPIT.TOOLTIPS.FUEL_PUMP_R_STAB_TURN_OFF</ON_TOOLTIP>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_FUEL_Push_Valve_Template">
                     <NODE_ID>push_ovhd_start_fuel_jettison_nozzle_l</NODE_ID>
@@ -1556,21 +1652,45 @@
                     <NODE_ID>push_ovhd_electrics_drive_disc_01</NODE_ID>
                     <SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
                     <SEQ2_EMISSIVE_CODE>1</SEQ2_EMISSIVE_CODE>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
                     <NODE_ID>push_ovhd_electrics_drive_disc_02</NODE_ID>
                     <SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
                     <SEQ2_EMISSIVE_CODE>1</SEQ2_EMISSIVE_CODE>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
                     <NODE_ID>push_ovhd_electrics_drive_disc_03</NODE_ID>
                     <SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
                     <SEQ2_EMISSIVE_CODE>1</SEQ2_EMISSIVE_CODE>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
                     <NODE_ID>push_ovhd_electrics_drive_disc_04</NODE_ID>
                     <SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
                     <SEQ2_EMISSIVE_CODE>1</SEQ2_EMISSIVE_CODE>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
                     <NODE_ID>push_ovhd_electrics_utility_pwr_l</NODE_ID>
@@ -1721,6 +1841,12 @@
                     <NODE_ID>push_ovhd_air_cond_altn_vent</NODE_ID>
                     <NO_SEQ1/>
                     <SEQ2_EMISSIVE_CODE>1</SEQ2_EMISSIVE_CODE>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
                     <NODE_ID>push_ovhd_air_cond_recirc_upr</NODE_ID>
@@ -1763,12 +1889,17 @@
                     <NODE_ID>knob_ovhd_air_cond_equip_cooling</NODE_ID>
                     <ANIM_NAME>ovhd_knob_air_cond_equip_cooling</ANIM_NAME>
                     <ANIM_CODE>50</ANIM_CODE>
-                    <DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
                     <NODE_ID>push_ovhd_air_cond_hi_flow</NODE_ID>
                     <SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
                     <SEQ2_EMISSIVE_CODE>1</SEQ2_EMISSIVE_CODE>
+                    <SEQ2_NOT_DIMMABLE>False</SEQ2_NOT_DIMMABLE>
+                    <SEQ2_CODE_DRIVES_DOWN_STATE>True</SEQ2_CODE_DRIVES_DOWN_STATE>
+                    <SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+                    <SEQ2_CODE_DRIVES_VISIBILITY>True</SEQ2_CODE_DRIVES_VISIBILITY>
+                    <SEQ1_NOT_DIMMABLE>True</SEQ1_NOT_DIMMABLE>
+                    <SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
                 </UseTemplate>
                 <UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
                     <NODE_ID>push_ovhd_air_cond_pack_rst</NODE_ID>
