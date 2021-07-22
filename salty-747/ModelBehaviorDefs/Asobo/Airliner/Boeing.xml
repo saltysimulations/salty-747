@@ -450,6 +450,9 @@
                 <SWITCH_POSITION_TYPE>#KNOB_POSITION_TYPE#</SWITCH_POSITION_TYPE>
                 <SWITCH_POSITION_VAR>#KNOB_POSITION_VAR#</SWITCH_POSITION_VAR>		
             </UseTemplate>
+            <UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+                <DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
+            </UseTemplate>
         </Component>
 </Template>
 
@@ -504,7 +507,7 @@
                     <WWISE_EVENT>seatbelts_switch</WWISE_EVENT>
                 </UseTemplate>
             </Case>
-        </Switch>        
+        </Switch>
         <UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
             <DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
         </UseTemplate>
@@ -542,6 +545,9 @@
             <ARROW_TYPE>Curved</ARROW_TYPE>
             <SWITCH_POSITION_TYPE>#KNOB_POSITION_TYPE#</SWITCH_POSITION_TYPE>
             <SWITCH_POSITION_VAR>#KNOB_POSITION_VAR#</SWITCH_POSITION_VAR>		
+        </UseTemplate>
+        <UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+            <DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
         </UseTemplate>
     </Component>
 </Template>
