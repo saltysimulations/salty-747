@@ -612,6 +612,29 @@
                     <NODE_ID>SCREEN_RUDDER</NODE_ID>
                     <SCREEN_ID>RUDDER</SCREEN_ID>
                 </UseTemplate>
+                <UseTemplate Name="ASOBO_GT_Screen_Template">
+                    <NODE_ID>SCREEN_TCI</NODE_ID>
+                    <SCREEN_ID>ATC</SCREEN_ID>
+                </UseTemplate>
+                <UseTemplate Name="ASOBO_GT_Screen_Template">
+                    <NODE_ID>SCREEN_COM1</NODE_ID>
+                    <SCREEN_ID>Com_1</SCREEN_ID>
+                    <CIRCUIT_ID>16</CIRCUIT_ID>
+                </UseTemplate>
+                <UseTemplate Name="ASOBO_GT_Screen_Template">
+                    <NODE_ID>SCREEN_COM2</NODE_ID>
+                    <SCREEN_ID>Com_2</SCREEN_ID>
+                    <CIRCUIT_ID>18</CIRCUIT_ID>
+                </UseTemplate>
+                <UseTemplate Name="ASOBO_GT_Screen_Template">
+                    <NODE_ID>SCREEN_COM3</NODE_ID>
+                    <SCREEN_ID>Com_3</SCREEN_ID>
+                    <CIRCUIT_ID>20</CIRCUIT_ID>
+                </UseTemplate>
+                <UseTemplate Name="ASOBO_GT_Screen_Template">
+                    <NODE_ID>SCREEN_AttitudeDisplay</NODE_ID>
+                    <SCREEN_ID>AttitudeDisplay</SCREEN_ID>
+                </UseTemplate>
             </Component>
             <Component ID="HANDLING_Trims">
                 <DefaultTemplateParameters>
@@ -3283,34 +3306,6 @@
                     <SCREEN_ID>PFD</SCREEN_ID>
                     <CIRCUIT_ID>22</CIRCUIT_ID>
                 </UseTemplate>
-                <Component ID="STATIC_INTENSITY_SCREENS">
-                    <OverrideTemplateParameters>
-                        <POTENTIOMETER>50</POTENTIOMETER>
-                    </OverrideTemplateParameters>
-                    <UseTemplate Name="ASOBO_GT_Screen_Template">
-                        <NODE_ID>SCREEN_TCI</NODE_ID>
-                        <SCREEN_ID>ATC</SCREEN_ID>
-                    </UseTemplate>
-                    <UseTemplate Name="ASOBO_GT_Screen_Template">
-                        <NODE_ID>SCREEN_COM1</NODE_ID>
-                        <SCREEN_ID>Com_1</SCREEN_ID>
-                        <CIRCUIT_ID>16</CIRCUIT_ID>
-                    </UseTemplate>
-                    <UseTemplate Name="ASOBO_GT_Screen_Template">
-                        <NODE_ID>SCREEN_COM2</NODE_ID>
-                        <SCREEN_ID>Com_2</SCREEN_ID>
-                        <CIRCUIT_ID>18</CIRCUIT_ID>
-                    </UseTemplate>
-                    <UseTemplate Name="ASOBO_GT_Screen_Template">
-                        <NODE_ID>SCREEN_COM3</NODE_ID>
-                        <SCREEN_ID>Com_3</SCREEN_ID>
-                        <CIRCUIT_ID>20</CIRCUIT_ID>
-                    </UseTemplate>
-                    <UseTemplate Name="ASOBO_GT_Screen_Template">
-                        <NODE_ID>SCREEN_AttitudeDisplay</NODE_ID>
-                        <SCREEN_ID>AttitudeDisplay</SCREEN_ID>
-                    </UseTemplate>
-                </Component>
             </Component>
         </Component>
         <Component ID="LIGHTING_Controls">
