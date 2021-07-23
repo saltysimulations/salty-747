@@ -16,9 +16,9 @@ class FMCSaltyOptions_IrsStatus {
             ["", ""],
             ["<IRS INSTANT ALIGN", ""],
             ["", ""],
+            ["<ECL BACK", "ECL FWD>"],
             ["", ""],
-            ["", ""],
-            ["", ""],
+            ["", "ECL SELECT>"],
             ["\xa0RETURN TO", ""],
             ["<OPTIONS", ""]
         ]);
@@ -38,6 +38,20 @@ class FMCSaltyOptions_IrsStatus {
                fmc.showErrorMessage("IRS KNOBS OFF");
            }
         }
+
+        fmc.onRightInput[4] = () => { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
+                                        cursorIndex++;
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_INC", "bool", 1);
+                                    };
+           
+        fmc.onLeftInput[4] = () =>  { let cursorIndex = SimVar.GetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum");
+                                        cursorIndex--;
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX", "Enum", cursorIndex);
+                                        SimVar.SetSimVarValue("L:SALTY_ECL_CURSOR_INDEX_DEC", "bool", 1);
+                                    };
+
+        fmc.onRightInput[5] = () => { SimVar.SetSimVarValue("L:SALTY_ECL_BTN", "bool", 1); };
 
         /* LSK6 */
         fmc.onLeftInput[5] = () => {
