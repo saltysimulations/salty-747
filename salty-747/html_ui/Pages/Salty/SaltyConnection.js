@@ -228,7 +228,6 @@ const getFplnFromSimBrief = async (fmc) => {
     const url = "http://www.simbrief.com/api/xml.fetcher.php?json=1&userid=" + SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
     let json = "";
     let routeArr;
-    let partial = false;
 
     const isCoordinate = async (icao) => {
         if (await CJ4_FMC_PilotWaypointParser.parseInput(convertWaypointIdentCoords(icao), 0, fmc)) {
@@ -300,9 +299,6 @@ const getFplnFromSimBrief = async (fmc) => {
                 fmc.flightPlanManager.resumeSync();
                 fmc.flightPlanManager.setActiveWaypointIndex(1);
                 SimVar.SetSimVarValue("L:WT_CJ4_INHIBIT_SEQUENCE", "number", 0);
-                if (partial) {
-                    fmc.setMsg("PARTIAL ROUTE 1 UPLINK");
-                }
                 FMCRoutePage.ShowPage1(fmc);
                 return;
             }
@@ -343,7 +339,6 @@ const getFplnFromSimBrief = async (fmc) => {
                         else {
                             fmc.flightPlanManager.resumeSync();
                             fmc.setMsg("ERROR WPT " + icao);
-                            partial = true;
                         }
 
                     });
@@ -368,14 +363,11 @@ const getFplnFromSimBrief = async (fmc) => {
                                 } else {
                                     fmc.flightPlanManager.resumeSync();
                                     fmc.setMsg("ERROR AIRWAY " + icao);
-                                    partial = true;
-                                    addWaypoint();
                                 }
                             });
                         }
                         else {
                             // TODO hmm, so if no airway found, just continue and add exit as wpt?
-                            partial = true;
                             addWaypoint();
                         }
                     });

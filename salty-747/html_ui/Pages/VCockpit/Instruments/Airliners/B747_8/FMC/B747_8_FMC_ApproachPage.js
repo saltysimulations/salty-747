@@ -40,7 +40,6 @@ class FMCApproachPage {
         let selectedFlapSpeedCell = "";
         if (isFinite(fmc.selectedApproachFlap)) {
             selectedFlapSpeedCell = fmc.selectedApproachFlap.toFixed(0) + "°";
-            SimVar.SetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "string", fmc.selectedApproachFlap.toFixed(0));
         }
         else {
             selectedFlapSpeedCell = "---";

@@ -657,8 +657,8 @@
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
 		<BASE_NAME>chkl</BASE_NAME>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.EICAS_PUSH_CHKL</TOOLTIPID>
-		<GROUP_INDEX>10</GROUP_INDEX> <!--Change to positive to activate-->
+		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.EICAS_PUSH_CHKL</TOOLTIPID>
+		<GROUP_INDEX>-10</GROUP_INDEX> <!--Change to positive to activate-->
 	</UseTemplate>
 	
 	<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
