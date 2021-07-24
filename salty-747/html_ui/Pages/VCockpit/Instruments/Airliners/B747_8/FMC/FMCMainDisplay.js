@@ -2226,8 +2226,8 @@ class FMCMainDisplay extends BaseAirliners {
         if (origin) {
             if (isFinite(origin.altitudeinFP)) {
                 let altitude = Math.round(origin.altitudeinFP / 10) * 10;
-                this.thrustReductionAltitude = altitude + 1500;
-                this.accelerationAltitude = altitude + 3000;
+                this.thrustReductionAltitude = altitude + 1000;
+                this.accelerationAltitude = altitude + 1000;
                 if (origin.infos instanceof AirportInfo) {
                     this.transitionAltitude = origin.infos.transitionAltitude;
                 }
@@ -2237,8 +2237,8 @@ class FMCMainDisplay extends BaseAirliners {
         }
         else {
             let altitude = Simplane.getAltitude();
-            SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", altitude + 1500);
-            SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", altitude + 3000);
+            SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", altitude + 1000);
+            SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", altitude + 1000);
         }
         let destination = this.flightPlanManager.getDestination();
         if (destination) {
