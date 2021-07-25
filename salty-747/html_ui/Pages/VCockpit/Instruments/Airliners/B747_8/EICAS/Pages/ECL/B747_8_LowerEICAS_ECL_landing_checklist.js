@@ -92,8 +92,8 @@ var B747_8_LowerEICAS_ECL_landing_checklist;
                 this.landingGearTick.style.visibility = "hidden";
             }
             //Compares FMC approach flap value with actual flap position. Flaps 25 and 30 are valid landing flaps.
-            if (((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 25 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.436))
-                || ((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 30 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) == 0.524))))){
+            if (((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 25 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) > 0.418))
+                || ((SimVar.GetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number") == 30 ) && ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "radians").toFixed(3) > 0.506))))){
                 this.landingFlapsText.style.fill = "lime";
                 this.landingFlapsTick.style.visibility = "visible";
                 landingFlapSet = 1;
