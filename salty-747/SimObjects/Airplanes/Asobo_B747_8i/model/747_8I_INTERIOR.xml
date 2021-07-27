@@ -13,6 +13,7 @@
 		<Include ModelBehaviorFile="Asobo\Airliner\AirlinerCommon.xml"/>
 		<Include ModelBehaviorFile="Asobo\Airliner\Boeing.xml"/>
 		<Include ModelBehaviorFile="Asobo\Airliner\FMC.xml"/>
+		<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
 
 		<Component ID="Yoke_Controls">
 			<UseTemplate Name="ASOBO_HANDLING_RudderPedals_Template">
@@ -57,12 +58,12 @@
 			<UseTemplate Name="ASOBO_HANDLING_Switch_ElevatorTrim_Template">
 				<ID>1</ID>
 				<NODE_ID>HANDLING_YOKE_Switch_ElevatorTrim</NODE_ID>
-				<ANIM_NAME>HANDLING_YOKE_Switch_ElevatorTrim</ANIM_NAME> 
+				<ANIM_NAME>HANDLING_YOKE_Switch_ElevatorTrim</ANIM_NAME>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_HANDLING_Switch_ElevatorTrim_Template">
 				<ID>2</ID>
 				<NODE_ID>switch_yoke_trim_01_copilot</NODE_ID>
-				<ANIM_NAME>yoke_switch_trim_01_copilot</ANIM_NAME> 
+				<ANIM_NAME>yoke_switch_trim_01_copilot</ANIM_NAME>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_HANDLING_Push_AP_Trim_Disc_Template">
 				<NODE_ID>btn_yoke_autopilot_disengage_pilot</NODE_ID>
@@ -72,7 +73,7 @@
 				<NODE_ID>btn_yoke_autopilot_disengage_pilot001</NODE_ID>
 				<ANIM_NAME>yoke_push_autopilot_disengage_copilot</ANIM_NAME>
 			</UseTemplate>
-			
+
 			<UseTemplate Name="ASOBO_HANDLING_Steering_Tiller_Template">
 				<NODE_ID>tiller_l</NODE_ID>
 				<ANIM_NAME>tiller_l</ANIM_NAME>
@@ -87,7 +88,7 @@
 			<DefaultTemplateParameters>
 				<SIMVAR_POWER_SETTING>LIGHT PANEL POWER SETTING:3</SIMVAR_POWER_SETTING>
 			</DefaultTemplateParameters>
-		
+
 			<UseTemplate Name="ASOBO_HANDLING_Lever_Flaps_Template">
 				<NODE_ID>lever_flaps</NODE_ID>
 				<ANIM_NAME>flaps_lever</ANIM_NAME>
@@ -154,7 +155,7 @@
 							} els{
 								(M:DragPercent) l6 - 1 l6 - / 2 + sp0
 							}
-						} 
+						}
 						l0
 					</OVERRIDE_NEW_POSITION>
 					<INVERT_IM_DRAG_INPUT_SCALAR>True</INVERT_IM_DRAG_INPUT_SCALAR>
@@ -262,7 +263,7 @@
 				<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.FUEL_SWITCH_VALVE_4_CUTOFF</ANIMTIP_0>
 				<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.FUEL_SWITCH_VALVE_4_RUN</ANIMTIP_1>
 			</UseTemplate>
-			
+
 			<!--
 		<Animation name="stab_cover_trim_1" 		guid="FDC987B7-3CEB-4F20-8F48-CF5570A723D1" length="2" type="Sim" typeParam2="stab_cover_trim_1" 		typeParam="AutoPlay" />
 		<Animation name="stab_cover_trim_2" 		guid="D4817EBA-FDDE-4390-B51E-B3E147274658" length="2" type="Sim" typeParam2="stab_cover_trim_2" 		typeParam="AutoPlay" />
@@ -438,7 +439,7 @@
 					cdu1_push_ope
 					cdu1_push_vnav
 					cdu1_push_brt
-				-->	
+				-->
 				</Component>
 				<Component ID="CDU_2">
 					<UseTemplate Name="ASOBO_FMC_B747">
@@ -628,7 +629,7 @@
 			<Animation name="btn_rudder" guid="AAC51809-06D3-4489-A311-22D6FF43F832" length="100" type="Sim" typeParam2="btn_rudder" typeParam="AutoPlay" />
 			<Animation name="btn_rudder_01" guid="CA33A046-ECC5-45F3-BE52-CFCEADF6A1BA" length="10" type="Sim" typeParam2="btn_rudder_01" typeParam="AutoPlay" />
 			-->
-			<Component ID="CDU_3">	
+			<Component ID="CDU_3">
 				<DefaultTemplateParameters>
 					<ANIM_NEVER_FAILS>True</ANIM_NEVER_FAILS>
 					<FAILURE>(A:LIGHT PANEL ON:3, Bool)</FAILURE>
@@ -795,7 +796,7 @@
 				cdu3_push_vnav
 				cdu3_push_brt
 			-->
-			</Component>	
+			</Component>
 			<Component ID="COM_Radios">
 				<OverrideTemplateParameters>
 					<TYPE>BOEING</TYPE>
@@ -809,7 +810,7 @@
 						<UseTemplate Name="ASOBO_COM_Template_Boeing">
 							<PANEL_NAME>B747_8_Com</PANEL_NAME>
 							<COM_INDEX>1</COM_INDEX>
-						</UseTemplate>	
+						</UseTemplate>
 					</Component>
 					<Component ID="Audio_Panel">
 						<OverrideTemplateParameters>
@@ -911,14 +912,14 @@
 
 			<UseTemplate Name="ASOBO_HANDLING_Switch_Wipers_Template">
 				<NODE_ID>SAFETY_Knob_Wipers</NODE_ID>
-				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>      
+				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>
 				<CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
 				<BOIENG_TYPE>True</BOIENG_TYPE>
 			</UseTemplate>
-			
+
 			<Component ID="Instruments">
 				<UseTemplate Name="ASOBO_INSTRUMENT_Dial_Compass_Template">
-					<ANIM_NAME>Compass_cylinder</ANIM_NAME> 
+					<ANIM_NAME>Compass_cylinder</ANIM_NAME>
 					<NODE_ID>Compass_cylinder</NODE_ID>
 				</UseTemplate>
 			</Component>
@@ -1632,15 +1633,15 @@
 					<ID>1</ID>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
-				
-			<!-- 
+
+			<!--
 				ovhd_push_elt
 				ovhd_switch_elt
 			-->
-			
+
 			<CameraTitle>Instruments09</CameraTitle>
 			</Component>
-		
+
 			<Component ID="AntiIce_Panel">
 				<UseTemplate Name="ASOBO_DEICE_Switch_Windshield_Template">
 					<NODE_ID>push_ovhd_anti_ice_window_heat_l</NODE_ID>
@@ -1712,7 +1713,7 @@
 			</Component>
 
 			<Component ID="Air_Conditioning_Panel">
-			
+
 				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 					<NODE_ID>push_ovhd_air_cond_altn_vent</NODE_ID>
 					<NO_SEQ1/>
@@ -1829,7 +1830,7 @@
 					<ANIM_NAME>ovhd_knob_air_data_center</ANIM_NAME>
 					<ANIM_CODE>50</ANIM_CODE>
 				</UseTemplate>
-			<!-- 						
+			<!--
 				ovhd_switch_pressurization_outflow_valves
 			-->
 			</Component>
@@ -1864,14 +1865,14 @@
 			</DefaultTemplateParameters>
 			<Component ID="Safety">
 				<UseTemplate Name="ASOBO_SAFETY_Push_WarningCaution_Template">
-					<ANIM_NAME>btn_master_pilot</ANIM_NAME> 
+					<ANIM_NAME>btn_master_pilot</ANIM_NAME>
 					<NODE_ID>btn_master_pilot</NODE_ID>
 					<SEQ1_NODE_ID>btn_master_pilot_seq2</SEQ1_NODE_ID>
 					<SEQ2_NODE_ID>btn_master_pilot_seq1</SEQ2_NODE_ID>
 					<NO_EMISSIVE_ON_HELD>True</NO_EMISSIVE_ON_HELD>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_SAFETY_Push_WarningCaution_Template">
-					<ANIM_NAME>btn_master_copilot</ANIM_NAME> 
+					<ANIM_NAME>btn_master_copilot</ANIM_NAME>
 					<NODE_ID>btn_master_copilot</NODE_ID>
 					<SEQ1_NODE_ID>btn_master_copilot_seq2</SEQ1_NODE_ID>
 					<SEQ2_NODE_ID>btn_master_copilot_seq1</SEQ2_NODE_ID>
@@ -1884,7 +1885,7 @@
 					<NO_SEQ2>True</NO_SEQ2>
 					<PLANE_PREFIX>B747_8</PLANE_PREFIX>
 				</DefaultTemplateParameters>
-				
+
 				<Component ID="GlassCockpit_Panel_Pilot">
 					<UseTemplate Name="ASOBO_AIRLINER_Knob_ND_Template">
 						<TYPE>BOEING_747</TYPE>
@@ -1976,7 +1977,7 @@
 						<ID>1</ID>
 					</UseTemplate>
 				</Component>
-				
+
 				<Component ID="GlassCockpit_Panel_CoPilot">
 					<UseTemplate Name="ASOBO_AIRLINER_Knob_ND_Template">
 						<TYPE>BOEING_747</TYPE>
@@ -2068,7 +2069,7 @@
 						<BUTTON_ANIM_NAME>afds_push_rst_r</BUTTON_ANIM_NAME>
 						<ID>2</ID>
 					</UseTemplate>
-				</Component>			
+				</Component>
 			</Component>
 			<Component ID="Autopilot_Panel">
 				<OverrideTemplateParameters>
@@ -2207,7 +2208,7 @@
 					<EMISSIVE_NODE_ID>btn_autopilot_vs_seq1</EMISSIVE_NODE_ID>
 					<ACTIVE_NODE_ID>btn_autopilot_vs_seq2</ACTIVE_NODE_ID>
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
-					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>		
+					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
 
@@ -2337,7 +2338,7 @@
 					</Component>
 				</Component>
 			</Component>
-				        
+
 			<Component ID="Cockpit_Pilots">
 	            <Component ID="PILOT_0" Node="PILOT_0">
 	                <UseTemplate Name="ASOBO_GT_Visibility_Code">
@@ -2517,7 +2518,7 @@
 						<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
 						<THRESHOLD_MOUSE>0.05</THRESHOLD_MOUSE>
 					</UseTemplate>
-					
+
 					<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
 						<NODE_ID>knob_gears_altn_flaps</NODE_ID>
 						<ANIM_NAME>gears_knob_altn_flaps</ANIM_NAME>
@@ -2546,9 +2547,9 @@
 				gnd_cover_prox_terr_ovrd
 			-->
 			</Component>
-			
+
 			<Component ID="Standby_Indicator">
-				
+
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Baro_Template">
 					<ANIM_NAME_KNOB>ifsd_knob_baro</ANIM_NAME_KNOB>
 					<ANIM_NAME_PUSH>ifsd_knob_baro_push</ANIM_NAME_PUSH>
@@ -2557,24 +2558,24 @@
 					<ID>3</ID>
 					<BARO_ID>2</BARO_ID>
 					<AIRLINER_TYPE>True</AIRLINER_TYPE>
-					
+
 					<ANIMREF_ID>-1</ANIMREF_ID>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.STBY_TUNING_KNOB_INCREASE</ANIMTIP_0>
 					<ANIMTIP_0_ON_CURSOR>TurnRight</ANIMTIP_0_ON_CURSOR>
 					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.STBY_TUNING_KNOB_DECREASE</ANIMTIP_1>
 					<ANIMTIP_1_ON_CURSOR>TurnLeft</ANIMTIP_1_ON_CURSOR>
-					
+
 				</UseTemplate>
 			</Component>
-			
+
 			<Component ID="Brakes_Indicator">
 				<UseTemplate Name="ASOBO_INSTRUMENT_Needle_BrakePressure_Template">
 				</UseTemplate>
 			</Component>
 		</Component>
 
-	<!-- RETROECLAIRAGE #############################################################################################################-->	
-		
+	<!-- RETROECLAIRAGE #############################################################################################################-->
+
 		<Component ID="Anim_Setup">
 			<UseTemplate Name="ASOBO_GT_Anim_Setup">
 				<ANIM_NAME>atc_transponder_knob_abv_blw</ANIM_NAME>
@@ -3155,7 +3156,7 @@
 					<UseTemplate Name="ASOBO_GT_Screen_Template">
 						<NODE_ID>SCREEN_RUDDER</NODE_ID>
 						<SCREEN_ID>RUDDER</SCREEN_ID>
-					</UseTemplate>	
+					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Screen_Template">
 						<NODE_ID>SCREEN_TCI</NODE_ID>
 						<SCREEN_ID>ATC</SCREEN_ID>
@@ -3227,7 +3228,7 @@
 					<NODE_ID>knob_side_panel_l2</NODE_ID>
 					<ANIM_NAME>Side_knob_panel_l2</ANIM_NAME>
 					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.LIGHTING_PANEL_FLOOD_DECREASE</ANIMTIP_0>
-					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.LIGHTING_PANEL_FLOOD_INCREASE</ANIMTIP_1>		
+					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.LIGHTING_PANEL_FLOOD_INCREASE</ANIMTIP_1>
 					<Count>20</Count>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Knob_Panel_Template">
@@ -3363,7 +3364,7 @@
 						<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.OUTBD_DSPL_BRT_INCREASE</ANIMTIP_1>
 						<EMISSIVE_KNOB>False</EMISSIVE_KNOB>
 						<Count>20</Count>
-					</UseTemplate>		
+					</UseTemplate>
 				</Component>
 				<!-- CoPilot Screens Backlight -->
 				<Component ID="Copilot_Panel">
@@ -3433,12 +3434,12 @@
 					<POTENTIOMETER/>
 					<USE_INTEGRATED_POWER_SETTING>False</USE_INTEGRATED_POWER_SETTING>
 				</OverrideTemplateParameters>
-				
+
 				<UseTemplate Name="ASOBO_AIRLINER_Update_Set_Potentiometer_On_Takeoff">
 					<POTENTIOMETER>21</POTENTIOMETER>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AIRLINER_Update_Set_Potentiometer_On_Gears_Up">
-					<POTENTIOMETER>20</POTENTIOMETER>				
+					<POTENTIOMETER>20</POTENTIOMETER>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Landing_Template">
 					<ANIM_NAME>ovhd_landing_switch_outbd_L</ANIM_NAME>
@@ -3535,7 +3536,7 @@
 				<CameraTitle>Instruments08</CameraTitle>
 			</Component>
 		</Component>
-		
+
 		<Component ID="TT_INOP">
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_lights_storm</NODE_ID>
@@ -4136,7 +4137,7 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>handle_ovhd_fire_protect_apu</NODE_ID>
 			</UseTemplate>
-			
+
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_ant_iice_windshield_washer_l</NODE_ID>
 			</UseTemplate>
@@ -4238,8 +4239,8 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_gears_altn_flaps</NODE_ID>
 			</UseTemplate>
-			
+
 		</Component>
-		
+
 	</Behaviors>
 </ModelInfo>
