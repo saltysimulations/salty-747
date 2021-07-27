@@ -8,21 +8,21 @@ class FMCApproachPage {
         let flaps30VRefCell = "";
         let landingWeight = fmc.getWeight(true);
         if (isFinite(landingWeight)) {
-            landingWeightCell = landingWeight.toFixed(1);
+            landingWeightCell = fastToFixed(landingWeight, 1);
             flaps25Cell = "25°";
             flaps30Cell = "30°";
             let flaps25Speed = fmc.getSlatApproachSpeed(true);
             if (isFinite(flaps25Speed)) {
-                flaps25VRefCell = flaps25Speed.toFixed(0) + "KT";
+                flaps25VRefCell = fastToFixed(flaps25Speed, 0) + "KT";
                 fmc.onRightInput[0] = () => {
-                    fmc.inOut = "25/" + flaps25Speed.toFixed(0);
+                    fmc.inOut = "25/" + fastToFixed(flaps25Speed, 0);
                 };
             }
             let flaps30Speed = fmc.getFlapApproachSpeed(true);
             if (isFinite(flaps30Speed)) {
-                flaps30VRefCell = flaps30Speed.toFixed(0) + "KT";
+                flaps30VRefCell = fastToFixed(flaps30Speed, 0) + "KT";
                 fmc.onRightInput[1] = () => {
-                    fmc.inOut = "30/" + flaps30Speed.toFixed(0);
+                    fmc.inOut = "30/" + fastToFixed(flaps30Speed, 0);
                 };
             }
         }
@@ -33,19 +33,19 @@ class FMCApproachPage {
             finalCell = Avionics.Utils.formatRunway(approach.name);
             let approachRunway = fmc.flightPlanManager.getApproachRunway();
             if (approachRunway) {
-                runwayLengthCell = approachRunway.length.toFixed(0) + "M";
+                runwayLengthCell = fastToFixed(approachRunway.length, 0) + "M";
             }
         }
         let selectedFlapSpeedCell = "";
         if (isFinite(fmc.selectedApproachFlap)) {
-            selectedFlapSpeedCell = fmc.selectedApproachFlap.toFixed(0) + "°";
+            selectedFlapSpeedCell = fastToFixed(fmc.selectedApproachFlap, 0) + "°";
         }
         else {
             selectedFlapSpeedCell = "---";
         }
         selectedFlapSpeedCell += "/ ";
         if (isFinite(fmc.selectedApproachSpeed)) {
-            selectedFlapSpeedCell += fmc.selectedApproachSpeed.toFixed(0) + "KT";
+            selectedFlapSpeedCell += fastToFixed(fmc.selectedApproachSpeed, 0) + "KT";
         }
         else {
             selectedFlapSpeedCell += "---";

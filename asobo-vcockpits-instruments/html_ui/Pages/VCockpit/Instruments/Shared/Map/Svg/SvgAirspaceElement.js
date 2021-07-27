@@ -46,55 +46,36 @@ class SvgAirspaceElement extends SvgMapElement {
         }
         return "airspace-" + this.ident + "-map-" + map.index;
     }
-    getLatLongPath() {
-        let path = [];
-        if (this.source && this.source.geometry) {
-            let splitGeometry = this.source.geometry.split(" ");
-            for (let i = 0; i < splitGeometry.length; i++) {
-                let point = splitGeometry[i];
-                let splitPoint = point.split(":");
-                if (point !== "X") {
-                    let type = parseInt(splitPoint[0]);
-                    if (type === 1 || type === 2) {
-                        let sLat = splitPoint[1];
-                        let sLong = splitPoint[2];
-                        path.push(new LatLong(parseFloat(sLat), parseFloat(sLong)));
-                    }
-                }
-            }
-        }
-        return path;
-    }
     createDraw(map) {
         let shape = document.createElementNS(Avionics.SVG.NS, "path");
         shape.id = this.id(map);
-        shape.setAttribute("fill", "none");
+        diffAndSetAttribute(shape, "fill", "none");
         if (this.source.type === 1) {
-            shape.setAttribute("stroke-width", "2");
-            shape.setAttribute("stroke", "red");
+            diffAndSetAttribute(shape, "stroke-width", "2");
+            diffAndSetAttribute(shape, "stroke", "red");
         }
         else if (this.source.type === 3) {
-            shape.setAttribute("stroke-width", "2");
-            shape.setAttribute("stroke", "#0b80fa");
+            diffAndSetAttribute(shape, "stroke-width", "2");
+            diffAndSetAttribute(shape, "stroke", "#0b80fa");
         }
         else if (this.source.type === 4) {
-            shape.setAttribute("stroke-width", "2");
-            shape.setAttribute("stroke", "#bb09c5");
+            diffAndSetAttribute(shape, "stroke-width", "2");
+            diffAndSetAttribute(shape, "stroke", "#bb09c5");
         }
         else if (this.source.type === 5) {
-            shape.setAttribute("stroke-width", "2");
-            shape.setAttribute("stroke", "#a0bcee");
+            diffAndSetAttribute(shape, "stroke-width", "2");
+            diffAndSetAttribute(shape, "stroke", "#a0bcee");
         }
         else if (this.source.type === 15) {
-            shape.setAttribute("stroke-width", "3");
-            shape.setAttribute("stroke", "#0b80fa");
+            diffAndSetAttribute(shape, "stroke-width", "3");
+            diffAndSetAttribute(shape, "stroke", "#0b80fa");
         }
         else if (this.source.type === 16) {
-            shape.setAttribute("stroke-width", "3");
-            shape.setAttribute("stroke", "#580982");
+            diffAndSetAttribute(shape, "stroke-width", "3");
+            diffAndSetAttribute(shape, "stroke", "#580982");
         }
         else {
-            shape.setAttribute("stroke", "#f99509");
+            diffAndSetAttribute(shape, "stroke", "#f99509");
         }
         return shape;
     }
@@ -180,7 +161,7 @@ class SvgAirspaceElement extends SvgMapElement {
                 }
             }
         }
-        this.svgElement.setAttribute("d", d);
+        diffAndSetAttribute(this.svgElement, "d", d);
     }
 }
 //# sourceMappingURL=SvgAirspaceElement.js.map

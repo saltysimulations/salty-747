@@ -1,0 +1,53 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+	<InputEvent ID="COMMON">
+		<Presets>
+			<Extend Target="ASOBO_GIE_Anim_Handling">
+				<Parameters Type="Default">
+					<INPUT_EVENT_ID_SOURCE>COMMON</INPUT_EVENT_ID_SOURCE>
+				</Parameters>
+			</Extend>
+		</Presets>
+	</InputEvent>
+	<InputEvent ID="PROCEDURE">
+		<Presets>
+			<Switch Param="PROCEDURE_ID">
+				<Case Value="AUTOSTART">
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>PROCEDURE</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Case>
+			</Switch>
+			<Extend Target="ASOBO_GIE_Anim_Handling">
+				<Parameters Type="Default">
+					<INPUT_EVENT_ID_SOURCE>PROCEDURE</INPUT_EVENT_ID_SOURCE>
+				</Parameters>
+			</Extend>
+		</Presets>
+	</InputEvent>
+	<!-- Inputs used by the model behavior only, not supposed to be exposed -->
+	<InputEvent ID="MODEL_BEHAVIOR">
+		<Presets>
+			<Extend Target="ASOBO_GIE_Base">
+				<Parameters Type="Default">
+					<INPUT_EVENT_ID_SOURCE>MB</INPUT_EVENT_ID_SOURCE>
+					<TT_ICON>PUSH</TT_ICON>
+					<TT_INTERACTION>PRIMARY_DOWN</TT_INTERACTION>
+					<TT_INTERACTION_LOCKABLE>LOCK</TT_INTERACTION_LOCKABLE>
+					<TT_DESCRIPTION>@TT_Package.GT_STATE_NA</TT_DESCRIPTION>
+					<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+					<TT_VALUE>@TT_Package.GT_STATE_NA</TT_VALUE>
+					<TT_VALUE_IS_DYNAMIC>False</TT_VALUE_IS_DYNAMIC>
+					<VALUE_UNITS>Bool</VALUE_UNITS>
+					<VALUE_CODE/>
+					<INIT_CODE/>
+					<INC_CODE>quit</INC_CODE>
+					<DEC_CODE>quit</DEC_CODE>
+					<SET_CODE>quit</SET_CODE>
+				</Parameters>
+			</Extend>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

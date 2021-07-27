@@ -9,41 +9,41 @@ class FlapsGauge extends AbstractGauge {
             this.removeChild(this.firstChild);
         }
         this.root = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.root.setAttribute("width", "100%");
-        this.root.setAttribute("height", "100%");
-        this.root.setAttribute("viewBox", "0 0 100 50");
-        this.root.setAttribute("overflow", "visible");
+        diffAndSetAttribute(this.root, "width", "100%");
+        diffAndSetAttribute(this.root, "height", "100%");
+        diffAndSetAttribute(this.root, "viewBox", "0 0 100 50");
+        diffAndSetAttribute(this.root, "overflow", "visible");
         this.appendChild(this.root);
         this.cursor = document.createElementNS(Avionics.SVG.NS, "path");
-        this.cursor.setAttribute("d", "M10 10 Q25 0 60 10 Q25 20 10 10");
-        this.cursor.setAttribute("fill", "aqua");
+        diffAndSetAttribute(this.cursor, "d", "M10 10 Q25 0 60 10 Q25 20 10 10");
+        diffAndSetAttribute(this.cursor, "fill", "aqua");
         this.root.appendChild(this.cursor);
         let angles = [this._minValue, this.takeOffValue, this._maxValue];
         let texts = ["UP", "T/O", "LDG"];
         for (let i = 0; i < angles.length; i++) {
             let graduation = document.createElementNS(Avionics.SVG.NS, "rect");
-            graduation.setAttribute("x", "60");
-            graduation.setAttribute("y", "10");
-            graduation.setAttribute("height", "1");
-            graduation.setAttribute("width", "10");
-            graduation.setAttribute("fill", "white");
-            graduation.setAttribute("transform", "rotate(" + angles[i] + " 10 10)");
+            diffAndSetAttribute(graduation, "x", "60");
+            diffAndSetAttribute(graduation, "y", "10");
+            diffAndSetAttribute(graduation, "height", "1");
+            diffAndSetAttribute(graduation, "width", "10");
+            diffAndSetAttribute(graduation, "fill", "white");
+            diffAndSetAttribute(graduation, "transform", "rotate(" + angles[i] + " 10 10)");
             this.root.appendChild(graduation);
             let text = document.createElementNS(Avionics.SVG.NS, "text");
             let radAngle = angles[i] * Math.PI / 180;
-            text.setAttribute("x", (10 + 65 * Math.cos(radAngle)).toString());
-            text.setAttribute("y", (15 + 65 * Math.sin(radAngle)).toString());
-            text.setAttribute("fill", "white");
-            text.setAttribute("font-size", "10");
-            text.textContent = texts[i];
+            diffAndSetAttribute(text, "x", (10 + 65 * Math.cos(radAngle)) + '');
+            diffAndSetAttribute(text, "y", (15 + 65 * Math.sin(radAngle)) + '');
+            diffAndSetAttribute(text, "fill", "white");
+            diffAndSetAttribute(text, "font-size", "10");
+            diffAndSetText(text, texts[i]);
             this.root.appendChild(text);
         }
         let flapsText = document.createElementNS(Avionics.SVG.NS, "text");
-        flapsText.setAttribute("x", "5");
-        flapsText.setAttribute("y", "45");
-        flapsText.setAttribute("fill", "white");
-        flapsText.setAttribute("font-size", "12");
-        flapsText.textContent = "FLAPS";
+        diffAndSetAttribute(flapsText, "x", "5");
+        diffAndSetAttribute(flapsText, "y", "45");
+        diffAndSetAttribute(flapsText, "fill", "white");
+        diffAndSetAttribute(flapsText, "font-size", "12");
+        diffAndSetText(flapsText, "FLAPS");
         this.root.appendChild(flapsText);
         this._updateValueSvg();
     }
@@ -51,7 +51,7 @@ class FlapsGauge extends AbstractGauge {
         throw new Error("Flaps Gauge not implemented in Canvas");
     }
     _updateValueSvg() {
-        this.cursor.setAttribute("transform", "rotate(" + this._value + " 10 10)");
+        diffAndSetAttribute(this.cursor, "transform", "rotate(" + this._value + " 10 10)");
     }
     _drawCursor() {
         throw new Error("Flaps Gauge not implemented in Canvas");

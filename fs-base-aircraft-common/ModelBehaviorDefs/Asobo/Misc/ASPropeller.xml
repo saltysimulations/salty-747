@@ -1,6 +1,5 @@
 <ModelBehaviors>
-	<Include ModelBehaviorFile="Asobo\Generic.xml"/>
-	
+	<Include RelativeFile="Inputs\\Misc_Inputs.xml"/>
 	<Template Name="ASOBO_ASPropeller_Template">
 		<Parameters Type="Default">
 			<SWITCH_AUTO_MANUAL_NODE_ID>ASPropeller_Switch_Propeller_AutoManual</SWITCH_AUTO_MANUAL_NODE_ID>
@@ -26,15 +25,34 @@
 			</UseTemplate>
 		</Component>
 		<Component ID="ASPropeller_Knob_Propeller_RPM" Node="#KNOB_INC_DEC_NODE_ID#">
+			<Parameters Type="Override">
+				<KNOB_ID>RPM_Knob</KNOB_ID>
+			</Parameters>
+			<UseInputEvent ID="AS_Propeller">
+				<SET_STATE_EXTERNAL>0 &gt; if{ (&gt;H:#AS_PROPELLER#_Knob_Inc) } els{ (&gt;H:#AS_PROPELLER#_Knob_Dec) }</SET_STATE_EXTERNAL>
+				<TT_DESCRIPTION_ID>@TT_Package.AS_PROPELLER_KNOB_ACTION</TT_DESCRIPTION_ID>
+				<GET_TT_VALUE_STATE>(L:#AS_PROPELLER#_Commanded_RPM)</GET_TT_VALUE_STATE>
+				<FORMAT_VALUE>'%d RPM' @sprintf</FORMAT_VALUE>
+			</UseInputEvent>
 			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
-				<CLOCKWISE_CODE>(&gt;H:#AS_PROPELLER#_Knob_Inc)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:#AS_PROPELLER#_Knob_Dec)</ANTICLOCKWISE_CODE>
+				<CLOCKWISE_CODE>1 (&gt;B:AS_Propeller_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+				<ANTICLOCKWISE_CODE>1 (&gt;B:AS_Propeller_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
 				<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
 				<THRESHOLD_MOUSE>0.01</THRESHOLD_MOUSE>
 				<ANIM_NAME>#KNOB_INC_DEC_ANIM_NAME#</ANIM_NAME>
+				<WWISE_EVENT>lever_propeller_knob</WWISE_EVENT>
+				<COUNT>24</COUNT>
+				<TOOLTIP_TITLE>@TT_Package.AS_PROPELLER_KNOB_TITLE</TOOLTIP_TITLE>
+				<TOOLTIP_ENTRY_0>AS_Propeller_#KNOB_ID#</TOOLTIP_ENTRY_0>
 			</UseTemplate>
 		</Component>
 		<Component ID="ASPropeller_Switch_Propeller_RPM" Node="#SWITCH_INC_DEC_NODE_ID#">
+			<Parameters Type="Override">
+				<POS_INC>0</POS_INC>
+				<POS_STATIC>1</POS_STATIC>
+				<POS_DEC>2</POS_DEC>
+				<BTN_ID>RPM_Switch</BTN_ID>
+			</Parameters>
 			<UseTemplate Name="ASOBO_GT_Update">
 				<FREQUENCY>#UPDATE_FREQ#</FREQUENCY>
 				<UPDATE_CODE>
@@ -50,35 +68,42 @@
 					}
 				</UPDATE_CODE>
 			</UseTemplate>
+			<UseInputEvent ID="AS_Propeller">
+				<NUM_STATES>3</NUM_STATES>
+				<ENUM_VAL_TO_POS_EXTERNAL>l0</ENUM_VAL_TO_POS_EXTERNAL>
+				<GET_STATE_EXTERNAL>(O:_Delta) 1 - abs sp0</GET_STATE_EXTERNAL>
+				<TT_DESCRIPTION_ID>@TT_Package.AS_PROPELLER_SWITCH_ACTION</TT_DESCRIPTION_ID>
+				<TT_VALUE>(L:#AS_PROPELLER#_Commanded_RPM) '%d RPM' @sprintf</TT_VALUE>
+				<!-- INC -->
+				<SET_STATE_#POS_INC#>(&gt;H:#AS_PROPELLER#_Switch_Inc) 1 (&gt;O:_Delta)</SET_STATE_#POS_INC#>
+				<STR_STATE_#POS_INC#>Increase</STR_STATE_#POS_INC#>
+				<!-- STATIC -->
+				<SET_STATE_#POS_STATIC#>0 (&gt;O:_Delta) 0 (&gt;O:_UPDATE_Count)</SET_STATE_#POS_STATIC#>
+				<STR_STATE_#POS_STATIC#>Static</STR_STATE_#POS_STATIC#>
+				<!-- DEC -->
+				<SET_STATE_#POS_DEC#>(&gt;H:#AS_PROPELLER#_Switch_Dec) -1 (&gt;O:_Delta)</SET_STATE_#POS_DEC#>
+				<STR_STATE_#POS_DEC#>Decrease</STR_STATE_#POS_DEC#>
+			</UseInputEvent>
 			<UseTemplate Name="ASOBO_GT_Switch_3States">
 				<ANIM_NAME>#SWITCH_INC_DEC_ANIM_NAME#</ANIM_NAME>
-				<CODE_POS_0>
-					1 (&gt;O:_Delta)
-					(&gt;H:#AS_PROPELLER#_Switch_Inc)
-				</CODE_POS_0>
-				<CODE_POS_1>
-					0 (&gt;O:_Delta)
-					0 (&gt;O:_UPDATE_Count)
-				</CODE_POS_1>
-				<CODE_POS_2>
-					-1 (&gt;O:_Delta)
-					(&gt;H:#AS_PROPELLER#_Switch_Inc)
-				</CODE_POS_2>
 				<MOMENTARY_SWITCH/>
 				<STATE_MAX_TIMER>#MOMENTARY_MIN_DURATION#</STATE_MAX_TIMER>
 				<STATE0_TIMER>#MOMENTARY_MIN_DURATION#</STATE0_TIMER>
-				<STATE0_TEST>
-					(O:_Delta) 0 &gt;
-				</STATE0_TEST>
-				<STATE1_TEST>
-					(O:_Delta) 0 ==
-				</STATE1_TEST>
-				<STATE2_TEST>
-					(O:_Delta) 0 &lt;
-				</STATE2_TEST>
 				<SWITCH_DIRECTION>Vertical</SWITCH_DIRECTION>
 				<THRESHOLD_INPUT>0.00025</THRESHOLD_INPUT>
 				<THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE>
+				<TOOLTIP_TITLE>@TT_Package.AS_PROPELLER_SWITCH_TITLE</TOOLTIP_TITLE>
+				<TOOLTIP_ENTRY_0>AS_Propeller_#BTN_ID#</TOOLTIP_ENTRY_0>
+				<WWISE_EVENT>lever_propeller_switch</WWISE_EVENT>
+				<!-- INC -->
+				<CODE_POS_#POS_INC#>(&gt;B:AS_Propeller_#BTN_ID#_Increase)</CODE_POS_#POS_INC#>
+				<STATE#POS_INC#_TEST>(B:AS_Propeller_#BTN_ID#) #POS_INC# ==</STATE#POS_INC#_TEST>
+				<!-- STATIC -->
+				<CODE_POS_#POS_STATIC#>(&gt;B:AS_Propeller_#BTN_ID#_Static)</CODE_POS_#POS_STATIC#>
+				<STATE#POS_STATIC#_TEST>(B:AS_Propeller_#BTN_ID#) #POS_STATIC# ==</STATE#POS_STATIC#_TEST>
+				<!-- DEC -->
+				<CODE_POS_#POS_DEC#>(&gt;B:AS_Propeller_#BTN_ID#_Decrease) -1 (&gt;O:_Delta)</CODE_POS_#POS_DEC#>
+				<STATE#POS_DEC#_TEST>(B:AS_Propeller_#BTN_ID#) #POS_DEC# ==</STATE#POS_DEC#_TEST>
 			</UseTemplate>
 		</Component>
 		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">

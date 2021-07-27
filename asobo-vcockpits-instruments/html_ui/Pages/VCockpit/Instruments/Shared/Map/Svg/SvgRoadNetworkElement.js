@@ -210,7 +210,7 @@ class SvgRoadNetworkElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         return container;
     }
     setVisible(_visible) {
@@ -218,9 +218,9 @@ class SvgRoadNetworkElement extends SvgMapElement {
             this.visible = _visible;
             if (this._visibleCanvas) {
                 if (this.visible)
-                    this._visibleCanvas.canvas.style.display = "block";
+                    diffAndSetStyle(this._visibleCanvas.canvas, StyleProperty.display, "block");
                 else
-                    this._visibleCanvas.canvas.style.display = "none";
+                    diffAndSetStyle(this._visibleCanvas.canvas, StyleProperty.display, "none");
             }
         }
     }
@@ -232,9 +232,9 @@ class SvgRoadNetworkElement extends SvgMapElement {
             }
             this._visibleCanvas = new RoadCanvas(canvasImage);
             if (this.visible)
-                this._visibleCanvas.canvas.style.display = "block";
+                diffAndSetStyle(this._visibleCanvas.canvas, StyleProperty.display, "block");
             else
-                this._visibleCanvas.canvas.style.display = "none";
+                diffAndSetStyle(this._visibleCanvas.canvas, StyleProperty.display, "none");
         }
         this.parentWidth = map.htmlRoot.getWidth() / this.overdrawFactor;
         this.parentHeight = map.htmlRoot.getHeight() / this.overdrawFactor;
@@ -503,13 +503,13 @@ class SvgRoadNetworkElement extends SvgMapElement {
         this.translateCanvas(this._visibleCanvas.canvas, left, top, deltaRotation);
     }
     translateCanvas(_canvas, _x, _y, _rotation) {
-        _canvas.style.transform = "translate(" + _x + "px, " + _y + "px) rotate(" + _rotation.toFixed(0) + "deg)";
+        _canvas.style.transform = "translate(" + _x + "px, " + _y + "px) rotate(" + fastToFixed(_rotation, 0) + "deg)";
     }
 }
-SvgRoadNetworkElement.MAX_STALL_PENDING_ROADS_UNSTACK = 0.5;
-SvgRoadNetworkElement.MAX_STALL_NODE_DEPRECATION = 0.5;
-SvgRoadNetworkElement.MAX_STALL_DRAW_ROADS = 2;
-SvgRoadNetworkElement.MAX_LENGTH_PENDING_ROADS_BUFFER = 500;
+SvgRoadNetworkElement.MAX_STALL_PENDING_ROADS_UNSTACK = 0.3;
+SvgRoadNetworkElement.MAX_STALL_NODE_DEPRECATION = 0.3;
+SvgRoadNetworkElement.MAX_STALL_DRAW_ROADS = 0.3;
+SvgRoadNetworkElement.MAX_LENGTH_PENDING_ROADS_BUFFER = 200;
 SvgRoadNetworkElement.ROADS_CANVAS_OVERFLOW_FACTOR = 1.5;
 SvgRoadNetworkElement.MAX_SIZE_ROADS_CANVAS = 2048;
 SvgRoadNetworkElement.EPSILON_ROADS_LEVEL0 = 0.0008;

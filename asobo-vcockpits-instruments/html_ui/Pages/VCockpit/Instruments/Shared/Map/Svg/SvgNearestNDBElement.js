@@ -1,4 +1,9 @@
 class SvgNearestNDBElement extends SvgWaypointElement {
+    constructor(source) {
+        super(source);
+        this.textOffsetRatio = 0;
+        this.sortIndex = 1;
+    }
     get ndbType() {
         if (this._ndbType) {
             return this._ndbType;
@@ -9,11 +14,6 @@ class SvgNearestNDBElement extends SvgWaypointElement {
     }
     set ndbType(v) {
         this._ndbType = v;
-    }
-    constructor(source) {
-        super(source);
-        this.textOffsetRatio = 0;
-        this.sortIndex = 1;
     }
     id(map) {
         return "nrst-ndb-" + this.ident + "-map-" + map.index;

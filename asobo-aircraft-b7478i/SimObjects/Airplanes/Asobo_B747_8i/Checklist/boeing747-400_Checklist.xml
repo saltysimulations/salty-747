@@ -35,6 +35,15 @@
         <Checkpoint ReferenceId="POWER_LEVERS_IDLE_4ENGINES">
           <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_THRUST_LEVERS" ExpectationTT="TT:GAME.CHECKLIST_IDLE"/>
         </Checkpoint>
+		
+		<Checkpoint ReferenceId="APU_Bleed_On">
+		  <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+		
+		<Checkpoint ReferenceId="ENGINE_BLEED_AIR_SWITCHES_ON_4ENGINES">
+		 <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+		
         <Checkpoint ReferenceId="Engine_4_Start_Switch_Pull">
           <ForceCamera name="Instruments09"/>
         </Checkpoint>

@@ -10,19 +10,19 @@ class SvgRailwayElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         let shape = document.createElementNS(Avionics.SVG.NS, "path");
         shape.classList.add("map-railway");
-        shape.setAttribute("stroke", map.config.railwayStrokeColor);
-        shape.setAttribute("stroke-width", fastToFixed(map.config.railwayWidth / map.overdrawFactor, 0));
-        shape.setAttribute("fill", "none");
+        diffAndSetAttribute(shape, "stroke", map.config.railwayStrokeColor);
+        diffAndSetAttribute(shape, "stroke-width", fastToFixed(map.config.railwayWidth / map.overdrawFactor, 0));
+        diffAndSetAttribute(shape, "fill", "none");
         container.appendChild(shape);
         let shapeRail = document.createElementNS(Avionics.SVG.NS, "path");
         shapeRail.classList.add("map-railway");
-        shapeRail.setAttribute("stroke", map.config.railwayStrokeColor);
-        shapeRail.setAttribute("stroke-width", fastToFixed((map.config.railwayWidth / map.overdrawFactor * 3), 0));
-        shapeRail.setAttribute("stroke-dasharray", map.config.railwayWidth / map.overdrawFactor + " " + map.config.railwayDashLength / map.overdrawFactor);
-        shapeRail.setAttribute("fill", "none");
+        diffAndSetAttribute(shapeRail, "stroke", map.config.railwayStrokeColor);
+        diffAndSetAttribute(shapeRail, "stroke-width", fastToFixed((map.config.railwayWidth / map.overdrawFactor * 3), 0));
+        diffAndSetAttribute(shapeRail, "stroke-dasharray", map.config.railwayWidth / map.overdrawFactor + " " + map.config.railwayDashLength / map.overdrawFactor);
+        diffAndSetAttribute(shapeRail, "fill", "none");
         container.appendChild(shapeRail);
         return container;
     }
@@ -66,8 +66,8 @@ class SvgRailwayElement extends SvgMapElement {
             }
             p1 = p2;
         }
-        this.svgElement.children[0].setAttribute("d", points);
-        this.svgElement.children[1].setAttribute("d", points);
+        diffAndSetAttribute(this.svgElement.children[0], "d", points);
+        diffAndSetAttribute(this.svgElement.children[1], "d", points);
     }
 }
 //# sourceMappingURL=SvgRailwayElement.js.map

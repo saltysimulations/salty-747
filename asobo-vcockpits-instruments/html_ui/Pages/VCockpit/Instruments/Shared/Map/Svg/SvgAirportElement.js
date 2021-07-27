@@ -1,4 +1,8 @@
 class SvgAirportElement extends SvgMapElement {
+    constructor() {
+        super();
+        this._tmpCenter = new Vec2();
+    }
     get ident() {
         if (this._ident) {
             return this._ident;
@@ -43,17 +47,13 @@ class SvgAirportElement extends SvgMapElement {
     set runways(v) {
         this._runways = v;
     }
-    constructor() {
-        super();
-        this._tmpCenter = new Vec2();
-    }
     id(map) {
         return "airport-" + this.icao + "-map-" + map.index;
     }
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         return container;
     }
     updateDraw(map) {
@@ -62,12 +62,12 @@ class SvgAirportElement extends SvgMapElement {
             let rectStroke = this.svgElement.children[i];
             if (!rectStroke) {
                 rectStroke = document.createElementNS(Avionics.SVG.NS, "rect");
-                rectStroke.setAttribute("stroke-width", fastToFixed(map.config.runwayStrokeWidth / map.overdrawFactor, 0));
+                diffAndSetAttribute(rectStroke, "stroke-width", fastToFixed(map.config.runwayStrokeWidth / map.overdrawFactor, 0));
                 this.svgElement.appendChild(rectStroke);
             }
-            rectStroke.setAttribute("stroke", map.config.runwayStrokeColor);
-            rectStroke.setAttribute("rx", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
-            rectStroke.setAttribute("ry", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
+            diffAndSetAttribute(rectStroke, "stroke", map.config.runwayStrokeColor);
+            diffAndSetAttribute(rectStroke, "rx", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
+            diffAndSetAttribute(rectStroke, "ry", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
         }
         for (let i = 0; i < this.runways.length; i++) {
             let runway = this.runways[i];
@@ -75,13 +75,13 @@ class SvgAirportElement extends SvgMapElement {
             let rectNoStroke = this.svgElement.children[i + this.runways.length];
             if (!rectNoStroke) {
                 rectNoStroke = document.createElementNS(Avionics.SVG.NS, "rect");
-                rectNoStroke.setAttribute("stroke-width", fastToFixed(map.config.runwayStrokeWidth / map.overdrawFactor, 0));
+                diffAndSetAttribute(rectNoStroke, "stroke-width", fastToFixed(map.config.runwayStrokeWidth / map.overdrawFactor, 0));
                 this.svgElement.appendChild(rectNoStroke);
             }
-            rectNoStroke.setAttribute("fill", map.config.runwayFillColor);
-            rectNoStroke.setAttribute("stroke", "none");
-            rectNoStroke.setAttribute("rx", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
-            rectNoStroke.setAttribute("ry", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
+            diffAndSetAttribute(rectNoStroke, "fill", map.config.runwayFillColor);
+            diffAndSetAttribute(rectNoStroke, "stroke", "none");
+            diffAndSetAttribute(rectNoStroke, "rx", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
+            diffAndSetAttribute(rectNoStroke, "ry", fastToFixed(map.config.runwayCornerRadius / map.overdrawFactor, 0));
             map.coordinatesToXYToRef(new LatLongAlt(runway.latitude, runway.longitude), this._tmpCenter);
             let l = map.feetsToPixels(runway.length);
             let w = Math.max(map.feetsToPixels(runway.width), map.config.runwayMinimalWidth / map.overdrawFactor);
@@ -93,16 +93,16 @@ class SvgAirportElement extends SvgMapElement {
                 fastToFixed((runway.direction), 0) + " " +
                 fastToFixed((this._tmpCenter.x), 0) + " " +
                 fastToFixed((this._tmpCenter.y), 0) + ")";
-            rectStroke.setAttribute("x", "" + x);
-            rectStroke.setAttribute("y", "" + y);
-            rectStroke.setAttribute("width", "" + width);
-            rectStroke.setAttribute("height", "" + height);
-            rectStroke.setAttribute("transform", transform);
-            rectNoStroke.setAttribute("x", "" + x);
-            rectNoStroke.setAttribute("y", "" + y);
-            rectNoStroke.setAttribute("width", "" + width);
-            rectNoStroke.setAttribute("height", "" + height);
-            rectNoStroke.setAttribute("transform", transform);
+            diffAndSetAttribute(rectStroke, "x", "" + x);
+            diffAndSetAttribute(rectStroke, "y", "" + y);
+            diffAndSetAttribute(rectStroke, "width", "" + width);
+            diffAndSetAttribute(rectStroke, "height", "" + height);
+            diffAndSetAttribute(rectStroke, "transform", transform);
+            diffAndSetAttribute(rectNoStroke, "x", "" + x);
+            diffAndSetAttribute(rectNoStroke, "y", "" + y);
+            diffAndSetAttribute(rectNoStroke, "width", "" + width);
+            diffAndSetAttribute(rectNoStroke, "height", "" + height);
+            diffAndSetAttribute(rectNoStroke, "transform", transform);
         }
         while (this.svgElement.children.length > this.runways.length * 2) {
             this.svgElement.removeChild(this.svgElement.lastElementChild);

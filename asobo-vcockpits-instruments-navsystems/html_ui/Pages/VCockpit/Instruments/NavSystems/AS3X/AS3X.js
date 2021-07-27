@@ -26,7 +26,7 @@ class AS3X extends NavSystem {
             let displayModeConfig = this.instrumentXmlConfig.getElementsByTagName("DisplayMode");
             if (displayModeConfig.length > 0) {
                 state = displayModeConfig[0].textContent;
-                this.contentElement.setAttribute("state", state);
+                diffAndSetAttribute(this.contentElement, "state", state);
             }
         }
         switch (state) {
@@ -92,28 +92,28 @@ class AS3X extends NavSystem {
     }
     Update() {
         super.Update();
-        Avionics.Utils.diffAndSet(this.currentPageElement, this.getCurrentPage().detailedName);
+        diffAndSetText(this.currentPageElement, this.getCurrentPage().detailedName);
         let currPageGroup = this.getCurrentPageGroup();
         for (let i = 0; i < currPageGroup.pages.length; i++) {
             if (i >= this.pageListElems.length) {
                 let elem = window.document.createElement("div");
-                elem.setAttribute("class", "pageElem");
+                diffAndSetAttribute(elem, "class", "pageElem");
                 this.pageListElems.push(elem);
                 this.pageListElement.appendChild(elem);
             }
-            Avionics.Utils.diffAndSet(this.pageListElems[i], currPageGroup.pages[i].shortName);
+            diffAndSetText(this.pageListElems[i], currPageGroup.pages[i].shortName);
             if (i == currPageGroup.pageIndex) {
-                Avionics.Utils.diffAndSetAttribute(this.pageListElems[i], "state", "Active");
+                diffAndSetAttribute(this.pageListElems[i], "state", "Active");
             }
             else {
-                Avionics.Utils.diffAndSetAttribute(this.pageListElems[i], "state", "Inactive");
+                diffAndSetAttribute(this.pageListElems[i], "state", "Inactive");
             }
         }
         for (let i = currPageGroup.pages.length; i < this.pageListElems.length; i++) {
-            Avionics.Utils.diffAndSet(this.pageListElems[i], "");
+            diffAndSetText(this.pageListElems[i], "");
         }
         if (this.gsValue) {
-            Avionics.Utils.diffAndSet(this.gsValue, fastToFixed(SimVar.GetSimVarValue("GPS GROUND SPEED", "knot"), 0) + "kt");
+            diffAndSetText(this.gsValue, fastToFixed(SimVar.GetSimVarValue("GPS GROUND SPEED", "knot"), 0) + "kt");
         }
     }
     get templateID() { return "AS3X"; }
@@ -136,7 +136,8 @@ class AS3X_PFD extends AS3X_Page {
         this.valueSelectionMode = 0;
         this.syntheticVision = true;
         this.element = new NavSystemElementGroup([
-            new PFD_Compass("HSI")
+            new PFD_Compass("HSI"),
+            new PFD_Minimums(),
         ]);
     }
     init() {
@@ -155,7 +156,7 @@ class AS3X_PFD extends AS3X_Page {
         this.baroSoftkeyMenu.elements = [
             new SoftKeyElement(""),
             new SoftKeyElement(""),
-            new SoftKeyElement("MINIMUMS", this.switchToValueSelectionMode.bind(this, 4), this.valueSelectionModeStateCallback.bind(this, 4)),
+            new SoftKeyElement("MINIMUMS", this.switchToMinimums.bind(this), this.valueSelectionModeStateCallback.bind(this, 4)),
             new SoftKeyElement("BARO", this.switchToValueSelectionMode.bind(this, 5), this.valueSelectionModeStateCallback.bind(this, 5)),
             new SoftKeyElement("BACK", this.switchFromBaroMenu.bind(this))
         ];
@@ -185,12 +186,12 @@ class AS3X_PFD extends AS3X_Page {
         this.syntheticVision = !this.syntheticVision;
         let attitude = this.gps.getElementOfType(PFD_Attitude);
         if (attitude) {
-            Avionics.Utils.diffAndSetAttribute(attitude.svg, "background", (this.syntheticVision ? "false" : "true"));
+            diffAndSetAttribute(attitude.svg, "background", (this.syntheticVision ? "false" : "true"));
         }
         if (this.syntheticVisionElement) {
-            this.syntheticVisionElement.style.display = (this.syntheticVision ? "Block" : "None");
+            diffAndSetStyle(this.syntheticVisionElement, StyleProperty.display, (this.syntheticVision ? "Block" : "None"));
         }
-        this.syntheticVisionElement.style.display = (this.syntheticVision ? "Block" : "None");
+        diffAndSetStyle(this.syntheticVisionElement, StyleProperty.display, (this.syntheticVision ? "Block" : "None"));
         this.syntheticVisionMenuElement.name = "Synthetic Vision " + (this.syntheticVision ? "On" : "Off");
     }
     valueSelectionModeStateCallback(_value) {
@@ -226,14 +227,22 @@ class AS3X_PFD extends AS3X_Page {
             Simplane.setAutoPilotSelectedNav(cdiSrc);
         }
     }
+    switchToMinimums() {
+        this.switchToValueSelectionMode(4);
+        if (this.valueSelectionMode == 4) {
+            if (SimVar.GetSimVarValue("L:AS3000_MinimalsMode", "number") == 0) {
+                SimVar.SetSimVarValue("L:AS3000_MinimalsMode", "number", 1);
+            }
+        }
+    }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
-        Avionics.Utils.diffAndSet(this.oatValue, fastToFixed(SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius"), 0) + "°C");
+        diffAndSetText(this.oatValue, fastToFixed(SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius"), 0) + "°C");
         let lcl = SimVar.GetSimVarValue("E:LOCAL TIME", "seconds");
         let hh = Math.floor(lcl / 3600);
         let mm = Math.floor((lcl % 3600) / 60);
         let ss = Math.floor(lcl % 60);
-        Avionics.Utils.diffAndSet(this.lclValue, (hh < 10 ? "0" : "") + hh + (mm < 10 ? ":0" : ":") + mm + (ss < 10 ? ":0" : ":") + ss);
+        diffAndSetText(this.lclValue, (hh < 10 ? "0" : "") + hh + (mm < 10 ? ":0" : ":") + mm + (ss < 10 ? ":0" : ":") + ss);
     }
     onEvent(_event) {
         super.onEvent(_event);
@@ -250,6 +259,7 @@ class AS3X_PFD extends AS3X_Page {
                         SimVar.SetSimVarValue("K:AP_ALT_VAR_INC", "number", 0);
                         break;
                     case 4:
+                        SimVar.SetSimVarValue("L:AS3000_MinimalsValue", "number", Math.min(SimVar.GetSimVarValue("L:AS3000_MinimalsValue", "number") + 10, 16000));
                         break;
                     case 5:
                         SimVar.SetSimVarValue("K:KOHLSMAN_INC", "number", this.altimeterIndex);
@@ -268,10 +278,16 @@ class AS3X_PFD extends AS3X_Page {
                         SimVar.SetSimVarValue("K:AP_ALT_VAR_DEC", "number", 0);
                         break;
                     case 4:
+                        SimVar.SetSimVarValue("L:AS3000_MinimalsValue", "number", Math.max(SimVar.GetSimVarValue("L:AS3000_MinimalsValue", "number") - 10, 0));
                         break;
                     case 5:
                         SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", this.altimeterIndex);
                         break;
+                }
+                break;
+            case "CLR":
+                if (this.valueSelectionMode == 4) {
+                    SimVar.SetSimVarValue("L:AS3000_MinimalsMode", "number", 0);
                 }
                 break;
         }
@@ -296,15 +312,15 @@ class AS3X_TopBar extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         let wp = SimVar.GetSimVarValue("GPS WP NEXT ID", "string");
-        Avionics.Utils.diffAndSet(this.value1, wp != "" ? wp : "____");
+        diffAndSetText(this.value1, wp != "" ? wp : "____");
         let brg = SimVar.GetSimVarValue("GPS WP BEARING", "degrees");
-        Avionics.Utils.diffAndSet(this.value2, brg > 0 ? fastToFixed(brg, 0) + "°M" : "___°M");
+        diffAndSetText(this.value2, brg > 0 ? fastToFixed(brg, 0) + "°M" : "___°M");
         let dist = SimVar.GetSimVarValue("GPS WP DISTANCE", "nautical mile");
-        Avionics.Utils.diffAndSet(this.value3, dist > 0 ? dist.toFixed(1) + "NM" : "__._NM");
+        diffAndSetText(this.value3, dist > 0 ? fastToFixed(dist, 1) + "NM" : "__._NM");
         let ete = SimVar.GetSimVarValue("GPS ETE", "minutes");
         let hh = Math.floor(ete / 60);
         let mm = Math.floor(ete % 60);
-        Avionics.Utils.diffAndSet(this.value4, ete > 0 ? (hh < 10 ? "0" : "") + hh + (mm < 10 ? ":0" : ":") + mm : "__:__");
+        diffAndSetText(this.value4, ete > 0 ? (hh < 10 ? "0" : "") + hh + (mm < 10 ? ":0" : ":") + mm : "__:__");
     }
     onExit() {
     }

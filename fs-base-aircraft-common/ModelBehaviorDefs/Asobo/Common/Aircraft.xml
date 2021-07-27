@@ -1,9 +1,10 @@
 <ModelBehaviors>
 	<Include RelativeFile="Subtemplates\\Aircraft_Subtemplates.xml"/>
-
-	<!-- Aircraft ################################################################ -->
+	<Include RelativeFile="Inputs\\Aircraft_Inputs.xml"/>
+	<!-- ################################## AIRCRAFT ################################## -->
+	<!-- ############################################################################## -->
 	<Template Name="ASOBO_AIRCRAFT_Lever_Canopy_Template">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<NODE_ID>AIRCRAFT_Lever_Canopy</NODE_ID>
 			<ANIM_NAME>AIRCRAFT_Lever_Canopy</ANIM_NAME>
 			<ANIM_CODE>(A:CANOPY OPEN, Percent)</ANIM_CODE>
@@ -11,7 +12,7 @@
 			<WWISE_EVENT_2>canopy_close_lever</WWISE_EVENT_2>
 			<NORMALIZED_TIME_2>0.1</NORMALIZED_TIME_2>
 			<DIRECTION_2>Backward</DIRECTION_2>
-		</DefaultTemplateParameters>
+		</Parameters>
 		<Component ID="#NODE_ID#" Node="#NODE_ID#">
 			<UseTemplate Name="ASOBO_GT_Switch_Code">
 				<!-- <TOOLTIPID>TOOLTIPTEXT_CANOPY</TOOLTIPID> -->
@@ -23,67 +24,79 @@
 	</Template>
 	<!-- Cannot be more generic atm as ID is off by 1 between SIMVAR and KEY -->
 	<Template Name="ASOBO_AIRCRAFT_Lever_Exit_0_Template">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<NODE_ID>AIRCRAFT_Lever_Exit_0</NODE_ID>
 			<ANIM_CODE>(A:EXIT OPEN:0, Percent)</ANIM_CODE>
 			<LEFT_SINGLE_CODE>0 (&gt;K:TOGGLE_AIRCRAFT_EXIT_FAST)</LEFT_SINGLE_CODE>
-		</DefaultTemplateParameters>
-
+		</Parameters>
 		<UseTemplate Name="ASOBO_AIRCRAFT_Lever_Exit_SubTemplate">
 		</UseTemplate>
 	</Template>
 	<Template Name="ASOBO_AIRCRAFT_Lever_Exit_1_Template">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<NODE_ID>AIRCRAFT_Lever_Exit_1</NODE_ID>
 			<ANIM_CODE>(A:EXIT OPEN:0, Percent)</ANIM_CODE>
 			<LEFT_SINGLE_CODE>1 (&gt;K:TOGGLE_AIRCRAFT_EXIT_FAST)</LEFT_SINGLE_CODE>
-		</DefaultTemplateParameters>
-
+		</Parameters>
 		<UseTemplate Name="ASOBO_AIRCRAFT_Lever_Exit_SubTemplate">
 		</UseTemplate>
 	</Template>
 	<Template Name="ASOBO_AIRCRAFT_Lever_Exit_2_Template">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<NODE_ID>AIRCRAFT_Lever_Exit_2</NODE_ID>
 			<ANIM_CODE>(A:EXIT OPEN:1, Percent)</ANIM_CODE>
 			<LEFT_SINGLE_CODE>2 (&gt;K:TOGGLE_AIRCRAFT_EXIT_FAST)</LEFT_SINGLE_CODE>
-		</DefaultTemplateParameters>
-
+		</Parameters>
 		<UseTemplate Name="ASOBO_AIRCRAFT_Lever_Exit_SubTemplate">
 		</UseTemplate>
 	</Template>
 	<Template Name="ASOBO_AIRCRAFT_Lever_Exit_3_Template">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<NODE_ID>AIRCRAFT_Lever_Exit_3</NODE_ID>
 			<ANIM_CODE>(A:EXIT OPEN:2, Percent)</ANIM_CODE>
 			<LEFT_SINGLE_CODE>3 (&gt;K:TOGGLE_AIRCRAFT_EXIT_FAST)</LEFT_SINGLE_CODE>
-		</DefaultTemplateParameters>
-
+		</Parameters>
 		<UseTemplate Name="ASOBO_AIRCRAFT_Lever_Exit_SubTemplate">
 		</UseTemplate>
 	</Template>
-
 	<Template Name="ASOBO_AIRFRAME_Warning_Door_Unlock_Template">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<TYPE>Front</TYPE>
 			<INDEX>0</INDEX>
-		</DefaultTemplateParameters>
-
+		</Parameters>
 		<UseTemplate Name="ASOBO_AIRFRAME_Warning_Door_Unlock_SubTemplate">
 		</UseTemplate>
 	</Template>
-
 	<Template Name="ASOBO_AIRFRAME_Warning_Door_Unlock_SubTemplate">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<NODE_ID>AIRFRAME_Warning_Door_Unlock_#TYPE#</NODE_ID>
 			<ANIM_NAME>AIRFRAME_Warning_Door_Unlock_#TYPE#</ANIM_NAME>
 			<ANIM_LENGTH>1</ANIM_LENGTH>
-		</DefaultTemplateParameters>
-
+		</Parameters>
 		<Component ID="#NODE_ID#" Node="#NODE_ID#">
 			<UseTemplate Name="ASOBO_GT_Anim_Code">
 				<ANIM_CODE>(A:EXIT OPEN:#INDEX#, Percent over 100) 0 == </ANIM_CODE>
 			</UseTemplate>
 		</Component>
+	</Template>
+	<!-- ########################################## -->
+	<!-- AIRCRAFT Interaction inputs setup template -->
+	<Template Name="ASOBO_AIRCRAFT_Base_Template">
+		<Parameters Type="Default">
+			<INPUT_EVENT_ID_SOURCE>AIRCRAFT</INPUT_EVENT_ID_SOURCE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_Interaction_Base_Template">
+			<USE_INPUT_EVENT_ID>AIRCRAFT</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRCRAFT_Push_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Push_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>AIRCRAFT</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRCRAFT_Pull_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Pull_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>AIRCRAFT</USE_INPUT_EVENT_ID>
+		</UseTemplate>
 	</Template>
 </ModelBehaviors>

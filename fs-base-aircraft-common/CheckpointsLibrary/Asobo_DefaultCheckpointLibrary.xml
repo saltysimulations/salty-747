@@ -826,7 +826,7 @@
               <Val SimVarName="ELECTRICAL MASTER BATTERY:2" Units="Boolean"/>
             </Operator>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY" EventParam="2"/>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;B:ELECTRICAL_Battery_STBY_2_Set)"/>
           <Instrument Id="ELECTRICAL_Switch_Battery_STBY"/>
         </Test>
         <Test>
@@ -834,26 +834,23 @@
           <TestValue>
             <Val Code="(L:XMLVAR_STBYBattery_IsHeld) (A:ELECTRICAL BATTERY VOLTAGE:2, volts) 17.0 &gt; and"/>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Code="2 (&gt;L:XMLVAR_BatterySTBY_SwitchState)"/>
-          <Action Copilot="True" Condition="TestValueFalse" Code="1 (&gt;L:XMLVAR_STBYBattery_Test)"/>
+          <Action Copilot="True" Condition="TestValueFalse" Code="2 (&gt;B:ELECTRICAL_Battery_STBY_2_Set)"/>
           <Action Copilot="True" Condition="TestValueFalse" Code="1 (&gt;L:XMLVAR_STBYBattery_IsHeld)"/>
           <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="20.0"/>
           <Instrument Id="ELECTRICAL_Switch_Battery_STBY"/>
         </Test>
       </Sequence>
-      <Action Copilot="True" Condition="End" Once="true" Code="0 (&gt;L:XMLVAR_STBYBattery_Test)"/>
       <Action Copilot="True" Condition="End" Once="true" Code="0 (&gt;L:XMLVAR_STBYBattery_IsHeld)"/>
-      <Action Copilot="True" Condition="End" Once="true" Code="1 (&gt;L:XMLVAR_BatterySTBY_SwitchState)"/>
+      <Action Copilot="True" Condition="End" Once="true" Code="1 (&gt;B:ELECTRICAL_Battery_STBY_2_Set)"/>
     </Checkpoint>
     <Checkpoint Id="STBY_BATT_Switch_OFF">
       <Clue name="TT:CLUE.STBY_BATT_SWITCH_OFF"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_STBY_BATT_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
       <Test>
         <TestValue>
-          <Val Code="(L:XMLVAR_BatterySTBY_SwitchState) 1 == (A:ELECTRICAL MASTER BATTERY:2, bool) ! and"/>
+          <Val Code="(B:ELECTRICAL_Battery_STBY_2) 1 == (A:ELECTRICAL MASTER BATTERY:2, bool) ! and"/>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:XMLVAR_BatterySTBY_SwitchState)"/>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY" EventParam="2"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ELECTRICAL_Battery_STBY_2_Set)"/>
         <Instrument Id="ELECTRICAL_Switch_Battery_STBY"/>
       </Test>
     </Checkpoint>
@@ -862,9 +859,9 @@
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_STBY_BATT_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_ARM_VERIFY_PFD"/>
       <Test>
         <TestValue>
-          <Val Code="(L:XMLVAR_BatterySTBY_SwitchState) 0 == (A:ELECTRICAL MASTER BATTERY:2, bool) and (L:AS1000_PFD_ScreenLuminosity) 0.75 &gt; and"/>
+          <Val Code="(B:ELECTRICAL_Battery_STBY_2) 0 == (L:AS1000_PFD_ScreenLuminosity) 0.75 &gt; and"/>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="MASTER_BATTERY_ON" EventParam="2"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="false" Code="(&gt;B:ELECTRICAL_Battery_STBY_2_Set)" />
         <Instrument Id="ELECTRICAL_Switch_Battery_STBY"/>
       </Test>
     </Checkpoint>
@@ -1378,7 +1375,7 @@
             <Val Value="0"/>
           </Operator>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;L:XMLVAR_APU_StarterKnob_Pos) (&gt;K:APU_STARTER)"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="APU_STARTER"/>
         <Instrument Id="ELECTRICAL_Switch_APU_Starter"/>
       </Test>
     </Checkpoint>
@@ -2212,42 +2209,42 @@
         </Test>
         <Test>
           <TestValue>
-            <Val SimVarName="FUELSYSTEM PUMP ACTIVE:1" Units="Boolean"/>
+            <Val SimVarName="FUELSYSTEM PUMP SWITCH:1" Units="Boolean"/>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="1"/>
           <Instrument Id="FUEL_Push_Pump1"/>
         </Test>
         <Test>
           <TestValue>
-            <Val SimVarName="FUELSYSTEM PUMP ACTIVE:2" Units="Boolean"/>
+            <Val SimVarName="FUELSYSTEM PUMP SWITCH:2" Units="Boolean"/>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="2"/>
           <Instrument Id="FUEL_Push_Pump2"/>
         </Test>
         <Test>
           <TestValue>
-            <Val SimVarName="FUELSYSTEM PUMP ACTIVE:3" Units="Boolean"/>
+            <Val SimVarName="FUELSYSTEM PUMP SWITCH:3" Units="Boolean"/>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="3"/>
           <Instrument Id="FUEL_Push_Pump3"/>
         </Test>
         <Test>
           <TestValue>
-            <Val SimVarName="FUELSYSTEM PUMP ACTIVE:4" Units="Boolean"/>
+            <Val SimVarName="FUELSYSTEM PUMP SWITCH:4" Units="Boolean"/>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="4"/>
           <Instrument Id="FUEL_Push_Pump4"/>
         </Test>
         <Test>
           <TestValue>
-            <Val SimVarName="FUELSYSTEM PUMP ACTIVE:5" Units="Boolean"/>
+            <Val SimVarName="FUELSYSTEM PUMP SWITCH:5" Units="Boolean"/>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="5"/>
           <Instrument Id="FUEL_Push_Pump5"/>
         </Test>
         <Test>
           <TestValue>
-            <Val SimVarName="FUELSYSTEM PUMP ACTIVE:6" Units="Boolean"/>
+            <Val SimVarName="FUELSYSTEM PUMP SWITCH:6" Units="Boolean"/>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="6"/>
           <Instrument Id="FUEL_Push_Pump6"/>
@@ -2552,20 +2549,20 @@
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_BLEED_AIR_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
       <Clue name="TT:CLUE.ENGINE_BLEED_AIR_SWITCHES_ON"/>
       <Sequence SeqType="Unordered">
-        <Test>
-          <TestValue>
-            <Val SimVarName="bleed air engine:1" Units="Boolean"/>
-          </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ENGINE_BLEED_AIR_SOURCE_TOGGLE" EventParam="1"/>
-          <Instrument Id="ELECTRICAL_Switch_Engine_Bleed"/>
-        </Test>
-        <Test>
-          <TestValue>
-            <Val SimVarName="bleed air engine:2" Units="Boolean"/>
-          </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ENGINE_BLEED_AIR_SOURCE_TOGGLE" EventParam="2"/>
-          <Instrument Id="ELECTRICAL_Switch_Engine_Bleed"/>
-        </Test>
+		<Test>
+			<TestValue>
+				<Val Code="(B:ELECTRICAL_Engine_Bleed_1, Bool)"/>
+			</TestValue>
+			<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_1_On)"/>
+			<Instrument Id="ELECTRICAL_Switch_Engine_Bleed"/>
+		</Test>
+		<Test>
+			<TestValue>
+				<Val Code="(B:ELECTRICAL_Engine_Bleed_2, Bool)"/>
+			</TestValue>
+			<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_2_On)"/>
+			<Instrument Id="ELECTRICAL_Switch_Engine_Bleed"/>
+		</Test>
       </Sequence>
     </Checkpoint>
     <Checkpoint Id="BLEED_SWITCHES_OFF">
@@ -2581,11 +2578,11 @@
         <Instrument Id="PRESSURIZATION_Switch_Bleed"/>
         <TestValue>
           <Operator OpType="EQUAL">
-            <Val SimVarName="BLEED AIR SOURCE CONTROL" Units="Enum"/>
-            <Val Value="1"/>
+            <Val Code="(B:PRESSURIZATION_Bleed_Air_Source)"/>
+            <Val Value="2"/>
           </Operator>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code=" 1 (&gt;K:BLEED_AIR_SOURCE_CONTROL_SET)"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:PRESSURIZATION_Bleed_Air_Source_Off)"/>
       </Test>
     </Checkpoint>
     <Checkpoint Id="BLEED_AUTO_OR_MAX_DIFF">
@@ -2594,18 +2591,12 @@
       <Test>
         <Instrument Id="PRESSURIZATION_Switch_Bleed"/>
         <TestValue>
-          <Operator OpType="OR">
-            <Operator OpType="EQUAL">
-              <Val SimVarName="BLEED AIR SOURCE CONTROL" Units="Enum"/>
-              <Val Value="0"/>
+            <Operator OpType="LESS">
+              <Val Code="(B:PRESSURIZATION_Bleed_Air_Source)"/>
+              <Val Value="2"/>
             </Operator>
-            <Operator OpType="EQUAL">
-              <Val SimVarName="BLEED AIR SOURCE CONTROL" Units="Enum"/>
-              <Val Value="3"/>
-            </Operator>
-          </Operator>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code=" 0 (&gt;K:BLEED_AIR_SOURCE_CONTROL_SET)"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:PRESSURIZATION_Bleed_Air_Source_Auto)"/>
       </Test>
     </Checkpoint>
     <Checkpoint Id="BLEEDS_AS_REQUIRED">
@@ -3110,10 +3101,103 @@
         <Instrument Id="LANDING_GEAR_Lever_Gear"/>
       </Test>
     </Checkpoint>
+	
+	<Checkpoint Id="Water_rudder_Up">
+      <Clue name="TT:CLUE.WATER_RUDDER_UP"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_WATER_RUDDER" ExpectationTT="TT:GAME.CHECKLIST_UP"/>
+      <Test>
+        <TestValue>
+			<Operator OpType="NOT">
+				<Val SimVarName="WATER RUDDER HANDLE POSITION" Units="Boolean"/>
+			</Operator>
+        </TestValue>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_WATER_RUDDER"/>
+        <Instrument Id="HANDLING_lever_Water_Rudder"/>
+      </Test>
+    </Checkpoint>
+	
+	<Checkpoint Id="Water_rudder_Down">
+      <Clue name="TT:CLUE.WATER_RUDDER_DOWN"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_WATER_RUDDER" ExpectationTT="TT:GAME.CHECKLIST_DOWN"/>
+      <Test>
+        <TestValue>
+				<Val SimVarName="WATER RUDDER HANDLE POSITION" Units="Boolean"/>
+        </TestValue>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_WATER_RUDDER"/>
+        <Instrument Id="HANDLING_Lever_Water_Rudder"/>
+      </Test>
+    </Checkpoint>
+	
+	<Checkpoint Id="SKIS_UP">
+      <Clue name="TT:CLUE.SKIS_UP"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SKIS" ExpectationTT="TT:GAME.CHECKLIST_UP"/>
+      <Test>
+        <TestValue>
+          <Operator OpType="NOT">
+            <Val SimVarName="GEAR HANDLE POSITION" Units="Boolean"/>
+          </Operator>
+        </TestValue>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="GEAR_TOGGLE"/>
+        <Instrument Id="LANDING_GEAR_Lever_Gear"/>
+        <Instrument Id="LANDING_GEAR_Lever_GearLight"/>
+      </Test>
+    </Checkpoint>
+	
+	<Checkpoint Id="SKIS_DOWN">
+      <Clue name="TT:CLUE.LANDING_SKIS_DOWN"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SKIS" ExpectationTT="TT:GAME.CHECKLIST_DOWN"/>
+      <Test>
+        <TestValue>
+          <Val SimVarName="GEAR HANDLE POSITION" Units="Boolean"/>
+        </TestValue>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="GEAR_TOGGLE"/>
+        <Instrument Id="LANDING_GEAR_Lever_Gear"/>
+		<Instrument Id="LANDING_GEAR_Lever_GearLight"/>
+      </Test>
+    </Checkpoint>
+	
+	<Checkpoint Id="SKIS_AS_REQUIRED">
+      <Clue name="TT:CLUE.LANDING_SKIS_AS_REQUIRED"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SKIS" ExpectationTT="TT:GAME.CHECKLIST_AS_REQUIRED"/>
+      <Test>
+        <Instrument Id="LANDING_GEAR_Lever_Gear"/>
+		<Instrument Id="LANDING_GEAR_Lever_GearLight"/>
+      </Test>
+    </Checkpoint>
+	
+	
+	
     <Checkpoint Id="Touchdown_Main_First">
       <Clue name="TT:CLUE.TOUCHDOWN_MAIN_FIRST"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TOUCHDOWN" ExpectationTT="TT:GAME.CHECKLIST_MAIN_FIRST"/>
     </Checkpoint>
+	
+	<Checkpoint Id="Touchdown_Main_First_TEST">
+      <Clue name="TT:CLUE.TOUCHDOWN_MAIN_FIRST"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TOUCHDOWN" ExpectationTT="TT:GAME.CHECKLIST_MAIN_FIRST"/>  
+      <Test>
+        <TestValue>
+          <Operator OpType="AND">
+            <Operator OpType="AND">
+              <Operator OpType="GREATER">
+                <Val SimVarName="WHEEL RPM:1" Units="rpm"/>
+                <Val Value="100"/>
+              </Operator>
+              <Operator OpType="GREATER">
+                <Val SimVarName="WHEEL RPM:2" Units="rpm"/>
+                <Val Value="100"/>
+              </Operator>
+            </Operator>
+            <Operator OpType="Less">
+              <Val SimVarName="WHEEL RPM:0" Units="rpm"/>
+              <Val Value="10"/>
+            </Operator>
+          </Operator>
+        </TestValue>
+        <Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
+      </Test>
+    </Checkpoint>
+	
     <Checkpoint Id="Landing_Roll_Lower_Nose_Gently">
       <Clue name="TT:CLUE.LANDING_ROLL_LOWER_NOSE_GENTLY"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_LANDING_ROLL" ExpectationTT="TT:GAME.CHECKLIST_LOWER_NOSE_GENTLY"/>
@@ -3802,6 +3886,60 @@
 				"/>
       </Test>
     </Checkpoint>
+	
+	<Checkpoint Id="Throttle_Set_4000_RPM">
+      <Clue name="TT:CLUE.THROTTLE_ADJUST_4000_RPM"/>
+      <Feedback name="TT:FEEDBACK.ADJUSTING_THROTTLE_RPM" SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
+      <Action Condition="Init" Code="1 (&gt;L:IsFirstRPMAdjustment)"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_THROTTLE" ExpectationTT="TT:GAME.CHECKLIST_SET_4000_RPM"/>
+      <Test>
+        <Duration Value="3.5" Cumulative="False"/>
+        <TestValue>
+          <Operator OpType="EQUAL" Tolerance="50">
+            <Val SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
+            <Val Value="4000"/>
+          </Operator>
+        </TestValue>
+        <Instrument Id="ENGINE_Lever_Throttle"/>
+        <Instrument Id="ENGINE_Lever_Throttle_Copilot"/>
+        <Instrument Id="ENGINE_Lever_Throttle1"/>
+        <Instrument Id="ENGINE_Lever_Throttle2"/>
+        <Instrument Id="INSTRUMENT_Digits_Tachometer"/>
+        <Instrument Id="HTML:G1000_MFD:Piston_RPMGauge"/>
+        <Instrument Id="HTML:AS1000_MFD:Piston_RPMGauge"/>
+        <Instrument Id="HTML:G1000_PFD:Piston_RPMGauge"/>
+        <Instrument Id="HTML:AS1000_PFD:Piston_RPMGauge"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="false" Code="
+					(L:CheckListThrottle_NextKeySentTime) (E:SIMULATION TIME, seconds) &lt; if{
+						(L:IsFirstRPMAdjustment) if{
+							10687 (&gt;K:THROTTLE1_SET)
+							0 (&gt;L:IsFirstRPMAdjustment)
+		         	(E:SIMULATION TIME, seconds) 0.5 + (&gt;L:CheckListThrottle_NextKeySentTime)    
+                } els{
+							(A:GENERAL ENG RPM:1, rpm) sp1
+							l1 (L:ChecklistThrottle_LastRPM) - (&gt;L:ChecklistThrottle_DeltaRPM)
+					
+							(L:ChecklistThrottle_DeltaRPM) abs (L:ChecklistThrottle_LastDeltaRPM) abs &lt;  if{
+								l1 4000 &lt; 
+								(L:ChecklistThrottle_DeltaRPM) 0.5 &lt; and if{
+									(&gt;K:THROTTLE_INCR)
+								} els{
+									l1 4000 &gt; 
+									(L:ChecklistThrottle_DeltaRPM) -0.5 &gt; and if{
+										(&gt;K:THROTTLE_DECR)
+									}
+								}
+								(E:SIMULATION TIME, seconds) 0.5 + (&gt;L:CheckListThrottle_NextKeySentTime)
+							}
+						}
+					
+						l1 (&gt;L:ChecklistThrottle_LastRPM)
+						(L:ChecklistThrottle_DeltaRPM) (&gt;L:ChecklistThrottle_LastDeltaRPM)
+					} 
+				"/>
+      </Test>
+    </Checkpoint>
+	
     <Checkpoint Id="Throttle_Set_2000_RPM">
       <Clue name="TT:CLUE.THROTTLE_ADJUST_2000_RPM"/>
       <Feedback name="TT:FEEDBACK.ADJUSTING_THROTTLE_RPM" SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
@@ -4909,6 +5047,7 @@
         </TestValue>
         <Instrument Id="ELECTRICAL_Switch_Avionics_Master"/>
         <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_AVIONICS_MASTER"/>
+		<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Avionics_Master_ON)"/>
       </Test>
     </Checkpoint>
     <Checkpoint Id="Avionics_Master_Switch_Off">
@@ -4928,11 +5067,19 @@
     <Checkpoint Id="Avionics_Bus_Switch_On">
       <!-- avionics master switch CP for electrical KH planes -->
       <SetTemplateValue Id="Circuit Avionics">
-        <Val SimVarName="CIRCUIT AVIONICS ON" Units="Boolean"/>
+        <Val SimVarName="CIRCUIT AVIONICS ON" Units="Boolean"/> <!-- Not great because false if no power - should generally be overriden to use either the specific InputEvent or CIRCUIT SWITCH ON -->
       </SetTemplateValue>
-      <SetTemplateAction Id="Toggle Avionics Bus" Copilot="True" Condition="TestValueFalse" Once="true" Code="22 (&gt;K:ELECTRICAL_CIRCUIT_TOGGLE)"/>
+      <SetTemplateAction Id="Toggle Avionics Bus" Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Avionics_Bus_1_Toggle)"/>
       <!--	NOTE : Avionics circuit's id  varies depending on the plane and can be found in systems.cfg
 		In case the switch is linked to several circuits, add them all one after the other in the Code description. 	-->
+		<!--
+			NOTE : With InputEvents it is better to use the following to override those values : 
+				<SetTemplateValue Id="Circuit Avionics">
+					<Val Code="(B:ELECTRICAL_Avionics_Bus_1, Bool)"/>
+				</SetTemplateValue>
+				<SetTemplateAction Id="Toggle Avionics Bus" Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Avionics_Bus_1_Toggle)"/>
+			Depending on which bus is your avionics bus, you may need to replace the 4s here by the ID of the bus.
+		-->
       <Clue name="TT:CLUE.AVIONICS_MASTER_SWITCH_ON"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_AVIONICS_MASTER_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
       <Test>
@@ -5127,6 +5274,7 @@
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_RADIOS" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
       <Test>
         <Instrument Id="RADIOS"/>
+		<Instrument Id="COM1_KNOB"/>
         <TestValue>
           <Operator OpType="GREATER">
             <Val SimVarName="COM VOLUME:1" Units="percent"/>
@@ -5141,6 +5289,7 @@
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_RADIOS" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
       <Test>
         <Instrument Id="RADIOS"/>
+		<Instrument Id="COM1_KNOB"/>
         <TestValue>
           <Operator OpType="EQUAL">
             <Val SimVarName="COM VOLUME:1" Units="percent"/>
@@ -5412,31 +5561,32 @@
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_CAUTION_ADVISORY_LIGHTS" ExpectationTT="TT:GAME.CHECKLIST_TEST"/>
     </Checkpoint>
     <Checkpoint Id="Annunciator_Panel_Test">
-      <Clue name="TT:CLUE.ANNUNCIATOR_PANEL_TEST"/>
-      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ANNUNCIATOR_PANEL" ExpectationTT="TT:GAME.CHECKLIST_TEST"/>
-      <SetTemplateAction Id="Move_Anunciator_Panel_Switches" Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;L:XMLVAR_DayNightSwitch) (E:SIMULATION TIME, seconds) 1 + (&gt;L:XMLVAR_DayNightSwitch_Timer)"/>
-      <Sequence SeqType="Ordered">
+		<Clue name="TT:CLUE.ANNUNCIATOR_PANEL_TEST"/>
+		<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ANNUNCIATOR_PANEL" ExpectationTT="TT:GAME.CHECKLIST_TEST"/>
+		<SetTemplateAction Id="Move_Anunciator_Panel_Switches" Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;L:XMLVAR_DayNightSwitch) (E:SIMULATION TIME, seconds) 1 + (&gt;L:XMLVAR_DayNightSwitch_Timer)"/>
+		<Sequence SeqType="Ordered">
         <!-- Used to actually move the panel's switch -->
-        <Test>
-          <TestValue>
-            <Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean"/>
-          </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY"/>
-        </Test>
-        <Test>
-          <Duration Value="0.5" Cumulative="False"/>
-          <Once>TRUE</Once>
-          <TestValue>
-            <Val SimVarName="ANNUNCIATOR SWITCH" Units="Boolean"/>
-          </TestValue>
-          <Instrument Id="SAFETY_Switch_Light"/>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ANNUNCIATOR_SWITCH_ON"/>
-          <Action UseTemplateAction="Move_Anunciator_Panel_Switches"/>
-          <!-- <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;L:XMLVAR_DayNightSwitch) (E:SIMULATION TIME, seconds) 1 + (&gt;L:XMLVAR_DayNightSwitch_Timer)"/> -->
-          <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="1.0"/>
-        </Test>
-      </Sequence>
-      <Action Copilot="True" Condition="End" Once="true" EventID="ANNUNCIATOR_SWITCH_OFF"/>
+			<Test>
+				<TestValue>
+					<Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean"/>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY"/>
+			</Test>
+			<Test>
+				<Duration Value="1.0" Cumulative="False"/>
+				<Once>TRUE</Once>
+				<TestValue>
+					<Val SimVarName="ANNUNCIATOR SWITCH" Units="Boolean"/>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ANNUNCIATOR_SWITCH_ON"/>
+				<Action UseTemplateAction="Move_Anunciator_Panel_Switches"/>
+				<!-- <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;L:XMLVAR_DayNightSwitch) (E:SIMULATION TIME, seconds) 1 + (&gt;L:XMLVAR_DayNightSwitch_Timer)"/> -->
+				<Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="1.5"/>
+				<Instrument Id="SAFETY_SWITCH_Light_Highlight"/>
+				<Instrument Id="SAFETY_Switch_Light"/>				
+			</Test>
+		</Sequence>
+		<Action Copilot="True" Condition="End" Once="true" EventID="ANNUNCIATOR_SWITCH_OFF"/>
     </Checkpoint>
     <Checkpoint Id="Annunciator_Panel_Clear">
       <Clue name="TT:CLUE.ANNUNCIATOR_PANEL_CLEAR"/>
@@ -5725,6 +5875,10 @@
     <Checkpoint Id="Propeller_Area_Clear">
       <Clue name="TT:CLUE.PROPELLER_AREA_CLEAR"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_PROPELLER_AREA" ExpectationTT="TT:GAME.CHECKLIST_CLEAR"/>
+    </Checkpoint>
+	<Checkpoint Id="Area_Clear">
+      <Clue name="TT:CLUE.AREA_CLEAR"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_AREA" ExpectationTT="TT:GAME.CHECKLIST_CLEAR"/>
     </Checkpoint>
     <Checkpoint Id="MICRO_MASK_MICRO_GUARDED">
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_MICRO_MASK" ExpectationTT="TT:GAME.CHECKLIST_MICRO_GUARDED"/>
@@ -6288,6 +6442,7 @@
           </Operator>
         </TestValue>
         <Instrument Id="HIGHLIGHT_OIL_PRESS"/>
+        <Instrument Id="INSTRUMENT_Needle_Oil_Temperature"/>
         <Instrument Id="HTML:G1000_MFD:Piston_OilTempGauge"/>
         <Instrument Id="HTML:AS1000_MFD:Piston_OilTempGauge"/>
         <Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
@@ -6416,12 +6571,12 @@
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ATTITUDE_INDICATOR" ExpectationTT="TT:GAME.CHECKLIST_SET"/>
       <Test>
         <TestValue>
-          <Operator OpType="EQUAL" Tolerance="5">
-            <Val Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 70 * 45 / 30 - (A:ATTITUDE BARS POSITION, percent) -"/>
+          <Operator OpType="EQUAL" Tolerance="3">
+            <Val Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 50 * 10 / (B:INSTRUMENT_Attitude_Indicator_Bars, percent) -"/>
             <Val Value="0"/>
           </Operator>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 70 * 45 / 30 - (&gt;K:ATTITUDE_BARS_POSITION_SET)"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 50 * 10 / (&gt;B:INSTRUMENT_Attitude_Indicator_Bars_Set)"/>
         <Instrument Id="KNOB_ATTITUDE"/>
         <Instrument Id="INSTRUMENT_AttitudeIndicator"/>
       </Test>
@@ -6526,11 +6681,11 @@
         <Test>
           <TestValue>
             <Operator OpType="EQUAL" Tolerance="5">
-              <Val Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 70 * 45 / 30 - (A:ATTITUDE BARS POSITION, percent) -"/>
+              <Val Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 50 * 10 / (A:ATTITUDE BARS POSITION, percent) -"/>
               <Val Value="0"/>
             </Operator>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 70 * 45 / 30 - (&gt;K:ATTITUDE_BARS_POSITION_SET)"/>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="(A:ATTITUDE INDICATOR PITCH DEGREES, degrees) 50 * 10 / (&gt;B:INSTRUMENT_Attitude_Indicator_Bars_Set)"/>
           <Instrument Id="KNOB_ATTITUDE"/>
           <Instrument Id="INSTRUMENT_AttitudeIndicator"/>
         </Test>
@@ -6637,19 +6792,9 @@
       <Clue name="TT:CLUE.ENGINE_MODE_SELECTOR_IGN_START"/>
       <Test>
         <TestValue>
-          <Operator OpType="AND">
-            <Operator OpType="EQUAL">
-              <Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
-              <Val Value="2"/>
-            </Operator>
-            <Operator OpType="EQUAL">
-              <Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
-              <Val Value="2"/>
-            </Operator>
-          </Operator>
+			<Val Code="(B:ENGINE_Mode) 2 =="/>
         </TestValue>
-        <Instrument Id="ENGINE_Switch_Engine_Mode"/>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="2 (&gt;K:TURBINE_IGNITION_SWITCH_SET)"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="(&gt;B:ENGINE_Mode_Ignition_Start)"/>
       </Test>
     </Checkpoint>
     <Checkpoint Id="ENGINE_MODE_SELECTOR_NORMAL">
@@ -6657,19 +6802,9 @@
       <Clue name="TT:CLUE.ENGINE_MODE_SELECTOR_NORMAL"/>
       <Test>
         <TestValue>
-          <Operator OpType="AND">
-            <Operator OpType="EQUAL">
-              <Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
-              <Val Value="1"/>
-            </Operator>
-            <Operator OpType="EQUAL">
-              <Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
-              <Val Value="1"/>
-            </Operator>
-          </Operator>
+			<Val Code="(B:ENGINE_Mode) 1 =="/>
         </TestValue>
-        <Instrument Id="ENGINE_Switch_Engine_Mode"/>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="1 (&gt;K:TURBINE_IGNITION_SWITCH_SET)"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="(&gt;B:ENGINE_Mode_Norm)"/>
       </Test>
     </Checkpoint>
     <Checkpoint Id="ENGINES_CONFIRM_STABILIZED">
@@ -6879,35 +7014,38 @@
         </Test>
       </Sequence>
     </Checkpoint>
-    
-    <!-- Comment engine start general aviation -->
-    <Checkpoint Id="CHOKE_ON_FULLY_PULLED">
-      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_CHOKE" ExpectationTT="TT:GAME.CHECKLIST_ON_FULLY_PULLED"/>
-      <Clue name="TT:CLUE.CHOKE_ON_FULLY_PULLED"/>
-      <Test>
-        <TestValue>
-          <Val Code="(L:XMLVAR_ENGINE_Lever_Choke_Pulled)"/>
-          <!-- using XML var until a SIMVAR is assigned -->
-        </TestValue>
-        <Instrument Id="ENGINE_LEVER_CHOKE"/>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="1 (&gt;L:XMLVAR_ENGINE_Lever_Choke_Pulled, Number)"/>
-      </Test>
-    </Checkpoint>
-    <Checkpoint Id="CHOKE_OFF">
-      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_CHOKE" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
-      <Clue name="TT:CLUE.CHOKE_OFF_FULLY_PUSHED"/>
-      <!-- modify -->
-      <Test>
-        <TestValue>
-          <Operator OpType="NOT">
-            <Val Code="(L:XMLVAR_ENGINE_Lever_Choke_Pulled)"/>
-            <!-- using XML var until a SIMVAR is assigned -->
-          </Operator>
-        </TestValue>
-        <Instrument Id="ENGINE_LEVER_CHOKE"/>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="0 (&gt;L:XMLVAR_ENGINE_Lever_Choke_Pulled, Number)"/>
-      </Test>
-    </Checkpoint>
+	
+	<Checkpoint Id="CHOKE_ON_FULLY_PULLED">
+		<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_CHOKE" ExpectationTT="TT:GAME.CHECKLIST_ON_FULLY_PULLED"/>
+		<Clue name="TT:CLUE.CHOKE_ON_FULLY_PULLED"/>
+		<SetTemplateValue Id="ENGINE_Choke_Pulled">
+			<Val Code="(B:ENGINE_Choke_1, Bool)"/>
+		</SetTemplateValue>
+		<SetTemplateAction Id="ENGINE_Choke_Pull" Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Choke_1_On)"/>
+		<Test>
+			<TestValue>
+				<Val UseTemplateValue="ENGINE_Choke_Pulled"/>
+			</TestValue>
+			<Instrument Id="ENGINE_LEVER_CHOKE"/>
+			<Action UseTemplateAction="ENGINE_Choke_Pull"/>
+		</Test>
+	</Checkpoint>
+	<Checkpoint Id="CHOKE_OFF_FULLY_PUSHED">
+		<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_CHOKE" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
+		<Clue name="TT:CLUE.CHOKE_OFF_FULLY_PUSHED"/>
+		<SetTemplateValue Id="ENGINE_Choke_Pushed">
+			<Val Code="(B:ENGINE_Choke_1, Bool) !"/>
+		</SetTemplateValue>
+		<SetTemplateAction Id="ENGINE_Choke_Push" Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Choke_1_Off)"/>
+		<Test>
+			<TestValue>
+				<Val UseTemplateValue="ENGINE_Choke_Pushed"/>
+			</TestValue>
+			<Instrument Id="ENGINE_LEVER_CHOKE"/>
+			<Action UseTemplateAction="ENGINE_Choke_Push"/>
+		</Test>
+	</Checkpoint>
+	
     <Checkpoint Id="Annunciations_Check_L_Engine_Glow_On">
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ANNUNCIATIONS" ExpectationTT="TT:GAME.CHECKLIST_CHECK_L_ENGINE_GLOW_ON"/>
       <Clue name="TT:CLUE.ANNUNCIATION_CHECK_L_ENGIN_GLOW_ON"/>
@@ -6935,7 +7073,7 @@
             <Val SimVarName="RECIP ENG ENGINE MASTER SWITCH:1" Units="Boolean"/>
           </Operator>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ENGINE_MASTER_TOGGLE"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ENGINE_MASTER_1_TOGGLE"/>
         <Instrument Id="ENGINE_Switch_Master"/>
         <Instrument Id="ENGINE_Switch_Master1"/>
         <Instrument Id="SAFETY_Panel_Highlight"/>
@@ -6955,12 +7093,13 @@
             <Val SimVarName="RECIP ENG ENGINE MASTER SWITCH:1" Units="Boolean"/>
           </Operator>
         </TestValue>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:XMLVAR_ENGINE_Switch_Master_Cover_Opened) (&gt;K:ENGINE_MASTER_TOGGLE)"/>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Master_1_On)"/>
         <Instrument Id="ENGINE_Switch_Master"/>
         <Instrument Id="ENGINE_Switch_Master1"/>
         <Instrument Id="SAFETY_Panel_Highlight"/>
         <Duration Value="3.0" Cumulative="False"/>
       </Test>
+		<Action Copilot="True" Condition="END" Once="false" Code="(&gt;B:ENGINE_Master_1_Cover_Close)"/>
     </Checkpoint>
     <Checkpoint Id="ELECTRIC_MASTER_START">
       <Clue name="TT:CLUE.ELECTRIC_MASTER_SWITCH_START"/>
@@ -6973,12 +7112,14 @@
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY"/>
           <Instrument Id="knob_electric_master"/>
           <Instrument Id="electrical_push_starter"/>
+		  <Instrument Id="electrical_knob_master"/>
         </Test>
         <Test>
           <TestValue>
             <Val SimVarName="GENERAL ENG STARTER:1" Units="Boolean"/>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_STARTER1"/>
+		  <Instrument Id="electrical_knob_master"/>
         </Test>
         <Test>
           <TestValue>
@@ -7144,7 +7285,7 @@
               <Val SimVarName="RECIP ENG ENGINE MASTER SWITCH:1" Units="Boolean"/>
             </Operator>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ENGINE_MASTER_TOGGLE"/>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ENGINE_MASTER_1_TOGGLE"/>
           <Instrument Id="ENGINE_Switch_Master1"/>
           <Instrument Id="ENGINE_Switch_Master"/>
         </Test>
@@ -7251,6 +7392,8 @@
           </TestValue>
           <Instrument Id="ENGINE_Switch_Master"/>
           <Instrument Id="ENGINE_Switch_Master1"/>
+          <Instrument Id="ELECTRICAL_Switch_Master"/>
+          <Instrument Id="ELECTRICAL_Switch_Master1"/>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_OFF"/>
         </Test>
         <Test>
@@ -7277,6 +7420,8 @@
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_START"/>
           <Instrument Id="ENGINE_Switch_Master"/>
           <Instrument Id="ENGINE_Switch_Master1"/>
+          <Instrument Id="ELECTRICAL_Switch_Master"/>
+          <Instrument Id="ELECTRICAL_Switch_Master1"/>
         </Test>
         <Test>
           <TestValue>
@@ -7317,6 +7462,8 @@
             </Operator>
           </TestValue>
           <Instrument Id="ENGINE_Switch_Master2"/>
+		  <Instrument Id="ELECTRICAL_Switch_Magneto02"/>
+		  <Instrument Id="ELECTRICAL_Switch_Master2"/>
         </Test>
         <Test>
           <TestValue>
@@ -7386,6 +7533,8 @@
           <Instrument Id="ENGINE_Switch_Master1"/>
           <Instrument Id="HTML:G1000_MFD:Piston_RPMGauge"/>
           <Instrument Id="HTML:AS1000_MFD:Piston_RPMGauge"/>
+		  <Instrument Id="ELECTRICAL_switch_magneto_1"/>
+			<Instrument Id="ELECTRICAL_switch_magneto_2"/>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_BOTH"/>
           <Action Condition="TestValueTrue" Once="false" StoreVar="Magneto_RPM_BOTH">
           <Val SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
@@ -7411,6 +7560,8 @@
               <Instrument Id="ENGINE_Switch_Master"/>
               <Instrument Id="ENGINE_Switch_Master1"/>
               <Instrument Id="INSTRUMENT_Digits_Tachometer"/>
+			  <Instrument Id="ELECTRICAL_switch_magneto_1"/>
+				<Instrument Id="ELECTRICAL_switch_magneto_2"/>
               <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_LEFT"/>
             </Test>
             <Test>
@@ -7460,6 +7611,8 @@
               <Duration Value="1.5" Cumulative="False"/>
               <Instrument Id="ENGINE_Switch_Master"/>
               <Instrument Id="ENGINE_Switch_Master1"/>
+			  <Instrument Id="ELECTRICAL_switch_magneto_1"/>
+				<Instrument Id="ELECTRICAL_switch_magneto_2"/>
               <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_RIGHT"/>
             </Test>
             <Test>
@@ -7581,6 +7734,8 @@
         <Instrument Id="ENGINE_Switch_Master1"/>
         <Instrument Id="ENGINE_Switch_Magneto_1"/>
         <Instrument Id="ENGINE_Switch_Magneto_2"/>
+		<Instrument Id="ELECTRICAL_switch_magneto_1"/>
+		<Instrument Id="ELECTRICAL_switch_magneto_2"/>
         <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_BOTH"/>
       </Test>
     </Checkpoint>
@@ -7600,9 +7755,11 @@
               </Operator>
             </Operator>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_OFF"/>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Magneto_1_Off)"/>
+		  <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="0.4"/>
           <Instrument Id="ENGINE_Switch_Master"/>
           <Instrument Id="ENGINE_Switch_Master1"/>
+		  <Instrument Id="ELECTRICAL_SWITCH_MAGNETO"/>
         </Test>
         <Test>
           <TestValue>
@@ -7611,11 +7768,141 @@
               <Val SimVarName="RECIP ENG RIGHT MAGNETO:1" Units="Boolean"/>
             </Operator>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_BOTH"/>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Magneto_1_Both)"/>
         </Test>
       </Sequence>
     </Checkpoint>
-
+	
+	<Checkpoint Id="Magneto_150_RPM_Max_Decrease_variant">
+	<!-- This is a variant of the "Magneto_150_RPM_Max_Decrease" checkpoint. Use this one if the other is not satisfying -->
+	  <Clue name="TT:CLUE.MAGNETO_150_RPM_MAX_DECREASE"/>
+	  <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_MAGNETOS" ExpectationTT="TT:GAME.CHECKLIST_150RPM_MAX_DECREASE"/>
+	  <Action Condition="Init" StoreVar="Magneto_RPM_BOTH" Value="0"/>
+	  <Action Condition="Init" StoreVar="Magneto_RPM_LEFT" Value="0"/>
+	  <Action Condition="Init" StoreVar="Magneto_RPM_RIGHT" Value="0"/>
+	  <Sequence SeqType="Ordered">
+		<Test>
+		  <TestValue>
+			<Operator OpType="And">
+			  <Val SimVarName="RECIP ENG LEFT MAGNETO:1" Units="Boolean"/>
+			  <Val SimVarName="RECIP ENG RIGHT MAGNETO:1" Units="Boolean"/>
+			</Operator>
+		  </TestValue>
+		  <Duration Value="1.0" Cumulative="False"/>
+		  <Once>True</Once>
+		  <Instrument Id="ENGINE_Switch_Master"/>
+		  <Instrument Id="ENGINE_Switch_Master1"/>
+		  <Instrument Id="HTML:ASVigilus:RPMGauge"/>
+		  <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_BOTH"/>
+		  <Action Condition="TestValueTrue" Once="false" StoreVar="Magneto_RPM_BOTH">
+			<Val SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
+		  </Action>
+		</Test>
+		<Sequence SeqType="Unordered">
+		  <Sequence SeqType="Ordered">
+			<Once>True</Once>
+			<Test>
+			  <TestValue>
+				<Operator OpType="And">
+				  <Val SimVarName="RECIP ENG LEFT MAGNETO:1" Units="Boolean"/>
+				  <Operator OpType="Not">
+					<Val SimVarName="RECIP ENG RIGHT MAGNETO:1" Units="Boolean"/>
+				  </Operator>
+				</Operator>
+			  </TestValue>
+			  <Duration Value="1.5" Cumulative="False"/>
+			  <Instrument Id="ENGINE_Switch_Master"/>
+			  <Instrument Id="ENGINE_Switch_Master1"/>
+			  <Instrument Id="INSTRUMENT_Digits_Tachometer"/>
+			  <Instrument Id="HTML:ASVigilus:RPMGauge"/>
+			  <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_LEFT"/>
+			</Test>
+			<Test>
+			  <TestValue>
+				<Operator OpType="Greater">
+				  <Val SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
+				  <Operator OpType="Minus">
+					<Val ReadVar="Magneto_RPM_BOTH"/>
+					<Val Value="150"/>
+				  </Operator>
+				</Operator>
+			  </TestValue>
+			</Test>
+			<Test>
+			  <!-- Store the current rpm in Magneto_RPM_LEFT, unless Magneto_RPM_RIGHT is already set -->
+			  <TestValue>
+				<Operator OpType="OR">
+				  <!-- Verifies if one of the var is set -->
+				  <Val ReadVar="Magneto_RPM_LEFT"/>
+				  <Val ReadVar="Magneto_RPM_RIGHT"/>
+				</Operator>
+			  </TestValue>
+			  <Action Condition="TestValueFalse" Once="True" StoreVar="Magneto_RPM_LEFT">
+				<Val SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
+			  </Action>
+			</Test>
+		  </Sequence>
+		  <Sequence SeqType="Ordered">
+			<Once>True</Once>
+			<Test>
+			  <TestValue>
+				<Operator OpType="And">
+				  <Val SimVarName="RECIP ENG RIGHT MAGNETO:1" Units="Boolean"/>
+				  <Operator OpType="Not">
+					<Val SimVarName="RECIP ENG LEFT MAGNETO:1" Units="Boolean"/>
+				  </Operator>
+				</Operator>
+			  </TestValue>
+			  <Duration Value="1.5" Cumulative="False"/>
+			  <Instrument Id="ENGINE_Switch_Master"/>
+			  <Instrument Id="ENGINE_Switch_Master1"/>
+			  <Instrument Id="HTML:ASVigilus:RPMGauge"/>
+			  <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_RIGHT"/>
+			</Test>
+			<Test>
+			  <TestValue>
+				<Operator OpType="Greater">
+				  <Val SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
+				  <Operator OpType="Minus">
+					<Val ReadVar="Magneto_RPM_BOTH"/>
+					<Val Value="150"/>
+				  </Operator>
+				</Operator>
+			  </TestValue>
+			</Test>
+			<Test>
+			  <!-- Store the current rpm in Magneto_RPM_RIGHT, unless Magneto_RPM_LEFT is already set -->
+			  <TestValue>
+				<Operator OpType="OR">
+				  <!-- Verifies if one of the var is set -->
+				  <Val ReadVar="Magneto_RPM_LEFT"/>
+				  <Val ReadVar="Magneto_RPM_RIGHT"/>
+				</Operator>
+			  </TestValue>
+			  <Action Condition="TestValueFalse" Once="True" StoreVar="Magneto_RPM_RIGHT">
+				<Val SimVarName="GENERAL ENG RPM:1" Units="rpm"/>
+			  </Action>
+			</Test>
+		  </Sequence>
+		</Sequence>
+		<Test>
+		  <TestValue>
+			<Operator OpType="And">
+			  <Val SimVarName="RECIP ENG LEFT MAGNETO:1" Units="Boolean"/>
+			  <Val SimVarName="RECIP ENG RIGHT MAGNETO:1" Units="Boolean"/>
+			</Operator>
+		  </TestValue>
+		  <Duration Value="1.0" Cumulative="False"/>
+		  <Once>True</Once>
+		  <Instrument Id="ENGINE_Switch_Master"/>
+		  <Instrument Id="ENGINE_Switch_Master1"/>
+		  <!--Instrument Id="ENGINE_MONITOR_FRAME_highlight"/-->
+		  <Instrument Id="HTML:ASVigilus:RPMGauge"/>
+		  <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="MAGNETO_BOTH"/>
+		</Test>        
+	  </Sequence>
+	</Checkpoint>
+	
 
 
     <!-- Comment brakes -->
@@ -7651,6 +7938,7 @@
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="AXIS_RIGHT_BRAKE_SET" EventParam="-16383"/>
           <Duration Value="1.0" Cumulative="False"/>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -7682,6 +7970,7 @@
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="AXIS_RIGHT_BRAKE_SET" EventParam="16383"/>
           <Duration Value="1.0" Cumulative="False"/>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -7714,6 +8003,7 @@
             </TestValue>
             <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="AXIS_RIGHT_BRAKE_SET" EventParam="16383"/>
             <Duration Value="1.0" Cumulative="False"/>
+			<Instrument Id="HANDLING_RudderPedals_Rudder"/>
             <Instrument Id="HANDLING_RudderPedals"/>
             <Instrument Id="HANDLING_RudderPedals1"/>
             <Instrument Id="HANDLING_RudderPedals2"/>
@@ -7774,6 +8064,7 @@
           <Instrument Id="LANDING_GEAR_Switch_ParkingBrake"/>
         </Test>
         <Test>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -7798,6 +8089,7 @@
       <Clue name="TT:CLUE.FEET_READY_TO_BRAKE"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FEET" ExpectationTT="TT:GAME.CHECKLIST_READY_TO_BRAKE"/>
       <Test>
+        <Instrument Id="HANDLING_RudderPedals_Rudder"/>
         <Instrument Id="HANDLING_RudderPedals"/>
         <Instrument Id="HANDLING_RudderPedals1"/>
         <Instrument Id="HANDLING_RudderPedals2"/>
@@ -7815,6 +8107,7 @@
               </Operator>
             </TestValue>
             <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="PARKING_BRAKES" />
+			<Instrument Id="HANDLING_RudderPedals_Rudder"/>
             <Instrument Id="HANDLING_RudderPedals"/>
             <Instrument Id="HANDLING_RudderPedals1"/>
             <Instrument Id="HANDLING_RudderPedals2"/>
@@ -7900,6 +8193,7 @@
           <TestValue>
             <Val SimVarName="SIM ON GROUND" Units="Boolean"/>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -8979,6 +9273,20 @@
         <Instrument Id="HANDLING_Lever_Flaps"/>
       </Test>
     </Checkpoint>
+		 <Checkpoint Id="FLAPS_SECOND_NOTCH">
+      <Clue name="TT:CLUE.FLAPS_SECOND_NOTCH"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="TT:GAME.CHECKLIST_SECOND_NOTCH"/>
+      <Test>
+        <TestValue>
+          <Operator OpType="EQUAL">
+            <Val SimVarName="FLAPS HANDLE INDEX" Units="number"/>
+            <Val Value="2"/>
+          </Operator>
+        </TestValue>
+        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FLAPS_2"/>
+        <Instrument Id="HANDLING_Lever_Flaps"/>
+      </Test>
+    </Checkpoint>
     <Checkpoint Id="Flaps_0">
       <Clue name="TT:CLUE.FLAPS_0"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="TT:GAME.CHECKLIST_0"/>
@@ -9305,6 +9613,7 @@
         </TestValue>
         <Instrument Id="HANDLING_Wheel_ElevatorTrim"/>
         <Instrument Id="HANDLING_Indicator_ElevatorTrim"/>
+		<Instrument Id="HANDLING_SWITCH_ELEVATOR_TRIM"/>
         <!-- TEST -->
         <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ELEVATOR_TRIM_SET" EventParam="0"/>
       </Test>
@@ -9347,9 +9656,10 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="-66"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -9361,9 +9671,10 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="66"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="RUDDER_SET" EventParam="-16383"/>
           <Duration Value="1.0" Cumulative="False"/>
@@ -9401,7 +9712,7 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="YOKE X POSITION" Units="percent"/>
-              <Val Value="-80"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="AILERON_SET" EventParam="16383"/>
@@ -9414,7 +9725,7 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="YOKE X POSITION" Units="percent"/>
-              <Val Value="80"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="AILERON_SET" EventParam="-16383"/>
@@ -9427,7 +9738,7 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="YOKE Y POSITION" Units="percent"/>
-              <Val Value="-80"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="Any" Once="true" EventID="AILERON_SET" EventParam="0"/>
@@ -9441,7 +9752,7 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="YOKE Y POSITION" Units="percent"/>
-              <Val Value="80"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="ELEVATOR_SET" EventParam="-16383"/>
@@ -9454,9 +9765,10 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="-66"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -9469,9 +9781,10 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="66"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="RUDDER_SET" EventParam="-16383"/>
           <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="1.0"/>
@@ -9491,7 +9804,7 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="YOKE X POSITION" Units="percent"/>
-              <Val Value="-80"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" EventID="AILERON_SET" EventParam="16383"/>
@@ -9507,7 +9820,7 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="YOKE X POSITION" Units="percent"/>
-              <Val Value="80"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" EventID="AILERON_SET" EventParam="-16383"/>
@@ -9518,7 +9831,7 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="YOKE Y POSITION" Units="percent"/>
-              <Val Value="-80"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="Any" Once="true" EventID="AILERON_SET" EventParam="0"/>
@@ -9530,7 +9843,7 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="YOKE Y POSITION" Units="percent"/>
-              <Val Value="80"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" EventID="ELEVATOR_SET" EventParam="-16383"/>
@@ -9550,7 +9863,7 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="YOKE X POSITION" Units="percent"/>
-              <Val Value="-80"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="AILERON_SET" EventParam="16383"/>
@@ -9563,7 +9876,7 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="YOKE X POSITION" Units="percent"/>
-              <Val Value="80"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="AILERON_SET" EventParam="-16383"/>
@@ -9576,7 +9889,7 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="YOKE Y POSITION" Units="percent"/>
-              <Val Value="-80"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="Any" Once="true" EventID="AILERON_SET" EventParam="0"/>
@@ -9590,7 +9903,7 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="YOKE Y POSITION" Units="percent"/>
-              <Val Value="80"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="ELEVATOR_SET" EventParam="-16383"/>
@@ -9603,9 +9916,10 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="-66"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -9618,9 +9932,10 @@
           <TestValue>
             <Operator OpType="GREATER">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="66"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="RUDDER_SET" EventParam="-16383"/>
           <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="1.0"/>
@@ -9639,9 +9954,10 @@
           <TestValue>
             <Operator OpType="LESS">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="-66"/>
+              <Val Value="-10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -9654,9 +9970,10 @@
             <!-- n_Coordinator_Check_Work -->
             <Operator OpType="GREATER">
               <Val SimVarName="RUDDER POSITION" Units="percent"/>
-              <Val Value="66"/>
+              <Val Value="10"/>
             </Operator>
           </TestValue>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="RUDDER_SET" EventParam="-16383"/>
           <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="0.5"/>
@@ -9667,6 +9984,7 @@
     <Checkpoint Id="RUDDER_MAINTAIN_AXIS">
       <Clue name="TT:CLUE.RUDDER_MAINTAIN_AXIS"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_RUDDER" ExpectationTT="TT:GAME.CHECKLIST_MAINTAIN_AXIS"/>
+      <Instrument Id="HANDLING_RudderPedals_Rudder"/>
       <Instrument Id="HANDLING_RudderPedals"/>
       <Test>
         <Duration Value="2.5" Cumulative="False"/>
@@ -9716,9 +10034,9 @@
         <Test>
           <Once>True</Once>
           <TestValue>
-            <Operator OpType="EQUAL" Tolerance="10">
+            <Operator OpType="GREATER">
               <Val SimVarName="YOKE Y POSITION" Units="percent"/>
-              <Val Value="100"/>
+              <Val Value="20"/>
             </Operator>
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" EventID="ELEVATOR_SET" EventParam="-16383"/>
@@ -10222,6 +10540,7 @@
           </TestValue>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="GEAR_TOGGLE"/>
           <Instrument Id="LANDING_GEAR_Lever_Gear"/>
+          <Instrument Id="HANDLING_RudderPedals_Rudder"/>
           <Instrument Id="HANDLING_RudderPedals"/>
           <Instrument Id="HANDLING_RudderPedals1"/>
           <Instrument Id="HANDLING_RudderPedals2"/>
@@ -11018,6 +11337,49 @@
       </Sequence>
     </Checkpoint>
     
+	 <Checkpoint Id="PROP_RPM_LEVER_CHECK">
+      <Clue name="TT:CLUE.PROP_RPM_LEVER_CHECK"/>
+      <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_PROP_RPM_LEVER" ExpectationTT="TT:GAME.CHECKLIST_CHECK"/>
+      <Sequence SeqType="Ordered">
+        <Test>
+          <Once>True</Once>
+          <TestValue>
+            <Operator OpType="EQUAL" Tolerance="0.2">
+              <Val SimVarName="GENERAL ENG PROPELLER LEVER POSITION:1" Units="percent"/>
+              <Val Value="100"/>
+            </Operator>
+          </TestValue>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Propeller_1_Full_Forward)"/>
+          <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="1.0"/>
+          <Instrument Id="ENGINE_Lever_Propeller"/>
+        </Test>
+        <Test>
+          <Once>True</Once>
+          <TestValue>
+            <Operator OpType="EQUAL" Tolerance="0.2">
+              <Val SimVarName="GENERAL ENG PROPELLER LEVER POSITION:1" Units="percent"/>
+              <Val Value="0"/>
+            </Operator>
+          </TestValue>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Propeller_1_Full_Backward)"/>
+          <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="2"/>
+          <Instrument Id="ENGINE_Lever_Propeller"/>
+        </Test>
+        <Test>
+          <Once>True</Once>
+          <TestValue>
+            <Operator OpType="EQUAL" Tolerance="0.2">
+              <Val SimVarName="GENERAL ENG PROPELLER LEVER POSITION:1" Units="percent"/>
+              <Val Value="100"/>
+            </Operator>
+          </TestValue>
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ENGINE_Propeller_1_Full_Forward)"/>
+          <Action Copilot="True" Condition="TestValueTrue" Once="true" SpecialAction="WaitForDuration" Value="1.5"/>
+          <Instrument Id="ENGINE_Lever_Propeller"/>
+        </Test>
+      </Sequence>
+    </Checkpoint>
+
     <!-- Comment engine turboprop -->
     <Checkpoint Id="ENGINE_START_SELECTION_SWITCH_OFF">
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_START_SELECTION_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
@@ -11102,6 +11464,8 @@
               </Operator>
             </TestValue>
             <Instrument Id="ENGINE_Switch_Master1"/>
+			<Instrument Id="ELECTRICAL_Switch_Magneto01"/>
+			<Instrument Id="ELECTRICAL_Switch_Master1"/>
           </Test>
           <Test>
             <TestValue>
@@ -11162,38 +11526,24 @@
       <Feedback name="TT:FEEDBACK.OPPOSITE_ENGINE_START_REPEAT_PROCEDURE"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_LEFT_ENGINE_START" ExpectationTT="TT:GAME.CHECKLIST_REPEAT_PROCEDURE"/>
       <Sequence SeqType="Ordered">
-        <Sequence SeqType="Unordered">
-          <Test>
-            <Once>TRUE</Once>
-            <TestValue>
-              <Operator optype ="EQUAL">
-                <Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
-                <Val Value="2"/>
-              </Operator>
-            </TestValue>
-            <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="TURBINE_IGNITION_SWITCH_SET1" EventParam="2"/>
-            <Instrument id="ENGINE_Switch_Ignition1"/>
-            <Instrument id="ENGINE_Switch_Starter1"/>
-          </Test>
-          <Test>
-            <Once>TRUE</Once>
-            <TestValue>
-              <Operator OpType="AND">
-                <Operator optype ="EQUAL">
-                  <Val SimVarName="GENERAL ENG STARTER:1" Units="Boolean"/>
-                  <Val Value="1"/>
-                </Operator>
-                <Operator optype ="EQUAL">
-                  <Val Code="(L:XMLVAR_Starter1)"/>
-                  <Val Value="0"/>
-                </Operator>
-              </Operator>
-            </TestValue>
-            <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="SET_STARTER1_HELD" EventParam="1"/>
-            <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:XMLVAR_Starter1)"/>
-            <Instrument id="ENGINE_Switch_Starter1"/>
-          </Test>
-        </Sequence>
+        <Test>
+          <Once>TRUE</Once>
+          <TestValue>
+			<Operator optype ="AND">
+				<Operator optype ="EQUAL">
+					<Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
+					<Val Value="2"/>
+				</Operator>
+				<Operator optype ="EQUAL">
+					<Val SimVarName="GENERAL ENG STARTER:1" Units="Boolean"/>
+					<Val Value="1"/>
+				</Operator>
+			</Operator>
+          </TestValue>
+		  <!-- Will complete both condition thanks to the InputEvent -->
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="SET_STARTER1_HELD" EventParam="1"/>
+          <Instrument id="ENGINE_Switch_Starter1"/>
+        </Test>
         <Sequence SeqType="Ordered">
           <Test>
             <Instrument id="HTML:AS3000_MFD:Turbo_N1Gauge"/>
@@ -11232,37 +11582,23 @@
             </TestValue>
             <Action Copilot="True" Condition="TestValueFalse" Once="false" SpecialAction="WaitForUserToDoIt"/>
           </Test>
-          <Test>
-            <Once>TRUE</Once>
-            <TestValue>
-              <Operator optype ="EQUAL">
-                <Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
-                <Val Value="0"/>
-              </Operator>
-            </TestValue>
-            <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="TURBINE_IGNITION_SWITCH_SET1" EventParam="0"/>
-            <Instrument id="ENGINE_Switch_Ignition1"/>
-            <Instrument id="ENGINE_Switch_Starter1"/>
-          </Test>
-          <Test>
-            <Once>TRUE</Once>
-            <TestValue>
-              <Operator OpType="AND">
-                <Operator optype ="EQUAL">
-                  <Val SimVarName="GENERAL ENG STARTER:1" Units="Boolean"/>
-                  <Val Value="0"/>
-                </Operator>
-                <Operator optype ="EQUAL">
-                  <Val Code="(L:XMLVAR_Starter1)"/>
-                  <Val Value="1"/>
-                </Operator>
-              </Operator>
-            </TestValue>
-            <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="SET_STARTER1_HELD" EventParam="0"/>
-            <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_STARTER1"/>
-            <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:XMLVAR_Starter1)"/>
-            <Instrument id="ENGINE_Switch_Starter1"/>
-          </Test>
+			<Test>
+			  <TestValue>
+				<Operator optype ="AND">
+					<Operator optype ="EQUAL">
+						<Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
+						<Val Value="0"/>
+					</Operator>
+					<Operator optype ="EQUAL">
+						<Val SimVarName="GENERAL ENG STARTER:1" Units="Boolean"/>
+						<Val Value="0"/>
+					</Operator>
+				</Operator>
+			  </TestValue>
+			  <!-- Will complete both condition thanks to the InputEvent -->
+			  <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="SET_STARTER1_HELD" EventParam="0"/>
+			  <Instrument id="ENGINE_Switch_Starter1"/>
+			</Test>
         </Sequence>
         <Sequence SeqType="Ordered">
           <Test>
@@ -11573,7 +11909,7 @@
               <Val Value="1"/>
             </Operator>
             <Operator OpType="EQUAL">
-              <Val Code="(L:XMLVAR_Starter1)"/>
+              <Val Code="(B:ENGINE_Starter_Ignition_1)"/>
               <Val Value="0"/>
             </Operator>
           </Operator>
@@ -11582,7 +11918,6 @@
         <Instrument Id="ELECTRICAL_Push_Starter"/>
         <!-- <Action Copilot="True" Condition="TestValueFalse" Once="true"	Code="0 (&gt;L:XMLVAR_Starter, Position)"/> -->
         <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="SET_STARTER1_HELD" EventParam="1"/>
-        <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TURBINE_IGNITION_SWITCH_SET1" EventParam="1"/>
         <Action Copilot="True" Condition="TestValueTrue" Once="True" SpecialAction="WaitForDuration" Value="1.5"/>
       </Test>
     </Checkpoint>
@@ -11602,14 +11937,13 @@
         <Test>
           <TestValue>
             <Operator OpType="EQUAL">
-              <Val Code="(L:XMLVAR_Starter1)"/>
+              <Val Code="(B:ENGINE_Starter_Ignition_1)"/>
               <Val Value="1"/>
             </Operator>
           </TestValue>
           <Instrument Id="ENGINE_Switch_Starter"/>
           <Instrument Id="ELECTRICAL_Push_Starter"/>
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="SET_STARTER1_HELD" EventParam="0"/>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_STARTER1"/>
         </Test>
       </Sequence>
     </Checkpoint>
@@ -11626,35 +11960,23 @@
     <Checkpoint Id="RIGHT_IGNITION_AND_ENGINE_START_ON_TURBOPROP">
       <Clue name="TT:CLUE.IGNITION_ON_TURBOPROP"/>
       <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_RIGHT_IGNITION_AND_ENGINE_START" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
-      <Sequence SeqType="UnOrdered">
         <Test>
           <TestValue>
-            <Operator optype ="EQUAL">
-              <Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
-              <Val Value="2"/>
-            </Operator>
+			<Operator optype ="AND">
+				<Operator optype ="EQUAL">
+					<Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
+					<Val Value="2"/>
+				</Operator>
+				<Operator optype ="EQUAL">
+					<Val SimVarName="GENERAL ENG STARTER:2" Units="Boolean"/>
+					<Val Value="1"/>
+				</Operator>
+			</Operator>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="TURBINE_IGNITION_SWITCH_SET2" EventParam="2"/>
-          <Instrument id="ENGINE_Switch_Starter2"/>
-        </Test>
-        <Test>
-          <TestValue>
-            <Operator OpType="AND">
-              <Operator optype ="EQUAL">
-                <Val SimVarName="GENERAL ENG STARTER:2" Units="Boolean"/>
-                <Val Value="1"/>
-              </Operator>
-              <Operator optype ="EQUAL">
-                <Val Code="(L:XMLVAR_Starter2)"/>
-                <Val Value="0"/>
-              </Operator>
-            </Operator>
-          </TestValue>
+		  <!-- Will complete both condition thanks to the InputEvent -->
           <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="SET_STARTER2_HELD" EventParam="1"/>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:XMLVAR_Starter2)"/>
           <Instrument id="ENGINE_Switch_Starter2"/>
         </Test>
-      </Sequence>
     </Checkpoint>
     <Checkpoint Id="RIGHT_ENGINE_STARTER_ON">
       <Clue name="TT:CLUE.RIGHT_ENGINE_STARTER_ON_TURBOPROP"/>
@@ -11688,31 +12010,19 @@
         </Test>
         <Test>
           <TestValue>
-            <Operator optype ="EQUAL">
-              <Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
-              <Val Value="0"/>
-            </Operator>
+			<Operator optype ="AND">
+				<Operator optype ="EQUAL">
+					<Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
+					<Val Value="0"/>
+				</Operator>
+				<Operator optype ="EQUAL">
+					<Val SimVarName="GENERAL ENG STARTER:2" Units="Boolean"/>
+					<Val Value="0"/>
+				</Operator>
+			</Operator>
           </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="TURBINE_IGNITION_SWITCH_SET2" EventParam="0"/>
-          <Instrument id="ENGINE_Switch_Ignition2"/>
-          <Instrument id="ENGINE_Switch_Starter2"/>
-        </Test>
-        <Test>
-          <TestValue>
-            <Operator OpType="AND">
-              <Operator optype ="EQUAL">
-                <Val SimVarName="GENERAL ENG STARTER:2" Units="Boolean"/>
-                <Val Value="0"/>
-              </Operator>
-              <Operator optype ="EQUAL">
-                <Val Code="(L:XMLVAR_Starter2)"/>
-                <Val Value="1"/>
-              </Operator>
-            </Operator>
-          </TestValue>
-          <Action Copilot="True" Condition="TestValueFalse" Once="false" EventID="SET_STARTER2_HELD" EventParam="0"/>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_STARTER2"/>
-          <Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:XMLVAR_Starter2)"/>
+		  <!-- Will complete both condition thanks to the InputEvent -->
+          <Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="SET_STARTER2_HELD" EventParam="0"/>
           <Instrument id="ENGINE_Switch_Starter2"/>
         </Test>
       </Sequence>

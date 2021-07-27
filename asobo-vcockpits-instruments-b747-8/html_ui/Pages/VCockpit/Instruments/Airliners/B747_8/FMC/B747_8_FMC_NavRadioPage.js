@@ -25,7 +25,7 @@ class B747_8_FMC_NavRadioPage {
                 }
             }
             if (fmc.vor1Frequency > 0) {
-                vor1FrequencyCell += fmc.vor1Frequency.toFixed(2);
+                vor1FrequencyCell += fastToFixed(fmc.vor1Frequency, 2);
             }
             else {
                 vor1FrequencyCell += "[]";
@@ -69,7 +69,7 @@ class B747_8_FMC_NavRadioPage {
             };
             vor1CourseCell = "-----";
             if (fmc.vor1Course >= 0) {
-                vor1CourseCell = fmc.vor1Course.toFixed(0) + "°";
+                vor1CourseCell = fastToFixed(fmc.vor1Course, 0) + "°";
             }
             fmc.onLeftInput[1] = () => {
                 let value = fmc.inOut;
@@ -96,7 +96,7 @@ class B747_8_FMC_NavRadioPage {
                 vor2FrequencyCell = fmc.vor2FrequencyIdent + "/";
             }
             if (fmc.vor2Frequency > 0) {
-                vor2FrequencyCell = "[]/" + fmc.vor2Frequency.toFixed(2);
+                vor2FrequencyCell = "[]/" + fastToFixed(fmc.vor2Frequency, 2);
             }
             else {
                 vor2FrequencyCell += "[]";
@@ -140,7 +140,7 @@ class B747_8_FMC_NavRadioPage {
             };
             vor2CourseCell = "-----";
             if (fmc.vor2Course >= 0) {
-                vor2CourseCell = fmc.vor2Course.toFixed(0) + "°";
+                vor2CourseCell = fastToFixed(fmc.vor2Course, 0) + "°";
             }
             fmc.onRightInput[1] = () => {
                 let value = fmc.inOut;
@@ -166,7 +166,7 @@ class B747_8_FMC_NavRadioPage {
         if (!radioOn) {
             adf1FrequencyCell = "-----";
             if (fmc.adf1Frequency > 0) {
-                adf1FrequencyCell = fmc.adf1Frequency.toFixed(2);
+                adf1FrequencyCell = fastToFixed(fmc.adf1Frequency, 2);
             }
             fmc.onLeftInput[2] = () => {
                 let value = fmc.inOut;
@@ -186,7 +186,7 @@ class B747_8_FMC_NavRadioPage {
             };
             adf2FrequencyCell = "-----";
             if (fmc.adf2Frequency > 0) {
-                adf2FrequencyCell = fmc.adf2Frequency.toFixed(2);
+                adf2FrequencyCell = fastToFixed(fmc.adf2Frequency, 2);
             }
             fmc.onRightInput[2] = () => {
                 let value = fmc.inOut;
@@ -211,11 +211,11 @@ class B747_8_FMC_NavRadioPage {
                 ilsFrequencyCell = Avionics.Utils.formatRunway(approach.name, true) + "/ ";
                 let runway = fmc.flightPlanManager.getApproachRunway();
                 if (runway) {
-                    ilsCourseCell = runway.direction.toFixed(0) + "°";
+                    ilsCourseCell = fastToFixed(runway.direction, 0) + "°";
                 }
             }
             if (isFinite(fmc.ilsFrequency) && fmc.ilsFrequency > 0) {
-                ilsFrequencyCell += fmc.ilsFrequency.toFixed(2);
+                ilsFrequencyCell += fastToFixed(fmc.ilsFrequency, 2);
             }
             else {
                 ilsFrequencyCell += "[ ]";

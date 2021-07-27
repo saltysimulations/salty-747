@@ -1,0 +1,12 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+	<InputEvent ID="SAFETY">
+		<Presets>
+			<Extend Target="ASOBO_GIE_Anim_Handling">
+				<Parameters Type="Default">
+					<INPUT_EVENT_ID_SOURCE>SAFETY</INPUT_EVENT_ID_SOURCE>
+				</Parameters>
+			</Extend>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

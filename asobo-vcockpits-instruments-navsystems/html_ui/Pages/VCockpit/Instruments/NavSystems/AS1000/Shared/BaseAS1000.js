@@ -44,6 +44,7 @@ var AS1000;
             this.nav2IdentElement = this.gps.getChildById("Nav2_Ident");
             this.navVolumePopup = this.gps.getChildById("NavVolumePopup");
             this.navVolumeValue = this.gps.getChildById("NavVolumeValue");
+            SimVar.SetSimVarValue("L:" + this.gps.templateID + "_SelectedNavIndex", "number", this.activeIndex);
         }
         onEvent(_event) {
             switch (_event) {
@@ -82,77 +83,78 @@ var AS1000;
             if (this.nav1ActiveElement) {
                 var nav1Active = SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:1", "MHz");
                 if (nav1Active) {
-                    var nav1ActiveValue = nav1Active.toFixed(2);
+                    var nav1ActiveValue = fastToFixed(nav1Active, 2);
                     if (nav1ActiveValue != this.nav1ActiveValue) {
-                        this.nav1ActiveElement.textContent = nav1ActiveValue;
-                        this.nav1IdentElement.textContent =
-                            this.nav1ActiveValue = nav1ActiveValue;
+                        diffAndSetText(this.nav1ActiveElement, nav1ActiveValue);
+                        diffAndSetText(this.nav1IdentElement, nav1ActiveValue);
+                        this.nav1ActiveValue = nav1ActiveValue;
                     }
                 }
-                Avionics.Utils.diffAndSet(this.nav1IdentElement, SimVar.GetSimVarValue("NAV SIGNAL:1", "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:1", "string") : "");
+                diffAndSetText(this.nav1IdentElement, SimVar.GetSimVarValue("NAV SIGNAL:1", "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:1", "string") : "");
                 var nav2Active = SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:2", "MHz");
                 if (nav2Active) {
-                    var nav2ActiveValue = nav2Active.toFixed(2);
+                    var nav2ActiveValue = fastToFixed(nav2Active, 2);
                     if (nav2ActiveValue != this.nav2ActiveValue) {
-                        this.nav2ActiveElement.textContent = nav2ActiveValue;
+                        diffAndSetText(this.nav2ActiveElement, nav2ActiveValue);
                         this.nav2ActiveValue = nav2ActiveValue;
                     }
                 }
-                Avionics.Utils.diffAndSet(this.nav2IdentElement, SimVar.GetSimVarValue("NAV SIGNAL:2", "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:2", "string") : "");
+                diffAndSetText(this.nav2IdentElement, SimVar.GetSimVarValue("NAV SIGNAL:2", "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:2", "string") : "");
                 var nav1Sby = SimVar.GetSimVarValue("NAV STANDBY FREQUENCY:1", "MHz");
                 if (nav1Sby) {
-                    var nav1SbyValue = nav1Sby.toFixed(2);
+                    var nav1SbyValue = fastToFixed(nav1Sby, 2);
                     if (nav1SbyValue != this.nav1SbyValue) {
-                        this.nav1SbyElement.textContent = nav1SbyValue;
+                        diffAndSetText(this.nav1SbyElement, nav1SbyValue);
                         this.nav1SbyValue = nav1SbyValue;
                     }
                 }
                 var nav2Sby = SimVar.GetSimVarValue("NAV STANDBY FREQUENCY:2", "MHz");
                 if (nav2Sby) {
-                    var nav2SbyValue = nav2Sby.toFixed(2);
+                    var nav2SbyValue = fastToFixed(nav2Sby, 2);
                     if (nav2SbyValue != this.nav2SbyValue) {
-                        this.nav2SbyElement.textContent = nav2SbyValue;
+                        diffAndSetText(this.nav2SbyElement, nav2SbyValue);
                         this.nav2SbyValue = nav2SbyValue;
                     }
                 }
                 if (this.activeIndex != this.wantedActiveIndex) {
                     if (this.wantedActiveIndex == 1) {
-                        this.nav1ArrowElement.setAttribute("style", "visibility:visible");
-                        this.nav2ArrowElement.setAttribute("style", "visibility:hidden");
-                        this.nav1SbyElement.setAttribute("state", "selected");
-                        this.nav2SbyElement.setAttribute("state", "unselected");
+                        diffAndSetAttribute(this.nav1ArrowElement, "style", "visibility:visible");
+                        diffAndSetAttribute(this.nav2ArrowElement, "style", "visibility:hidden");
+                        diffAndSetAttribute(this.nav1SbyElement, "state", "selected");
+                        diffAndSetAttribute(this.nav2SbyElement, "state", "unselected");
                     }
                     else {
-                        this.nav1ArrowElement.setAttribute("style", "visibility:hidden");
-                        this.nav2ArrowElement.setAttribute("style", "visibility:visible");
-                        this.nav1SbyElement.setAttribute("state", "unselected");
-                        this.nav2SbyElement.setAttribute("state", "selected");
+                        diffAndSetAttribute(this.nav1ArrowElement, "style", "visibility:hidden");
+                        diffAndSetAttribute(this.nav2ArrowElement, "style", "visibility:visible");
+                        diffAndSetAttribute(this.nav1SbyElement, "state", "unselected");
+                        diffAndSetAttribute(this.nav2SbyElement, "state", "selected");
                     }
                     this.activeIndex = this.wantedActiveIndex;
+                    SimVar.SetSimVarValue("L:" + this.gps.templateID + "_SelectedNavIndex", "number", this.activeIndex);
                 }
             }
             if (Date.now() - this.volumeDisplayStartTime < 3000) {
-                Avionics.Utils.diffAndSetAttribute(this.navVolumePopup, "state", this.activeIndex == 1 ? "" : "Bottom");
-                Avionics.Utils.diffAndSet(this.navVolumeValue, SimVar.GetSimVarValue("NAV VOLUME:" + this.activeIndex, "percent").toFixed(0) + "%");
+                diffAndSetAttribute(this.navVolumePopup, "state", this.activeIndex == 1 ? "" : "Bottom");
+                diffAndSetText(this.navVolumeValue, fastToFixed(SimVar.GetSimVarValue("NAV VOLUME:" + this.activeIndex, "percent"), 0) + "%");
             }
             else {
-                Avionics.Utils.diffAndSetAttribute(this.navVolumePopup, "state", "Inactive");
+                diffAndSetAttribute(this.navVolumePopup, "state", "Inactive");
             }
         }
         onExit() {
         }
         setGreenFrequencyIndex(_index) {
             if (_index == 1) {
-                this.nav1ActiveElement.setAttribute("state", "green");
+                diffAndSetAttribute(this.nav1ActiveElement, "state", "green");
             }
             else {
-                this.nav1ActiveElement.setAttribute("state", "none");
+                diffAndSetAttribute(this.nav1ActiveElement, "state", "none");
             }
             if (_index == 2) {
-                this.nav2ActiveElement.setAttribute("state", "green");
+                diffAndSetAttribute(this.nav2ActiveElement, "state", "green");
             }
             else {
-                this.nav2ActiveElement.setAttribute("state", "none");
+                diffAndSetAttribute(this.nav2ActiveElement, "state", "none");
             }
         }
     }
@@ -220,6 +222,7 @@ var AS1000;
             this.com2ActiveElement = this.gps.getChildById("Com2_Active");
             this.comVolumePopup = this.gps.getChildById("ComVolumePopup");
             this.comVolumeValue = this.gps.getChildById("ComVolumeValue");
+            SimVar.SetSimVarValue("L:" + this.gps.templateID + "_SelectedComIndex", "number", this.activeIndex);
         }
         onEnter() {
         }
@@ -227,58 +230,59 @@ var AS1000;
             if (this.com1ActiveElement) {
                 var com1Active = SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:1", "MHz");
                 if (com1Active) {
-                    var com1ActiveValue = com1Active.toFixed(3);
+                    var com1ActiveValue = fastToFixed(com1Active, 3);
                     if (com1ActiveValue != this.com1ActiveValue) {
-                        this.com1ActiveElement.textContent = com1ActiveValue;
+                        diffAndSetText(this.com1ActiveElement, com1ActiveValue);
                         this.com1ActiveValue = com1ActiveValue;
                     }
                 }
                 var com2Active = SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:2", "MHz");
                 if (com2Active) {
-                    var com2ActiveValue = com2Active.toFixed(3);
+                    var com2ActiveValue = fastToFixed(com2Active, 3);
                     if (com2ActiveValue != this.com2ActiveValue) {
-                        this.com2ActiveElement.textContent = com2ActiveValue;
+                        diffAndSetText(this.com2ActiveElement, com2ActiveValue);
                         this.com2ActiveValue = com2ActiveValue;
                     }
                 }
                 var com1Sby = SimVar.GetSimVarValue("COM STANDBY FREQUENCY:1", "MHz");
                 if (com1Sby) {
-                    var com1SbyValue = com1Sby.toFixed(3);
+                    var com1SbyValue = fastToFixed(com1Sby, 3);
                     if (com1SbyValue != this.com1SbyValue) {
-                        this.com1SbyElement.textContent = com1SbyValue;
+                        diffAndSetText(this.com1SbyElement, com1SbyValue);
                         this.com1SbyValue = com1SbyValue;
                     }
                 }
                 var com2Sby = SimVar.GetSimVarValue("COM STANDBY FREQUENCY:2", "MHz");
                 if (com2Sby) {
-                    var com2SbyValue = com2Sby.toFixed(3);
+                    var com2SbyValue = fastToFixed(com2Sby, 3);
                     if (com2SbyValue != this.com2SbyValue) {
-                        this.com2SbyElement.textContent = com2SbyValue;
+                        diffAndSetText(this.com2SbyElement, com2SbyValue);
                         this.com2SbyValue = com2SbyValue;
                     }
                 }
                 if (this.wantedActiveIndex != this.activeIndex) {
                     if (this.wantedActiveIndex == 1) {
-                        this.com1ArrowElement.setAttribute("style", "visibility:visible");
-                        this.com2ArrowElement.setAttribute("style", "visibility:hidden");
-                        this.com1SbyElement.setAttribute("state", "selected");
-                        this.com2SbyElement.setAttribute("state", "unselected");
+                        diffAndSetAttribute(this.com1ArrowElement, "style", "visibility:visible");
+                        diffAndSetAttribute(this.com2ArrowElement, "style", "visibility:hidden");
+                        diffAndSetAttribute(this.com1SbyElement, "state", "selected");
+                        diffAndSetAttribute(this.com2SbyElement, "state", "unselected");
                     }
                     else {
-                        this.com1ArrowElement.setAttribute("style", "visibility:hidden");
-                        this.com2ArrowElement.setAttribute("style", "visibility:visible");
-                        this.com1SbyElement.setAttribute("state", "unselected");
-                        this.com2SbyElement.setAttribute("state", "selected");
+                        diffAndSetAttribute(this.com1ArrowElement, "style", "visibility:hidden");
+                        diffAndSetAttribute(this.com2ArrowElement, "style", "visibility:visible");
+                        diffAndSetAttribute(this.com1SbyElement, "state", "unselected");
+                        diffAndSetAttribute(this.com2SbyElement, "state", "selected");
                     }
                     this.activeIndex = this.wantedActiveIndex;
+                    SimVar.SetSimVarValue("L:" + this.gps.templateID + "_SelectedComIndex", "number", this.activeIndex);
                 }
             }
             if (Date.now() - this.volumeDisplayStartTime < 3000) {
-                Avionics.Utils.diffAndSetAttribute(this.comVolumePopup, "state", this.activeIndex == 1 ? "" : "Bottom");
-                Avionics.Utils.diffAndSet(this.comVolumeValue, SimVar.GetSimVarValue("COM VOLUME:" + this.activeIndex, "percent").toFixed(0) + "%");
+                diffAndSetAttribute(this.comVolumePopup, "state", this.activeIndex == 1 ? "" : "Bottom");
+                diffAndSetText(this.comVolumeValue, fastToFixed(SimVar.GetSimVarValue("COM VOLUME:" + this.activeIndex, "percent"), 0) + "%");
             }
             else {
-                Avionics.Utils.diffAndSetAttribute(this.comVolumePopup, "state", "Inactive");
+                diffAndSetAttribute(this.comVolumePopup, "state", "Inactive");
             }
         }
         onExit() {
@@ -307,7 +311,7 @@ class Engine extends NavSystemElementContainer {
             let engineRoot = this.gps.xmlConfig.getElementsByTagName("EngineDisplay");
             if (engineRoot.length > 0) {
                 fromConfig = true;
-                this.root.setAttribute("state", "XML");
+                diffAndSetAttribute(this.root, "state", "XML");
                 this.xmlEngineDisplay = this.root.querySelector("glasscockpit-xmlenginedisplay");
                 this.xmlEngineDisplay.setConfiguration(this.gps, engineRoot[0]);
             }
@@ -328,7 +332,7 @@ class Engine extends NavSystemElementContainer {
         switch (this.engineType) {
             case EngineType.ENGINE_TYPE_PISTON:
                 {
-                    this.root.setAttribute("state", "piston");
+                    diffAndSetAttribute(this.root, "state", "piston");
                     this.addGauge().Set(this.gps.getChildById("Piston_VacGauge"), this.settings.Vacuum, this.getVAC.bind(this), "VAC", "inHg");
                     this.addGauge().Set(this.gps.getChildById("Piston_FuelGauge"), this.settings.FuelQuantity, this.getFuelR.bind(this), "FUEL QTY", "GAL", 0, this.getFuelL.bind(this));
                     this.addText().Set(this.gps.getChildById("Piston_EngineHours"), this.getEngineHours.bind(this));
@@ -353,7 +357,7 @@ class Engine extends NavSystemElementContainer {
             case EngineType.ENGINE_TYPE_TURBOPROP:
             case EngineType.ENGINE_TYPE_JET:
                 {
-                    this.root.setAttribute("state", "turbo");
+                    diffAndSetAttribute(this.root, "state", "turbo");
                     this.addGauge().Set(this.gps.getChildById("Turbo_AmpGauge1"), this.settings.BatteryBusAmps, this.getAmpsBattery.bind(this), "", "AMPS B");
                     this.addGauge().Set(this.gps.getChildById("Turbo_AmpGauge2"), this.settings.GenAltBusAmps, this.getAmpsGenAlt.bind(this), "", "AMPS G");
                     this.addGauge().Set(this.gps.getChildById("Turbo_VoltsGauge1"), this.settings.MainBusVoltage, this.getVoltsBus.bind(this), "", "VOLTS B");
@@ -737,7 +741,7 @@ class AS1000_PFD_NearestAirports extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         if (this.isActive) {
-            this.rootElement.setAttribute("state", "Active");
+            diffAndSetAttribute(this.rootElement, "state", "Active");
             this.nearestAirportList.Update(25, 200);
             var airportListStrings = [];
             for (var i = 0; i < this.nearestAirportList.airports.length; i++) {
@@ -759,7 +763,7 @@ class AS1000_PFD_NearestAirports extends NavSystemElement {
             this.airportsSliderGroup.setStringElements(airportListStrings);
         }
         else {
-            this.rootElement.setAttribute("state", "Inactive");
+            diffAndSetAttribute(this.rootElement, "state", "Inactive");
         }
     }
     onExit() {
@@ -768,7 +772,7 @@ class AS1000_PFD_NearestAirports extends NavSystemElement {
             this.gps.lastRelevantICAO = this.nearestAirportList.airports[Math.floor(this.airportsSliderGroup.getIndex() / 2)].icao;
             this.gps.lastRelevantICAOType = "A";
         }
-        this.rootElement.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.rootElement, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -827,66 +831,66 @@ class AS1000_PFD_AirportInfos extends NavSystemElement {
     }
     onEnter() {
         this.isActive = true;
-        this.rootElement.setAttribute("state", "Active");
+        diffAndSetAttribute(this.rootElement, "state", "Active");
         this.gps.ActiveSelection(this.defaultSelectables);
     }
     onUpdate(_deltaTime) {
         if (this.isActive) {
             var infos = this.wayPoint.GetInfos();
             if (infos instanceof AirportInfo) {
-                this.ident.textContent = infos.ident;
+                diffAndSetText(this.ident, infos.ident);
                 var symbol = infos.GetSymbolFileName();
                 if (symbol) {
-                    this.symbol.innerHTML = '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/' + infos.GetSymbolFileName() + '"/>';
+                    diffAndSetHTML(this.symbol, '<img src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/' + infos.GetSymbolFileName() + '"/>');
                 }
                 else {
-                    this.symbol.innerHTML = "";
+                    diffAndSetHTML(this.symbol, "");
                 }
-                this.city.textContent = infos.city;
-                this.facilityName.textContent = infos.name;
+                diffAndSetText(this.city, infos.city);
+                diffAndSetText(this.facilityName, infos.name);
                 switch (infos.privateType) {
                     case 0:
-                        this.type.textContent = "UNKNOWN";
+                        diffAndSetText(this.type, "UNKNOWN");
                         break;
                     case 1:
-                        this.type.textContent = "PUBLIC";
+                        diffAndSetText(this.type, "PUBLIC");
                         break;
                     case 2:
-                        this.type.textContent = "MILITARY";
+                        diffAndSetText(this.type, "MILITARY");
                         break;
                     case 3:
-                        this.type.textContent = "PRIVATE";
+                        diffAndSetText(this.type, "PRIVATE");
                         break;
                 }
-                this.timeZone.textContent = "";
+                diffAndSetText(this.timeZone, "");
                 var maxLength = 0;
                 for (let i = 0; i < infos.runways.length; i++) {
                     if (infos.runways[i].length > maxLength) {
                         maxLength = infos.runways[i].length;
                     }
                 }
-                this.runwwayLength.textContent = fastToFixed(maxLength, 0) + "FT";
-                this.region.textContent = infos.region;
-                this.latitude.textContent = this.gps.latitudeFormat(infos.coordinates.lat);
-                this.longitude.textContent = this.gps.longitudeFormat(infos.coordinates.long);
+                diffAndSetText(this.runwwayLength, fastToFixed(maxLength, 0) + "FT");
+                diffAndSetText(this.region, infos.region);
+                diffAndSetText(this.latitude, this.gps.latitudeFormat(infos.coordinates.lat));
+                diffAndSetText(this.longitude, this.gps.longitudeFormat(infos.coordinates.long));
             }
             else {
-                this.ident.textContent = "";
-                this.symbol.innerHTML = "";
-                this.city.textContent = "";
-                this.facilityName.textContent = "";
-                this.type.textContent = "";
-                this.timeZone.textContent = "";
-                this.runwwayLength.textContent = "";
-                this.region.textContent = "";
-                this.latitude.textContent = "";
-                this.longitude.textContent = "";
+                diffAndSetText(this.ident, "");
+                diffAndSetHTML(this.symbol, "");
+                diffAndSetText(this.city, "");
+                diffAndSetText(this.facilityName, "");
+                diffAndSetText(this.type, "");
+                diffAndSetText(this.timeZone, "");
+                diffAndSetText(this.runwwayLength, "");
+                diffAndSetText(this.region, "");
+                diffAndSetText(this.latitude, "");
+                diffAndSetText(this.longitude, "");
             }
         }
     }
     onExit() {
         this.isActive = false;
-        this.rootElement.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.rootElement, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -946,25 +950,26 @@ class AS1000_PFD_TMRREF extends NavSystemElement {
         this.defaultSelectables.push(new SelectableElement(this.gps, this.minimumsValueElement, this.minimumsValuesCallback.bind(this)));
         let raElem = this.gps.instrumentXmlConfig.getElementsByTagName("RadarAltitude");
         if (raElem.length > 0) {
-            this.haveRadarAltitude = raElem[0].textContent == "True";
+            this.haveRadarAltitude = true;
+            diffAndSetText(raElem[0], "True");
         }
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
     }
     onUpdate(_deltaTime) {
         if (this.searchField.isActive) {
             this.searchField.Update();
         }
         else {
-            Avionics.Utils.diffAndSet(this.time, this.backgroundTimer.formatTimeFromMS(this.backgroundTimer.getCurrentDisplay()));
+            diffAndSetText(this.time, this.backgroundTimer.formatTimeFromMS(this.backgroundTimer.getCurrentDisplay()));
         }
-        Avionics.Utils.diffAndSet(this.direction, this.backgroundTimer.getIsCountingDown() ? "DN" : "UP");
-        Avionics.Utils.diffAndSet(this.startStop, this.backgroundTimer.getIsCounting() ? "STOP?" : (this.backgroundTimer.getWillReset() ? "RESET?" : "START?"));
+        diffAndSetText(this.direction, this.backgroundTimer.getIsCountingDown() ? "DN" : "UP");
+        diffAndSetText(this.startStop, this.backgroundTimer.getIsCounting() ? "STOP?" : (this.backgroundTimer.getWillReset() ? "RESET?" : "START?"));
         let displayedBugs = "";
         for (let i = 0; i < this.references.length; i++) {
-            Avionics.Utils.diffAndSet(this.references[i].valueElement, Math.round(this.references[i].displayedSpeed) + (this.references[i].displayedSpeed == this.references[i].refSpeed ? "kt" : "kt*"));
-            Avionics.Utils.diffAndSet(this.references[i].statusElement, this.references[i].isDisplayed ? "ON" : "OFF");
+            diffAndSetText(this.references[i].valueElement, Math.round(this.references[i].displayedSpeed) + (this.references[i].displayedSpeed == this.references[i].refSpeed ? "kt" : "kt*"));
+            diffAndSetText(this.references[i].statusElement, this.references[i].isDisplayed ? "ON" : "OFF");
             if (this.references[i].isDisplayed) {
                 if (displayedBugs != "") {
                     displayedBugs += ";";
@@ -972,26 +977,26 @@ class AS1000_PFD_TMRREF extends NavSystemElement {
                 displayedBugs += this.references[i].displayName + ":" + this.references[i].displayedSpeed;
             }
         }
-        Avionics.Utils.diffAndSetAttribute(this.airspeedIndicator, "reference-bugs", displayedBugs);
+        diffAndSetAttribute(this.airspeedIndicator, "reference-bugs", displayedBugs);
         let source = SimVar.GetSimVarValue("L:AS3000_MinimalsMode", "number");
         switch (source) {
             case 0:
-                Avionics.Utils.diffAndSet(this.minimumsSourceElement, "OFF");
+                diffAndSetText(this.minimumsSourceElement, "OFF");
                 break;
             case 1:
-                Avionics.Utils.diffAndSet(this.minimumsSourceElement, "BARO");
+                diffAndSetText(this.minimumsSourceElement, "BARO");
                 break;
             case 2:
-                Avionics.Utils.diffAndSet(this.minimumsSourceElement, "TEMP&nbsp;COMP");
+                diffAndSetText(this.minimumsSourceElement, "TEMP COMP");
                 break;
             case 3:
-                Avionics.Utils.diffAndSet(this.minimumsSourceElement, "RADIO&nbsp;ALT");
+                diffAndSetText(this.minimumsSourceElement, "RADIO ALT");
                 break;
         }
-        Avionics.Utils.diffAndSet(this.minimumsValueElement, SimVar.GetSimVarValue("L:AS3000_MinimalsValue", "number") + "FT");
+        diffAndSetText(this.minimumsValueElement, SimVar.GetSimVarValue("L:AS3000_MinimalsValue", "number") + "FT");
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
     }
     onEvent(_event) {
     }

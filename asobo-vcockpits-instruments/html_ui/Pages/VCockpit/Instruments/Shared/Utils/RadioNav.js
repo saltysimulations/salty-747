@@ -8,16 +8,16 @@ class RadioNav {
     }
     get mode() { return this.navMode; }
     setRADIONAVActive(_index, _value) {
-        return SimVar.SetSimVarValue("L:RADIONAV ACTIVE:1", "Bool", _value);
+        return Simplane.setRadioNavAct(_value);
     }
     getRADIONAVActive(_index) {
-        return SimVar.GetSimVarValue("L:RADIONAV ACTIVE:1", "Bool");
+        return Simplane.getRadioNavAct();
     }
     getRADIONAVSource() {
-        return SimVar.GetSimVarValue("L:RADIONAV_SOURCE", "number");
+        return Simplane.getAPRadioNavSource();
     }
     setRADIONAVSource(_source) {
-        return SimVar.SetSimVarValue("L:RADIONAV_SOURCE", "number", _source);
+        Simplane.setAPRadioNavSource(_source);
     }
     swapVORFrequencies(_index) {
         return SimVar.SetSimVarValue("K:NAV" + _index + "_RADIO_SWAP", "Bool", 1);
@@ -26,7 +26,7 @@ class RadioNav {
         return SimVar.SetSimVarValue("K:NAV" + _index + "_RADIO_SET_HZ", "Hz", _value * 1000000);
     }
     getVORActiveFrequency(_index) {
-        return SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:" + _index, "MHz");
+        return Simplane.getNavActFreq(_index);
     }
     setVORActiveIdent(_index, _value) {
         return SimVar.SetGameVarValue("RADIO_NAV" + _index + "_ACTIVE_IDENT", "string", _value);
@@ -81,8 +81,8 @@ class RadioNav {
     }
     _getVORBeacon(_index) {
         this.navBeacon.reset();
-        let hasNav = SimVar.GetSimVarValue("NAV HAS NAV:" + _index, "boolean");
-        let hasLocalizer = SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + _index, "Bool");
+        let hasNav = Simplane.getNavHasNav(_index);
+        let hasLocalizer = Simplane.getAutoPilotNavHasLoc(_index);
         if (hasNav && !hasLocalizer) {
             this.navBeacon.id = _index;
             this.navBeacon.freq = SimVar.GetSimVarValue("NAV FREQUENCY:" + _index, "MHz");
@@ -105,7 +105,7 @@ class RadioNav {
     }
     getILSActiveFrequency(_index) {
         let index = (this.navMode == NavMode.FOUR_SLOTS) ? _index + 2 : _index;
-        return SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:" + index, "MHz");
+        return Simplane.getNavActFreq(index);
     }
     setILSActiveIdent(_index, _value) {
         let index = (this.navMode == NavMode.FOUR_SLOTS) ? _index + 2 : _index;
@@ -148,7 +148,7 @@ class RadioNav {
     _getILSBeacon(_index) {
         this.navBeacon.reset();
         let index = (this.navMode == NavMode.FOUR_SLOTS) ? _index + 2 : _index;
-        let hasLocalizer = SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + index, "Bool");
+        let hasLocalizer = Simplane.getAutoPilotNavHasLoc(index);
         if (hasLocalizer) {
             this.navBeacon.id = index;
             this.navBeacon.freq = SimVar.GetSimVarValue("NAV FREQUENCY:" + index, "MHz");
@@ -220,6 +220,12 @@ class RadioNav {
     setTransponderCode(_index, _value) {
         SimVar.SetSimVarValue("K:XPNDR_SET", "Frequency BCD16", Avionics.Utils.make_xpndr_bcd16(_value));
     }
+    getTransponderState(_index) {
+        return SimVar.GetSimVarValue("TRANSPONDER STATE:" + _index, "number");
+    }
+    setTransponderState(_index, _state) {
+        SimVar.SetSimVarValue("TRANSPONDER STATE:" + _index, "number", _state);
+    }
     swapVHFFrequencies(_userIndex, _vhfIndex) {
         return SimVar.SetSimVarValue("K:COM" + _vhfIndex + "_RADIO_SWAP", "Bool", 1);
     }
@@ -278,7 +284,7 @@ class RadioNav {
         return this.getVHFStandbyFrequency(_index, 3);
     }
     getRadioDecisionHeight() {
-        return SimVar.GetSimVarValue("DECISION HEIGHT", "feet");
+        return Simplane.getDecisionHeight();
     }
     static isHz833Compliant(_MHz) {
         let freq = Math.round(_MHz * 1000) / 1000;
@@ -348,6 +354,15 @@ var NavSource;
     NavSource[NavSource["ILS1"] = 4] = "ILS1";
     NavSource[NavSource["ILS2"] = 5] = "ILS2";
 })(NavSource || (NavSource = {}));
+var TRANSPONDER_STATE;
+(function (TRANSPONDER_STATE) {
+    TRANSPONDER_STATE[TRANSPONDER_STATE["OFF"] = 0] = "OFF";
+    TRANSPONDER_STATE[TRANSPONDER_STATE["STBY"] = 1] = "STBY";
+    TRANSPONDER_STATE[TRANSPONDER_STATE["TEST"] = 2] = "TEST";
+    TRANSPONDER_STATE[TRANSPONDER_STATE["ON"] = 3] = "ON";
+    TRANSPONDER_STATE[TRANSPONDER_STATE["ALT"] = 4] = "ALT";
+    TRANSPONDER_STATE[TRANSPONDER_STATE["GND"] = 5] = "GND";
+})(TRANSPONDER_STATE || (TRANSPONDER_STATE = {}));
 class NavBeacon {
     constructor() {
         this.id = 0;

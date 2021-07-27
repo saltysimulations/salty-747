@@ -6,29 +6,29 @@ class SvgLatLonElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("width", "100%");
-        container.setAttribute("height", "100%");
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "width", "100%");
+        diffAndSetAttribute(container, "height", "100%");
+        diffAndSetAttribute(container, "overflow", "visible");
         let shapeLat = document.createElementNS(Avionics.SVG.NS, "polyline");
         shapeLat.classList.add("map-lat-lon-lines");
-        shapeLat.setAttribute("fill", "none");
-        shapeLat.setAttribute("stroke", map.config.latLonStrokeColor);
-        shapeLat.setAttribute("stroke-width", fastToFixed(map.config.latLonStrokeWidth / map.overdrawFactor, 0));
+        diffAndSetAttribute(shapeLat, "fill", "none");
+        diffAndSetAttribute(shapeLat, "stroke", map.config.latLonStrokeColor);
+        diffAndSetAttribute(shapeLat, "stroke-width", fastToFixed(map.config.latLonStrokeWidth / map.overdrawFactor, 0));
         container.appendChild(shapeLat);
         let shapeLon = document.createElementNS(Avionics.SVG.NS, "polyline");
         shapeLon.classList.add("map-lat-lon-lines");
-        shapeLon.setAttribute("fill", "none");
-        shapeLon.setAttribute("stroke", map.config.latLonStrokeColor);
-        shapeLon.setAttribute("stroke-width", fastToFixed(map.config.latLonStrokeWidth / map.overdrawFactor, 0));
+        diffAndSetAttribute(shapeLon, "fill", "none");
+        diffAndSetAttribute(shapeLon, "stroke", map.config.latLonStrokeColor);
+        diffAndSetAttribute(shapeLon, "stroke-width", fastToFixed(map.config.latLonStrokeWidth / map.overdrawFactor, 0));
         container.appendChild(shapeLon);
         for (let i = 0; i < SvgLatLonElement.MAXLABELCOUNT; i++) {
             let label = document.createElementNS(Avionics.SVG.NS, "text");
             label.classList.add("map-lat-lon-label");
-            label.setAttribute("font-family", map.config.latLonLabelFontFamily);
-            label.setAttribute("font-size", map.config.latLonLabelFontSize / map.overdrawFactor + "px");
-            label.setAttribute("fill", map.config.latLonLabelColor);
-            label.setAttribute("stroke", map.config.latLonLabelStrokeColor);
-            label.setAttribute("stroke-width", "10px");
+            diffAndSetAttribute(label, "font-family", map.config.latLonLabelFontFamily);
+            diffAndSetAttribute(label, "font-size", map.config.latLonLabelFontSize / map.overdrawFactor + "px");
+            diffAndSetAttribute(label, "fill", map.config.latLonLabelColor);
+            diffAndSetAttribute(label, "stroke", map.config.latLonLabelStrokeColor);
+            diffAndSetAttribute(label, "stroke-width", "10px");
             container.appendChild(label);
         }
         return container;
@@ -69,11 +69,11 @@ class SvgLatLonElement extends SvgMapElement {
                 everyEvenIteration = !everyEvenIteration;
                 if (labelIndex < SvgLatLonElement.MAXLABELCOUNT) {
                     let latLabel = this.svgElement.children[4 + labelIndex++];
-                    latLabel.setAttribute("visibility", "visible");
-                    latLabel.textContent = fastToFixed(lla.lat, decimals);
-                    latLabel.setAttribute("text-anchor", "start");
-                    latLabel.setAttribute("x", "10");
-                    latLabel.setAttribute("y", fastToFixed((p.y + map.config.latLonLabelFontSize / map.overdrawFactor * 0.3), 0));
+                    diffAndSetAttribute(latLabel, "visibility", "visible");
+                    diffAndSetText(latLabel, fastToFixed(lla.lat, decimals));
+                    diffAndSetAttribute(latLabel, "text-anchor", "start");
+                    diffAndSetAttribute(latLabel, "x", "10");
+                    diffAndSetAttribute(latLabel, "y", fastToFixed((p.y + map.config.latLonLabelFontSize / map.overdrawFactor * 0.3), 0));
                 }
             }
         }
@@ -92,24 +92,24 @@ class SvgLatLonElement extends SvgMapElement {
                 everyEvenIteration = !everyEvenIteration;
                 if (labelIndex < SvgLatLonElement.MAXLABELCOUNT) {
                     let longLabel = this.svgElement.children[2 + labelIndex++];
-                    longLabel.setAttribute("visibility", "visible");
-                    longLabel.textContent = fastToFixed(lla.long, decimals);
-                    longLabel.setAttribute("text-anchor", "middle");
-                    longLabel.setAttribute("x", fastToFixed(p.x, 0));
-                    longLabel.setAttribute("y", "50");
+                    diffAndSetAttribute(longLabel, "visibility", "visible");
+                    diffAndSetText(longLabel, fastToFixed(lla.long, decimals));
+                    diffAndSetAttribute(longLabel, "text-anchor", "middle");
+                    diffAndSetAttribute(longLabel, "x", fastToFixed(p.x, 0));
+                    diffAndSetAttribute(longLabel, "y", "50");
                 }
             }
         }
         for (let i = labelIndex; i < SvgLatLonElement.MAXLABELCOUNT; i++) {
-            this.svgElement.children[2 + i].setAttribute("visibility", "hidden ");
+            diffAndSetAttribute(this.svgElement.children[2 + i], "visibility", "hidden ");
         }
         let shapeLat = this.svgElement.children[0];
         if (shapeLat instanceof SVGPolylineElement) {
-            shapeLat.setAttribute("points", pointsLat);
+            diffAndSetAttribute(shapeLat, "points", pointsLat);
         }
         let shapeLong = this.svgElement.children[1];
         if (shapeLong instanceof SVGPolylineElement) {
-            shapeLong.setAttribute("points", pointsLong);
+            diffAndSetAttribute(shapeLong, "points", pointsLong);
         }
     }
 }

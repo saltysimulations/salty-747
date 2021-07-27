@@ -37,7 +37,7 @@ class B747_8_FMC_SelectWptPage {
             }
         }
         fmc.setTemplate([
-            ["SELECT DESIRED WPT", (page + 1).toFixed(0), (waypoints.length / 5).toFixed(0)],
+            ["SELECT DESIRED WPT", fastToFixed((page + 1), 0), fastToFixed((waypoints.length / 5), 0)],
             ...rows,
             [""]
         ]);

@@ -1,4 +1,7 @@
 class CircularGauge extends AbstractGauge {
+    constructor() {
+        super();
+    }
     get _startAngle() {
         return Math.PI + this._tilt * Avionics.Utils.DEG2RAD;
     }
@@ -44,37 +47,34 @@ class CircularGauge extends AbstractGauge {
     get _redEndAngle() {
         return this._startAngle + ((this._redEndValue - this._minValue) / this._amplitude) * this._angularSize * Avionics.Utils.DEG2RAD;
     }
-    constructor() {
-        super();
-    }
     _redrawSvg() {
         while (this.firstChild) {
             this.removeChild(this.firstChild);
         }
         let svg = document.createElementNS(Avionics.SVG.NS, "svg");
-        svg.setAttribute("overflow", "visible");
-        svg.setAttribute("width", "100%");
-        svg.setAttribute("height", "100%");
-        svg.setAttribute("viewBox", "0 0 100 100");
+        diffAndSetAttribute(svg, "overflow", "visible");
+        diffAndSetAttribute(svg, "width", "100%");
+        diffAndSetAttribute(svg, "height", "100%");
+        diffAndSetAttribute(svg, "viewBox", "0 0 100 100");
         this.appendChild(svg);
         let circularGauge = document.createElementNS(Avionics.SVG.NS, "path");
         let d = "M 13 50 L 0 50 A 50 50 0 0 1 100 50 L 87 50";
         circularGauge.classList.add("gauge-base");
         circularGauge.classList.add("circular-gauge-base");
-        circularGauge.setAttribute("d", d);
-        circularGauge.setAttribute("fill", "none");
-        circularGauge.setAttribute("stroke", "black");
+        diffAndSetAttribute(circularGauge, "d", d);
+        diffAndSetAttribute(circularGauge, "fill", "none");
+        diffAndSetAttribute(circularGauge, "stroke", "black");
         svg.appendChild(circularGauge);
         let circularDashes = document.createElementNS(Avionics.SVG.NS, "path");
         let circularDashesPath = "M 5 50 A 45 45 0 0 1 95 50";
         circularDashes.classList.add("gauge-base");
         circularDashes.classList.add("circular-gauge-base");
-        circularDashes.setAttribute("d", circularDashesPath);
-        circularDashes.setAttribute("fill", "none");
-        circularDashes.setAttribute("stroke", "white");
-        circularDashes.setAttribute("stroke-width", "10");
-        circularDashes.setAttribute("stroke-dashoffset", "1");
-        circularDashes.setAttribute("stroke-dasharray", "1 " + (142 - this._stepsCount) / (this._stepsCount));
+        diffAndSetAttribute(circularDashes, "d", circularDashesPath);
+        diffAndSetAttribute(circularDashes, "fill", "none");
+        diffAndSetAttribute(circularDashes, "stroke", "white");
+        diffAndSetAttribute(circularDashes, "stroke-width", "10");
+        diffAndSetAttribute(circularDashes, "stroke-dashoffset", "1");
+        diffAndSetAttribute(circularDashes, "stroke-dasharray", "1 " + (142 - this._stepsCount) / (this._stepsCount));
         svg.appendChild(circularDashes);
         if (this._redLengthPercent > 0) {
             let redStartX = -Math.cos(this._redStartAngle) * 50;
@@ -88,8 +88,8 @@ class CircularGauge extends AbstractGauge {
             redAreaPath += " A " + (50 * redWidthFactor) + " " + (50 * redWidthFactor) + " 0 0 1 " + (50 + redEndX * redWidthFactor) + " " + (50 + redEndY * redWidthFactor);
             redAreaPath += " L " + (50 + redEndX) + " " + (50 + redEndY);
             redAreaPath += " A 50 50 0 0 0 " + (50 + redStartX) + " " + (50 + redStartY);
-            redArea.setAttribute("d", redAreaPath);
-            redArea.setAttribute("fill", "red");
+            diffAndSetAttribute(redArea, "d", redAreaPath);
+            diffAndSetAttribute(redArea, "fill", "red");
             svg.appendChild(redArea);
         }
         if (this._yellowLengthPercent) {
@@ -104,8 +104,8 @@ class CircularGauge extends AbstractGauge {
             yellowAreaPath += " A " + (50 * yellowWidthFactor) + " " + (50 * yellowWidthFactor) + " 0 0 1 " + (50 + yellowEndX * yellowWidthFactor) + " " + (50 + yellowEndY * yellowWidthFactor);
             yellowAreaPath += " L " + (50 + yellowEndX) + " " + (50 + yellowEndY);
             yellowAreaPath += " A 50 50 0 0 0 " + (50 + yellowStartX) + " " + (50 + yellowStartY);
-            yellowArea.setAttribute("d", yellowAreaPath);
-            yellowArea.setAttribute("fill", "yellow");
+            diffAndSetAttribute(yellowArea, "d", yellowAreaPath);
+            diffAndSetAttribute(yellowArea, "fill", "yellow");
             svg.appendChild(yellowArea);
         }
         if (this._greenLengthPercent > 0) {
@@ -120,8 +120,8 @@ class CircularGauge extends AbstractGauge {
             greenAreaPath += " A " + (50 * greenWidthFactor) + " " + (50 * greenWidthFactor) + " 0 0 1 " + (50 + greenEndX * greenWidthFactor) + " " + (50 + greenEndY * greenWidthFactor);
             greenAreaPath += " L " + (50 + greenEndX) + " " + (50 + greenEndY);
             greenAreaPath += " A 50 50 0 0 0 " + (50 + greenStartX) + " " + (50 + greenStartY);
-            greenArea.setAttribute("d", greenAreaPath);
-            greenArea.setAttribute("fill", "green");
+            diffAndSetAttribute(greenArea, "d", greenAreaPath);
+            diffAndSetAttribute(greenArea, "fill", "green");
             svg.appendChild(greenArea);
         }
         if (this._lowRedLengthPercent > 0) {
@@ -136,8 +136,8 @@ class CircularGauge extends AbstractGauge {
             lowRedAreaPath += " A " + (50 * lowRedWidthFactor) + " " + (50 * lowRedWidthFactor) + " 0 0 1 " + (50 + lowRedEndX * lowRedWidthFactor) + " " + (50 + lowRedEndY * lowRedWidthFactor);
             lowRedAreaPath += " L " + (50 + lowRedEndX) + " " + (50 + lowRedEndY);
             lowRedAreaPath += " A 50 50 0 0 0 " + (50 + lowRedStartX) + " " + (50 + lowRedStartY);
-            lowRedArea.setAttribute("d", lowRedAreaPath);
-            lowRedArea.setAttribute("fill", "red");
+            diffAndSetAttribute(lowRedArea, "d", lowRedAreaPath);
+            diffAndSetAttribute(lowRedArea, "fill", "red");
             svg.appendChild(lowRedArea);
         }
         if (this._lowYellowLengthPercent > 0) {
@@ -152,17 +152,17 @@ class CircularGauge extends AbstractGauge {
             lowYellowAreaPath += " A " + (50 * lowYellowWidthFactor) + " " + (50 * lowYellowWidthFactor) + " 0 0 1 " + (50 + lowYellowEndX * lowYellowWidthFactor) + " " + (50 + lowYellowEndY * lowYellowWidthFactor);
             lowYellowAreaPath += " L " + (50 + lowYellowEndX) + " " + (50 + lowYellowEndY);
             lowYellowAreaPath += " A 50 50 0 0 0 " + (50 + lowYellowStartX) + " " + (50 + lowYellowStartY);
-            lowYellowArea.setAttribute("d", lowYellowAreaPath);
-            lowYellowArea.setAttribute("fill", "yellow");
+            diffAndSetAttribute(lowYellowArea, "d", lowYellowAreaPath);
+            diffAndSetAttribute(lowYellowArea, "fill", "yellow");
             svg.appendChild(lowYellowArea);
         }
         this._cursor = document.createElementNS(Avionics.SVG.NS, "path");
         this._cursor.classList.add("gauge-cursor");
         this._cursor.classList.add("circular-gauge-cursor");
         let cursorPath = "M 10 50 L 20 45 L 20 55 Z";
-        this._cursor.setAttribute("d", cursorPath);
-        this._cursor.setAttribute("fill", "white");
-        this._cursor.setAttribute("stroke", "black");
+        diffAndSetAttribute(this._cursor, "d", cursorPath);
+        diffAndSetAttribute(this._cursor, "fill", "white");
+        diffAndSetAttribute(this._cursor, "stroke", "black");
         svg.appendChild(this._cursor);
         this._updateValue();
     }

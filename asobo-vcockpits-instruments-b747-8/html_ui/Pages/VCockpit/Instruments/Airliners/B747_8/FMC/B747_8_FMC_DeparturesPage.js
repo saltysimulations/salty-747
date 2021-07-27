@@ -27,7 +27,7 @@ class FMCDeparturesPage {
                     let index = i + pageCurrent;
                     let runway = runways[index];
                     if (runway) {
-                        rows[2 * i] = ["←" + Avionics.Utils.formatRunway(runway.designation) + "[color]blue", runway.length.toFixed(0) + "M[color]blue"];
+                        rows[2 * i] = ["←" + Avionics.Utils.formatRunway(runway.designation) + "[color]blue", fastToFixed(runway.length, 0) + "M[color]blue"];
                         rows[2 * i + 1] = ["042[color]blue"];
                         fmc.onLeftInput[i + 1] = async () => {
                             FMCDeparturesPage.ShowPage(fmc, airport, 0, index);

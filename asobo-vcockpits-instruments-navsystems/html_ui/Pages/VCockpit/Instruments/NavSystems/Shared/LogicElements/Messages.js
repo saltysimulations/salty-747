@@ -22,40 +22,61 @@ class Message {
 }
 class MessageList {
     constructor(_instrument) {
-        this.messages = [];
+        this.newMessagesAlert = 0;
         this.instrument = _instrument;
-        this.haveNewMessages = false;
+        this.messages = [];
+        this.newMessagesAlert = 0;
         this.batch = new SimVar.SimVarBatch("C:fs9gps:MessageItemsNumber", "C:fs9gps:MessageCurrentLine");
         this.batch.add("C:fs9gps:MessageCurrentType", "number", "number");
     }
     Update() {
-        if (MessageList.readManager.AddToQueue(this.instrument, this)) {
-            this.loadState = 0;
+        if (this.IsIdle()) {
+            if (this.newMessagesAlert > 0) {
+                this.newMessagesAlert -= this.instrument.deltaTime;
+            }
+            else {
+                let hasNewMessages = (SimVar.GetSimVarValue("C:fs9gps:NewMessagesNumber", "number") > 0);
+                if (hasNewMessages) {
+                    this.loadState = 0;
+                }
+            }
         }
-        this.haveNewMessages = (SimVar.GetSimVarValue("C:fs9gps:NewMessagesNumber", "number") > 0);
+        if (!this.IsUpToDate()) {
+            this.LoadData();
+        }
     }
-    SetNewMessagesRead() {
-        SimVar.SetSimVarValue("C:fs9gps:NewMessagesConfirm", "number", 0);
+    hasNewMessages() {
+        return this.newMessagesAlert > 0;
     }
     LoadData() {
         switch (this.loadState) {
             case 0:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.batch, function (_values) {
                     for (var i = 0; i < _values.length; i++) {
-                        var message = new Message();
+                        let message = new Message();
                         message.SetAirspaceMessageType(_values[i][0]);
-                        this.loadState++;
+                        this.messages.push(message);
                     }
+                    if (this.messages.length > 5) {
+                        this.messages.splice(0, this.messages.length - 5);
+                    }
+                    this.loadState++;
                 }.bind(this));
-                this.loadState++;
+                break;
+            case 2:
+                SimVar.SetSimVarValue("C:fs9gps:NewMessagesConfirm", "number", 0).then(function () {
+                    this.newMessagesAlert = 10000;
+                    this.loadState++;
+                }.bind(this));
                 break;
         }
     }
     IsUpToDate() {
-        return this.loadState == 2;
+        return this.loadState == 3;
     }
-    EndLoad() {
+    IsIdle() {
+        return (this.IsUpToDate() || this.loadState == 0);
     }
 }
-MessageList.readManager = new InstrumentDataReadManager();
 //# sourceMappingURL=Messages.js.map

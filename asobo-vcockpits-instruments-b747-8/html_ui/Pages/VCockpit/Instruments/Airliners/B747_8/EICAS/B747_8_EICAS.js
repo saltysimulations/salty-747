@@ -2,6 +2,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     constructor() {
         super(...arguments);
         this.engines = new Array();
+        this.FrameUpdateCounter = 0;
     }
     get templateID() { return "B747_8_EICAS"; }
     Init() {
@@ -33,9 +34,15 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         return "EICAS_CHANGE_PAGE_";
     }
     onUpdate(_deltaTime) {
+        engine.beginProfileEvent("B747_8_EICAS::onUpdate");
         super.onUpdate(_deltaTime);
+        engine.beginProfileEvent("updateAnnunciations");
         this.updateAnnunciations();
+        engine.endProfileEvent();
+        engine.beginProfileEvent("updateEngines");
         this.updateEngines(_deltaTime);
+        engine.endProfileEvent();
+        engine.endProfileEvent();
     }
     updateAnnunciations() {
         let infoPanelManager = this.upperTopScreen.getInfoPanelManager();
@@ -85,13 +92,13 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         return 60;
     }
     getN2Value(_engineId) {
-        return SimVar.GetSimVarValue("ENG N2 RPM:" + _engineId, "percent");
+        return Simplane.getN2Value(_engineId);
     }
     getFuelValveOpen(_engineId) {
-        return SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:" + (4 + _engineId), "boolean");
+        return Simplane.getFuelValveOpen(_engineId);
     }
     updateEngines(_deltaTime) {
-        for (var i = 0; i < this.engines.length; i++) {
+        for (var i = this.FrameUpdateCounter; i < this.engines.length; i++) {
             let N2Value = this.getN2Value(i + 1);
             switch (this.engines[i].currentState) {
                 case B747_8_EngineState.IDLE:

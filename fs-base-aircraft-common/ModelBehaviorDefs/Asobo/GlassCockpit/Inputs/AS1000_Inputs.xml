@@ -1,0 +1,33 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+	<Include ModelBehaviorFile="ASOBO\Common\Inputs\Autopilot_Inputs.xml"/>
+	<InputEvent ID="AS1000">
+		<Presets>
+			<Switch>
+				<Case Valid="IS_AUTOPILOT">
+					<Extend Target="AUTOPILOT">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>AS1000</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Case>
+				<Default>
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>AS1000</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Default>
+			</Switch>
+		</Presets>
+	</InputEvent>
+	<InputEvent ID="AS3000">
+		<Presets>
+			<Extend Target="ASOBO_GIE_Anim_Handling">
+				<Parameters Type="Default">
+					<INPUT_EVENT_ID_SOURCE>AS3000</INPUT_EVENT_ID_SOURCE>
+				</Parameters>
+			</Extend>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

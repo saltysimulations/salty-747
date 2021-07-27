@@ -10,8 +10,10 @@ class SvgMap {
     constructor(_root, arg) {
         this._maxUpdateTime = 0;
         this._lastMaxUpdateTime = 0;
+        this._totalUpdateTime = 0;
         this._mediumUpdateTime = 0;
         this._iterations = 0;
+        this._iterationsNoReset = 0;
         this.configLoaded = false;
         this.rotationMode = EMapRotationMode.NorthUp;
         this.overdrawFactor = 1;
@@ -35,6 +37,7 @@ class SvgMap {
         this._frameClipping = new Avionics.Intersect();
         this._bottomLeftCoordinates = new LatLongAlt();
         this._topRightCoordinates = new LatLongAlt();
+        this._lastMapElementsCount = -1;
         this.index = SvgMap.Index;
         console.log("New SvgMap of index " + this.index);
         SvgMap.Index++;
@@ -59,7 +62,7 @@ class SvgMap {
         if (!this._svgHtmlElement) {
             this._svgHtmlElement = _root.querySelector("#" + elementId);
         }
-        this.svgHtmlElement.setAttribute("viewBox", "0 0 1000 1000");
+        diffAndSetAttribute(this.svgHtmlElement, "viewBox", "0 0 1000 1000");
         this._frameClipping.initRect(1000, 1000);
         let loadConfig = () => {
             if (typeof (SvgMapConfig) !== "undefined") {
@@ -224,8 +227,12 @@ class SvgMap {
         if (!this.configLoaded) {
             return;
         }
+        engine.beginProfileEvent("SvgMap::update");
+        engine.beginProfileEvent("onBeforeMapRedraw");
         this.htmlRoot.onBeforeMapRedraw();
+        engine.endProfileEvent();
         if (!this.centerCoordinates) {
+            engine.endProfileEvent();
             return;
         }
         if (!this.flightPlanLayer) {
@@ -248,8 +255,7 @@ class SvgMap {
             this.planeLayer = document.createElementNS(Avionics.SVG.NS, "g");
             this.svgHtmlElement.appendChild(this.planeLayer);
         }
-        let newPlaneDirectionDeg = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "radians");
-        newPlaneDirectionDeg *= 180 / Math.PI;
+        let newPlaneDirectionDeg = Simplane.getHeadingTrue();
         while (newPlaneDirectionDeg < 0) {
             newPlaneDirectionDeg += 360;
         }
@@ -267,7 +273,7 @@ class SvgMap {
                 this.mapUpDirection = SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degrees");
                 break;
             case EMapRotationMode.HDGUp:
-                this.mapUpDirection = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
+                this.mapUpDirection = Simplane.getHeadingTrue();
                 break;
             case EMapRotationMode.TrackUp:
                 this.mapUpDirection = SimVar.GetSimVarValue("GPS GROUND TRUE TRACK", "degrees");
@@ -293,7 +299,7 @@ class SvgMap {
         let mapRightDirectionRadian = -this.mapRightDirection / 180 * Math.PI;
         this.cosMapRightDirection = Math.cos(mapRightDirectionRadian);
         this.sinMapRightDirection = Math.sin(mapRightDirectionRadian);
-        this.planeAltitude = SimVar.GetSimVarValue("PLANE ALT ABOVE GROUND", "feet");
+        this.planeAltitude = Simplane.getAltitudeAboveGround();
         let w = this.htmlRoot.getWidth();
         let h = this.htmlRoot.getHeight();
         let r = w / h;
@@ -311,40 +317,53 @@ class SvgMap {
             t0 = performance.now();
         }
         ;
+        engine.beginProfileEvent("Mark all elements for deletion");
         for (let i = 0; i < this.planeLayer.children.length; i++) {
-            this.planeLayer.children[i].setAttribute("needDeletion", "true");
+            this.planeLayer.children[i]["needDeletion"] = true;
         }
         for (let i = 0; i < this.maskLayer.children.length; i++) {
-            this.maskLayer.children[i].setAttribute("needDeletion", "true");
+            this.maskLayer.children[i]["needDeletion"] = true;
         }
         for (let i = 0; i < this.defaultLayer.children.length; i++) {
-            this.defaultLayer.children[i].setAttribute("needDeletion", "true");
+            this.defaultLayer.children[i]["needDeletion"] = true;
         }
         for (let i = 0; i < this.flightPlanLayer.children.length; i++) {
-            this.flightPlanLayer.children[i].setAttribute("needDeletion", "true");
+            this.flightPlanLayer.children[i]["needDeletion"] = true;
         }
+        engine.endProfileEvent();
         if (this.lineCanvas) {
+            engine.beginProfileEvent("Clear canvas");
             this.lineCanvas.getContext("2d").clearRect(0, 0, this.lineCanvas.width, this.lineCanvas.height);
+            engine.endProfileEvent();
         }
+        let insertionsCount = this.mapElements.length - this._lastMapElementsCount;
+        engine.beginProfileEvent("draw all map elements");
         for (let i = 0; i < this.mapElements.length; i++) {
             let svgElement = this.mapElements[i].draw(this);
-            svgElement.setAttribute("needDeletion", "false");
+            svgElement["needDeletion"] = false;
         }
+        engine.endProfileEvent();
+        let deletionCount = 0;
         let i = 0;
+        engine.beginProfileEvent("recycle plane elements");
         while (i < this.planeLayer.children.length) {
             let e = this.planeLayer.children[i];
-            if (e.getAttribute("needDeletion") === "true") {
+            if (e["needDeletion"] === true) {
                 this.planeLayer.removeChild(e);
+                deletionCount++;
             }
             else {
                 i++;
             }
         }
+        engine.endProfileEvent();
         i = 0;
+        engine.beginProfileEvent("recycle default elements");
         while (i < this.defaultLayer.children.length) {
             let e = this.defaultLayer.children[i];
-            if (e.getAttribute("needDeletion") === "true") {
+            if (e["needDeletion"] === true) {
                 this.defaultLayer.removeChild(e);
+                deletionCount++;
                 if (e.getAttribute("hasTextBox") === "true") {
                     let textElement = this.htmlRoot.querySelector("#" + e.id + "-text-" + this.index);
                     if (textElement) {
@@ -360,63 +379,73 @@ class SvgMap {
                 i++;
             }
         }
+        engine.endProfileEvent();
+        engine.beginProfileEvent("recycle flightPlan elements");
         i = 0;
         while (i < this.flightPlanLayer.children.length) {
             let e = this.flightPlanLayer.children[i];
-            if (e.getAttribute("needDeletion") === "true") {
+            if (e["needDeletion"] === true) {
                 this.flightPlanLayer.removeChild(e);
+                deletionCount++;
             }
             else {
                 i++;
             }
         }
+        engine.endProfileEvent();
+        engine.beginProfileEvent("recycle mask elements");
         i = 0;
         while (i < this.maskLayer.children.length) {
             let e = this.maskLayer.children[i];
-            if (e.getAttribute("needDeletion") === "true") {
+            if (e["needDeletion"] === true) {
                 this.maskLayer.removeChild(e);
+                deletionCount++;
             }
             else {
                 i++;
             }
         }
+        engine.endProfileEvent();
         if (this.config.preventLabelOverlap) {
-            this._elementsWithTextBox = [];
-            for (let i = 0; i < this.mapElements.length; i++) {
-                let e = this.mapElements[i];
-                if (e instanceof SvgNearestAirportElement) {
-                    this._elementsWithTextBox.push(e);
-                }
-                else if (e instanceof SvgWaypointElement) {
-                    this._elementsWithTextBox.push(e);
-                }
-                else if (e instanceof SvgConstraintElement) {
-                    this._elementsWithTextBox.push(e);
+            engine.beginProfileEvent("prevent label overlap");
+            if (deletionCount > 0 || insertionsCount != 0) {
+                this._elementsWithTextBox = [];
+                for (let i = 0; i < this.mapElements.length; i++) {
+                    let e = this.mapElements[i];
+                    if (e instanceof SvgNearestAirportElement) {
+                        this._elementsWithTextBox.push(e);
+                    }
+                    else if (e instanceof SvgWaypointElement) {
+                        this._elementsWithTextBox.push(e);
+                    }
+                    else if (e instanceof SvgConstraintElement) {
+                        this._elementsWithTextBox.push(e);
+                    }
                 }
             }
             if (!this.textManager) {
                 this.textManager = new SvgTextManager();
             }
             this.textManager.update(this, this._elementsWithTextBox);
+            engine.endProfileEvent();
         }
         if (SvgMap.LOG_PERFS) {
             let dt = performance.now() - t0;
+            this._totalUpdateTime += dt;
             this._iterations += 1;
-            this._mediumUpdateTime *= 99 / 100;
-            this._mediumUpdateTime += dt / 100;
+            this._iterationsNoReset += 1;
             this._maxUpdateTime = Math.max(dt, this._maxUpdateTime);
             this._lastMaxUpdateTime = Math.max(dt, this._lastMaxUpdateTime);
-            if (this._iterations >= 60) {
-                console.log("-----------------------------------------------");
-                console.log("Medium Update Time   " + this._mediumUpdateTime.toFixed(3) + " ms");
-                console.log("Last Max Update Time " + this._lastMaxUpdateTime.toFixed(3) + " ms");
-                console.log("Max Update Time      " + this._maxUpdateTime.toFixed(3) + " ms");
-                console.log("-----------------------------------------------");
-                this._lastMaxUpdateTime = 0;
+            if (this._iterations >= 100) {
+                this._mediumUpdateTime = this._totalUpdateTime / this._iterations;
+                console.log("Medium Update Time   " + fastToFixed(this._mediumUpdateTime, 3) + " ms");
+                console.log("Max Update Time      " + fastToFixed(this._maxUpdateTime, 3) + " ms");
                 this._iterations = 0;
-                SvgMapElement.logPerformances();
+                this._totalUpdateTime = 0;
+                this._maxUpdateTime = 0;
             }
         }
+        engine.endProfileEvent();
     }
     appendChild(mapElement, svgElement) {
         if (mapElement instanceof SvgAirplaneElement) {
@@ -445,8 +474,8 @@ class SvgMap {
     resize(w, h) {
         console.log("SvgMap Resize : " + w + " " + h);
         let max = Math.max(w, h);
-        this.svgHtmlElement.setAttribute("width", fastToFixed(max, 0) + "px");
-        this.svgHtmlElement.setAttribute("height", fastToFixed(max, 0) + "px");
+        diffAndSetAttribute(this.svgHtmlElement, "width", fastToFixed(max, 0) + "px");
+        diffAndSetAttribute(this.svgHtmlElement, "height", fastToFixed(max, 0) + "px");
         let top = "0px";
         let left = "0px";
         top = fastToFixed(((h - max) - h * (1 - 1 / this.overdrawFactor)) / 2, 0) + "px";

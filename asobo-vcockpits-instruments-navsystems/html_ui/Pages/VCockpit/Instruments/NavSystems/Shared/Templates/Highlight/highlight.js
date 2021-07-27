@@ -17,11 +17,11 @@ class Highlight extends HTMLElement {
         let rect = this.getBoundingClientRect();
         if (!this.built && rect.height != 0) {
             this.built = true;
-            this.root.setAttribute("width", "100%");
-            this.root.setAttribute("height", "100%");
-            this.root.setAttribute("display", "none");
+            diffAndSetAttribute(this.root, "width", "100%");
+            diffAndSetAttribute(this.root, "height", "100%");
+            diffAndSetAttribute(this.root, "display", "none");
             let vbox = "0 0 " + rect.width + " " + rect.height;
-            this.root.setAttribute("viewBox", vbox);
+            diffAndSetAttribute(this.root, "viewBox", vbox);
             this.appendChild(this.root);
             this.height = rect.height;
             this.width = rect.width;
@@ -31,17 +31,17 @@ class Highlight extends HTMLElement {
             d += "L" + rect.width + " " + rect.height;
             d += "L0 " + rect.height;
             d += "L0 0";
-            this.background.setAttribute("d", d);
-            this.background.setAttribute("fill", "black");
-            this.background.setAttribute("fill-opacity", "0.90");
-            this.background.setAttribute("fill-rule", "evenodd");
+            diffAndSetAttribute(this.background, "d", d);
+            diffAndSetAttribute(this.background, "fill", "black");
+            diffAndSetAttribute(this.background, "fill-opacity", "0.90");
+            diffAndSetAttribute(this.background, "fill-rule", "evenodd");
             this.root.appendChild(this.background);
             this.rectangles = document.createElementNS(Avionics.SVG.NS, "path");
-            this.rectangles.setAttribute("d", "");
-            this.rectangles.setAttribute("stroke", "#01b0f1");
-            this.rectangles.setAttribute("stroke-width", "6");
-            this.rectangles.setAttribute("fill", "none");
-            this.rectangles.setAttribute("stroke-linecap", "square");
+            diffAndSetAttribute(this.rectangles, "d", "");
+            diffAndSetAttribute(this.rectangles, "stroke", "#01b0f1");
+            diffAndSetAttribute(this.rectangles, "stroke-width", "6");
+            diffAndSetAttribute(this.rectangles, "fill", "none");
+            diffAndSetAttribute(this.rectangles, "stroke-linecap", "square");
             this.root.appendChild(this.rectangles);
         }
     }
@@ -52,10 +52,10 @@ class Highlight extends HTMLElement {
         switch (name) {
             case "active":
                 if (newValue == "true") {
-                    this.root.setAttribute("display", "inherit");
+                    diffAndSetAttribute(this.root, "display", "inherit");
                 }
                 else {
-                    this.root.setAttribute("display", "none");
+                    diffAndSetAttribute(this.root, "display", "none");
                 }
                 break;
             case "elements":
@@ -94,10 +94,10 @@ class Highlight extends HTMLElement {
                     rectanglePath += "L" + paths[i].points[0].x + " " + paths[i].points[0].y;
                 }
                 if (this.background) {
-                    this.background.setAttribute("d", d + rectanglePath);
+                    diffAndSetAttribute(this.background, "d", d + rectanglePath);
                 }
                 if (this.rectangles) {
-                    this.rectangles.setAttribute("d", rectanglePath);
+                    diffAndSetAttribute(this.rectangles, "d", rectanglePath);
                 }
                 if (this.rectangleTest) {
                 }
@@ -134,7 +134,7 @@ class drawPath {
     getDestinationIndex(_point) {
         for (let i = 0; i < this.points.length; i++) {
             if ((this.points[i].y == _point.y && (_point.x == this.points[i].x || ((this.points[i].x <= _point.x != this.points[(i + 1) % this.points.length].x <= _point.x) && _point.x != this.points[(i + 1) % this.points.length].x)))
-                || (this.points[i].x == _point.x && (_point.y == this.points[i].y || ((this.points[i].y <= _point.y != this.points[(i + 1) % this.points.length].y <= _point.y) && _point.y != this.points[(i + 1) % this.points.length].y)))) {
+                || (this.points[i].x == _point.x && ((this.points[i].y <= _point.y != this.points[(i + 1) % this.points.length].y <= _point.y) && _point.y != this.points[(i + 1) % this.points.length].y))) {
                 return (i + 1) % this.points.length;
             }
         }
@@ -144,7 +144,11 @@ class drawPath {
         let elem = -1;
         let dist = (_p1.x != _p2.x ? Math.abs(_p2.x - _p1.x) : Math.abs(_p1.y - _p2.y)) + 1;
         for (let i = 0; i < this.points.length; i++) {
-            if ((_p1.x != _p2.x ? (this.points[i].y < _p1.y != this.points[(i + 1) % this.points.length].y < _p1.y) && (this.points[i].x < _p1.x != this.points[i].x < _p2.x) : (this.points[i].x < _p1.x != this.points[(i + 1) % this.points.length].x < _p1.x) && (this.points[i].y < _p1.y != this.points[i].y < _p2.y)) && !(_p1.x == this.points[i].x && _p1.y == this.points[i].y) && !(_p1.x == this.points[(i + 1) % this.points.length].x && _p1.y == this.points[(i + 1) % this.points.length].y)) {
+            if (((_p1.x != _p2.x ? (this.points[i].y < _p1.y != this.points[(i + 1) % this.points.length].y < _p1.y) && (this.points[i].x < _p1.x != this.points[i].x < _p2.x) :
+                (this.points[i].x < _p1.x != this.points[(i + 1) % this.points.length].x < _p1.x) && (this.points[i].y < _p1.y != this.points[i].y < _p2.y))
+                && !(_p1.x == this.points[i].x && _p1.y == this.points[i].y) && !(_p1.x == this.points[(i + 1) % this.points.length].x && _p1.y == this.points[(i + 1) % this.points.length].y))
+                || (_p1.y == this.points[i].y && _p1.x != _p2.x && this.points[i].x != this.points[(i + 1) % this.points.length].x && _p1.x > _p2.x == this.points[i].x > this.points[(i + 1) % this.points.length].x && this.points[i].x < _p1.x != this.points[i].x < _p2.x)
+                || (_p1.x == this.points[i].x && _p1.y != _p2.y && this.points[i].y != this.points[(i + 1) % this.points.length].y && _p1.y > _p2.y == this.points[i].y > this.points[(i + 1) % this.points.length].y && this.points[i].y < _p1.y != this.points[i].y < _p2.y)) {
                 let localDist = (_p1.x != _p2.x ? Math.abs(_p1.x - this.points[i].x) : Math.abs(_p1.y - this.points[i].y));
                 if (localDist < dist && localDist > 0) {
                     elem = i;
@@ -176,8 +180,9 @@ class drawPath {
                 return _other;
             }
         }
-        let startIndex = index;
         currPoint = this.points[index];
+        let startX = currPoint.x;
+        let startY = currPoint.y;
         while (!finish && counter > 0) {
             let direction = this.getDestinationIndex(currPoint);
             let directionOther = _other.getDestinationIndex(currPoint);
@@ -301,8 +306,18 @@ class drawPath {
                     }
                 }
             }
+            if (newPath.points.length >= 2) {
+                if (newPath.points[newPath.points.length - 2].x == newPath.points[newPath.points.length - 1].x && newPath.points[newPath.points.length - 1].x == currPoint.x ||
+                    newPath.points[newPath.points.length - 2].y == newPath.points[newPath.points.length - 1].y && newPath.points[newPath.points.length - 1].y == currPoint.y) {
+                    if (newPath.points[newPath.points.length - 1].x == startX && newPath.points[newPath.points.length - 1].y == startY) {
+                        startX = newPath.points[newPath.points.length - 2].x;
+                        startY = newPath.points[newPath.points.length - 2].y;
+                    }
+                    newPath.points.pop();
+                }
+            }
             counter--;
-            if (this.points[startIndex].x == currPoint.x && this.points[startIndex].y == currPoint.y) {
+            if (startX == currPoint.x && startY == currPoint.y) {
                 finish = true;
             }
         }

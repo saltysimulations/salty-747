@@ -440,6 +440,7 @@ class AirportInfo extends WayPointInfo {
                 this.frequencies.push(new Frequency(data.frequencies[i].name, data.frequencies[i].freqMHz, data.frequencies[i].freqBCD16, data.frequencies[i].type));
             }
         }
+        let alt = 0;
         this.runways = [];
         if (data.runways) {
             for (let i = 0; i < data.runways.length; i++) {
@@ -447,6 +448,7 @@ class AirportInfo extends WayPointInfo {
                 runway.latitude = data.runways[i].latitude;
                 runway.longitude = data.runways[i].longitude;
                 runway.elevation = data.runways[i].elevation;
+                alt += runway.elevation;
                 runway.designation = data.runways[i].designation;
                 runway.length = data.runways[i].length;
                 runway.width = data.runways[i].width;
@@ -459,6 +461,10 @@ class AirportInfo extends WayPointInfo {
                 this.oneWayRunways.push(...runway.splitIfTwoWays());
             }
         }
+        if (data.runways.length > 0) {
+            alt = alt / data.runways.length;
+        }
+        this.coordinates.alt = alt;
         if (this.oneWayRunways) {
             this.unsortedOneWayRunways = [...this.oneWayRunways];
             this.oneWayRunways = this.oneWayRunways.sort((r1, r2) => {
@@ -568,7 +574,7 @@ class AirportInfo extends WayPointInfo {
         }
         for (let i = 0; i < this.departures.length; i++) {
             for (let j = 0; j < this.departures[i].runwayTransitions.length; j++) {
-                this.departures[i].runwayTransitions[j].name = "RW" + this.departures[i].runwayTransitions[j].runwayNumber.toString();
+                this.departures[i].runwayTransitions[j].name = "RW" + this.departures[i].runwayTransitions[j].runwayNumber + '';
                 switch (this.departures[i].runwayTransitions[j].runwayDesignation) {
                     case 1:
                         this.departures[i].runwayTransitions[j].name += "L";
@@ -589,7 +595,7 @@ class AirportInfo extends WayPointInfo {
         this.arrivals = data.arrivals;
         for (let i = 0; i < this.arrivals.length; i++) {
             for (let j = 0; j < this.arrivals[i].runwayTransitions.length; j++) {
-                this.arrivals[i].runwayTransitions[j].name = "RW" + this.arrivals[i].runwayTransitions[j].runwayNumber.toString();
+                this.arrivals[i].runwayTransitions[j].name = "RW" + this.arrivals[i].runwayTransitions[j].runwayNumber + '';
                 switch (this.arrivals[i].runwayTransitions[j].runwayDesignation) {
                     case 1:
                         this.arrivals[i].runwayTransitions[j].name += "L";

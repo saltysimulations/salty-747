@@ -57,10 +57,10 @@ class AS530_VorInfos extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         let ident = SimVar.GetSimVarValue("NAV SIGNAL:1", "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:1", "string") : "";
-        let isLoc = SimVar.GetSimVarValue("NAV HAS LOCALIZER:1", "boolean");
+        let isLoc = Simplane.getAutoPilotNavHasLoc(1);
         if (isLoc) {
             let airportIdent = SimVar.GetSimVarValue("NAV LOC AIRPORT IDENT:1", "string");
-            Avionics.Utils.diffAndSet(this.airportIdent, airportIdent ? airportIdent : "____");
+            diffAndSetText(this.airportIdent, airportIdent ? airportIdent : "____");
             let runwayName = SimVar.GetSimVarValue("NAV LOC RUNWAY NUMBER:1", "number");
             let runwayDesignation = SimVar.GetSimVarValue("NAV LOC RUNWAY DESIGNATOR:1", "number");
             switch (runwayDesignation) {
@@ -80,12 +80,12 @@ class AS530_VorInfos extends NavSystemElement {
                     runwayName += "B";
                     break;
             }
-            Avionics.Utils.diffAndSet(this.ilsRunway, this.airportIdent ? "ILS " + runwayName : "____");
+            diffAndSetText(this.ilsRunway, this.airportIdent ? "ILS " + runwayName : "____");
         }
-        Avionics.Utils.diffAndSetAttribute(this.vorRadContainer, "mode", isLoc ? "LOC" : "VOR");
-        Avionics.Utils.diffAndSetAttribute(this.disContainer, "mode", isLoc ? "LOC" : "VOR");
-        Avionics.Utils.diffAndSet(this.baliseType, isLoc ? "LOC" : "VOR");
-        Avionics.Utils.diffAndSet(this.vor, ident != "" ? ident : "___");
+        diffAndSetAttribute(this.vorRadContainer, "mode", isLoc ? "LOC" : "VOR");
+        diffAndSetAttribute(this.disContainer, "mode", isLoc ? "LOC" : "VOR");
+        diffAndSetText(this.baliseType, isLoc ? "LOC" : "VOR");
+        diffAndSetText(this.vor, ident != "" ? ident : "___");
         let radial = Math.round(SimVar.GetSimVarValue("NAV RADIAL:1", "degrees"));
         while (radial < 0) {
             radial += 360;
@@ -93,8 +93,8 @@ class AS530_VorInfos extends NavSystemElement {
         while (radial >= 360) {
             radial -= 360;
         }
-        Avionics.Utils.diffAndSet(this.rad, (SimVar.GetSimVarValue("NAV HAS NAV:1", "bool") ? radial.toFixed(0) : "___") + "°");
-        Avionics.Utils.diffAndSet(this.dis, (SimVar.GetSimVarValue("NAV HAS DME:1", "bool") ? Math.round(SimVar.GetSimVarValue("NAV DME:1", "Nautical Miles")).toFixed(1) : "__._"));
+        diffAndSetText(this.rad, (SimVar.GetSimVarValue("NAV HAS NAV:1", "bool") ? fastToFixed(radial, 0) : "___") + "°");
+        diffAndSetText(this.dis, (SimVar.GetSimVarValue("NAV HAS DME:1", "bool") ? fastToFixed(Math.round(SimVar.GetSimVarValue("NAV DME:1", "Nautical Miles")), 1) : "__._"));
     }
 }
 registerInstrument("as530-element", AS530);

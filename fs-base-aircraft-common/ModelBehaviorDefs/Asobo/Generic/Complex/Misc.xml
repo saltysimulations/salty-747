@@ -5,7 +5,7 @@
 		Required parameter:
 			ANIM_NAME
 			SIMVAR
-			SIMVAR_UNIT
+			UNITS
 			MIN_VALUE
 			MAX_VALUE
 	-->

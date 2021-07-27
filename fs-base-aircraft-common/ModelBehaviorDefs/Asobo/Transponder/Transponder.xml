@@ -1,399 +1,435 @@
 <ModelBehaviors>
 	<Include ModelBehaviorFile="Asobo\Generic.xml"/>
-
-
-	<Macro Name="TransponderButtonEmissiveCode">
-		(A:CIRCUIT GENERAL PANEL ON, Bool) (A:LIGHT POTENTIOMETER:#EMISSIVE_POTENTIOMETER#, percent over 100) *
-	</Macro>
-
+	<Include ModelBehaviorFile="Asobo\NAVCOM\NavComSystem.xml"/>
+	
+	<!-- Transponder composite presets -->
+	<!-- AS76A -->
 	<Template Name="ASOBO_5Knobs_Transponder_Template">
-		<DefaultTemplateParameters>
+		<UseTemplate Name="ASOBO_Transponder_AS76A_Template"/>
+	</Template>
+	<Template Name="ASOBO_Transponder_AS76A_Template">
+		<Parameters Type="Default">
 			<ID>1</ID>
-		</DefaultTemplateParameters>
-		
+		</Parameters>
 		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
-			<TEMPLATE_TO_CALL>ASOBO_5Knobs_Transponder_SubTemplate</TEMPLATE_TO_CALL>
+			<TEMPLATE_TO_CALL>ASOBO_Transponder_AS76A_SubTemplate</TEMPLATE_TO_CALL>
 		</UseTemplate>
 	</Template>
-
-	<Template Name="ASOBO_5Knobs_Transponder_SubTemplate">
-		<DefaultTemplateParameters>
+	<Template Name="ASOBO_Transponder_AS76A_SubTemplate">
+		<Parameters Type="Default">
 			<NODE_ID_KNOB_SETTING>TRANSPONDER_Knob#SUFFIX_ID#</NODE_ID_KNOB_SETTING>
 			<ANIM_NAME_KNOB_SETTING>TRANSPONDER_Knob#SUFFIX_ID#</ANIM_NAME_KNOB_SETTING>
-			
-			<NODE_ID_KNOB_THOUSANDS>TRANSPONDER_Knob_01#SUFFIX_ID#</NODE_ID_KNOB_THOUSANDS>
-			<ANIM_NAME_KNOB_THOUSANDS>TRANSPONDER_Knob_01#SUFFIX_ID#</ANIM_NAME_KNOB_THOUSANDS>
-			<NODE_ID_KNOB_HUNDREDS>TRANSPONDER_Knob_02#SUFFIX_ID#</NODE_ID_KNOB_HUNDREDS>
-			<ANIM_NAME_KNOB_HUNDREDS>TRANSPONDER_Knob_02#SUFFIX_ID#</ANIM_NAME_KNOB_HUNDREDS>
-			<NODE_ID_KNOB_TENS>TRANSPONDER_Knob_03#SUFFIX_ID#</NODE_ID_KNOB_TENS>
-			<ANIM_NAME_KNOB_TENS>TRANSPONDER_Knob_03#SUFFIX_ID#</ANIM_NAME_KNOB_TENS>
-			<NODE_ID_KNOB_ONES>TRANSPONDER_Knob_04#SUFFIX_ID#</NODE_ID_KNOB_ONES>
-			<ANIM_NAME_KNOB_ONES>TRANSPONDER_Knob_04#SUFFIX_ID#</ANIM_NAME_KNOB_ONES>
-			
 			<NODE_ID_IDT>TRANSPONDER_Push_IDT#SUFFIX_ID#</NODE_ID_IDT>
 			<ANIM_NAME_IDT>TRANSPONDER_Push_IDT#SUFFIX_ID#</ANIM_NAME_IDT>
-		</DefaultTemplateParameters>
-
-		<UseTemplate Name="ASOBO_Transponder_knob_Setting_Template">
-			<ANIMREF_ID>0</ANIMREF_ID>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.XPDR_OFF</ANIMTIP_0>
-			<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.XPDR_SBY</ANIMTIP_1>
-			<ANIMTIP_1_ON_PERCENT>0.25</ANIMTIP_1_ON_PERCENT>
-			<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.XPDR_ON</ANIMTIP_2>
-			<ANIMTIP_2_ON_PERCENT>.5</ANIMTIP_2_ON_PERCENT>
-			<ANIMTIP_3>TT:COCKPIT.TOOLTIPS.XPDR_ALT</ANIMTIP_3>
-			<ANIMTIP_3_ON_PERCENT>0.75</ANIMTIP_3_ON_PERCENT>
-			<ANIMTIP_4>TT:COCKPIT.TOOLTIPS.XPDR_TEST</ANIMTIP_4>
-			<ANIMTIP_4_ON_PERCENT>1</ANIMTIP_4_ON_PERCENT>
+			<NODE_ID_IDENT_LIGHT>ANNUNCIATOR_Radio_Ident</NODE_ID_IDENT_LIGHT>
+		</Parameters>
+		<Loop>
+			<Setup>
+				<Param>DIGIT</Param>
+				<From>1</From>
+				<Inc>1</Inc>
+				<To>4</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Default">
+					<Condition NotEmpty="NAME_KNOB_#DIGIT#">
+						<True>
+							<NODE_ID Process="Param">NAME_KNOB_#DIGIT#</NODE_ID>
+							<ANIM_NAME Process="Param">NAME_KNOB_#DIGIT#</ANIM_NAME>
+						</True>
+						<False>
+							<NODE_ID>TRANSPONDER_Knob_0#DIGIT##SUFFIX_ID#</NODE_ID>
+							<ANIM_NAME>TRANSPONDER_Knob_0#DIGIT##SUFFIX_ID#</ANIM_NAME>
+						</False>
+					</Condition>
+				</Parameters>
+				<UseTemplate Name="ASOBO_Transponder_Knob_Value_Template"/>
+			</Do>
+		</Loop>
+		<UseTemplate Name="ASOBO_Transponder_Push_IDT_Template">
+			<NODE_ID>#NODE_ID_IDT#</NODE_ID>
+			<ANIM_NAME>#ANIM_NAME_IDT#</ANIM_NAME>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+			<NODE_ID>#NODE_ID_IDENT_LIGHT#</NODE_ID>
+			<EMISSIVE_CODE>(A:TRANSPONDER STATE:1, Enum) 2 == (E:SIMULATION TIME, second) (I:XMLVAR_IDENT_Shutdown_Time) &lt; or</EMISSIVE_CODE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_Transponder_Knob_Setting_Template">
 			<NODE_ID>#NODE_ID_KNOB_SETTING#</NODE_ID>
 			<ANIM_NAME>#ANIM_NAME_KNOB_SETTING#</ANIM_NAME>
 		</UseTemplate>
-		
-		<Component ID="IDENT_Light" Node="ANNUNCIATOR_Radio_Ident">
-			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-				<EMISSIVE_CODE>
-					(A:TRANSPONDER STATE:1, Enum) 2 ==
-					(E:SIMULATION TIME, second) (I:XMLVAR_IDENT_Shutdown_Time) &lt; or
-				</EMISSIVE_CODE> <!-- TODO -->
-			</UseTemplate>
-		</Component>
-		
-		<!-- <Component ID="State_Light" Node="TRANSPONDER_Light_Active"> -->
-			<!-- <UseTemplate Name="ASOBO_GT_Emissive_Gauge"> -->
-				<!-- <EMISSIVE_CODE>(A:TRANSPONDER STATE:1, Enum) 0 &gt;</EMISSIVE_CODE> -->
-				<!-- <FAILURE>(A:CIRCUIT AVIONICS ON, Bool)</FAILURE> -->
-			<!-- </UseTemplate> -->
-		<!-- </Component> -->
-		
-		<Component ID="TRANSPONDER_Push_IDT" Node="#NODE_ID_IDT#">
-			<UseTemplate Name="ASOBO_GT_Push_Button">
-				<ANIM_NAME>#ANIM_NAME_IDT#</ANIM_NAME>
-				<LEFT_SINGLE_CODE>
-					(A:TRANSPONDER STATE:1, Enum) 0 != if{
-						(E:SIMULATION TIME, second) 20 + (&gt;I:XMLVAR_IDENT_Shutdown_Time)
-					}
-				</LEFT_SINGLE_CODE>
-				<WWISE_EVENT_1>transponder_push_button_on</WWISE_EVENT_1>
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>			
-				<WWISE_EVENT_2>transponder_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.YOKE_BUTTON_IDENT</TOOLTIPID>
-			</UseTemplate>
-		</Component>
-		
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template_4">
-			<NODE_ID>#NODE_ID_KNOB_THOUSANDS#</NODE_ID>
-			<ANIM_NAME>#ANIM_NAME_KNOB_THOUSANDS#</ANIM_NAME>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template_3">
-			<NODE_ID>#NODE_ID_KNOB_HUNDREDS#</NODE_ID>
-			<ANIM_NAME>#ANIM_NAME_KNOB_HUNDREDS#</ANIM_NAME>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template_2">
-			<NODE_ID>#NODE_ID_KNOB_TENS#</NODE_ID>
-			<ANIM_NAME>#ANIM_NAME_KNOB_TENS#</ANIM_NAME>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template_1">
-			<NODE_ID>#NODE_ID_KNOB_ONES#</NODE_ID>
-			<ANIM_NAME>#ANIM_NAME_KNOB_ONES#</ANIM_NAME>
-		</UseTemplate>
 	</Template>
-
-	<Template Name="ASOBO_Simple_Transponder_Template">
-		<DefaultTemplateParameters>
-			<ID>1</ID>
-		</DefaultTemplateParameters>
-		
-		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
-			<TEMPLATE_TO_CALL>ASOBO_Simple_Transponder_SubTemplate</TEMPLATE_TO_CALL>
-		</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_Simple_Transponder_SubTemplate">
-		<Component ID="Transponder_Buttons">
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>IDT</ID>
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.YOKE_BUTTON_IDENT</TOOLTIPID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>VFR</ID>
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.XPDR_VFR</TOOLTIPID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>CLR</ID>
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.XPDR_CLR</TOOLTIPID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>0</ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>1</ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>2</ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>3</ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>4</ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>5</ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>6</ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-				<ID>7</ID>
-			</UseTemplate>
-		</Component>
-	</Template>
-
-	<!-- TODO - Complete -->
-	<Template Name="ASOBO_Garmin_GTX330_Transponder_Template">
-		<DefaultTemplateParameters>
-			<ID>1</ID>
-		</DefaultTemplateParameters>
-		
-		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
-			<TEMPLATE_TO_CALL>ASOBO_Garmin_GTX330_Transponder_SubTemplate</TEMPLATE_TO_CALL>
-		</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_Garmin_GTX330_Transponder_SubTemplate">
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>ON</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>IDT</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>VFR</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>CLR</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>STBY</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>ALT</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>OFF</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>FUNC</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>CRSR</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>STARTSTOP</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>0</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>1</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>2</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>3</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>4</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>5</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>6</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>7</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>8</ID>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_Button_Transponder_ID_Template">
-			<ID>9</ID>
-		</UseTemplate>
-	</Template>
-		
-	<!--
-			Code to Handle a button on the transpoder
-			Req. : #ID# - ID of the button 
-	-->
-	<Template Name="ASOBO_Button_Transponder_ID_Template">
-		<DefaultTemplateParameters>
-			<EMISSIVE_POTENTIOMETER>1</EMISSIVE_POTENTIOMETER>
-			<BUTTON_EMISSIVE_FACTOR>1</BUTTON_EMISSIVE_FACTOR>
-		</DefaultTemplateParameters>
-
-		<Component ID="Transponder_Button_#ID#" Node="TRANSPONDER_Push_#ID##SUFFIX_ID#">
-			<PartID>TRANSPONDER_Push_#ID#</PartID>
-			<UseTemplate Name="ASOBO_GT_Push_Button_Emissive">
-				<ANIM_NAME>TRANSPONDER_Push_#ID##SUFFIX_ID#</ANIM_NAME>
-				<LEFT_SINGLE_CODE>(&gt;H:Transponder#ID#)</LEFT_SINGLE_CODE>
-				<EMISSIVE_CODE>@TransponderButtonEmissiveCode #BUTTON_EMISSIVE_FACTOR# *</EMISSIVE_CODE>
-				<WWISE_EVENT_1>transponder_push_button_on</WWISE_EVENT_1>
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>			
-				<WWISE_EVENT_2>transponder_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.1</NORMALIZED_TIME_2>
-			</UseTemplate>
-		</Component>
-	</Template>
-		
+	<!-- AS76C -->
 	<Template Name="ASOBO_Simple_Transponder_With_Knob_Template">
-		<DefaultTemplateParameters>
+		<UseTemplate Name="ASOBO_Transponder_AS76C_Template"/>
+	</Template>
+	<Template Name="ASOBO_Transponder_AS76C_Template">
+		<Parameters Type="Default">
 			<ID>1</ID>
-		</DefaultTemplateParameters>
-		
+		</Parameters>
 		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
-			<TEMPLATE_TO_CALL>ASOBO_Simple_Transponder_With_Knob_SubTemplate</TEMPLATE_TO_CALL>
+			<TEMPLATE_TO_CALL>ASOBO_Transponder_AS76C_SubTemplate</TEMPLATE_TO_CALL>
 		</UseTemplate>
 	</Template>
-
-	<Template Name="ASOBO_Simple_Transponder_With_Knob_SubTemplate">
-		<DefaultTemplateParameters>
-			<KNOB_NODE_ID>TRANSPONDER_Knob#SUFFIX_ID#</KNOB_NODE_ID>
-			<KNOB_ANIM_NAME>TRANSPONDER_Knob#SUFFIX_ID#</KNOB_ANIM_NAME>
+	<Template Name="ASOBO_Transponder_AS76C_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID_KNOB_SETTING>TRANSPONDER_Knob#SUFFIX_ID#</NODE_ID_KNOB_SETTING>
+			<ANIM_NAME_KNOB_SETTING>TRANSPONDER_Knob#SUFFIX_ID#</ANIM_NAME_KNOB_SETTING>
+			<NODE_ID_FRAME>TRANSPONDER_Frame#SUFFIX_ID#</NODE_ID_FRAME>
 			<ANIM_NEVER_FAILS/>
-		</DefaultTemplateParameters>
-		
-		<UseTemplate Name="ASOBO_Simple_Transponder_Template">
+			<FAILURE>(A:CIRCUIT AVIONICS ON, Bool) (A:TRANSPONDER STATE:1, Enum) 0 &gt; and</FAILURE>
+			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+			<NORMALIZED_TIME_2>0.1</NORMALIZED_TIME_2>
+			<EMISSIVE_POTENTIOMETER>7</EMISSIVE_POTENTIOMETER>
+			<BUTTON_EMISSIVE_FACTOR>0.2</BUTTON_EMISSIVE_FACTOR>
+		</Parameters>
+		<Parameters Type="Override">
+			<PUSH_ID_1>IDT</PUSH_ID_1>
+			<PUSH_ID_2>VFR</PUSH_ID_2>
+			<PUSH_ID_3>CLR</PUSH_ID_3>
+			<PUSH_ID_4>0</PUSH_ID_4>
+			<PUSH_ID_5>1</PUSH_ID_5>
+			<PUSH_ID_6>2</PUSH_ID_6>
+			<PUSH_ID_7>3</PUSH_ID_7>
+			<PUSH_ID_8>4</PUSH_ID_8>
+			<PUSH_ID_9>5</PUSH_ID_9>
+			<PUSH_ID_10>6</PUSH_ID_10>
+			<PUSH_ID_11>7</PUSH_ID_11>
+		</Parameters>
+		<Parameters Type="Default">
+			<!-- @TT_Placeholder_Description remove TT_DESCRIPTION_... below when all entries have been created and decomment TRANSPONDER_PUSH_DIGIT_ACTION -->
+			<TT_DESCRIPTION_ID_0/>
+			<TT_DESCRIPTION_ID_1/>
+			<TT_DESCRIPTION_ID_2/>
+			<TT_DESCRIPTION_ID_3/>
+			<TT_DESCRIPTION_ID_4/>
+			<TT_DESCRIPTION_ID_5/>
+			<TT_DESCRIPTION_ID_6/>
+			<TT_DESCRIPTION_ID_7/>
+			<Loop>
+				<Setup>
+					<Param>CUR_ID</Param>
+					<From>1</From>
+					<Inc>1</Inc>
+					<To>11</To>
+				</Setup>
+				<Do>
+					<Parameters Type="Override">
+						<ID Process="Param">PUSH_ID_#CUR_ID#</ID>
+					</Parameters>
+					<NODE_ID_#ID#>TRANSPONDER_Push_#ID##SUFFIX_ID#</NODE_ID_#ID#>
+					<ANIM_NAME_#ID#>TRANSPONDER_Push_#ID##SUFFIX_ID#</ANIM_NAME_#ID#>
+					<Condition>
+						<Test>
+							<GreaterOrEqual>
+								<Value>CUR_ID</Value>
+								<Number>4</Number>
+							</GreaterOrEqual>
+						</Test>
+						<True>
+							<TT_DESCRIPTION_ID_#ID#>@TT_Package.TRANSPONDER_PUSH_DIGIT_ACTION</TT_DESCRIPTION_ID_#ID#>
+							<TT_DESCRIPTION_INDEX>#ID#</TT_DESCRIPTION_INDEX>
+						</True>
+						<False>
+							<TT_DESCRIPTION_ID_#ID#>@TT_Package.TRANSPONDER_PUSH_#ID#_ACTION</TT_DESCRIPTION_ID_#ID#>
+							<TOOLTIP_TITLE_#ID#>@TT_Package.TRANSPONDER_PUSH_#ID#_TITLE</TOOLTIP_TITLE_#ID#>
+						</False>
+					</Condition>
+				</Do>
+			</Loop>
+		</Parameters>
+		<Loop>
+			<Setup>
+				<Param>CUR_ID</Param>
+				<From>1</From>
+				<Inc>1</Inc>
+				<To>11</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Override">
+					<ID Process="Param">PUSH_ID_#CUR_ID#</ID>
+				</Parameters>
+				<Parameters Type="Override">
+					<NODE_ID Process="Param">NODE_ID_#ID#</NODE_ID>
+					<ANIM_NAME Process="Param">ANIM_NAME_#ID#</ANIM_NAME>
+					<TT_DESCRIPTION_ID Process="Param">TT_DESCRIPTION_ID_#ID#</TT_DESCRIPTION_ID>
+					<Condition NotEmpty="TOOLTIP_TITLE_#ID#">
+						<TOOLTIP_TITLE Process="Param">TOOLTIP_TITLE_#ID#</TOOLTIP_TITLE>						
+					</Condition>
+				</Parameters>
+				<!-- @TT_Placeholder_Description remove parameters (the whole xml node) below when all placeholders have been replaced -->
+				<Parameters Type="Override">
+					<Condition Valid="TT_DESCRIPTION_ID">
+						<False>
+							<TT_DESCRIPTION>@TT_Placeholder_Description</TT_DESCRIPTION>
+							<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+						</False>
+					</Condition>
+				</Parameters>
+				<UseTemplate Name="ASOBO_Transponder_Push_ID_Template"/>
+			</Do>
+		</Loop>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+			<NODE_ID>#NODE_ID_FRAME#</NODE_ID>
+			<POTENTIOMETER>#EMISSIVE_POTENTIOMETER#</POTENTIOMETER>
+			<EMISSIVE_CODE>(A:CIRCUIT GENERAL PANEL ON, Bool)</EMISSIVE_CODE>
 		</UseTemplate>
-		<Component ID="TRANSPONDER_Frame#SUFFIX_ID#" Node="TRANSPONDER_Frame#SUFFIX_ID#">
-			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-				<EMISSIVE_CODE>@TransponderButtonEmissiveCode</EMISSIVE_CODE>
-			</UseTemplate>
-		</Component>
-		<UseTemplate Name="ASOBO_Transponder_knob_Setting_Template">
-			<NODE_ID>#KNOB_NODE_ID#</NODE_ID>
-			<ANIM_NAME>#KNOB_ANIM_NAME#</ANIM_NAME>
-			<ANIMREF_ID>0</ANIMREF_ID>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.XPDR_OFF</ANIMTIP_0>
-			<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.XPDR_SBY</ANIMTIP_1>
-			<ANIMTIP_1_ON_PERCENT>0.25</ANIMTIP_1_ON_PERCENT>
-			<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.XPDR_TEST</ANIMTIP_2>
-			<ANIMTIP_2_ON_PERCENT>.5</ANIMTIP_2_ON_PERCENT>
-			<ANIMTIP_3>TT:COCKPIT.TOOLTIPS.XPDR_ON</ANIMTIP_3>
-			<ANIMTIP_3_ON_PERCENT>0.75</ANIMTIP_3_ON_PERCENT>
-			<ANIMTIP_4>TT:COCKPIT.TOOLTIPS.XPDR_ALT</ANIMTIP_4>
-			<ANIMTIP_4_ON_PERCENT>1</ANIMTIP_4_ON_PERCENT>
+		<UseTemplate Name="ASOBO_Transponder_Knob_Setting_Template">
+			<NODE_ID>#NODE_ID_KNOB_SETTING#</NODE_ID>
+			<ANIM_NAME>#ANIM_NAME_KNOB_SETTING#</ANIM_NAME>
+			<POS_OFF>0</POS_OFF>
+			<POS_STBY>1</POS_STBY>
+			<POS_TEST>2</POS_TEST>
+			<POS_ON>3</POS_ON>
+			<POS_ALT>4</POS_ALT>
 		</UseTemplate>
 	</Template>
-		
-	<Template Name="ASOBO_Transponder_knob_Value_Template_4">
-		<DefaultTemplateParameters>
-			<STEP></STEP>
-			<DIGIT>1</DIGIT>
-		</DefaultTemplateParameters>
-		
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template_3">
-			<STEP>#STEP#0</STEP>
-		</UseTemplate>
-	</Template>
-		
-	<Template Name="ASOBO_Transponder_knob_Value_Template_3">
-		<DefaultTemplateParameters>
-			<STEP></STEP>
-			<DIGIT>2</DIGIT>
-		</DefaultTemplateParameters>
-		
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template_2">
-			<STEP>#STEP#0</STEP>
-		</UseTemplate>
-	</Template>
-		
-	<Template Name="ASOBO_Transponder_knob_Value_Template_2">
-		<DefaultTemplateParameters>
-			<STEP></STEP>
-			<DIGIT>3</DIGIT>
-		</DefaultTemplateParameters>
-		
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template_1">
-			<STEP>#STEP#0</STEP>
-		</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_Transponder_knob_Value_Template_1">
-		<DefaultTemplateParameters>
-			<STEP></STEP>
-			<DIGIT>4</DIGIT>
-		</DefaultTemplateParameters>
-		
-		<UseTemplate Name="ASOBO_Transponder_knob_Value_Template">
-			<STEP>1#STEP#</STEP>
-		</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_Transponder_knob_Value_Template">
-		<DefaultTemplateParameters>
-			<NODE_ID>TRANSPONDER_Knob_0#DIGIT##SUFFIX_ID#</NODE_ID>
-			<ANIM_NAME>TRANSPONDER_Knob_0#DIGIT##SUFFIX_ID#</ANIM_NAME>
+	<!-- ################################ -->
+	<!-- Transponder components templates -->
+	<!-- ################################ -->
+	<Template Name="ASOBO_Transponder_Knob_Value_Template">
+		<Parameters Type="Default">
 			<WWISE_EVENT>transponder_knob_value</WWISE_EVENT> 
 			<COUNT>8</COUNT>
-		</DefaultTemplateParameters>
-		
-		<Component ID="#NODE_ID#" Node="#NODE_ID#">
-			<UseTemplate Name="ASOBO_GT_Knob_Finite_Code">
-				<CLOCKWISE_CODE>(&gt;K:XPNDR_#STEP#_INC)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;K:XPNDR_#STEP#_DEC)</ANTICLOCKWISE_CODE>
-				<ANIM_CODE>800 (A:TRANSPONDER CODE:1, Number) #STEP# / int 10 % 100 * -</ANIM_CODE>
-				<ANIM_LENGTH>800</ANIM_LENGTH>
-				<ANIM_LAG>800</ANIM_LAG>
-				<UPDATE_FREQUENCY>5</UPDATE_FREQUENCY>
-			</UseTemplate>
-		</Component>
+			<STEP_INT Process="Int">10 4 #DIGIT# - pow</STEP_INT>
+			<Switch Param="DIGIT">
+				<Case Value="1">
+					<DIGIT_ID>THOUSANDS</DIGIT_ID>
+					<STEP_MAX_HEX_MASK>F000</STEP_MAX_HEX_MASK>
+					<STEP_MASK>7000</STEP_MASK>
+					<STEP>1000</STEP>
+				</Case>
+				<Case Value="2">
+					<DIGIT_ID>HUNDREDS</DIGIT_ID>
+					<STEP_MAX_HEX_MASK>0F00</STEP_MAX_HEX_MASK>
+					<STEP_MASK>0700</STEP_MASK>
+					<STEP>0100</STEP>
+				</Case>
+				<Case Value="3">
+					<DIGIT_ID>TENS</DIGIT_ID>
+					<STEP_MAX_HEX_MASK>00F0</STEP_MAX_HEX_MASK>
+					<STEP_MASK>0070</STEP_MASK>
+					<STEP>0010</STEP>
+				</Case>
+				<Case Value="4">
+					<DIGIT_ID>ONES</DIGIT_ID>
+					<STEP_MAX_HEX_MASK>000F</STEP_MAX_HEX_MASK>
+					<STEP_MASK>0007</STEP_MASK>
+					<STEP>0001</STEP>
+				</Case>
+			</Switch>
+			<INPUT_EVENT_ID_SOURCE>NAVCOM</INPUT_EVENT_ID_SOURCE>
+		</Parameters>
+		<Parameters Type="Default">
+			<TOOLTIP_TITLE>@TT_Package.TRANSPONDER_KNOB_CODE_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.TRANSPONDER_KNOB_CODE_#DIGIT_ID#_ACTION</TT_DESCRIPTION_ID>
+			<THRESHOLD_INPUT>0.0004</THRESHOLD_INPUT>
+			<THRESHOLD_MOUSE>0.01</THRESHOLD_MOUSE>
+		</Parameters>
+		<Parameters Type="Override">
+			<GET_DIGIT_VALUE>(A:TRANSPONDER CODE:1, Number) #STEP_INT# / int 10 %</GET_DIGIT_VALUE>
+		</Parameters>
+		<UseInputEvent ID="NAVCOM">
+			<ANIM>EXTERNAL</ANIM>
+			<!-- Override defaults -->
+			<KNOB_ID>Transponder_Code</KNOB_ID>
+			<NO_ANIM_VAR_UPDATE>True</NO_ANIM_VAR_UPDATE>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<!-- ################# -->
+			<GET_STATE_EXTERNAL>(A:TRANSPONDER CODE:1, Bco16)</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>(&gt;K:XPNDR_SET)</SET_STATE_EXTERNAL>
+			<!-- Add binding for setting transponder code directly from a BCD -->
+			<BINDING_SET_0>Set_BCD</BINDING_SET_0>
+			<BINDING_SET_0_PARAM_0>p0 (&gt;O:_TempConvVar, enum) (O:_TempConvVar, Bco16)</BINDING_SET_0_PARAM_0>
+			<BINDING_SET_0_PARAM_0_IS_DYNAMIC>True</BINDING_SET_0_PARAM_0_IS_DYNAMIC>
+			<!-- BCO16 is stored in as an hex value, we need to check the value after each increment to avoid illegal values .. -->
+			<INC_CODE_ADJUST_VALUE>
+				s0 0x000F & 0x0007 > if{ l0 0x0008 + sp0 } 
+				l0 0x00F0 & 0x0070 > if{ l0 0x0080 + sp0 } 
+				l0 0x0F00 & 0x0700 > if{ l0 0x0800 + sp0 } 
+				l0 0xF000 & 0x7000 > if{ l0 0x8000 + sp0 } 
+				l0
+			</INC_CODE_ADJUST_VALUE>
+			<DEC_CODE_ADJUST_VALUE>
+				s0 0x000F & 0x0007 > if{ l0 0x0008 - sp0 } 
+				l0 0x00F0 & 0x0070 > if{ l0 0x0080 - sp0 } 
+				l0 0x0F00 & 0x0700 > if{ l0 0x0800 - sp0 } 
+				l0 0xF000 & 0x7000 > if{ l0 0x8000 - sp0 } 
+				l0
+			</DEC_CODE_ADJUST_VALUE>
+			<MIN_VALUE>0x0000</MIN_VALUE>
+			<MAX_VALUE>0x7777</MAX_VALUE>
+			<GET_TT_VALUE_STATE>(A:TRANSPONDER CODE:1, Number)</GET_TT_VALUE_STATE>
+			<FORMAT_VALUE>'%d' @sprintf</FORMAT_VALUE>
+			<TOOLTIP_TITLE>@TT_Package.TRANSPONDER_KNOB_CODE_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.TRANSPONDER_KNOB_CODE_ACTION</TT_DESCRIPTION_ID>
+		</UseInputEvent>
+		<UseTemplate Name="ASOBO_NAVCOM_Base_Template">
+			<KNOB_ID>Transponder_Code_#DIGIT_ID#</KNOB_ID>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<GET_TT_VALUE_STATE>#GET_DIGIT_VALUE#</GET_TT_VALUE_STATE>
+			<FORMAT_VALUE>'%d' @sprintf</FORMAT_VALUE>
+			<ANIM_CODE>800 #GET_DIGIT_VALUE# 100 * -</ANIM_CODE>
+			<ANIM_LENGTH>800</ANIM_LENGTH>
+			<ANIM_LAG>800</ANIM_LAG>
+			<INC_CODE>#GET_DIGIT_VALUE# p0 + 8 % (&gt;B:#INPUT_EVENT_ID_SOURCE#_Transponder_Code_#DIGIT_ID#_Set)</INC_CODE>
+			<!-- have to check for negative modulo value as it can happen in RPN.. -->
+			<DEC_CODE>#GET_DIGIT_VALUE# p0 - 8 % s2 0 &lt; if{ 8 l2 + sp2 } l2 (&gt;B:#INPUT_EVENT_ID_SOURCE#_Transponder_Code_#DIGIT_ID#_Set)</DEC_CODE>
+			<!-- replace digit value using masks -->
+			<SET_PARAM_0>p0 0x#STEP# *</SET_PARAM_0>
+			<SET_PARAM_0_IS_DYNAMIC>True</SET_PARAM_0_IS_DYNAMIC>
+			<!-- isolate and set a digit value -->
+			<SET_STATE_EXTERNAL>(A:TRANSPONDER CODE:1, Bco16) 0x#STEP_MAX_HEX_MASK# 0xFFFF ^ &#38; p0 0x#STEP_MASK# &#38; + (&gt;B:#INPUT_EVENT_ID_SOURCE#_Transponder_Code_Set)</SET_STATE_EXTERNAL>
+		</UseTemplate>
 	</Template>
-
-	<Template Name="ASOBO_Transponder_knob_Setting_Template">
-		<DefaultTemplateParameters>
-			<NODE_ID>TRANSPONDER_Knob#SUFFIX_ID#</NODE_ID>
-			<ANIM_NAME>TRANSPONDER_Knob#SUFFIX_ID#</ANIM_NAME>
+	<Template Name="ASOBO_Transponder_Push_IDT_Template">
+		<Parameters Type="Default">
+			<WWISE_EVENT_1>transponder_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>transponder_push_button_off</WWISE_EVENT_2>
+			<TT_DESCRIPTION_ID>@TT_Package.TRANSPONDER_PUSH_IDT_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.TRANSPONDER_PUSH_IDT_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_NAVCOM_Base_Template">
+			<SET_STATE_EXTERNAL>(A:TRANSPONDER STATE:1, Enum) 0 != if{ (E:SIMULATION TIME, second) 20 + (&gt;I:XMLVAR_IDENT_Shutdown_Time) }</SET_STATE_EXTERNAL>
+			<BTN_ID>Transponder_Identify</BTN_ID>
+			<TT_VALUE>(A:TRANSPONDER STATE:1, Enum) 2 == (E:SIMULATION TIME, second) (I:XMLVAR_IDENT_Shutdown_Time) &lt; or @TT_OnOff_Cond</TT_VALUE>
+			<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_Transponder_Knob_Setting_Template">
+		<Parameters Type="Default">
+			<TYPE>OFF_STBY_ON_ALT_TEST</TYPE>
+			<TRANSPONDER_INDEX>1</TRANSPONDER_INDEX>
+		</Parameters>
+		<Parameters Type="Default">
 			<WWISE_EVENT>transponder_mode_knob</WWISE_EVENT>    
 			<COUNT>4</COUNT>
 			<!-- position on knob is deifferent from enum value by default -->
-			<POS_OFF>0</POS_OFF>
-			<POS_STBY>1</POS_STBY>
-			<POS_TEST>4</POS_TEST>
-			<POS_ON>2</POS_ON>
-			<POS_ALT>3</POS_ALT>
-		</DefaultTemplateParameters>
-		<OverrideTemplateParameters>
+			<Switch Param="TYPE">
+				<Case Value="OFF_STBY_ON_ALT_TEST">
+					<POS_OFF>0</POS_OFF>
+					<POS_STBY>1</POS_STBY>
+					<POS_ON>2</POS_ON>
+					<POS_ALT>3</POS_ALT>
+					<POS_TEST>4</POS_TEST>
+				</Case>
+				<Case Value="OFF_STBY_GRND_ON_ALT">
+					<POS_OFF>0</POS_OFF>
+					<POS_STBY>1</POS_STBY>
+					<POS_GRND>2</POS_GRND>
+					<POS_ON>3</POS_ON>
+					<POS_ALT>4</POS_ALT>
+				</Case>
+			</Switch>
+			<INPUT_EVENT_ID_SOURCE>NAVCOM</INPUT_EVENT_ID_SOURCE>
+		</Parameters>
+		<Parameters Type="Override">
 			<ENUM_VAL_OFF>0</ENUM_VAL_OFF>
 			<ENUM_VAL_STBY>1</ENUM_VAL_STBY>
 			<ENUM_VAL_TEST>2</ENUM_VAL_TEST>
 			<ENUM_VAL_ON>3</ENUM_VAL_ON>
 			<ENUM_VAL_ALT>4</ENUM_VAL_ALT>
-			<SET_TRANSPONDER_STATE>(&gt;A:TRANSPONDER STATE:1, Enum)</SET_TRANSPONDER_STATE>
-			<GET_TRANSPONDER_STATE>(A:TRANSPONDER STATE:1, Enum)</GET_TRANSPONDER_STATE>
-		</OverrideTemplateParameters>
-		
-		<Component ID="#NODE_ID#" Node="#NODE_ID#">
-			<UseTemplate Name="ASOBO_GT_Switch_5States">
-				<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
-				<LEFTARROW>TurnLeft</LEFTARROW>
-				<RIGHTARROW>TurnRight</RIGHTARROW>
-				<CODE_POS_#POS_OFF#>#ENUM_VAL_OFF# #SET_TRANSPONDER_STATE# 0 (&gt;I:XMLVAR_IDENT_Shutdown_Time)</CODE_POS_#POS_OFF#>
-				<CODE_POS_#POS_STBY#>#ENUM_VAL_STBY# #SET_TRANSPONDER_STATE#</CODE_POS_#POS_STBY#>
-				<CODE_POS_#POS_ON#>#ENUM_VAL_ON# #SET_TRANSPONDER_STATE#</CODE_POS_#POS_ON#>
-				<CODE_POS_#POS_ALT#>#ENUM_VAL_ALT# #SET_TRANSPONDER_STATE#</CODE_POS_#POS_ALT#>
-				<CODE_POS_#POS_TEST#>#ENUM_VAL_TEST# #SET_TRANSPONDER_STATE#</CODE_POS_#POS_TEST#>
-				<STATE#POS_OFF#_TEST>#GET_TRANSPONDER_STATE# #ENUM_VAL_OFF# ==</STATE#POS_OFF#_TEST>
-				<STATE#POS_STBY#_TEST>#GET_TRANSPONDER_STATE# #ENUM_VAL_STBY# ==</STATE#POS_STBY#_TEST>
-				<STATE#POS_ON#_TEST>#GET_TRANSPONDER_STATE# #ENUM_VAL_ON# ==</STATE#POS_ON#_TEST>
-				<STATE#POS_ALT#_TEST>#GET_TRANSPONDER_STATE# #ENUM_VAL_ALT# ==</STATE#POS_ALT#_TEST>
-				<STATE#POS_TEST#_TEST>#GET_TRANSPONDER_STATE# #ENUM_VAL_TEST# ==</STATE#POS_TEST#_TEST>
-			</UseTemplate>
-			<PartID>TRANSPONDER_KNOB</PartID>
-		</Component>
+			<ENUM_VAL_GRND>5</ENUM_VAL_GRND>
+			<SET_TRANSPONDER_STATE>(&gt;A:TRANSPONDER STATE:#TRANSPONDER_INDEX#, Enum)</SET_TRANSPONDER_STATE>
+			<GET_TRANSPONDER_STATE>(A:TRANSPONDER STATE:#TRANSPONDER_INDEX#, Enum)</GET_TRANSPONDER_STATE>
+			<SIMVAR_TO_WATCH_0>TRANSPONDER STATE:#TRANSPONDER_INDEX#</SIMVAR_TO_WATCH_0>
+			<KNOB_ID>Transponder_Mode</KNOB_ID>
+			<USE_BTN_IE>True</USE_BTN_IE>
+			<NUM_STATES>5</NUM_STATES>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<TT_DESCRIPTION_ID>@TT_Package.AUDIOPANEL_KNOB_TRANSPONDER_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUDIOPANEL_KNOB_TRANSPONDER_TITLE</TOOLTIP_TITLE>
+			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+			<LEFTARROW>TurnLeft</LEFTARROW>
+			<RIGHTARROW>TurnRight</RIGHTARROW>
+		</Parameters>
+		<UseTemplate Name="ASOBO_NAVCOM_Base_Template">
+			<PART_ID>TRANSPONDER_KNOB</PART_ID>
+			<GET_STATE_EXTERNAL>#GET_TRANSPONDER_STATE# sp0</GET_STATE_EXTERNAL>
+			<Switch Param="TYPE">
+				<Case Value="OFF_STBY_ON_ALT_TEST">
+					<ENUM_VAL_TO_POS_EXTERNAL>
+						l0 #ENUM_VAL_OFF# == if{ #POS_OFF# sp1 g2 }
+						l0 #ENUM_VAL_STBY# == if{ #POS_STBY# sp1 g2 }
+						l0 #ENUM_VAL_ON# == if{ #POS_ON# sp1 g2 }
+						l0 #ENUM_VAL_ALT# == if{ #POS_ALT# sp1 g2 }
+						l0 #ENUM_VAL_TEST# == l0 #ENUM_VAL_GRND# == or if{ #POS_TEST# sp1 g2 }
+						:2 l1
+					</ENUM_VAL_TO_POS_EXTERNAL>
+				</Case>
+				<Case Value="OFF_STBY_GRND_ON_ALT">
+					<ENUM_VAL_TO_POS_EXTERNAL>
+						l0 #ENUM_VAL_OFF# == if{ #POS_OFF# sp1 g2 }
+						l0 #ENUM_VAL_STBY# == if{ #POS_STBY# sp1 g2 }
+						l0 #ENUM_VAL_ON# == if{ #POS_ON# sp1 g2 }
+						l0 #ENUM_VAL_ALT# == if{ #POS_ALT# sp1 g2 }
+						l0 #ENUM_VAL_GRND# == l0 #ENUM_VAL_TEST# == or if{ #POS_GRND# sp1 g2 }
+						:2 l1
+					</ENUM_VAL_TO_POS_EXTERNAL>
+				</Case>
+			</Switch>
+			<!-- OFF -->
+			<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+			<SET_STATE_#POS_OFF#>#ENUM_VAL_OFF# #SET_TRANSPONDER_STATE# 0 (&gt;I:XMLVAR_IDENT_Shutdown_Time)</SET_STATE_#POS_OFF#>
+			<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+			<CODE_POS_#POS_OFF#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Off)</CODE_POS_#POS_OFF#>
+			<STATE#POS_OFF#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#) #POS_OFF# ==</STATE#POS_OFF#_TEST>
+			<!-- STBY -->
+			<TT_VALUE_#POS_STBY#>@TT_Package.GT_STATE_STANDBY</TT_VALUE_#POS_STBY#>
+			<SET_STATE_#POS_STBY#>#ENUM_VAL_STBY# #SET_TRANSPONDER_STATE#</SET_STATE_#POS_STBY#>
+			<STR_STATE_#POS_STBY#>Standby</STR_STATE_#POS_STBY#>
+			<CODE_POS_#POS_STBY#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Standby)</CODE_POS_#POS_STBY#>
+			<STATE#POS_STBY#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#) #POS_STBY# ==</STATE#POS_STBY#_TEST>
+			<!-- ON -->
+			<TT_VALUE_#POS_ON#>@TT_Package.GT_STATE_ON</TT_VALUE_#POS_ON#>
+			<SET_STATE_#POS_ON#>#ENUM_VAL_ON# #SET_TRANSPONDER_STATE#</SET_STATE_#POS_ON#>
+			<STR_STATE_#POS_ON#>On</STR_STATE_#POS_ON#>
+			<CODE_POS_#POS_ON#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_On)</CODE_POS_#POS_ON#>
+			<STATE#POS_ON#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#) #POS_ON# ==</STATE#POS_ON#_TEST>
+			<!-- ALT -->
+			<TT_VALUE_#POS_ALT#>@TT_Package.GT_STATE_ALT</TT_VALUE_#POS_ALT#>
+			<SET_STATE_#POS_ALT#>#ENUM_VAL_ALT# #SET_TRANSPONDER_STATE#</SET_STATE_#POS_ALT#>
+			<STR_STATE_#POS_ALT#>Alt</STR_STATE_#POS_ALT#>
+			<CODE_POS_#POS_ALT#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Alt)</CODE_POS_#POS_ALT#>
+			<STATE#POS_ALT#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#) #POS_ALT# ==</STATE#POS_ALT#_TEST>
+			<Switch Param="TYPE">
+				<Case Value="OFF_STBY_ON_ALT_TEST">
+					<!-- TEST -->
+					<TT_VALUE_#POS_TEST#>@TT_Package.GT_STATE_TEST</TT_VALUE_#POS_TEST#>
+					<SET_STATE_#POS_TEST#>#ENUM_VAL_TEST# #SET_TRANSPONDER_STATE#</SET_STATE_#POS_TEST#>
+					<STR_STATE_#POS_TEST#>Test</STR_STATE_#POS_TEST#>
+					<CODE_POS_#POS_TEST#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Test)</CODE_POS_#POS_TEST#>
+					<STATE#POS_TEST#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#) #POS_TEST# ==</STATE#POS_TEST#_TEST>
+				</Case>
+				<Case Value="OFF_STBY_GRND_ON_ALT">
+					<!-- GRND -->
+					<TT_VALUE_#POS_GRND#>@TT_Package.GT_STATE_GROUND</TT_VALUE_#POS_GRND#>
+					<SET_STATE_#POS_GRND#>#ENUM_VAL_GRND# #SET_TRANSPONDER_STATE#</SET_STATE_#POS_GRND#>
+					<STR_STATE_#POS_GRND#>Ground</STR_STATE_#POS_GRND#>
+					<CODE_POS_#POS_GRND#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Ground)</CODE_POS_#POS_GRND#>
+					<STATE#POS_GRND#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#) #POS_GRND# ==</STATE#POS_GRND#_TEST>
+				</Case>
+			</Switch>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_Transponder_Push_ID_Template">
+		<Parameters Type="Default">
+			<EMISSIVE_POTENTIOMETER>1</EMISSIVE_POTENTIOMETER>
+			<BUTTON_EMISSIVE_FACTOR>1</BUTTON_EMISSIVE_FACTOR>
+			<WWISE_EVENT_1>transponder_push_button_on</WWISE_EVENT_1>
+			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>			
+			<WWISE_EVENT_2>transponder_push_button_off</WWISE_EVENT_2>
+			<NORMALIZED_TIME_2>0.1</NORMALIZED_TIME_2>
+			<PART_ID>TRANSPONDER_Push_#ID#</PART_ID>
+			<EVENT_PUSH>Transponder#ID#</EVENT_PUSH>
+		</Parameters>
+		<UseTemplate Name="ASOBO_NAVCOM_Base_Template">
+			<BTN_ID>Transponder_#ID#</BTN_ID>
+			<SET_STATE_EXTERNAL>p0 if{ (&gt;H:#EVENT_PUSH#) }</SET_STATE_EXTERNAL>
+			<EMISSIVE_CODE>(A:CIRCUIT GENERAL PANEL ON, Bool) (A:LIGHT POTENTIOMETER:#EMISSIVE_POTENTIOMETER#, percent over 100) * #BUTTON_EMISSIVE_FACTOR# *</EMISSIVE_CODE>
+		</UseTemplate>
 	</Template>
 </ModelBehaviors>

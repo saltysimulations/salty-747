@@ -1,0 +1,68 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="Asobo\Generic.xml"/>
+
+
+	<Template Name="ASOBO_ASVigilus_Template">
+	<DefaultTemplateParameters>
+		<NODE_ID_KNOB>ENGINE_MONITOR_KNOB_SELECT_#ID#</NODE_ID_KNOB>
+		<NODE_ID_KNOB_PUSH>ENGINE_MONITOR_KNOB_SELECT_PUSH_#ID#</NODE_ID_KNOB_PUSH>
+		<NODE_ID_PUSH_LEFT>ENGINE_MONITOR_PUSH_LEFT_#ID#</NODE_ID_PUSH_LEFT>
+		<NODE_ID_PUSH_RIGHT>ENGINE_MONITOR_PUSH_RIGHT_#ID#</NODE_ID_PUSH_RIGHT>
+		<NODE_ID_SCREEN>ENGINE_MONITOR_Screen_#ID#</NODE_ID_SCREEN>
+	</DefaultTemplateParameters>
+	
+	<Component ID="ASOBO_ASVIGILUS">
+	
+		<Component ID="#NODE_ID_KNOB#" Node="#NODE_ID_KNOB#">
+			<!--<UseInputEvent ID="INSTRUMENT"/>-->
+			<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
+				<CLOCKWISE_CONDITION> 10 </CLOCKWISE_CONDITION>
+				<ANTICLOCKWISE_CONDITION> 10 </ANTICLOCKWISE_CONDITION>
+				<ANIM_NAME_KNOB>#NODE_ID_KNOB#</ANIM_NAME_KNOB>
+				<ANIM_NAME_PUSH>#NODE_ID_KNOB_PUSH#</ANIM_NAME_PUSH>
+				<CLOCKWISE_CODE_DEFAULT_IM>(&gt;H:ASVigilus_knob_Inc)</CLOCKWISE_CODE_DEFAULT_IM>
+				<ANTICLOCKWISE_CODE_DEFAULT_IM>(&gt;H:ASVigilus_knob_Dec)</ANTICLOCKWISE_CODE_DEFAULT_IM>
+				<CLOCKWISE_CODE_DRAG_IM>(&gt;H:ASVigilus_knob_Inc)</CLOCKWISE_CODE_DRAG_IM>
+				<ANTICLOCKWISE_CODE_DRAG_IM>(&gt;H:ASVigilus_knob_Dec)</ANTICLOCKWISE_CODE_DRAG_IM>
+				<LEFT_SINGLE_CODE>(&gt;H:ASVigilus_knob_Push) </LEFT_SINGLE_CODE>
+			</UseTemplate>
+		</Component>
+		
+		<Component ID="#NODE_ID_PUSH_LEFT#" Node="#NODE_ID_PUSH_LEFT#">
+		  <UseTemplate Name="ASOBO_GT_Push_Button">
+			<ANIM_NAME>#NODE_ID_PUSH_LEFT#</ANIM_NAME>
+			<LEFT_SINGLE_CODE>(&gt;H:ASVigilus_push_left)</LEFT_SINGLE_CODE>
+		  </UseTemplate>
+		</Component>
+		
+		<Component ID="#NODE_ID_PUSH_RIGHT#" Node="#NODE_ID_PUSH_RIGHT#">
+		  <UseTemplate Name="ASOBO_GT_Push_Button">
+			<ANIM_NAME>#NODE_ID_PUSH_RIGHT#</ANIM_NAME>
+			<LEFT_SINGLE_CODE>(&gt;H:ASVigilus_push_right)</LEFT_SINGLE_CODE>
+		  </UseTemplate>
+		</Component>
+		
+		
+		<Component ID="#NODE_ID_SCREEN#" Node="#NODE_ID_SCREEN#">
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(L:ASVigilus_Brightness, number)</EMISSIVE_CODE>
+				<NODE_ID>EngineMotor</NODE_ID>
+			</UseTemplate>
+		</Component>
+		<!--<Component ID="#NODE_ID_KNOB_PUSH#" Node="#NODE_ID_KNOB_PUSH#">
+			<UseTemplate Name="ASOBO_GT_Knob_Infinite_PUSH">
+				<ANIM_NAME_PUSH>#NODE_ID_KNOB_PUSH#</ANIM_NAME_PUSH>
+				<CLOCKWISE_CODE_DEFAULT_IM>1 (&gt;H:ASVigilus_knob_Inc)</CLOCKWISE_CODE_DEFAULT_IM>
+				<ANTICLOCKWISE_CODE_DEFAULT_IM>1 (&gt;H:ASVigilus_knob_Dec)</ANTICLOCKWISE_CODE_DEFAULT_IM>
+				<CLOCKWISE_CODE_DRAG_IM>1 (&gt;H:ASVigilus_knob_Inc)</CLOCKWISE_CODE_DRAG_IM>
+				<ANTICLOCKWISE_CODE_DRAG_IM>1 (&gt;H:ASVigilus_knob_Dec)</ANTICLOCKWISE_CODE_DRAG_IM>
+			</UseTemplate>
+		</Component>-->
+		
+		
+		
+	</Component>
+</Template>
+	
+</ModelBehaviors>
+	

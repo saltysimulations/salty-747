@@ -72,7 +72,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             RegisterViewListener("JS_LISTENER_FACILITY", () => {
                 console.log("JS_LISTENER_FACILITY registered.");
                 this._registered = true;
-            });
+            }, true);
         });
     }
     Init() {
@@ -87,6 +87,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.onDepArr = () => { B747_8_FMC_DepArrIndexPage.ShowPage1(this); };
         this.onRad = () => { B747_8_FMC_NavRadioPage.ShowPage(this); };
         this.onVNAV = () => { B747_8_FMC_VNAVPage.ShowPage1(this); };
+        this.onMenu = () => { FMCMainDisplayPages.MenuPage(this); };
         this.onProg = () => { B747_8_FMC_ProgPage.ShowPage1(this); };
         FMCIdentPage.ShowPage1(this);
     }
@@ -98,10 +99,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
-        if (this.refreshPageCallback && this._lastActiveWP != this.currFlightPlanManager.getActiveWaypointIndex() || this._wasApproachActive != this.currFlightPlanManager.isActiveApproach()) {
+        if (this._lastActiveWP != this.currFlightPlanManager.getActiveWaypointIndex() || this._wasApproachActive != this.currFlightPlanManager.isActiveApproach()) {
             this._lastActiveWP = this.currFlightPlanManager.getActiveWaypointIndex();
             this._wasApproachActive = this.currFlightPlanManager.isActiveApproach();
-            this.refreshPageCallback();
+            if (this.refreshPageCallback) {
+                this.refreshPageCallback();
+            }
         }
         this.updateAutopilot();
     }
@@ -196,7 +199,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         SimVar.SetSimVarValue("L:AIRLINER_V1_SPEED", "Knots", this.v1Speed);
         console.log("Computed V1Speed = " + this.v1Speed);
     }
-    _computeVRSpeed() {
+    _getComputedVRSpeed() {
         let runwayCoef = 1.0;
         {
             let runway = this.flightPlanManager.getDepartureRunway();
@@ -215,13 +218,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let flapsHandleIndex = Simplane.getFlapsHandleIndex();
         let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         let index = this._getIndexFromTemp(temp);
-        console.log("Index From Temp = " + index);
         let min = B747_8_FMC_MainDisplay._vRs[index][0];
         let max = B747_8_FMC_MainDisplay._vRs[index][1];
-        this.vRSpeed = min * (1 - runwayCoef) + max * runwayCoef;
-        this.vRSpeed *= dWeightCoeff;
-        this.vRSpeed -= (flapsHandleIndex - 3) * 11;
-        this.vRSpeed = Math.round(this.vRSpeed);
+        let vRSpeed = min * (1 - runwayCoef) + max * runwayCoef;
+        vRSpeed *= dWeightCoeff;
+        vRSpeed -= (flapsHandleIndex - 3) * 11;
+        vRSpeed = Math.round(vRSpeed);
+        return vRSpeed;
+    }
+    _computeVRSpeed() {
+        this.vRSpeed = this._getComputedVRSpeed();
         SimVar.SetSimVarValue("L:AIRLINER_VR_SPEED", "Knots", this.vRSpeed);
         console.log("Computed VRSpeed = " + this.vRSpeed);
     }
@@ -261,10 +267,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     getSlatTakeOffSpeed() {
         let dWeight = (this.getWeight(true) - 500) / (900 - 500);
         return 183 + 40 * dWeight;
-    }
-    getCleanTakeOffSpeed() {
-        let dWeight = (this.getWeight(true) - 500) / (900 - 500);
-        return 204 + 40 * dWeight;
     }
     getClbManagedSpeed() {
         let dCI = this.getCostIndexFactor();
@@ -460,7 +462,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.updateAutopilotCooldown = -1;
         }
         if (this.updateAutopilotCooldown < 0) {
-            let currentApMasterStatus = SimVar.GetSimVarValue("AUTOPILOT MASTER", "boolean");
+            let currentApMasterStatus = Simplane.getAutoPilotActive();
             if (currentApMasterStatus != this._apMasterStatus) {
                 this._apMasterStatus = currentApMasterStatus;
                 this._forceNextAltitudeUpdate = true;
@@ -514,7 +516,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this.doActivateVNAV();
                 }
             }
-            if (currentApMasterStatus && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
+            if (currentApMasterStatus && Simplane.getAPVNAVActive() === 1) {
                 let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
                 let deltaAltitude = Math.abs(targetAltitude - altitude);
@@ -574,7 +576,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             let groundSpeed = Simplane.getGroundSpeed();
             let apTargetAltitude = Simplane.getAutoPilotAltitudeLockValue("feet");
             let planeHeading = Simplane.getHeadingMagnetic();
-            let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
+            let planeCoordinates = new LatLong(Simplane.getCurrentLat(), Simplane.getCurrentLon());
             if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_CLIMB) {
                 let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
                 if (activeWaypoint != this._activeWaypoint) {
@@ -733,7 +735,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
-                if (this.getIsVNAVActive()) {
+                if (this.getIsVNAVActive() || Simplane.getAutoPilotGlideslopeActive()) {
                     let speed = this.getManagedApproachSpeed();
                     this.setAPManagedSpeed(speed, Aircraft.B747_8);
                 }

@@ -38,7 +38,11 @@
 			VISIBILITY_CODE
 	-->
 	<Template Name = "ASOBO_GT_Visibility_Code">
-		<Visibility>
+		<DefaultTemplateParameters>
+			<ONCE>False</ONCE>
+		</DefaultTemplateParameters>
+		
+		<Visibility Once="#ONCE#">
 			<Parameter>
 				<Code>#VISIBILITY_CODE#</Code>
 			</Parameter>

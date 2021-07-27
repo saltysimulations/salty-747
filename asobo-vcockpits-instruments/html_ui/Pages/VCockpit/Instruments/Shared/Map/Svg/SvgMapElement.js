@@ -58,7 +58,6 @@ class SvgMapElement {
                 map.appendChild(this, this.svgElement);
             }
         }
-        this.svgElement.removeAttribute("display");
         this.updateDraw(map);
         if (SvgMap.LOG_PERFS) {
             let t = performance.now() - t0;
@@ -81,7 +80,7 @@ class SvgMapElement {
     static logPerformances() {
         console.log("-----------------------------------------------");
         SvgMapElement.probes.forEach((probe, name) => {
-            console.log("class " + SvgMapElement.padEnd(name, " ", 40) + " mean " + probe.mean.toFixed(3) + " ms | recentMax " + probe.recentMax.toFixed(3) + " ms | max " + probe.max.toFixed(3) + " ms");
+            console.log("class " + SvgMapElement.padEnd(name, " ", 40) + " mean " + fastToFixed(probe.mean, 3) + " ms | recentMax " + fastToFixed(probe.recentMax, 3) + " ms | max " + fastToFixed(probe.max, 3) + " ms");
             probe.recentMax = 0;
         });
         console.log("-----------------------------------------------");

@@ -22,57 +22,57 @@ class SvgFlightPlanElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         if (map.config.flightPlanNonActiveLegStrokeWidth > 0) {
             this._outlinePath = document.createElementNS(Avionics.SVG.NS, "path");
-            this._outlinePath.setAttribute("stroke", map.config.flightPlanNonActiveLegStrokeColor);
-            this._outlinePath.setAttribute("fill", "none");
+            diffAndSetAttribute(this._outlinePath, "stroke", map.config.flightPlanNonActiveLegStrokeColor);
+            diffAndSetAttribute(this._outlinePath, "fill", "none");
             let outlinePathWidth = fastToFixed((map.config.flightPlanNonActiveLegStrokeWidth / map.overdrawFactor + map.config.flightPlanNonActiveLegWidth / map.overdrawFactor), 0);
-            this._outlinePath.setAttribute("stroke-width", outlinePathWidth);
-            this._outlinePath.setAttribute("stroke-linecap", "square");
+            diffAndSetAttribute(this._outlinePath, "stroke-width", outlinePathWidth);
+            diffAndSetAttribute(this._outlinePath, "stroke-linecap", "square");
             container.appendChild(this._outlinePath);
             this._outlineActive = document.createElementNS(Avionics.SVG.NS, "path");
-            this._outlineActive.setAttribute("stroke", map.config.flightPlanActiveLegStrokeColor);
-            this._outlineActive.setAttribute("fill", "none");
+            diffAndSetAttribute(this._outlineActive, "stroke", map.config.flightPlanActiveLegStrokeColor);
+            diffAndSetAttribute(this._outlineActive, "fill", "none");
             let outlineActiveWidth = fastToFixed((map.config.flightPlanActiveLegStrokeWidth / map.overdrawFactor + map.config.flightPlanActiveLegWidth / map.overdrawFactor), 0);
-            this._outlineActive.setAttribute("stroke-width", outlineActiveWidth);
-            this._outlineActive.setAttribute("stroke-linecap", "square");
+            diffAndSetAttribute(this._outlineActive, "stroke-width", outlineActiveWidth);
+            diffAndSetAttribute(this._outlineActive, "stroke-linecap", "square");
             container.appendChild(this._outlineActive);
             this._transitionOutlinePath = document.createElementNS(Avionics.SVG.NS, "path");
-            this._transitionOutlinePath.setAttribute("stroke", map.config.flightPlanNonActiveLegStrokeColor);
-            this._transitionOutlinePath.setAttribute("fill", "none");
-            this._transitionOutlinePath.setAttribute("stroke-width", outlinePathWidth);
-            this._transitionOutlinePath.setAttribute("stroke-linecap", "square");
+            diffAndSetAttribute(this._transitionOutlinePath, "stroke", map.config.flightPlanNonActiveLegStrokeColor);
+            diffAndSetAttribute(this._transitionOutlinePath, "fill", "none");
+            diffAndSetAttribute(this._transitionOutlinePath, "stroke-width", outlinePathWidth);
+            diffAndSetAttribute(this._transitionOutlinePath, "stroke-linecap", "square");
             container.appendChild(this._transitionOutlinePath);
         }
         this._colorPath = document.createElementNS(Avionics.SVG.NS, "path");
-        this._colorPath.setAttribute("stroke", map.config.flightPlanNonActiveLegColor);
-        this._colorPath.setAttribute("fill", "none");
+        diffAndSetAttribute(this._colorPath, "stroke", map.config.flightPlanNonActiveLegColor);
+        diffAndSetAttribute(this._colorPath, "fill", "none");
         if (this.flightPlanIndex === 1) {
-            this._colorPath.setAttribute("stroke", "yellow");
+            diffAndSetAttribute(this._colorPath, "stroke", "yellow");
         }
         let colorPathWidth = fastToFixed(map.config.flightPlanNonActiveLegWidth / map.overdrawFactor, 0);
-        this._colorPath.setAttribute("stroke-width", colorPathWidth);
-        this._colorPath.setAttribute("stroke-linecap", "square");
+        diffAndSetAttribute(this._colorPath, "stroke-width", colorPathWidth);
+        diffAndSetAttribute(this._colorPath, "stroke-linecap", "square");
         container.appendChild(this._colorPath);
         this._colorActive = document.createElementNS(Avionics.SVG.NS, "path");
-        this._colorActive.setAttribute("stroke", map.config.flightPlanActiveLegColor);
-        this._colorActive.setAttribute("fill", "none");
+        diffAndSetAttribute(this._colorActive, "stroke", map.config.flightPlanActiveLegColor);
+        diffAndSetAttribute(this._colorActive, "fill", "none");
         if (this.flightPlanIndex === 1) {
-            this._colorActive.setAttribute("stroke", "yellow");
+            diffAndSetAttribute(this._colorActive, "stroke", "yellow");
         }
         let colorActiveWidth = fastToFixed(map.config.flightPlanActiveLegWidth / map.overdrawFactor, 0);
-        this._colorActive.setAttribute("stroke-width", colorActiveWidth);
-        this._colorActive.setAttribute("stroke-linecap", "square");
+        diffAndSetAttribute(this._colorActive, "stroke-width", colorActiveWidth);
+        diffAndSetAttribute(this._colorActive, "stroke-linecap", "square");
         container.appendChild(this._colorActive);
         this._transitionPath = document.createElementNS(Avionics.SVG.NS, "path");
-        this._transitionPath.setAttribute("stroke", map.config.flightPlanNonActiveLegColor);
-        this._transitionPath.setAttribute("fill", "none");
+        diffAndSetAttribute(this._transitionPath, "stroke", map.config.flightPlanNonActiveLegColor);
+        diffAndSetAttribute(this._transitionPath, "fill", "none");
         if (this.flightPlanIndex === 1) {
-            this._transitionPath.setAttribute("stroke", "yellow");
+            diffAndSetAttribute(this._transitionPath, "stroke", "yellow");
         }
-        this._transitionPath.setAttribute("stroke-width", colorPathWidth);
-        this._transitionPath.setAttribute("stroke-linecap", "square");
+        diffAndSetAttribute(this._transitionPath, "stroke-width", colorPathWidth);
+        diffAndSetAttribute(this._transitionPath, "stroke-linecap", "square");
         container.appendChild(this._transitionPath);
         this.setAsDashed(this._isDashed, true);
         return container;
@@ -184,6 +184,20 @@ class SvgFlightPlanElement extends SvgMapElement {
                             }
                         }
                         wpPoints.push(waypoint.infos.coordinates.toLatLong());
+                        if (waypoint === this.source.getDestination() && this.source.getApproachIndex() === -1 && this.source.getArrivalRunwayIndex() != -1) {
+                            let infos = this.source.getDestination().infos;
+                            if (infos instanceof AirportInfo) {
+                                let runways = infos.unsortedOneWayRunways;
+                                if (runways) {
+                                    let runway = runways[this.source.getArrivalRunwayIndex()];
+                                    if (runway) {
+                                        wpPoints.pop();
+                                        wpPoints.push(runway.beginningCoordinates.toLatLong());
+                                        wpPoints.push(runway.endCoordinates.toLatLong());
+                                    }
+                                }
+                            }
+                        }
                         for (let j = 0; j < wpPoints.length; j++) {
                             this.latLong = wpPoints[j];
                             if (departureRunwayCase && i === 0) {
@@ -296,6 +310,21 @@ class SvgFlightPlanElement extends SvgMapElement {
                 }
             }
         }
+        if (this.points.length === 4) {
+            if (!this.source.getIsDirectTo()) {
+                if (this.source.getWaypoints().length <= 3) {
+                    let atcTimeClimbLLA = this.source.getAtcTimeClimbLLA();
+                    if (atcTimeClimbLLA) {
+                        let p = map.coordinatesToXY(atcTimeClimbLLA);
+                        p.refWP = undefined;
+                        p.refWPIndex = 1;
+                        if (isFinite(p.x) && isFinite(p.y)) {
+                            this.points.splice(1, 0, p);
+                        }
+                    }
+                }
+            }
+        }
         let logWPIndex = false;
         if (logWPIndex) {
             let indexes = "";
@@ -312,8 +341,7 @@ class SvgFlightPlanElement extends SvgMapElement {
                     let pPrev = this.points[i - 1];
                     let p = this.points[i];
                     let pNext = this.points[i + 1];
-                    if ((pPrev.x == p.x && pPrev.y == p.y) || (pNext.x == p.x && pNext.y == p.y)) {
-                        beveledPoints.push(p);
+                    if (Math.abs(pPrev.x - p.x) < 3 && Math.abs(pPrev.y - p.y) < 3) {
                         continue;
                     }
                     let xPrev = pPrev.x - p.x;
@@ -327,23 +355,32 @@ class SvgFlightPlanElement extends SvgMapElement {
                     xNext /= dNext;
                     yNext /= dNext;
                     let b = Math.min(dPrev / 3, dNext / 3, bevelAmount);
-                    let dot = Math.abs(xPrev * xNext + yPrev * yNext) / (dPrev / dNext);
+                    let dot = Math.abs(xPrev * xNext + yPrev * yNext);
                     if (Math.abs(dot) > 0.99) {
-                        b = 10;
+                        b = Math.min(b, 10);
                     }
                     let refWPIndex = p.refWPIndex + (((bevels === 1) && (i % 2 === 0)) ? 1 : 0);
                     let refWP = (((bevels === 1) && (i % 2 === 0)) ? pNext.refWP : p.refWP);
-                    beveledPoints.push({
+                    let bp1 = {
                         x: p.x + xPrev * b,
                         y: p.y + yPrev * b,
                         refWP: refWP,
                         refWPIndex: refWPIndex
-                    }, {
+                    };
+                    let bp2 = {
                         x: p.x + xNext * b,
                         y: p.y + yNext * b,
                         refWP: refWP,
                         refWPIndex: refWPIndex
-                    });
+                    };
+                    let last = beveledPoints[beveledPoints.length - 1];
+                    if (Math.abs(last.x - bp1.x) > 1 || Math.abs(last.y - bp1.y) > 1) {
+                        beveledPoints.push(bp1);
+                    }
+                    last = beveledPoints[beveledPoints.length - 1];
+                    if (Math.abs(last.x - bp2.x) > 1 || Math.abs(last.y - bp2.y) > 1) {
+                        beveledPoints.push(bp2);
+                    }
                 }
                 beveledPoints.push(this.points[this.points.length - 1]);
                 this.points = beveledPoints;
@@ -461,37 +498,37 @@ class SvgFlightPlanElement extends SvgMapElement {
         }
         if (showActiveLeg) {
             if (this._colorActive) {
-                this._colorActive.setAttribute("display", "visible");
+                diffAndSetAttribute(this._colorActive, "display", "visible");
             }
             if (this._outlineActive) {
-                this._outlineActive.setAttribute("display", "visible");
+                diffAndSetAttribute(this._outlineActive, "display", "visible");
             }
             if (this._outlineActive) {
-                this._outlineActive.setAttribute("d", activePath);
+                diffAndSetAttribute(this._outlineActive, "d", activePath);
             }
             if (this._colorActive) {
-                this._colorActive.setAttribute("d", activePath);
+                diffAndSetAttribute(this._colorActive, "d", activePath);
             }
         }
         else {
             if (this._colorActive) {
-                this._colorActive.setAttribute("display", "none");
+                diffAndSetAttribute(this._colorActive, "display", "none");
             }
             if (this._outlineActive) {
-                this._outlineActive.setAttribute("display", "none");
+                diffAndSetAttribute(this._outlineActive, "display", "none");
             }
         }
         if (this._colorPath) {
-            this._colorPath.setAttribute("d", standardPath);
+            diffAndSetAttribute(this._colorPath, "d", standardPath);
         }
         if (this._outlinePath) {
-            this._outlinePath.setAttribute("d", standardPath);
+            diffAndSetAttribute(this._outlinePath, "d", standardPath);
         }
         if (this._transitionPath) {
-            this._transitionPath.setAttribute("d", transitionPath);
+            diffAndSetAttribute(this._transitionPath, "d", transitionPath);
         }
         if (this._transitionOutlinePath) {
-            this._transitionOutlinePath.setAttribute("d", transitionPath);
+            diffAndSetAttribute(this._transitionOutlinePath, "d", transitionPath);
         }
     }
     setAsDashed(_val, _force = false) {
@@ -502,15 +539,15 @@ class SvgFlightPlanElement extends SvgMapElement {
                     let length = 14;
                     let spacing = 8;
                     this._colorPath.removeAttribute("stroke-linecap");
-                    this._colorPath.setAttribute("stroke-dasharray", length + " " + spacing);
+                    diffAndSetAttribute(this._colorPath, "stroke-dasharray", length + " " + spacing);
                     this._colorActive.removeAttribute("stroke-linecap");
-                    this._colorActive.setAttribute("stroke-dasharray", length + " " + spacing);
+                    diffAndSetAttribute(this._colorActive, "stroke-dasharray", length + " " + spacing);
                 }
                 else {
                     this._colorPath.removeAttribute("stroke-dasharray");
-                    this._colorPath.setAttribute("stroke-linecap", "square");
+                    diffAndSetAttribute(this._colorPath, "stroke-linecap", "square");
                     this._colorActive.removeAttribute("stroke-dasharray");
-                    this._colorActive.setAttribute("stroke-linecap", "square");
+                    diffAndSetAttribute(this._colorActive, "stroke-linecap", "square");
                 }
             }
         }
@@ -583,20 +620,20 @@ class SvgBackOnTrackElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         if (map.config.flightPlanDirectLegStrokeWidth > 0) {
             this._outlineLine = document.createElementNS(Avionics.SVG.NS, "line");
-            this._outlineLine.setAttribute("stroke", this.overrideColor != "" ? this.overrideColor : map.config.flightPlanDirectLegStrokeColor);
+            diffAndSetAttribute(this._outlineLine, "stroke", this.overrideColor != "" ? this.overrideColor : map.config.flightPlanDirectLegStrokeColor);
             let outlineDirectLegWidth = fastToFixed((map.config.flightPlanDirectLegStrokeWidth / map.overdrawFactor + map.config.flightPlanDirectLegWidth), 0);
-            this._outlineLine.setAttribute("stroke-width", outlineDirectLegWidth);
-            this._outlineLine.setAttribute("stroke-linecap", "square");
+            diffAndSetAttribute(this._outlineLine, "stroke-width", outlineDirectLegWidth);
+            diffAndSetAttribute(this._outlineLine, "stroke-linecap", "square");
             container.appendChild(this._outlineLine);
         }
         this._colorLine = document.createElementNS(Avionics.SVG.NS, "line");
-        this._colorLine.setAttribute("stroke", this.overrideColor != "" ? this.overrideColor : map.config.flightPlanDirectLegColor);
+        diffAndSetAttribute(this._colorLine, "stroke", this.overrideColor != "" ? this.overrideColor : map.config.flightPlanDirectLegColor);
         let colorDirectLegWidth = fastToFixed(map.config.flightPlanDirectLegWidth / map.overdrawFactor, 0);
-        this._colorLine.setAttribute("stroke-width", colorDirectLegWidth);
-        this._colorLine.setAttribute("stroke-linecap", "square");
+        diffAndSetAttribute(this._colorLine, "stroke-width", colorDirectLegWidth);
+        diffAndSetAttribute(this._colorLine, "stroke-linecap", "square");
         container.appendChild(this._colorLine);
         return container;
     }
@@ -618,15 +655,15 @@ class SvgBackOnTrackElement extends SvgMapElement {
         p1.y += dy * 5;
         p2.x -= dx * 5;
         p2.y -= dy * 5;
-        this._colorLine.setAttribute("x1", fastToFixed(p1.x, 0));
-        this._colorLine.setAttribute("y1", fastToFixed(p1.y, 0));
-        this._colorLine.setAttribute("x2", fastToFixed(p2.x, 0));
-        this._colorLine.setAttribute("y2", fastToFixed(p2.y, 0));
+        diffAndSetAttribute(this._colorLine, "x1", fastToFixed(p1.x, 0));
+        diffAndSetAttribute(this._colorLine, "y1", fastToFixed(p1.y, 0));
+        diffAndSetAttribute(this._colorLine, "x2", fastToFixed(p2.x, 0));
+        diffAndSetAttribute(this._colorLine, "y2", fastToFixed(p2.y, 0));
         if (this._outlineLine) {
-            this._outlineLine.setAttribute("x1", fastToFixed(p1.x, 0));
-            this._outlineLine.setAttribute("y1", fastToFixed(p1.y, 0));
-            this._outlineLine.setAttribute("x2", fastToFixed(p2.x, 0));
-            this._outlineLine.setAttribute("y2", fastToFixed(p2.y, 0));
+            diffAndSetAttribute(this._outlineLine, "x1", fastToFixed(p1.x, 0));
+            diffAndSetAttribute(this._outlineLine, "y1", fastToFixed(p1.y, 0));
+            diffAndSetAttribute(this._outlineLine, "x2", fastToFixed(p2.x, 0));
+            diffAndSetAttribute(this._outlineLine, "y2", fastToFixed(p2.y, 0));
         }
     }
 }
@@ -684,12 +721,20 @@ class SvgDirectToElement extends SvgMapElement {
         let dx = p2.x - p1.x;
         let dy = p2.y - p1.y;
         let d = Math.sqrt(dx * dx + dy * dy);
-        dx /= d;
-        dy /= d;
-        p1.x += dx * 5;
-        p1.y += dy * 5;
-        p2.x -= dx * 5;
-        p2.y -= dy * 5;
+        if (d === 0) {
+            p1.x = -10000;
+            p1.y = -10000;
+            p2.x = -10000;
+            p2.y = -10000;
+        }
+        else {
+            dx /= d;
+            dy /= d;
+            p1.x += dx * 5;
+            p1.y += dy * 5;
+            p2.x -= dx * 5;
+            p2.y -= dy * 5;
+        }
         this._colorLine.setAttribute("x1", fastToFixed(p1.x, 0));
         this._colorLine.setAttribute("y1", fastToFixed(p1.y, 0));
         this._colorLine.setAttribute("x2", fastToFixed(p2.x, 0));
@@ -715,11 +760,11 @@ class SvgApproachFlightPlanDebugElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         this._path = document.createElementNS(Avionics.SVG.NS, "path");
-        this._path.setAttribute("stroke", "red");
-        this._path.setAttribute("stroke-width", "4");
-        this._path.setAttribute("fill", "none");
+        diffAndSetAttribute(this._path, "stroke", "red");
+        diffAndSetAttribute(this._path, "stroke-width", "4");
+        diffAndSetAttribute(this._path, "fill", "none");
         container.appendChild(this._path);
         return container;
     }
@@ -739,14 +784,14 @@ class SvgApproachFlightPlanDebugElement extends SvgMapElement {
                     let lla = wpPoints[j];
                     let xy = map.coordinatesToXY(lla);
                     if (i === 0 && j === 0) {
-                        d += "M" + xy.x.toFixed(0) + " " + xy.y.toFixed(0) + " ";
+                        d += "M" + fastToFixed(xy.x, 0) + " " + fastToFixed(xy.y, 0) + " ";
                     }
                     else {
-                        d += "L" + xy.x.toFixed(0) + " " + xy.y.toFixed(0) + " ";
+                        d += "L" + fastToFixed(xy.x, 0) + " " + fastToFixed(xy.y, 0) + " ";
                     }
                 }
             }
-            this._path.setAttribute("d", d);
+            diffAndSetAttribute(this._path, "d", d);
         }
     }
 }

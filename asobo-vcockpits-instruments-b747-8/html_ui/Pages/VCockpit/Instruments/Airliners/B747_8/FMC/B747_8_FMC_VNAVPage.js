@@ -15,11 +15,11 @@ class B747_8_FMC_VNAVPage {
         let speedTransCell = "---";
         let speed = fmc.getCrzManagedSpeed();
         if (isFinite(speed)) {
-            speedTransCell = speed.toFixed(0);
+            speedTransCell = fastToFixed(speed, 0);
         }
         speedTransCell += "/";
         if (isFinite(fmc.transitionAltitude)) {
-            speedTransCell += fmc.transitionAltitude.toFixed(0);
+            speedTransCell += fastToFixed(fmc.transitionAltitude, 0);
         }
         else {
             speedTransCell += "-----";
@@ -57,7 +57,7 @@ class B747_8_FMC_VNAVPage {
         let n1Cell = "--%";
         let n1Value = fmc.getThrustClimbLimit();
         if (isFinite(n1Value)) {
-            n1Cell = n1Value.toFixed(1) + "%";
+            n1Cell = fastToFixed(n1Value, 1) + "%";
         }
         fmc.setTemplate([
             ["CRZ", "2", "3"],
@@ -82,7 +82,7 @@ class B747_8_FMC_VNAVPage {
         let speedTransCell = "---";
         let speed = fmc.getDesManagedSpeed();
         if (isFinite(speed)) {
-            speedTransCell = speed.toFixed(0);
+            speedTransCell = fastToFixed(speed, 0);
         }
         speedTransCell += "/10000";
         fmc.setTemplate([

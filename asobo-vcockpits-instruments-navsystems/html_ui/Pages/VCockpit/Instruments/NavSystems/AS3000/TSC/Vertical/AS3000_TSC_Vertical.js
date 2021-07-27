@@ -16,13 +16,11 @@ class AS3000_TSC_Vertical extends AS3000_TSC {
         if (!_fromPopUp) {
             this.middleKnobText_Save = _text;
         }
-        if (this.middleKnobText.innerHTML != _text) {
-            this.middleKnobText.innerHTML = _text;
-        }
+        diffAndSetHTML(this.middleKnobText, _text);
     }
     rollBackKnobTexts() {
         super.rollBackKnobTexts();
-        this.middleKnobText.innerHTML = this.middleKnobText_Save;
+        diffAndSetHTML(this.middleKnobText, this.middleKnobText_Save);
     }
     parseXMLConfig() {
         super.parseXMLConfig();

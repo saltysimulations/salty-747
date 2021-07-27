@@ -20,11 +20,11 @@
                         <glasscockpit-airspeed-indicator id="Airspeed" NoColor="True"></glasscockpit-airspeed-indicator>
                         <glasscockpit-horizontal-compass id="Compass"></glasscockpit-horizontal-compass>
                         <glasscockpit-cdi id="CDI"></glasscockpit-cdi>
-                        <glasscockpit-attitude-indicator id="Horizon" background="False"></glasscockpit-attitude-indicator>
+                        <glasscockpit-attitude-indicator id="Horizon" background="false"></glasscockpit-attitude-indicator>
                     </div>
                     <div id="Map" class="page">
                         <div id="Map_Elements">
-                            <map-instrument id="MapInstrument" bing-id="MFD" config-path="/Pages/VCockpit/Instruments/NavSystems/AS1000/MFD/" show-flightplan="true" hide-flightplan-if-bushtrip="true"></map-instrument>
+                            <map-instrument id="MapInstrument" bing-id="MFD" config-path="/Pages/VCockpit/Instruments/NavSystems/AS1000/MFD/" show-flightplan="true" hide-flightplan-if-bushtrip="true" overdrawfactor="1.42"></map-instrument>
                             <div id="Interactions">
                                 <svg class="mapLess" viewBox="-2 -2 54 54">
                                     <circle r="25" cx="25" cy="25" fill="#bbbbbb" stroke="#444444" stroke-width="2" />
@@ -231,7 +231,8 @@
                                 <tr>
                                     <td>
                                         <div class="gradientButton" id="AFPL_SelectApproach_Button" state="Greyed">
-                                            <div class="mainText">Select Approach</div>
+                                            <div class="title">Approach</div>
+                                            <div class="value">____</div>
                                         </div>
                                     </td>
                                     <td></td>
@@ -287,6 +288,29 @@
                                     <td></td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+                    <div id="Procedures" class="page">
+                        <div class="gradientButton" id="Procedures_Departure" state="Hidden">
+                            <div class="title">Departure</div>
+                            <div class="value">____</div>
+                        </div>
+                        <div class="gradientButton" id="Procedures_Arrival">
+                            <div class="title">Arrival</div>
+                            <div class="value">____</div>
+                        </div>
+                        <div class="gradientButton" id="Procedures_Approach">
+                            <div class="title">Approach</div>
+                            <div class="value">____</div>
+                        </div>
+                        <div class="gradientButton" id="Procedures_ActivateApproach">
+                            <div class="title">Activate Approach</div>
+                        </div>
+                        <div class="gradientButton" id="Procedures_ActivateVectorsToFinal" state="Hidden">
+                            <div class="title">Activate Vectors To Final</div>
+                        </div>
+                        <div class="gradientButton" id="Procedures_ActivateMissedApproach" state="Hidden">
+                            <div class="title">Activate Missed Approach</div>
                         </div>
                     </div>
                     <div id="NearestAirport" class="page">
@@ -526,6 +550,22 @@
 
                         </div>
                     </div>
+                    <div id="MapOrientationSetup" class="page">
+                        <div class="content">
+                            <div class="gradientButton" id="MapOrientation_North">
+                                <div class="title">North Up</div>
+                                <div class="statusBar"></div>
+                            </div>
+                            <div class="gradientButton" id="MapOrientation_Track">
+                                <div class="title">Track Up</div>
+                                <div class="statusBar"></div>
+                            </div>
+                            <div class="gradientButton" id="MapOrientation_HDG">
+                                <div class="title">HDG Up</div>
+                                <div class="statusBar"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="MFD_BottomBar">
                     <div id="currentPage">
@@ -687,6 +727,51 @@
                             <div class="mainText">Activate <img class="DrctImg" src="/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_DIRECT_TO_1.png" /></div>
                             <div class="mainValue">______</div>
                         </div>
+                    </div>
+                </div>
+                <div class="popup" id="ApproachSelection" state="Inactive">
+                    <div class="gradientButton" id="Approach_Airport">
+                        <div class="title">Airport</div>
+                        <div class="ident">____</div>
+                        <div class="name">____</div>
+                        <img class="logo" />
+                    </div>
+                    <div class="gradientButton" id="Approach_Approach">
+                        <div class="title">Approach</div>
+                        <div class="value">____</div>
+                    </div>
+                    <div class="gradientButton" id="Approach_Transition">
+                        <div class="title">Transition</div>
+                        <div class="value">____</div>
+                    </div>
+                    <div class="gradientButton" id="Approach_Minimums" state="Hidden">
+                        <div class="title">Minimums</div>
+                        <div class="state">Off</div>
+                        <div class="value">_____M</div>
+                    </div>
+                    <div class="gradientButton" id="Approach_PrimaryFrequency" state="Hidden">
+                        <div class="title">Primary Frequency</div>
+                        <div class="value">BD 110.30</div>
+                    </div>
+                    <div id="Approach_Options">
+                        <div class="title">Approach Options</div>
+                        <div class="gradientButton" id="Approach_Preview" state="Hidden">
+                            <div class="title">Preview</div>
+                            <div class="value">Off</div>
+                        </div>
+                        <div class="gradientButton" id="Approach_Remove">
+                            <div class="title">Remove</div>
+                        </div>
+                        <div class="gradientButton" id="Approach_Load">
+                            <div class="title">Load</div>
+                        </div>
+                        <div class="gradientButton" id="Approach_LoadAndActivate">
+                            <div class="title">Load &amp; Activate</div>
+                        </div>
+                    </div>
+                    <div id="Approach_Sequence">
+                        <div class="title">Sequence</div>
+                        <div class="content"></div>
                     </div>
                 </div>
                 <div class="popup" id="fullKeyboard" state="Inactive" keyboard="Letters">
@@ -1175,6 +1260,12 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="popup" id="SelectionList" state="Inactive">
+                    <div class="WindowTitle"></div>
+                    <div class="content">
                     </div>
                 </div>
             </div>

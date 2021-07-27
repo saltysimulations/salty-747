@@ -55,14 +55,17 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         else if (this.aircraft == Aircraft.AS01B) {
             this.construct_AS01B();
         }
+        else if (this.aircraft == Aircraft.AS03D) {
+            this.construct_AS03D();
+        }
         else {
             this.construct_A320_Neo();
         }
     }
     construct_CJ4() {
         this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.rootSVG.setAttribute("id", "ViewBox");
-        this.rootSVG.setAttribute("viewBox", "0 0 250 1000");
+        diffAndSetAttribute(this.rootSVG, "id", "ViewBox");
+        diffAndSetAttribute(this.rootSVG, "viewBox", "0 0 250 1000");
         var width = 70.5;
         var centerHeight = 495;
         var posX = width * 0.5;
@@ -71,14 +74,14 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.cursorTextColor = "rgb(26,255,0)";
         if (!this.rootGroup) {
             this.rootGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.rootGroup.setAttribute("id", "VerticalSpeed");
+            diffAndSetAttribute(this.rootGroup, "id", "VerticalSpeed");
         }
         else {
             Utils.RemoveAllChildren(this.rootGroup);
         }
         if (!this.centerGroup) {
             this.centerGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.centerGroup.setAttribute("id", "CenterGroup");
+            diffAndSetAttribute(this.centerGroup, "id", "CenterGroup");
         }
         else {
             Utils.RemoveAllChildren(this.centerGroup);
@@ -90,26 +93,26 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             var _width = width;
             var _height = centerHeight;
             var bg = document.createElementNS(Avionics.SVG.NS, "rect");
-            bg.setAttribute("x", _left.toString());
-            bg.setAttribute("y", _top.toString());
-            bg.setAttribute("width", _width.toString());
-            bg.setAttribute("height", _height.toString());
-            bg.setAttribute("fill", "black");
-            bg.setAttribute("fill-opacity", "0.5");
+            diffAndSetAttribute(bg, "x", _left + '');
+            diffAndSetAttribute(bg, "y", _top + '');
+            diffAndSetAttribute(bg, "width", _width + '');
+            diffAndSetAttribute(bg, "height", _height + '');
+            diffAndSetAttribute(bg, "fill", "black");
+            diffAndSetAttribute(bg, "fill-opacity", "0.5");
             this.centerGroup.appendChild(bg);
             this.topSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
-            this.topSpeedText.textContent = "";
-            this.topSpeedText.setAttribute("x", (_left + _width * 0.92).toString());
-            this.topSpeedText.setAttribute("y", (_top + 18).toString());
-            this.topSpeedText.setAttribute("fill", "green");
-            this.topSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
-            this.topSpeedText.setAttribute("font-family", "Roboto-Bold");
-            this.topSpeedText.setAttribute("text-anchor", "end");
-            this.topSpeedText.setAttribute("alignment-baseline", "central");
+            diffAndSetText(this.topSpeedText, "");
+            diffAndSetAttribute(this.topSpeedText, "x", (_left + _width * 0.92) + '');
+            diffAndSetAttribute(this.topSpeedText, "y", (_top + 18) + '');
+            diffAndSetAttribute(this.topSpeedText, "fill", "green");
+            diffAndSetAttribute(this.topSpeedText, "font-size", (this.fontSize * 0.85) + '');
+            diffAndSetAttribute(this.topSpeedText, "font-family", "Roboto-Bold");
+            diffAndSetAttribute(this.topSpeedText, "text-anchor", "end");
+            diffAndSetAttribute(this.topSpeedText, "alignment-baseline", "central");
             this.centerGroup.appendChild(this.topSpeedText);
             if (!this.graduationsGroup) {
                 this.graduationsGroup = document.createElementNS(Avionics.SVG.NS, "g");
-                this.graduationsGroup.setAttribute("id", "GraduationsGroup");
+                diffAndSetAttribute(this.graduationsGroup, "id", "GraduationsGroup");
             }
             else {
                 Utils.RemoveAllChildren(this.graduationsGroup);
@@ -130,23 +133,23 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 _gradLineVec.y = this.cursorPosY2 - y;
                 _gradLineVec.SetNorm(len);
                 var line = document.createElementNS(Avionics.SVG.NS, "line");
-                line.setAttribute("x1", this.cursorPosX1.toString());
-                line.setAttribute("y1", y.toString());
-                line.setAttribute("x2", (this.cursorPosX1 + _gradLineVec.x).toString());
-                line.setAttribute("y2", (y + _gradLineVec.y).toString());
-                line.setAttribute("stroke", "white");
-                line.setAttribute("stroke-width", "1");
+                diffAndSetAttribute(line, "x1", this.cursorPosX1 + '');
+                diffAndSetAttribute(line, "y1", y + '');
+                diffAndSetAttribute(line, "x2", (this.cursorPosX1 + _gradLineVec.x) + '');
+                diffAndSetAttribute(line, "y2", (y + _gradLineVec.y) + '');
+                diffAndSetAttribute(line, "stroke", "white");
+                diffAndSetAttribute(line, "stroke-width", "1");
                 this.graduationsGroup.appendChild(line);
                 if (grad >= 1000) {
                     var text = document.createElementNS(Avionics.SVG.NS, "text");
-                    text.textContent = (grad / 1000).toString();
-                    text.setAttribute("x", (this.cursorPosX1 - 2).toString());
-                    text.setAttribute("y", y.toString());
-                    text.setAttribute("fill", "white");
-                    text.setAttribute("font-size", (this.fontSize * 0.8).toString());
-                    text.setAttribute("font-family", "Roboto-Light");
-                    text.setAttribute("text-anchor", "end");
-                    text.setAttribute("alignment-baseline", "central");
+                    diffAndSetText(text, (grad / 1000) + '');
+                    diffAndSetAttribute(text, "x", (this.cursorPosX1 - 2) + '');
+                    diffAndSetAttribute(text, "y", y + '');
+                    diffAndSetAttribute(text, "fill", "white");
+                    diffAndSetAttribute(text, "font-size", (this.fontSize * 0.8) + '');
+                    diffAndSetAttribute(text, "font-family", "Roboto-Light");
+                    diffAndSetAttribute(text, "text-anchor", "end");
+                    diffAndSetAttribute(text, "alignment-baseline", "central");
                     this.graduationsGroup.appendChild(text);
                 }
                 y = this.cursorPosY2 - this.gradYPos[i];
@@ -154,67 +157,67 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 _gradLineVec.y = this.cursorPosY2 - y;
                 _gradLineVec.SetNorm(len);
                 line = document.createElementNS(Avionics.SVG.NS, "line");
-                line.setAttribute("x1", this.cursorPosX1.toString());
-                line.setAttribute("y1", y.toString());
-                line.setAttribute("x2", (this.cursorPosX1 + _gradLineVec.x).toString());
-                line.setAttribute("y2", (y + _gradLineVec.y).toString());
-                line.setAttribute("stroke", "white");
-                line.setAttribute("stroke-width", "1");
+                diffAndSetAttribute(line, "x1", this.cursorPosX1 + '');
+                diffAndSetAttribute(line, "y1", y + '');
+                diffAndSetAttribute(line, "x2", (this.cursorPosX1 + _gradLineVec.x) + '');
+                diffAndSetAttribute(line, "y2", (y + _gradLineVec.y) + '');
+                diffAndSetAttribute(line, "stroke", "white");
+                diffAndSetAttribute(line, "stroke-width", "1");
                 this.graduationsGroup.appendChild(line);
                 if (grad >= 1000) {
                     var text = document.createElementNS(Avionics.SVG.NS, "text");
-                    text.textContent = (grad / 1000).toString();
-                    text.setAttribute("x", (this.cursorPosX1 - 2).toString());
-                    text.setAttribute("y", y.toString());
-                    text.setAttribute("fill", "white");
-                    text.setAttribute("font-size", (this.fontSize * 0.8).toString());
-                    text.setAttribute("font-family", "Roboto-Light");
-                    text.setAttribute("text-anchor", "end");
-                    text.setAttribute("alignment-baseline", "central");
+                    diffAndSetText(text, (grad / 1000) + '');
+                    diffAndSetAttribute(text, "x", (this.cursorPosX1 - 2) + '');
+                    diffAndSetAttribute(text, "y", y + '');
+                    diffAndSetAttribute(text, "fill", "white");
+                    diffAndSetAttribute(text, "font-size", (this.fontSize * 0.8) + '');
+                    diffAndSetAttribute(text, "font-family", "Roboto-Light");
+                    diffAndSetAttribute(text, "text-anchor", "end");
+                    diffAndSetAttribute(text, "alignment-baseline", "central");
                     this.graduationsGroup.appendChild(text);
                 }
             }
             this.centerGroup.appendChild(this.graduationsGroup);
             let centerLine = document.createElementNS(Avionics.SVG.NS, "line");
-            centerLine.setAttribute("x1", (this.cursorPosX1 - 10).toString());
-            centerLine.setAttribute("y1", this.cursorPosY1.toString());
-            centerLine.setAttribute("x2", (this.cursorPosX1 + 20).toString());
-            centerLine.setAttribute("y2", this.cursorPosY1.toString());
-            centerLine.setAttribute("stroke", "white");
-            centerLine.setAttribute("stroke-width", "3");
+            diffAndSetAttribute(centerLine, "x1", (this.cursorPosX1 - 10) + '');
+            diffAndSetAttribute(centerLine, "y1", this.cursorPosY1 + '');
+            diffAndSetAttribute(centerLine, "x2", (this.cursorPosX1 + 20) + '');
+            diffAndSetAttribute(centerLine, "y2", this.cursorPosY1 + '');
+            diffAndSetAttribute(centerLine, "stroke", "white");
+            diffAndSetAttribute(centerLine, "stroke-width", "3");
             this.centerGroup.appendChild(centerLine);
             if (!this.cursorSVGGroup) {
                 this.cursorSVGGroup = document.createElementNS(Avionics.SVG.NS, "g");
-                this.cursorSVGGroup.setAttribute("id", "CursorGroup");
+                diffAndSetAttribute(this.cursorSVGGroup, "id", "CursorGroup");
             }
             else
                 Utils.RemoveAllChildren(this.cursorSVGGroup);
             if (!this.cursorSVGLine)
                 this.cursorSVGLine = document.createElementNS(Avionics.SVG.NS, "line");
-            this.cursorSVGLine.setAttribute("x1", this.cursorPosX1.toString());
-            this.cursorSVGLine.setAttribute("y1", this.cursorPosY1.toString());
-            this.cursorSVGLine.setAttribute("x2", this.cursorPosX2.toString());
-            this.cursorSVGLine.setAttribute("y2", this.cursorPosY2.toString());
-            this.cursorSVGLine.setAttribute("stroke", this.cursorTextColor);
-            this.cursorSVGLine.setAttribute("stroke-width", "2");
+            diffAndSetAttribute(this.cursorSVGLine, "x1", this.cursorPosX1 + '');
+            diffAndSetAttribute(this.cursorSVGLine, "y1", this.cursorPosY1 + '');
+            diffAndSetAttribute(this.cursorSVGLine, "x2", this.cursorPosX2 + '');
+            diffAndSetAttribute(this.cursorSVGLine, "y2", this.cursorPosY2 + '');
+            diffAndSetAttribute(this.cursorSVGLine, "stroke", this.cursorTextColor);
+            diffAndSetAttribute(this.cursorSVGLine, "stroke-width", "2");
             this.cursorSVGGroup.appendChild(this.cursorSVGLine);
             this.centerGroup.appendChild(this.cursorSVGGroup);
             let selectedCursorHeight = 12;
             this.selectedCursorOffsetY = selectedCursorHeight * 0.5;
             this.selectedCursorSVG = document.createElementNS(Avionics.SVG.NS, "path");
-            this.selectedCursorSVG.setAttribute("d", "M" + (this.cursorPosX1 - 14) + " 0 l5 0 l0 -5 l13 " + (selectedCursorHeight * 0.5 + 5) + " l-13 " + (selectedCursorHeight * 0.5 + 5) + "l0 -5 l-5 0 l0 " + (-selectedCursorHeight * 0.5) + "Z");
-            this.selectedCursorSVG.setAttribute("fill", "cyan");
-            this.selectedCursorSVG.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(this.selectedCursorSVG, "d", "M" + (this.cursorPosX1 - 14) + " 0 l5 0 l0 -5 l13 " + (selectedCursorHeight * 0.5 + 5) + " l-13 " + (selectedCursorHeight * 0.5 + 5) + "l0 -5 l-5 0 l0 " + (-selectedCursorHeight * 0.5) + "Z");
+            diffAndSetAttribute(this.selectedCursorSVG, "fill", "cyan");
+            diffAndSetAttribute(this.selectedCursorSVG, "visibility", "hidden");
             this.cursorSVGGroup.appendChild(this.selectedCursorSVG);
             this.bottomSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
-            this.bottomSpeedText.textContent = "";
-            this.bottomSpeedText.setAttribute("x", (_left + _width * 0.92).toString());
-            this.bottomSpeedText.setAttribute("y", (_top + _height * 0.95).toString());
-            this.bottomSpeedText.setAttribute("fill", "green");
-            this.bottomSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
-            this.bottomSpeedText.setAttribute("font-family", "Roboto-Bold");
-            this.bottomSpeedText.setAttribute("text-anchor", "end");
-            this.bottomSpeedText.setAttribute("alignment-baseline", "central");
+            diffAndSetText(this.bottomSpeedText, "");
+            diffAndSetAttribute(this.bottomSpeedText, "x", (_left + _width * 0.92) + '');
+            diffAndSetAttribute(this.bottomSpeedText, "y", (_top + _height * 0.95) + '');
+            diffAndSetAttribute(this.bottomSpeedText, "fill", "green");
+            diffAndSetAttribute(this.bottomSpeedText, "font-size", (this.fontSize * 0.85) + '');
+            diffAndSetAttribute(this.bottomSpeedText, "font-family", "Roboto-Bold");
+            diffAndSetAttribute(this.bottomSpeedText, "text-anchor", "end");
+            diffAndSetAttribute(this.bottomSpeedText, "alignment-baseline", "central");
             this.centerGroup.appendChild(this.bottomSpeedText);
             this.rootGroup.appendChild(this.centerGroup);
         }
@@ -223,8 +226,8 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
     }
     construct_B747_8() {
         this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.rootSVG.setAttribute("id", "ViewBox");
-        this.rootSVG.setAttribute("viewBox", "0 0 250 600");
+        diffAndSetAttribute(this.rootSVG, "id", "ViewBox");
+        diffAndSetAttribute(this.rootSVG, "viewBox", "0 0 250 600");
         var width = 100;
         var height = 450;
         var posX = 0;
@@ -233,22 +236,22 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.cursorTextColor = "rgb(255,255,255)";
         if (!this.rootGroup) {
             this.rootGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.rootGroup.setAttribute("id", "VerticalSpeed");
+            diffAndSetAttribute(this.rootGroup, "id", "VerticalSpeed");
         }
         else {
             Utils.RemoveAllChildren(this.rootGroup);
         }
         if (!this.centerGroup) {
             this.centerGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.centerGroup.setAttribute("id", "CenterGroup");
+            diffAndSetAttribute(this.centerGroup, "id", "CenterGroup");
         }
         else {
             Utils.RemoveAllChildren(this.centerGroup);
         }
         var smallBg = document.createElementNS(Avionics.SVG.NS, "path");
-        smallBg.setAttribute("fill", "#343B51");
-        smallBg.setAttribute("d", "M 0 0 l 0 " + (height * 0.34) + " l 30 15 l 0 " + (height - (height * 0.34 + 15) * 2) + " l -30 15 L 0 " + height + " L 45 " + height + " L 75 " + (height - 90) + " L 75 90 L 45 0 Z");
-        smallBg.setAttribute("transform", "translate(" + posX + " " + posY + ")");
+        diffAndSetAttribute(smallBg, "fill", "#343B51");
+        diffAndSetAttribute(smallBg, "d", "M 0 0 l 0 " + (height * 0.34) + " l 30 15 l 0 " + (height - (height * 0.34 + 15) * 2) + " l -30 15 L 0 " + height + " L 45 " + height + " L 75 " + (height - 90) + " L 75 90 L 45 0 Z");
+        diffAndSetAttribute(smallBg, "transform", "translate(" + posX + " " + posY + ")");
         this.centerGroup.appendChild(smallBg);
         var _width = width;
         var _height = height;
@@ -257,18 +260,18 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         var _graduationStartY = _top + _height * 0.05;
         var _graduationHeight = (_top + _height * 0.95) - _graduationStartY;
         this.topSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
-        this.topSpeedText.textContent = "";
-        this.topSpeedText.setAttribute("x", (_left - 10).toString());
-        this.topSpeedText.setAttribute("y", (_top - 22).toString());
-        this.topSpeedText.setAttribute("fill", "white");
-        this.topSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
-        this.topSpeedText.setAttribute("font-family", "Roboto-Bold");
-        this.topSpeedText.setAttribute("text-anchor", "start");
-        this.topSpeedText.setAttribute("alignment-baseline", "central");
+        diffAndSetText(this.topSpeedText, "");
+        diffAndSetAttribute(this.topSpeedText, "x", (_left - 10) + '');
+        diffAndSetAttribute(this.topSpeedText, "y", (_top - 22) + '');
+        diffAndSetAttribute(this.topSpeedText, "fill", "white");
+        diffAndSetAttribute(this.topSpeedText, "font-size", (this.fontSize * 0.85) + '');
+        diffAndSetAttribute(this.topSpeedText, "font-family", "Roboto-Bold");
+        diffAndSetAttribute(this.topSpeedText, "text-anchor", "start");
+        diffAndSetAttribute(this.topSpeedText, "alignment-baseline", "central");
         this.rootGroup.appendChild(this.topSpeedText);
         if (!this.graduationsGroup) {
             this.graduationsGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.graduationsGroup.setAttribute("id", "GraduationsGroup");
+            diffAndSetAttribute(this.graduationsGroup, "id", "GraduationsGroup");
         }
         else {
             Utils.RemoveAllChildren(this.graduationsGroup);
@@ -285,42 +288,42 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             var offset = isPrimary ? 0 : 3;
             var y = _graduationStartY + _graduationHeight * 0.5 + this.gradYPos[i];
             var line = document.createElementNS(Avionics.SVG.NS, "rect");
-            line.setAttribute("x", (_left + _width * 0.2 + offset).toString());
-            line.setAttribute("y", y.toString());
-            line.setAttribute("width", lineWidth.toString());
-            line.setAttribute("height", lineHeight.toString());
-            line.setAttribute("fill", "white");
+            diffAndSetAttribute(line, "x", (_left + _width * 0.2 + offset) + '');
+            diffAndSetAttribute(line, "y", y + '');
+            diffAndSetAttribute(line, "width", lineWidth + '');
+            diffAndSetAttribute(line, "height", lineHeight + '');
+            diffAndSetAttribute(line, "fill", "white");
             this.graduationsGroup.appendChild(line);
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
-                text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
-                text.setAttribute("fill", "white");
-                text.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
-                text.setAttribute("text-anchor", "start");
-                text.setAttribute("alignment-baseline", "central");
+                diffAndSetText(text, (this.gradSpeeds[i] / 1000) + '');
+                diffAndSetAttribute(text, "x", _left + '');
+                diffAndSetAttribute(text, "y", y + '');
+                diffAndSetAttribute(text, "fill", "white");
+                diffAndSetAttribute(text, "font-size", (this.fontSize * 0.9) + '');
+                diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(text, "text-anchor", "start");
+                diffAndSetAttribute(text, "alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
             }
             y = _graduationStartY + _graduationHeight * 0.5 - this.gradYPos[i];
             var line = document.createElementNS(Avionics.SVG.NS, "rect");
-            line.setAttribute("x", (_left + _width * 0.2 + offset).toString());
-            line.setAttribute("y", y.toString());
-            line.setAttribute("width", lineWidth.toString());
-            line.setAttribute("height", lineHeight.toString());
-            line.setAttribute("fill", "white");
+            diffAndSetAttribute(line, "x", (_left + _width * 0.2 + offset) + '');
+            diffAndSetAttribute(line, "y", y + '');
+            diffAndSetAttribute(line, "width", lineWidth + '');
+            diffAndSetAttribute(line, "height", lineHeight + '');
+            diffAndSetAttribute(line, "fill", "white");
             this.graduationsGroup.appendChild(line);
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
-                text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
-                text.setAttribute("fill", "white");
-                text.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
-                text.setAttribute("text-anchor", "start");
-                text.setAttribute("alignment-baseline", "central");
+                diffAndSetText(text, (this.gradSpeeds[i] / 1000) + '');
+                diffAndSetAttribute(text, "x", _left + '');
+                diffAndSetAttribute(text, "y", y + '');
+                diffAndSetAttribute(text, "fill", "white");
+                diffAndSetAttribute(text, "font-size", (this.fontSize * 0.9) + '');
+                diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(text, "text-anchor", "start");
+                diffAndSetAttribute(text, "alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
             }
         }
@@ -332,54 +335,54 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             this.cursorPosY2 = _graduationStartY + _graduationHeight * 0.5;
             if (!this.cursorSVGGroup) {
                 this.cursorSVGGroup = document.createElementNS(Avionics.SVG.NS, "g");
-                this.cursorSVGGroup.setAttribute("id", "CursorGroup");
+                diffAndSetAttribute(this.cursorSVGGroup, "id", "CursorGroup");
             }
             else
                 Utils.RemoveAllChildren(this.cursorSVGGroup);
             if (!this.cursorSVGLine)
                 this.cursorSVGLine = document.createElementNS(Avionics.SVG.NS, "line");
-            this.cursorSVGLine.setAttribute("stroke", this.cursorTextColor);
-            this.cursorSVGLine.setAttribute("stroke-width", "3");
+            diffAndSetAttribute(this.cursorSVGLine, "stroke", this.cursorTextColor);
+            diffAndSetAttribute(this.cursorSVGLine, "stroke-width", "3");
             this.cursorSVGGroup.appendChild(this.cursorSVGLine);
             var cursorSVGNeutral = document.createElementNS(Avionics.SVG.NS, "line");
-            cursorSVGNeutral.setAttribute("x1", (_left + _width * 0.2).toString());
-            cursorSVGNeutral.setAttribute("y1", this.cursorPosY1.toString());
-            cursorSVGNeutral.setAttribute("x2", (_left + _width * 0.5).toString());
-            cursorSVGNeutral.setAttribute("y2", this.cursorPosY1.toString());
-            cursorSVGNeutral.setAttribute("stroke", "white");
-            cursorSVGNeutral.setAttribute("stroke-width", "3");
+            diffAndSetAttribute(cursorSVGNeutral, "x1", (_left + _width * 0.2) + '');
+            diffAndSetAttribute(cursorSVGNeutral, "y1", this.cursorPosY1 + '');
+            diffAndSetAttribute(cursorSVGNeutral, "x2", (_left + _width * 0.5) + '');
+            diffAndSetAttribute(cursorSVGNeutral, "y2", this.cursorPosY1 + '');
+            diffAndSetAttribute(cursorSVGNeutral, "stroke", "white");
+            diffAndSetAttribute(cursorSVGNeutral, "stroke-width", "3");
             this.cursorSVGGroup.appendChild(cursorSVGNeutral);
             let selectedCursorWidth = 18;
             let selectedCursorHeight = 12;
             this.selectedCursorOffsetY = selectedCursorHeight * 0.5;
             this.selectedCursorSVG = document.createElementNS(Avionics.SVG.NS, "rect");
-            this.selectedCursorSVG.setAttribute("x", (this.cursorPosX1 - 10).toString());
-            this.selectedCursorSVG.setAttribute("y", "0");
-            this.selectedCursorSVG.setAttribute("width", selectedCursorWidth.toString());
-            this.selectedCursorSVG.setAttribute("height", selectedCursorHeight.toString());
-            this.selectedCursorSVG.setAttribute("fill", "#D570FF");
-            this.selectedCursorSVG.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(this.selectedCursorSVG, "x", (this.cursorPosX1 - 10) + '');
+            diffAndSetAttribute(this.selectedCursorSVG, "y", "0");
+            diffAndSetAttribute(this.selectedCursorSVG, "width", selectedCursorWidth + '');
+            diffAndSetAttribute(this.selectedCursorSVG, "height", selectedCursorHeight + '');
+            diffAndSetAttribute(this.selectedCursorSVG, "fill", "#D570FF");
+            diffAndSetAttribute(this.selectedCursorSVG, "visibility", "hidden");
             this.cursorSVGGroup.appendChild(this.selectedCursorSVG);
             this.centerGroup.appendChild(this.cursorSVGGroup);
         }
         this.rootGroup.appendChild(this.centerGroup);
         this.bottomSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
-        this.bottomSpeedText.textContent = "";
-        this.bottomSpeedText.setAttribute("x", (_left - 10).toString());
-        this.bottomSpeedText.setAttribute("y", (_top + _height + 25).toString());
-        this.bottomSpeedText.setAttribute("fill", "white");
-        this.bottomSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
-        this.bottomSpeedText.setAttribute("font-family", "Roboto-Bold");
-        this.bottomSpeedText.setAttribute("text-anchor", "start");
-        this.bottomSpeedText.setAttribute("alignment-baseline", "central");
+        diffAndSetText(this.bottomSpeedText, "");
+        diffAndSetAttribute(this.bottomSpeedText, "x", (_left - 10) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "y", (_top + _height + 25) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "fill", "white");
+        diffAndSetAttribute(this.bottomSpeedText, "font-size", (this.fontSize * 0.85) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "font-family", "Roboto-Bold");
+        diffAndSetAttribute(this.bottomSpeedText, "text-anchor", "start");
+        diffAndSetAttribute(this.bottomSpeedText, "alignment-baseline", "central");
         this.rootGroup.appendChild(this.bottomSpeedText);
         this.rootSVG.appendChild(this.rootGroup);
         this.appendChild(this.rootSVG);
     }
     construct_AS01B() {
         this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.rootSVG.setAttribute("id", "ViewBox");
-        this.rootSVG.setAttribute("viewBox", "0 0 250 600");
+        diffAndSetAttribute(this.rootSVG, "id", "ViewBox");
+        diffAndSetAttribute(this.rootSVG, "viewBox", "0 0 250 600");
         var width = 100;
         var height = 450;
         var posX = 0;
@@ -388,23 +391,23 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.cursorTextColor = "rgb(255,255,255)";
         if (!this.rootGroup) {
             this.rootGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.rootGroup.setAttribute("id", "VerticalSpeed");
+            diffAndSetAttribute(this.rootGroup, "id", "VerticalSpeed");
         }
         else {
             Utils.RemoveAllChildren(this.rootGroup);
         }
         if (!this.centerGroup) {
             this.centerGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.centerGroup.setAttribute("id", "CenterGroup");
+            diffAndSetAttribute(this.centerGroup, "id", "CenterGroup");
         }
         else {
             Utils.RemoveAllChildren(this.centerGroup);
         }
         var smallBg = document.createElementNS(Avionics.SVG.NS, "path");
-        smallBg.setAttribute("d", "M 0 0 l 0 " + (height * 0.34) + " l 30 15 l 0 " + (height - (height * 0.34 + 15) * 2) + " l -30 15 L 0 " + height + " L 45 " + height + " L 75 " + (height - 90) + " L 75 90 L 45 0 Z");
-        smallBg.setAttribute("transform", "translate(" + posX + " " + posY + ")");
-        smallBg.setAttribute("fill", "black");
-        smallBg.setAttribute("fill-opacity", "0.3");
+        diffAndSetAttribute(smallBg, "d", "M 0 0 l 0 " + (height * 0.34) + " l 30 15 l 0 " + (height - (height * 0.34 + 15) * 2) + " l -30 15 L 0 " + height + " L 45 " + height + " L 75 " + (height - 90) + " L 75 90 L 45 0 Z");
+        diffAndSetAttribute(smallBg, "transform", "translate(" + posX + " " + posY + ")");
+        diffAndSetAttribute(smallBg, "fill", "black");
+        diffAndSetAttribute(smallBg, "fill-opacity", "0.3");
         this.centerGroup.appendChild(smallBg);
         var _width = width;
         var _height = height;
@@ -413,18 +416,18 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         var _graduationStartY = _top + _height * 0.05;
         var _graduationHeight = (_top + _height * 0.95) - _graduationStartY;
         this.topSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
-        this.topSpeedText.textContent = "";
-        this.topSpeedText.setAttribute("x", (_left - 5).toString());
-        this.topSpeedText.setAttribute("y", (_top - 25).toString());
-        this.topSpeedText.setAttribute("fill", "white");
-        this.topSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
-        this.topSpeedText.setAttribute("font-family", "Roboto-Bold");
-        this.topSpeedText.setAttribute("text-anchor", "start");
-        this.topSpeedText.setAttribute("alignment-baseline", "central");
+        diffAndSetText(this.topSpeedText, "");
+        diffAndSetAttribute(this.topSpeedText, "x", (_left - 5) + '');
+        diffAndSetAttribute(this.topSpeedText, "y", (_top - 25) + '');
+        diffAndSetAttribute(this.topSpeedText, "fill", "white");
+        diffAndSetAttribute(this.topSpeedText, "font-size", (this.fontSize * 0.85) + '');
+        diffAndSetAttribute(this.topSpeedText, "font-family", "Roboto-Bold");
+        diffAndSetAttribute(this.topSpeedText, "text-anchor", "start");
+        diffAndSetAttribute(this.topSpeedText, "alignment-baseline", "central");
         this.rootGroup.appendChild(this.topSpeedText);
         if (!this.graduationsGroup) {
             this.graduationsGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.graduationsGroup.setAttribute("id", "GraduationsGroup");
+            diffAndSetAttribute(this.graduationsGroup, "id", "GraduationsGroup");
         }
         else {
             Utils.RemoveAllChildren(this.graduationsGroup);
@@ -441,42 +444,42 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             var offset = isPrimary ? 0 : 3;
             var y = _graduationStartY + _graduationHeight * 0.5 + this.gradYPos[i];
             var line = document.createElementNS(Avionics.SVG.NS, "rect");
-            line.setAttribute("x", (_left + _width * 0.2 + offset).toString());
-            line.setAttribute("y", y.toString());
-            line.setAttribute("width", lineWidth.toString());
-            line.setAttribute("height", lineHeight.toString());
-            line.setAttribute("fill", "white");
+            diffAndSetAttribute(line, "x", (_left + _width * 0.2 + offset) + '');
+            diffAndSetAttribute(line, "y", y + '');
+            diffAndSetAttribute(line, "width", lineWidth + '');
+            diffAndSetAttribute(line, "height", lineHeight + '');
+            diffAndSetAttribute(line, "fill", "white");
             this.graduationsGroup.appendChild(line);
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
-                text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
-                text.setAttribute("fill", "white");
-                text.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
-                text.setAttribute("text-anchor", "start");
-                text.setAttribute("alignment-baseline", "central");
+                diffAndSetText(text, (this.gradSpeeds[i] / 1000) + '');
+                diffAndSetAttribute(text, "x", _left + '');
+                diffAndSetAttribute(text, "y", y + '');
+                diffAndSetAttribute(text, "fill", "white");
+                diffAndSetAttribute(text, "font-size", (this.fontSize * 0.9) + '');
+                diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(text, "text-anchor", "start");
+                diffAndSetAttribute(text, "alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
             }
             y = _graduationStartY + _graduationHeight * 0.5 - this.gradYPos[i];
             var line = document.createElementNS(Avionics.SVG.NS, "rect");
-            line.setAttribute("x", (_left + _width * 0.2 + offset).toString());
-            line.setAttribute("y", y.toString());
-            line.setAttribute("width", lineWidth.toString());
-            line.setAttribute("height", lineHeight.toString());
-            line.setAttribute("fill", "white");
+            diffAndSetAttribute(line, "x", (_left + _width * 0.2 + offset) + '');
+            diffAndSetAttribute(line, "y", y + '');
+            diffAndSetAttribute(line, "width", lineWidth + '');
+            diffAndSetAttribute(line, "height", lineHeight + '');
+            diffAndSetAttribute(line, "fill", "white");
             this.graduationsGroup.appendChild(line);
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
-                text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
-                text.setAttribute("fill", "white");
-                text.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
-                text.setAttribute("text-anchor", "start");
-                text.setAttribute("alignment-baseline", "central");
+                diffAndSetText(text, (this.gradSpeeds[i] / 1000) + '');
+                diffAndSetAttribute(text, "x", _left + '');
+                diffAndSetAttribute(text, "y", y + '');
+                diffAndSetAttribute(text, "fill", "white");
+                diffAndSetAttribute(text, "font-size", (this.fontSize * 0.9) + '');
+                diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(text, "text-anchor", "start");
+                diffAndSetAttribute(text, "alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
             }
         }
@@ -488,54 +491,178 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             this.cursorPosY2 = _graduationStartY + _graduationHeight * 0.5;
             if (!this.cursorSVGGroup) {
                 this.cursorSVGGroup = document.createElementNS(Avionics.SVG.NS, "g");
-                this.cursorSVGGroup.setAttribute("id", "CursorGroup");
+                diffAndSetAttribute(this.cursorSVGGroup, "id", "CursorGroup");
             }
             else
                 Utils.RemoveAllChildren(this.cursorSVGGroup);
             if (!this.cursorSVGLine)
                 this.cursorSVGLine = document.createElementNS(Avionics.SVG.NS, "line");
-            this.cursorSVGLine.setAttribute("stroke", this.cursorTextColor);
-            this.cursorSVGLine.setAttribute("stroke-width", "3");
+            diffAndSetAttribute(this.cursorSVGLine, "stroke", this.cursorTextColor);
+            diffAndSetAttribute(this.cursorSVGLine, "stroke-width", "3");
             this.cursorSVGGroup.appendChild(this.cursorSVGLine);
             var cursorSVGNeutral = document.createElementNS(Avionics.SVG.NS, "line");
-            cursorSVGNeutral.setAttribute("x1", (_left + _width * 0.2).toString());
-            cursorSVGNeutral.setAttribute("y1", this.cursorPosY1.toString());
-            cursorSVGNeutral.setAttribute("x2", (_left + _width * 0.5).toString());
-            cursorSVGNeutral.setAttribute("y2", this.cursorPosY1.toString());
-            cursorSVGNeutral.setAttribute("stroke", "white");
-            cursorSVGNeutral.setAttribute("stroke-width", "3");
+            diffAndSetAttribute(cursorSVGNeutral, "x1", (_left + _width * 0.2) + '');
+            diffAndSetAttribute(cursorSVGNeutral, "y1", this.cursorPosY1 + '');
+            diffAndSetAttribute(cursorSVGNeutral, "x2", (_left + _width * 0.5) + '');
+            diffAndSetAttribute(cursorSVGNeutral, "y2", this.cursorPosY1 + '');
+            diffAndSetAttribute(cursorSVGNeutral, "stroke", "white");
+            diffAndSetAttribute(cursorSVGNeutral, "stroke-width", "3");
             this.cursorSVGGroup.appendChild(cursorSVGNeutral);
             let selectedCursorWidth = 18;
             let selectedCursorHeight = 12;
             this.selectedCursorOffsetY = selectedCursorHeight * 0.5;
             this.selectedCursorSVG = document.createElementNS(Avionics.SVG.NS, "rect");
-            this.selectedCursorSVG.setAttribute("x", (this.cursorPosX1 - 10).toString());
-            this.selectedCursorSVG.setAttribute("y", "0");
-            this.selectedCursorSVG.setAttribute("width", selectedCursorWidth.toString());
-            this.selectedCursorSVG.setAttribute("height", selectedCursorHeight.toString());
-            this.selectedCursorSVG.setAttribute("fill", "#D570FF");
-            this.selectedCursorSVG.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(this.selectedCursorSVG, "x", (this.cursorPosX1 - 10) + '');
+            diffAndSetAttribute(this.selectedCursorSVG, "y", "0");
+            diffAndSetAttribute(this.selectedCursorSVG, "width", selectedCursorWidth + '');
+            diffAndSetAttribute(this.selectedCursorSVG, "height", selectedCursorHeight + '');
+            diffAndSetAttribute(this.selectedCursorSVG, "fill", "#D570FF");
+            diffAndSetAttribute(this.selectedCursorSVG, "visibility", "hidden");
             this.cursorSVGGroup.appendChild(this.selectedCursorSVG);
             this.centerGroup.appendChild(this.cursorSVGGroup);
         }
         this.rootGroup.appendChild(this.centerGroup);
         this.bottomSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
-        this.bottomSpeedText.textContent = "";
-        this.bottomSpeedText.setAttribute("x", (_left - 5).toString());
-        this.bottomSpeedText.setAttribute("y", (_top + _height + 25).toString());
-        this.bottomSpeedText.setAttribute("fill", "white");
-        this.bottomSpeedText.setAttribute("font-size", (this.fontSize * 0.85).toString());
-        this.bottomSpeedText.setAttribute("font-family", "Roboto-Bold");
-        this.bottomSpeedText.setAttribute("text-anchor", "start");
-        this.bottomSpeedText.setAttribute("alignment-baseline", "central");
+        diffAndSetText(this.bottomSpeedText, "");
+        diffAndSetAttribute(this.bottomSpeedText, "x", (_left - 5) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "y", (_top + _height + 25) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "fill", "white");
+        diffAndSetAttribute(this.bottomSpeedText, "font-size", (this.fontSize * 0.85) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "font-family", "Roboto-Bold");
+        diffAndSetAttribute(this.bottomSpeedText, "text-anchor", "start");
+        diffAndSetAttribute(this.bottomSpeedText, "alignment-baseline", "central");
+        this.rootGroup.appendChild(this.bottomSpeedText);
+        this.rootSVG.appendChild(this.rootGroup);
+        this.appendChild(this.rootSVG);
+    }
+    construct_AS03D() {
+        this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
+        diffAndSetAttribute(this.rootSVG, "id", "ViewBox");
+        diffAndSetAttribute(this.rootSVG, "viewBox", "0 0 125 1050");
+        let posX = 10;
+        let posY = 125;
+        let width = 120;
+        let height = 800;
+        this.maxSpeed = 40000;
+        this.cursorTextColor = "rgb(26,255,0)";
+        if (!this.rootGroup) {
+            this.rootGroup = document.createElementNS(Avionics.SVG.NS, "g");
+            diffAndSetAttribute(this.rootGroup, "id", "VerticalSpeed");
+        }
+        else {
+            Utils.RemoveAllChildren(this.rootGroup);
+        }
+        this.topSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
+        diffAndSetText(this.topSpeedText, "");
+        diffAndSetAttribute(this.topSpeedText, "x", (width / 2) + '');
+        diffAndSetAttribute(this.topSpeedText, "y", (posY - 70) + '');
+        diffAndSetAttribute(this.topSpeedText, "fill", "white");
+        diffAndSetAttribute(this.topSpeedText, "font-size", (this.fontSize * 1.8) + '');
+        diffAndSetAttribute(this.topSpeedText, "font-family", "Roboto-Bold");
+        diffAndSetAttribute(this.topSpeedText, "text-anchor", "middle");
+        diffAndSetAttribute(this.topSpeedText, "alignment-baseline", "central");
+        this.rootGroup.appendChild(this.topSpeedText);
+        {
+            if (!this.centerGroup) {
+                this.centerGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                diffAndSetAttribute(this.centerGroup, "id", "CenterGroup");
+            }
+            else {
+                Utils.RemoveAllChildren(this.centerGroup);
+            }
+            let _width = width;
+            let _height = height;
+            let _top = posY;
+            let _left = posX + 40;
+            let _centerGroupMiddleY = _top + _height * 0.5;
+            {
+                if (!this.graduationsGroup) {
+                    this.graduationsGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                    diffAndSetAttribute(this.graduationsGroup, "id", "GraduationsGroup");
+                }
+                else {
+                    Utils.RemoveAllChildren(this.graduationsGroup);
+                }
+                this.gradSpeeds = [1000, 2000, 3000, 4000, 6000, 10000, 20000, 40000];
+                this.gradYPos = [50, 100, 150, 200, 250, 300, 350, 400];
+                for (let i = 0; i < this.gradSpeeds.length; i++) {
+                    let isPrimary = (i % 2 != 0);
+                    for (let j = 0; j < 2; j++) {
+                        let y = _centerGroupMiddleY;
+                        if (j == 0) {
+                            y -= this.gradYPos[i];
+                        }
+                        else {
+                            y += this.gradYPos[i];
+                        }
+                        let line = document.createElementNS(Avionics.SVG.NS, "rect");
+                        diffAndSetAttribute(line, "x", (_left) + '');
+                        diffAndSetAttribute(line, "y", y + '');
+                        diffAndSetAttribute(line, "width", isPrimary ? "12" : "12");
+                        diffAndSetAttribute(line, "height", isPrimary ? "8" : "4");
+                        diffAndSetAttribute(line, "fill", "white");
+                        this.graduationsGroup.appendChild(line);
+                        if (isPrimary) {
+                            let text = document.createElementNS(Avionics.SVG.NS, "text");
+                            diffAndSetText(text, (this.gradSpeeds[i] / 1000) + '');
+                            diffAndSetAttribute(text, "x", (_left - 2) + '');
+                            diffAndSetAttribute(text, "y", y + '');
+                            diffAndSetAttribute(text, "fill", "white");
+                            diffAndSetAttribute(text, "font-size", (this.fontSize * 1.8) + '');
+                            diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                            diffAndSetAttribute(text, "text-anchor", "end");
+                            diffAndSetAttribute(text, "alignment-baseline", "central");
+                            this.graduationsGroup.appendChild(text);
+                        }
+                    }
+                }
+                this.centerGroup.appendChild(this.graduationsGroup);
+            }
+            {
+                this.cursorPosX1 = _left + 12;
+                this.cursorPosY1 = _centerGroupMiddleY;
+                this.cursorPosX2 = _width;
+                this.cursorPosY2 = _centerGroupMiddleY;
+                if (!this.cursorSVGGroup) {
+                    this.cursorSVGGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                    diffAndSetAttribute(this.cursorSVGGroup, "id", "CursorGroup");
+                }
+                else
+                    Utils.RemoveAllChildren(this.cursorSVGGroup);
+                if (!this.cursorSVGLine)
+                    this.cursorSVGLine = document.createElementNS(Avionics.SVG.NS, "line");
+                diffAndSetAttribute(this.cursorSVGLine, "stroke", this.cursorTextColor);
+                diffAndSetAttribute(this.cursorSVGLine, "stroke-width", "6");
+                this.cursorSVGGroup.appendChild(this.cursorSVGLine);
+                var cursorSVGNeutral = document.createElementNS(Avionics.SVG.NS, "line");
+                diffAndSetAttribute(cursorSVGNeutral, "x1", posX + '');
+                diffAndSetAttribute(cursorSVGNeutral, "y1", this.cursorPosY1 + '');
+                diffAndSetAttribute(cursorSVGNeutral, "x2", this.cursorPosX1 + '');
+                diffAndSetAttribute(cursorSVGNeutral, "y2", this.cursorPosY1 + '');
+                diffAndSetAttribute(cursorSVGNeutral, "stroke", "yellow");
+                diffAndSetAttribute(cursorSVGNeutral, "stroke-width", "10");
+                this.cursorSVGGroup.appendChild(cursorSVGNeutral);
+                this.centerGroup.appendChild(this.cursorSVGGroup);
+            }
+            this.rootGroup.appendChild(this.centerGroup);
+        }
+        this.bottomSpeedText = document.createElementNS(Avionics.SVG.NS, "text");
+        diffAndSetText(this.bottomSpeedText, "");
+        diffAndSetAttribute(this.bottomSpeedText, "x", (width / 2) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "y", (posY + height + 70) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "fill", "white");
+        diffAndSetAttribute(this.bottomSpeedText, "font-size", (this.fontSize * 1.8) + '');
+        diffAndSetAttribute(this.bottomSpeedText, "font-family", "Roboto-Bold");
+        diffAndSetAttribute(this.bottomSpeedText, "text-anchor", "middle");
+        diffAndSetAttribute(this.bottomSpeedText, "alignment-baseline", "central");
         this.rootGroup.appendChild(this.bottomSpeedText);
         this.rootSVG.appendChild(this.rootGroup);
         this.appendChild(this.rootSVG);
     }
     construct_A320_Neo() {
         this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.rootSVG.setAttribute("id", "ViewBox");
-        this.rootSVG.setAttribute("viewBox", "0 0 250 600");
+        diffAndSetAttribute(this.rootSVG, "id", "ViewBox");
+        diffAndSetAttribute(this.rootSVG, "viewBox", "0 0 250 600");
         var posX = 0;
         var posY = 0;
         var width = 100;
@@ -544,22 +671,22 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.cursorTextColor = "rgb(26,255,0)";
         if (!this.rootGroup) {
             this.rootGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.rootGroup.setAttribute("id", "VerticalSpeed");
+            diffAndSetAttribute(this.rootGroup, "id", "VerticalSpeed");
         }
         else {
             Utils.RemoveAllChildren(this.rootGroup);
         }
         if (!this.centerGroup) {
             this.centerGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.centerGroup.setAttribute("id", "CenterGroup");
+            diffAndSetAttribute(this.centerGroup, "id", "CenterGroup");
         }
         else {
             Utils.RemoveAllChildren(this.centerGroup);
         }
         var smallBg = document.createElementNS(Avionics.SVG.NS, "path");
-        smallBg.setAttribute("fill", "#343B51");
-        smallBg.setAttribute("d", "M 0 0 L 0 " + height + " L 30 " + height + " L 50 " + (height - 100) + " L 50 100 L 30 0 Z");
-        smallBg.setAttribute("transform", "translate(" + posX + " " + posY + ")");
+        diffAndSetAttribute(smallBg, "fill", "#343B51");
+        diffAndSetAttribute(smallBg, "d", "M 0 0 L 0 " + height + " L 30 " + height + " L 50 " + (height - 100) + " L 50 100 L 30 0 Z");
+        diffAndSetAttribute(smallBg, "transform", "translate(" + posX + " " + posY + ")");
         this.centerGroup.appendChild(smallBg);
         var _width = width;
         var _height = height;
@@ -569,7 +696,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         var _graduationHeight = (_top + _height * 0.95) - _graduationStartY;
         if (!this.graduationsGroup) {
             this.graduationsGroup = document.createElementNS(Avionics.SVG.NS, "g");
-            this.graduationsGroup.setAttribute("id", "GraduationsGroup");
+            diffAndSetAttribute(this.graduationsGroup, "id", "GraduationsGroup");
         }
         else {
             Utils.RemoveAllChildren(this.graduationsGroup);
@@ -580,42 +707,42 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             var isPrimary = (i % 2 != 0) ? true : false;
             var y = _graduationStartY + _graduationHeight * 0.5 + this.gradYPos[i];
             var line = document.createElementNS(Avionics.SVG.NS, "rect");
-            line.setAttribute("x", (_left + _width * 0.2).toString());
-            line.setAttribute("y", y.toString());
-            line.setAttribute("width", isPrimary ? "9" : "9");
-            line.setAttribute("height", isPrimary ? "8" : "2");
-            line.setAttribute("fill", "white");
+            diffAndSetAttribute(line, "x", (_left + _width * 0.2) + '');
+            diffAndSetAttribute(line, "y", y + '');
+            diffAndSetAttribute(line, "width", isPrimary ? "9" : "9");
+            diffAndSetAttribute(line, "height", isPrimary ? "8" : "2");
+            diffAndSetAttribute(line, "fill", "white");
             this.graduationsGroup.appendChild(line);
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
-                text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
-                text.setAttribute("fill", "white");
-                text.setAttribute("font-size", (this.fontSize * 1.15).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
-                text.setAttribute("text-anchor", "start");
-                text.setAttribute("alignment-baseline", "central");
+                diffAndSetText(text, (this.gradSpeeds[i] / 1000) + '');
+                diffAndSetAttribute(text, "x", _left + '');
+                diffAndSetAttribute(text, "y", y + '');
+                diffAndSetAttribute(text, "fill", "white");
+                diffAndSetAttribute(text, "font-size", (this.fontSize * 1.15) + '');
+                diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(text, "text-anchor", "start");
+                diffAndSetAttribute(text, "alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
             }
             y = _graduationStartY + _graduationHeight * 0.5 - this.gradYPos[i];
             var line = document.createElementNS(Avionics.SVG.NS, "rect");
-            line.setAttribute("x", (_left + _width * 0.2).toString());
-            line.setAttribute("y", y.toString());
-            line.setAttribute("width", isPrimary ? "9" : "9");
-            line.setAttribute("height", isPrimary ? "8" : "2");
-            line.setAttribute("fill", "white");
+            diffAndSetAttribute(line, "x", (_left + _width * 0.2) + '');
+            diffAndSetAttribute(line, "y", y + '');
+            diffAndSetAttribute(line, "width", isPrimary ? "9" : "9");
+            diffAndSetAttribute(line, "height", isPrimary ? "8" : "2");
+            diffAndSetAttribute(line, "fill", "white");
             this.graduationsGroup.appendChild(line);
             if (isPrimary) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
-                text.textContent = (this.gradSpeeds[i] / 1000).toString();
-                text.setAttribute("x", _left.toString());
-                text.setAttribute("y", y.toString());
-                text.setAttribute("fill", "white");
-                text.setAttribute("font-size", (this.fontSize * 1.15).toString());
-                text.setAttribute("font-family", "Roboto-Bold");
-                text.setAttribute("text-anchor", "start");
-                text.setAttribute("alignment-baseline", "central");
+                diffAndSetText(text, (this.gradSpeeds[i] / 1000) + '');
+                diffAndSetAttribute(text, "x", _left + '');
+                diffAndSetAttribute(text, "y", y + '');
+                diffAndSetAttribute(text, "fill", "white");
+                diffAndSetAttribute(text, "font-size", (this.fontSize * 1.15) + '');
+                diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(text, "text-anchor", "start");
+                diffAndSetAttribute(text, "alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
             }
         }
@@ -627,42 +754,42 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             this.cursorPosY2 = _graduationStartY + _graduationHeight * 0.5;
             if (!this.cursorSVGGroup) {
                 this.cursorSVGGroup = document.createElementNS(Avionics.SVG.NS, "g");
-                this.cursorSVGGroup.setAttribute("id", "CursorGroup");
+                diffAndSetAttribute(this.cursorSVGGroup, "id", "CursorGroup");
             }
             else
                 Utils.RemoveAllChildren(this.cursorSVGGroup);
             if (!this.cursorSVGLine)
                 this.cursorSVGLine = document.createElementNS(Avionics.SVG.NS, "line");
-            this.cursorSVGLine.setAttribute("stroke", this.cursorTextColor);
-            this.cursorSVGLine.setAttribute("stroke-width", "4.5");
+            diffAndSetAttribute(this.cursorSVGLine, "stroke", this.cursorTextColor);
+            diffAndSetAttribute(this.cursorSVGLine, "stroke-width", "4.5");
             this.cursorSVGGroup.appendChild(this.cursorSVGLine);
             var cursorSVGNeutral = document.createElementNS(Avionics.SVG.NS, "line");
-            cursorSVGNeutral.setAttribute("x1", _left.toString());
-            cursorSVGNeutral.setAttribute("y1", this.cursorPosY1.toString());
-            cursorSVGNeutral.setAttribute("x2", this.cursorPosX1.toString());
-            cursorSVGNeutral.setAttribute("y2", this.cursorPosY1.toString());
-            cursorSVGNeutral.setAttribute("stroke", "yellow");
-            cursorSVGNeutral.setAttribute("stroke-width", "8");
+            diffAndSetAttribute(cursorSVGNeutral, "x1", _left + '');
+            diffAndSetAttribute(cursorSVGNeutral, "y1", this.cursorPosY1 + '');
+            diffAndSetAttribute(cursorSVGNeutral, "x2", this.cursorPosX1 + '');
+            diffAndSetAttribute(cursorSVGNeutral, "y2", this.cursorPosY1 + '');
+            diffAndSetAttribute(cursorSVGNeutral, "stroke", "yellow");
+            diffAndSetAttribute(cursorSVGNeutral, "stroke-width", "8");
             this.cursorSVGGroup.appendChild(cursorSVGNeutral);
             let cursorBgWidth = 34;
             let cursorBgHeight = 25;
             this.cursorBgOffsetY = cursorBgHeight * 0.45;
             this.cursorSVGTextBg = document.createElementNS(Avionics.SVG.NS, "rect");
-            this.cursorSVGTextBg.setAttribute("x", (this.cursorPosX1).toString());
-            this.cursorSVGTextBg.setAttribute("y", (this.cursorPosY1 - this.cursorBgOffsetY).toString());
-            this.cursorSVGTextBg.setAttribute("width", cursorBgWidth.toString());
-            this.cursorSVGTextBg.setAttribute("height", cursorBgHeight.toString());
-            this.cursorSVGTextBg.setAttribute("fill", "black");
+            diffAndSetAttribute(this.cursorSVGTextBg, "x", (this.cursorPosX1) + '');
+            diffAndSetAttribute(this.cursorSVGTextBg, "y", (this.cursorPosY1 - this.cursorBgOffsetY) + '');
+            diffAndSetAttribute(this.cursorSVGTextBg, "width", cursorBgWidth + '');
+            diffAndSetAttribute(this.cursorSVGTextBg, "height", cursorBgHeight + '');
+            diffAndSetAttribute(this.cursorSVGTextBg, "fill", "black");
             this.cursorSVGGroup.appendChild(this.cursorSVGTextBg);
             this.cursorSVGText = document.createElementNS(Avionics.SVG.NS, "text");
-            this.cursorSVGText.textContent = "17";
-            this.cursorSVGText.setAttribute("x", this.cursorPosX1.toString());
-            this.cursorSVGText.setAttribute("y", this.cursorPosY1.toString());
-            this.cursorSVGText.setAttribute("fill", this.cursorTextColor);
-            this.cursorSVGText.setAttribute("font-size", (this.fontSize * 1.0).toString());
-            this.cursorSVGText.setAttribute("font-family", "Roboto-Bold");
-            this.cursorSVGText.setAttribute("text-anchor", "start");
-            this.cursorSVGText.setAttribute("alignment-baseline", "central");
+            diffAndSetText(this.cursorSVGText, "17");
+            diffAndSetAttribute(this.cursorSVGText, "x", this.cursorPosX1 + '');
+            diffAndSetAttribute(this.cursorSVGText, "y", this.cursorPosY1 + '');
+            diffAndSetAttribute(this.cursorSVGText, "fill", this.cursorTextColor);
+            diffAndSetAttribute(this.cursorSVGText, "font-size", (this.fontSize * 1.0) + '');
+            diffAndSetAttribute(this.cursorSVGText, "font-family", "Roboto-Bold");
+            diffAndSetAttribute(this.cursorSVGText, "text-anchor", "start");
+            diffAndSetAttribute(this.cursorSVGText, "alignment-baseline", "central");
             this.cursorSVGGroup.appendChild(this.cursorSVGText);
             this.centerGroup.appendChild(this.cursorSVGGroup);
         }
@@ -681,9 +808,9 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
             case "selected_vspeed_active":
                 if (this.selectedCursorSVG) {
                     if (newValue == "true")
-                        this.selectedCursorSVG.setAttribute("visibility", "visible");
+                        diffAndSetAttribute(this.selectedCursorSVG, "visibility", "visible");
                     else
-                        this.selectedCursorSVG.setAttribute("visibility", "hidden");
+                        diffAndSetAttribute(this.selectedCursorSVG, "visibility", "hidden");
                 }
                 break;
             case "selected_vspeed":
@@ -694,75 +821,75 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
     }
     updateVSpeed(_speed) {
         if (this.gradSpeeds) {
+            let vSpeed = Math.min(this.maxSpeed, Math.max(-this.maxSpeed, _speed));
             {
-                let vSpeed = Math.min(this.maxSpeed, Math.max(-this.maxSpeed, _speed));
                 let height = this.heightFromSpeed(vSpeed);
                 if (vSpeed >= 0)
                     this.cursorPosY1 = this.cursorPosY2 - height;
                 else
                     this.cursorPosY1 = this.cursorPosY2 + height;
                 let alert = false;
-                if (this.aircraft != Aircraft.AS01B) {
+                if (this.aircraft != Aircraft.AS01B && this.aircraft != Aircraft.AS03D) {
                     let altitude = Simplane.getAltitudeAboveGround();
                     if ((altitude <= 2500 && vSpeed <= -2000) || (altitude > 2500 && vSpeed <= -6000))
                         alert = true;
                 }
                 if (this.cursorSVGLine) {
-                    this.cursorSVGLine.setAttribute("x1", this.cursorPosX1.toString());
-                    this.cursorSVGLine.setAttribute("y1", this.cursorPosY1.toString());
-                    this.cursorSVGLine.setAttribute("x2", this.cursorPosX2.toString());
-                    this.cursorSVGLine.setAttribute("y2", this.cursorPosY2.toString());
+                    diffAndSetAttribute(this.cursorSVGLine, "x1", this.cursorPosX1 + '');
+                    diffAndSetAttribute(this.cursorSVGLine, "y1", this.cursorPosY1 + '');
+                    diffAndSetAttribute(this.cursorSVGLine, "x2", this.cursorPosX2 + '');
+                    diffAndSetAttribute(this.cursorSVGLine, "y2", this.cursorPosY2 + '');
                     if (alert)
-                        this.cursorSVGLine.setAttribute("stroke", "orange");
+                        diffAndSetAttribute(this.cursorSVGLine, "stroke", "orange");
                     else
-                        this.cursorSVGLine.setAttribute("stroke", this.cursorTextColor);
+                        diffAndSetAttribute(this.cursorSVGLine, "stroke", this.cursorTextColor);
                 }
                 if (this.cursorSVGText) {
-                    var displaySpeed = Math.floor(vSpeed / 100);
+                    let displaySpeed = Math.floor(vSpeed / 100);
                     if (Math.abs(displaySpeed) > 0) {
-                        this.cursorSVGText.textContent = Math.abs(displaySpeed).toString();
+                        diffAndSetText(this.cursorSVGText, Math.abs(displaySpeed) + '');
                         let posY;
                         if (displaySpeed > 0)
                             posY = this.cursorPosY1 - 13;
                         else
                             posY = this.cursorPosY1 + 13;
-                        this.cursorSVGText.setAttribute("y", posY.toString());
+                        diffAndSetAttribute(this.cursorSVGText, "y", posY + '');
                         if (this.cursorSVGTextBg) {
-                            this.cursorSVGTextBg.setAttribute("y", (posY - this.cursorBgOffsetY).toString());
-                            this.cursorSVGTextBg.setAttribute("visibility", "visible");
+                            diffAndSetAttribute(this.cursorSVGTextBg, "y", (posY - this.cursorBgOffsetY) + '');
+                            diffAndSetAttribute(this.cursorSVGTextBg, "visibility", "visible");
                         }
                     }
                     else {
-                        this.cursorSVGText.textContent = "";
+                        diffAndSetText(this.cursorSVGText, "");
                         if (this.cursorSVGTextBg) {
-                            this.cursorSVGTextBg.setAttribute("visibility", "hidden");
+                            diffAndSetAttribute(this.cursorSVGTextBg, "visibility", "hidden");
                         }
                     }
                     if (alert)
-                        this.cursorSVGText.setAttribute("fill", "orange");
+                        diffAndSetAttribute(this.cursorSVGText, "fill", "orange");
                     else
-                        this.cursorSVGText.setAttribute("fill", this.cursorTextColor);
+                        diffAndSetAttribute(this.cursorSVGText, "fill", this.cursorTextColor);
                 }
             }
             {
                 let threshold = 400;
-                var displaySpeed = Math.abs(Math.floor(_speed));
+                let displaySpeed = Math.abs(Math.floor(_speed));
                 displaySpeed = Math.round(displaySpeed / 5) * 5;
                 if (this.topSpeedText) {
                     if (_speed >= threshold)
-                        this.topSpeedText.textContent = displaySpeed.toString();
+                        diffAndSetText(this.topSpeedText, displaySpeed + '');
                     else if (_speed <= -threshold)
-                        this.topSpeedText.textContent = "";
+                        diffAndSetText(this.topSpeedText, "");
                     else
-                        this.topSpeedText.textContent = "";
+                        diffAndSetText(this.topSpeedText, "");
                 }
                 if (this.bottomSpeedText) {
                     if (_speed >= threshold)
-                        this.bottomSpeedText.textContent = "";
+                        diffAndSetText(this.bottomSpeedText, "");
                     else if (_speed <= -threshold)
-                        this.bottomSpeedText.textContent = displaySpeed.toString();
+                        diffAndSetText(this.bottomSpeedText, displaySpeed + '');
                     else
-                        this.bottomSpeedText.textContent = "";
+                        diffAndSetText(this.bottomSpeedText, "");
                 }
             }
         }
@@ -776,7 +903,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 posY = this.cursorPosY2 - height;
             else
                 posY = this.cursorPosY2 + height;
-            this.selectedCursorSVG.setAttribute("transform", "translate(0 " + (posY - this.selectedCursorOffsetY) + ")");
+            diffAndSetAttribute(this.selectedCursorSVG, "transform", "translate(0 " + (posY - this.selectedCursorOffsetY) + ")");
         }
     }
     heightFromSpeed(_speed) {

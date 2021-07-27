@@ -9,7 +9,7 @@ class SvgObstacleElement extends SvgMapElement {
         this._lastFileName = "";
         this.name = name;
         if (!this.name) {
-            this.name = (Math.random() * 10).toFixed(0).padStart(10, "0");
+            this.name = fastToFixed((Math.random() * 10), 0).padStart(10, "0");
         }
         this._checkAltitude = Math.floor(Math.random() * 60);
     }
@@ -31,15 +31,15 @@ class SvgObstacleElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         this._image = document.createElementNS(Avionics.SVG.NS, "image");
         this._image.classList.add("map-city-icon");
-        this._image.setAttribute("width", "100%");
-        this._image.setAttribute("height", "100%");
+        diffAndSetAttribute(this._image, "width", "100%");
+        diffAndSetAttribute(this._image, "height", "100%");
         this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + this.imageFileName());
         container.appendChild(this._image);
-        container.setAttribute("width", fastToFixed(map.config.cityIconSize / map.overdrawFactor, 0));
-        container.setAttribute("height", fastToFixed(map.config.cityIconSize / map.overdrawFactor, 0));
+        diffAndSetAttribute(container, "width", fastToFixed(map.config.cityIconSize / map.overdrawFactor, 0));
+        diffAndSetAttribute(container, "height", fastToFixed(map.config.cityIconSize / map.overdrawFactor, 0));
         return container;
     }
     updateDraw(map) {
@@ -65,8 +65,8 @@ class SvgObstacleElement extends SvgMapElement {
                 }
             }
             if (Math.abs(this.x - this._lastX) > 0.1 || Math.abs(this.y - this._lastY) > 0.1) {
-                this.svgElement.setAttribute("x", fastToFixed((this.x - map.config.cityIconSize / map.overdrawFactor * 0.5), 1));
-                this.svgElement.setAttribute("y", fastToFixed((this.y - map.config.cityIconSize / map.overdrawFactor * 0.5), 1));
+                diffAndSetAttribute(this.svgElement, "x", fastToFixed((this.x - map.config.cityIconSize / map.overdrawFactor * 0.5), 1));
+                diffAndSetAttribute(this.svgElement, "y", fastToFixed((this.y - map.config.cityIconSize / map.overdrawFactor * 0.5), 1));
                 this._lastX = this.x;
                 this._lastY = this.y;
             }

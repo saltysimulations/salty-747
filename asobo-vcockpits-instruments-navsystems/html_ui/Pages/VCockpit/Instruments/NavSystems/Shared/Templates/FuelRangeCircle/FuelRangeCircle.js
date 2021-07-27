@@ -15,26 +15,26 @@ class FuelRangeCircle extends HTMLElement {
     }
     connectedCallback() {
         this.root = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.root.setAttribute("width", "100%");
-        this.root.setAttribute("viewBox", "0 0 1000 1000");
+        diffAndSetAttribute(this.root, "width", "100%");
+        diffAndSetAttribute(this.root, "viewBox", "0 0 1000 1000");
         this.appendChild(this.root);
         this.group = document.createElementNS(Avionics.SVG.NS, "g");
         this.root.appendChild(this.group);
         this.reserveCircle = document.createElementNS(Avionics.SVG.NS, "circle");
-        this.reserveCircle.setAttribute("r", "300");
-        this.reserveCircle.setAttribute("cx", "500");
-        this.reserveCircle.setAttribute("cy", "500");
-        this.reserveCircle.setAttribute("fill", "none");
-        this.reserveCircle.setAttribute("stroke", "green");
-        this.reserveCircle.setAttribute("stroke-width", "5");
+        diffAndSetAttribute(this.reserveCircle, "r", "300");
+        diffAndSetAttribute(this.reserveCircle, "cx", "500");
+        diffAndSetAttribute(this.reserveCircle, "cy", "500");
+        diffAndSetAttribute(this.reserveCircle, "fill", "none");
+        diffAndSetAttribute(this.reserveCircle, "stroke", "green");
+        diffAndSetAttribute(this.reserveCircle, "stroke-width", "5");
         this.group.appendChild(this.reserveCircle);
         this.innerCircle = document.createElementNS(Avionics.SVG.NS, "circle");
-        this.innerCircle.setAttribute("r", "200");
-        this.innerCircle.setAttribute("cx", "500");
-        this.innerCircle.setAttribute("cy", "500");
-        this.innerCircle.setAttribute("stroke", "green");
-        this.innerCircle.setAttribute("fill", "none");
-        this.innerCircle.setAttribute("stroke-width", "5");
+        diffAndSetAttribute(this.innerCircle, "r", "200");
+        diffAndSetAttribute(this.innerCircle, "cx", "500");
+        diffAndSetAttribute(this.innerCircle, "cy", "500");
+        diffAndSetAttribute(this.innerCircle, "stroke", "green");
+        diffAndSetAttribute(this.innerCircle, "fill", "none");
+        diffAndSetAttribute(this.innerCircle, "stroke-width", "5");
         this.group.appendChild(this.innerCircle);
         let dashSize = 10;
         let perimeter = 2 * Math.PI * 200;
@@ -44,33 +44,33 @@ class FuelRangeCircle extends HTMLElement {
         this.innerCircle_dash = new Array();
         while (angle < 360) {
             this.innerCircle_dash.push(document.createElementNS(Avionics.SVG.NS, "rect"));
-            this.innerCircle_dash[id].setAttribute("x", "500");
-            this.innerCircle_dash[id].setAttribute("y", "297.5");
-            this.innerCircle_dash[id].setAttribute("width", dashSize.toString());
-            this.innerCircle_dash[id].setAttribute("height", "5");
-            this.innerCircle_dash[id].setAttribute("fill", "black");
-            this.innerCircle_dash[id].setAttribute("transform", "rotate(" + angle + " 500 500)");
+            diffAndSetAttribute(this.innerCircle_dash[id], "x", "500");
+            diffAndSetAttribute(this.innerCircle_dash[id], "y", "297.5");
+            diffAndSetAttribute(this.innerCircle_dash[id], "width", dashSize + '');
+            diffAndSetAttribute(this.innerCircle_dash[id], "height", "5");
+            diffAndSetAttribute(this.innerCircle_dash[id], "fill", "black");
+            diffAndSetAttribute(this.innerCircle_dash[id], "transform", "rotate(" + angle + " 500 500)");
             this.group.appendChild(this.innerCircle_dash[id]);
             id++;
             angle += offset;
         }
         this.timeToReserve_BG = document.createElementNS(Avionics.SVG.NS, "rect");
-        this.timeToReserve_BG.setAttribute("x", "460");
-        this.timeToReserve_BG.setAttribute("y", "295");
-        this.timeToReserve_BG.setAttribute("width", "80");
-        this.timeToReserve_BG.setAttribute("height", "20");
-        this.timeToReserve_BG.setAttribute("fill", "black");
-        this.timeToReserve_BG.setAttribute("stroke", "white");
-        this.timeToReserve_BG.setAttribute("stroke-width", "1");
+        diffAndSetAttribute(this.timeToReserve_BG, "x", "460");
+        diffAndSetAttribute(this.timeToReserve_BG, "y", "295");
+        diffAndSetAttribute(this.timeToReserve_BG, "width", "80");
+        diffAndSetAttribute(this.timeToReserve_BG, "height", "20");
+        diffAndSetAttribute(this.timeToReserve_BG, "fill", "black");
+        diffAndSetAttribute(this.timeToReserve_BG, "stroke", "white");
+        diffAndSetAttribute(this.timeToReserve_BG, "stroke-width", "1");
         this.group.appendChild(this.timeToReserve_BG);
         this.timeToReserve_Text = document.createElementNS(Avionics.SVG.NS, "text");
-        this.timeToReserve_Text.setAttribute("x", "500");
-        this.timeToReserve_Text.setAttribute("y", "310");
-        this.timeToReserve_Text.setAttribute("fill", "lime");
-        this.timeToReserve_Text.setAttribute("font-size", "15");
-        this.timeToReserve_Text.setAttribute("font-family", "Roboto-Bold");
-        this.timeToReserve_Text.setAttribute("text-anchor", "middle");
-        this.timeToReserve_Text.textContent = "29h00m";
+        diffAndSetAttribute(this.timeToReserve_Text, "x", "500");
+        diffAndSetAttribute(this.timeToReserve_Text, "y", "310");
+        diffAndSetAttribute(this.timeToReserve_Text, "fill", "lime");
+        diffAndSetAttribute(this.timeToReserve_Text, "font-size", "15");
+        diffAndSetAttribute(this.timeToReserve_Text, "font-family", "Roboto-Bold");
+        diffAndSetAttribute(this.timeToReserve_Text, "text-anchor", "middle");
+        diffAndSetText(this.timeToReserve_Text, "29h00m");
         this.group.appendChild(this.timeToReserve_Text);
     }
     attributeChangedCallback(name, oldValue, newValue) {
@@ -79,17 +79,17 @@ class FuelRangeCircle extends HTMLElement {
         switch (name) {
             case "offset-x":
                 this.offsetX = parseFloat(newValue);
-                this.group.setAttribute("transform", "translate(" + this.offsetX + " " + this.offsetY + ")");
+                diffAndSetAttribute(this.group, "transform", "translate(" + this.offsetX + " " + this.offsetY + ")");
                 break;
             case "offset-y":
                 this.offsetY = parseFloat(newValue);
-                this.group.setAttribute("transform", "translate(" + this.offsetX + " " + this.offsetY + ")");
+                diffAndSetAttribute(this.group, "transform", "translate(" + this.offsetX + " " + this.offsetY + ")");
                 break;
             case "radius-reserve":
-                this.reserveCircle.setAttribute("r", newValue);
+                diffAndSetAttribute(this.reserveCircle, "r", newValue);
                 break;
             case "inner-radius":
-                this.innerCircle.setAttribute("r", newValue);
+                diffAndSetAttribute(this.innerCircle, "r", newValue);
                 let dashSize = 10;
                 let perimeter = 2 * Math.PI * parseFloat(newValue);
                 let angle = 0;
@@ -98,27 +98,27 @@ class FuelRangeCircle extends HTMLElement {
                 while (angle < 360) {
                     if (id >= this.innerCircle_dash.length) {
                         this.innerCircle_dash.push(document.createElementNS(Avionics.SVG.NS, "rect"));
-                        this.innerCircle_dash[id].setAttribute("x", "500");
-                        this.innerCircle_dash[id].setAttribute("width", dashSize.toString());
-                        this.innerCircle_dash[id].setAttribute("height", "5");
-                        this.innerCircle_dash[id].setAttribute("fill", "black");
+                        diffAndSetAttribute(this.innerCircle_dash[id], "x", "500");
+                        diffAndSetAttribute(this.innerCircle_dash[id], "width", dashSize + '');
+                        diffAndSetAttribute(this.innerCircle_dash[id], "height", "5");
+                        diffAndSetAttribute(this.innerCircle_dash[id], "fill", "black");
                     }
-                    this.innerCircle_dash[id].setAttribute("y", (500 - parseFloat(newValue) - 2.5).toString());
-                    this.innerCircle_dash[id].setAttribute("transform", "rotate(" + angle + " 500 500)");
-                    this.innerCircle_dash[id].setAttribute("visibility", "visible");
+                    diffAndSetAttribute(this.innerCircle_dash[id], "y", (500 - parseFloat(newValue) - 2.5) + '');
+                    diffAndSetAttribute(this.innerCircle_dash[id], "transform", "rotate(" + angle + " 500 500)");
+                    diffAndSetAttribute(this.innerCircle_dash[id], "visibility", "visible");
                     this.group.insertBefore(this.innerCircle_dash[id], this.timeToReserve_BG);
                     id++;
                     angle += offset;
                 }
                 for (let i = id; i < this.innerCircle_dash.length; i++) {
-                    this.innerCircle_dash[i].setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.innerCircle_dash[i], "visibility", "hidden");
                 }
-                this.timeToReserve_BG.setAttribute("y", (500 - parseFloat(newValue) - 5).toString());
-                this.timeToReserve_Text.setAttribute("y", (500 - parseFloat(newValue) + 10).toString());
+                diffAndSetAttribute(this.timeToReserve_BG, "y", (500 - parseFloat(newValue) - 5) + '');
+                diffAndSetAttribute(this.timeToReserve_Text, "y", (500 - parseFloat(newValue) + 10) + '');
                 break;
             case "time-to-reserve":
                 let time = parseFloat(newValue);
-                this.timeToReserve_Text.textContent = Math.floor(time / 60).toString().padStart(2, "0") + "h" + Math.floor(time % 60).toString().padStart(2, "0") + "m";
+                diffAndSetText(this.timeToReserve_Text, (Math.floor(time / 60) + '').padStart(2, "0") + "h" + (Math.floor(time % 60) + '').padStart(2, "0") + "m");
                 break;
         }
     }

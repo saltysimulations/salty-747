@@ -49,26 +49,26 @@ class GaugeElement extends NavSystemElement {
     }
     init() {
         if (this.gauge) {
-            this.gauge.setAttribute("max-value", this.maxValue.toString());
-            this.gauge.setAttribute("min-value", this.minValue.toString());
-            this.gauge.setAttribute("red-start", this.redArcBegin.toString());
-            this.gauge.setAttribute("red-end", this.redArcEnd.toString());
-            this.gauge.setAttribute("yellow-start", this.yellowArcBegin.toString());
-            this.gauge.setAttribute("yellow-end", this.yellowArcEnd.toString());
-            this.gauge.setAttribute("green-start", this.greenArcBegin.toString());
-            this.gauge.setAttribute("green-end", this.greenArcEnd.toString());
-            this.gauge.setAttribute("white-start", this.whiteArcBegin.toString());
-            this.gauge.setAttribute("white-end", this.whiteArcEnd.toString());
-            this.gauge.setAttribute("low-yellow-start", this.lowYellowArcBegin.toString());
-            this.gauge.setAttribute("low-yellow-end", this.lowYellowArcEnd.toString());
-            this.gauge.setAttribute("low-red-start", this.lowRedArcBegin.toString());
-            this.gauge.setAttribute("low-red-end", this.lowRedArcEnd.toString());
-            this.gauge.setAttribute("limit-low", (this.lowLimit > 0) ? this.lowLimit.toString() : "undefined");
-            this.gauge.setAttribute("limit-high", (this.highLimit > 0) ? this.highLimit.toString() : "undefined");
-            this.gauge.setAttribute("take-off-value", this.takeOffValue.toString());
-            this.gauge.setAttribute("title", this.title);
-            this.gauge.setAttribute("unit", this.unit);
-            this.gauge.setAttribute("value-precision", this.valuePrecision.toString());
+            diffAndSetAttribute(this.gauge, "max-value", this.maxValue + '');
+            diffAndSetAttribute(this.gauge, "min-value", this.minValue + '');
+            diffAndSetAttribute(this.gauge, "red-start", this.redArcBegin + '');
+            diffAndSetAttribute(this.gauge, "red-end", this.redArcEnd + '');
+            diffAndSetAttribute(this.gauge, "yellow-start", this.yellowArcBegin + '');
+            diffAndSetAttribute(this.gauge, "yellow-end", this.yellowArcEnd + '');
+            diffAndSetAttribute(this.gauge, "green-start", this.greenArcBegin + '');
+            diffAndSetAttribute(this.gauge, "green-end", this.greenArcEnd + '');
+            diffAndSetAttribute(this.gauge, "white-start", this.whiteArcBegin + '');
+            diffAndSetAttribute(this.gauge, "white-end", this.whiteArcEnd + '');
+            diffAndSetAttribute(this.gauge, "low-yellow-start", this.lowYellowArcBegin + '');
+            diffAndSetAttribute(this.gauge, "low-yellow-end", this.lowYellowArcEnd + '');
+            diffAndSetAttribute(this.gauge, "low-red-start", this.lowRedArcBegin + '');
+            diffAndSetAttribute(this.gauge, "low-red-end", this.lowRedArcEnd + '');
+            diffAndSetAttribute(this.gauge, "limit-low", (this.lowLimit > 0) ? this.lowLimit + '' : "undefined");
+            diffAndSetAttribute(this.gauge, "limit-high", (this.highLimit > 0) ? this.highLimit + '' : "undefined");
+            diffAndSetAttribute(this.gauge, "take-off-value", this.takeOffValue + '');
+            diffAndSetAttribute(this.gauge, "title", this.title);
+            diffAndSetAttribute(this.gauge, "unit", this.unit);
+            diffAndSetAttribute(this.gauge, "value-precision", this.valuePrecision + '');
         }
     }
     onEnter() {
@@ -78,12 +78,12 @@ class GaugeElement extends NavSystemElement {
             var val = this.getCurrentValue();
             var clampedVal = Math.min(Math.max(val, this.minValue), this.maxValue);
             var roundedVal = fastToFixed(clampedVal, this.valuePrecision);
-            this.gauge.setAttribute("value", "" + roundedVal);
+            diffAndSetAttribute(this.gauge, "value", "" + roundedVal);
             if (this.getCurrentValue2) {
                 var val2 = this.getCurrentValue2();
                 var clampedVal2 = Math.min(Math.max(val2, this.minValue), this.maxValue);
                 var roundedVal2 = fastToFixed(clampedVal2, this.valuePrecision);
-                this.gauge.setAttribute("value2", "" + roundedVal2);
+                diffAndSetAttribute(this.gauge, "value2", "" + roundedVal2);
             }
         }
     }
@@ -146,7 +146,7 @@ class TextElement extends NavSystemElement {
     onUpdate(_deltaTime) {
         var val = this.getCurrentValue();
         if (this.elem && this.value != val) {
-            this.elem.textContent = val;
+            diffAndSetText(this.elem, val);
             this.value = val;
         }
     }

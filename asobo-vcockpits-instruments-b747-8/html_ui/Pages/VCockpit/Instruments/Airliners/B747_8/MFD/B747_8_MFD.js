@@ -79,7 +79,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.map.instrument.smallAirportMaxRange = Infinity;
         this.map.instrument.medAirportMaxRange = Infinity;
         this.map.instrument.largeAirportMaxRange = Infinity;
-        SimVar.SetSimVarValue("L:B747_8_MFD_NAV_MODE", "number", 2);
+        Simplane.set747MFDNavMode(2);
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
@@ -99,11 +99,11 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 break;
             case "BTN_WXR":
                 if (this.wxRadarOn) {
-                    SimVar.SetSimVarValue("L:BTN_WX_ACTIVE", "number", 0);
+                    Simplane.setBTNWXActive(false);
                 }
                 else {
-                    SimVar.SetSimVarValue("L:BTN_WX_ACTIVE", "number", 1);
-                    SimVar.SetSimVarValue("L:BTN_TERRONND_ACTIVE", "number", 0);
+                    Simplane.setBTNWXActive(true);
+                    Simplane.setBTNTerrOnNdActive(false);
                 }
                 break;
             case "BTN_STA":
@@ -132,7 +132,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 }
                 else {
                     SimVar.SetSimVarValue("L:BTN_TERRONND_ACTIVE", "number", 1);
-                    SimVar.SetSimVarValue("L:BTN_WX_ACTIVE", "number", 0);
+                    Simplane.setBTNWXActive(false);
                 }
                 break;
         }
@@ -148,14 +148,14 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         if (this.modeChangeMask && this.modeChangeTimer >= 0) {
             this.modeChangeTimer -= _deltaTime / 1000;
             if (this.modeChangeTimer <= 0) {
-                this.modeChangeMask.style.display = "none";
+                diffAndSetStyle(this.modeChangeMask, StyleProperty.display, "none");
                 this.modeChangeTimer = -1;
             }
         }
-        var wxRadarOn = SimVar.GetSimVarValue("L:BTN_WX_ACTIVE", "bool");
+        var wxRadarOn = Simplane.getBTNWXActive();
         var terrainOn = SimVar.GetSimVarValue("L:BTN_TERRONND_ACTIVE", "number");
-        var mapMode = SimVar.GetSimVarValue("L:B747_8_MFD_NAV_MODE", "number");
-        var mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_Range", "number");
+        var mapMode = Simplane.get747MFDNavMode();
+        var mapRange = Simplane.get747MFDRange();
         if (this.wxRadarOn != wxRadarOn || this.terrainOn != terrainOn || this.mapMode != mapMode || this.forceMapUpdate) {
             this.wxRadarOn = wxRadarOn;
             this.terrainOn = terrainOn;
@@ -180,7 +180,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.map.hideCompassMask();
             }
             if (this.modeChangeMask) {
-                this.modeChangeMask.style.display = "block";
+                diffAndSetStyle(this.modeChangeMask, StyleProperty.display, "block");
                 this.modeChangeTimer = 0.15;
             }
         }
@@ -252,11 +252,11 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 break;
         }
         if (_mode == 3)
-            this.gps.setAttribute("mapstyle", "plan");
+            diffAndSetAttribute(this.gps, "mapstyle", "plan");
         else if (_centered)
-            this.gps.setAttribute("mapstyle", "rose");
+            diffAndSetAttribute(this.gps, "mapstyle", "rose");
         else
-            this.gps.setAttribute("mapstyle", "arc");
+            diffAndSetAttribute(this.gps, "mapstyle", "arc");
         this.compass.svg.showArcRange(false);
         SimVar.SetSimVarValue("L:FMC_UPDATE_CURRENT_PAGE", "number", 1);
     }
@@ -435,7 +435,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
     }
     showSymbol(_symbol, _show) {
         if (this.allSymbols[_symbol])
-            this.allSymbols[_symbol].setAttribute("visibility", (_show) ? "visible" : "hidden");
+            diffAndSetAttribute(this.allSymbols[_symbol], "visibility", (_show) ? "visible" : "hidden");
     }
 }
 registerInstrument("b747-8-mfd-element", B747_8_MFD);

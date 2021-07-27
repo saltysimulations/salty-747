@@ -1,0 +1,11 @@
+<ModelBehaviors>
+	<InputEvent ID="PRESSURIZATION">
+		<Presets>
+			<Extend Target="ASOBO_GIE_Anim_Handling">
+				<Parameters Type="Default">
+					<INPUT_EVENT_ID_SOURCE>PRESSURIZATION</INPUT_EVENT_ID_SOURCE>
+				</Parameters>
+			</Extend>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

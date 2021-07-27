@@ -1,0 +1,1610 @@
+<ModelBehaviors>
+	<InputEvent ID="ELECTRICAL">
+		<Presets>
+			<Switch>
+				<Case NotEmpty="MASTER_ID">
+					<Preset ID="ELECTRICAL_Master_#MASTER_ID#">
+						<Parameters Type="Default">
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<UPPER_LIMIT>2</UPPER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_STATE_CHANGED/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False> 	
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_Master_#MASTER_ID#</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<TT_DESCRIPTION_ID>@TT_Package.ELECTRICAL_BATTERY_MASTER_ACTION_SET</TT_DESCRIPTION_ID>
+						</Parameters>
+						<Parameters Type="Override">
+							<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:ELECTRICAL_Master_#MASTER_ID#_Set)</INC_EVENT>
+							<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:ELECTRICAL_Master_#MASTER_ID#_Set)</DEC_EVENT>
+							<INIT_VALUE>
+								#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+								#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+								#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+							</INIT_VALUE>
+							<SET_EVENT>
+								p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+								s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+								l0 0 == if{ #CODE_POS_0# quit }
+								l0 1 == if{ #CODE_POS_1# quit }
+								l0 2 == if{ #CODE_POS_2# quit }
+							</SET_EVENT>
+							<TOOLTIP_VALUE>
+								(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+								s0 0 == if{ @TT_Off quit }
+								l0 1 == if{ @TT_On quit }
+								l0 2 == if{ @TT_Start quit }
+							</TOOLTIP_VALUE>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+							<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+							<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+							<TT_ICON>MOVE_X</TT_ICON>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+									<True>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+									</True>
+									<False>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+									</False>
+								</Condition>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="GENERAL ENG STARTER:#STARTER_ID#"/>
+								<Simvar ID="ELECTRICAL MASTER BATTERY:#BATTERY_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ELECTRICAL_Master_#MASTER_ID#_Toggle">
+									<Param RPN="True">(A:ELECTRICAL MASTER BATTERY:#BATTERY_ID#, bool) if{ 0 } els{ 2 }</Param>
+								</Binding>
+								<Binding EventID="STARTER_SET">
+									<Param RPN="True">p1</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_ALL_STARTERS">
+									<Param RPN="True">(A:ELECTRICAL MASTER BATTERY:#BATTERY_ID#, bool) if{ 0 } els{ 2 }</Param>
+								</Binding>
+								<Binding EventID="SET_STARTER_ALL_HELD">
+									<Param RPN="True">p1</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_STARTER#STARTER_ID#">
+									<Param RPN="True">(A:GENERAL ENG STARTER:#STARTER_ID#, bool) if{ 0 } els{ 2 }</Param>
+								</Binding>
+								<Binding EventID="STARTER#STARTER_ID#_SET">
+									<Param RPN="True">p1</Param>
+								</Binding>
+								<Binding EventID="SET_STARTER#STARTER_ID#_HELD">
+									<Param RPN="True">p1</Param>
+								</Binding>
+								<Binding EventID="ALTERNATOR_SET">
+									<Param RPN="True">
+										p2 #ALTERNATOR_ID# == if{ p1 } els{ (B:ELECTRICAL_Master_#MASTER_ID#) }
+									</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_MASTER_ALTERNATOR">
+									<Param RPN="True">
+										p1 #ALTERNATOR_ID# == if{ (B:ELECTRICAL_Master_#MASTER_ID#) ! } els{ (B:ELECTRICAL_Master_#MASTER_ID#) }
+									</Param>
+								</Binding>
+								<Binding EventID="ALTERNATOR_OFF">
+									<Param RPN="True">
+										p1 #ALTERNATOR_ID# == if{ 0 } els{ (B:ELECTRICAL_Master_#MASTER_ID#) }
+									</Param>
+								</Binding>
+								<Binding EventID="ALTERNATOR_ON">
+									<Param RPN="True">
+										p1 #ALTERNATOR_ID# == if{ 1 } els{ (B:ELECTRICAL_Master_#MASTER_ID#) }
+									</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_ALTERNATOR#ALTERNATOR_ID#">
+									<Param RPN="True">(B:ELECTRICAL_Master_#MASTER_ID#) !</Param>
+								</Binding>
+								<Binding EventID="BATTERY#BATTERY_ID#_SET">
+									<Param RPN="True">p1 0 &gt; if{ 1 } els{ 0 }</Param>
+								</Binding>
+								<!-- Events bound to all presets instances -->
+								<Binding EventID="MASTER_BATTERY_SET">
+									<Param RPN="True">p1 0 &gt; if{ 1 } els{ 0 }</Param>
+								</Binding>
+								<Binding EventID="MASTER_BATTERY_ON">
+									<Param RPN="True">p1 0 == p1 #BATTERY_ID# == or if{ 1 } els{ (B:ELECTRICAL_Master_#MASTER_ID#) }</Param>
+								</Binding>
+								<Binding EventID="MASTER_BATTERY_OFF">
+									<Param RPN="True">p1 0 == p1 #BATTERY_ID# == or if{ 0 } els{ (B:ELECTRICAL_Master_#MASTER_ID#) }</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_MASTER_BATTERY">
+									<Param RPN="True">p1 0 == p1 #BATTERY_ID# == or if{ 1 0 (B:ELECTRICAL_Master_#MASTER_ID#) 0 == ? } els{ (B:ELECTRICAL_Master_#MASTER_ID#) }</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="STBY_BATTERY_ID">
+					<Preset ID="ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#">
+						<Parameters Type="Default">
+							<UPPER_LIMIT>2</UPPER_LIMIT>
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+							<STATE_ARM>0</STATE_ARM>
+							<STATE_OFF>1</STATE_OFF>
+							<STATE_TEST>2</STATE_TEST>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ON_STATE_CHANGED/>
+							<TT_DESCRIPTION_ID>@TT_Package.ELECTRICAL_SWITCH_BATTERY_STANDBY_ACTION</TT_DESCRIPTION_ID>
+							<Condition Check="COVER_VAR_NAME">
+								<True>
+									<COVER_CHECK>(#COVER_VAR_TYPE#:#COVER_VAR_NAME#) *</COVER_CHECK>
+								</True>
+								<False>
+									<COVER_CHECK></COVER_CHECK>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#_Set)</INC_EVENT>
+							<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#_Set)</DEC_EVENT>
+							<INIT_VALUE>
+								#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+								#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+								#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+							</INIT_VALUE>
+							<SET_EVENT>
+								p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+								s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+								l0 #STATE_ARM# == if{ #CODE_POS_0# quit }
+								l0 #STATE_OFF# == if{ #CODE_POS_1# quit }
+								l0 #STATE_TEST# == if{ #CODE_POS_2# quit }
+							</SET_EVENT>
+							<TOOLTIP_VALUE>
+								(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+								s0 #STATE_ARM# == if{ (R:1:@TT_Package.GT_STATE_ARM) quit }
+								l0 #STATE_OFF# == if{ (R:1:@TT_Package.GT_STATE_OFF) quit }
+								l0 #STATE_TEST# == if{ (R:1:@TT_Package.GT_STATE_TEST) quit }
+							</TOOLTIP_VALUE>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+								<True>
+									<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+									<TT_ICON>MOVE_X</TT_ICON>
+								</True>
+								<False>
+									<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</False>
+							</Condition>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+									<True>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+									</True>
+									<False>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+									</False>
+								</Condition>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="BATTERY#STBY_BATTERY_ID#_SET">
+									<Param RPN="True">p1 0 &gt; if{ #STATE_ARM# } els{ #STATE_OFF# }</Param>
+								</Binding>
+								<!-- Events bound to all presets instances -->
+								<Binding EventID="MASTER_BATTERY_SET">
+									<Param RPN="True">p1 0 &gt; if{ #STATE_ARM# } els{ #STATE_OFF# }</Param>
+								</Binding>
+								<Binding EventID="MASTER_BATTERY_ON">
+									<Param RPN="True">p1 0 == p1 #STBY_BATTERY_ID# == or if{ #STATE_ARM# } els{ (B:ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#) }</Param>
+								</Binding>
+								<Binding EventID="MASTER_BATTERY_OFF">
+									<Param RPN="True">p1 0 == p1 #STBY_BATTERY_ID# == or if{ #STATE_OFF# } els{ (B:ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#) }</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_MASTER_BATTERY">
+									<Param RPN="True">p1 0 == p1 #STBY_BATTERY_ID# == or if{ #STATE_ARM# #STATE_OFF# (B:ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#) #STATE_OFF# == ? } els{ (B:ELECTRICAL_Battery_STBY_#STBY_BATTERY_ID#) }</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="BATTERY_ID">
+					<Preset ID="ELECTRICAL_Battery_#BATTERY_ID#">
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="AIRBUS">
+									<AIRLINER_TYPE>AIRBUS</AIRLINER_TYPE>
+									<TYPE>ON_OFF</TYPE>
+								</Case>
+								<Case Value="BOEING">
+									<AIRLINER_TYPE>BOEING</AIRLINER_TYPE>
+									<TYPE>ON_OFF</TYPE>
+								</Case>
+								<Case Value="AS02A">
+									<AIRLINER_TYPE>AS02A</AIRLINER_TYPE>
+									<TYPE>ON_OFF</TYPE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Default">
+							<IS_BATTERY_ON>(A:ELECTRICAL MASTER BATTERY:#BATTERY_ID#, Bool)</IS_BATTERY_ON>
+							<Condition>
+								<Test>
+									<And>
+										<Arg Check="BATTERY_BUS_ID"/>
+										<Arg Check="HOT_BATTERY_BUS_ID"/>								
+									</And>
+								</Test>
+								<True>
+									<IS_BATTERY_CONNECTION_ON>#BATTERY_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#HOT_BATTERY_BUS_ID#, Bool)</IS_BATTERY_CONNECTION_ON>							
+								</True>
+							</Condition>
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<STATE_ON>0</STATE_ON>
+									<STATE_OFF>1</STATE_OFF>
+									<MAX_POS>1</MAX_POS>
+								</Case>
+								<Case Value="ON_OFF_EMERGENCY">
+									<STATE_ON>0</STATE_ON>
+									<STATE_OFF>1</STATE_OFF>
+									<STATE_EMERGENCY>2</STATE_EMERGENCY>
+									<MAX_POS>2</MAX_POS>
+									<SET_EMERGENCY>(&gt;L:XMLVAR_Essential_Bus_ON)</SET_EMERGENCY>
+									<GET_EMERGENCY>(L:XMLVAR_Essential_Bus_ON) 1 ==</GET_EMERGENCY>
+								</Case>
+								<Case Value="GPU_BATT_OFF">
+									<STATE_GPU>0</STATE_GPU>
+									<STATE_BATT>1</STATE_BATT>
+									<STATE_ON>1</STATE_ON>
+									<STATE_OFF>2</STATE_OFF>
+									<MAX_POS>2</MAX_POS>
+									<SET_GPU>(&gt;L:XMLVAR_Battery_GPU_ON)</SET_GPU>
+									<GET_GPU>(L:XMLVAR_Battery_GPU_ON)</GET_GPU>
+								</Case>
+							</Switch>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition>
+								<Test>
+									<And>
+										<Arg Check="BATTERY_BUS_ID"/>
+										<Arg Check="HOT_BATTERY_BUS_ID"/>								
+									</And>
+								</Test>
+								<True>
+									<SET_BATTERY_CONNECTION>sp0 #IS_BATTERY_CONNECTION_ON# l0 != if{ #BATTERY_BUS_ID# #HOT_BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE) }</SET_BATTERY_CONNECTION>							
+								</True>
+							</Condition>
+							<SET_BATTERY>sp0 #IS_BATTERY_ON# l0 != if{ #BATTERY_ID# (&gt;K:TOGGLE_MASTER_BATTERY) }</SET_BATTERY>
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF_EMERGENCY">
+									<ON_STATE_CHANGED_EXTERNAL_CODE>
+										(* close/open connection between main and essential bus *)
+										#MAIN_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#ESSENTIAL_BUS_ID#, Bool) #GET_EMERGENCY# == if{
+											#ESSENTIAL_BUS_ID# #MAIN_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+										}
+										(* Redirect power relay coil *)
+										#GET_EMERGENCY# if{
+											#MAIN_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) if{
+												#MAIN_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+											}
+											#ESSENTIAL_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) ! if{
+												#ESSENTIAL_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+											}
+										} els{
+											#MAIN_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) ! if{
+												#MAIN_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+											}
+											#ESSENTIAL_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) if{
+												#ESSENTIAL_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+											}
+										}
+										#GET_EMERGENCY# (&gt;O:_Last_XMLVAR_Essential_Bus_ON)
+										#ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED_EXTERNAL_CODE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>#BATTERY_ID# (R:1:@TT_Package.ELECTRICAL_BATTERY_MASTER_ACTION_SET) @sprintf</TT_DESCRIPTION>
+									<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<SET_STATE_ON>1 #SET_BATTERY#</SET_STATE_ON>
+									<SET_STATE_OFF>0 #SET_BATTERY#</SET_STATE_OFF>
+								</Case>
+								<Case Value="ON_OFF_EMERGENCY">
+									<SET_STATE_ON>1 #SET_BATTERY# 0 #SET_EMERGENCY#</SET_STATE_ON>
+									<SET_STATE_OFF>0 #SET_BATTERY# 0 #SET_EMERGENCY#</SET_STATE_OFF>
+									<SET_STATE_EMERGENCY>1 #SET_BATTERY# 1 #SET_EMERGENCY#</SET_STATE_EMERGENCY>
+								</Case>
+								<Case Value="GPU_BATT_OFF">
+									<SET_STATE_GPU>0 #SET_BATTERY# 1 #SET_GPU#</SET_STATE_GPU>
+									<SET_STATE_BATT>1 #SET_BATTERY# 0 #SET_GPU#</SET_STATE_BATT>
+									<SET_STATE_OFF>0 #SET_BATTERY# 0 #SET_GPU#</SET_STATE_OFF>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<Condition>
+										<Test>
+											<And>
+												<Arg Check="BATTERY_BUS_ID"/>
+												<Arg Check="HOT_BATTERY_BUS_ID"/>								
+											</And>
+										</Test>
+										<True>
+											<SET_STATE_ON>#SET_STATE_ON# 1 #SET_BATTERY_CONNECTION#</SET_STATE_ON>
+											<SET_STATE_OFF>#SET_STATE_ON# 0 #SET_BATTERY_CONNECTION#</SET_STATE_OFF>
+											<ON_INIT>
+												#IS_BATTERY_CONNECTION_ON# and if{ #STATE_ON# sp2 } els{ #STATE_OFF# sp2 }
+												l2 (&gt;O:ELECTRICAL_Battery_#BATTERY_ID#_Position)
+												#IS_BATTERY_ON# ! if{ 1 #SET_BATTERY# }
+											</ON_INIT>
+										</True>
+										<False>
+											<ON_INIT>
+												#IS_BATTERY_ON# if{ #STATE_ON# sp2 } els{ #STATE_OFF# sp2 }
+												l2 (&gt;O:ELECTRICAL_Battery_#BATTERY_ID#_Position)
+											</ON_INIT>
+										</False>
+									</Condition>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<ON_STATE_CHANGED>
+										(O:ELECTRICAL_Battery_#BATTERY_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<TT_VALUE>(B:ELECTRICAL_Battery_#BATTERY_ID#) #STATE_ON# == if{ @TT_On } els{ @TT_Off }</TT_VALUE>
+								</Case>
+								<Case Value="ON_OFF_EMERGENCY">
+									<ON_STATE_CHANGED>
+										(O:ELECTRICAL_Battery_#BATTERY_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										l0 #STATE_EMERGENCY# == if{ #SET_STATE_EMERGENCY# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										#IS_BATTERY_ON# sp0 #GET_EMERGENCY# sp1
+										l0 ! l1 ! and if{ #STATE_OFF# sp2 g1 }
+										l0 l1 ! and if{ #STATE_ON# sp2 g1 }
+										l0 l1 and if{ #STATE_EMERGENCY# sp2 g1 }
+										:1 l2 (&gt;O:ELECTRICAL_Battery_#BATTERY_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ELECTRICAL_Battery_#BATTERY_ID#) sp0
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+										l0 #STATE_ON# == if{ @TT_On quit }
+										l0 #STATE_EMERGENCY# == if{ (R:1:@TT_Package.GT_STATE_EMERGENCY) quit }
+									</TT_VALUE>
+								</Case>
+								<Case Value="GPU_BATT_OFF">
+									<ON_STATE_CHANGED>
+										(O:ELECTRICAL_Battery_#BATTERY_ID#_Position) sp0
+										l0 #STATE_GPU# == if{ #SET_STATE_GPU# g1 }
+										l0 #STATE_BATT# == if{ #SET_STATE_BATT# g1 }
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										#IS_BATTERY_ON# sp0 #GET_GPU# sp1
+										l0 ! l1 ! and if{ #STATE_OFF# sp2 g1 }
+										l0 l1 ! and if{ #STATE_BATT# sp2 g1 }
+										l0 ! l1 and if{ #STATE_GPU# sp2 g1 }
+										:1 l2 (&gt;O:ELECTRICAL_Battery_#BATTERY_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ELECTRICAL_Battery_#BATTERY_ID#) sp0
+										l0 #STATE_GPU# == if{ (R:1:@TT_Package.GT_STATE_GPU) quit }
+										l0 #STATE_BATT# == if{ (R:1:@TT_Package.GT_STATE_BATTERY) quit }
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+									</TT_VALUE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>MAX_POS</Value>
+										<Number>1</Number>
+									</Greater>
+								</Test>
+								<True>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+											<TT_ICON>MOVE_X</TT_ICON>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+											<TT_ICON>MOVE_Y</TT_ICON>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+									<TT_ICON>PUSH</TT_ICON>
+								</False>
+							</Condition>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="Push">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+								<Case Value="SWITCH">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Number</Units>
+							<Code>(O:ELECTRICAL_Battery_#BATTERY_ID#_Position)</Code>
+							<Init>#ON_INIT#</Init>
+							<WatchVars>
+								<Simvar ID="ELECTRICAL MASTER BATTERY:#BATTERY_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>p0 1 + (&gt;B:ELECTRICAL_Battery_#BATTERY_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>p0 1 - (&gt;B:ELECTRICAL_Battery_#BATTERY_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #MAX_POS# min 0 max (&gt;O:ELECTRICAL_Battery_#BATTERY_ID#_Position) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Condition Check="TYPE" Match="ON_OFF">
+									<Binding Alias="ELECTRICAL_Battery_#BATTERY_ID#_Toggle">
+										<Param RPN="True">#STATE_ON# #STATE_OFF# (B:ELECTRICAL_Battery_#BATTERY_ID#) #STATE_OFF# == ?</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_ON">
+									<Binding Alias="ELECTRICAL_Battery_#BATTERY_ID#_On">
+										<Param>#STATE_ON#</Param>
+									</Binding>
+								</Condition>
+								<Binding Alias="ELECTRICAL_Battery_#BATTERY_ID#_Off">
+									<Param>#STATE_OFF#</Param>
+								</Binding>
+								<Condition Check="STATE_EMERGENCY">
+									<Binding Alias="ELECTRICAL_Battery_#BATTERY_ID#_Emergency">
+										<Param>#STATE_EMERGENCY#</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_BATT">
+									<Binding Alias="ELECTRICAL_Battery_#BATTERY_ID#_Battery">
+										<Param>#STATE_BATT#</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_GPU">
+									<Binding Alias="ELECTRICAL_Battery_#BATTERY_ID#_GPU">
+										<Param>#STATE_GPU#</Param>
+									</Binding>
+								</Condition>
+								<Binding EventID="BATTERY#BATTERY_ID#_SET">
+									<Param RPN="True">p1 0 &gt; if{ #STATE_ON# } els{ #STATE_OFF# }</Param>
+								</Binding>
+								<!-- Events bound to all presets instances -->
+								<Binding EventID="MASTER_BATTERY_SET">
+									<Param RPN="True">p1 0 &gt; if{ #STATE_ON# } els{ #STATE_OFF# }</Param>
+								</Binding>
+								<Binding EventID="MASTER_BATTERY_ON">
+									<Param RPN="True">p1 0 == p1 #BATTERY_ID# == or if{ #STATE_ON# } els{ (B:ELECTRICAL_Battery_#BATTERY_ID#) }</Param>
+								</Binding>
+								<Binding EventID="MASTER_BATTERY_OFF">
+									<Param RPN="True">p1 0 == p1 #BATTERY_ID# == or if{ #STATE_OFF# } els{ (B:ELECTRICAL_Battery_#BATTERY_ID#) }</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_MASTER_BATTERY">
+									<Param RPN="True">p1 0 == p1 #BATTERY_ID# == or if{ #STATE_ON# #STATE_OFF# (B:ELECTRICAL_Battery_#BATTERY_ID#) #STATE_OFF# == ? } els{ (B:ELECTRICAL_Battery_#BATTERY_ID#) }</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="EXTPWR_ID">
+					<Preset ID="ELECTRICAL_ExternalPower_#EXTPWR_ID#">
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<UPPER_LIMIT>2</UPPER_LIMIT>
+										</Case>
+										<Default>
+											<UPPER_LIMIT>1</UPPER_LIMIT>
+										</Default>
+									</Switch>
+								</Case>
+								<Default>
+									<UPPER_LIMIT>1</UPPER_LIMIT>
+								</Default>
+							</Switch>
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_ExternalPower_#EXTPWR_ID#</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<INC_EVENT>1 (&gt;B:ELECTRICAL_ExternalPower_#EXTPWR_ID#_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:ELECTRICAL_ExternalPower_#EXTPWR_ID#_Set)</DEC_EVENT>
+							<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 #EXTPWR_ID# (&gt;K:2:SET_EXTERNAL_POWER) l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</SET_EVENT>
+							<INIT_VALUE>(A:EXTERNAL POWER ON:#EXTPWR_ID#, Bool) (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<TOOLTIP_DESCRIPTION>(R:1:@TT_Package.ELECTRICAL_SWITCH_EXTERNAL_POWER_ACTION_SET)</TOOLTIP_DESCRIPTION>
+							<ON_STATE_CHANGED/>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:ELECTRICAL_ExternalPower_#EXTPWR_ID#_Set)</INC_EVENT>
+											<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:ELECTRICAL_ExternalPower_#EXTPWR_ID#_Set)</DEC_EVENT>
+											<INIT_VALUE>
+												#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+											</INIT_VALUE>
+											<SET_EVENT>
+												p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+												s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+												l0 0 == if{ #CODE_POS_0# quit }
+												l0 1 == if{ #CODE_POS_1# quit }
+												l0 2 == if{ #CODE_POS_2# quit }
+											</SET_EVENT>
+											<TOOLTIP_VALUE>
+												(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+												s0 0 == if{ (R:1:@TT_Package.GT_STATE_BUS) quit }
+												l0 1 == if{ (R:1:@TT_Package.GT_STATE_STARTER) quit }
+												l0 2 == if{ (R:1:@TT_Package.GT_STATE_OFF) quit }
+											</TOOLTIP_VALUE>
+										</Case>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>NUM_STATES</Value>
+										<Number>2</Number>
+									</Greater>
+								</Test>
+								<True>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</False>
+									</Condition>
+								</True>
+								<False>
+								   <INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+								   <INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+								</False>
+							</Condition>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Case Value="PUSH">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+								<Default>
+									<TT_ICON>PUSH</TT_ICON>
+								</Default>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription RPN="True">#TOOLTIP_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ELECTRICAL_ExternalPower_#EXTPWR_ID#_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="SET_EXTERNAL_POWER">
+									<Param RPN="True">
+										p1 #EXTPWR_ID# == p1 0 == or if{ p2 } els{ (B:ELECTRICAL_ExternalPower_#EXTPWR_ID#) }
+									</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_EXTERNAL_POWER">
+									<Param RPN="True">
+										p1 #EXTPWR_ID# == p1 0 == or if{ (B:ELECTRICAL_ExternalPower_#EXTPWR_ID#) ! } els{ (B:ELECTRICAL_ExternalPower_#EXTPWR_ID#) }
+									</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="STARTER_ID">
+					<Preset ID="ELECTRICAL_Starter_#STARTER_ID#">
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<UPPER_LIMIT>2</UPPER_LIMIT>
+										</Case>
+										<Default>
+											<UPPER_LIMIT>1</UPPER_LIMIT>
+										</Default>
+									</Switch>
+								</Case>
+								<Default>
+									<UPPER_LIMIT>1</UPPER_LIMIT>
+								</Default>
+							</Switch>
+							<STARTER_SET_KEY>(&gt;K:SET_STARTER#STARTER_ID#_HELD)</STARTER_SET_KEY>
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_Starter_#STARTER_ID#</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<TT_DESCRIPTION_ID>@TT_Package.ELECTRICAL_PUSH_START_ACTION</TT_DESCRIPTION_ID>
+							<Condition Check="COVER_VAR_NAME">
+								<True>
+									<COVER_CHECK>(#COVER_VAR_TYPE#:#COVER_VAR_NAME#) *</COVER_CHECK>
+								</True>
+								<False>
+									<COVER_CHECK></COVER_CHECK>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<INC_EVENT>1 (&gt;B:ELECTRICAL_Starter_#STARTER_ID#_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:ELECTRICAL_Starter_#STARTER_ID#_Set)</DEC_EVENT>
+							<SET_EVENT>
+								p0 #COVER_CHECK# #LOWER_LIMIT# max #UPPER_LIMIT# min s0 
+								(O:ForceHeld) if{ (&gt;K:SET_STARTER#STARTER_ID#_HELD) } els{ 
+									(O:ForceNotHeld) if{ (&gt;K:STARTER#STARTER_ID#_SET) } els{ #STARTER_SET_KEY# }
+								}
+								l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+							</SET_EVENT>
+							<INIT_VALUE>(A:GENERAL ENG STARTER:#STARTER_ID#, Bool) (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<ON_STATE_CHANGED>0 (&gt;O:ForceHeld) 0 (&gt;O:ForceNotHeld)</ON_STATE_CHANGED>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:ELECTRICAL_Starter_#STARTER_ID#_Set)</INC_EVENT>
+											<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:ELECTRICAL_Starter_#STARTER_ID#_Set)</DEC_EVENT>
+											<INIT_VALUE>
+												#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+											</INIT_VALUE>
+											<SET_EVENT>
+												p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+												s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+												l0 0 == if{ #CODE_POS_0# quit }
+												l0 1 == if{ #CODE_POS_1# quit }
+												l0 2 == if{ #CODE_POS_2# quit }
+											</SET_EVENT>
+											<TOOLTIP_VALUE>
+												(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+												s0 0 == if{ (R:1:@TT_Package.GT_STATE_START) quit }
+												l0 1 == if{ (R:1:@TT_Package.GT_STATE_ON) quit }
+												l0 2 == if{ @TT_Off quit }
+											</TOOLTIP_VALUE>
+										</Case>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>NUM_STATES</Value>
+										<Number>2</Number>
+									</Greater>
+								</Test>
+								<True>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</False>
+									</Condition>
+								</True>
+								<False>
+								   <INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+								   <INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+								</False>
+							</Condition>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Case Value="PUSH">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+								<Default>
+									<TT_ICON>PUSH</TT_ICON>
+								</Default>
+							</Switch>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+									<True>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+									</True>
+									<False>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+									</False>
+								</Condition>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="GENERAL ENG STARTER:#STARTER_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ELECTRICAL_Starter_#STARTER_ID#_Toggle">
+									<Param RPN="True">1 (&gt;O:ForceNotHeld) (#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding Alias="ELECTRICAL_Starter_#STARTER_ID#_On">
+									<Param RPN="True">1 (&gt;O:ForceNotHeld) 1</Param>
+								</Binding>
+								<Binding Alias="ELECTRICAL_Starter_#STARTER_ID#_Off">
+									<Param RPN="True">1 (&gt;O:ForceNotHeld) 0</Param>
+								</Binding>
+								<Binding EventID="STARTER_SET">
+									<Param RPN="True">1 (&gt;O:ForceNotHeld) p1</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_ALL_STARTERS">
+									<Param RPN="True">1 (&gt;O:ForceNotHeld) (B:ELECTRICAL_Starter_#STARTER_ID#) !</Param>
+								</Binding>
+								<Binding EventID="SET_STARTER_ALL_HELD">
+									<Param RPN="True">1 (&gt;O:ForceHeld) p1</Param>
+								</Binding>
+								<Binding EventID="STARTER#STARTER_ID#_SET">
+									<Param RPN="True">1 (&gt;O:ForceNotHeld) p1</Param>
+								</Binding>
+								<Binding EventID="SET_STARTER#STARTER_ID#_HELD">
+									<Param RPN="True">1 (&gt;O:ForceHeld) p1</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="ESSENTIAL_BUS_ID">
+					<Preset ID="ELECTRICAL_EssentialBus_#ESSENTIAL_BUS_ID#">
+						<Parameters Type="Default">
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<UPPER_LIMIT>1</UPPER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_STATE_CHANGED/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_EssentialBus_#ESSENTIAL_BUS_ID#</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOGGLE_BUSES>
+								(* close/open connection between main and essential bus *)
+								l0 #MAIN_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#ESSENTIAL_BUS_ID#, Bool) == if{
+									#ESSENTIAL_BUS_ID# #MAIN_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+								}
+								(* Redirect power relay coil *)
+								l0 if{
+									#MAIN_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) if{
+										#MAIN_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+									}
+									#ESSENTIAL_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) ! if{
+										#ESSENTIAL_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+									}
+								} els{
+									#MAIN_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) ! if{
+										#MAIN_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+									}
+									#ESSENTIAL_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#BATTERY_BUS_ID#, Bool) if{
+										#ESSENTIAL_BUS_ID# #BATTERY_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+									}
+								}
+							</TOGGLE_BUSES>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<INC_EVENT>1 (&gt;B:ELECTRICAL_EssentialBus_#ESSENTIAL_BUS_ID#_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:ELECTRICAL_EssentialBus_#ESSENTIAL_BUS_ID#_Set)</DEC_EVENT>
+							<SET_EVENT>
+								p0 #LOWER_LIMIT# max #UPPER_LIMIT# min sp0 
+								#TOGGLE_BUSES#
+								l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+							</SET_EVENT>
+							<INIT_VALUE>#MAIN_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#ESSENTIAL_BUS_ID#, Bool) ! (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+							<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+							<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+							<TT_ICON>MOVE_Y</TT_ICON>
+							<TT_DESCRIPTION_ID>@TT_Package.SAFETY_SWITCH_ESSENTIALBUS_ACTION_SET</TT_DESCRIPTION_ID>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription>#TT_DESCRIPTION_ID#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ELECTRICAL_EssentialBus_#ESSENTIAL_BUS_ID#_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) if{ 0 } els{ 1 }</Param>
+								</Binding>
+								<Binding EventID="ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE">
+									<Param RPN="True">
+										#ESSENTIAL_BUS_ID# p1 == #MAIN_BUS_ID# p2 == and 
+										#MAIN_BUS_ID# p1 == #ESSENTIAL_BUS_ID# p2 == and or 
+										if{ (B:ELECTRICAL_EssentialBus_#ESSENTIAL_BUS_ID#) ! } els{ (B:ELECTRICAL_EssentialBus_#ESSENTIAL_BUS_ID#) }
+									</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="APU_BLEED_ID">
+					<Preset ID="ELECTRICAL_APU_Bleed">
+						<Parameters Type="Default">
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<UPPER_LIMIT>1</UPPER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_STATE_CHANGED/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_APU_Bleed</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<INC_EVENT>1 (&gt;B:ELECTRICAL_APU_Bleed_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:ELECTRICAL_APU_Bleed_Set)</DEC_EVENT>
+							<SET_EVENT>
+								p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 
+								(&gt;K:APU_BLEED_AIR_SOURCE_SET)
+								l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+							</SET_EVENT>
+							<INIT_VALUE>(A:BLEED AIR APU, Bool) (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<TOOLTIP_DESCRIPTION>@TT_Package.CABIN_PRESSURIZATION_SWITCH_BLEED_APU_ACTION</TOOLTIP_DESCRIPTION>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+						   <INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+						   <INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+							<TT_ICON>PUSH</TT_ICON>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription>#TOOLTIP_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ELECTRICAL_APU_Bleed_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="APU_BLEED_AIR_SOURCE_SET">
+									<Param RPN="True">p1</Param>
+								</Binding>
+								<Binding EventID="APU_BLEED_AIR_SOURCE_TOGGLE">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="APU_STARTER_ID">
+					<Preset ID="ELECTRICAL_APU_Starter">
+						<Parameters Type="Default">
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<UPPER_LIMIT>2</UPPER_LIMIT>
+										</Case>
+										<Default>
+											<UPPER_LIMIT>1</UPPER_LIMIT>
+										</Default>
+									</Switch>
+								</Case>
+								<Default>
+									<UPPER_LIMIT>1</UPPER_LIMIT>
+								</Default>
+							</Switch>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_STATE_CHANGED/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_APU_Starter</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<INC_EVENT>1 (&gt;B:ELECTRICAL_APU_Starter_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:ELECTRICAL_APU_Starter_Set)</DEC_EVENT>
+							<SET_EVENT>
+								p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 if{ (&gt;K:APU_STARTER) } els{ (&gt;K:APU_OFF_SWITCH) }
+								l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+							</SET_EVENT>
+							<INIT_VALUE>(A:APU SWITCH, Bool) (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<TOOLTIP_DESCRIPTION>@TT_Package.ELECTRICAL_SWITCH_APU_STARTER_ACTION_SET</TOOLTIP_DESCRIPTION>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:ELECTRICAL_APU_Starter_Set)</INC_EVENT>
+											<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:ELECTRICAL_APU_Starter_Set)</DEC_EVENT>
+											<INIT_VALUE>
+												#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+											</INIT_VALUE>
+											<SET_EVENT>
+												p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+												s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+												l0 0 == if{ #CODE_POS_0# quit }
+												l0 1 == if{ #CODE_POS_1# quit }
+												l0 2 == if{ #CODE_POS_2# quit }
+											</SET_EVENT>
+											<TOOLTIP_VALUE>
+												(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+												s0 0 == if{ @TT_Off quit }
+												l0 1 == if{ @TT_On quit }
+												l0 2 == if{ @TT_Start quit }
+											</TOOLTIP_VALUE>
+										</Case>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Condition>
+										<Test>
+											<Greater>
+												<Value>NUM_STATES</Value>
+												<Number>2</Number>
+											</Greater>
+										</Test>
+										<True>
+											<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+												<True>
+													<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+													<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+													<TT_ICON>MOVE_X</TT_ICON>
+												</True>
+												<False>
+													<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+													<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+													<TT_ICON>MOVE_Y</TT_ICON>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+											<TT_ICON>PUSH</TT_ICON>
+										</False>
+									</Condition>
+								</Case>
+								<Default>
+									<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+									<TT_ICON>PUSH</TT_ICON>
+								</Default>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription>#TOOLTIP_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="APU SWITCH"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ELECTRICAL_APU_Starter_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="APU_STARTER">
+									<Param RPN="True">#UPPER_LIMIT#</Param>
+								</Binding>
+								<Binding EventID="APU_OFF_SWITCH">
+									<Param RPN="True">0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="APU_GEN_ID">
+					<Preset ID="ELECTRICAL_APU_Generator_#APU_GEN_ID#">
+						<Parameters Type="Default">
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<UPPER_LIMIT>2</UPPER_LIMIT>
+										</Case>
+										<Default>
+											<UPPER_LIMIT>1</UPPER_LIMIT>
+										</Default>
+									</Switch>
+								</Case>
+								<Default>
+									<UPPER_LIMIT>1</UPPER_LIMIT>
+								</Default>
+							</Switch>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_STATE_CHANGED/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>ELECTRICAL_APU_Generator_#APU_GEN_ID#</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<TT_VALUE_OFF>@TT_Off</TT_VALUE_OFF>
+											<TT_VALUE_ON>@TT_On</TT_VALUE_ON>
+											<TT_VALUE_RESET>(R:1:@TT_Package.GT_STATE_RESET)</TT_VALUE_RESET>
+										</Case>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<INC_EVENT>1 (&gt;B:ELECTRICAL_APU_Generator_#APU_GEN_ID#_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:ELECTRICAL_APU_Generator_#APU_GEN_ID#_Set)</DEC_EVENT>
+							<SET_EVENT>
+								#APU_GEN_ID# p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:2:APU_GENERATOR_SWITCH_SET) l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+							</SET_EVENT>
+							<INIT_VALUE>(A:APU GENERATOR SWITCH:#APU_GEN_ID#, Bool) (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<TOOLTIP_DESCRIPTION>@TT_Package.ELECTRICAL_SWITCH_APU_GENERATOR_ACTION</TOOLTIP_DESCRIPTION>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="3">
+											<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:ELECTRICAL_APU_Generator_#APU_GEN_ID#_Set)</INC_EVENT>
+											<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:ELECTRICAL_APU_Generator_#APU_GEN_ID#_Set)</DEC_EVENT>
+											<INIT_VALUE>
+												#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+											</INIT_VALUE>
+											<SET_EVENT>
+												p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+												s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+												l0 0 == if{ #CODE_POS_0# quit }
+												l0 1 == if{ #CODE_POS_1# quit }
+												l0 2 == if{ #CODE_POS_2# quit }
+											</SET_EVENT>
+											<TOOLTIP_VALUE>
+												(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+												s0 0 == if{ #TT_VALUE_ON# quit }
+												l0 1 == if{ #TT_VALUE_OFF# quit }
+												l0 2 == if{ #TT_VALUE_RESET# quit }
+											</TOOLTIP_VALUE>
+										</Case>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Condition>
+										<Test>
+											<Greater>
+												<Value>NUM_STATES</Value>
+												<Number>2</Number>
+											</Greater>
+										</Test>
+										<True>
+											<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+												<True>
+													<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+													<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+													<TT_ICON>MOVE_X</TT_ICON>
+												</True>
+												<False>
+													<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+													<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+													<TT_ICON>MOVE_Y</TT_ICON>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+											<TT_ICON>PUSH</TT_ICON>
+										</False>
+									</Condition>
+								</Case>
+								<Default>
+									<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+									<TT_ICON>PUSH</TT_ICON>
+								</Default>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription>#TOOLTIP_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>number</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="APU GENERATOR SWITCH:#APU_GEN_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ELECTRICAL_APU_Generator_#APU_GEN_ID#_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="KEY_APU_GENERATOR_SWITCH_TOGGLE">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="APU_GENERATOR_SWITCH_SET">
+									<Param RPN="True">p1</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Default>
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>ELECTRICAL</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Default>
+			</Switch>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

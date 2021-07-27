@@ -3,77 +3,77 @@
     {
       "path": "de-DE.locPak",
       "size": 2410,
-      "date": 132642643370928646
+      "date": 132698714003726015
     },
     {
       "path": "en-US.locPak",
       "size": 2014,
-      "date": 132642643370918658
+      "date": 132698714003705984
     },
     {
       "path": "es-ES.locPak",
       "size": 2171,
-      "date": 132642643370888666
+      "date": 132698714003687988
     },
     {
       "path": "fi-FI.locPak",
       "size": 2186,
-      "date": 132642643370938659
+      "date": 132698714003736004
     },
     {
       "path": "fr-FR.locPak",
       "size": 2272,
-      "date": 132642643370928646
+      "date": 132698714003726015
     },
     {
       "path": "it-IT.locPak",
       "size": 2223,
-      "date": 132642643370948658
+      "date": 132698714003746005
     },
     {
       "path": "ja-JP.locPak",
       "size": 2523,
-      "date": 132642643370888666
+      "date": 132698714003687988
     },
     {
       "path": "nb-NO.locPak",
       "size": 2157,
-      "date": 132642643370938659
+      "date": 132698714003736004
     },
     {
       "path": "nl-NL.locPak",
       "size": 2149,
-      "date": 132642643370908674
+      "date": 132698714003705984
     },
     {
       "path": "pl-PL.locPak",
       "size": 2327,
-      "date": 132642643370898650
+      "date": 132698714003697977
     },
     {
       "path": "pt-BR.locPak",
       "size": 2114,
-      "date": 132642643370878648
+      "date": 132698714003678205
     },
     {
       "path": "RTC/Asobo_B747_8i/CameraShot_Events.spb",
       "size": 1861,
-      "date": 132646975822628894
+      "date": 132698712410442539
     },
     {
       "path": "RTC/Asobo_B747_8i/RTC_Hangar.spb",
       "size": 2717,
-      "date": 132646975822818782
+      "date": 132698712410506198
     },
     {
       "path": "RTC/Asobo_B747_8i/RTC_Missions.spb",
       "size": 2788,
-      "date": 132646975822869045
+      "date": 132698712410571323
     },
     {
       "path": "ru-RU.locPak",
       "size": 3379,
-      "date": 132642643370918658
+      "date": 132698714003716022
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/ai.cfg",
@@ -82,13 +82,13 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/aircraft.cfg",
-      "size": 4131,
-      "date": 132418915089538167
+      "size": 3988,
+      "date": 132697182015598535
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/aircraft.loc",
-      "size": 33186,
-      "date": 132641001990000000
+      "size": 32574,
+      "date": 132642684180000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/approach.FLT",
@@ -107,13 +107,13 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/Checklist/boeing747-400_Checklist.xml",
-      "size": 2625,
-      "date": 132394669440000000
+      "size": 2875,
+      "date": 132660012800000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/Checklist/Library.xml",
-      "size": 11560,
-      "date": 132564124730000000
+      "size": 12383,
+      "date": 132695404090000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/Climb.flt",
@@ -122,8 +122,8 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/cockpit.cfg",
-      "size": 4811,
-      "date": 132525010160000000
+      "size": 4987,
+      "date": 132677052350000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/cruise.FLT",
@@ -142,8 +142,8 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/flight_model.cfg",
-      "size": 41211,
-      "date": 132560529210000000
+      "size": 41935,
+      "date": 132700581430000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/gameplay.cfg",
@@ -157,113 +157,148 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I.xml",
-      "size": 15524,
-      "date": 132645286560000000
+      "size": 12063,
+      "date": 132694601310000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_FX.xml",
+      "size": 6593,
+      "date": 132694600790000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR.xml",
-      "size": 190286,
-      "date": 132624586890000000
+      "size": 195777,
+      "date": 132694533410000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD00.bin",
-      "size": 20740882,
-      "date": 132609128794366134
+      "size": 20789590,
+      "date": 132698713677391178
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD00.gltf",
-      "size": 2312356,
-      "date": 132609128794616132
+      "size": 2459691,
+      "date": 132698713677643067
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD01.bin",
-      "size": 16970892,
-      "date": 132604496747418079
+      "size": 14030670,
+      "date": 132698713702249855
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD01.gltf",
-      "size": 2663161,
-      "date": 132604496747728070
+      "size": 1559339,
+      "date": 132698713702419840
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD02.bin",
-      "size": 11806930,
-      "date": 132604496775186222
+      "size": 10693132,
+      "date": 132698713717330211
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD02.gltf",
-      "size": 2834973,
-      "date": 132604496775486220
+      "size": 1845359,
+      "date": 132698713717511152
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD03.bin",
+      "size": 866858,
+      "date": 132698713722177875
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD03.gltf",
+      "size": 14366,
+      "date": 132698713722187884
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD04.bin",
+      "size": 78810,
+      "date": 132698713722378474
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD04.gltf",
+      "size": 3132,
+      "date": 132698713722392771
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD05.bin",
+      "size": 15288,
+      "date": 132698713722486929
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD05.gltf",
+      "size": 2754,
+      "date": 132698713722486929
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD06.bin",
+      "size": 114,
+      "date": 132698713722565204
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD06.gltf",
+      "size": 2383,
+      "date": 132698713722574985
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD00.bin",
-      "size": 58851672,
-      "date": 132645069590483492
+      "size": 66180424,
+      "date": 132698713874256728
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD00.gltf",
-      "size": 1158154,
-      "date": 132645069590623481
+      "size": 1167346,
+      "date": 132698713874356673
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD01.bin",
-      "size": 40096464,
-      "date": 132645069681378262
+      "size": 40499964,
+      "date": 132698713956570709
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD01.gltf",
-      "size": 1131469,
-      "date": 132645069681698256
+      "size": 1141069,
+      "date": 132698713956680847
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD02.bin",
-      "size": 19689312,
-      "date": 132645069714418975
+      "size": 19736072,
+      "date": 132698713987887804
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD02.gltf",
-      "size": 1074844,
-      "date": 132645069714528985
+      "size": 1083598,
+      "date": 132698713987977539
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD03.bin",
-      "size": 4507192,
-      "date": 132645069722678910
+      "size": 4497880,
+      "date": 132698713994481559
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD03.gltf",
-      "size": 723852,
-      "date": 132645069722748915
+      "size": 713576,
+      "date": 132698713994541525
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD04.bin",
-      "size": 4164440,
-      "date": 132645069729298512
+      "size": 4074588,
+      "date": 132698713999137698
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD04.gltf",
-      "size": 611688,
-      "date": 132645069729358739
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD05.bin",
-      "size": 829248,
-      "date": 132645069732818405
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD05.gltf",
-      "size": 158210,
-      "date": 132645069732888397
+      "size": 604172,
+      "date": 132698713999197652
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD06.bin",
       "size": 206840,
-      "date": 132605380241899558
+      "date": 132698714001137235
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_LOD06.gltf",
-      "size": 31418,
-      "date": 132605380241909543
+      "size": 35509,
+      "date": 132698714001147236
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/model/model.CFG",
@@ -277,8 +312,8 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.cfg",
-      "size": 2508,
-      "date": 132279124780000000
+      "size": 2474,
+      "date": 132617515980000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/panel/panel.xml",
@@ -292,13 +327,13 @@
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/sound/Asobo_B747_8i.PC.PCK",
-      "size": 77609431,
-      "date": 132521680200000000
+      "size": 57120557,
+      "date": 132687346950000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/sound/sound.xml",
-      "size": 29429,
-      "date": 132519069980000000
+      "size": 33492,
+      "date": 132684844070000000
     },
     {
       "path": "SimObjects/Airplanes/Asobo_B747_8i/soundai/Asobo_B747_8i_AI.PC.PCK",
@@ -326,1334 +361,1539 @@
       "date": 132519999350000000
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL2_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL2_ALBD.PNG.DDS",
       "size": 174904,
-      "date": 132421309026115741
+      "date": 132698712540948832
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL2_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL2_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421309025975731
+      "date": 132698712540938836
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL2_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL2_COMP.PNG.DDS",
       "size": 349700,
-      "date": 132421309018009055
+      "date": 132698712539226421
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL2_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL2_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL2_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309017989033
+      "date": 132698712539176447
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL2_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL2_NORM.PNG.DDS",
       "size": 349680,
-      "date": 132421308127554880
+      "date": 132698712424758423
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL2_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL2_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421308127424880
+      "date": 132698712424728435
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL_ALBD.PNG.DDS",
       "size": 1398256,
-      "date": 132421308134434968
+      "date": 132698712467130555
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421308134404956
+      "date": 132698712467110567
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL_COMP.PNG.DDS",
       "size": 349700,
-      "date": 132421309263440956
+      "date": 132698712613552012
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309263430951
+      "date": 132698712613524873
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421309215454677
+      "date": 132698712589308416
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BELLYDECAL_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BELLYDECAL_NORM.PNG.DDS.json",
       "size": 177,
-      "date": 132421309215264671
+      "date": 132698712589188481
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BIGDOOR_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BIGDOOR_ALBD.PNG.DDS",
       "size": 1398256,
-      "date": 132421308126934875
+      "date": 132698712424508560
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BIGDOOR_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BIGDOOR_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421308126894870
+      "date": 132698712424458589
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BIGDOOR_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BIGDOOR_COMP.PNG.DDS",
       "size": 1398276,
-      "date": 132421309289045452
+      "date": 132698712625560067
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BIGDOOR_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BIGDOOR_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BIGDOOR_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309289015625
+      "date": 132698712625509679
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BIGDOOR_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BIGDOOR_NORM.PNG.DDS",
       "size": 1398256,
-      "date": 132421309027435777
+      "date": 132698712541658426
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_BIGDOOR_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_BIGDOOR_NORM.PNG.DDS.json",
       "size": 177,
-      "date": 132421309027275771
+      "date": 132698712541638435
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_CARGO_CABIN_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_CARGO_CABIN_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132519033832121627
+      "date": 132698712535028577
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_CARGO_CABIN_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_CARGO_CABIN_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132519033832071628
+      "date": 132698712534968610
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_CARGO_CABIN_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_CARGO_CABIN_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132519033836151728
+      "date": 132698712628787932
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_CARGO_CABIN_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_CARGO_CABIN_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132519033836061718
+      "date": 132698712628727970
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_COCKPITDOOR_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_COCKPITDOOR_ALBD.PNG.DDS",
       "size": 349680,
-      "date": 132421309386742810
+      "date": 132698712672243300
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_COCKPITDOOR_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_COCKPITDOOR_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309386732811
+      "date": 132698712672233305
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_COCKPITDOOR_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_COCKPITDOOR_COMP.PNG.DDS",
       "size": 349700,
-      "date": 132421308124144244
+      "date": 132698712421918556
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_COCKPITDOOR_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_COCKPITDOOR_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_COCKPITDOOR_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421308124133221
+      "date": 132698712421898563
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_COCKPITDOOR_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_COCKPITDOOR_NORM.PNG.DDS",
       "size": 349680,
-      "date": 132421308506327069
+      "date": 132698712513539449
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_COCKPITDOOR_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_COCKPITDOOR_NORM.PNG.DDS.json",
       "size": 177,
-      "date": 132421308506257067
+      "date": 132698712513529451
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEBODY_ALBD.PNG.DDS",
-      "size": 2796344,
-      "date": 132421309872101621
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEBODY_ALBD.PNG.DDS.json",
-      "size": 102,
-      "date": 132421309871961606
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEBODY_COMP.PNG.DDS",
-      "size": 5592580,
-      "date": 132421309538496919
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEBODY_COMP.PNG.DDS.json",
-      "size": 191,
-      "date": 132421309538426908
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEBODY_NORM.PNG.DDS",
-      "size": 5592560,
-      "date": 132421309650350611
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEBODY_NORM.PNG.DDS.json",
-      "size": 160,
-      "date": 132421309650260620
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEHELICE_ALBD.PNG.DDS",
-      "size": 174904,
-      "date": 132421309651280621
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEHELICE_ALBD.PNG.DDS.json",
-      "size": 102,
-      "date": 132421309651270633
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEHELICE_COMP.PNG.DDS",
-      "size": 1398276,
-      "date": 132421309764206720
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEHELICE_COMP.PNG.DDS.json",
-      "size": 191,
-      "date": 132421309764191523
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEHELICE_NORM.PNG.DDS",
-      "size": 1398256,
-      "date": 132421310526425423
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEHELICE_NORM.PNG.DDS.json",
-      "size": 160,
-      "date": 132421310526395418
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEPART_ALBD.PNG.DDS",
-      "size": 2796344,
-      "date": 132421308505737053
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEPART_ALBD.PNG.DDS.json",
-      "size": 102,
-      "date": 132421308505687051
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEPART_COMP.PNG.DDS",
-      "size": 5592580,
-      "date": 132421309211774947
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEPART_COMP.PNG.DDS.json",
-      "size": 191,
-      "date": 132421309211724944
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEPART_NORM.PNG.DDS",
-      "size": 5592560,
-      "date": 132421309243810801
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_ENGINEPART_NORM.PNG.DDS.json",
-      "size": 160,
-      "date": 132421309243480797
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FLAPSDETAIL_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINE_GRID_ALBD.PNG.DDS",
       "size": 699192,
-      "date": 132421309030086427
+      "date": 132698712733043391
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FLAPSDETAIL_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINE_GRID_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421309029956425
+      "date": 132698712733033401
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FLAPSDETAIL_COMP.PNG.DDS",
-      "size": 1398276,
-      "date": 132421308587748624
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINE_GRID_COMP.PNG.DDS",
+      "size": 699192,
+      "date": 132698712752703580
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FLAPSDETAIL_COMP.PNG.DDS.json",
-      "size": 191,
-      "date": 132421308587728526
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINE_GRID_COMP.PNG.DDS.json",
+      "size": 166,
+      "date": 132698712752683592
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FLAPSDETAIL_NORM.PNG.DDS",
-      "size": 1398256,
-      "date": 132421308125069352
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FLAPSDETAIL_NORM.PNG.DDS.json",
-      "size": 160,
-      "date": 132421308125019355
-    },
-    {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FUSELAGE_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEBODY_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132519033844141903
+      "date": 132698712764784384
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FUSELAGE_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEBODY_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132519033844091902
+      "date": 132698712764714418
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FUSELAGE_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEBODY_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132519033820011379
+      "date": 132698712731583085
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FUSELAGE_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEBODY_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEBODY_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132519033819941524
+      "date": 132698712731503355
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FUSELAGE_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEBODY_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132519033824361452
+      "date": 132698712736831230
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_FUSELAGE_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEBODY_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132519033824151451
+      "date": 132698712736731280
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_GLASS_ALBD.PNG.DDS",
-      "size": 349680,
-      "date": 132421308404651255
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEHELICE_ALBD.PNG.DDS",
+      "size": 174904,
+      "date": 132698712737420886
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_GLASS_ALBD.PNG.DDS.json",
-      "size": 119,
-      "date": 132421308404631254
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEHELICE_ALBD.PNG.DDS.json",
+      "size": 102,
+      "date": 132698712737410895
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_GLASS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEHELICE_COMP.PNG.DDS",
       "size": 1398276,
-      "date": 132421309240325237
+      "date": 132698712751702197
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_GLASS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEHELICE_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEHELICE_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309240305245
+      "date": 132698712751651593
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT01_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEHELICE_NORM.PNG.DDS",
+      "size": 1398256,
+      "date": 132698712849058535
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEHELICE_NORM.PNG.DDS.json",
+      "size": 160,
+      "date": 132698712849038544
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEPART_ALBD.PNG.DDS",
+      "size": 2796344,
+      "date": 132698712513279602
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEPART_ALBD.PNG.DDS.json",
+      "size": 102,
+      "date": 132698712513189649
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEPART_COMP.PNG.DDS",
+      "size": 5592580,
+      "date": 132698712586691004
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEPART_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEPART_COMP.PNG.DDS.json",
+      "size": 191,
+      "date": 132698712586649861
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEPART_NORM.PNG.DDS",
+      "size": 5592560,
+      "date": 132698712602426472
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_ENGINEPART_NORM.PNG.DDS.json",
+      "size": 160,
+      "date": 132698712602366507
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FLAPSDETAIL_ALBD.PNG.DDS",
+      "size": 699192,
+      "date": 132698712543427417
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FLAPSDETAIL_ALBD.PNG.DDS.json",
+      "size": 102,
+      "date": 132698712543407429
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FLAPSDETAIL_COMP.PNG.DDS",
+      "size": 1398276,
+      "date": 132698712525355631
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FLAPSDETAIL_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FLAPSDETAIL_COMP.PNG.DDS.json",
+      "size": 191,
+      "date": 132698712525303743
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FLAPSDETAIL_NORM.PNG.DDS",
+      "size": 1398256,
+      "date": 132698712423039405
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FLAPSDETAIL_NORM.PNG.DDS.json",
+      "size": 160,
+      "date": 132698712422969440
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FUSELAGE_ALBD.PNG.DDS",
+      "size": 2796344,
+      "date": 132698712633992140
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FUSELAGE_ALBD.PNG.DDS.json",
+      "size": 102,
+      "date": 132698712633882290
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FUSELAGE_COMP.PNG.DDS",
+      "size": 5592580,
+      "date": 132698712462731695
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FUSELAGE_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FUSELAGE_COMP.PNG.DDS.json",
+      "size": 191,
+      "date": 132698712462691462
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FUSELAGE_NORM.PNG.DDS",
+      "size": 5592560,
+      "date": 132698712527444147
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_FUSELAGE_NORM.PNG.DDS.json",
+      "size": 160,
+      "date": 132698712527394190
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_GLASS_ALBD.PNG.DDS",
       "size": 349680,
-      "date": 132421309441119945
+      "date": 132698712503144185
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT01_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_GLASS_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309441109951
+      "date": 132698712503114202
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT01_COMP.PNG.DDS",
-      "size": 349700,
-      "date": 132421310423071370
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_GLASS_COMP.PNG.DDS",
+      "size": 1398276,
+      "date": 132698712600107823
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT01_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_GLASS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_GLASS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421310423061357
+      "date": 132698712600087793
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT04_ALBD.PNG.DDS",
-      "size": 87536,
-      "date": 132421308405742286
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT01_ALBD.PNG.DDS",
+      "size": 349680,
+      "date": 132698712683378965
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT04_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT01_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421308405717214
+      "date": 132698712683368970
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT04_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT01_COMP.PNG.DDS",
+      "size": 349700,
+      "date": 132698712768960548
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT01_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT01_COMP.PNG.DDS.json",
+      "size": 191,
+      "date": 132698712768919210
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT04_ALBD.PNG.DDS",
+      "size": 87536,
+      "date": 132698712503384048
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT04_ALBD.PNG.DDS.json",
+      "size": 119,
+      "date": 132698712503374053
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT04_COMP.PNG.DDS",
       "size": 87556,
-      "date": 132421309248863104
+      "date": 132698712605057396
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT04_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT04_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT04_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309248853097
+      "date": 132698712605015094
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT04_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT04_NORM.PNG.DDS",
       "size": 87536,
-      "date": 132421309119898080
+      "date": 132698712548179752
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT04_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT04_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421309119848078
+      "date": 132698712548169757
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT_EMIS.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT_EMIS.PNG.DDS",
       "size": 1398256,
-      "date": 132421309265297051
+      "date": 132698712614982899
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT_EMIS.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT_EMIS.PNG.DDS.json",
       "size": 119,
-      "date": 132421309265166465
+      "date": 132698712614952913
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT_NORM.PNG.DDS",
       "size": 87536,
-      "date": 132421308405942574
+      "date": 132698712503683875
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_HUBLOT_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_HUBLOT_NORM.PNG.DDS.json",
       "size": 177,
-      "date": 132421308405922587
+      "date": 132698712503673881
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LANDING_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LANDING_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132519033851422079
+      "date": 132698712682769309
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LANDING_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LANDING_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132519033851272070
+      "date": 132698712682699351
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LANDING_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LANDING_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132519033977975385
+      "date": 132698712848364817
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LANDING_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LANDING_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LANDING_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132519033977875375
+      "date": 132698712848287816
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LANDING_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LANDING_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132519033862142325
+      "date": 132698712740407881
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LANDING_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LANDING_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132519033862032320
+      "date": 132698712740317928
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LIVERY2_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LIVERY2_ALBD.PNG.DDS",
       "size": 349712,
-      "date": 132421309742493857
+      "date": 132698713723090742
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LIVERY2_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LIVERY2_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309742413866
+      "date": 132698713723070752
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LIVERY_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LIVERY_ALBD.PNG.DDS",
       "size": 5592560,
-      "date": 132421309415855457
+      "date": 132698712676960605
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LIVERY_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LIVERY_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309415745452
+      "date": 132698712676870650
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LOD6_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LOD6_ALBD.PNG.DDS",
       "size": 87528,
-      "date": 132542298762710475
+      "date": 132698714000867388
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_LOD6_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_LOD6_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132542298762690476
+      "date": 132698714000867388
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_PROP_BLUR_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_PROP_BLUR_ALBD.PNG.DDS",
       "size": 699216,
-      "date": 132519033821201387
+      "date": 132698712504803235
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_PROP_BLUR_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_PROP_BLUR_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132519033821161378
+      "date": 132698712504783245
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_REACTORDECAL_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_REACTORDECAL_ALBD.PNG.DDS",
       "size": 5592560,
-      "date": 132421309455818378
+      "date": 132698712694333092
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_REACTORDECAL_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_REACTORDECAL_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309455628368
+      "date": 132698712694273132
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_REACTORDECAL_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_REACTORDECAL_COMP.PNG.DDS",
       "size": 349700,
-      "date": 132421310429698747
+      "date": 132698712773108310
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_REACTORDECAL_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_REACTORDECAL_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_REACTORDECAL_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421310429688764
+      "date": 132698712773098291
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_REACTORDECAL_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_REACTORDECAL_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421309775309408
+      "date": 132698712755112207
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_REACTORDECAL_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_REACTORDECAL_NORM.PNG.DDS.json",
       "size": 177,
-      "date": 132421309775188925
+      "date": 132698712755042248
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_ALBD.PNG.DDS",
       "size": 349680,
-      "date": 132421309025145713
+      "date": 132698712540309193
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309024995713
+      "date": 132698712540289207
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_COMP.PNG.DDS",
       "size": 5636,
-      "date": 132421308907415440
+      "date": 132698712529387439
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421308907415440
+      "date": 132698712529379356
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_NORM.PNG.DDS",
       "size": 1398256,
-      "date": 132421308129758128
+      "date": 132698712463578943
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421308129728119
+      "date": 132698712463558951
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_PLUS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_PLUS_ALBD.PNG.DDS",
       "size": 349712,
-      "date": 132421309018559047
+      "date": 132698712539679558
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_PLUS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_PLUS_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309018539058
+      "date": 132698712539649577
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_PLUS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_PLUS_NORM.PNG.DDS",
       "size": 1398288,
-      "date": 132421308131104368
+      "date": 132698712464468432
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_RIBBONS_PLUS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_RIBBONS_PLUS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421308131074369
+      "date": 132698712464428460
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SMALLDOOR_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SMALLDOOR_ALBD.PNG.DDS",
       "size": 5592560,
-      "date": 132421309256143276
+      "date": 132698712609545602
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SMALLDOOR_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SMALLDOOR_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309255953275
+      "date": 132698712609455654
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SMALLDOOR_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SMALLDOOR_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421308404111884
+      "date": 132698712502598556
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SMALLDOOR_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SMALLDOOR_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SMALLDOOR_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421308404051898
+      "date": 132698712502518349
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SMALLDOOR_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SMALLDOOR_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421308497710523
+      "date": 132698712508202492
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SMALLDOOR_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SMALLDOOR_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421308497520515
+      "date": 132698712508112550
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE2_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE2_ALBD.PNG.DDS",
       "size": 5592560,
-      "date": 132421309741583847
+      "date": 132698712932314823
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE2_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE2_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421309741483839
+      "date": 132698712932214878
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE2_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE2_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421309735559340
+      "date": 132698712927762319
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE2_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE2_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE2_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309735494685
+      "date": 132698712927680914
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE2_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE2_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421309418434400
+      "date": 132698712893510972
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE2_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE2_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421309418234399
+      "date": 132698712893451003
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE_ALBD.PNG.DDS",
       "size": 5592560,
-      "date": 132421308594680892
+      "date": 132698712854671503
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421308594470875
+      "date": 132698712854551565
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421309119718074
+      "date": 132698712889538319
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309119648092
+      "date": 132698712889456880
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421309385594281
+      "date": 132698712891811950
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_SOUTE_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_SOUTE_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421309385404273
+      "date": 132698712891702005
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WING_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WING_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132519033858392239
+      "date": 132698712688635956
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WING_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WING_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132519033858332236
+      "date": 132698712688585987
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WING_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WING_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132519033919184022
+      "date": 132698712808131922
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WING_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WING_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WING_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132519033919114028
+      "date": 132698712808060622
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WING_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WING_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421309780805632
+      "date": 132698712759177587
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WING_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WING_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421309780685622
+      "date": 132698712759097628
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WINGFLAPS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WINGFLAPS_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421308102722251
+      "date": 132698712417673271
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WINGFLAPS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WINGFLAPS_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421308102672253
+      "date": 132698712417643288
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WINGFLAPS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WINGFLAPS_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421309382446026
+      "date": 132698712671671062
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WINGFLAPS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WINGFLAPS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784150000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WINGFLAPS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421309382386090
+      "date": 132698712671585208
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WINGFLAPS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WINGFLAPS_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421309035818431
+      "date": 132698712547939889
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/747_8I_AIRFRAME_WINGFLAPS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/747_8I_AIRFRAME_WINGFLAPS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421309035628424
+      "date": 132698712547889920
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_01_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_01_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311987895924
+      "date": 132698713376054642
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_01_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_01_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311987825913
+      "date": 132698713375994680
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_01_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_01_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421312608246923
+      "date": 132698713566426249
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_01_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_01_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_01_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421312608166924
+      "date": 132698713566386246
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_01_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_01_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421312411647204
+      "date": 132698713477524257
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_01_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_01_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421312411352128
+      "date": 132698713477434305
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_02_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_02_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421310994552267
+      "date": 132698713029195121
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_02_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_02_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421310994502269
+      "date": 132698713029115161
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_02_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_02_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421311792901407
+      "date": 132698713272420675
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_02_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_02_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_02_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421311792831407
+      "date": 132698713272348429
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_02_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_02_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421311522985395
+      "date": 132698713196512736
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_02_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_02_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421311522885393
+      "date": 132698713196432776
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_03_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_03_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311844732309
+      "date": 132698713301169097
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_03_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_03_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311844692301
+      "date": 132698713301079155
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_03_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_03_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421310968044245
+      "date": 132698713022223731
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_03_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_03_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_03_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421310967984195
+      "date": 132698713022183723
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_03_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_03_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421311020474104
+      "date": 132698713087410397
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_03_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_03_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421311020324097
+      "date": 132698713087290457
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BRAKE_GAUGE_ALBD.JPG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BRAKE_GAUGE_ALBD.JPG.DDS",
       "size": 699192,
-      "date": 132421312811826312
+      "date": 132698713644977934
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BRAKE_GAUGE_ALBD.JPG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BRAKE_GAUGE_ALBD.JPG.DDS.json",
       "size": 102,
-      "date": 132421312811796321
+      "date": 132698713644937960
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_KNOBS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_KNOBS_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311874075877
+      "date": 132698713355492748
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_KNOBS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_KNOBS_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311873895877
+      "date": 132698713355432782
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_KNOBS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_KNOBS_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421312808945941
+      "date": 132698713643609709
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_KNOBS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_KNOBS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_KNOBS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421312808855684
+      "date": 132698713643530002
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_KNOBS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_KNOBS_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421312367157326
+      "date": 132698713457928143
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_KNOBS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_KNOBS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421312366977317
+      "date": 132698713457818206
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311994453514
+      "date": 132698713381104696
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311994393227
+      "date": 132698713381044732
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421312516269195
+      "date": 132698713525871801
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421312516199170
+      "date": 132698713525789894
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421312394440180
+      "date": 132698713464784214
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_BUTTONS_PUSH_SWITCHES_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421312394280167
+      "date": 132698713464694266
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECAL_STITCH_ALBD.TIF.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECAL_STITCH_ALBD.TIF.DDS",
       "size": 43920,
-      "date": 132421311891978781
+      "date": 132698713368835798
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECAL_STITCH_ALBD.TIF.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECAL_STITCH_ALBD.TIF.DDS.json",
       "size": 119,
-      "date": 132421311891948782
+      "date": 132698713368825801
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECAL_STITCH_NORM.TIF.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECAL_STITCH_NORM.TIF.DDS",
       "size": 43920,
-      "date": 132421312411997203
+      "date": 132698713477744131
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECAL_STITCH_NORM.TIF.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECAL_STITCH_NORM.TIF.DDS.json",
       "size": 160,
-      "date": 132421312411967209
+      "date": 132698713477734138
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_ALBD.PNG.DDS",
       "size": 349680,
-      "date": 132421312390065027
+      "date": 132698713461612027
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132421312390025023
+      "date": 132698713461592040
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_COMP.PNG.DDS",
       "size": 349700,
-      "date": 132421312212330110
+      "date": 132698713446668453
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421312212320104
+      "date": 132698713446628601
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_EMIS.TIF.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_EMIS.TIF.DDS",
       "size": 174904,
-      "date": 132421312420156178
+      "date": 132698713482991135
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_EMIS.TIF.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_EMIS.TIF.DDS.json",
       "size": 102,
-      "date": 132421312420146170
+      "date": 132698713482981135
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_NORM.PNG.DDS",
       "size": 349680,
-      "date": 132421311856160837
+      "date": 132698713347335917
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_DECALS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_DECALS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421311856150843
+      "date": 132698713347315928
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_FLOOR_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_FLOOR_ALBD.PNG.DDS",
       "size": 699192,
-      "date": 132562345466504980
+      "date": 132698713460962395
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_FLOOR_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_FLOOR_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132562345466444815
+      "date": 132698713460922422
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_FLOOR_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_FLOOR_COMP.PNG.DDS",
       "size": 1398276,
-      "date": 132562345462274920
+      "date": 132698713442440860
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_FLOOR_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_FLOOR_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_FLOOR_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132562345462234920
+      "date": 132698713442400879
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_FLOOR_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_FLOOR_NORM.PNG.DDS",
       "size": 1398256,
-      "date": 132562345431483483
+      "date": 132698713349542857
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_FLOOR_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_FLOOR_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132562345431433486
+      "date": 132698713349522867
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_GLARESHIELD_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_GLARESHIELD_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311234746650
+      "date": 132698713101235718
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_GLARESHIELD_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_GLARESHIELD_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311234696647
+      "date": 132698713101205735
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_GLARESHIELD_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_GLARESHIELD_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421311419943980
+      "date": 132698713148786459
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_GLARESHIELD_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_GLARESHIELD_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_GLARESHIELD_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421311419863974
+      "date": 132698713148706430
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_GLARESHIELD_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_GLARESHIELD_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421311835893304
+      "date": 132698713294010650
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_GLARESHIELD_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_GLARESHIELD_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421311835683302
+      "date": 132698713293910707
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_ALBD.PNG.DDS",
       "size": 43848,
-      "date": 132421310877122221
+      "date": 132698712976560828
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421310877112231
+      "date": 132698712976550835
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_COMP.PNG.DDS",
       "size": 87588,
-      "date": 132421311813726096
+      "date": 132698713280018586
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421311813706099
+      "date": 132698713279978696
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_EMISSIVE.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_EMISSIVE.PNG.DDS",
       "size": 43848,
-      "date": 132421312714221766
+      "date": 132698713606601440
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_EMISSIVE.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_EMISSIVE.PNG.DDS.json",
       "size": 102,
-      "date": 132421312714001766
+      "date": 132698713606601440
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_NORM.PNG.DDS",
       "size": 87568,
-      "date": 132421311244490966
+      "date": 132698713108820050
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_KNOBS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_KNOBS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421311244480964
+      "date": 132698713108810058
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_RUDDER_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_RUDDER_ALBD.PNG.DDS",
       "size": 22032,
-      "date": 132519034350353962
+      "date": 132698713301438946
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_RUDDER_ALBD.PNG.DDS.FLAGS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_RUDDER_ALBD.PNG.DDS.FLAGS",
       "size": 18,
       "date": 132246925590000000
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_RUDDER_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_RUDDER_ALBD.PNG.DDS.json",
       "size": 119,
-      "date": 132519034350303970
+      "date": 132698713301428949
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_RUDDER_EMIS.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_RUDDER_EMIS.PNG.DDS",
       "size": 22032,
-      "date": 132519034343953820
+      "date": 132698713233688349
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHT_RUDDER_EMIS.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHT_RUDDER_EMIS.PNG.DDS.json",
       "size": 119,
-      "date": 132519034343923817
+      "date": 132698713233668363
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHTBULB_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHTBULB_ALBD.PNG.DDS",
       "size": 699192,
-      "date": 132421312518023502
+      "date": 132698713567655134
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHTBULB_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHTBULB_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421312517993496
+      "date": 132698713567615156
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHTBULB_EMIS.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHTBULB_EMIS.PNG.DDS",
       "size": 699192,
-      "date": 132421312360022469
+      "date": 132698713454127654
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_LIGHTBULB_EMIS.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_LIGHTBULB_EMIS.PNG.DDS.json",
       "size": 102,
-      "date": 132421312360012468
+      "date": 132698713454107663
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_MAIN_PANEL_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_MAIN_PANEL_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311012090619
+      "date": 132698713042690674
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_MAIN_PANEL_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_MAIN_PANEL_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311012030610
+      "date": 132698713042610720
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_MAIN_PANEL_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_MAIN_PANEL_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421311514217320
+      "date": 132698713186080827
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_MAIN_PANEL_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_MAIN_PANEL_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_MAIN_PANEL_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421311514157329
+      "date": 132698713186000882
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_MAIN_PANEL_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_MAIN_PANEL_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421311855580824
+      "date": 132698713346896164
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_MAIN_PANEL_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_MAIN_PANEL_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421311855480826
+      "date": 132698713346806219
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_OVERHEAD_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_OVERHEAD_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311826323808
+      "date": 132698713286421455
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_OVERHEAD_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_OVERHEAD_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311826183802
+      "date": 132698713286351489
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_OVERHEAD_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_OVERHEAD_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421310876852219
+      "date": 132698712976409756
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_OVERHEAD_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_OVERHEAD_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_OVERHEAD_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421310876782214
+      "date": 132698712976330978
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_OVERHEAD_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_OVERHEAD_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421311227043916
+      "date": 132698713095228336
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_OVERHEAD_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_OVERHEAD_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421311226863918
+      "date": 132698713095148381
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PEDESTAL_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PEDESTAL_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421312428323612
+      "date": 132698713489539214
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PEDESTAL_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PEDESTAL_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421312428173604
+      "date": 132698713489469253
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PEDESTAL_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PEDESTAL_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421312085113122
+      "date": 132698713419802036
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PEDESTAL_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PEDESTAL_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PEDESTAL_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421312085033111
+      "date": 132698713419761805
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PEDESTAL_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PEDESTAL_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132562345438853301
+      "date": 132698713368555959
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PEDESTAL_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PEDESTAL_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132562345438703314
+      "date": 132698713368476004
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PROPS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PROPS_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311883927955
+      "date": 132698713362491149
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PROPS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PROPS_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311883837951
+      "date": 132698713362401195
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PROPS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PROPS_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421312713731753
+      "date": 132698713606465524
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PROPS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PROPS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PROPS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421312713671759
+      "date": 132698713606379649
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PROPS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PROPS_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421312235066674
+      "date": 132698713452618516
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_PROPS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_PROPS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421312234666663
+      "date": 132698713452528568
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_SEATS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_SEATS_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132562345328242661
+      "date": 132698712938121996
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_SEATS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_SEATS_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132562345328182673
+      "date": 132698712938042038
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_SEATS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_SEATS_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132562345428843548
+      "date": 132698713339835112
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_SEATS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_SEATS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_SEATS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132562345428773552
+      "date": 132698713339764107
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_SEATS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_SEATS_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132562345332292562
+      "date": 132698713189080332
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_SEATS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_SEATS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132562345332192563
+      "date": 132698713188990381
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_ALBD.TIF.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_ALBD.TIF.DDS",
       "size": 5592560,
-      "date": 132580315931332513
+      "date": 132698713469621448
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_ALBD.TIF.DDS.FLAGS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_ALBD.TIF.DDS.FLAGS",
       "size": 18,
       "date": 132246925780000000
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_ALBD.TIF.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_ALBD.TIF.DDS.json",
       "size": 119,
-      "date": 132580315931242512
+      "date": 132698713469511509
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_COMP.TIF.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_COMP.TIF.DDS",
       "size": 1398276,
-      "date": 132421312111615607
+      "date": 132698713430812899
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_COMP.TIF.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_COMP.TIF.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_COMP.TIF.DDS.json",
       "size": 191,
-      "date": 132421312111595601
+      "date": 132698713430753566
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS",
       "size": 2796344,
-      "date": 132519034363054257
+      "date": 132698713482391473
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS.FLAGS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS.FLAGS",
       "size": 18,
       "date": 132246925820000000
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_EMISSIVE.TIF.DDS.json",
       "size": 102,
-      "date": 132519034363004257
+      "date": 132698713482361489
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_NORM.TIF.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_NORM.TIF.DDS",
       "size": 5592560,
-      "date": 132421311997155835
+      "date": 132698713383364669
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_TEXTS_NORM.TIF.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_TEXTS_NORM.TIF.DDS.json",
       "size": 160,
-      "date": 132421311997045841
+      "date": 132698713383284712
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_THROTTLE_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_THROTTLE_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132519034282812413
+      "date": 132698713036331142
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_THROTTLE_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_THROTTLE_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132519034282742407
+      "date": 132698713036301164
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_THROTTLE_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_THROTTLE_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132519034343773826
+      "date": 132698713233538613
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_THROTTLE_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_THROTTLE_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_THROTTLE_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132519034343713810
+      "date": 132698713233478481
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_THROTTLE_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_THROTTLE_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132519034349553946
+      "date": 132698713277407969
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_THROTTLE_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_THROTTLE_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132519034349443948
+      "date": 132698713277348003
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_YOKE_PEDALS_ALBD.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_YOKE_PEDALS_ALBD.PNG.DDS",
       "size": 2796344,
-      "date": 132421311244280962
+      "date": 132698713108630158
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_YOKE_PEDALS_ALBD.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_YOKE_PEDALS_ALBD.PNG.DDS.json",
       "size": 102,
-      "date": 132421311244230952
+      "date": 132698713108580188
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_YOKE_PEDALS_COMP.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_YOKE_PEDALS_COMP.PNG.DDS",
       "size": 5592580,
-      "date": 132421311210760992
+      "date": 132698713080463655
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_YOKE_PEDALS_COMP.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_YOKE_PEDALS_COMP.PNG.DDS.FLAGS",
+      "size": 21,
+      "date": 132648784160000000
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_YOKE_PEDALS_COMP.PNG.DDS.json",
       "size": 191,
-      "date": 132421311210700953
+      "date": 132698713080373663
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_YOKE_PEDALS_NORM.PNG.DDS",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_YOKE_PEDALS_NORM.PNG.DDS",
       "size": 5592560,
-      "date": 132421310976420381
+      "date": 132698712983678704
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/B747_COCKPIT_YOKE_PEDALS_NORM.PNG.DDS.json",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/B747_COCKPIT_YOKE_PEDALS_NORM.PNG.DDS.json",
       "size": 160,
-      "date": 132421310976230369
+      "date": 132698712983598755
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/texture.CFG",
-      "size": 201,
-      "date": 132361050520000000
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/texture.CFG",
+      "size": 248,
+      "date": 132660589620000000
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/thumbnail.JPG",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/thumbnail.JPG",
       "size": 204254,
       "date": 132297765670000000
     },
     {
-      "path": "SimObjects/Airplanes/Asobo_B747_8i/TEXTURE/thumbnail_small.JPG",
+      "path": "SimObjects/Airplanes/Asobo_B747_8i/texture/thumbnail_small.JPG",
       "size": 40291,
       "date": 132297765790000000
     },
     {
       "path": "sv-SE.locPak",
       "size": 2125,
-      "date": 132642643370878648
+      "date": 132698714003687988
     },
     {
       "path": "zh-CN.locPak",
       "size": 1989,
-      "date": 132642643370908674
+      "date": 132698714003705984
     }
   ]
 }

@@ -19,10 +19,29 @@ class AS3000_PFD extends NavSystem {
         this.addIndependentElementContainer(new NavSystemElementContainer("WindData", "WindData", new PFD_WindData()));
         this.addIndependentElementContainer(new NavSystemElementContainer("Warnings", "Warnings", this.warnings));
         this.addIndependentElementContainer(new NavSystemElementContainer("SoftKeys", "SoftKeys", new SoftKeys(AS3000_PFD_SoftKeyHtmlElement)));
-        this.maxUpdateBudget = 12;
     }
     disconnectedCallback() {
         super.disconnectedCallback();
+    }
+    Init() {
+        super.Init();
+        this.initSyntheticVision();
+    }
+    initSyntheticVision() {
+        if (SimVar.GetSimVarValue("L:XMLVAR_SyntheticVision_On", "boolean")) {
+            this.mainPage.syntheticVision = true;
+        }
+        else if (SimVar.GetSimVarValue("L:XMLVAR_SyntheticVision_Off", "boolean")) {
+            this.mainPage.syntheticVision = false;
+        }
+        if (this.mainPage.syntheticVision) {
+            diffAndSetAttribute(this.mainPage.attitude.svg, "background", "false");
+            this.getChildById("SyntheticVision").style.display = "block";
+        }
+        else {
+            diffAndSetAttribute(this.mainPage.attitude.svg, "background", "true");
+            this.getChildById("SyntheticVision").style.display = "none";
+        }
     }
     parseXMLConfig() {
         super.parseXMLConfig();
@@ -33,17 +52,9 @@ class AS3000_PFD extends NavSystem {
             reversionaryMode = this.instrumentXmlConfig.getElementsByTagName("ReversionaryMode")[0];
         }
         if (!syntheticVision || syntheticVision.textContent == "True") {
-            if (this.mainPage.attitude.svg) {
-                this.mainPage.attitude.svg.setAttribute("background", "false");
-            }
-            this.getChildById("SyntheticVision").style.display = "block";
             this.mainPage.syntheticVision = true;
         }
         else {
-            if (this.mainPage.attitude.svg) {
-                this.mainPage.attitude.svg.setAttribute("background", "true");
-            }
-            this.getChildById("SyntheticVision").style.display = "none";
             this.mainPage.syntheticVision = false;
         }
         if (reversionaryMode && reversionaryMode.textContent == "True") {
@@ -87,21 +98,21 @@ class AS3000_PFD_SoftKeyHtmlElement extends SoftKeyHtmlElement {
     fillFromElement(_elem) {
         super.fillFromElement(_elem);
         if (_elem.statusBarCallback == null) {
-            Avionics.Utils.diffAndSetAttribute(this.StatusBar, "state", "None");
+            diffAndSetAttribute(this.StatusBar, "state", "None");
         }
         else {
             if (_elem.statusBarCallback()) {
-                Avionics.Utils.diffAndSetAttribute(this.StatusBar, "state", "Active");
+                diffAndSetAttribute(this.StatusBar, "state", "Active");
             }
             else {
-                Avionics.Utils.diffAndSetAttribute(this.StatusBar, "state", "Inactive");
+                diffAndSetAttribute(this.StatusBar, "state", "Inactive");
             }
         }
         if (_elem.valueCallback == null) {
-            Avionics.Utils.diffAndSet(this.ValueElement, "");
+            diffAndSetText(this.ValueElement, "");
         }
         else {
-            Avionics.Utils.diffAndSet(this.ValueElement, _elem.valueCallback());
+            diffAndSetText(this.ValueElement, _elem.valueCallback());
         }
     }
 }
@@ -144,10 +155,10 @@ class AS3000_PFD_MainPage extends NavSystemPage {
         this.wind = this.gps.getChildById("WindData");
         this.mapInstrument.setGPS(this.gps);
         if (this.syntheticVision) {
-            this.attitude.svg.setAttribute("background", "false");
+            diffAndSetAttribute(this.attitude.svg, "background", "false");
         }
         else {
-            this.attitude.svg.setAttribute("background", "true");
+            diffAndSetAttribute(this.attitude.svg, "background", "true");
         }
         this.rootMenu.elements = [
             new AS3000_PFD_SoftKeyElement("Map Range-", this.gps.computeEvent.bind(this.gps, "RANGE_DEC")),
@@ -270,8 +281,8 @@ class AS3000_PFD_MainPage extends NavSystemPage {
     }
     toggleSVT() {
         this.syntheticVision = !this.syntheticVision;
-        Avionics.Utils.diffAndSetAttribute(this.attitude.svg, "background", (this.syntheticVision ? "false" : "true"));
-        this.syntheticVisionElement.style.display = (this.syntheticVision ? "Block" : "None");
+        diffAndSetAttribute(this.attitude.svg, "background", (this.syntheticVision ? "false" : "true"));
+        diffAndSetStyle(this.syntheticVisionElement, StyleProperty.display, (this.syntheticVision ? "Block" : "None"));
         SimVar.SetSimVarValue("L:Glasscockpit_SVTTerrain", "number", (this.syntheticVision ? 1 : 0));
     }
     getSvtStatus() {
@@ -315,12 +326,12 @@ class AS3000_PFD_BottomInfos extends NavSystemElement {
     onEnter() {
     }
     onUpdate(_deltaTime) {
-        Avionics.Utils.diffAndSet(this.tas, fastToFixed(Simplane.getTrueSpeed(), 0) + "KT");
-        Avionics.Utils.diffAndSet(this.oat, fastToFixed(SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius"), 0) + "°C");
-        Avionics.Utils.diffAndSet(this.gs, fastToFixed(SimVar.GetSimVarValue("GPS GROUND SPEED", "knots"), 0) + "KT");
-        Avionics.Utils.diffAndSet(this.isa, fastToFixed(SimVar.GetSimVarValue("STANDARD ATM TEMPERATURE", "celsius"), 0) + "°C");
-        Avionics.Utils.diffAndSet(this.utcTime, Utils.SecondsToDisplayTime(SimVar.GetGlobalVarValue("ZULU TIME", "seconds"), true, true, false));
-        Avionics.Utils.diffAndSet(this.timer, Utils.SecondsToDisplayTime(SimVar.GetSimVarValue("L:AS3000_" + this.gps.urlConfig.index + "_Timer_Value", "number") / 1000, true, true, false));
+        diffAndSetText(this.tas, fastToFixed(Simplane.getTrueSpeed(), 0) + "KT");
+        diffAndSetText(this.oat, fastToFixed(SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius"), 0) + "°C");
+        diffAndSetText(this.gs, fastToFixed(SimVar.GetSimVarValue("GPS GROUND SPEED", "knots"), 0) + "KT");
+        diffAndSetText(this.isa, fastToFixed(SimVar.GetSimVarValue("STANDARD ATM TEMPERATURE", "celsius"), 0) + "°C");
+        diffAndSetText(this.utcTime, Utils.SecondsToDisplayTime(SimVar.GetGlobalVarValue("ZULU TIME", "seconds"), true, true, false));
+        diffAndSetText(this.timer, Utils.SecondsToDisplayTime(SimVar.GetSimVarValue("L:AS3000_" + this.gps.urlConfig.index + "_Timer_Value", "number") / 1000, true, true, false));
     }
     onExit() {
     }
@@ -336,7 +347,7 @@ class AS3000_PFD_ActiveCom extends NavSystemElement {
     onEnter() {
     }
     onUpdate(_deltaTime) {
-        Avionics.Utils.diffAndSet(this.activeComFreq, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:1", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
+        diffAndSetHTML(this.activeComFreq, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:1", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
     }
     onExit() {
     }
@@ -354,14 +365,14 @@ class AS3000_PFD_ActiveNav extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         if (!SimVar.GetSimVarValue("GPS DRIVES NAV1", "Boolean")) {
-            Avionics.Utils.diffAndSetAttribute(this.NavInfos, "state", "Visible");
+            diffAndSetAttribute(this.NavInfos, "state", "Visible");
             let index = Simplane.getAutoPilotSelectedNav();
-            Avionics.Utils.diffAndSet(this.ActiveNav, "NAV" + index);
-            Avionics.Utils.diffAndSet(this.ActiveNavFreq, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:" + index, "MHz"), 2));
-            Avionics.Utils.diffAndSet(this.ActiveNavName, SimVar.GetSimVarValue("NAV SIGNAL:" + index, "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:" + index, "string") : "");
+            diffAndSetText(this.ActiveNav, "NAV" + index);
+            diffAndSetHTML(this.ActiveNavFreq, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:" + index, "MHz"), 2));
+            diffAndSetText(this.ActiveNavName, SimVar.GetSimVarValue("NAV SIGNAL:" + index, "number") > 0 ? SimVar.GetSimVarValue("NAV IDENT:" + index, "string") : "");
         }
         else {
-            Avionics.Utils.diffAndSetAttribute(this.NavInfos, "state", "Inactive");
+            diffAndSetAttribute(this.NavInfos, "state", "Inactive");
         }
     }
     onExit() {
@@ -390,7 +401,7 @@ class AS3000_PFD_AngleOfAttackIndicator extends NavSystemElement {
     onEnter() {
     }
     onUpdate(_deltaTime) {
-        this.AoaElement.setAttribute("aoa", Math.min(Math.max(Simplane.getAngleOfAttack(), 0), 16).toString());
+        diffAndSetAttribute(this.AoaElement, "aoa", Math.min(Math.max(Simplane.getAngleOfAttack(), 0), 16) + '');
     }
     onExit() {
     }
@@ -410,10 +421,10 @@ class AS3000_PFD_AngleOfAttackIndicator extends NavSystemElement {
                 break;
         }
         if (this.AoaMode == 0) {
-            this.AoaElement.style.display = "none";
+            diffAndSetStyle(this.AoaElement, StyleProperty.display, "none");
         }
         else {
-            this.AoaElement.style.display = "block";
+            diffAndSetStyle(this.AoaElement, StyleProperty.display, "block");
         }
         SimVar.SetSimVarValue("L:Glasscockpit_AOA_Mode", "number", this.AoaMode);
     }

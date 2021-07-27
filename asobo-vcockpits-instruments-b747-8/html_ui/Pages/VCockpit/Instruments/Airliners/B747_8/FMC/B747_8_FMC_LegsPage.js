@@ -70,8 +70,8 @@ class B747_8_FMC_LegsPage {
                             }
                             isDepartureWaypoint = true;
                         }
-                        let bearing = isFinite(waypoint.bearingInFP) ? waypoint.bearingInFP.toFixed(0) + "°" : "";
-                        let distance = isFinite(waypoint.cumulativeDistanceInFP) ? waypoint.cumulativeDistanceInFP.toFixed(0) + "NM" : "";
+                        let bearing = isFinite(waypoint.bearingInFP) ? fastToFixed(waypoint.bearingInFP, 0) + "°" : "";
+                        let distance = isFinite(waypoint.cumulativeDistanceInFP) ? fastToFixed(waypoint.cumulativeDistanceInFP, 0) + "NM" : "";
                         rows[2 * i] = [bearing, distance];
                         rows[2 * i + 1] = [waypoint.ident != "" ? waypoint.ident : "USR"];
                         let ii = i;
@@ -122,41 +122,41 @@ class B747_8_FMC_LegsPage {
                         else {
                             let speedConstraint = "---";
                             if (waypoint.speedConstraint > 0) {
-                                speedConstraint = waypoint.speedConstraint.toFixed(0);
+                                speedConstraint = fastToFixed(waypoint.speedConstraint, 0);
                             }
                             else {
                                 if (isLastDepartureWaypoint || isArrivalWaypoint) {
-                                    speedConstraint = fmc.getCrzManagedSpeed().toFixed(0);
+                                    speedConstraint = fastToFixed(fmc.getCrzManagedSpeed(), 0);
                                 }
                                 else if (isDepartureWaypoint) {
                                     let d = (waypointFPIndex - 1) / (fmc.flightPlanManager.getDepartureWaypointsCount() - 1 - activeWaypoint);
-                                    speedConstraint = (fmc.v2Speed * (1 - d) + fmc.getCrzManagedSpeed() * d).toFixed(0);
+                                    speedConstraint = fastToFixed((fmc.v2Speed * (1 - d) + fmc.getCrzManagedSpeed() * d), 0);
                                 }
                                 else if (isApproachWaypoint) {
                                     let predictedFlapsIndex = i + offset - (waypoints.length - 1) + 2;
                                     predictedFlapsIndex = Math.max(0, predictedFlapsIndex);
                                     console.log(waypoint.ident + " " + predictedFlapsIndex);
-                                    speedConstraint = fmc.getManagedApproachSpeed(predictedFlapsIndex).toFixed(0);
+                                    speedConstraint = fastToFixed(fmc.getManagedApproachSpeed(predictedFlapsIndex), 0);
                                 }
                             }
                             let altitudeConstraint = "-----";
                             if (waypoint.legAltitudeDescription !== 0) {
                                 if (waypoint.legAltitudeDescription === 1) {
                                     if (waypoint.legAltitude1 >= 15000) {
-                                        altitudeConstraint = "FL" + (waypoint.legAltitude1 / 100).toFixed(0);
+                                        altitudeConstraint = "FL" + fastToFixed((waypoint.legAltitude1 / 100), 0);
                                     }
                                     else {
-                                        altitudeConstraint = waypoint.legAltitude1.toFixed(0);
+                                        altitudeConstraint = fastToFixed(waypoint.legAltitude1, 0);
                                     }
                                 }
                                 if (waypoint.legAltitudeDescription === 2) {
-                                    altitudeConstraint = waypoint.legAltitude1.toFixed(0) + "A";
+                                    altitudeConstraint = fastToFixed(waypoint.legAltitude1, 0) + "A";
                                 }
                                 if (waypoint.legAltitudeDescription === 3) {
-                                    altitudeConstraint = waypoint.legAltitude1.toFixed(0) + "B";
+                                    altitudeConstraint = fastToFixed(waypoint.legAltitude1, 0) + "B";
                                 }
                                 else if (waypoint.legAltitudeDescription === 4) {
-                                    altitudeConstraint = "FL" + ((waypoint.legAltitude1 + waypoint.legAltitude2) * 0.5 / 100).toFixed(0);
+                                    altitudeConstraint = "FL" + fastToFixed(((waypoint.legAltitude1 + waypoint.legAltitude2) * 0.5 / 100), 0);
                                 }
                             }
                             else if (isDepartureWaypoint) {
@@ -164,7 +164,7 @@ class B747_8_FMC_LegsPage {
                                     altitudeConstraint = "FL" + fmc.cruiseFlightLevel;
                                 }
                                 else {
-                                    altitudeConstraint = Math.floor(waypoint.cumulativeDistanceInFP * 0.14 * 6076.118 / 10).toFixed(0) + "0";
+                                    altitudeConstraint = fastToFixed(Math.floor(waypoint.cumulativeDistanceInFP * 0.14 * 6076.118 / 10), 0) + "0";
                                 }
                             }
                             else {
@@ -209,7 +209,7 @@ class B747_8_FMC_LegsPage {
             };
         }
         fmc.setTemplate([
-            [(fmc.getIsRouteActivated() ? "MOD" : "ACT") + " RTE 1 LEGS", currentPage.toFixed(0), pageCount.toFixed(0)],
+            [(fmc.getIsRouteActivated() ? "MOD" : "ACT") + " RTE 1 LEGS", fastToFixed(currentPage, 0), fastToFixed(pageCount, 0)],
             ...rows,
             ["__FMCSEPARATOR"],
             ["\<RTE 2 LEGS", isMapModePlan ? "STEP>" : "RTE DATA>"]

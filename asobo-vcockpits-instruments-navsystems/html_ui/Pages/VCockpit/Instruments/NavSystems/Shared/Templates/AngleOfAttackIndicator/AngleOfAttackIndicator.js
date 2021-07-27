@@ -11,53 +11,53 @@ class AOAIndicator extends HTMLElement {
     }
     connectedCallback() {
         this.root = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.root.setAttribute("width", "100%");
-        this.root.setAttribute("height", "100%");
-        this.root.setAttribute("viewBox", "0 0 100 100");
+        diffAndSetAttribute(this.root, "width", "100%");
+        diffAndSetAttribute(this.root, "height", "100%");
+        diffAndSetAttribute(this.root, "viewBox", "0 0 100 100");
         this.appendChild(this.root);
         let background = document.createElementNS(Avionics.SVG.NS, "rect");
-        background.setAttribute("x", "0");
-        background.setAttribute("y", "0");
-        background.setAttribute("width", "100");
-        background.setAttribute("height", "100");
-        background.setAttribute("fill", "#1a1d21");
-        background.setAttribute("fill-opacity", "0.25");
+        diffAndSetAttribute(background, "x", "0");
+        diffAndSetAttribute(background, "y", "0");
+        diffAndSetAttribute(background, "width", "100");
+        diffAndSetAttribute(background, "height", "100");
+        diffAndSetAttribute(background, "fill", "#1a1d21");
+        diffAndSetAttribute(background, "fill-opacity", "0.25");
         this.root.appendChild(background);
         let whiteCircle = document.createElementNS(Avionics.SVG.NS, "path");
-        whiteCircle.setAttribute("d", "M10 90 A80 80 0 0 1 90 10 ");
-        whiteCircle.setAttribute("fill", "none");
-        whiteCircle.setAttribute("stroke", "white");
-        whiteCircle.setAttribute("stroke-width", "4");
+        diffAndSetAttribute(whiteCircle, "d", "M10 90 A80 80 0 0 1 90 10 ");
+        diffAndSetAttribute(whiteCircle, "fill", "none");
+        diffAndSetAttribute(whiteCircle, "stroke", "white");
+        diffAndSetAttribute(whiteCircle, "stroke-width", "4");
         this.root.appendChild(whiteCircle);
         let angleBegin = Math.PI * (1.5 - this.redPercent / 200);
         let xBegin = 90 + 80 * Math.cos(angleBegin);
         let yBegin = 90 + 80 * Math.sin(angleBegin);
         let redCircle = document.createElementNS(Avionics.SVG.NS, "path");
-        redCircle.setAttribute("d", "M" + xBegin + " " + yBegin + " A80 80 0 0 1 90 10 ");
-        redCircle.setAttribute("fill", "none");
-        redCircle.setAttribute("stroke", "red");
-        redCircle.setAttribute("stroke-width", "4");
+        diffAndSetAttribute(redCircle, "d", "M" + xBegin + " " + yBegin + " A80 80 0 0 1 90 10 ");
+        diffAndSetAttribute(redCircle, "fill", "none");
+        diffAndSetAttribute(redCircle, "stroke", "red");
+        diffAndSetAttribute(redCircle, "stroke-width", "4");
         this.root.appendChild(redCircle);
         let whiteBar = document.createElementNS(Avionics.SVG.NS, "rect");
-        whiteBar.setAttribute("x", "-10");
-        whiteBar.setAttribute("y", "90");
-        whiteBar.setAttribute("width", "15");
-        whiteBar.setAttribute("height", "2");
-        whiteBar.setAttribute("fill", "white");
-        whiteBar.setAttribute("transform", "rotate(" + this.whiteBarAngle + " 90 90)");
+        diffAndSetAttribute(whiteBar, "x", "-10");
+        diffAndSetAttribute(whiteBar, "y", "90");
+        diffAndSetAttribute(whiteBar, "width", "15");
+        diffAndSetAttribute(whiteBar, "height", "2");
+        diffAndSetAttribute(whiteBar, "fill", "white");
+        diffAndSetAttribute(whiteBar, "transform", "rotate(" + this.whiteBarAngle + " 90 90)");
         this.root.appendChild(whiteBar);
         this.cursor = document.createElementNS(Avionics.SVG.NS, "polygon");
-        this.cursor.setAttribute("points", "10,90 30,82.5 30,97.5");
-        this.cursor.setAttribute("fill", "white");
-        this.cursor.setAttribute("stroke", "black");
+        diffAndSetAttribute(this.cursor, "points", "10,90 30,82.5 30,97.5");
+        diffAndSetAttribute(this.cursor, "fill", "white");
+        diffAndSetAttribute(this.cursor, "stroke", "black");
         this.root.appendChild(this.cursor);
         let AOAText = document.createElementNS(Avionics.SVG.NS, "text");
-        AOAText.setAttribute("x", "60");
-        AOAText.setAttribute("y", "70");
-        AOAText.setAttribute("fill", "white");
-        AOAText.setAttribute("font-size", "17");
-        AOAText.setAttribute("font-family", "Roboto-Bold");
-        AOAText.textContent = "AOA";
+        diffAndSetAttribute(AOAText, "x", "60");
+        diffAndSetAttribute(AOAText, "y", "70");
+        diffAndSetAttribute(AOAText, "fill", "white");
+        diffAndSetAttribute(AOAText, "font-size", "17");
+        diffAndSetAttribute(AOAText, "font-family", "Roboto-Bold");
+        diffAndSetText(AOAText, "AOA");
         this.root.appendChild(AOAText);
     }
     attributeChangedCallback(name, oldValue, newValue) {
@@ -66,8 +66,8 @@ class AOAIndicator extends HTMLElement {
         switch (name) {
             case "aoa":
                 let value = parseFloat(newValue);
-                Avionics.Utils.diffAndSetAttribute(this.cursor, "transform", "rotate(" + (50 + value / 16 * (value < 0 ? 50 : 40)) + " 90 90)");
-                Avionics.Utils.diffAndSetAttribute(this.cursor, "fill", ((50 + value / 16 * 40) > (90 - this.redPercent) ? "red" : "white"));
+                diffAndSetAttribute(this.cursor, "transform", "rotate(" + (50 + value / 16 * (value < 0 ? 50 : 40)) + " 90 90)");
+                diffAndSetAttribute(this.cursor, "fill", ((50 + value / 16 * 40) > (90 - this.redPercent) ? "red" : "white"));
                 break;
         }
     }

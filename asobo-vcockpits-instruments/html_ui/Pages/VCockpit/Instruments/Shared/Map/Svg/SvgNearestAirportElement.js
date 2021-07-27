@@ -1,4 +1,8 @@
 class SvgNearestAirportElement extends SvgWaypointElement {
+    constructor(source) {
+        super(source);
+        this.sortIndex = 3;
+    }
     get airportClass() {
         if (this._airportClass) {
             return this._airportClass;
@@ -15,10 +19,6 @@ class SvgNearestAirportElement extends SvgWaypointElement {
     }
     class() {
         return "map-nrst-airport";
-    }
-    constructor(source) {
-        super(source);
-        this.sortIndex = 3;
     }
     imageFileName() {
         if (this.source && this.source.imageFileName) {

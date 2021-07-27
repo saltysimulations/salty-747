@@ -4,7 +4,7 @@ class ContextualMenu {
         this.elements = _elements;
     }
     Update(_gps, _maxElems = 6) {
-        _gps.contextualMenuTitle.innerHTML = this.title;
+        diffAndSetHTML(_gps.contextualMenuTitle, this.title);
         var elementsHTML = "";
         _gps.UpdateSlider(_gps.menuSlider, _gps.menuSliderCursor, _gps.contextualMenuDisplayBeginIndex, _gps.currentContextualMenu.elements.length, _maxElems);
         for (var i = _gps.contextualMenuDisplayBeginIndex; i < Math.min(this.elements.length, _gps.contextualMenuDisplayBeginIndex + _maxElems); i++) {
@@ -20,7 +20,7 @@ class ContextualMenu {
                 }
             }
         }
-        Avionics.Utils.diffAndSet(_gps.contextualMenuElements, elementsHTML);
+        diffAndSetHTML(_gps.contextualMenuElements, elementsHTML);
     }
 }
 class ContextualMenuConfirmation extends ContextualMenu {
@@ -29,15 +29,15 @@ class ContextualMenuConfirmation extends ContextualMenu {
         this.message = _message;
     }
     Update(_gps) {
-        _gps.contextualMenuTitle.innerHTML = this.title;
+        diffAndSetHTML(_gps.contextualMenuTitle, this.title);
         var ElementsHTML = "";
-        _gps.menuSlider.setAttribute("state", "Inactive");
+        diffAndSetAttribute(_gps.menuSlider, "state", "Inactive");
         ElementsHTML += '<div class="ContextualMenuElement" state="Unselected">' + this.message + '</div>';
         ElementsHTML += '<div id="ContextualMenuSeparator"></div>';
         ElementsHTML += '<div class="ContextualMenuElement Align" state="' + (_gps.cursorIndex == 0 ? 'Selected' : 'Unselected') + '">' + this.elements[0].name + '</div>';
         ElementsHTML += '<div class="ContextualMenuElement Align" state="Unselected">&nbsp;or&nbsp;</div>';
         ElementsHTML += '<div class="ContextualMenuElement Align" state="' + (_gps.cursorIndex == 1 ? 'Selected' : 'Unselected') + '">' + this.elements[1].name + '</div>';
-        _gps.contextualMenuElements.innerHTML = ElementsHTML;
+        diffAndSetHTML(_gps.contextualMenuElements, ElementsHTML);
     }
 }
 class ContextualMenuElement {

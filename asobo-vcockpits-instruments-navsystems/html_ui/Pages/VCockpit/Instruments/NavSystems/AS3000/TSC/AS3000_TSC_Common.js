@@ -22,12 +22,12 @@ class AS3000_TSC_NavButton {
         }
         if (_data.isActive) {
             this.currentState = _data;
-            this.text.innerHTML = _data.title;
-            this.img.setAttribute("src", _data.imagePath);
-            this.button.setAttribute("state", "");
+            diffAndSetHTML(this.text, _data.title);
+            diffAndSetAttribute(this.img, "src", _data.imagePath);
+            diffAndSetAttribute(this.button, "state", "");
         }
         else {
-            this.button.setAttribute("state", "Inactive");
+            diffAndSetAttribute(this.button, "state", "Inactive");
         }
     }
     deactivate(_fromPopUp = false) {
@@ -150,9 +150,7 @@ class AS3000_TSC extends NavSystemTouch {
     }
     onUpdate() {
         let title = this.getCurrentPage().name;
-        if (this.pageTitle.innerHTML != title) {
-            this.pageTitle.innerHTML = title;
-        }
+        diffAndSetHTML(this.pageTitle, title);
         SimVar.SetSimVarValue("L:AS3000_" + this.urlConfig.index + "_Timer_Value", "number", this.timer.getCurrentDisplay());
         let timeOfDay = SimVar.GetSimVarValue("E:TIME OF DAY", "number");
         let autoBright = (timeOfDay == 1 ? 1 : timeOfDay == 3 ? 0.1 : 0.35);
@@ -222,21 +220,17 @@ class AS3000_TSC extends NavSystemTouch {
         if (!_fromPopUp) {
             this.topKnobText_Save = _text;
         }
-        if (this.topKnobText.innerHTML != _text) {
-            this.topKnobText.innerHTML = _text;
-        }
+        diffAndSetHTML(this.topKnobText, _text);
     }
     setBottomKnobText(_text, _fromPopUp = false) {
         if (!_fromPopUp) {
             this.bottomKnobText_Save = _text;
         }
-        if (this.bottomKnobText.innerHTML != _text) {
-            this.bottomKnobText.innerHTML = _text;
-        }
+        diffAndSetHTML(this.bottomKnobText, _text);
     }
     rollBackKnobTexts() {
-        this.topKnobText.innerHTML = this.topKnobText_Save;
-        this.bottomKnobText.innerHTML = this.bottomKnobText_Save;
+        diffAndSetHTML(this.topKnobText, this.topKnobText_Save);
+        diffAndSetHTML(this.bottomKnobText, this.bottomKnobText_Save);
     }
     closePopUpElement() {
         super.closePopUpElement();
@@ -297,50 +291,50 @@ class AS3000_TSC_PFDHome extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         if (SimVar.GetSimVarValue("GPS DRIVES NAV1", "Boolean")) {
-            Avionics.Utils.diffAndSet(this.NavSourceButton_Value, "GPS");
+            diffAndSetText(this.NavSourceButton_Value, "GPS");
         }
         else {
             if (Simplane.getAutoPilotSelectedNav() == 1) {
-                Avionics.Utils.diffAndSet(this.NavSourceButton_Value, "NAV1");
+                diffAndSetText(this.NavSourceButton_Value, "NAV1");
             }
             else {
-                Avionics.Utils.diffAndSet(this.NavSourceButton_Value, "NAV2");
+                diffAndSetText(this.NavSourceButton_Value, "NAV2");
             }
         }
         let brg1Src = SimVar.GetSimVarValue("L:PFD_BRG1_Source", "number");
         switch (brg1Src) {
             case 0:
-                Avionics.Utils.diffAndSet(this.Bearing1Button_Value, "OFF");
+                diffAndSetText(this.Bearing1Button_Value, "OFF");
                 break;
             case 1:
-                Avionics.Utils.diffAndSet(this.Bearing1Button_Value, "NAV1");
+                diffAndSetText(this.Bearing1Button_Value, "NAV1");
                 break;
             case 2:
-                Avionics.Utils.diffAndSet(this.Bearing1Button_Value, "NAV2");
+                diffAndSetText(this.Bearing1Button_Value, "NAV2");
                 break;
             case 3:
-                Avionics.Utils.diffAndSet(this.Bearing1Button_Value, "GPS");
+                diffAndSetText(this.Bearing1Button_Value, "GPS");
                 break;
             case 4:
-                Avionics.Utils.diffAndSet(this.Bearing1Button_Value, "ADF");
+                diffAndSetText(this.Bearing1Button_Value, "ADF");
                 break;
         }
         let brg2Src = SimVar.GetSimVarValue("L:PFD_BRG2_Source", "number");
         switch (brg2Src) {
             case 0:
-                Avionics.Utils.diffAndSet(this.Bearing2Button_Value, "OFF");
+                diffAndSetText(this.Bearing2Button_Value, "OFF");
                 break;
             case 1:
-                Avionics.Utils.diffAndSet(this.Bearing2Button_Value, "NAV1");
+                diffAndSetText(this.Bearing2Button_Value, "NAV1");
                 break;
             case 2:
-                Avionics.Utils.diffAndSet(this.Bearing2Button_Value, "NAV2");
+                diffAndSetText(this.Bearing2Button_Value, "NAV2");
                 break;
             case 3:
-                Avionics.Utils.diffAndSet(this.Bearing2Button_Value, "GPS");
+                diffAndSetText(this.Bearing2Button_Value, "GPS");
                 break;
             case 4:
-                Avionics.Utils.diffAndSet(this.Bearing2Button_Value, "ADF");
+                diffAndSetText(this.Bearing2Button_Value, "ADF");
                 break;
         }
     }
@@ -402,20 +396,20 @@ class AS3000_TSC_MFDHome extends NavSystemElement {
     updateMapButtons(_newIndex = undefined) {
         let currMap = _newIndex == undefined ? SimVar.GetSimVarValue("L:AS3000_MFD_Current_Map", "number") : _newIndex;
         if (currMap == 0) {
-            Avionics.Utils.diffAndSet(this.mapButton_text, "Map Settings");
-            Avionics.Utils.diffAndSetAttribute(this.mapButton, "state", "Active");
+            diffAndSetText(this.mapButton_text, "Map Settings");
+            diffAndSetAttribute(this.mapButton, "state", "Active");
         }
         else {
-            Avionics.Utils.diffAndSet(this.mapButton_text, "Map");
-            Avionics.Utils.diffAndSetAttribute(this.mapButton, "state", "");
+            diffAndSetText(this.mapButton_text, "Map");
+            diffAndSetAttribute(this.mapButton, "state", "");
         }
         if (currMap == 2) {
-            Avionics.Utils.diffAndSet(this.weatherButton_text, "Weather Selection");
-            Avionics.Utils.diffAndSetAttribute(this.weatherButton, "state", "Active");
+            diffAndSetText(this.weatherButton_text, "Weather Selection");
+            diffAndSetAttribute(this.weatherButton, "state", "Active");
         }
         else {
-            Avionics.Utils.diffAndSet(this.weatherButton_text, "Weather");
-            Avionics.Utils.diffAndSetAttribute(this.weatherButton, "state", "");
+            diffAndSetText(this.weatherButton_text, "Weather");
+            diffAndSetAttribute(this.weatherButton, "state", "");
         }
     }
     onEnter() {
@@ -454,13 +448,13 @@ class AS3000_TSC_MapSettings extends NavSystemElement {
         let rotationMode = SimVar.GetSimVarValue("L:AS3000_MFD_MapRotationMode", "number");
         switch (rotationMode) {
             case EMapRotationMode.NorthUp:
-                Avionics.Utils.diffAndSet(this.mapOrientationButtonValue, "North Up");
+                diffAndSetText(this.mapOrientationButtonValue, "North Up");
                 break;
             case EMapRotationMode.TrackUp:
-                Avionics.Utils.diffAndSet(this.mapOrientationButtonValue, "Track Up");
+                diffAndSetText(this.mapOrientationButtonValue, "Track Up");
                 break;
             case EMapRotationMode.HDGUp:
-                Avionics.Utils.diffAndSet(this.mapOrientationButtonValue, "Heading Up");
+                diffAndSetText(this.mapOrientationButtonValue, "Heading Up");
                 break;
         }
     }
@@ -489,14 +483,14 @@ class AS3000_TSC_MapOrientationPopup extends NavSystemElement {
         this.gps.makeButton(this.orientation_Track, this.buttonClick.bind(this, EMapRotationMode.TrackUp));
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
         this.gps.activateNavButton(1, "Back", this.back.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
         this.gps.activateNavButton(2, "Home", this.backHome.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
     }
     onUpdate(_deltaTime) {
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
         this.gps.deactivateNavButton(1);
         this.gps.deactivateNavButton(2);
     }
@@ -578,28 +572,28 @@ class AS3000_TSC_WeatherSelection extends NavSystemElement {
     updateWeatherMapButtons(_newIndex = undefined) {
         let currMap = _newIndex == undefined ? SimVar.GetSimVarValue("L:AS3000_MFD_Current_WeatherMap", "number") : _newIndex;
         if (currMap == 0) {
-            Avionics.Utils.diffAndSet(this.nexradButton_text, "NEXRAD Settings");
-            Avionics.Utils.diffAndSetAttribute(this.nexradButton, "state", "Active");
+            diffAndSetText(this.nexradButton_text, "NEXRAD Settings");
+            diffAndSetAttribute(this.nexradButton, "state", "Active");
         }
         else {
-            Avionics.Utils.diffAndSet(this.nexradButton_text, "NEXRAD");
-            Avionics.Utils.diffAndSetAttribute(this.nexradButton, "state", "");
+            diffAndSetText(this.nexradButton_text, "NEXRAD");
+            diffAndSetAttribute(this.nexradButton, "state", "");
         }
         if (currMap == 1) {
-            Avionics.Utils.diffAndSet(this.wxRadarButton_text, "WX RADAR Settings");
-            Avionics.Utils.diffAndSetAttribute(this.wxRadarButton, "state", "Active");
+            diffAndSetText(this.wxRadarButton_text, "WX RADAR Settings");
+            diffAndSetAttribute(this.wxRadarButton, "state", "Active");
         }
         else {
-            Avionics.Utils.diffAndSet(this.wxRadarButton_text, "WX RADAR Horizontal");
-            Avionics.Utils.diffAndSetAttribute(this.wxRadarButton, "state", "");
+            diffAndSetText(this.wxRadarButton_text, "WX RADAR Horizontal");
+            diffAndSetAttribute(this.wxRadarButton, "state", "");
         }
         if (currMap == 2) {
-            Avionics.Utils.diffAndSet(this.wxRadarVertButton_text, "WX RADAR Settings");
-            Avionics.Utils.diffAndSetAttribute(this.wxRadarVertButton, "state", "Active");
+            diffAndSetText(this.wxRadarVertButton_text, "WX RADAR Settings");
+            diffAndSetAttribute(this.wxRadarVertButton, "state", "Active");
         }
         else {
-            Avionics.Utils.diffAndSet(this.wxRadarVertButton_text, "WX RADAR Vertical");
-            Avionics.Utils.diffAndSetAttribute(this.wxRadarVertButton, "state", "");
+            diffAndSetText(this.wxRadarVertButton_text, "WX RADAR Vertical");
+            diffAndSetAttribute(this.wxRadarVertButton, "state", "");
         }
     }
 }
@@ -844,15 +838,15 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
         this.runwaysScrollElement.update();
         if (this.airport) {
             let infos = this.airport.infos;
-            if (infos.lat && infos.long) {
+            if (infos.lat && infos.long && this.geoCalc.IsIdle()) {
                 this.geoCalc.SetParams(SimVar.GetSimVarValue("PLANE LATITUDE", "degree"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree"), infos.lat, infos.long, true);
                 this.geoCalc.Compute(this.onEndGeoCalc.bind(this));
             }
         }
     }
     onEndGeoCalc() {
-        Avionics.Utils.diffAndSet(this.bearing_value, fastToFixed(this.geoCalc.bearing, 0) + "°");
-        Avionics.Utils.diffAndSet(this.distance_value, fastToFixed(this.geoCalc.distance, 0) + "NM");
+        diffAndSetText(this.bearing_value, fastToFixed(this.geoCalc.bearing, 0) + "°");
+        diffAndSetText(this.distance_value, fastToFixed(this.geoCalc.distance, 0) + "NM");
     }
     onExit() {
         this.gps.deactivateNavButton(1);
@@ -882,60 +876,59 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
             this.airport.type = "A";
             this.gps.facilityLoader.getFacilityCB(_icao, (wp) => {
                 this.airport = wp;
-                this.onLoadEnd();
+                this.onNewInfo();
             });
         }
         else {
             this.airport = null;
-            this.onLoadEnd();
         }
     }
-    onLoadEnd() {
+    onNewInfo() {
         if (this.airport) {
             let infos = this.airport.infos;
-            this.city.textContent = infos.city ? infos.city : "";
-            this.region.textContent = infos.region ? infos.region : "";
-            this.latitude.textContent = infos.lat ? this.gps.latitudeFormat(infos.lat) : "";
-            this.longitude.textContent = infos.long ? this.gps.longitudeFormat(infos.long) : "";
-            this.elev_value.textContent = infos.coordinates && infos.coordinates.alt ? fastToFixed(infos.coordinates.alt, 0) + "FT" : "";
-            this.fuel_value.textContent = infos.fuel ? infos.fuel : "";
+            diffAndSetText(this.city, infos.city ? infos.city : "");
+            diffAndSetText(this.region, infos.region ? infos.region : "");
+            diffAndSetText(this.latitude, infos.lat ? this.gps.latitudeFormat(infos.lat) : "");
+            diffAndSetText(this.longitude, infos.long ? this.gps.longitudeFormat(infos.long) : "");
+            diffAndSetText(this.elev_value, infos.coordinates && infos.coordinates.alt ? fastToFixed(infos.coordinates.alt, 0) + "FT" : "");
+            diffAndSetText(this.fuel_value, infos.fuel ? infos.fuel : "");
             switch (infos.privateType) {
                 case 0:
-                    this.privacy.textContent = "UNKNOWN";
+                    diffAndSetText(this.privacy, "UNKNOWN");
                     break;
                 case 1:
-                    this.privacy.textContent = "PUBLIC";
+                    diffAndSetText(this.privacy, "PUBLIC");
                     break;
                 case 2:
-                    this.privacy.textContent = "MILITARY";
+                    diffAndSetText(this.privacy, "MILITARY");
                     break;
                 case 3:
-                    this.privacy.textContent = "PRIVATE";
+                    diffAndSetText(this.privacy, "PRIVATE");
                     break;
             }
-            this.airportSelection_mainText.textContent = "";
-            this.airportSelection_mainValue.textContent = infos.ident;
-            this.airportSelection_title.textContent = infos.name;
+            diffAndSetText(this.airportSelection_mainText, "");
+            diffAndSetText(this.airportSelection_mainValue, infos.ident);
+            diffAndSetText(this.airportSelection_title, infos.name);
             let symbol = infos.imageFileName();
-            this.airportSelection_symbol.setAttribute("src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
+            diffAndSetAttribute(this.airportSelection_symbol, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
             for (let i = 0; i < infos.frequencies.length; i++) {
                 if (i >= this.frequencyElements.length) {
                     let freqLine = new AS3000_TSC_AirportInfo_FreqLine();
                     freqLine.frequency = infos.frequencies[i];
                     freqLine.lineElem = document.createElement("div");
-                    freqLine.lineElem.setAttribute("class", "line");
+                    diffAndSetAttribute(freqLine.lineElem, "class", "line");
                     this.frequencyTable.appendChild(freqLine.lineElem);
                     freqLine.freqNameElem = document.createElement("div");
-                    freqLine.freqNameElem.setAttribute("class", "frequencyName");
+                    diffAndSetAttribute(freqLine.freqNameElem, "class", "frequencyName");
                     freqLine.lineElem.appendChild(freqLine.freqNameElem);
                     let buttonContainer = document.createElement("div");
-                    buttonContainer.setAttribute("class", "buttonContainer");
+                    diffAndSetAttribute(buttonContainer, "class", "buttonContainer");
                     freqLine.lineElem.appendChild(buttonContainer);
                     freqLine.buttonElem = document.createElement("div");
-                    freqLine.buttonElem.setAttribute("class", "gradientButton");
+                    diffAndSetAttribute(freqLine.buttonElem, "class", "gradientButton");
                     buttonContainer.appendChild(freqLine.buttonElem);
                     freqLine.frequencyElem = document.createElement("div");
-                    freqLine.frequencyElem.setAttribute("class", "mainText");
+                    diffAndSetAttribute(freqLine.frequencyElem, "class", "mainText");
                     freqLine.buttonElem.appendChild(freqLine.frequencyElem);
                     this.gps.makeButton(freqLine.buttonElem, this.frequencyButtonCallback.bind(this, freqLine));
                     this.frequencyElements.push(freqLine);
@@ -944,31 +937,31 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
                     }
                 }
                 this.frequencyElements[i].frequency = infos.frequencies[i];
-                this.frequencyElements[i].freqNameElem.textContent = this.frequencyElements[i].frequency.getTypeName();
-                this.frequencyElements[i].frequencyElem.textContent = this.frequencyElements[i].frequency.mhValue.toFixed(2);
-                this.frequencyElements[i].lineElem.style.display = "block";
+                diffAndSetText(this.frequencyElements[i].freqNameElem, this.frequencyElements[i].frequency.getTypeName());
+                diffAndSetText(this.frequencyElements[i].frequencyElem, fastToFixed(this.frequencyElements[i].frequency.mhValue, 3));
+                diffAndSetStyle(this.frequencyElements[i].lineElem, StyleProperty.display, "block");
             }
             for (let i = infos.frequencies.length; i < this.frequencyElements.length; i++) {
-                this.frequencyElements[i].lineElem.style.display = "none";
+                diffAndSetStyle(this.frequencyElements[i].lineElem, StyleProperty.display, "none");
             }
             for (let i = 0; i < infos.runways.length; i++) {
                 if (i >= this.runwayElements.length) {
                     let runwayLine = new AS3000_TSC_AirportInfo_RunwayLine();
                     runwayLine.runway = infos.runways[i];
                     runwayLine.lineElem = document.createElement("div");
-                    runwayLine.lineElem.setAttribute("class", "line");
+                    diffAndSetAttribute(runwayLine.lineElem, "class", "line");
                     this.runwayTable.appendChild(runwayLine.lineElem);
                     runwayLine.nameElem = document.createElement("div");
-                    runwayLine.nameElem.setAttribute("class", "name");
+                    diffAndSetAttribute(runwayLine.nameElem, "class", "name");
                     runwayLine.lineElem.appendChild(runwayLine.nameElem);
                     runwayLine.sizeElem = document.createElement("div");
-                    runwayLine.sizeElem.setAttribute("class", "size");
+                    diffAndSetAttribute(runwayLine.sizeElem, "class", "size");
                     runwayLine.lineElem.appendChild(runwayLine.sizeElem);
                     runwayLine.surfaceElem = document.createElement("div");
-                    runwayLine.surfaceElem.setAttribute("class", "surface");
+                    diffAndSetAttribute(runwayLine.surfaceElem, "class", "surface");
                     runwayLine.lineElem.appendChild(runwayLine.surfaceElem);
                     runwayLine.lightingElem = document.createElement("div");
-                    runwayLine.lightingElem.setAttribute("class", "lighting");
+                    diffAndSetAttribute(runwayLine.lightingElem, "class", "lighting");
                     runwayLine.lineElem.appendChild(runwayLine.lightingElem);
                     this.runwayElements.push(runwayLine);
                     if (i == 0) {
@@ -976,9 +969,9 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
                     }
                 }
                 this.runwayElements[i].runway = infos.runways[i];
-                this.runwayElements[i].nameElem.textContent = infos.runways[i].designation;
-                this.runwayElements[i].sizeElem.textContent = Math.round(infos.runways[i].length * 3.28084) + "FT X " + Math.round(infos.runways[i].width * 3.28084) + "FT";
-                this.runwayElements[i].surfaceElem.textContent = infos.runways[i].getSurfaceString();
+                diffAndSetText(this.runwayElements[i].nameElem, infos.runways[i].designation);
+                diffAndSetText(this.runwayElements[i].sizeElem, Math.round(infos.runways[i].length * 3.28084) + "FT X " + Math.round(infos.runways[i].width * 3.28084) + "FT");
+                diffAndSetText(this.runwayElements[i].surfaceElem, infos.runways[i].getSurfaceString());
                 let lighting = "Unknown";
                 switch (infos.runways[i].lighting) {
                     case 1:
@@ -994,11 +987,11 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
                         lighting = "Frequency";
                         break;
                 }
-                this.runwayElements[i].lightingElem.textContent = lighting;
-                this.runwayElements[i].lineElem.style.display = "block";
+                diffAndSetText(this.runwayElements[i].lightingElem, lighting);
+                diffAndSetStyle(this.runwayElements[i].lineElem, StyleProperty.display, "block");
             }
             for (let i = infos.runways.length; i < this.runwayElements.length; i++) {
-                this.runwayElements[i].lineElem.style.display = "none";
+                diffAndSetStyle(this.runwayElements[i].lineElem, StyleProperty.display, "none");
             }
             if (this.showInMap) {
                 SimVar.SetSimVarValue("L:AS3000_MFD_OverrideLatitude", "number", infos.lat);
@@ -1006,18 +999,16 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
                 SimVar.SetSimVarValue("L:AS3000_MFD_IsPositionOverride", "number", 1);
             }
         }
-        else {
-        }
     }
     switchPage(_page, _button) {
         this.gps.deactivateNavButton(5);
         this.gps.deactivateNavButton(6);
         this.currPage = _page;
-        this.centerDisplay.setAttribute("state", _page);
+        diffAndSetAttribute(this.centerDisplay, "state", _page);
         if (this.activeTab) {
-            this.activeTab.setAttribute("state", "");
+            diffAndSetAttribute(this.activeTab, "state", "");
         }
-        _button.setAttribute("state", "White");
+        diffAndSetAttribute(_button, "state", "White");
         this.activeTab = _button;
         if (_page == "Freqs") {
             this.gps.activateNavButton(5, "Up", this.scrollUpFreq.bind(this), false, "Icons/ICON_MAP_CB_UP_ARROW_1.png");
@@ -1031,7 +1022,7 @@ class AS3000_TSC_AirportInfo extends NavSystemElement {
     frequencyButtonCallback(_freqLine) {
         this.gps.deactivateNavButton(5);
         this.gps.deactivateNavButton(6);
-        this.gps.loadFrequencyWindow.element.setContext(_freqLine.frequency.mhValue.toFixed(2) + " " + this.airport.ident + " " + _freqLine.frequency.name, _freqLine.frequency.bcd16Value, _freqLine.frequency.mhValue < 118);
+        this.gps.loadFrequencyWindow.element.setContext(fastToFixed(_freqLine.frequency.mhValue, 2) + " " + this.airport.ident + " " + _freqLine.frequency.name, _freqLine.frequency.bcd16Value, _freqLine.frequency.mhValue < 118);
         this.gps.switchToPopUpPage(this.gps.loadFrequencyWindow);
     }
     scrollUpFreq() {
@@ -1124,16 +1115,16 @@ class AS3000_TSC_NRST_Airport_Line {
             let td1 = window.document.createElement("td");
             {
                 this.identButton = window.document.createElement("div");
-                this.identButton.setAttribute("class", "gradientButton");
+                diffAndSetAttribute(this.identButton, "class", "gradientButton");
                 {
                     this.ident = window.document.createElement("div");
-                    this.ident.setAttribute("class", "mainValue");
+                    diffAndSetAttribute(this.ident, "class", "mainValue");
                     this.identButton.appendChild(this.ident);
                     this.name = window.document.createElement("div");
-                    this.name.setAttribute("class", "title");
+                    diffAndSetAttribute(this.name, "class", "title");
                     this.identButton.appendChild(this.name);
                     this.symbol = window.document.createElement("img");
-                    this.symbol.setAttribute("class", "symbol");
+                    diffAndSetAttribute(this.symbol, "class", "symbol");
                     this.identButton.appendChild(this.symbol);
                 }
                 td1.appendChild(this.identButton);
@@ -1142,7 +1133,7 @@ class AS3000_TSC_NRST_Airport_Line {
             let td2 = window.document.createElement("td");
             {
                 this.bearingArrow = window.document.createElement("img");
-                this.bearingArrow.setAttribute("src", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/BlueArrow.svg");
+                diffAndSetAttribute(this.bearingArrow, "src", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/Misc/BlueArrow.svg");
                 td2.appendChild(this.bearingArrow);
                 this.bearingText = window.document.createElement("div");
                 td2.appendChild(this.bearingText);
@@ -1210,18 +1201,18 @@ class AS3000_TSC_NRST_Airport extends NavSystemElement {
                 this.airportLines.push(newLine);
             }
             let infos = this.nearestAirports.airports[i];
-            Avionics.Utils.diffAndSet(this.airportLines[i].ident, infos.ident);
-            Avionics.Utils.diffAndSet(this.airportLines[i].name, infos.name);
+            diffAndSetText(this.airportLines[i].ident, infos.ident);
+            diffAndSetText(this.airportLines[i].name, infos.name);
             let symbol = infos.imageFileName();
-            Avionics.Utils.diffAndSetAttribute(this.airportLines[i].symbol, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
-            Avionics.Utils.diffAndSetAttribute(this.airportLines[i].bearingArrow, "style", "transform: rotate(" + fastToFixed(infos.bearing - SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degree"), 3) + "deg)");
-            Avionics.Utils.diffAndSet(this.airportLines[i].bearingText, fastToFixed(infos.bearing, 0) + "°");
-            Avionics.Utils.diffAndSet(this.airportLines[i].distance, fastToFixed(infos.distance, 1) + "NM");
-            Avionics.Utils.diffAndSet(this.airportLines[i].runway, fastToFixed(infos.longestRunwayLength, 0) + "FT");
-            Avionics.Utils.diffAndSet(this.airportLines[i].appr, infos.bestApproach);
+            diffAndSetAttribute(this.airportLines[i].symbol, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
+            diffAndSetAttribute(this.airportLines[i].bearingArrow, "style", "transform: rotate(" + fastToFixed(infos.bearing - SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degree"), 3) + "deg)");
+            diffAndSetText(this.airportLines[i].bearingText, fastToFixed(infos.bearing, 0) + "°");
+            diffAndSetText(this.airportLines[i].distance, fastToFixed(infos.distance, 1) + "NM");
+            diffAndSetText(this.airportLines[i].runway, fastToFixed(infos.longestRunwayLength, 0) + "FT");
+            diffAndSetText(this.airportLines[i].appr, infos.bestApproach);
         }
         for (let i = this.nearestAirports.airports.length; i < this.airportLines.length; i++) {
-            Avionics.Utils.diffAndSetAttribute(this.airportLines[i].base, "state", "Inactive");
+            diffAndSetAttribute(this.airportLines[i].base, "state", "Inactive");
         }
     }
     onExit() {
@@ -1232,8 +1223,8 @@ class AS3000_TSC_NRST_Airport extends NavSystemElement {
         if (this.selectedElement != -1) {
             this.gps.lastRelevantICAOType = "A";
             this.gps.lastRelevantICAO = this.nearestAirports.airports[this.selectedElement].icao;
-            this.menu.setAttribute("state", "Inactive");
-            this.airportLines[this.selectedElement].identButton.setAttribute("state", "None");
+            diffAndSetAttribute(this.menu, "state", "Inactive");
+            diffAndSetAttribute(this.airportLines[this.selectedElement].identButton, "state", "None");
             this.selectedElement = -1;
         }
         SimVar.SetSimVarValue("L:AS3000_MFD_OverrideLatitude", "number", 0);
@@ -1276,16 +1267,16 @@ class AS3000_TSC_NRST_Airport extends NavSystemElement {
     clickOnElement(_index) {
         if (this.selectedElement == _index) {
             this.selectedElement = -1;
-            this.menu.setAttribute("state", "Inactive");
-            this.airportLines[_index].identButton.setAttribute("state", "None");
+            diffAndSetAttribute(this.menu, "state", "Inactive");
+            diffAndSetAttribute(this.airportLines[_index].identButton, "state", "None");
         }
         else {
             if (this.selectedElement != -1) {
-                this.airportLines[this.selectedElement].identButton.setAttribute("state", "None");
+                diffAndSetAttribute(this.airportLines[this.selectedElement].identButton, "state", "None");
             }
             this.selectedElement = _index;
-            Avionics.Utils.diffAndSetAttribute(this.menu, "state", "Active");
-            this.airportLines[_index].identButton.setAttribute("state", "SelectedWP");
+            diffAndSetAttribute(this.menu, "state", "Active");
+            diffAndSetAttribute(this.airportLines[_index].identButton, "state", "SelectedWP");
         }
         if (this.showOnMap) {
             SimVar.SetSimVarValue("L:AS3000_MFD_OverrideLatitude", "number", this.nearestAirports.airports[_index].coordinates.lat);
@@ -1313,7 +1304,7 @@ class AS3000_TSC_NRST_Airport extends NavSystemElement {
     }
     showOnMapToggle() {
         this.showOnMap = !this.showOnMap;
-        this.showOnMap_button.setAttribute("state", this.showOnMap ? "Active" : "");
+        diffAndSetAttribute(this.showOnMap_button, "state", this.showOnMap ? "Active" : "");
         if (this.showOnMap) {
             SimVar.SetSimVarValue("L:AS3000_MFD_OverrideLatitude", "number", this.nearestAirports.airports[this.selectedElement].coordinates.lat);
             SimVar.SetSimVarValue("L:AS3000_MFD_OverrideLongitude", "number", this.nearestAirports.airports[this.selectedElement].coordinates.long);
@@ -1424,7 +1415,7 @@ class AS3000_TSC_NRST_VOR extends NavSystemTouch_NRST_VOR {
     }
     clickOnFrequency(_index) {
         let infos = this.nearest.vors[_index];
-        this.gps.loadFrequencyWindow.element.setContext(infos.frequencyMHz.toFixed(2) + " " + infos.ident, infos.frequencyBCD16, true);
+        this.gps.loadFrequencyWindow.element.setContext(fastToFixed(infos.frequencyMHz, 2) + " " + infos.ident, infos.frequencyBCD16, true);
         this.gps.switchToPopUpPage(this.gps.loadFrequencyWindow);
     }
 }
@@ -1546,10 +1537,10 @@ class AS3000_TSC_LightingConfigs extends NavSystemElement {
         let backLightManual = SimVar.GetSimVarValue("L:AS3000_Brightness_Manual", "number");
         let backLightAuto = SimVar.GetSimVarValue("L:AS3000_Brightness_Auto", "number");
         let backLightValue = Math.min(1, Math.max(0, backLightManual * backLightAuto));
-        Avionics.Utils.diffAndSet(this.masterPercentText, (backLightValue * 100).toFixed(0));
+        diffAndSetText(this.masterPercentText, fastToFixed((backLightValue * 100), 0));
         let length = backLightValue * 100;
         let height = backLightValue * 30;
-        Avionics.Utils.diffAndSetAttribute(this.masterBGTriangle, "points", "0,30 " + length + "," + (30 - height) + " " + length + ",30");
+        diffAndSetAttribute(this.masterBGTriangle, "points", "0,30 " + length + "," + (30 - height) + " " + length + ",30");
         this.masterCursor.style.left = (this.cursorStartVH + (this.cursorBGWidthVH * backLightValue)) + "vh";
     }
     onLessPress() {
@@ -1661,7 +1652,7 @@ class AS3000_TSC_NavComHome extends NavSystemElement {
             let state = this.gps.blinkGetState(1000, 500) ? "Blink" : "Off";
             var regex = new RegExp('^(.{' + (this.inputIndex > 2 ? this.inputIndex + 1 : this.inputIndex) + '})(.)(.*)');
             var replace = '<span class="Writed">$1</span><span class="Writing" state="' + state + '">$2</span><span class = "ToWrite">$3</span>';
-            com1Stby = ((this.currentInput / 1000).toFixed(SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3) + " ").replace(regex, replace);
+            com1Stby = (fastToFixed((this.currentInput / 1000), SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3) + " ").replace(regex, replace);
         }
         let com2Active = this.gps.frequencyFormat(SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:2", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3);
         let com2Stby;
@@ -1672,58 +1663,48 @@ class AS3000_TSC_NavComHome extends NavSystemElement {
             let state = this.gps.blinkGetState(1000, 500) ? "Blink" : "Off";
             var regex = new RegExp('^(.{' + (this.inputIndex > 2 ? this.inputIndex + 1 : this.inputIndex) + '})(.)(.*)');
             var replace = '<span class="Writed">$1</span><span class="Writing" state="' + state + '">$2</span><span class = "ToWrite">$3</span>';
-            com2Stby = ((this.currentInput / 1000).toFixed(SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3) + " ").replace(regex, replace);
+            com2Stby = (fastToFixed((this.currentInput / 1000), SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3) + " ").replace(regex, replace);
         }
-        if (this.Com1Active_Freq.innerHTML != com1Active) {
-            this.Com1Active_Freq.innerHTML = com1Active;
-        }
-        if (this.Com1Stby_Freq.innerHTML != com1Stby) {
-            this.Com1Stby_Freq.innerHTML = com1Stby;
-        }
-        if (this.Com2Active_Freq.innerHTML != com2Active) {
-            this.Com2Active_Freq.innerHTML = com2Active;
-        }
-        if (this.Com2Stby_Freq.innerHTML != com2Stby) {
-            this.Com2Stby_Freq.innerHTML = com2Stby;
-        }
+        diffAndSetHTML(this.Com1Active_Freq, com1Active);
+        diffAndSetHTML(this.Com1Stby_Freq, com1Stby);
+        diffAndSetHTML(this.Com2Active_Freq, com2Active);
+        diffAndSetHTML(this.Com2Stby_Freq, com2Stby);
         if (this.selectedCom == 1) {
-            this.Com1Stby.setAttribute("state", "Selected");
-            this.Com2Stby.setAttribute("state", "none");
+            diffAndSetAttribute(this.Com1Stby, "state", "Selected");
+            diffAndSetAttribute(this.Com2Stby, "state", "none");
         }
         else if (this.selectedCom == 2) {
-            this.Com1Stby.setAttribute("state", "none");
-            this.Com2Stby.setAttribute("state", "Selected");
+            diffAndSetAttribute(this.Com1Stby, "state", "none");
+            diffAndSetAttribute(this.Com2Stby, "state", "Selected");
         }
         let xpdrState = SimVar.GetSimVarValue("TRANSPONDER STATE:1", "number");
         if (this.xpdrState != xpdrState) {
             this.xpdrState = xpdrState;
             switch (xpdrState) {
                 case 0:
-                    this.XPDRStatus.innerHTML = "Off";
-                    this.XPDR.setAttribute("state", "");
+                    diffAndSetText(this.XPDRStatus, "Off");
+                    diffAndSetAttribute(this.XPDR, "state", "");
                     break;
                 case 1:
-                    this.XPDRStatus.innerHTML = "STBY";
-                    this.XPDR.setAttribute("state", "");
+                    diffAndSetText(this.XPDRStatus, "STBY");
+                    diffAndSetAttribute(this.XPDR, "state", "");
                     break;
                 case 2:
-                    this.XPDRStatus.innerHTML = "TEST";
-                    this.XPDR.setAttribute("state", "");
+                    diffAndSetText(this.XPDRStatus, "TEST");
+                    diffAndSetAttribute(this.XPDR, "state", "");
                     break;
                 case 3:
-                    this.XPDRStatus.innerHTML = "ON";
-                    this.XPDR.setAttribute("state", "Green");
+                    diffAndSetText(this.XPDRStatus, "ON");
+                    diffAndSetAttribute(this.XPDR, "state", "Green");
                     break;
                 case 4:
-                    this.XPDRStatus.innerHTML = "ALT";
-                    this.XPDR.setAttribute("state", "Green");
+                    diffAndSetText(this.XPDRStatus, "ALT");
+                    diffAndSetAttribute(this.XPDR, "state", "Green");
                     break;
             }
         }
         let transponderCode = ("0000" + SimVar.GetSimVarValue("TRANSPONDER CODE:1", "number")).slice(-4);
-        if (transponderCode != this.XPDRCode.innerHTML) {
-            this.XPDRCode.innerHTML = transponderCode;
-        }
+        diffAndSetText(this.XPDRCode, transponderCode);
         let comSpacingMode = SimVar.GetSimVarValue("COM SPACING MODE:" + this.selectedCom, "Enum");
         if (comSpacingMode == 0 && this.currentInput % 25 != 0) {
             this.currentInput -= this.currentInput % 25;
@@ -1733,17 +1714,17 @@ class AS3000_TSC_NavComHome extends NavSystemElement {
         }
         if (this.identTime > 0) {
             this.identTime -= this.gps.deltaTime;
-            Avionics.Utils.diffAndSetAttribute(this.XPDRIdent, "state", "Active");
+            diffAndSetAttribute(this.XPDRIdent, "state", "Active");
         }
         else {
-            Avionics.Utils.diffAndSetAttribute(this.XPDRIdent, "state", "");
+            diffAndSetAttribute(this.XPDRIdent, "state", "");
         }
-        Avionics.Utils.diffAndSetAttribute(this.Mic_Com1_Status, "visibility", SimVar.GetSimVarValue("COM TRANSMIT:1", "Bool") ? "visible" : "hidden");
-        Avionics.Utils.diffAndSetAttribute(this.Com1Active, "state", SimVar.GetSimVarValue("COM TRANSMIT:1", "Bool") ? "Active" : "");
-        Avionics.Utils.diffAndSetAttribute(this.Mic_Com2_Status, "visibility", SimVar.GetSimVarValue("COM TRANSMIT:2", "Bool") ? "visible" : "hidden");
-        Avionics.Utils.diffAndSetAttribute(this.Com2Active, "state", SimVar.GetSimVarValue("COM TRANSMIT:2", "Bool") ? "Active" : "");
-        Avionics.Utils.diffAndSetAttribute(this.Mon_Com1_Status, "visibility", SimVar.GetSimVarValue("COM RECEIVE:1", "Bool") ? "visible" : "hidden");
-        Avionics.Utils.diffAndSetAttribute(this.Mon_Com2_Status, "visibility", SimVar.GetSimVarValue("COM RECEIVE:2", "Bool") ? "visible" : "hidden");
+        diffAndSetAttribute(this.Mic_Com1_Status, "visibility", SimVar.GetSimVarValue("COM TRANSMIT:1", "Bool") ? "visible" : "hidden");
+        diffAndSetAttribute(this.Com1Active, "state", SimVar.GetSimVarValue("COM TRANSMIT:1", "Bool") ? "Active" : "");
+        diffAndSetAttribute(this.Mic_Com2_Status, "visibility", SimVar.GetSimVarValue("COM TRANSMIT:2", "Bool") ? "visible" : "hidden");
+        diffAndSetAttribute(this.Com2Active, "state", SimVar.GetSimVarValue("COM TRANSMIT:2", "Bool") ? "Active" : "");
+        diffAndSetAttribute(this.Mon_Com1_Status, "visibility", SimVar.GetSimVarValue("COM RECEIVE:1", "Bool") ? "visible" : "hidden");
+        diffAndSetAttribute(this.Mon_Com2_Status, "visibility", SimVar.GetSimVarValue("COM RECEIVE:2", "Bool") ? "visible" : "hidden");
     }
     onExit() {
         this.gps.deactivateNavButton(1);
@@ -2060,7 +2041,7 @@ class AS3000_TSC_AudioRadios extends NavSystemElement {
         }
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
         this.gps.activateNavButton(1, "Back", this.closeWindow.bind(this), true, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
         this.gps.activateNavButton(2, "Home", this.closeWindow.bind(this), true, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
         this.gps.activateNavButton(5, "Up", this.scrollUp.bind(this), true, "Icons/ICON_MAP_CB_UP_ARROW_1.png");
@@ -2073,19 +2054,19 @@ class AS3000_TSC_AudioRadios extends NavSystemElement {
             this.scrollElement.elementSize = this.lines[0].lineElement.getBoundingClientRect().height;
         }
         this.scrollElement.update();
-        Avionics.Utils.diffAndSet(this.Nav1_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:1", "MHz"), 2));
-        Avionics.Utils.diffAndSet(this.Nav1_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV STANDBY FREQUENCY:1", "MHz"), 2));
-        Avionics.Utils.diffAndSet(this.Nav2_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:2", "MHz"), 2));
-        Avionics.Utils.diffAndSet(this.Nav2_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV STANDBY FREQUENCY:2", "MHz"), 2));
-        Avionics.Utils.diffAndSet(this.Com1_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:1", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
-        Avionics.Utils.diffAndSet(this.Com1_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM STANDBY FREQUENCY:1", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
-        Avionics.Utils.diffAndSet(this.Com2_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:2", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
-        Avionics.Utils.diffAndSet(this.Com2_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM STANDBY FREQUENCY:2", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
-        Avionics.Utils.diffAndSet(this.Adf_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("ADF ACTIVE FREQUENCY:1", "KHz"), 1));
-        Avionics.Utils.diffAndSet(this.Adf_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("ADF STANDBY FREQUENCY:1", "KHz"), 1));
+        diffAndSetHTML(this.Nav1_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:1", "MHz"), 2));
+        diffAndSetHTML(this.Nav1_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV STANDBY FREQUENCY:1", "MHz"), 2));
+        diffAndSetHTML(this.Nav2_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV ACTIVE FREQUENCY:2", "MHz"), 2));
+        diffAndSetHTML(this.Nav2_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("NAV STANDBY FREQUENCY:2", "MHz"), 2));
+        diffAndSetHTML(this.Com1_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:1", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
+        diffAndSetHTML(this.Com1_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM STANDBY FREQUENCY:1", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
+        diffAndSetHTML(this.Com2_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:2", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
+        diffAndSetHTML(this.Com2_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("COM STANDBY FREQUENCY:2", "MHz"), SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
+        diffAndSetHTML(this.Adf_Active, this.gps.frequencyFormat(SimVar.GetSimVarValue("ADF ACTIVE FREQUENCY:1", "KHz"), 1));
+        diffAndSetHTML(this.Adf_Stby, this.gps.frequencyFormat(SimVar.GetSimVarValue("ADF STANDBY FREQUENCY:1", "KHz"), 1));
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
         this.gps.deactivateNavButton(1, true);
         this.gps.deactivateNavButton(2, true);
         this.gps.deactivateNavButton(5, true);
@@ -2143,9 +2124,9 @@ class AS3000_TSC_AudioRadios extends NavSystemElement {
         }
     }
     setSelectedLine(_index) {
-        this.lines[this.selectedLine].lineElement.setAttribute("state", "");
+        diffAndSetAttribute(this.lines[this.selectedLine].lineElement, "state", "");
         this.selectedLine = _index;
-        this.lines[this.selectedLine].lineElement.setAttribute("state", "Selected");
+        diffAndSetAttribute(this.lines[this.selectedLine].lineElement, "state", "Selected");
         this.gps.setTopKnobText(this.lines[this.selectedLine].topKnobText, true);
         this.gps.setBottomKnobText(this.lines[this.selectedLine].bottomKnobText, true);
     }
@@ -2366,7 +2347,7 @@ class AS3000_TSC_SpeedKeyboard extends NavSystemElement {
         this.currentInput = _startingValue;
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
         this.isInputing = false;
         this.digits = [0, 0, 0];
         this.gps.activateNavButton(1, "Back", this.cancelEdit.bind(this), true, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
@@ -2385,15 +2366,15 @@ class AS3000_TSC_SpeedKeyboard extends NavSystemElement {
                 }
                 text += '<span class="Writing">' + this.digits[this.digits.length - 1] + '</span>';
                 this.inputChanged = false;
-                this.display.innerHTML = text;
+                diffAndSetHTML(this.display, text);
             }
         }
         else {
-            this.display.innerHTML = this.currentInput + "KT";
+            diffAndSetHTML(this.display, this.currentInput + "KT");
         }
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
         this.gps.deactivateNavButton(1, true);
         this.gps.deactivateNavButton(2, true);
         this.gps.deactivateNavButton(6, true);
@@ -2522,15 +2503,15 @@ class AS3000_TSC_TerrainAlert extends Warnings {
         }
         if (warningIndex > 0 && this.lastAcknowledged != warningIndex && this.warnings[warningIndex - 1].level > 1) {
             if (this.lastActive != warningIndex) {
-                this.window.setAttribute("state", "Active");
-                this.warning.setAttribute("state", (this.warnings[warningIndex - 1].level == 2 ? "Yellow" : "Red"));
-                this.warningContent.innerHTML = this.warnings[warningIndex - 1].longText;
+                diffAndSetAttribute(this.window, "state", "Active");
+                diffAndSetAttribute(this.warning, "state", (this.warnings[warningIndex - 1].level == 2 ? "Yellow" : "Red"));
+                diffAndSetHTML(this.warningContent, this.warnings[warningIndex - 1].longText);
                 this.lastActive = warningIndex;
             }
         }
         else {
             if (this.window.getAttribute("state") == "Active") {
-                this.window.setAttribute("state", "Inactive");
+                diffAndSetAttribute(this.window, "state", "Inactive");
                 this.lastActive = 0;
             }
         }
@@ -2548,19 +2529,19 @@ class AS3000_TSC_TerrainAlert extends Warnings {
 class AS3000_TSC_WaypointButtonElement {
     constructor() {
         this.base = window.document.createElement("div");
-        this.base.setAttribute("class", "line");
+        diffAndSetAttribute(this.base, "class", "line");
         {
             this.button = window.document.createElement("div");
-            this.button.setAttribute("class", "gradientButton");
+            diffAndSetAttribute(this.button, "class", "gradientButton");
             {
                 this.ident = window.document.createElement("div");
-                this.ident.setAttribute("class", "mainValue");
+                diffAndSetAttribute(this.ident, "class", "mainValue");
                 this.button.appendChild(this.ident);
                 this.name = window.document.createElement("div");
-                this.name.setAttribute("class", "title");
+                diffAndSetAttribute(this.name, "class", "title");
                 this.button.appendChild(this.name);
                 this.symbol = window.document.createElement("img");
-                this.symbol.setAttribute("class", "symbol");
+                diffAndSetAttribute(this.symbol, "class", "symbol");
                 this.button.appendChild(this.symbol);
             }
             this.base.appendChild(this.button);
@@ -2585,7 +2566,7 @@ class AS3000_TSC_InsertBeforeWaypoint extends NavSystemElement {
     }
     onEnter() {
         this.gps.currFlightPlanManager.updateFlightPlan();
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
         this.gps.activateNavButton(1, "Back", this.back.bind(this), true, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
         this.gps.activateNavButton(2, "Home", this.backHome.bind(this), true, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
         this.gps.activateNavButton(5, "Up", this.scrollUp.bind(this), true, "Icons/ICON_MAP_CB_UP_ARROW_1.png");
@@ -2604,17 +2585,17 @@ class AS3000_TSC_InsertBeforeWaypoint extends NavSystemElement {
                 this.elements.push(newElem);
             }
             let infos = this.gps.currFlightPlanManager.getWaypoint(i).infos;
-            Avionics.Utils.diffAndSet(this.elements[i].ident, infos.ident);
-            Avionics.Utils.diffAndSet(this.elements[i].name, infos.name);
+            diffAndSetText(this.elements[i].ident, infos.ident);
+            diffAndSetText(this.elements[i].name, infos.name);
             let symbol = infos.imageFileName();
-            Avionics.Utils.diffAndSetAttribute(this.elements[i].symbol, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
+            diffAndSetAttribute(this.elements[i].symbol, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
         }
         for (let i = this.gps.currFlightPlanManager.getWaypointsCount(); i < this.elements.length; i++) {
-            Avionics.Utils.diffAndSetAttribute(this.elements[i].base, "state", "Inactive");
+            diffAndSetAttribute(this.elements[i].base, "state", "Inactive");
         }
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
         this.gps.deactivateNavButton(1, true);
         this.gps.deactivateNavButton(2, true);
         this.gps.deactivateNavButton(4, true);
@@ -2713,15 +2694,15 @@ class AS3000_TSC_Timers extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         if (this.isCountingDown) {
-            Avionics.Utils.diffAndSetAttribute(this.UpButton, "state", "");
-            Avionics.Utils.diffAndSetAttribute(this.DownButton, "state", "Active");
+            diffAndSetAttribute(this.UpButton, "state", "");
+            diffAndSetAttribute(this.DownButton, "state", "Active");
         }
         else {
-            Avionics.Utils.diffAndSetAttribute(this.DownButton, "state", "");
-            Avionics.Utils.diffAndSetAttribute(this.UpButton, "state", "Active");
+            diffAndSetAttribute(this.DownButton, "state", "");
+            diffAndSetAttribute(this.UpButton, "state", "Active");
         }
-        Avionics.Utils.diffAndSet(this.StopButtonTitle, this.isCounting ? "Stop" : "Start");
-        Avionics.Utils.diffAndSet(this.Timer, this.formatTimeFromMS(this.getCurrentDisplay()));
+        diffAndSetText(this.StopButtonTitle, this.isCounting ? "Stop" : "Start");
+        diffAndSetText(this.Timer, this.formatTimeFromMS(this.getCurrentDisplay()));
     }
     onExit() {
         this.gps.deactivateNavButton(1);
@@ -2844,15 +2825,15 @@ class AS3000_TSC_Minimums extends NavSystemElement {
                     display += '</span><span class="Writed">';
                     zerosEnded = true;
                 }
-                display += this.digits[i].toString();
+                display += this.digits[i] + '';
             }
             display += '</span><span class="Writing">' + this.digits[this.digits.length - 1] + '</span><span class="Writed">FT</span>';
-            Avionics.Utils.diffAndSet(this.display, display);
+            diffAndSetHTML(this.display, display);
         }
         else {
             let display = '<span class="Initial">';
             display += SimVar.GetSimVarValue("L:AS3000_MinimalsValue", "number");
-            Avionics.Utils.diffAndSet(this.display, display + "FT</span>");
+            diffAndSetHTML(this.display, display + "FT</span>");
         }
     }
     onExit() {
@@ -2890,7 +2871,7 @@ class AS3000_TSC_Minimums extends NavSystemElement {
     }
     setMode(_mode) {
         this.currentMode = _mode;
-        Avionics.Utils.diffAndSetAttribute(this.tempAtDestButton, "state", (_mode == 2 ? "Active" : "Inactive"));
+        diffAndSetAttribute(this.tempAtDestButton, "state", (_mode == 2 ? "Active" : "Inactive"));
         let newValue = "";
         switch (_mode) {
             case 0:
@@ -2906,7 +2887,7 @@ class AS3000_TSC_Minimums extends NavSystemElement {
                 newValue = "Radio Alt";
                 break;
         }
-        Avionics.Utils.diffAndSet(this.typeButtonValue, newValue);
+        diffAndSetText(this.typeButtonValue, newValue);
     }
     cancelEdit() {
         this.gps.goBack();
@@ -3005,9 +2986,9 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
         this.updateDisplayedMenu();
     }
     updateDisplayedMenu() {
-        Avionics.Utils.diffAndSetAttribute(this.aoaMenu, "state", this.active == 1 ? "Active" : "Inactive");
-        Avionics.Utils.diffAndSetAttribute(this.windMenu, "state", this.active == 2 ? "Active" : "Inactive");
-        Avionics.Utils.diffAndSetAttribute(this.comSpacingSelectionMenu, "state", this.active == 3 ? "Active" : "Inactive");
+        diffAndSetAttribute(this.aoaMenu, "state", this.active == 1 ? "Active" : "Inactive");
+        diffAndSetAttribute(this.windMenu, "state", this.active == 2 ? "Active" : "Inactive");
+        diffAndSetAttribute(this.comSpacingSelectionMenu, "state", this.active == 3 ? "Active" : "Inactive");
     }
     onEnter() {
         this.gps.activateNavButton(1, "Back", this.back.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
@@ -3022,13 +3003,13 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
             this.aoaMode = aoa;
             switch (aoa) {
                 case 0:
-                    this.aoaValue.textContent = "Off";
+                    diffAndSetText(this.aoaValue, "Off");
                     break;
                 case 1:
-                    this.aoaValue.textContent = "On";
+                    diffAndSetText(this.aoaValue, "On");
                     break;
                 case 2:
-                    this.aoaValue.textContent = "Auto";
+                    diffAndSetText(this.aoaValue, "Auto");
                     break;
             }
         }
@@ -3036,16 +3017,16 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
             this.windMode = wind;
             switch (wind) {
                 case 0:
-                    this.windValue.textContent = "Off";
+                    diffAndSetText(this.windValue, "Off");
                     break;
                 case 1:
-                    this.windValue.textContent = "Option 1";
+                    diffAndSetText(this.windValue, "Option 1");
                     break;
                 case 2:
-                    this.windValue.textContent = "Option 2";
+                    diffAndSetText(this.windValue, "Option 2");
                     break;
                 case 3:
-                    this.windValue.textContent = "Option 3";
+                    diffAndSetText(this.windValue, "Option 3");
                     break;
             }
         }
@@ -3053,14 +3034,14 @@ class AS3000_TSC_PFDSettings extends NavSystemElement {
             this.comSpacingMode = comSpacing;
             switch (comSpacing) {
                 case 0:
-                    this.comSpacingValue.textContent = "25 kHz";
+                    diffAndSetText(this.comSpacingValue, "25 kHz");
                     break;
                 case 1:
-                    this.comSpacingValue.textContent = "8.33 kHz";
+                    diffAndSetText(this.comSpacingValue, "8.33 kHz");
                     break;
             }
         }
-        Avionics.Utils.diffAndSet(this.svtTerrainValue, SVTTerrainActive ? "On" : "Off");
+        diffAndSetText(this.svtTerrainValue, SVTTerrainActive ? "On" : "Off");
     }
     onExit() {
         this.gps.deactivateNavButton(1);
@@ -3097,12 +3078,12 @@ class AS3000_TSC_MinimumSource extends NavSystemElement {
         this.gps.makeButton(this.minSource_RadioAlt, this.buttonClick.bind(this, 3));
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
     }
     onUpdate(_deltaTime) {
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -3120,8 +3101,8 @@ class AS3000_TSC_AirspeedReference {
         this.valueButton = _valueButton;
         this.valueElement = _valueButton.getElementsByClassName("mainValue")[0];
         this.statusElement = _statusElem;
-        this.refSpeed = _refSpeed;
-        this.displayedSpeed = _refSpeed;
+        this.refSpeed = Math.round(_refSpeed);
+        this.displayedSpeed = this.refSpeed;
         this.displayName = _displayName;
     }
 }
@@ -3154,14 +3135,14 @@ class AS3000_TSC_SpeedBugs extends NavSystemElement {
     onUpdate(_deltaTime) {
         let nbOn = 0;
         for (let i = 0; i < this.references.length; i++) {
-            Avionics.Utils.diffAndSetAttribute(this.references[i].statusElement, "state", this.references[i].isDisplayed ? "Active" : "");
+            diffAndSetAttribute(this.references[i].statusElement, "state", this.references[i].isDisplayed ? "Active" : "");
             if (this.references[i].isDisplayed) {
                 nbOn++;
             }
-            Avionics.Utils.diffAndSet(this.references[i].valueElement, Math.round(this.references[i].displayedSpeed) + (this.references[i].displayedSpeed == this.references[i].refSpeed ? "KT" : "KT*"));
+            diffAndSetText(this.references[i].valueElement, Math.round(this.references[i].displayedSpeed) + (this.references[i].displayedSpeed == this.references[i].refSpeed ? "KT" : "KT*"));
         }
-        Avionics.Utils.diffAndSetAttribute(this.allOffButton, "state", nbOn == 0 ? "Greyed" : "");
-        Avionics.Utils.diffAndSetAttribute(this.allOnButton, "state", nbOn == this.references.length ? "Greyed" : "");
+        diffAndSetAttribute(this.allOffButton, "state", nbOn == 0 ? "Greyed" : "");
+        diffAndSetAttribute(this.allOnButton, "state", nbOn == this.references.length ? "Greyed" : "");
     }
     onExit() {
         this.gps.deactivateNavButton(1);
@@ -3230,12 +3211,12 @@ class AS3000_TSC_ConfirmationWindow extends NavSystemElement {
         this.gps.makeButton(this.button, this.onClick.bind(this));
     }
     onEnter() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
     }
     open(_text, _buttonText = "OK") {
-        this.text.innerHTML = _text;
-        this.buttonText.textContent = _buttonText;
-        this.window.setAttribute("state", "Active");
+        diffAndSetHTML(this.text, _text);
+        diffAndSetText(this.buttonText, _buttonText);
+        diffAndSetAttribute(this.window, "state", "Active");
     }
     onUpdate(_deltaTime) {
     }
@@ -3244,7 +3225,7 @@ class AS3000_TSC_ConfirmationWindow extends NavSystemElement {
     onEvent(_event) {
     }
     onClick() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
     }
 }
 class AS3000_TSC_LoadFrequencyWindow extends NavSystemElement {
@@ -3263,21 +3244,21 @@ class AS3000_TSC_LoadFrequencyWindow extends NavSystemElement {
         this.gps.makeButton(this.rightStby, this.setStandbyRight.bind(this));
     }
     onEnter() {
-        this.rootElem.setAttribute("state", "Active");
-        this.freqNameElem.textContent = this.frequencyText;
+        diffAndSetAttribute(this.rootElem, "state", "Active");
+        diffAndSetText(this.freqNameElem, this.frequencyText);
         if (this.isNav) {
-            this.titleLeftElem.textContent = "NAV1";
-            this.titleRightElem.textContent = "NAV2";
+            diffAndSetText(this.titleLeftElem, "NAV1");
+            diffAndSetText(this.titleRightElem, "NAV2");
         }
         else {
-            this.titleLeftElem.textContent = "COM1";
-            this.titleRightElem.textContent = "COM2";
+            diffAndSetText(this.titleLeftElem, "COM1");
+            diffAndSetText(this.titleRightElem, "COM2");
         }
     }
     onUpdate(_deltaTime) {
     }
     onExit() {
-        this.rootElem.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.rootElem, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -3334,13 +3315,13 @@ class AS3000_TSC_WaypointOptions extends NavSystemElement {
         this.gps.makeButton(this.showInMap_btn, this.showInMapToggle.bind(this));
     }
     onEnter() {
-        this.rootElement.setAttribute("state", "Active");
+        diffAndSetAttribute(this.rootElement, "state", "Active");
     }
     onUpdate(_deltaTime) {
-        Avionics.Utils.diffAndSetAttribute(this.showInMap_btn, "state", this.showInMapStatus_CB() ? "Active" : "");
+        diffAndSetAttribute(this.showInMap_btn, "state", this.showInMapStatus_CB() ? "Active" : "");
     }
     onExit() {
-        this.rootElement.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.rootElement, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -3384,7 +3365,7 @@ class AS3000_MapPointerControl extends NavSystemElement {
         this.touchPad.addEventListener("mousewheel", this.onMouseWheel.bind(this));
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
         this.gps.activateNavButton(1, "Back", this.gps.goBack.bind(this.gps), false, "Icons/ICON_MAP_BUTTONBAR_BACK_1.png");
         this.gps.activateNavButton(2, "Home", this.backHome.bind(this), false, "Icons/ICON_MAP_BUTTONBAR_HOME.png");
         LaunchFlowEvent("ON_MOUSERECT_HTMLEVENT", "AS3000_MFD_ActivateMapCursor");
@@ -3394,7 +3375,7 @@ class AS3000_MapPointerControl extends NavSystemElement {
     onUpdate(_deltaTime) {
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
         this.gps.deactivateNavButton(1);
         this.gps.deactivateNavButton(2);
         LaunchFlowEvent("ON_MOUSERECT_HTMLEVENT", "AS3000_MFD_DeactivateMapCursor");

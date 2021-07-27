@@ -2,9 +2,9 @@ class ArcHSIIndicator extends HSIndicator {
     createSVG() {
         Utils.RemoveAllChildren(this);
         this.root = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.root.setAttribute("width", "100%");
-        this.root.setAttribute("height", "100%");
-        this.root.setAttribute("viewBox", "-28 -15 156 116");
+        diffAndSetAttribute(this.root, "width", "100%");
+        diffAndSetAttribute(this.root, "height", "100%");
+        diffAndSetAttribute(this.root, "viewBox", "-28 -15 156 116");
         this.appendChild(this.root);
         {
             {
@@ -21,26 +21,26 @@ class ArcHSIIndicator extends HSIndicator {
                 let turnRateBackground = document.createElementNS(Avionics.SVG.NS, "path");
                 let path = "M" + beginPointBotX + " " + pointBotY + "A " + (arcRadius - arcWidth / 2) + " " + (arcRadius - arcWidth / 2) + " 0 0 1 " + endPointBotX + " " + pointBotY;
                 path += "L" + endPointTopX + " " + pointTopY + "A " + (arcRadius + arcWidth / 2) + " " + (arcRadius + arcWidth / 2) + " 0 0 0 " + beginPointTopX + " " + pointTopY;
-                turnRateBackground.setAttribute("d", path);
-                turnRateBackground.setAttribute("fill", "#1a1d21");
-                turnRateBackground.setAttribute("fill-opacity", "0.25");
+                diffAndSetAttribute(turnRateBackground, "d", path);
+                diffAndSetAttribute(turnRateBackground, "fill", "#1a1d21");
+                diffAndSetAttribute(turnRateBackground, "fill-opacity", "0.25");
                 this.root.appendChild(turnRateBackground);
                 let lines = [-18, -9, 9, 18];
                 for (let i = 0; i < lines.length; i++) {
                     let line = document.createElementNS(Avionics.SVG.NS, "rect");
-                    line.setAttribute("x", "49.5");
-                    line.setAttribute("y", (45 - arcWidth).toString());
-                    line.setAttribute("width", "1");
-                    line.setAttribute("height", arcWidth.toString());
-                    line.setAttribute("transform", "rotate(" + lines[i] + " 50 120)");
-                    line.setAttribute("fill", "white");
+                    diffAndSetAttribute(line, "x", "49.5");
+                    diffAndSetAttribute(line, "y", (45 - arcWidth) + '');
+                    diffAndSetAttribute(line, "width", "1");
+                    diffAndSetAttribute(line, "height", arcWidth + '');
+                    diffAndSetAttribute(line, "transform", "rotate(" + lines[i] + " 50 120)");
+                    diffAndSetAttribute(line, "fill", "white");
                     this.root.appendChild(line);
                 }
             }
             {
                 let turnRateArc = document.createElementNS(Avionics.SVG.NS, "path");
                 this.turnRateArc = turnRateArc;
-                turnRateArc.setAttribute("fill", "#d12bc7");
+                diffAndSetAttribute(turnRateArc, "fill", "#d12bc7");
                 this.root.appendChild(turnRateArc);
             }
         }
@@ -49,11 +49,11 @@ class ArcHSIIndicator extends HSIndicator {
             this.root.appendChild(this.backgroundCircle);
             {
                 let circle = document.createElementNS(Avionics.SVG.NS, "circle");
-                circle.setAttribute("cx", "50");
-                circle.setAttribute("cy", "120");
-                circle.setAttribute("r", "75");
-                circle.setAttribute("fill", "#1a1d21");
-                circle.setAttribute("fill-opacity", "0.25");
+                diffAndSetAttribute(circle, "cx", "50");
+                diffAndSetAttribute(circle, "cy", "120");
+                diffAndSetAttribute(circle, "r", "75");
+                diffAndSetAttribute(circle, "fill", "#1a1d21");
+                diffAndSetAttribute(circle, "fill-opacity", "0.25");
                 this.backgroundCircle.appendChild(circle);
             }
             {
@@ -61,12 +61,12 @@ class ArcHSIIndicator extends HSIndicator {
                 for (let i = 0; i < 72; i++) {
                     let line = document.createElementNS(Avionics.SVG.NS, "rect");
                     let length = i % 2 == 0 ? 4 : 2;
-                    line.setAttribute("x", "49.5");
-                    line.setAttribute("y", "45");
-                    line.setAttribute("width", "1");
-                    line.setAttribute("height", length.toString());
-                    line.setAttribute("transform", "rotate(" + ((-angle / Math.PI) * 180 + 180) + " 50 120)");
-                    line.setAttribute("fill", "white");
+                    diffAndSetAttribute(line, "x", "49.5");
+                    diffAndSetAttribute(line, "y", "45");
+                    diffAndSetAttribute(line, "width", "1");
+                    diffAndSetAttribute(line, "height", length + '');
+                    diffAndSetAttribute(line, "transform", "rotate(" + ((-angle / Math.PI) * 180 + 180) + " 50 120)");
+                    diffAndSetAttribute(line, "fill", "white");
                     angle += (2 * Math.PI) / 72;
                     this.backgroundCircle.appendChild(line);
                 }
@@ -76,30 +76,30 @@ class ArcHSIIndicator extends HSIndicator {
                 let angle = 0;
                 for (let i = 0; i < texts.length; i++) {
                     let text = document.createElementNS(Avionics.SVG.NS, "text");
-                    text.textContent = texts[i];
-                    text.setAttribute("x", "50");
-                    text.setAttribute("y", (i % 3) == 0 ? "59" : "56");
-                    text.setAttribute("fill", "white");
-                    text.setAttribute("font-size", (i % 3) == 0 ? "18" : "10");
-                    text.setAttribute("font-family", "Roboto-Bold");
-                    text.setAttribute("text-anchor", "middle");
-                    text.setAttribute("alignment-baseline", "central");
-                    text.setAttribute("transform", "rotate(" + angle + " 50 120)");
+                    diffAndSetText(text, texts[i]);
+                    diffAndSetAttribute(text, "x", "50");
+                    diffAndSetAttribute(text, "y", (i % 3) == 0 ? "59" : "56");
+                    diffAndSetAttribute(text, "fill", "white");
+                    diffAndSetAttribute(text, "font-size", (i % 3) == 0 ? "18" : "10");
+                    diffAndSetAttribute(text, "font-family", "Roboto-Bold");
+                    diffAndSetAttribute(text, "text-anchor", "middle");
+                    diffAndSetAttribute(text, "alignment-baseline", "central");
+                    diffAndSetAttribute(text, "transform", "rotate(" + angle + " 50 120)");
                     angle += 360 / texts.length;
                     this.backgroundCircle.appendChild(text);
                 }
             }
             {
                 this.headingBug = document.createElementNS(Avionics.SVG.NS, "polygon");
-                this.headingBug.setAttribute("points", "46,45 47,45 50,49 53,45 54,45 54,50 46,50");
-                this.headingBug.setAttribute("fill", "aqua");
+                diffAndSetAttribute(this.headingBug, "points", "46,45 47,45 50,49 53,45 54,45 54,50 46,50");
+                diffAndSetAttribute(this.headingBug, "fill", "aqua");
                 this.backgroundCircle.appendChild(this.headingBug);
             }
         }
         {
             this.currentTrackIndicator = document.createElementNS(Avionics.SVG.NS, "polygon");
-            this.currentTrackIndicator.setAttribute("points", "50,41 52,45 50,49 48,45");
-            this.currentTrackIndicator.setAttribute("fill", "#d12bc7");
+            diffAndSetAttribute(this.currentTrackIndicator, "points", "50,41 52,45 50,49 48,45");
+            diffAndSetAttribute(this.currentTrackIndicator, "fill", "#d12bc7");
             this.backgroundCircle.appendChild(this.currentTrackIndicator);
         }
         {
@@ -107,33 +107,33 @@ class ArcHSIIndicator extends HSIndicator {
             this.backgroundCircle.appendChild(this.course);
             {
                 this.beginArrow = document.createElementNS(Avionics.SVG.NS, "polygon");
-                this.beginArrow.setAttribute("points", "51,192 49,192 49,60 45,60 50,49 55,60 51,60");
-                this.beginArrow.setAttribute("fill", "#d12bc7");
+                diffAndSetAttribute(this.beginArrow, "points", "51,192 49,192 49,60 45,60 50,49 55,60 51,60");
+                diffAndSetAttribute(this.beginArrow, "fill", "#d12bc7");
                 this.course.appendChild(this.beginArrow);
             }
         }
         {
             let topTriangle = document.createElementNS(Avionics.SVG.NS, "polygon");
-            topTriangle.setAttribute("points", "46,42 54,42 50,48");
-            topTriangle.setAttribute("fill", "white");
-            topTriangle.setAttribute("stroke", "black");
+            diffAndSetAttribute(topTriangle, "points", "46,42 54,42 50,48");
+            diffAndSetAttribute(topTriangle, "fill", "white");
+            diffAndSetAttribute(topTriangle, "stroke", "black");
             this.root.appendChild(topTriangle);
         }
         {
             let bearingRectangle = document.createElementNS(Avionics.SVG.NS, "rect");
-            bearingRectangle.setAttribute("x", "35");
-            bearingRectangle.setAttribute("y", "30");
-            bearingRectangle.setAttribute("height", "12");
-            bearingRectangle.setAttribute("width", "30");
-            bearingRectangle.setAttribute("fill", "#1a1d21");
+            diffAndSetAttribute(bearingRectangle, "x", "35");
+            diffAndSetAttribute(bearingRectangle, "y", "30");
+            diffAndSetAttribute(bearingRectangle, "height", "12");
+            diffAndSetAttribute(bearingRectangle, "width", "30");
+            diffAndSetAttribute(bearingRectangle, "fill", "#1a1d21");
             this.root.appendChild(bearingRectangle);
             let bearingText = document.createElementNS(Avionics.SVG.NS, "text");
-            bearingText.setAttribute("fill", "white");
-            bearingText.setAttribute("text-anchor", "middle");
-            bearingText.setAttribute("x", "50");
-            bearingText.setAttribute("y", "40");
-            bearingText.setAttribute("font-size", "11");
-            bearingText.setAttribute("font-family", "Roboto-Bold");
+            diffAndSetAttribute(bearingText, "fill", "white");
+            diffAndSetAttribute(bearingText, "text-anchor", "middle");
+            diffAndSetAttribute(bearingText, "x", "50");
+            diffAndSetAttribute(bearingText, "y", "40");
+            diffAndSetAttribute(bearingText, "font-size", "11");
+            diffAndSetAttribute(bearingText, "font-family", "Roboto-Bold");
             this.bearingText = bearingText;
             this.root.appendChild(bearingText);
         }
@@ -141,197 +141,197 @@ class ArcHSIIndicator extends HSIndicator {
             return;
         {
             let headingRectangle = document.createElementNS(Avionics.SVG.NS, "rect");
-            headingRectangle.setAttribute("x", "-28");
-            headingRectangle.setAttribute("y", "48");
-            headingRectangle.setAttribute("height", "8");
-            headingRectangle.setAttribute("width", "36");
-            headingRectangle.setAttribute("fill", "#1a1d21");
-            headingRectangle.setAttribute("fill-opacity", "1");
+            diffAndSetAttribute(headingRectangle, "x", "-28");
+            diffAndSetAttribute(headingRectangle, "y", "48");
+            diffAndSetAttribute(headingRectangle, "height", "8");
+            diffAndSetAttribute(headingRectangle, "width", "36");
+            diffAndSetAttribute(headingRectangle, "fill", "#1a1d21");
+            diffAndSetAttribute(headingRectangle, "fill-opacity", "1");
             this.root.appendChild(headingRectangle);
             let headingLeftText = document.createElementNS(Avionics.SVG.NS, "text");
-            headingLeftText.textContent = "HDG";
-            headingLeftText.setAttribute("fill", "white");
-            headingLeftText.setAttribute("x", "-26");
-            headingLeftText.setAttribute("y", "54.4");
-            headingLeftText.setAttribute("font-size", "7");
-            headingLeftText.setAttribute("font-family", "Roboto");
+            diffAndSetText(headingLeftText, "HDG");
+            diffAndSetAttribute(headingLeftText, "fill", "white");
+            diffAndSetAttribute(headingLeftText, "x", "-26");
+            diffAndSetAttribute(headingLeftText, "y", "54.4");
+            diffAndSetAttribute(headingLeftText, "font-size", "7");
+            diffAndSetAttribute(headingLeftText, "font-family", "Roboto");
             this.root.appendChild(headingLeftText);
             let headingValue = document.createElementNS(Avionics.SVG.NS, "text");
-            headingValue.setAttribute("fill", "#36c8d2");
-            headingValue.setAttribute("x", "-10");
-            headingValue.setAttribute("y", "54.4");
-            headingValue.setAttribute("font-size", "7");
-            headingValue.setAttribute("font-family", "Roboto");
+            diffAndSetAttribute(headingValue, "fill", "#36c8d2");
+            diffAndSetAttribute(headingValue, "x", "-10");
+            diffAndSetAttribute(headingValue, "y", "54.4");
+            diffAndSetAttribute(headingValue, "font-size", "7");
+            diffAndSetAttribute(headingValue, "font-family", "Roboto");
             this.headingText = headingValue;
             this.root.appendChild(headingValue);
         }
         {
             let courseRectangle = document.createElementNS(Avionics.SVG.NS, "rect");
-            courseRectangle.setAttribute("x", "92");
-            courseRectangle.setAttribute("y", "48");
-            courseRectangle.setAttribute("height", "8");
-            courseRectangle.setAttribute("width", "36");
-            courseRectangle.setAttribute("fill", "#1a1d21");
+            diffAndSetAttribute(courseRectangle, "x", "92");
+            diffAndSetAttribute(courseRectangle, "y", "48");
+            diffAndSetAttribute(courseRectangle, "height", "8");
+            diffAndSetAttribute(courseRectangle, "width", "36");
+            diffAndSetAttribute(courseRectangle, "fill", "#1a1d21");
             this.root.appendChild(courseRectangle);
             let courseLeftText = document.createElementNS(Avionics.SVG.NS, "text");
-            courseLeftText.textContent = "CRS";
-            courseLeftText.setAttribute("fill", "white");
-            courseLeftText.setAttribute("x", "94");
-            courseLeftText.setAttribute("y", "54.4");
-            courseLeftText.setAttribute("font-size", "7");
-            courseLeftText.setAttribute("font-family", "Roboto");
+            diffAndSetText(courseLeftText, "CRS");
+            diffAndSetAttribute(courseLeftText, "fill", "white");
+            diffAndSetAttribute(courseLeftText, "x", "94");
+            diffAndSetAttribute(courseLeftText, "y", "54.4");
+            diffAndSetAttribute(courseLeftText, "font-size", "7");
+            diffAndSetAttribute(courseLeftText, "font-family", "Roboto");
             this.root.appendChild(courseLeftText);
             let courseValue = document.createElementNS(Avionics.SVG.NS, "text");
-            courseValue.setAttribute("fill", "#d12bc7");
-            courseValue.setAttribute("x", "110");
-            courseValue.setAttribute("y", "54.4");
-            courseValue.setAttribute("font-size", "7");
-            courseValue.setAttribute("font-family", "Roboto");
+            diffAndSetAttribute(courseValue, "fill", "#d12bc7");
+            diffAndSetAttribute(courseValue, "x", "110");
+            diffAndSetAttribute(courseValue, "y", "54.4");
+            diffAndSetAttribute(courseValue, "font-size", "7");
+            diffAndSetAttribute(courseValue, "font-family", "Roboto");
             this.courseText = courseValue;
             this.root.appendChild(courseValue);
         }
         {
             this.navSourceBg = document.createElementNS(Avionics.SVG.NS, "rect");
-            this.navSourceBg.setAttribute("fill", "#1a1d21");
-            this.navSourceBg.setAttribute("fill-opacity", "1");
-            this.navSourceBg.setAttribute("x", "27");
-            this.navSourceBg.setAttribute("y", "74.5");
-            this.navSourceBg.setAttribute("height", "7");
-            this.navSourceBg.setAttribute("width", "16");
+            diffAndSetAttribute(this.navSourceBg, "fill", "#1a1d21");
+            diffAndSetAttribute(this.navSourceBg, "fill-opacity", "1");
+            diffAndSetAttribute(this.navSourceBg, "x", "27");
+            diffAndSetAttribute(this.navSourceBg, "y", "74.5");
+            diffAndSetAttribute(this.navSourceBg, "height", "7");
+            diffAndSetAttribute(this.navSourceBg, "width", "16");
             this.root.appendChild(this.navSourceBg);
             this.navSource = document.createElementNS(Avionics.SVG.NS, "text");
-            this.navSource.textContent = "GPS";
-            this.navSource.setAttribute("fill", "#d12bc7");
-            this.navSource.setAttribute("x", "35");
-            this.navSource.setAttribute("y", "80");
-            this.navSource.setAttribute("font-size", "6");
-            this.navSource.setAttribute("font-family", "Roboto-Bold");
-            this.navSource.setAttribute("text-anchor", "middle");
+            diffAndSetText(this.navSource, "GPS");
+            diffAndSetAttribute(this.navSource, "fill", "#d12bc7");
+            diffAndSetAttribute(this.navSource, "x", "35");
+            diffAndSetAttribute(this.navSource, "y", "80");
+            diffAndSetAttribute(this.navSource, "font-size", "6");
+            diffAndSetAttribute(this.navSource, "font-family", "Roboto-Bold");
+            diffAndSetAttribute(this.navSource, "text-anchor", "middle");
             this.root.appendChild(this.navSource);
             this.flightPhaseBg = document.createElementNS(Avionics.SVG.NS, "rect");
-            this.flightPhaseBg.setAttribute("fill", "#1a1d21");
-            this.flightPhaseBg.setAttribute("fill-opacity", "1");
-            this.flightPhaseBg.setAttribute("x", "56");
-            this.flightPhaseBg.setAttribute("y", "74.5");
-            this.flightPhaseBg.setAttribute("height", "7");
-            this.flightPhaseBg.setAttribute("width", "18");
+            diffAndSetAttribute(this.flightPhaseBg, "fill", "#1a1d21");
+            diffAndSetAttribute(this.flightPhaseBg, "fill-opacity", "1");
+            diffAndSetAttribute(this.flightPhaseBg, "x", "56");
+            diffAndSetAttribute(this.flightPhaseBg, "y", "74.5");
+            diffAndSetAttribute(this.flightPhaseBg, "height", "7");
+            diffAndSetAttribute(this.flightPhaseBg, "width", "18");
             this.root.appendChild(this.flightPhaseBg);
             let flightPhase = document.createElementNS(Avionics.SVG.NS, "text");
-            flightPhase.textContent = "TERM";
-            flightPhase.setAttribute("fill", "#d12bc7");
-            flightPhase.setAttribute("x", "65");
-            flightPhase.setAttribute("y", "80");
-            flightPhase.setAttribute("font-size", "6");
-            flightPhase.setAttribute("font-family", "Roboto-Bold");
-            flightPhase.setAttribute("text-anchor", "middle");
+            diffAndSetText(flightPhase, "TERM");
+            diffAndSetAttribute(flightPhase, "fill", "#d12bc7");
+            diffAndSetAttribute(flightPhase, "x", "65");
+            diffAndSetAttribute(flightPhase, "y", "80");
+            diffAndSetAttribute(flightPhase, "font-size", "6");
+            diffAndSetAttribute(flightPhase, "font-family", "Roboto-Bold");
+            diffAndSetAttribute(flightPhase, "text-anchor", "middle");
             this.flightPhase = flightPhase;
             this.root.appendChild(flightPhase);
         }
         {
             let cdiBackground = document.createElementNS(Avionics.SVG.NS, "rect");
-            cdiBackground.setAttribute("x", "10");
-            cdiBackground.setAttribute("y", "90");
-            cdiBackground.setAttribute("width", "80");
-            cdiBackground.setAttribute("height", "15");
-            cdiBackground.setAttribute("fill", "#1a1d21");
-            cdiBackground.setAttribute("stroke", "white");
-            cdiBackground.setAttribute("stroke-width", "1");
+            diffAndSetAttribute(cdiBackground, "x", "10");
+            diffAndSetAttribute(cdiBackground, "y", "90");
+            diffAndSetAttribute(cdiBackground, "width", "80");
+            diffAndSetAttribute(cdiBackground, "height", "15");
+            diffAndSetAttribute(cdiBackground, "fill", "#1a1d21");
+            diffAndSetAttribute(cdiBackground, "stroke", "white");
+            diffAndSetAttribute(cdiBackground, "stroke-width", "1");
             this.root.appendChild(cdiBackground);
             let circlePosition = [-30, -15, 15, 30];
             for (let i = 0; i < circlePosition.length; i++) {
                 let CDICircle = document.createElementNS(Avionics.SVG.NS, "circle");
-                CDICircle.setAttribute("cx", (50 + circlePosition[i]).toString());
-                CDICircle.setAttribute("cy", "96");
-                CDICircle.setAttribute("r", "1.5");
-                CDICircle.setAttribute("stroke", "white");
-                CDICircle.setAttribute("stroke-width", "0.75");
-                CDICircle.setAttribute("fill-opacity", "0");
+                diffAndSetAttribute(CDICircle, "cx", (50 + circlePosition[i]) + '');
+                diffAndSetAttribute(CDICircle, "cy", "96");
+                diffAndSetAttribute(CDICircle, "r", "1.5");
+                diffAndSetAttribute(CDICircle, "stroke", "white");
+                diffAndSetAttribute(CDICircle, "stroke-width", "0.75");
+                diffAndSetAttribute(CDICircle, "fill-opacity", "0");
                 this.root.appendChild(CDICircle);
             }
             this.cdiCentralLine = document.createElementNS(Avionics.SVG.NS, "rect");
-            this.cdiCentralLine.setAttribute("x", "49.75");
-            this.cdiCentralLine.setAttribute("y", "90");
-            this.cdiCentralLine.setAttribute("width", "0.5");
-            this.cdiCentralLine.setAttribute("height", "15");
-            this.cdiCentralLine.setAttribute("fill", "white");
+            diffAndSetAttribute(this.cdiCentralLine, "x", "49.75");
+            diffAndSetAttribute(this.cdiCentralLine, "y", "90");
+            diffAndSetAttribute(this.cdiCentralLine, "width", "0.5");
+            diffAndSetAttribute(this.cdiCentralLine, "height", "15");
+            diffAndSetAttribute(this.cdiCentralLine, "fill", "white");
             this.root.appendChild(this.cdiCentralLine);
             {
                 let CDISvg = document.createElementNS(Avionics.SVG.NS, "svg");
-                CDISvg.setAttribute("x", "10");
-                CDISvg.setAttribute("y", "90");
-                CDISvg.setAttribute("width", "80");
-                CDISvg.setAttribute("height", "15");
-                CDISvg.setAttribute("viewBox", "10 90 80 15");
+                diffAndSetAttribute(CDISvg, "x", "10");
+                diffAndSetAttribute(CDISvg, "y", "90");
+                diffAndSetAttribute(CDISvg, "width", "80");
+                diffAndSetAttribute(CDISvg, "height", "15");
+                diffAndSetAttribute(CDISvg, "viewBox", "10 90 80 15");
                 this.root.appendChild(CDISvg);
                 this.CDI = document.createElementNS(Avionics.SVG.NS, "g");
                 CDISvg.appendChild(this.CDI);
                 this.toIndicator = document.createElementNS(Avionics.SVG.NS, "polygon");
-                this.toIndicator.setAttribute("points", "50,94 46,98 54,98");
-                this.toIndicator.setAttribute("fill", "#d12bc7");
+                diffAndSetAttribute(this.toIndicator, "points", "50,94 46,98 54,98");
+                diffAndSetAttribute(this.toIndicator, "fill", "#d12bc7");
                 this.CDI.appendChild(this.toIndicator);
                 this.fromIndicator = document.createElementNS(Avionics.SVG.NS, "polygon");
-                this.fromIndicator.setAttribute("points", "50,98 46,94 54,94");
-                this.fromIndicator.setAttribute("fill", "#d12bc7");
+                diffAndSetAttribute(this.fromIndicator, "points", "50,98 46,94 54,94");
+                diffAndSetAttribute(this.fromIndicator, "fill", "#d12bc7");
                 this.CDI.appendChild(this.fromIndicator);
             }
             this.crossTrackError = document.createElementNS(Avionics.SVG.NS, "text");
-            this.crossTrackError.textContent = "3.15NM";
-            this.crossTrackError.setAttribute("fill", "#d12bc7");
-            this.crossTrackError.setAttribute("x", "50");
-            this.crossTrackError.setAttribute("y", "99");
-            this.crossTrackError.setAttribute("font-size", "6");
-            this.crossTrackError.setAttribute("font-family", "Roboto-Bold");
-            this.crossTrackError.setAttribute("text-anchor", "middle");
+            diffAndSetText(this.crossTrackError, "3.15NM");
+            diffAndSetAttribute(this.crossTrackError, "fill", "#d12bc7");
+            diffAndSetAttribute(this.crossTrackError, "x", "50");
+            diffAndSetAttribute(this.crossTrackError, "y", "99");
+            diffAndSetAttribute(this.crossTrackError, "font-size", "6");
+            diffAndSetAttribute(this.crossTrackError, "font-family", "Roboto-Bold");
+            diffAndSetAttribute(this.crossTrackError, "text-anchor", "middle");
             this.root.appendChild(this.crossTrackError);
         }
         {
             {
                 this.dme = document.createElementNS(Avionics.SVG.NS, "g");
-                this.dme.setAttribute("display", "none");
+                diffAndSetAttribute(this.dme, "display", "none");
                 this.root.appendChild(this.dme);
                 let dmeZone = document.createElementNS(Avionics.SVG.NS, "rect");
-                dmeZone.setAttribute("x", "-15");
-                dmeZone.setAttribute("y", "20");
-                dmeZone.setAttribute("height", "26");
-                dmeZone.setAttribute("width", "36");
-                dmeZone.setAttribute("fill", "#1a1d21");
-                dmeZone.setAttribute("fill-opacity", "1");
+                diffAndSetAttribute(dmeZone, "x", "-15");
+                diffAndSetAttribute(dmeZone, "y", "20");
+                diffAndSetAttribute(dmeZone, "height", "26");
+                diffAndSetAttribute(dmeZone, "width", "36");
+                diffAndSetAttribute(dmeZone, "fill", "#1a1d21");
+                diffAndSetAttribute(dmeZone, "fill-opacity", "1");
                 this.dme.appendChild(dmeZone);
                 let dme1 = document.createElementNS(Avionics.SVG.NS, "text");
-                dme1.textContent = "DME";
-                dme1.setAttribute("fill", "white");
-                dme1.setAttribute("x", "-13");
-                dme1.setAttribute("y", "26");
-                dme1.setAttribute("font-size", "6");
-                dme1.setAttribute("font-family", "Roboto-Bold");
-                dme1.setAttribute("text-anchor", "start");
+                diffAndSetText(dme1, "DME");
+                diffAndSetAttribute(dme1, "fill", "white");
+                diffAndSetAttribute(dme1, "x", "-13");
+                diffAndSetAttribute(dme1, "y", "26");
+                diffAndSetAttribute(dme1, "font-size", "6");
+                diffAndSetAttribute(dme1, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(dme1, "text-anchor", "start");
                 this.dme.appendChild(dme1);
                 this.dmeSource = document.createElementNS(Avionics.SVG.NS, "text");
-                this.dmeSource.textContent = "NAV1";
-                this.dmeSource.setAttribute("fill", "#36c8d2");
-                this.dmeSource.setAttribute("x", "-13");
-                this.dmeSource.setAttribute("y", "32");
-                this.dmeSource.setAttribute("font-size", "6");
-                this.dmeSource.setAttribute("font-family", "Roboto-Bold");
-                this.dmeSource.setAttribute("text-anchor", "start");
+                diffAndSetText(this.dmeSource, "NAV1");
+                diffAndSetAttribute(this.dmeSource, "fill", "#36c8d2");
+                diffAndSetAttribute(this.dmeSource, "x", "-13");
+                diffAndSetAttribute(this.dmeSource, "y", "32");
+                diffAndSetAttribute(this.dmeSource, "font-size", "6");
+                diffAndSetAttribute(this.dmeSource, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(this.dmeSource, "text-anchor", "start");
                 this.dme.appendChild(this.dmeSource);
                 this.dmeIdent = document.createElementNS(Avionics.SVG.NS, "text");
-                this.dmeIdent.textContent = "117.80";
-                this.dmeIdent.setAttribute("fill", "#36c8d2");
-                this.dmeIdent.setAttribute("x", "-13");
-                this.dmeIdent.setAttribute("y", "38");
-                this.dmeIdent.setAttribute("font-size", "6");
-                this.dmeIdent.setAttribute("font-family", "Roboto-Bold");
-                this.dmeIdent.setAttribute("text-anchor", "start");
+                diffAndSetText(this.dmeIdent, "117.80");
+                diffAndSetAttribute(this.dmeIdent, "fill", "#36c8d2");
+                diffAndSetAttribute(this.dmeIdent, "x", "-13");
+                diffAndSetAttribute(this.dmeIdent, "y", "38");
+                diffAndSetAttribute(this.dmeIdent, "font-size", "6");
+                diffAndSetAttribute(this.dmeIdent, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(this.dmeIdent, "text-anchor", "start");
                 this.dme.appendChild(this.dmeIdent);
                 this.dmeDistance = document.createElementNS(Avionics.SVG.NS, "text");
-                this.dmeDistance.textContent = "97.7NM";
-                this.dmeDistance.setAttribute("fill", "white");
-                this.dmeDistance.setAttribute("x", "-13");
-                this.dmeDistance.setAttribute("y", "44");
-                this.dmeDistance.setAttribute("font-size", "6");
-                this.dmeDistance.setAttribute("font-family", "Roboto-Bold");
-                this.dmeDistance.setAttribute("text-anchor", "start");
+                diffAndSetText(this.dmeDistance, "97.7NM");
+                diffAndSetAttribute(this.dmeDistance, "fill", "white");
+                diffAndSetAttribute(this.dmeDistance, "x", "-13");
+                diffAndSetAttribute(this.dmeDistance, "y", "44");
+                diffAndSetAttribute(this.dmeDistance, "font-size", "6");
+                diffAndSetAttribute(this.dmeDistance, "font-family", "Roboto-Bold");
+                diffAndSetAttribute(this.dmeDistance, "text-anchor", "start");
                 this.dme.appendChild(this.dmeDistance);
             }
         }
@@ -342,10 +342,10 @@ class ArcHSIIndicator extends HSIndicator {
                 this.isDmeDisplayed = !this.isDmeDisplayed;
                 if (this.dme) {
                     if (this.isDmeDisplayed) {
-                        this.dme.setAttribute("display", "inherit");
+                        diffAndSetAttribute(this.dme, "display", "inherit");
                     }
                     else {
-                        this.dme.setAttribute("display", "none");
+                        diffAndSetAttribute(this.dme, "display", "none");
                     }
                 }
                 break;
@@ -354,29 +354,29 @@ class ArcHSIIndicator extends HSIndicator {
             return;
         switch (name) {
             case "rotation":
-                this.backgroundCircle.setAttribute("transform", "rotate(" + (-newValue) + " 50 120)");
+                diffAndSetAttribute(this.backgroundCircle, "transform", "rotate(" + (-newValue) + " 50 120)");
                 if (this.bearingText) {
                     let brg = fastToFixed(parseFloat(newValue), 0);
-                    this.bearingText.textContent = "000".slice(brg.length) + brg + "°";
+                    diffAndSetText(this.bearingText, "000".slice(brg.length) + brg + "°");
                 }
                 break;
             case "heading_bug_rotation":
-                this.headingBug.setAttribute("transform", "rotate(" + (newValue) + ", 50, 120)");
+                diffAndSetAttribute(this.headingBug, "transform", "rotate(" + (newValue) + ", 50, 120)");
                 if (this.headingText) {
                     let headingValue = parseFloat(newValue);
                     if (headingValue == 0) {
                         headingValue = 360;
                     }
                     let hdg = fastToFixed(headingValue, 0);
-                    this.headingText.textContent = "000".slice(hdg.length) + hdg + "°";
+                    diffAndSetText(this.headingText, "000".slice(hdg.length) + hdg + "°");
                 }
                 break;
             case "course":
                 if (this.course) {
-                    this.course.setAttribute("transform", "rotate(" + (newValue) + ", 50, 120)");
+                    diffAndSetAttribute(this.course, "transform", "rotate(" + (newValue) + ", 50, 120)");
                     if (this.courseText) {
                         let crs = fastToFixed(parseFloat(newValue), 0);
-                        this.courseText.textContent = "000".slice(crs.length) + crs + "°";
+                        diffAndSetText(this.courseText, "000".slice(crs.length) + crs + "°");
                     }
                 }
                 break;
@@ -386,17 +386,17 @@ class ArcHSIIndicator extends HSIndicator {
                     if (this.sourceIsGps) {
                         this.crossTrackGoal = (Math.min(Math.max(deviation, -this.crosstrackFullError * 4 / 3), this.crosstrackFullError * 4 / 3) * (30 / this.crosstrackFullError));
                         if (Math.abs(deviation) < this.crosstrackFullError) {
-                            Avionics.Utils.diffAndSetAttribute(this.crossTrackError, "visibility", "hidden");
-                            Avionics.Utils.diffAndSetAttribute(this.cdiCentralLine, "visibility", "visible");
+                            diffAndSetAttribute(this.crossTrackError, "visibility", "hidden");
+                            diffAndSetAttribute(this.cdiCentralLine, "visibility", "visible");
                         }
                         else {
-                            Avionics.Utils.diffAndSetAttribute(this.crossTrackError, "visibility", "visible");
-                            Avionics.Utils.diffAndSetAttribute(this.cdiCentralLine, "visibility", "hidden");
-                            this.crossTrackError.textContent = fastToFixed(Math.abs(deviation), 1) + "NM";
+                            diffAndSetAttribute(this.crossTrackError, "visibility", "visible");
+                            diffAndSetAttribute(this.cdiCentralLine, "visibility", "hidden");
+                            diffAndSetText(this.crossTrackError, fastToFixed(Math.abs(deviation), 1) + "NM");
                         }
                     }
                     else {
-                        Avionics.Utils.diffAndSetAttribute(this.crossTrackError, "visibility", "hidden");
+                        diffAndSetAttribute(this.crossTrackError, "visibility", "hidden");
                         this.crossTrackGoal = (Math.min(Math.max(deviation, -4 / 3), 4 / 3) * 30);
                     }
                 }
@@ -433,54 +433,54 @@ class ArcHSIIndicator extends HSIndicator {
                             path = "M" + beginPointBotX + " " + beginPointBotY + "A " + (arcRadius - arcWidth / 2) + " " + (arcRadius - arcWidth / 2) + " 0 0 " + (arcAngle > 0 ? "1" : "0") + " " + endPointBotX + " " + endPointBotY;
                             path += "L" + endPointTopX + " " + endPointTopY + "A " + (arcRadius + arcWidth / 2) + " " + (arcRadius + arcWidth / 2) + " 0 0 " + (arcAngle > 0 ? "0" : "1") + " " + beginPointTopX + " " + beginPointTopY;
                         }
-                        this.turnRateArc.setAttribute("d", path);
+                        diffAndSetAttribute(this.turnRateArc, "d", path);
                     }
                 }
                 break;
             case "nav_source":
                 if (this.navSource) {
-                    this.navSource.textContent = newValue;
+                    diffAndSetText(this.navSource, newValue);
                     switch (newValue) {
                         case "GPS":
                             this.sourceIsGps = true;
-                            this.beginArrow.setAttribute("fill", "#d12bc7");
-                            this.beginArrow.setAttribute("fill-opacity", "1");
-                            this.beginArrow.setAttribute("stroke", "");
-                            this.navSource.setAttribute("fill", "#d12bc7");
-                            this.flightPhase.setAttribute("visibility", "visible");
-                            this.flightPhaseBg.setAttribute("visibility", "visible");
-                            this.toIndicator.setAttribute("fill", "#d12bc7");
-                            this.fromIndicator.setAttribute("fill", "#d12bc7");
+                            diffAndSetAttribute(this.beginArrow, "fill", "#d12bc7");
+                            diffAndSetAttribute(this.beginArrow, "fill-opacity", "1");
+                            diffAndSetAttribute(this.beginArrow, "stroke", "");
+                            diffAndSetAttribute(this.navSource, "fill", "#d12bc7");
+                            diffAndSetAttribute(this.flightPhase, "visibility", "visible");
+                            diffAndSetAttribute(this.flightPhaseBg, "visibility", "visible");
+                            diffAndSetAttribute(this.toIndicator, "fill", "#d12bc7");
+                            diffAndSetAttribute(this.fromIndicator, "fill", "#d12bc7");
                             break;
                         case "VOR1":
                         case "LOC1":
                             this.sourceIsGps = false;
-                            this.beginArrow.setAttribute("fill", "#10c210");
-                            this.beginArrow.setAttribute("fill-opacity", "1");
-                            this.beginArrow.setAttribute("stroke", "");
-                            this.navSource.setAttribute("fill", "#10c210");
-                            this.flightPhase.setAttribute("visibility", "hidden");
-                            this.flightPhaseBg.setAttribute("visibility", "hidden");
-                            this.toIndicator.setAttribute("fill", "#10c210");
-                            this.fromIndicator.setAttribute("fill", "#10c210");
+                            diffAndSetAttribute(this.beginArrow, "fill", "#10c210");
+                            diffAndSetAttribute(this.beginArrow, "fill-opacity", "1");
+                            diffAndSetAttribute(this.beginArrow, "stroke", "");
+                            diffAndSetAttribute(this.navSource, "fill", "#10c210");
+                            diffAndSetAttribute(this.flightPhase, "visibility", "hidden");
+                            diffAndSetAttribute(this.flightPhaseBg, "visibility", "hidden");
+                            diffAndSetAttribute(this.toIndicator, "fill", "#10c210");
+                            diffAndSetAttribute(this.fromIndicator, "fill", "#10c210");
                             break;
                         case "VOR2":
                         case "LOC2":
                             this.sourceIsGps = false;
-                            this.beginArrow.setAttribute("fill-opacity", "0");
-                            this.beginArrow.setAttribute("stroke", "#10c210");
-                            this.navSource.setAttribute("fill", "#10c210");
-                            this.flightPhase.setAttribute("visibility", "hidden");
-                            this.flightPhaseBg.setAttribute("visibility", "hidden");
-                            this.toIndicator.setAttribute("fill", "#10c210");
-                            this.fromIndicator.setAttribute("fill", "#10c210");
+                            diffAndSetAttribute(this.beginArrow, "fill-opacity", "0");
+                            diffAndSetAttribute(this.beginArrow, "stroke", "#10c210");
+                            diffAndSetAttribute(this.navSource, "fill", "#10c210");
+                            diffAndSetAttribute(this.flightPhase, "visibility", "hidden");
+                            diffAndSetAttribute(this.flightPhaseBg, "visibility", "hidden");
+                            diffAndSetAttribute(this.toIndicator, "fill", "#10c210");
+                            diffAndSetAttribute(this.fromIndicator, "fill", "#10c210");
                             break;
                     }
                 }
                 break;
             case "flight_phase":
                 if (this.flightPhase) {
-                    this.flightPhase.textContent = newValue;
+                    diffAndSetText(this.flightPhase, newValue);
                 }
                 break;
             case "crosstrack_full_error":
@@ -490,46 +490,46 @@ class ArcHSIIndicator extends HSIndicator {
                 this.isDmeDisplayed = newValue == "true";
                 if (this.dme) {
                     if (this.isDmeDisplayed) {
-                        this.dme.setAttribute("display", "inherit");
+                        diffAndSetAttribute(this.dme, "display", "inherit");
                     }
                     else {
-                        this.dme.setAttribute("display", "none");
+                        diffAndSetAttribute(this.dme, "display", "none");
                     }
                 }
                 break;
             case "dme_source":
                 if (this.dmeSource)
-                    this.dmeSource.textContent = newValue;
+                    diffAndSetText(this.dmeSource, newValue);
                 break;
             case "dme_ident":
                 if (this.dmeIdent)
-                    this.dmeIdent.textContent = newValue;
+                    diffAndSetText(this.dmeIdent, newValue);
                 break;
             case "dme_distance":
                 if (this.dmeDistance)
-                    this.dmeDistance.textContent = (newValue == "" ? "" : fastToFixed(parseFloat(newValue), 1) + " NM");
+                    diffAndSetText(this.dmeDistance, (newValue == "" ? "" : fastToFixed(parseFloat(newValue), 1) + " NM"));
                 break;
             case "to_from":
                 if (this.toIndicator && this.fromIndicator) {
                     switch (newValue) {
                         case "0":
-                            this.toIndicator.setAttribute("display", "none");
-                            this.fromIndicator.setAttribute("display", "none");
+                            diffAndSetAttribute(this.toIndicator, "display", "none");
+                            diffAndSetAttribute(this.fromIndicator, "display", "none");
                             break;
                         case "1":
-                            this.toIndicator.setAttribute("display", "inherit");
-                            this.fromIndicator.setAttribute("display", "none");
+                            diffAndSetAttribute(this.toIndicator, "display", "inherit");
+                            diffAndSetAttribute(this.fromIndicator, "display", "none");
                             break;
                         case "2":
-                            this.toIndicator.setAttribute("display", "none");
-                            this.fromIndicator.setAttribute("display", "inherit");
+                            diffAndSetAttribute(this.toIndicator, "display", "none");
+                            diffAndSetAttribute(this.fromIndicator, "display", "inherit");
                             break;
                     }
                 }
                 break;
             case "current_track":
                 if (this.currentTrackIndicator)
-                    this.currentTrackIndicator.setAttribute("transform", "rotate(" + (newValue) + ", 50, 120)");
+                    diffAndSetAttribute(this.currentTrackIndicator, "transform", "rotate(" + (newValue) + ", 50, 120)");
                 break;
         }
     }
@@ -538,10 +538,10 @@ class ArcHSIIndicator extends HSIndicator {
     update(_deltaTime) {
         super.update(_deltaTime);
         if (SimVar.GetSimVarValue("L:PFD_DME_Displayed", "number") != 0) {
-            Avionics.Utils.diffAndSetAttribute(this, "show_dme", "true");
+            diffAndSetAttribute(this, "show_dme", "true");
         }
         else {
-            Avionics.Utils.diffAndSetAttribute(this, "show_dme", "false");
+            diffAndSetAttribute(this, "show_dme", "false");
         }
     }
 }

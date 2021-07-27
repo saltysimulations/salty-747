@@ -25,58 +25,58 @@ class HorizontalCompass extends HTMLElement {
         }
         let center = (width - truncateLeft + truncateRight) / 2;
         this.root = document.createElementNS(Avionics.SVG.NS, "svg");
-        this.root.setAttribute("width", "100%");
-        this.root.setAttribute("height", "100%");
-        this.root.setAttribute("viewBox", "0 0 " + width + " 20");
+        diffAndSetAttribute(this.root, "width", "100%");
+        diffAndSetAttribute(this.root, "height", "100%");
+        diffAndSetAttribute(this.root, "viewBox", "0 0 " + width + " 20");
         this.appendChild(this.root);
         let background = document.createElementNS(Avionics.SVG.NS, "rect");
-        background.setAttribute("x", "0");
-        background.setAttribute("y", "0");
-        background.setAttribute("width", width.toString());
-        background.setAttribute("height", "20");
-        background.setAttribute("fill", "#1a1d21");
-        background.setAttribute("fill-opacity", "0.25");
+        diffAndSetAttribute(background, "x", "0");
+        diffAndSetAttribute(background, "y", "0");
+        diffAndSetAttribute(background, "width", width + '');
+        diffAndSetAttribute(background, "height", "20");
+        diffAndSetAttribute(background, "fill", "#1a1d21");
+        diffAndSetAttribute(background, "fill-opacity", "0.25");
         this.root.appendChild(background);
         this.movingRibbon = document.createElementNS(Avionics.SVG.NS, "g");
         this.root.appendChild(this.movingRibbon);
         this.digits = [];
         for (let i = -8; i <= 8; i++) {
             let digit = document.createElementNS(Avionics.SVG.NS, "text");
-            digit.setAttribute("fill", "white");
-            digit.setAttribute("text-anchor", "middle");
-            digit.setAttribute("x", (center + 20.6 * i).toString());
-            digit.setAttribute("y", "16");
-            digit.setAttribute("font-size", "8");
-            digit.setAttribute("font-family", "Roboto-Bold");
-            digit.textContent = "XXX";
+            diffAndSetAttribute(digit, "fill", "white");
+            diffAndSetAttribute(digit, "text-anchor", "middle");
+            diffAndSetAttribute(digit, "x", (center + 20.6 * i) + '');
+            diffAndSetAttribute(digit, "y", "16");
+            diffAndSetAttribute(digit, "font-size", "8");
+            diffAndSetAttribute(digit, "font-family", "Roboto-Bold");
+            diffAndSetText(digit, "XXX");
             this.movingRibbon.appendChild(digit);
             this.digits.push(digit);
         }
         for (let i = -80; i <= 80; i++) {
             let rect = document.createElementNS(Avionics.SVG.NS, "rect");
-            rect.setAttribute("x", (center - 0.5 + 2.06 * i).toString());
-            rect.setAttribute("y", i % 5 == 0 ? "17" : "18.5");
-            rect.setAttribute("width", "1");
-            rect.setAttribute("height", i % 5 == 0 ? "3" : "1.5");
-            rect.setAttribute("fill", "white");
+            diffAndSetAttribute(rect, "x", (center - 0.5 + 2.06 * i) + '');
+            diffAndSetAttribute(rect, "y", i % 5 == 0 ? "17" : "18.5");
+            diffAndSetAttribute(rect, "width", "1");
+            diffAndSetAttribute(rect, "height", i % 5 == 0 ? "3" : "1.5");
+            diffAndSetAttribute(rect, "fill", "white");
             this.movingRibbon.appendChild(rect);
         }
         this.courseElement = document.createElementNS(Avionics.SVG.NS, "polygon");
-        this.courseElement.setAttribute("points", center + ",20 " + (center + 6) + ",16 " + (center + 10) + ",16 " + (center + 10) + ",20 " + (center - 10) + ",20 " + (center - 10) + ",16 " + (center - 6) + ",16");
-        this.courseElement.setAttribute("fill", "aqua");
+        diffAndSetAttribute(this.courseElement, "points", center + ",20 " + (center + 6) + ",16 " + (center + 10) + ",16 " + (center + 10) + ",20 " + (center - 10) + ",20 " + (center - 10) + ",16 " + (center - 6) + ",16");
+        diffAndSetAttribute(this.courseElement, "fill", "aqua");
         this.root.appendChild(this.courseElement);
         let bearingBackground = document.createElementNS(Avionics.SVG.NS, "polygon");
-        bearingBackground.setAttribute("points", center + ",20 " + (center + 6) + ",16 " + (center + 14) + ",16 " + (center + 14) + ",0 " + (center - 14) + ",0 " + (center - 14) + ",16 " + (center - 6) + ",16");
-        bearingBackground.setAttribute("fill", "black");
+        diffAndSetAttribute(bearingBackground, "points", center + ",20 " + (center + 6) + ",16 " + (center + 14) + ",16 " + (center + 14) + ",0 " + (center - 14) + ",0 " + (center - 14) + ",16 " + (center - 6) + ",16");
+        diffAndSetAttribute(bearingBackground, "fill", "black");
         this.root.appendChild(bearingBackground);
         this.bearingText = document.createElementNS(Avionics.SVG.NS, "text");
-        this.bearingText.setAttribute("fill", "white");
-        this.bearingText.setAttribute("text-anchor", "middle");
-        this.bearingText.setAttribute("x", center.toString());
-        this.bearingText.setAttribute("y", "13");
-        this.bearingText.setAttribute("font-size", "14");
-        this.bearingText.setAttribute("font-family", "Roboto-Bold");
-        this.bearingText.textContent = "XXX";
+        diffAndSetAttribute(this.bearingText, "fill", "white");
+        diffAndSetAttribute(this.bearingText, "text-anchor", "middle");
+        diffAndSetAttribute(this.bearingText, "x", center + '');
+        diffAndSetAttribute(this.bearingText, "y", "13");
+        diffAndSetAttribute(this.bearingText, "font-size", "14");
+        diffAndSetAttribute(this.bearingText, "font-family", "Roboto-Bold");
+        diffAndSetText(this.bearingText, "XXX");
         this.root.appendChild(this.bearingText);
     }
     attributeChangedCallback(name, oldValue, newValue) {
@@ -87,26 +87,26 @@ class HorizontalCompass extends HTMLElement {
             case "bearing":
                 this.bearing = parseFloat(newValue);
                 let roundedBearing = Math.round(this.bearing / 10) * 10;
-                let bearingString = Math.round(this.bearing).toString();
-                this.bearingText.textContent = "000".slice(0, 3 - bearingString.length) + bearingString;
+                let bearingString = Math.round(this.bearing) + '';
+                diffAndSetText(this.bearingText, "000".slice(0, 3 - bearingString.length) + bearingString);
                 for (let i = -8; i <= 8; i++) {
-                    let string = ((roundedBearing + i * 10 + 360) % 360).toString();
-                    this.digits[i + 8].textContent = "000".slice(0, 3 - string.length) + string;
+                    let string = ((roundedBearing + i * 10 + 360) % 360) + '';
+                    diffAndSetText(this.digits[i + 8], "000".slice(0, 3 - string.length) + string);
                 }
-                this.movingRibbon.setAttribute("transform", "translate(" + ((roundedBearing - this.bearing) * 2.06) + ",0)");
-                this.courseElement.setAttribute("transform", "translate(" + ((this.course - this.bearing) * 2.06) + ",0)");
+                diffAndSetAttribute(this.movingRibbon, "transform", "translate(" + ((roundedBearing - this.bearing) * 2.06) + ",0)");
+                diffAndSetAttribute(this.courseElement, "transform", "translate(" + ((this.course - this.bearing) * 2.06) + ",0)");
                 break;
             case "course-active":
                 if (newValue == "True") {
-                    this.courseElement.setAttribute("visibility", "");
+                    diffAndSetAttribute(this.courseElement, "visibility", "");
                 }
                 else {
-                    this.courseElement.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.courseElement, "visibility", "hidden");
                 }
                 break;
             case "course":
                 this.course = parseFloat(newValue);
-                this.courseElement.setAttribute("transform", "translate(" + ((this.course - this.bearing) * 2.06) + ",0)");
+                diffAndSetAttribute(this.courseElement, "transform", "translate(" + ((this.course - this.bearing) * 2.06) + ",0)");
                 break;
         }
     }

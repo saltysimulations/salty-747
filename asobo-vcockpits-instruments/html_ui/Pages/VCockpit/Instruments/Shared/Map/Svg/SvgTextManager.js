@@ -32,10 +32,14 @@ class SvgTextManager {
         }
     }
     update(map, elementsWithTextBox) {
+        let firstIterator = this._iterator;
         for (let n = 0; n < 30; n++) {
             this._iterator++;
             if (this._iterator >= elementsWithTextBox.length) {
                 this._iterator = 0;
+            }
+            if (this._iterator === firstIterator) {
+                return;
             }
             let e = elementsWithTextBox[this._iterator];
             if (!e || !e._label) {
@@ -49,7 +53,7 @@ class SvgTextManager {
                         if (!(Math.abs(e.x - other.x) > 60 || Math.abs(e.y - other.y) > 30)) {
                             cross = true;
                             e.showText = false;
-                            e._label.setAttribute("display", "none");
+                            diffAndSetAttribute(e._label, "display", "none");
                             break;
                         }
                     }
@@ -61,7 +65,7 @@ class SvgTextManager {
             }
             else {
                 e.showText = false;
-                e._label.setAttribute("display", "none");
+                diffAndSetAttribute(e._label, "display", "none");
             }
         }
     }

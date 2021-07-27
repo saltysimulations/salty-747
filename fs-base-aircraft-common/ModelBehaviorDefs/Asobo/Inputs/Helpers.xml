@@ -1,0 +1,54 @@
+<ModelBehaviors>
+	<!-- ########################## -->
+	<!-- ######### Macros ######### -->
+	<!-- ########################## -->
+
+	<!-- Units conversion -->
+	<Macro Name="S16KToU16K">16384 + 2 /</Macro>
+	<Macro Name="S16KTo01">@S16KToU16K 16384 /</Macro>
+	<Macro Name="S16KToS1">16384 /</Macro>
+	<Macro Name="S1To01">1 + 2 /</Macro>
+	<Macro Name="16K">16384</Macro>
+	<!-- TTs formating -->
+	<Macro Name="sprintf">(F:Format)</Macro>
+	<Macro Name="TT_Package">COCKPIT.TOOLTIPSV2</Macro>
+	<!-- TT placeholders -->
+	<Macro Name="TT_Placeholder_Title">' '</Macro>
+	<Macro Name="TT_Placeholder_Description">' '</Macro>
+	<Macro Name="TT_Placeholder_Value">' '</Macro>
+	<Macro Name="TT_OverrideMe_Title">' '</Macro>
+	<Macro Name="TT_OverrideMe_Description">' '</Macro>
+	<Macro Name="TT_OverrideMe_Value">' '</Macro>
+	<!-- TT RPN macro -->
+	<Macro Name="TT_On">(R:1:@TT_Package.GT_STATE_ON)</Macro>
+	<Macro Name="TT_Off">(R:1:@TT_Package.GT_STATE_OFF)</Macro>
+	<Macro Name="TT_Open">(R:1:@TT_Package.GT_STATE_OPEN)</Macro>
+	<Macro Name="TT_Closed">(R:1:@TT_Package.GT_STATE_CLOSE)</Macro>
+	<Macro Name="TT_Auto">(R:1:@TT_Package.GT_STATE_AUTO)</Macro>
+	<Macro Name="TT_Eng">(R:1:@TT_Package.GT_STATE_ENG)</Macro>
+	<Macro Name="TT_Right">(R:1:@TT_Package.GT_STATE_RIGHT)</Macro>
+	<Macro Name="TT_Left">(R:1:@TT_Package.GT_STATE_LEFT)</Macro>
+	<Macro Name="TT_Both">(R:1:@TT_Package.GT_STATE_BOTH)</Macro>
+	<Macro Name="TT_NA">(R:1:@TT_Package.GT_STATE_NA)</Macro>
+	<Macro Name="TT_Start">(R:1:@TT_Package.GT_STATE_START)</Macro>
+	<Macro Name="TT_Test">(R:1:@TT_Package.GT_STATE_TEST)</Macro>
+	<Macro Name="TT_Standby">(R:1:@TT_Package.GT_STATE_STANDBY)</Macro>
+	<!-- TT RPN macro combination -->
+	<Macro Name="TT_OnOff_Cond">if{ @TT_On } els{ @TT_Off }</Macro>
+	<!-- Misc -->
+	<Macro Name="FeatherPropPos">-0.25</Macro><!-- Defined as const in cpp, no simvar -->
+	<!-- Assistances -->
+	<!-- BEGIN USE_IDLE_POS_SNAP_ASSISTANCE -->
+	<Macro Name="UseIdlePosSnapAssistance">True</Macro><!-- False to disable -->
+	<Macro Name="IdlePosSnapAssistance_MinTimebeforeReverse">0.5</Macro><!-- Amount of time in s the input has to be held to allow going into reverse -->
+	<Macro Name="IdlePosSnapAssistance_ThresholdHeldDetection">0.2</Macro><!-- Maximum amount of time in between inputs to still be considered held -->
+	<!-- END USE_IDLE_POS_SNAP_ASSISTANCE -->
+	
+	<!-- ########################## -->
+	<!-- #### GenericInputEvent ### -->
+	<!-- ########################## -->
+	
+	<Include RelativeFile="Generic.xml"/>
+	<Include RelativeFile="Templates.xml"/>
+	
+</ModelBehaviors>

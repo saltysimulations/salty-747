@@ -13,6 +13,7 @@
 	<DefaultTemplateParameters>
 		<MOUSEFLAGS/>
 		<DISABLE_INTERACTION_LOCK>True</DISABLE_INTERACTION_LOCK>
+		<DISABLE_MOUSERECT>True</DISABLE_MOUSERECT>
 	</DefaultTemplateParameters>
 
 	<UseTemplate Name="ASOBO_GT_MouseRect">
@@ -125,7 +126,10 @@
 		LEFT_SINGLE_CODE
 -->
 <Template Name = "ASOBO_GT_Interaction_LeftSingle_Code">
-	<DefaultTemplateParameters>
+	<Parameters Type="Override">
+		<IS_SWITCH>False</IS_SWITCH><!-- Testing removing switch drag interactions prefering toggle instead in all situations -->
+	</Parameters>
+	<Parameters Type="Default">
 		<HELPID/>
 		<TOOLTIPID/>
 		<CURSOR>Hand</CURSOR>
@@ -178,8 +182,8 @@
 				<LEFT_SINGLE_CODE_DRAG_IM/>
 			</False>
 		</Condition>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
+	</Parameters>
+	<Parameters Type="Override">
 		<Condition Valid = "IS_SWITCH">
 			<Condition NotEmpty="ANIM_CODE">
 				<False>
@@ -214,7 +218,7 @@
 				</True>
 			</Condition>
 		</Condition>
-	</OverrideTemplateParameters>
+	</Parameters>
 	
 	<UseTemplate Name="ASOBO_GT_MouseRect">
 		<CALLBACKCODE_DRAG_IM>
@@ -266,15 +270,30 @@
 		<TOOLTIPID/>
 		<LEFT_SINGLE_CODE/>
 		<LEFT_LEAVE_CODE/>
+		<INFO_LONG_CLICK_CODE/>
+		<RELEASE_CODE/>
+		<TEST_CODE/>
 	</DefaultTemplateParameters>
-
 	<Update Frequency = "10">
 		(O:_PressTime) 0 &gt; if{
-			(E:SIMULATION TIME, second) (O:_PressTime) #LONG_CLICK_TIME# + &gt;
-			if{ #LONG_CLICK_CODE# 0 (&gt;O:_PressTime) }
+			(O:_PressForDuration) 0 &gt; if{ 
+				(E:SIMULATION TIME, second) (O:_PressTime) (O:_PressForDuration) + &gt; if{ 
+					
+					(O:_PressForDuration) #LONG_CLICK_TIME# &gt;= if{
+						#LONG_CLICK_CODE#
+					} els{
+						#RELEASE_CODE#
+						#SHORT_CLICK_CODE#
+					}
+					0 (&gt;O:_PressTime) 
+				}
+			} els{
+				#INFO_LONG_CLICK_CODE#
+				(E:SIMULATION TIME, second) (O:_PressTime) #LONG_CLICK_TIME# + &gt;
+				if{ #LONG_CLICK_CODE# 0 (&gt;O:_PressTime) 0 (&gt;#FLAG_EV_INFO#) }
+			}
 		}
 	</Update>
-
 	<UseTemplate Name = "ASOBO_GT_Interaction_LeftSingle_Leave_Code">
 		<LEFT_SINGLE_CODE>
 			(E:SIMULATION TIME, second) (&gt;O:_PressTime)
@@ -283,7 +302,9 @@
 		<LEFT_LEAVE_CODE>
 			(O:_PressTime) 0 &gt; if{
 				(E:SIMULATION TIME, second) (O:_PressTime) #LONG_CLICK_TIME# + &lt;
-				if{ #SHORT_CLICK_CODE# }
+				if{ #RELEASE_CODE#
+				0 (&gt;#FLAG_EV_INFO#)
+					#SHORT_CLICK_CODE# }
 			}
 			0 (&gt;O:_PressTime)
 			#LEFT_LEAVE_CODE#
@@ -455,8 +476,8 @@
 						(E:SIMULATION TIME, second) (&gt;O:_LastPullTime)
 					}
 				</UPDATE_LAST_PULL_TIME>
-				<CAN_BE_PUSHED>(O:_PushLocked) !</CAN_BE_PUSHED>
-				<CAN_BE_PULLED>(O:_PullLocked) !</CAN_BE_PULLED>
+				<CAN_BE_PUSHED>(O:_PushLocked) ! @IsUsingRelativePos and</CAN_BE_PUSHED>
+				<CAN_BE_PULLED>(O:_PullLocked) ! @IsUsingRelativePos and</CAN_BE_PULLED>
 				<LOCK_PUSH>1 (&gt;O:_PushLocked)</LOCK_PUSH>
 				<LOCK_PULL>1 (&gt;O:_PullLocked)</LOCK_PULL>
 				<RESET_PUSH>(O:_PushLocked) if{ 0 (&gt;O:_PushLocked) }</RESET_PUSH>
@@ -471,6 +492,10 @@
 		<PRE_DRAG_UPDATE/>
 		<POST_DRAG_UPDATE/>
 		<ALWAYS_USE_ANIM_LAG>False</ALWAYS_USE_ANIM_LAG>
+		<LOCKABLE_HANDLE_CODE_UP/>
+		<NO_LOCK_HANDLE_CODE_UP/>
+		<LOCKABLE_HANDLE_CODE_DN/>
+		<NO_LOCK_HANDLE_CODE_DN/>
 	</Parameters>
 	<Parameters Type="Override">
 		<THRESHOLD_X>#THRESHOLD_X_INPUT# #THRESHOLD_X_MOUSE# (M:InputType) 1 == ?</THRESHOLD_X>
@@ -498,6 +523,43 @@
 			</False>
 		</Condition>
 	</Parameters>
+	<Parameters Type="Default">
+		<LOCKABLE_EVENT_PRIMARY>LeftSingle</LOCKABLE_EVENT_PRIMARY>
+		<LOCKABLE_EVENT_SECONDARY>RightSingle</LOCKABLE_EVENT_SECONDARY>
+		<NO_LOCK_EVENT_PRIMARY>RightSingle</NO_LOCK_EVENT_PRIMARY>
+		<NO_LOCK_EVENT_SECONDARY>MiddleSingle</NO_LOCK_EVENT_SECONDARY>
+	</Parameters>
+	<Parameters Type="Override">
+		<Condition NotEmpty="CODE_UP">
+			<LOCKABLE_HANDLE_CODE_UP>(M:Event) '#LOCKABLE_EVENT_PRIMARY#' scmi 0 == if{ #CODE_UP# quit }</LOCKABLE_HANDLE_CODE_UP>
+			<NO_LOCK_HANDLE_CODE_UP>(M:Event) '#NO_LOCK_EVENT_PRIMARY#' scmi 0 == if{ #CODE_UP# quit }</NO_LOCK_HANDLE_CODE_UP>
+		</Condition>
+		<Condition NotEmpty="CODE_DN">
+			<LOCKABLE_HANDLE_CODE_DN>(M:Event) '#LOCKABLE_EVENT_SECONDARY#' scmi 0 == if{ #CODE_DN# quit }</LOCKABLE_HANDLE_CODE_DN>
+			<NO_LOCK_HANDLE_CODE_DN>(M:Event) '#NO_LOCK_EVENT_SECONDARY#' scmi 0 == if{ #CODE_DN# quit }</NO_LOCK_HANDLE_CODE_DN>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Default">
+		<LOCKABLE_INPUTS_HANDLING>
+			#LOCKABLE_HANDLE_CODE_UP#
+			#LOCKABLE_HANDLE_CODE_DN#
+		</LOCKABLE_INPUTS_HANDLING>
+		<NO_LOCK_INPUTS_HANDLING>
+			#NO_LOCK_HANDLE_CODE_UP#
+			#NO_LOCK_HANDLE_CODE_DN#
+		</NO_LOCK_INPUTS_HANDLING>
+	</Parameters>
+	<Parameters Type="Default">
+		<IM_DRAG_ADDITIONAL_EVENT_HANDLING>
+			(M:InputType) 1 == if{
+				#LOCKABLE_INPUTS_HANDLING#
+			} els{
+				#NO_LOCK_INPUTS_HANDLING#
+			}
+		</IM_DRAG_ADDITIONAL_EVENT_HANDLING>
+		<MOUSEFLAGS_DEFAULT_IM>LeftSingle+LeftRelease+WheelUp+WheelDown+Lock+Unlock</MOUSEFLAGS_DEFAULT_IM>
+		<MOUSEFLAGS_DRAG_IM>MiddleSingle+RightSingle+LeftAll+Wheel+Lock+Unlock</MOUSEFLAGS_DRAG_IM>
+	</Parameters>
 	<Update Frequency = "#UPDATE_FREQUENCY#" InteractionModel="Default">
 		(O:XMLVAR_Interacting_RepeatTime) (E:SIMULATION TIME, seconds) &lt; if{
 			#UPDATE_DEFAULT_IM#
@@ -524,7 +586,6 @@
 	<UseTemplate Name="ASOBO_GT_MouseRect">
 		<LEFTARROW>#CURSOR_LEFT#</LEFTARROW>
 		<RIGHTARROW>#CURSOR_RIGHT#</RIGHTARROW>
-		<MOUSEFLAGS_DEFAULT_IM>LeftSingle+LeftRelease+WheelUp+WheelDown+Lock+Unlock</MOUSEFLAGS_DEFAULT_IM>
 		<CALLBACKCODE_DEFAULT_IM>
 			(M:Event) 'WheelUp'    scmi 0 == if{ #CLOCKWISE_CODE_DEFAULT_IM# } els{
 			(M:Event) 'WheelDown'  scmi 0 == if{ #ANTICLOCKWISE_CODE_DEFAULT_IM# } els{
@@ -549,9 +610,9 @@
 			} 
 			} } }
 		</CALLBACKCODE_DEFAULT_IM>
-		<MOUSEFLAGS_DRAG_IM>LeftAll+Wheel+Lock+Unlock</MOUSEFLAGS_DRAG_IM>
 		<CALLBACKCODE_DRAG_IM>
 			#ADDITIONAL_EVENT_HANDLING#
+			#IM_DRAG_ADDITIONAL_EVENT_HANDLING#
 			(M:Event) 'WheelUp'    scmi 0 == if{ #CLOCKWISE_CODE_DRAG_IM# } els{
 			(M:Event) 'WheelDown'  scmi 0 == if{ #ANTICLOCKWISE_CODE_DRAG_IM# } els{
 			(M:Event) 'Lock' scmi 0 == if{
@@ -639,7 +700,7 @@
 		PULL_CODE
 -->
 <Template Name = "ASOBO_GT_Interaction_WheelAndContinuousLeft_PushPull">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<CURSOR_LEFT>TurnLeft</CURSOR_LEFT>
 		<!-- Big arrows by default -->
 		<CURSOR_RIGHT>TurnRight</CURSOR_RIGHT>
@@ -703,8 +764,8 @@
 						(E:SIMULATION TIME, second) (&gt;O:_LastPullTime)
 					}
 				</UPDATE_LAST_PULL_TIME>
-				<CAN_BE_PUSHED>(O:IsPushed) !</CAN_BE_PUSHED>
-				<CAN_BE_PULLED>(O:IsPulled) !</CAN_BE_PULLED>
+				<CAN_BE_PUSHED>(O:IsPushed) ! @IsUsingRelativePos and</CAN_BE_PUSHED>
+				<CAN_BE_PULLED>(O:IsPulled) ! @IsUsingRelativePos and</CAN_BE_PULLED>
 				<LOCK_PUSH>1 (&gt;O:IsPushed)</LOCK_PUSH>
 				<LOCK_PULL>1 (&gt;O:IsPulled)</LOCK_PULL>
 				<RESET_PUSH>(O:IsPushed) if{ 0 (&gt;O:IsPushed) }</RESET_PUSH>
@@ -722,8 +783,12 @@
 		<CURSOR_CENTER_DRAG_IM/>
 		<CURSOR_DRAG_IM>Grab</CURSOR_DRAG_IM>
 		<ALWAYS_USE_ANIM_LAG>False</ALWAYS_USE_ANIM_LAG>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
+		<LOCKABLE_HANDLE_CODE_UP/>
+		<NO_LOCK_HANDLE_CODE_UP/>
+		<LOCKABLE_HANDLE_CODE_DN/>
+		<NO_LOCK_HANDLE_CODE_DN/>
+	</Parameters>
+	<Parameters Type="Override">
 		<THRESHOLD_X>#THRESHOLD_X_INPUT# #THRESHOLD_X_MOUSE# (M:InputType) 1 == ?</THRESHOLD_X>
 		<THRESHOLD_Y>#THRESHOLD_Y_INPUT# #THRESHOLD_Y_MOUSE# (M:InputType) 1 == ?</THRESHOLD_Y>
 		<Condition Valid="INVERT_AXIS_CODE">
@@ -740,8 +805,38 @@
 				<Condition NotEmpty="CODE_RIGHT"><False><CODE_RIGHT>#CLOCKWISE_CODE_DRAG_IM#</CODE_RIGHT></False></Condition>
 			</False>
 		</Condition>
-	</OverrideTemplateParameters>
-	
+	</Parameters>
+	<Parameters Type="Override">
+		<Condition NotEmpty="CODE_UP">
+			<LOCKABLE_HANDLE_CODE_UP>(M:Event) 'LeftSingle' scmi 0 == if{ #CODE_UP# quit }</LOCKABLE_HANDLE_CODE_UP>
+			<NO_LOCK_HANDLE_CODE_UP>(M:Event) 'RightSingle' scmi 0 == if{ #CODE_UP# quit }</NO_LOCK_HANDLE_CODE_UP>
+		</Condition>
+		<Condition NotEmpty="CODE_DN">
+			<LOCKABLE_HANDLE_CODE_DN>(M:Event) 'RightSingle' scmi 0 == if{ #CODE_DN# quit }</LOCKABLE_HANDLE_CODE_DN>
+			<NO_LOCK_HANDLE_CODE_DN>(M:Event) 'MiddleSingle' scmi 0 == if{ #CODE_DN# quit }</NO_LOCK_HANDLE_CODE_DN>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Default">
+		<LOCKABLE_INPUTS_HANDLING>
+			#LOCKABLE_HANDLE_CODE_UP#
+			#LOCKABLE_HANDLE_CODE_DN#
+		</LOCKABLE_INPUTS_HANDLING>
+		<NO_LOCK_INPUTS_HANDLING>
+			#NO_LOCK_HANDLE_CODE_UP#
+			#NO_LOCK_HANDLE_CODE_DN#
+		</NO_LOCK_INPUTS_HANDLING>
+	</Parameters>
+	<Parameters Type="Default">
+		<IM_DRAG_ADDITIONAL_EVENT_HANDLING>
+			(M:InputType) 1 == if{
+				#LOCKABLE_INPUTS_HANDLING#
+			} els{
+				#NO_LOCK_INPUTS_HANDLING#
+			}
+		</IM_DRAG_ADDITIONAL_EVENT_HANDLING>
+		<MOUSEFLAGS_DEFAULT_IM>LeftSingle+LeftRelease+WheelUp+WheelDown</MOUSEFLAGS_DEFAULT_IM>
+		<MOUSEFLAGS_DRAG_IM>MiddleSingle+RightSingle+LeftAll+Wheel+Lock+Unlock</MOUSEFLAGS_DRAG_IM>
+	</Parameters>
 	<Update Frequency = "#UPDATE_FREQUENCY#" InteractionModel="Default">
 		(O:_MouseDownRelativePosX) 0 &gt; if{ #CLOCKWISE_CODE_DEFAULT_IM# } els{
 		(O:_MouseDownRelativePosX) 0 &lt; if{ #ANTICLOCKWISE_CODE_DEFAULT_IM# } }
@@ -749,15 +844,15 @@
 	<Condition Valid="NO_PUSH_PULL_LOCK">
 		<False>
 			<Update Frequency = "#UPDATE_FREQUENCY#" InteractionModel="Drag">
-				(O:_PushLocked) (O:_LastPushTime) 0 &gt; and if{
+				(O:IsPushed) (O:_LastPushTime) 0 &gt; and if{
 					(E:SIMULATION TIME, second) (O:_LastPushTime) - #PUSH_RESET_DELAY# &gt; if{
-						0 (&gt;O:_PushLocked) 
+						0 (&gt;O:IsPushed) 
 						0 (&gt;O:_LastPushTime)
 					}
 				} 
-				(O:_PullLocked) (O:_LastPullTime) 0 &gt; and  if{
+				(O:IsPulled) (O:_LastPullTime) 0 &gt; and  if{
 					(E:SIMULATION TIME, second) (O:_LastPullTime) - #PULL_RESET_DELAY# &gt; if{
-						0 (&gt;O:_PullLocked) 
+						0 (&gt;O:IsPulled) 
 						0 (&gt;O:_LastPullTime)
 					}
 				}
@@ -766,7 +861,6 @@
 	</Condition>
 
 	<UseTemplate Name="ASOBO_GT_MouseRect">
-		<MOUSEFLAGS>LeftSingle+LeftRelease+WheelUp+WheelDown</MOUSEFLAGS>
 		<LEFTARROW>#CURSOR_LEFT#</LEFTARROW>
 		<RIGHTARROW>#CURSOR_RIGHT#</RIGHTARROW>
 		<UPARROW>#CURSOR_UP#</UPARROW>
@@ -804,9 +898,9 @@
 				} 
 			}
 		</CALLBACKCODE_DEFAULT_IM>
-		<MOUSEFLAGS_DRAG_IM>LeftAll+Wheel+Lock+Unlock</MOUSEFLAGS_DRAG_IM>
 		<CALLBACKCODE_DRAG_IM>
 			#ADDITIONAL_EVENT_HANDLING#
+			#IM_DRAG_ADDITIONAL_EVENT_HANDLING#
 			(M:Event) 'WheelUp'    scmi 0 == if{ #CLOCKWISE_CODE_DRAG_IM# } els{
 			(M:Event) 'WheelDown'  scmi 0 == if{ #ANTICLOCKWISE_CODE_DRAG_IM# } els{
 			(M:Event) 'Lock' scmi 0 == if{
@@ -894,32 +988,48 @@
 		LONG_CLICK_CODE
 -->
 <Template Name = "ASOBO_GT_Interaction_WheelAndContinuousLeft_LeftSingleTimed">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<LEFT_SINGLE_CODE/>
 		<LEFT_LEAVE_CODE/>
 		<ALWAYS_USE_ANIM_LAG>False</ALWAYS_USE_ANIM_LAG>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_GT_Interaction_WheelAndContinuousLeft_LeftSingle">
-		<LEFT_SINGLE_CODE>
-			(E:SIMULATION TIME, second) (&gt;O:_PressTime)
-			#LEFT_SINGLE_CODE#
-		</LEFT_SINGLE_CODE>
-		<LEFT_LEAVE_CODE>
-			(O:_PressTime) 0 &gt; if{
-				(E:SIMULATION TIME, second) (O:_PressTime) #LONG_CLICK_TIME# + &lt;
-				if{ #SHORT_CLICK_CODE# }
-			}
-			0 (&gt;O:_PressTime)
-			#LEFT_LEAVE_CODE#
-		</LEFT_LEAVE_CODE>
-	</UseTemplate>
-
+	</Parameters>
+	<Parameters Type="Override">
+		<Condition Valid="TIMER_EVENTS_HANDLED_EXTERNALLY">
+			<True>
+				<LONG_CLICK_CODE>#LEFT_LEAVE_CODE#</LONG_CLICK_CODE>
+				<SHORT_CLICK_CODE>#LEFT_LEAVE_CODE#</SHORT_CLICK_CODE>
+			</True>
+		</Condition>
+	</Parameters>
 	<Update Frequency = "10">
 		(O:_PressTime) 0 &gt; if{
-			(E:SIMULATION TIME, second) (O:_PressTime) #LONG_CLICK_TIME# + &gt;
-			if{ #LONG_CLICK_CODE# 0 (&gt;O:_PressTime) }
+			(O:_PressForDuration) 0 &gt; if{ 
+				(E:SIMULATION TIME, second) (O:_PressTime) (O:_PressForDuration) + &gt; if{ 
+					(O:_PressForDuration) #LONG_CLICK_TIME# &gt;= if{ #LONG_CLICK_CODE# } els{ #SHORT_CLICK_CODE# }
+				}
+			} els{
+				(E:SIMULATION TIME, second) (O:_PressTime) #LONG_CLICK_TIME# + &gt; if{ #LONG_CLICK_CODE# }
+			}
 		}
 	</Update>
+	<UseTemplate Name="ASOBO_GT_Interaction_WheelAndContinuousLeft_LeftSingle">
+		<Condition Valid="TIMER_EVENTS_HANDLED_EXTERNALLY">
+			<False>
+				<LEFT_SINGLE_CODE>
+					(E:SIMULATION TIME, second) (&gt;O:_PressTime)
+					#LEFT_SINGLE_CODE#
+				</LEFT_SINGLE_CODE>
+				<LEFT_LEAVE_CODE>
+					(O:_PressTime) 0 &gt; if{
+						(E:SIMULATION TIME, second) (O:_PressTime) #LONG_CLICK_TIME# + &lt;
+						if{ #SHORT_CLICK_CODE# }
+					}
+					0 (&gt;O:_PressTime)
+					#LEFT_LEAVE_CODE#
+				</LEFT_LEAVE_CODE>				
+			</False>
+		</Condition>
+	</UseTemplate>
 </Template>
 
 <Template Name = "ASOBO_GT_Interaction_WheelLeftDrag_Axis">
@@ -994,7 +1104,7 @@
 	<UseTemplate Name="ASOBO_GT_MouseRect">
 		<MouseFlags>LeftSingle+LeftRelease+LeftDrag+WheelUp+WheelDown+Lock+Unlock</MouseFlags>
 		<CALLBACKCODE>
-			(M:Event) 'Lock'       scmi 0 == if{ #LOCK_CODE# } els{
+			(M:Event) 'Lock'       scmi 0 == if{ (M:Relative#AXIS#) (&gt;O:_LastPos) #LOCK_CODE# } els{
 			(M:Event) 'Unlock'     scmi 0 == if{ #UNLOCK_CODE# } els{
 			(M:Event) 'WheelUp'    scmi 0 == if{ g#FLAG_1# } els{
 			(M:Event) 'WheelDown'  scmi 0 == if{ g#FLAG_2# } els{
@@ -1094,14 +1204,12 @@
 		<Condition Valid="USE_PAD_DRAG_IM_LOCK">
 			<True>
 				<CHECK_AND_RESET_DRAG_LOCK>
-					(M:InputType) 1 == if{ 
-						(O:_ResetDragTime) (E:SIMULATION TIME, second) &lt; if{ 
-							0 (&gt;O:_IsLimited) 
-						} 
-						(E:SIMULATION TIME, second) @DragLockResetTimer + (&gt;O:_ResetDragTime) 
+					(O:_ResetDragTime) (E:SIMULATION TIME, second) &lt; if{ 
+						0 (&gt;O:_IsLimited) 
 					} 
+					(E:SIMULATION TIME, second) @DragLockResetTimer + (&gt;O:_ResetDragTime)
 				</CHECK_AND_RESET_DRAG_LOCK>
-				<CHECK_IS_DRAG_LOCKED>(M:InputType) 1 == (O:_IsLimited) and</CHECK_IS_DRAG_LOCKED>
+				<CHECK_IS_DRAG_LOCKED>(O:_IsLimited)</CHECK_IS_DRAG_LOCKED>
 				<SET_DRAG_LOCK>1 (&gt;O:_IsLimited)</SET_DRAG_LOCK>
 				<UNSET_DRAG_LOCK>0 (&gt;O:_IsLimited)</UNSET_DRAG_LOCK>
 			</True>
@@ -1513,6 +1621,7 @@
 			</False>
 		</Condition>
 		<LEFT_SINGLE_CODE></LEFT_SINGLE_CODE>
+		<LEFT_RELEASE_CODE></LEFT_RELEASE_CODE>
 		<ALWAYS_USE_ANIM_LAG>False</ALWAYS_USE_ANIM_LAG>
 	</DefaultTemplateParameters>
 	
@@ -1522,6 +1631,7 @@
 			(M:Event) 'WheelUp'    scmi 0 == if{ g1 } els{
 			(M:Event) 'WheelDown'  scmi 0 == if{ g2 } els{
 			(M:Event) 'LeftSingle' scmi 0 == if{ #LEFT_SINGLE_CODE# (M:Relative#AXIS#) (&gt;O:_Last#AXIS#) } els{
+			(M:Event) 'LeftRelease' scmi 0 == if{ #LEFT_RELEASE_CODE# } els{
 			(M:Event) 'LeftDrag'   scmi 0 == if{
 				(O:_Last#AXIS#) (M:Relative#AXIS#) -  #DRAG_DELTA# / abs (&gt;O:DragFactor)
 				(O:_Last#AXIS#) (M:Relative#AXIS#) -  -#DRAG_DELTA# &lt; if{ 
@@ -1532,7 +1642,7 @@
 					(M:Relative#AXIS#) (&gt;O:_Last#AXIS#) 
 					g2 
 					} els{
-			} } } } } }
+			} } } } } } }
 			quit
 			
 			:#FLAG_1# (#POSITION_TYPE#:#POSITION_VAR#) #DRAG_SPEED# (O:DragFactor) * + #MAX_LIMITER# (&gt;#POSITION_TYPE#:#POSITION_VAR#)
@@ -1709,8 +1819,20 @@
 		<TOOLTIP_TITLE/>
 		<TOOLTIP_TITLE_IS_DYNAMIC>False</TOOLTIP_TITLE_IS_DYNAMIC>
 		<TEMPORARY_LOCK_FLAGS>LeftSingle</TEMPORARY_LOCK_FLAGS>
+		<INTERACTABLE_GROUP_ID/>
 	</DefaultTemplateParameters>
 	<OverrideTemplateParameters>
+		<Condition NotEmpty="TOOLTIP_TITLE_INDEX">
+			<Condition NotEmpty="TOOLTIP_TITLE_ID">
+				<True>
+					<TOOLTIP_TITLE>#TOOLTIP_TITLE_INDEX# (R:1:#TOOLTIP_TITLE_ID#) @sprintf</TOOLTIP_TITLE>
+				</True>
+				<False>
+					<TOOLTIP_TITLE>#TOOLTIP_TITLE_INDEX# (R:1:#TOOLTIP_TITLE#) @sprintf</TOOLTIP_TITLE>
+				</False>
+			</Condition>
+			<TOOLTIP_TITLE_IS_DYNAMIC>True</TOOLTIP_TITLE_IS_DYNAMIC>
+		</Condition>
 		<Condition Valid="ALWAYS_USE_ANIM_LAG">
 			<True>
 				<DRAG_USE_ANIM_LAG>True</DRAG_USE_ANIM_LAG>
@@ -1789,6 +1911,14 @@
 				<DRAG_IM_LOCK_ENABLED>True</DRAG_IM_LOCK_ENABLED>
 			</False>
 		</Condition>
+		<Condition Valid="DISABLE_MOUSERECT">
+			<True>
+				<MOUSERECT_DISABLED>True</MOUSERECT_DISABLED>
+			</True>
+			<False>
+				<MOUSERECT_DISABLED>False</MOUSERECT_DISABLED>
+			</False>
+		</Condition>
 		<PARAM1>LEFTARROW</PARAM1>
 		<PARAM2>RIGHTARROW</PARAM2>
 		<PARAM3>CURSOR</PARAM3>
@@ -1828,7 +1958,7 @@
 			</While>
 		</Setup>
 		<Do>
-			<Parameters Type="Default">
+			<Parameters Type="Default" Lifetime="Iteration">
 				<Condition Valid="PARAM#ID#_EMPTY_IF_NOT_DECLARED">
 					<True>
 						<EMPTY_IF_NOT_DECLARED Process="Param">PARAM#ID#_EMPTY_IF_NOT_DECLARED</EMPTY_IF_NOT_DECLARED>
@@ -1838,7 +1968,7 @@
 					</False>
 				</Condition>
 			</Parameters>
-			<Parameters Type="Override">
+			<Parameters Type="Override" Lifetime="Iteration">
 				<PARAM Process="Param">PARAM#ID#</PARAM>
 			</Parameters>
 			<Parameters Type="Override" Lifetime="Loop">
@@ -1930,9 +2060,7 @@
 					<Condition Check="ANIMREF_ID">
 						<AnimRefID>#ANIMREF_ID#</AnimRefID>
 					</Condition>
-						
-					<AnimCursor min="#ANIMCURSOR_MIN#" max="#ANIMCURSOR_MAX#">#ANIMCURSOR_DIR#</AnimCursor>
-						
+					<AnimCursor min="#ANIMCURSOR_MIN#" max="#ANIMCURSOR_MAX#">#ANIMCURSOR_DIR#</AnimCursorDir>
 					<Condition Check="ANIMTIP_LOOP">
 						<AnimTooltipLoop>#ANIMTIP_LOOP#</AnimTooltipLoop>
 					</Condition>
@@ -1946,12 +2074,12 @@
 							</While>
 						</Setup>
 						<Do>
-							<Parameters Type="Default">
+							<Parameters Type="Default" Lifetime="Iteration">
 								<ANIMTIP_#ID#_ON_PERCENT>False</ANIMTIP_#ID#_ON_PERCENT>
 								<TOOLTIP_#ID#_ON_CURSOR/>
 								<TOOLTIP_#ID#_ON_HITBOX/>
 							</Parameters>
-							<Parameters Type="Override">
+							<Parameters Type="Override" Lifetime="Iteration">
 								<ANIMTIP_ON_PERCENT Process="Param">ANIMTIP_#ID#_ON_PERCENT</ANIMTIP_ON_PERCENT>
 								<TOOLTIP_ON_CURSOR Process="Param">ANIMTIP_#ID#_ON_CURSOR</TOOLTIP_ON_CURSOR>
 								<TOOLTIP_ON_HITBOX Process="Param">ANIMTIP_#ID#_ON_HITBOX</TOOLTIP_ON_HITBOX>
@@ -1963,47 +2091,34 @@
 				</Animated>
 			</IMDefault>
 			<IMDrag>
-				<Tooltips>
-					<TTTitle RPN="#TOOLTIP_TITLE_IS_DYNAMIC#">#TOOLTIP_TITLE#</TTTitle>
-					<Loop>
-						<Setup>
-							<Param>ID</Param>
-							<From>0</From>
-							<Inc>1</Inc>
-							<While>
-								<And>
-									<Arg Valid="TOOLTIP_#ID#_DESC"/>
-									<Arg Valid="TOOLTIP_#ID#_VALUE"/>
-								</And>
-							</While>
-						</Setup>
-						<Do>
-							<Parameters Type="Default">
-								<TOOLTIP_#ID#_DESC_IS_DYNAMIC>False</TOOLTIP_#ID#_DESC_IS_DYNAMIC>
-								<TOOLTIP_#ID#_VALUE_IS_DYNAMIC>True</TOOLTIP_#ID#_VALUE_IS_DYNAMIC>
-								<TOOLTIP_#ID#_ICON/>
-								<TOOLTIP_#ID#_VALUE/>
-							</Parameters>
-							<Parameters Type="Override">
-								<TOOLTIP_ICON Process="Param">TOOLTIP_#ID#_ICON</TOOLTIP_ICON>
-								<TOOLTIP_DESC Process="Param">TOOLTIP_#ID#_DESC</TOOLTIP_DESC>
-								<TOOLTIP_DESC_IS_DYNAMIC Process="Param">TOOLTIP_#ID#_DESC_IS_DYNAMIC</TOOLTIP_DESC_IS_DYNAMIC>
-								<TOOLTIP_VALUE Process="Param">TOOLTIP_#ID#_VALUE</TOOLTIP_VALUE>
-								<TOOLTIP_VALUE_IS_DYNAMIC Process="Param">TOOLTIP_#ID#_VALUE_IS_DYNAMIC</TOOLTIP_VALUE_IS_DYNAMIC>
-							</Parameters>
-							<Tooltip>
-								<Icon>#TOOLTIP_ICON#</Icon><!-- Move, Rotate, Push, Pull -->
-								<TTDescription RPN="#TOOLTIP_DESC_IS_DYNAMIC#">#TOOLTIP_DESC#</TTDescription>
-								<TTValue RPN="#TOOLTIP_VALUE_IS_DYNAMIC#">#TOOLTIP_VALUE#</TTValue>
-							</Tooltip>
-						</Do>
-					</Loop>
-				</Tooltips>
+				<Condition NotEmpty="TOOLTIP_TITLE">
+					<TooltipEntries>
+						<TTTitle RPN="#TOOLTIP_TITLE_IS_DYNAMIC#">#TOOLTIP_TITLE#</TTTitle>
+						<Loop>
+							<Setup>
+								<Param>ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg NotEmpty="TOOLTIP_ENTRY_#ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override" Lifetime="Iteration">
+									<TT_ID Process="Param">TOOLTIP_ENTRY_#ID#</TT_ID>
+								</Parameters>
+								<TooltipEntry ID="#TT_ID#"/>
+							</Do>
+						</Loop>
+					</TooltipEntries>
+				</Condition>
 			</IMDrag>
 		</IMTooltipsInstances>
+		<Disabled>#MOUSERECT_DISABLED#</Disabled>
 		<Lock>#DRAG_IM_LOCK_ENABLED#</Lock>
 		<LockFlagsTemporary>#TEMPORARY_LOCK_FLAGS#</LockFlagsTemporary>
 		<HighlightNodeId>#HIGHLIGHT_NODE_ID#</HighlightNodeId>
+		<GroupID>#INTERACTABLE_GROUP_ID#</GroupID>
 		<Switch>
 			<Case NotEmpty="EVENTID">
 				<EventID>#EVENTID#</EventID>

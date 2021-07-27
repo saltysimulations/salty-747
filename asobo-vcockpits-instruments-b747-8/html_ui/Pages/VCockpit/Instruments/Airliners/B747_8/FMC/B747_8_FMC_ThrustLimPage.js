@@ -9,9 +9,9 @@ class FMCThrustLimPage {
                 FMCThrustLimPage.ShowPage1(fmc);
             }
         };
-        let toN1Cell = fmc.getThrustTakeOffLimit().toFixed(1) + "%";
+        let toN1Cell = fastToFixed(fmc.getThrustTakeOffLimit(), 1) + "%";
         let oatValue = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-        let oatCell = oatValue.toFixed(0) + "°C";
+        let oatCell = fastToFixed(oatValue, 0) + "°C";
         let thrustTOMode = fmc.getThrustTakeOffMode();
         let thrustClimbMode = fmc.getThrustCLBMode();
         fmc.onLeftInput[1] = () => {

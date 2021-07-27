@@ -44,13 +44,13 @@ var B747_8_RadioManagement;
             }
             this.stby = Utils.Clamp(this.stby, this.min, this.max);
             if (_frequencyText != null) {
-                _frequencyText.textContent = this.frequencyDisplayName;
+                diffAndSetText(_frequencyText, this.frequencyDisplayName);
             }
             if (_activeText != null) {
-                _activeText.textContent = this.active.toFixed(this.displayDP);
+                diffAndSetText(_activeText, fastToFixed(this.active, this.displayDP));
             }
             if (_stbyText != null) {
-                _stbyText.textContent = this.stby.toFixed(this.displayDP);
+                diffAndSetText(_stbyText, fastToFixed(this.stby, this.displayDP));
             }
         }
         transfer(_activeText, _stbyText) {
@@ -59,7 +59,7 @@ var B747_8_RadioManagement;
                 var editedValue = parseFloat(this.editedValueString);
                 if (isNaN(editedValue) || (editedValue < this.min) || (editedValue > this.max) || (this.use833Hz && !RadioNav.isHz833Compliant(editedValue))) {
                     if (_stbyText != null) {
-                        _stbyText.textContent = "ERR";
+                        diffAndSetText(_stbyText, "ERR");
                     }
                     return;
                 }
@@ -73,16 +73,16 @@ var B747_8_RadioManagement;
             this.setActiveValueSimVar();
             this.setStbyValueSimVar();
             if (_activeText != null) {
-                _activeText.textContent = this.active.toFixed(this.displayDP);
+                diffAndSetText(_activeText, fastToFixed(this.active, this.displayDP));
             }
             if (_stbyText != null) {
-                _stbyText.textContent = this.stby.toFixed(this.displayDP);
+                diffAndSetText(_stbyText, fastToFixed(this.stby, this.displayDP));
             }
         }
         makeEdit(_value, _stbyText) {
             if (!this.editModeActive) {
                 if (_value < 0) {
-                    this.editedValueString = this.stby.toFixed(this.displayDP).padStart(this.defaultEditValueString.length, "0");
+                    this.editedValueString = fastToFixed(this.stby, this.displayDP).padStart(this.defaultEditValueString.length, "0");
                 }
                 else {
                     this.editedValueString = this.defaultEditValueString;
@@ -105,11 +105,11 @@ var B747_8_RadioManagement;
             }
             else {
                 if (firstEmpty >= 0) {
-                    this.setEditValueDigit(firstEmpty, _value.toString());
+                    this.setEditValueDigit(firstEmpty, _value + '');
                 }
             }
             if (_stbyText != null) {
-                _stbyText.textContent = this.editedValueString;
+                diffAndSetText(_stbyText, this.editedValueString);
             }
         }
         setEditValueDigit(_digit, _value) {
@@ -118,7 +118,7 @@ var B747_8_RadioManagement;
         cancelEdit(_stbyText) {
             if (this.editModeActive) {
                 if (_stbyText != null) {
-                    _stbyText.textContent = this.stby.toFixed(this.displayDP);
+                    diffAndSetText(_stbyText, fastToFixed(this.stby, this.displayDP));
                 }
                 this.editModeActive = false;
             }

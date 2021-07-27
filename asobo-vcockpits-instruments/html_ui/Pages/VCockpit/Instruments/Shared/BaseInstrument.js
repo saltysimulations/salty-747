@@ -2,7 +2,8 @@ class BaseInstrument extends TemplateElement {
     constructor() {
         super();
         this.urlConfig = new URLConfig();
-        this.frameCount = 0;
+        this._frameCount = 0;
+        this.electricityAvailable = false;
         this.highlightList = [];
         this.backgroundList = [];
         this._lastTime = 0;
@@ -15,7 +16,8 @@ class BaseInstrument extends TemplateElement {
         this._gameState = GameState.ingame;
         this._alwaysUpdate = false;
         this._alwaysUpdateList = new Array();
-        this._pendingCalls = [];
+        this._pendingCalls = new Array();
+        this._pendingCallUId = 0;
         this.dataMetaManager = new DataReadMetaManager();
     }
     get initialized() { return this._isInitialized; }
@@ -25,6 +27,7 @@ class BaseInstrument extends TemplateElement {
     get IsGlassCockpit() { return false; }
     get isPrimary() { return (this.urlConfig.index == null || this.urlConfig.index == 1); }
     get deltaTime() { return this._deltaTime; }
+    get frameCount() { return this._frameCount; }
     get flightPlanManager() { return null; }
     get facilityLoader() {
         if (!this._facilityLoader)
@@ -71,7 +74,7 @@ class BaseInstrument extends TemplateElement {
             return null;
         if (!_selector.startsWith("#") && !_selector.startsWith("."))
             _selector = "#" + _selector;
-        var child = this.querySelector(_selector.toString());
+        var child = this.querySelector(_selector + '');
         return child;
     }
     getChildrenById(_selector) {
@@ -79,7 +82,7 @@ class BaseInstrument extends TemplateElement {
             return null;
         if (!_selector.startsWith("#") && !_selector.startsWith("."))
             _selector = "#" + _selector;
-        var children = this.querySelectorAll(_selector.toString());
+        var children = this.querySelectorAll(_selector + '');
         return children;
     }
     getChildrenByClassName(_selector) {
@@ -133,7 +136,7 @@ class BaseInstrument extends TemplateElement {
         }
         this.backgroundList = [];
         if (this.highlightList.length > 0) {
-            this.highlightSvg.setAttribute("active", "true");
+            diffAndSetAttribute(this.highlightSvg, "active", "true");
             let elems = "";
             for (let i = 0; i < this.highlightList.length; i++) {
                 let rect = this.highlightList[i].elem.getBoundingClientRect();
@@ -141,10 +144,10 @@ class BaseInstrument extends TemplateElement {
                     let bg = document.createElement("div");
                     bg.style.backgroundColor = "rgba(0,0,0,0.9)";
                     bg.style.zIndex = "-1";
-                    bg.style.left = this.highlightList[i].elem.offsetLeft.toString() + "px";
-                    bg.style.top = this.highlightList[i].elem.offsetTop.toString() + "px";
-                    bg.style.width = rect.width.toString() + "px";
-                    bg.style.height = rect.height.toString() + "px";
+                    bg.style.left = this.highlightList[i].elem.offsetLeft + '' + "px";
+                    bg.style.top = this.highlightList[i].elem.offsetTop + '' + "px";
+                    bg.style.width = rect.width + '' + "px";
+                    bg.style.height = rect.height + '' + "px";
                     bg.style.position = "absolute";
                     this.highlightList[i].elem.parentElement.appendChild(bg);
                     this.backgroundList.push(bg);
@@ -157,10 +160,10 @@ class BaseInstrument extends TemplateElement {
                 elems += rect.right + " ";
                 elems += rect.bottom;
             }
-            this.highlightSvg.setAttribute("elements", elems);
+            diffAndSetAttribute(this.highlightSvg, "elements", elems);
         }
         else {
-            this.highlightSvg.setAttribute("active", "false");
+            diffAndSetAttribute(this.highlightSvg, "active", "false");
         }
     }
     onInteractionEvent(_args) {
@@ -179,7 +182,7 @@ class BaseInstrument extends TemplateElement {
     reboot() {
         console.log("Rebooting Instrument...");
         this.startTime = Date.now();
-        this.frameCount = 0;
+        this._frameCount = 0;
         this.initTransponder();
         this.dispatchEvent(new Event('Reboot'));
     }
@@ -250,7 +253,7 @@ class BaseInstrument extends TemplateElement {
             instrumentID += "_" + this.urlConfig.index;
         this.setInstrumentIdentifier(instrumentID);
         if (this.urlConfig.style)
-            this.setAttribute("instrumentstyle", this.urlConfig.style);
+            diffAndSetAttribute(this, "instrumentstyle", this.urlConfig.style);
     }
     beforeUpdate() {
         let curTime = Date.now();
@@ -258,21 +261,28 @@ class BaseInstrument extends TemplateElement {
         this._frameLastTime = curTime;
     }
     Update() {
+        engine.beginProfileEvent("updateElectricity");
         this.updateElectricity();
+        engine.endProfileEvent();
         this.updateHighlight();
         if (this.dataMetaManager) {
+            engine.beginProfileEvent("dataMetaManager.UpdateAll");
             this.dataMetaManager.UpdateAll();
+            engine.endProfileEvent();
         }
         if (this._facilityLoader) {
+            engine.beginProfileEvent("facilityLoader.update");
             this._facilityLoader.update();
+            engine.endProfileEvent();
         }
     }
     afterUpdate() {
-        this.frameCount++;
-        if (this.frameCount >= Number.MAX_SAFE_INTEGER)
-            this.frameCount = 0;
+        this._frameCount++;
+        if (this._frameCount >= Number.MAX_SAFE_INTEGER)
+            this._frameCount = 0;
     }
     doUpdate() {
+        engine.beginProfileEvent("BaseInstr::doUpdate");
         this.beforeUpdate();
         if (this.canUpdate()) {
             let curTime = Date.now();
@@ -285,6 +295,7 @@ class BaseInstrument extends TemplateElement {
             this.updateAlwaysList();
         }
         this.afterUpdate();
+        engine.endProfileEvent();
     }
     CanUpdate() {
         console.warn("Deprecated - You should not be calling this function anymore");
@@ -292,40 +303,24 @@ class BaseInstrument extends TemplateElement {
     }
     canUpdate() {
         var quality = this.getQuality();
-        if (quality == Quality.ultra) {
-            return true;
-        }
-        else if (quality == Quality.high) {
-            if ((this.frameCount % 2) != 0) {
-                return false;
-            }
-        }
-        else if (quality == Quality.medium) {
-            if ((this.frameCount % 4) != 0) {
-                return false;
-            }
-        }
-        else if (quality == Quality.low) {
-            if ((this.frameCount % 32) != 0) {
-                return false;
-            }
-        }
-        else if (quality == Quality.hidden) {
-            if ((this.frameCount % 128) != 0) {
-                return false;
-            }
-        }
-        else if (quality == Quality.disabled) {
+        if (quality == Quality.disabled) {
             return false;
         }
         return true;
     }
     updateElectricity() {
+        if ((this._frameCount & 3) != 0) {
+            return;
+        }
         if (this.electricity) {
-            if (this.isElectricityAvailable())
-                this.electricity.setAttribute("state", "on");
-            else
-                this.electricity.setAttribute("state", "off");
+            let available = this.isElectricityAvailable();
+            if (available != this.electricityAvailable) {
+                this.electricityAvailable = available;
+                if (available)
+                    diffAndSetAttribute(this.electricity, "state", "on");
+                else
+                    diffAndSetAttribute(this.electricity, "state", "off");
+            }
         }
     }
     isElectricityAvailable() {
@@ -345,26 +340,27 @@ class BaseInstrument extends TemplateElement {
         if (this._isConnected)
             return;
         this._lastTime = Date.now();
-        let updateLoop = () => {
-            if (!this._isConnected) {
-                console.log("Exiting MainLoop...");
-                return;
-            }
-            try {
-                if (BaseInstrument.allInstrumentsLoaded && SimVar.IsReady()) {
-                    if (!this._isInitialized)
-                        this.Init();
-                    this.doUpdate();
-                }
-            }
-            catch (Error) {
-                console.error(this.instrumentIdentifier + " : " + Error, Error.stack);
-            }
-            requestAnimationFrame(updateLoop);
-        };
         this._isConnected = true;
         console.log("MainLoop created");
-        requestAnimationFrame(updateLoop);
+        this._mainLoopFuncInstance = this.mainLoop.bind(this);
+        requestAnimationFrame(this._mainLoopFuncInstance);
+    }
+    mainLoop() {
+        if (!this._isConnected) {
+            console.log("Exiting MainLoop...");
+            return;
+        }
+        try {
+            if (BaseInstrument.allInstrumentsLoaded && SimVar.IsReady()) {
+                if (!this._isInitialized)
+                    this.Init();
+                this.doUpdate();
+            }
+        }
+        catch (Error) {
+            console.error(this.instrumentIdentifier + " : " + Error, Error.stack);
+        }
+        requestAnimationFrame(this._mainLoopFuncInstance);
     }
     killMainLoop() {
         this._isConnected = false;
@@ -424,22 +420,51 @@ class BaseInstrument extends TemplateElement {
         if (transponderCode) {
             let currentCode = parseInt(transponderCode);
             if (currentCode == 0) {
-                Simplane.setTransponderToRegion();
+                Simplane.setTransponderToRegion(1);
+                Simplane.setTransponderToRegion(2);
             }
         }
     }
-    requestCall(_func) {
-        this._pendingCalls.push(_func);
+    requestCall(_func, _timeout = 0) {
+        let call = new PendingCall();
+        call.func = _func;
+        call.timeout = _timeout;
+        call.uid = ++this._pendingCallUId;
+        if (call.uid == 0)
+            console.error("Unsafe GUID");
+        if (this._pendingCallUId >= Number.MAX_SAFE_INTEGER)
+            this._pendingCallUId = 0;
+        this._pendingCalls.push(call);
+        return call.uid;
+    }
+    removeCall(_uid) {
+        if (_uid > 0) {
+            let length = this._pendingCalls.length;
+            for (let i = 0; i < length; i++) {
+                if (this._pendingCalls[i].uid == _uid) {
+                    this._pendingCalls.splice(i, 1);
+                    return;
+                }
+            }
+        }
     }
     updatePendingCalls() {
         let length = this._pendingCalls.length;
-        for (let i = 0; i < length; i++) {
-            this._pendingCalls[i]();
+        let i = 0;
+        while (i < length) {
+            let call = this._pendingCalls[i];
+            call.timeout -= this.deltaTime;
+            if (call.timeout <= 0) {
+                this._pendingCalls.splice(i, 1);
+                call.func();
+                length--;
+                continue;
+            }
+            i++;
         }
-        this._pendingCalls.splice(0, length);
     }
     clearPendingCalls() {
-        this._pendingCalls.splice(0, length);
+        this._pendingCalls.length = 0;
     }
     alwaysUpdate(_element, _val) {
         for (var i = 0; i < this._alwaysUpdateList.length; i++) {
@@ -464,6 +489,8 @@ class BaseInstrument extends TemplateElement {
 BaseInstrument.allInstrumentsLoaded = false;
 BaseInstrument.useSvgImages = false;
 class URLConfig {
+}
+class PendingCall {
 }
 var Quality;
 (function (Quality) {

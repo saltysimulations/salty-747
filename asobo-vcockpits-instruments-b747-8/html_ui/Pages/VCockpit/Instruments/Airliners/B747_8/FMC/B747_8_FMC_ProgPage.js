@@ -8,7 +8,7 @@ class B747_8_FMC_ProgPage {
                 B747_8_FMC_ProgPage.ShowPage1(fmc);
             }
         };
-        let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
+        let planeCoordinates = new LatLong(Simplane.getCurrentLat(), Simplane.getCurrentLon());
         let waypointFromCell = "";
         let waypointFromAltAtaCell = "";
         let waypointFromFuelCell = "";
@@ -28,10 +28,10 @@ class B747_8_FMC_ProgPage {
                 for (let i = 0; i < 4 - Math.log10(waypointFrom.altitudeWasReached); i++) {
                     waypointFromAltAtaCell += "&nbsp";
                 }
-                waypointFromAltAtaCell += waypointFrom.altitudeWasReached.toFixed(0) + " " + hours.toFixed(0).padStart(2, "0") + minutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                waypointFromAltAtaCell += fastToFixed(waypointFrom.altitudeWasReached, 0) + " " + fastToFixed(hours, 0).padStart(2, "0") + fastToFixed(minutes, 0).padStart(2, "0") + "&nbsp";
             }
             if (isFinite(waypointFrom.fuelWasReached)) {
-                waypointFromFuelCell = waypointFrom.getFuelWasReached(true).toFixed(0);
+                waypointFromFuelCell = fastToFixed(waypointFrom.getFuelWasReached(true), 0);
             }
         }
         let speed = Simplane.getGroundSpeed();
@@ -51,19 +51,19 @@ class B747_8_FMC_ProgPage {
                 for (let i = 0; i < 3 - Math.log10(waypointActiveDistance); i++) {
                     waypointActiveDistanceCell += "&nbsp";
                 }
-                waypointActiveDistanceCell += waypointActiveDistance.toFixed(0) + " ";
+                waypointActiveDistanceCell += fastToFixed(waypointActiveDistance, 0) + " ";
                 let eta = fmc.computeETA(waypointActiveDistance, speed, currentTime);
                 if (isFinite(eta)) {
                     let etaHours = Math.floor(eta / 3600);
                     let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                    waypointActiveDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                    waypointActiveDistanceCell += fastToFixed(etaHours, 0).padStart(2, "0") + fastToFixed(etaMinutes, 0).padStart(2, "0") + "&nbsp";
                 }
                 else {
                     waypointActiveDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                 }
                 let fuelLeft = fmc.computeFuelLeft(waypointActiveDistance, speed, currentFuel, currentFuelFlow);
                 if (isFinite(fuelLeft)) {
-                    waypointActiveFuelCell = fuelLeft.toFixed(0);
+                    waypointActiveFuelCell = fastToFixed(fuelLeft, 0);
                 }
             }
         }
@@ -83,19 +83,19 @@ class B747_8_FMC_ProgPage {
                         for (let i = 0; i < 3 - Math.log10(waypointActiveNextDistance); i++) {
                             waypointActiveNextDistanceCell += "&nbsp";
                         }
-                        waypointActiveNextDistanceCell += waypointActiveNextDistance.toFixed(0) + " ";
+                        waypointActiveNextDistanceCell += fastToFixed(waypointActiveNextDistance, 0) + " ";
                         let eta = fmc.computeETA(waypointActiveNextDistance, speed, currentTime);
                         if (isFinite(eta)) {
                             let etaHours = Math.floor(eta / 3600);
                             let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                            waypointActiveNextDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                            waypointActiveNextDistanceCell += fastToFixed(etaHours, 0).padStart(2, "0") + fastToFixed(etaMinutes, 0).padStart(2, "0") + "&nbsp";
                         }
                         else {
                             waypointActiveNextDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                         }
                         let fuelLeft = fmc.computeFuelLeft(waypointActiveNextDistance, speed, currentFuel, currentFuelFlow);
                         if (isFinite(fuelLeft)) {
-                            waypointActiveNextFuelCell = fuelLeft.toFixed(0);
+                            waypointActiveNextFuelCell = fastToFixed(fuelLeft, 0);
                         }
                     }
                 }
@@ -116,19 +116,19 @@ class B747_8_FMC_ProgPage {
                     for (let i = 0; i < 3 - Math.log10(destinationDistance); i++) {
                         destinationDistanceCell += "&nbsp";
                     }
-                    destinationDistanceCell += destinationDistance.toFixed(0) + " ";
+                    destinationDistanceCell += fastToFixed(destinationDistance, 0) + " ";
                     let eta = fmc.computeETA(destinationDistance, speed, currentTime);
                     if (isFinite(eta)) {
                         let etaHours = Math.floor(eta / 3600);
                         let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                        destinationDistanceCell += etaHours.toFixed(0).padStart(2, "0") + etaMinutes.toFixed(0).padStart(2, "0") + "&nbsp";
+                        destinationDistanceCell += fastToFixed(etaHours, 0).padStart(2, "0") + fastToFixed(etaMinutes, 0).padStart(2, "0") + "&nbsp";
                     }
                     else {
                         destinationDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                     }
                     let fuelLeft = fmc.computeFuelLeft(destinationDistance, speed, currentFuel, currentFuelFlow);
                     if (isFinite(fuelLeft)) {
-                        destinationFuelCell = fuelLeft.toFixed(0);
+                        destinationFuelCell = fastToFixed(fuelLeft, 0);
                     }
                 }
             }

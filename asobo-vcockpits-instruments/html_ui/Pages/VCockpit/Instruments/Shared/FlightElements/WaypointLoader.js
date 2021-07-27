@@ -21,8 +21,8 @@ class NearestAirspacesLoader {
                             let name = "airspace-";
                             name += airspaceData.type;
                             if (airspaceData.segments.length > 2) {
-                                name += airspaceData.segments[0].lat.toFixed(5);
-                                name += airspaceData.segments[1].long.toFixed(5);
+                                name += fastToFixed(airspaceData.segments[0].lat, 5);
+                                name += fastToFixed(airspaceData.segments[1].long, 5);
                             }
                             if (!this.nearestAirspaces.find(a => { return a.name === name; })) {
                                 let nearestAirspace = new NearestAirspace();
@@ -80,7 +80,7 @@ class FacilityLoader {
                 this.addFacility(data);
             });
             this._isCompletelyRegistered = true;
-        });
+        }, true);
     }
     update() {
         if (this._pendingGetFacilityCoherentCall.length > 0) {
@@ -1098,7 +1098,7 @@ class WaypointLoader {
                         this._hasUpdatedItems = false;
                     }
                     else {
-                        setTimeout(() => {
+                        this.instrument.requestCall(() => {
                             this._locked = false;
                         }, 1000);
                     }
@@ -1117,7 +1117,7 @@ class WaypointLoader {
                         this._hasUpdatedItems = false;
                     }
                     else {
-                        setTimeout(() => {
+                        this.instrument.requestCall(() => {
                             this._locked = false;
                         }, 1000);
                     }

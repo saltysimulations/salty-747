@@ -94,7 +94,7 @@ var B747_8_LowerEICAS_Fuel;
                 if (allPumps != null) {
                     for (var i = 0; i < allPumps.length; ++i) {
                         var lineIndex = parseInt(allPumps[i].textContent.replace("FuelLine", ""));
-                        allPumps[i].textContent = "";
+                        diffAndSetText(allPumps[i], "");
                         var clonedPump = _pumpTemplate.cloneNode(true);
                         clonedPump.removeAttribute("id");
                         allPumps[i].appendChild(clonedPump);
@@ -132,7 +132,7 @@ var B747_8_LowerEICAS_Fuel;
         applyPathDString(_selector, _d) {
             var pathElement = this.querySelector(_selector);
             if (pathElement != null) {
-                pathElement.setAttribute("d", _d);
+                diffAndSetAttribute(pathElement, "d", _d);
             }
         }
         update(_deltaTime) {
@@ -155,22 +155,22 @@ var B747_8_LowerEICAS_Fuel;
             }
             if (this.unitTextSVG) {
                 if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
-                    this.unitTextSVG.textContent = "KGS X 1000";
+                    diffAndSetText(this.unitTextSVG, "KGS X 1000");
                 else
-                    this.unitTextSVG.textContent = "LBS X 1000";
+                    diffAndSetText(this.unitTextSVG, "LBS X 1000");
             }
         }
         getTotalFuelInMegagrams() {
             let factor = this.gallonToMegapounds;
             if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
                 factor = this.gallonToMegagrams;
-            return (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * factor);
+            return (Simplane.getFuelcQuantity() * factor);
         }
         getMainTankFuelInMegagrams(_index) {
             let factor = this.gallonToMegapounds;
             if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
                 factor = this.gallonToMegagrams;
-            return (SimVar.GetSimVarValue("FUELSYSTEM TANK QUANTITY:" + _index, "gallons") * factor);
+            return Simplane.getEngFuelTankQuantity(_index) * factor;
         }
     }
     B747_8_LowerEICAS_Fuel.Display = Display;
@@ -187,7 +187,7 @@ var B747_8_LowerEICAS_Fuel;
             this.refresh(false, false, false, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"), (SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:" + this.lineIndex, "number") > 0));
+            this.refresh(Simplane.getEngFuelPumpSwitch(this.index), Simplane.getEngFuelPumpActive(this.index), (Simplane.getEngFuelLineFlow(this.lineIndex) > 0));
         }
         refresh(_isPumpSwitched, _isPumpActive, _isLineActive, _force = false) {
             if (_force || (this.isPumpSwitched != _isPumpSwitched) || (this.isPumpActive != _isPumpActive) || (this.isLineActive != _isLineActive)) {
@@ -202,7 +202,7 @@ var B747_8_LowerEICAS_Fuel;
                     else {
                         className += "-inactive";
                     }
-                    this.element.setAttribute("class", "fuelpump-" + className);
+                    diffAndSetAttribute(this.element, "class", "fuelpump-" + className);
                 }
             }
         }

@@ -73,7 +73,7 @@
 	-->
 	<Template Name = "ASOBO_GT_Anim_Code_Inversion_Test">	
 		<UseTemplate Name="ASOBO_GT_Anim_Code_Repeat_Test">
-			<Condition Check="INVERT_ANIM">
+			<Condition Valid="INVERT_ANIM">
 				<ANIM_CODE>
 					#ANIM_LENGTH# #ANIM_CODE# -
 				</ANIM_CODE>

@@ -9,13 +9,13 @@
   "title": "Boeing 747-8i vcockpit",
   "manufacturer": "",
   "creator": "Asobo Studio",
-  "package_version": "0.1.118",
-  "minimum_game_version": "1.17.1",
+  "package_version": "0.1.124",
+  "minimum_game_version": "1.18.11",
   "release_notes": {
     "neutral": {
       "LastUpdate": "",
       "OlderHistory": ""
     }
   },
-  "total_package_size": "00000000000000412624"
+  "total_package_size": "00000000000000412812"
 }

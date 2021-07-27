@@ -1,984 +1,736 @@
 <ModelBehaviors>
-	<Template Name="ASOBO_RMP_BACKLIGHT_Template">
-	<DefaultTemplateParameters>
-		<BACKLIGHT_NAME>PUSH_RADIO#SIDE#_#BASE_NAME#_SEQ1</BACKLIGHT_NAME>
-	</DefaultTemplateParameters>
-	
-	<Component ID="#BACKLIGHT_NAME#" Node="#BACKLIGHT_NAME#">
-		<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-			<Condition Check="POTENTIOMETER">
-				<True>
-					<EMISSIVE_CODE>(L:XMLVAR_RMP_#SIDE#_On, bool) (A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent over 100) *</EMISSIVE_CODE>
-				</True>
+	<Template Name="ASOBO_RMP_Button_Template">
+		<Parameters Type="Default">
+			<USE_BACKLIGHT>False</USE_BACKLIGHT>
+			<USE_LED>True</USE_LED>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>PUSH_RADIO#SIDE#_#BASE_NAME#</NODE_ID>
+			<ANIM_NAME>PUSH_RADIO#SIDE#_#BASE_NAME#</ANIM_NAME>
+			<WWISE_PREFIX>radio</WWISE_PREFIX>
+		</Parameters>
+		<Parameters Type="Override">
+			<IE_NAME>#BASE_NAME#_Button</IE_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IS_AIRLINER>True</IS_AIRLINER>
+			<Condition Valid="USE_BACKLIGHT">
 				<False>
-			<EMISSIVE_CODE>(L:XMLVAR_RMP_#SIDE#_On, bool)</EMISSIVE_CODE>
+					<NO_SEQ_1/>
 				</False>
 			</Condition>
+			<Condition Valid="USE_LED">
+				<False>
+					<NO_SEQ_2/>
+				</False>
+				<True>
+					<SEQ2_EMISSIVE_CODE>(B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#, Bool)</SEQ2_EMISSIVE_CODE>
+				</True>
+			</Condition>
+			<TT_DESCRIPTION_ID>@TT_Package.#TT_ID#_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.#TT_ID#_TITLE</TOOLTIP_TITLE>
+			<Condition NotEmpty="TT_INDEX">
+				<TOOLTIP_TITLE_INDEX>#TT_INDEX#</TOOLTIP_TITLE_INDEX>
+				<TT_DESCRIPTION_INDEX>#TT_INDEX#</TT_DESCRIPTION_INDEX>
+			</Condition>
 		</UseTemplate>
-	</Component>
 	</Template>
-
-	<Template Name="ASOBO_RMP_BUTTON_Template">
-	<DefaultTemplateParameters>
-		<NODE_ID>PUSH_RADIO#SIDE#_#BASE_NAME#</NODE_ID>
-		<ANIM_NAME_BUTTON>PUSH_RADIO#SIDE#_#BASE_NAME#</ANIM_NAME_BUTTON>
-		<LED_NODE_ID>PUSH_RADIO#SIDE#_#BASE_NAME#_SEQ2</LED_NODE_ID>
-		<EVENT_NAME>A320_Neo_FDW_BTN_#SIDE#_#BASE_NAME#</EVENT_NAME>
-		<STATE_VAR_NAME>XMLVAR_RMP_#SIDE#_#BASE_NAME#_Active</STATE_VAR_NAME>
-		<OPTIONAL_ACTIVE_IF>1</OPTIONAL_ACTIVE_IF>
-		<RUN_ON_PRESS></RUN_ON_PRESS>
-		<WWISE_EVENT_1>radio_push_button_on</WWISE_EVENT_1>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<WWISE_EVENT_2>radio_push_button_off</WWISE_EVENT_2>
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.RADIO_SELECT_#BASE_NAME#</TOOLTIPID>
-	</DefaultTemplateParameters>
-	<EditableTemplateParameters>
-		<AddParams>
-			<LED_NODE_ID></LED_NODE_ID>
-		</AddParams>
-	</EditableTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Push_Button">
-			<ANIM_NAME>#ANIM_NAME_BUTTON#</ANIM_NAME>
-			<LEFT_SINGLE_CODE>
-				<!--Only respond when power is on-->
-				(L:XMLVAR_RMP_#SIDE#_On) #OPTIONAL_ACTIVE_IF# and if{
-					(&gt;H:#EVENT_NAME#) (L:#STATE_VAR_NAME#) ! (&gt;L:#STATE_VAR_NAME#)
-					#RUN_ON_PRESS#
-				}
-			</LEFT_SINGLE_CODE>
+	<Template Name="ASOBO_RMP_Button_With_Lights_Template">
+		<UseTemplate Name="ASOBO_RMP_Button_Template">
+			<USE_BACKLIGHT>True</USE_BACKLIGHT>
 		</UseTemplate>
-	</Component>
-	
-	<Component ID="#LED_NODE_ID#" Node="#LED_NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-			<EMISSIVE_CODE>
-				(L:XMLVAR_RMP_#SIDE#_On, bool) if{
-					(L:#STATE_VAR_NAME#, bool) #OPTIONAL_ACTIVE_IF# and
-				}
-				els{ 0 }
-			</EMISSIVE_CODE>
+	</Template>
+	<Template Name="ASOBO_RMP_Radio_MODE_Selection_Template">
+		<Parameters Type="Default">
+			<TOGGLE_CONDITION>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool)</TOGGLE_CONDITION>
+			<TOGGLE_CONDITION_MODE>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) (L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) 0 == and (B:#INPUT_EVENT_ID_SOURCE#_NAV_Button, Bool) and</TOGGLE_CONDITION_MODE>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_SIDE_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<LOCAL_VAR_TO_WATCH_1>#RMP_SIDE_PREFIX#_#ID_MODE_GROUP#</LOCAL_VAR_TO_WATCH_1>
+			<LOCAL_VAR_TO_WATCH_2>#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#</LOCAL_VAR_TO_WATCH_2>
+		</Parameters>
+		<UseTemplate Name="ASOBO_RMP_Button_With_Lights_Template">
+			<COVER_NODE_ID>LOCK_RADIO#SIDE#_NAV</COVER_NODE_ID>
+			<COVER_ANIM_NAME>LOCK_RADIO#SIDE#_NAV</COVER_ANIM_NAME>
+			<WWISE_COVER_EVENT_OPEN>radio_lock_on</WWISE_COVER_EVENT_OPEN>
+			<WWISE_COVER_EVENT_CLOSE>radio_lock_off</WWISE_COVER_EVENT_CLOSE>
+			<BASE_NAME>NAV</BASE_NAME>
+			<SET_STATE_EXTERNAL>#TOGGLE_CONDITION# p0 and if{ 1 (&gt;L:#RMP_SIDE_PREFIX#_NAV_Enabled) (&gt;H:#RMP_BTN_PREFIX#_NAV) #RESET_FREQ# } els{ 0 (&gt;O:#INPUT_EVENT_ID_SOURCE#_NAV_Button_Position) 0 (&gt;L:#RMP_SIDE_PREFIX#_NAV_Enabled) }</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#RMP_SIDE_PREFIX#_NAV_Enabled) #TOGGLE_CONDITION# and s0 (&gt;L:#RMP_SIDE_PREFIX#_NAV_Active)</GET_STATE_EXTERNAL>
+			<TT_ID>AIRLINER_PUSH_AUDIO_NAV</TT_ID>
+			<LOCAL_VAR_TO_WATCH_3>#RMP_SIDE_PREFIX#_NAV_Enabled</LOCAL_VAR_TO_WATCH_3>
 		</UseTemplate>
-	</Component>
+		<Component ID="#INPUT_EVENT_ID_SOURCE#_Mode_Group">
+			<Parameters Type="Default">
+				<ID_MODE_0>VOR</ID_MODE_0>
+				<ID_MODE_1>ILS</ID_MODE_1>
+				<ID_MODE_2>MLS</ID_MODE_2>
+				<ID_MODE_3>ADF</ID_MODE_3>
+				<ID_MODE_4>BFO</ID_MODE_4>
+				<ID_MODE_2_IS_INOP>True</ID_MODE_2_IS_INOP>
+			</Parameters>
+			<Parameters Type="Override">
+				<TOGGLE_CONDITION>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) (B:#INPUT_EVENT_ID_SOURCE#_NAV_Button, Bool) and</TOGGLE_CONDITION>
+				<LOCAL_VAR_TO_WATCH_3>#RMP_SIDE_PREFIX#_NAV_Active</LOCAL_VAR_TO_WATCH_3>
+			</Parameters>
+			<Loop>
+				<Setup>
+					<Param>ID_MODE</Param>
+					<From>0</From>
+					<Inc>1</Inc>
+					<To>4</To>
+				</Setup>
+				<Do>
+					<Parameters Type="Override">
+						<Condition NotEmpty="ID_MODE_#ID_MODE#_IS_INOP">
+							<IS_INOP>True</IS_INOP>
+						</Condition>
+						<MODE_NAME Process="Param">ID_MODE_#ID_MODE#</MODE_NAME>
+						<GROUP_INDEX Process="Int">#ID_MODE# 1 +</GROUP_INDEX>
+					</Parameters>
+					<UseTemplate Name="ASOBO_RMP_Button_With_Lights_Template">
+						<BASE_NAME>#MODE_NAME#</BASE_NAME>
+						<SET_STATE_EXTERNAL>#TOGGLE_CONDITION# p0 and if{ #GROUP_INDEX# (&gt;L:#RMP_SIDE_PREFIX#_#ID_MODE_GROUP#) (&gt;H:#RMP_BTN_PREFIX#_#MODE_NAME#) #RESET_FREQ# } els{ 0 (&gt;O:#INPUT_EVENT_ID_SOURCE#_#MODE_NAME#_Button_Position) }</SET_STATE_EXTERNAL>
+						<GET_STATE_EXTERNAL>(L:#RMP_SIDE_PREFIX#_#ID_MODE_GROUP#) #GROUP_INDEX# == #TOGGLE_CONDITION_MODE# and s0 (&gt;L:#RMP_SIDE_PREFIX#_#MODE_NAME#_Active)</GET_STATE_EXTERNAL>
+						<TT_ID>AIRLINER_PUSH_AUDIO_#MODE_NAME#</TT_ID>
+					</UseTemplate>
+				</Do>
+			</Loop>
+		</Component>
 	</Template>
-
-	<Template Name="ASOBO_RMP_BUTTON_WITH_LIGHTS_Template">
-	<DefaultTemplateParameters>
-		<BASE_NAME>UNKNOWN</BASE_NAME>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_RMP_BACKLIGHT_Template">
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_BUTTON_Template">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_RMP_GROUPED_BUTTON_Template">
-	<DefaultTemplateParameters>
-		<NODE_ID>PUSH_RADIO#SIDE#_#BASE_NAME#</NODE_ID>
-		<ANIM_NAME_BUTTON>PUSH_RADIO#SIDE#_#BASE_NAME#</ANIM_NAME_BUTTON>
-		<LED_NODE_ID>PUSH_RADIO#SIDE#_#BASE_NAME#_SEQ2</LED_NODE_ID>
-		<EVENT_NAME>A320_Neo_FDW_BTN_#SIDE#_#BASE_NAME#</EVENT_NAME>
-		<GROUP_STATE_VAR_NAME>XMLVAR_RMP_#SIDE#_GROUP_#GROUP_NAME#_IS_DISABLED</GROUP_STATE_VAR_NAME>
-		<CURRENT_BUTTON_VAR_NAME>XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_#GROUP_NAME#</CURRENT_BUTTON_VAR_NAME>
-		<OPTIONAL_ACTIVE_IF>1</OPTIONAL_ACTIVE_IF>
-		<RUN_ON_PRESS></RUN_ON_PRESS>
-		<WWISE_EVENT_1>radio_push_button_on</WWISE_EVENT_1>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<WWISE_EVENT_2>radio_push_button_off</WWISE_EVENT_2>
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.RADIO_SELECT_#BASE_NAME#</TOOLTIPID>
-	</DefaultTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Push_Button">
-			<ANIM_NAME>#ANIM_NAME_BUTTON#</ANIM_NAME>
-			<LEFT_SINGLE_CODE>
-				<!--Only respond when power is on AND the group isn't disabled AND the optional requirement is valid-->
-				(L:XMLVAR_RMP_#SIDE#_On) if{
-					(L:#GROUP_STATE_VAR_NAME#) ! if{
-						#OPTIONAL_ACTIVE_IF# if{
-							(&gt;H:#EVENT_NAME#) #GROUP_INDEX# (&gt;L:#CURRENT_BUTTON_VAR_NAME#)
-							#RUN_ON_PRESS#
-						}
-					}
-				}
-			</LEFT_SINGLE_CODE>
+	<Template Name="ASOBO_RMP_Radio_FREQ_Selection_Template">
+		<Parameters Type="Default">
+			<TOGGLE_CONDITION>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) (L:#RMP_SIDE_PREFIX#_#ID_MODE_GROUP#) 0 == and</TOGGLE_CONDITION>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_SIDE_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<LOCAL_VAR_TO_WATCH_1>#RMP_SIDE_PREFIX#_#ID_MODE_GROUP#</LOCAL_VAR_TO_WATCH_1>
+			<LOCAL_VAR_TO_WATCH_2>#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#</LOCAL_VAR_TO_WATCH_2>
+		</Parameters>
+		<Loop>
+			<Setup>
+				<Param>VHF_ID</Param>
+				<From>1</From>
+				<Inc>1</Inc>
+				<To>3</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Override">
+					<GROUP_INDEX Process="Param">GROUP_ID_VHF_#VHF_ID#</GROUP_INDEX>
+					<VHF_NAME>VHF#VHF_ID#</VHF_NAME>
+				</Parameters>
+				<UseTemplate Name="ASOBO_RMP_Button_With_Lights_Template">
+					<BASE_NAME>#VHF_NAME#</BASE_NAME>
+					<SET_STATE_EXTERNAL>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) p0 and if{ #GROUP_INDEX# (&gt;L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) (&gt;H:#RMP_BTN_PREFIX#_#VHF_NAME#) #RESET_MODE# } els{ (L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) #GROUP_INDEX# == (&gt;O:#INPUT_EVENT_ID_SOURCE#_#VHF_NAME#_Button_Position) }</SET_STATE_EXTERNAL>
+					<GET_STATE_EXTERNAL>(L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) #GROUP_INDEX# == #TOGGLE_CONDITION# and (B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) and s0 (&gt;L:#RMP_SIDE_PREFIX#_#VHF_NAME#_Active)</GET_STATE_EXTERNAL>
+					<TT_ID>AIRLINER_PUSH_AUDIO_VHF</TT_ID>
+					<TT_INDEX>#VHF_ID#</TT_INDEX>
+				</UseTemplate>
+			</Do>
+		</Loop>
+		<Loop>
+			<Setup>
+				<Param>HF_ID</Param>
+				<From>1</From>
+				<Inc>1</Inc>
+				<To>2</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Override">
+					<GROUP_INDEX Process="Param">GROUP_ID_HF_#HF_ID#</GROUP_INDEX>
+					<HF_NAME>HF#HF_ID#</HF_NAME>
+				</Parameters>
+				<UseTemplate Name="ASOBO_RMP_Button_With_Lights_Template">
+					<BASE_NAME>#HF_NAME#</BASE_NAME>
+					<SET_STATE_EXTERNAL>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) p0 and if{ #GROUP_INDEX# (&gt;L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) (&gt;H:#RMP_BTN_PREFIX#_#HF_NAME#) #RESET_MODE# } els{ 0 (&gt;O:#INPUT_EVENT_ID_SOURCE#_#HF_NAME#_Button_Position) }</SET_STATE_EXTERNAL>
+					<GET_STATE_EXTERNAL>(L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) #GROUP_INDEX# == #TOGGLE_CONDITION# and (B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) and s0 (&gt;L:#RMP_SIDE_PREFIX#_#HF_NAME#_Active)</GET_STATE_EXTERNAL>
+					<TT_ID>AIRLINER_PUSH_AUDIO_HF</TT_ID>
+					<TT_INDEX>#HF_ID#</TT_INDEX>
+				</UseTemplate>
+			</Do>
+		</Loop>
+		<UseTemplate Name="ASOBO_RMP_Button_Template">
+			<BASE_NAME>AM</BASE_NAME>
+			<SET_STATE_EXTERNAL>(L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) s0 #GROUP_ID_HF_1# == l0 #GROUP_ID_HF_2# == or #TOGGLE_CONDITION# and p0 and if{ 1 (&gt;L:#RMP_SIDE_PREFIX#_AM_Enabled) (&gt;H:#RMP_BTN_PREFIX#_AM) } els{ 0 (&gt;L:#RMP_SIDE_PREFIX#_AM_Enabled) 0 (&gt;O:#INPUT_EVENT_ID_SOURCE#_AM_Button_Position) }</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#) s0 #GROUP_ID_HF_1# == l0 #GROUP_ID_HF_2# == or #TOGGLE_CONDITION# and (L:#RMP_SIDE_PREFIX#_AM_Enabled) and s0 (&gt;L:#RMP_SIDE_PREFIX#_AM_Active)</GET_STATE_EXTERNAL>
+			<TT_ID>AIRLINER_PUSH_AUDIO_AM</TT_ID>
 		</UseTemplate>
-	</Component>
-	
-	<Component ID="#LED_NODE_ID#" Node="#LED_NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-			<EMISSIVE_CODE>
-				(L:XMLVAR_RMP_#SIDE#_On, bool) (L:#GROUP_STATE_VAR_NAME#) ! and if{
-					(L:#CURRENT_BUTTON_VAR_NAME#) #GROUP_INDEX# == #OPTIONAL_ACTIVE_IF# and
-				}
-				els{
-					0
-				}
-			</EMISSIVE_CODE>
-		</UseTemplate>
-	</Component>
 	</Template>
-
-	<Template Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-	<DefaultTemplateParameters>
-		<BASE_NAME>UNKNOWN</BASE_NAME>
-		<GROUP_NAME>NONE</GROUP_NAME>
-		<GROUP_INDEX>-1</GROUP_INDEX>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_RMP_BACKLIGHT_Template">
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_Template">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_RMP_RADIO_SELECTION_Template">
-	<DefaultTemplateParameters>
-		<SIDE>UNKNOWN</SIDE>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>VHF1</BASE_NAME>
-		<GROUP_NAME>FREQ</GROUP_NAME>
-		<GROUP_INDEX>1</GROUP_INDEX>
-		<OPTIONAL_ACTIVE_IF>
-			(* FREQ buttons are only available when nothing is active in the MODE group *)
-			(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE) 0 ==
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>VHF2</BASE_NAME>
-		<GROUP_NAME>FREQ</GROUP_NAME>
-		<GROUP_INDEX>2</GROUP_INDEX>
-		<OPTIONAL_ACTIVE_IF>
-			(* FREQ buttons are only available when nothing is active in the MODE group *)
-			(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE) 0 ==
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>VHF3</BASE_NAME>
-		<GROUP_NAME>FREQ</GROUP_NAME>
-		<GROUP_INDEX>3</GROUP_INDEX>
-		<OPTIONAL_ACTIVE_IF>
-			(* FREQ buttons are only available when nothing is active in the MODE group *)
-			(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE) 0 ==
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>HF1</BASE_NAME>
-		<GROUP_NAME>FREQ</GROUP_NAME>
-		<GROUP_INDEX>4</GROUP_INDEX>
-		<OPTIONAL_ACTIVE_IF>
-			(* FREQ buttons are only available when nothing is active in the MODE group *)
-			(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE) 0 ==
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>HF2</BASE_NAME>
-		<GROUP_NAME>FREQ</GROUP_NAME>
-		<GROUP_INDEX>5</GROUP_INDEX>
-		<OPTIONAL_ACTIVE_IF>
-			(* FREQ buttons are only available when nothing is active in the MODE group *)
-			(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE) 0 ==
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>AM</BASE_NAME>
-		<OPTIONAL_ACTIVE_IF>
-			(* AM is only available when HF1/HF2 are active *)
-			(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE) 0 == (L:XMLVAR_RMP_#SIDE#_GROUP_FREQ_IS_DISABLED) ! and if{
-				(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_FREQ) 4 == (L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_FREQ) 5 == or
-			}
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
-	</Template>
-
 	<Template Name="ASOBO_RMP_DISPLAY_Template">
-	<DefaultTemplateParameters>
-		<SIDE>UNKNOWN</SIDE>
-	</DefaultTemplateParameters>
-	
-	<Component ID="RMP_SWITCH_#SIDE#" Node="SWITCH_RADIO#SIDE#_1">
-		<UseTemplate Name="ASOBO_GT_Switch_Code">
-			<ANIM_NAME>SWITCH_RADIO#SIDE#_1</ANIM_NAME>
-			<ANIM_LENGTH>100</ANIM_LENGTH>
-			<ANIM_CODE>(L:XMLVAR_RMP_#SIDE#_On) 100 *</ANIM_CODE>
-			<LEFT_SINGLE_CODE>
-				(L:XMLVAR_RMP_#SIDE#_On) ! (&gt;L:XMLVAR_RMP_#SIDE#_On)
-				(L:XMLVAR_RMP_#SIDE#_On) if{
-					0 (&gt;L:XMLVAR_RMP_#SIDE#_GROUP_FREQ_IS_DISABLED)			(* FREQ group enabled *)
-					1 (&gt;L:XMLVAR_RMP_#SIDE#_GROUP_MODE_IS_DISABLED)			(* MODE group disabled *)
-					1 (&gt;L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_FREQ)	(* Default FREQ group is button 1 (VHF1) *)
-					0 (&gt;L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE)	(* Default MODE group is button 0 (NONE) *)
-					0 (&gt;L:XMLVAR_RMP_#SIDE#_AM_Active)						(* AM button off *)
-					0 (&gt;L:XMLVAR_RMP_#SIDE#_NAV_Active)						(* NAV button off *)
-					0 (&gt;L:XMLVAR_RMP_#SIDE#_BFO_Active)						(* BFO button off *)
-				}
-				(&gt;H:A320_Neo_FDW_SWITCH_#SIDE#_TOGGLE)
-			</LEFT_SINGLE_CODE>
-			<WWISE_EVENT_1>radio_switch_on</WWISE_EVENT_1>
-			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-			<WWISE_EVENT_2>radio_switch_off</WWISE_EVENT_2>
-			<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.RADIO_SELECT_TURN_RMP_ON</ANIMTIP_0>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.RADIO_SELECT_TURN_RMP_OFF</ANIMTIP_1>
+		<Parameters Type="Default">
+			<PANEL_NAME>A320_Neo_FDW</PANEL_NAME>
+			<RMP_VAR_PREFIX>XMLVAR_RMP</RMP_VAR_PREFIX>
+			<RMP_SIDE_PREFIX>XMLVAR_RMP_L</RMP_SIDE_PREFIX><!-- Force L as there is only one system behind the curtain -->
+			<SEQ1_EMISSIVE_DRIVES_VISIBILITY>False</SEQ1_EMISSIVE_DRIVES_VISIBILITY>
+			<SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
+		</Parameters>
+		<Parameters Type="Default">
+			<STATE_VAR_SIDE_NAME>#RMP_SIDE_PREFIX#_On</STATE_VAR_SIDE_NAME>
+			<INPUT_EVENT_ID_SOURCE>AIRLINER_RMP_#SIDE#</INPUT_EVENT_ID_SOURCE>
+			<ID_MODE_GROUP>CURRENT_BUTTON_IN_GROUP_MODE</ID_MODE_GROUP>
+			<ID_FREQ_GROUP>CURRENT_BUTTON_IN_GROUP_FREQ</ID_FREQ_GROUP>
+			<RMP_BTN_PREFIX>#PANEL_NAME#_BTN_L</RMP_BTN_PREFIX><!-- Force L as there is only one system behind the curtain -->
+		</Parameters>
+		<Parameters Type="Override">
+			<IE_STATE>Master_Switch</IE_STATE>
+			<IE_FREQ_STATE>Frequency</IE_FREQ_STATE>
+			<IE_MODE_STATE>Mode</IE_MODE_STATE>
+			<RESET_MODE>0 (&gt;L:#RMP_SIDE_PREFIX#_#ID_MODE_GROUP#) 0 (&gt;L:#RMP_SIDE_PREFIX#_NAV_Enabled)</RESET_MODE>
+			<RESET_FREQ>0 (&gt;L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#)</RESET_FREQ>
+		</Parameters>
+		<Parameters Type="Override">
+			<SEQ1_EMISSIVE_CODE>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool)</SEQ1_EMISSIVE_CODE>
+		</Parameters>
+		<Parameters Type="Override">
+			<GROUP_ID_VHF_1>1</GROUP_ID_VHF_1>
+			<GROUP_ID_VHF_2>2</GROUP_ID_VHF_2>
+			<GROUP_ID_VHF_3>3</GROUP_ID_VHF_3>
+			<GROUP_ID_HF_1>4</GROUP_ID_HF_1>
+			<GROUP_ID_HF_2>5</GROUP_ID_HF_2>
+			<GROUP_ID_NULL>0</GROUP_ID_NULL>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Update">
+			<UPDATE_ONCE>True</UPDATE_ONCE>
+			<UPDATE_CODE>1 (&gt;L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#)</UPDATE_CODE>
 		</UseTemplate>
-		
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>#IE_STATE#</IE_NAME>
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
+			<NODE_ID>SWITCH_RADIO#SIDE#_1</NODE_ID>
+			<ANIM_NAME>SWITCH_RADIO#SIDE#_1</ANIM_NAME>
+			<SET_STATE_EXTERNAL>
+				p0 s0 if{
+					#GROUP_ID_VHF_1# (&gt;L:#RMP_SIDE_PREFIX#_#ID_FREQ_GROUP#)
+					#GROUP_ID_NULL# (&gt;L:#RMP_SIDE_PREFIX#_#ID_MODE_GROUP#)
+				}
+				(L:#STATE_VAR_SIDE_NAME#) l0 != if{ l0 (&gt;L:#STATE_VAR_SIDE_NAME#) (&gt;H:#PANEL_NAME#_SWITCH_#SIDE#_TOGGLE) }
+			</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_SIDE_NAME#) sp0</GET_STATE_EXTERNAL>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_SIDE_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<WWISE_PREFIX>radio</WWISE_PREFIX>
+			<COUNT>18</COUNT>
+			<COMP_INIT_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#_On)</COMP_INIT_CODE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_SWITCH_RADIO_MASTER_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_SWITCH_RADIO_MASTER_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Frequency_Mhz</IE_NAME>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<IS_INFINITE>True</IS_INFINITE>
+			<NODE_ID>KNOB_RADIO#SIDE#_BIG</NODE_ID>
+			<ANIM_NAME>KNOB_RADIO#SIDE#_BIG</ANIM_NAME>
+			<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:#PANEL_NAME#_DIAL_L_INTEGER_INC) } els{ (&gt;H:#PANEL_NAME#_DIAL_L_INTEGER_DEC) }</SET_STATE_EXTERNAL><!-- Force L as there is only one system behind the curtain -->
+			<WWISE_PREFIX>radio_big</WWISE_PREFIX>
+			<COUNT>18</COUNT>
+			<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
+			<THRESHOLD_MOUSE>0.025</THRESHOLD_MOUSE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_KNOB_RADIO_BIG_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_KNOB_RADIO_BIG_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Frequency_Khz</IE_NAME>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<IS_INFINITE>True</IS_INFINITE>
+			<NODE_ID>KNOB_RADIO#SIDE#_SMALL</NODE_ID>
+			<ANIM_NAME>KNOB_RADIO#SIDE#_SMALL</ANIM_NAME>
+			<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:#PANEL_NAME#_DIAL_L_DECIMAL_INC) } els{ (&gt;H:#PANEL_NAME#_DIAL_L_DECIMAL_DEC) }</SET_STATE_EXTERNAL><!-- Force L as there is only one system behind the curtain -->
+			<WWISE_PREFIX>radio_small</WWISE_PREFIX>
+			<COUNT>18</COUNT>
+			<THRESHOLD_INPUT>0.00025</THRESHOLD_INPUT>
+			<THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_KNOB_RADIO_SMALL_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_KNOB_RADIO_SMALL_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Frequency_Swap</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IS_AIRLINER>True</IS_AIRLINER>
+			<NO_SEQ_2/>
+			<NODE_ID>PUSH_RADIO#SIDE#_ARROWS</NODE_ID>
+			<ANIM_NAME>PUSH_RADIO#SIDE#_ARROWS</ANIM_NAME>
+			<SET_STATE_EXTERNAL>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) p0 and if{ (&gt;H:A320_Neo_FDW_BTN_L_TRANSFER) }</SET_STATE_EXTERNAL><!-- Force L as there is only one system behind the curtain -->
+			<WWISE_PREFIX>radio</WWISE_PREFIX>
+			<COUNT>18</COUNT>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_PUSH_RADIO_SWAP_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_PUSH_RADIO_SWAP_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_RMP_Radio_FREQ_Selection_Template"/>
+		<UseTemplate Name="ASOBO_RMP_Radio_MODE_Selection_Template"/>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+			<NODE_ID>PUSH_RADIO#SIDE#_SEL_SEQ1</NODE_ID>
+			<EMISSIVE_CODE>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool)</EMISSIVE_CODE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+			<NODE_ID>PUSH_RADIO#SIDE#_SEL_SEQ2</NODE_ID>
+			<EMISSIVE_CODE>(B:#INPUT_EVENT_ID_SOURCE#_#IE_STATE#, Bool) (L:#RMP_VAR_PREFIX#_L_#ID_FREQ_GROUP#) 0 &gt; and</EMISSIVE_CODE>
+			<!-- (* Both RMPs must be on *) -->
+			<!-- (* Both frequency groups must be active *) -->
+			<!-- (* The currently selected frequency must be valid *) -->
+			<!-- (* Both RMPs must be in the default mode *) -->
+			<!-- (* SEL will now be highlighted when both RMPs have the same frequency set *) -->
+		</UseTemplate>
+	</Template>
+	
+	<!-- -->
+	
+	<Template Name="ASOBO_AIRBUS_Push_ILS_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_ILS_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_ILS_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>LS</ID_BTN>
+			<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_CSTR_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_CSTR_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_CSTR_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>CSTR</ID_BTN>
+			<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_VORD_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_VORD_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_VORD_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>VORD</ID_BTN>
+			<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_WPT_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_WPT_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_WPT_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>WPT</ID_BTN>
+			<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_NDB_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_NDB_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_NDB_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>NDB</ID_BTN>
+			<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_ARPT_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_ARPT_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_ARPT_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>ARPT</ID_BTN>
+			<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_Heading_Track_Template">
+		<Parameters Type="Default">
+			<NODE_ID>AIRBUS_Push_Heading_Track</NODE_ID>
+			<ANIM_NAME>AIRBUS_Push_Heading_Track</ANIM_NAME>
+			<PART_ID>AIRBUS_Push_Heading_Track</PART_ID>
+			<STATE_VAR_NAME>XMLVAR_TRK_FPA_MODE_ACTIVE</STATE_VAR_NAME>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_HEADING_TRACK_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_HEADING_TRACK_ACTION_SET</TT_DESCRIPTION_ID>
+			<WWISE_EVENT_1>autopilot_push_button2_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_push_button2_off</WWISE_EVENT_2>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>HDG_TRK</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<SET_STATE_EXTERNAL>p0 (&gt;L:#STATE_VAR_NAME#) (&gt;H:A320_Neo_CDU_AP_TRK_FPA)</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<STR_STATE_ON>TRK</STR_STATE_ON>
+			<STR_STATE_OFF>HDG</STR_STATE_OFF>
+			<TT_VALUE_ON>'TRK'</TT_VALUE_ON>
+			<TT_VALUE_OFF>'HDG'</TT_VALUE_OFF>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_Metric_Alt_Template">
+		<Parameters Type="Default">
+			<NODE_ID>AIRBUS_Push_Metric_Alt</NODE_ID>
+			<ANIM_NAME>AIRBUS_Push_Metric_Alt</ANIM_NAME>
+			<PART_ID>AIRBUS_Push_Metric_Alt</PART_ID>
+			<STATE_VAR_NAME>XMLVAR_PLACEHOLDER_PMA_VAR</STATE_VAR_NAME>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_METRIC_ALT_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_METRIC_ALT_ACTION</TT_DESCRIPTION_ID>
+			<WWISE_EVENT_1>autopilot_push_button2_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_push_button2_off</WWISE_EVENT_2>
+			<IS_INOP>True</IS_INOP>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Metric_Alt</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<SET_STATE_EXTERNAL>(&gt;L:#STATE_VAR_NAME#)</SET_STATE_EXTERNAL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_NAV_AID_SWITCH_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<ANIM_NAME>SWITCH_AUTOPILOT_ADF#ID#_#SIDE#</ANIM_NAME>
+			<NODE_ID>SWITCH_AUTOPILOT_ADF#ID#_#SIDE#</NODE_ID>
+			<PART_ID>SWITCH_AUTOPILOT_ADF#ID#_#SIDE#</PART_ID>
+			<STATE_VAR_NAME>XMLVAR_NAV_AID_SWITCH_#SIDE##ID#_State</STATE_VAR_NAME>
+			<WWISE_PREFIX>nav_aid</WWISE_PREFIX>
+			<POS_ADF>0</POS_ADF>
+			<POS_OFF>1</POS_OFF>
+			<POS_VOR>2</POS_VOR>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_SWITCH_VOR_ADF_TITLE</TOOLTIP_TITLE>
+			<!-- <TT_DESCRIPTION_ID>@TT_Package.AIRLINER_SWITCH_VOR_ADF_ACTION_ID</TT_DESCRIPTION_ID> -->
+			<TT_DESCRIPTION>@TT_Placeholder_Description</TT_DESCRIPTION>
+			<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+			<Switch Param="SIDE">
+				<Case Value="L">
+					<TT_DESCRIPTION_INDEX>#ID# @TT_Left</TT_DESCRIPTION_INDEX>
+				</Case>
+				<Case Value="R">
+					<TT_DESCRIPTION_INDEX>#ID# @TT_Right</TT_DESCRIPTION_INDEX>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<ENUM_VAL_OFF>0</ENUM_VAL_OFF>
+			<ENUM_VAL_ADF>1</ENUM_VAL_ADF>
+			<ENUM_VAL_VOR>2</ENUM_VAL_VOR>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>#SIDE#_VOR_ADF_#ID#</IE_NAME>
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
+			<NUM_STATES>3</NUM_STATES>
+			<STR_STATE_#POS_ADF#>ADF_#ID#</STR_STATE_#POS_ADF#>
+			<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+			<STR_STATE_#POS_VOR#>VOR_#ID#</STR_STATE_#POS_VOR#>
+			<TT_VALUE_#POS_ADF#>'ADF #ID#'</TT_VALUE_#POS_ADF#>
+			<TT_VALUE_#POS_ADF#_IS_DYNAMIC>True</TT_VALUE_#POS_ADF#_IS_DYNAMIC>
+			<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+			<TT_VALUE_#POS_VOR#>'VOR #ID#'</TT_VALUE_#POS_VOR#>
+			<TT_VALUE_#POS_VOR#_IS_DYNAMIC>True</TT_VALUE_#POS_VOR#_IS_DYNAMIC>
+			<SET_STATE_#POS_ADF#>#ENUM_VAL_ADF# (&gt;L:#STATE_VAR_NAME#)</SET_STATE_#POS_ADF#>
+			<SET_STATE_#POS_OFF#>#ENUM_VAL_OFF# (&gt;L:#STATE_VAR_NAME#)</SET_STATE_#POS_OFF#>
+			<SET_STATE_#POS_VOR#>#ENUM_VAL_VOR# (&gt;L:#STATE_VAR_NAME#)</SET_STATE_#POS_VOR#>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+			<ENUM_VAL_TO_POS_EXTERNAL>l0 #ENUM_VAL_OFF# == if{ #POS_OFF# sp1 g2 } els{ #POS_ADF# #POS_VOR# l0 #ENUM_VAL_ADF# == ? sp1 g2 } :2 l1</ENUM_VAL_TO_POS_EXTERNAL>
+			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_TERRONND_Template">
+		<Parameters Type="Default">
+			<NODE_ID>AIRBUS_Push_TERRONND</NODE_ID>
+			<ANIM_NAME>AIRBUS_Push_TERRONND</ANIM_NAME>
+			<PART_ID>AIRBUS_Push_TERRONND</PART_ID>
+			<WWISE_PREFIX>autopilot</WWISE_PREFIX>
+			<STATE_VAR_NAME>BTN_TERRONND_ACTIVE</STATE_VAR_NAME>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_PUSH_TERRONND_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_PUSH_TERRONND_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<Parameters Type="Default">
+			<SEQ1_NODE_ID>#NODE_ID#_SEQ1</SEQ1_NODE_ID>
+			<SEQ2_NODE_ID>#NODE_ID#_SEQ2</SEQ2_NODE_ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>TERR_ON_ND_Button_#ID#</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IS_AIRLINER>True</IS_AIRLINER>
+			<SET_STATE_EXTERNAL>p0 (L:#STATE_VAR_NAME#) != if{ (&gt;H:A320_Neo_MFD_BTN_TERRONND) }</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
+			<SEQ2_EMISSIVE_CODE>(B:AIRLINER_TERR_ON_ND_Button_#ID#, Bool)</SEQ2_EMISSIVE_CODE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_ECAM_PAGE_BUTTON_Template">
+		<Parameters Type="Default">
+			<NODE_ID>PUSH_ECAM_#BASE_NAME#</NODE_ID>
+			<ANIM_NAME>PUSH_ECAM_#BASE_NAME#</ANIM_NAME>
+			<LED_NODE_ID>PUSH_ECAM_#BASE_NAME#_SEQ2</LED_NODE_ID>
+			<BACKLIGHT_NODE_ID>PUSH_ECAM_#BASE_NAME#_SEQ1</BACKLIGHT_NODE_ID>
+			<EVENT_NAME>#PANEL_NAME#_ECAM_CHANGE_PAGE_#BASE_NAME#</EVENT_NAME>
+			<STATE_VAR_NAME>XMLVAR_ECAM_CURRENT_PAGE</STATE_VAR_NAME>
+			<WWISE_PREFIX>radio</WWISE_PREFIX>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<Condition>
+				<Test>
+					<GreaterOrEqual>
+						<Value>GROUP_INDEX</Value>
+						<Number>0</Number>
+					</GreaterOrEqual>
+				</Test>
+				<False>
+					<IS_INOP>True</IS_INOP>
+				</False>
+			</Condition>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IE_NAME>Page_#BASE_NAME#</IE_NAME>
+			<SET_STATE_EXTERNAL>if{ #GROUP_INDEX# -1 &gt; if{ (&gt;H:#EVENT_NAME#) #GROUP_INDEX# (&gt;L:#STATE_VAR_NAME#) } }</SET_STATE_EXTERNAL>
+		</UseTemplate>
+		<Component ID="#LED_NODE_ID#" Node="#LED_NODE_ID#">
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<Condition>
+					<Test>
+						<GreaterOrEqual>
+							<Value>GROUP_INDEX</Value>
+							<Number>0</Number>
+						</GreaterOrEqual>
+					</Test>
+					<True>
+						<EMISSIVE_CODE>(L:#STATE_VAR_NAME#) #GROUP_INDEX# ==</EMISSIVE_CODE>
+					</True>
+					<False>
+						<EMISSIVE_CODE>0</EMISSIVE_CODE>
+					</False>
+				</Condition>
+			</UseTemplate>
+		</Component>
+		<Condition Check="POTENTIOMETER">
+			<Component ID="#BACKLIGHT_NODE_ID#" Node="#BACKLIGHT_NODE_ID#">
+				<UseTemplate Name="ASOBO_GT_Emissive_Potentiometer"/>
+			</Component>
+		</Condition>
+	</Template>
+	<Template Name="ASOBO_ECAM_PAGE_SELECTION_Template">
+		<Parameters Type="Default">
+			<PANEL_NAME>A320_Neo_EICAS_2</PANEL_NAME>
+			<INPUT_EVENT_ID_SOURCE>AILRINER_ECAM</INPUT_EVENT_ID_SOURCE>
+			<!-- BTN list -->
+			<ID_BTN_0>FUEL</ID_BTN_0>
+			<ID_BTN_1>ENG</ID_BTN_1>
+			<ID_BTN_2>BLEED</ID_BTN_2>
+			<ID_BTN_3>PRESS</ID_BTN_3>
+			<ID_BTN_4>ELEC</ID_BTN_4>
+			<ID_BTN_5>HYD</ID_BTN_5>
+			<ID_BTN_6>APU</ID_BTN_6>
+			<ID_BTN_7>COND</ID_BTN_7>
+			<ID_BTN_8>DOOR</ID_BTN_8>
+			<ID_BTN_9>WHEEL</ID_BTN_9>
+			<ID_BTN_10>FTCL</ID_BTN_10>
+			<!-- GROUP_ID config list, negative = inop -->
+			<GROUP_ID_0>0</GROUP_ID_0>
+			<GROUP_ID_1>1</GROUP_ID_1>
+			<GROUP_ID_2>-1</GROUP_ID_2>
+			<GROUP_ID_3>-2</GROUP_ID_3>
+			<GROUP_ID_4>-3</GROUP_ID_4>
+			<GROUP_ID_5>-4</GROUP_ID_5>
+			<GROUP_ID_6>-5</GROUP_ID_6>
+			<GROUP_ID_7>-6</GROUP_ID_7>
+			<GROUP_ID_8>-7</GROUP_ID_8>
+			<GROUP_ID_9>-8</GROUP_ID_9>
+			<GROUP_ID_10>-9</GROUP_ID_10>
+			<!-- TT list -->
+			<TT_ID_0>ECAM_PUSH_FUEL</TT_ID_0>
+			<TT_ID_1>ECAM_PUSH_ENG</TT_ID_1>
+			<TT_ID_2>ECAM_PUSH_BLEED</TT_ID_2>
+			<TT_ID_3>ECAM_PUSH_PRESS</TT_ID_3>
+			<TT_ID_4>ECAM_PUSH_ELEC</TT_ID_4>
+			<TT_ID_5>ECAM_PUSH_HYD</TT_ID_5>
+			<TT_ID_6>ECAM_PUSH_APU</TT_ID_6>
+			<TT_ID_7>ECAM_PUSH_COND</TT_ID_7>
+			<TT_ID_8>ECAM_PUSH_DOOR</TT_ID_8>
+			<TT_ID_9>ECAM_PUSH_WHEEL</TT_ID_9>
+			<TT_ID_10>ECAM_PUSH_FTCL</TT_ID_10>
+		</Parameters>
+		<Loop>
+			<Setup>
+				<Param>CUR_ID</Param>
+				<From>0</From>
+				<Inc>1</Inc>
+				<To>10</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Override">
+					<TT_ID Process="Param">TT_ID_#CUR_ID#</TT_ID>
+					<GROUP_INDEX Process="Param">GROUP_ID_#CUR_ID#</GROUP_INDEX>
+					<BASE_NAME Process="Param">ID_BTN_#CUR_ID#</BASE_NAME>
+				</Parameters>
+				<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
+					<TOOLTIP_TITLE>@TT_Package.#TT_ID#_TITLE</TOOLTIP_TITLE>
+					<TT_DESCRIPTION_ID>@TT_Package.#TT_ID#_ACTION</TT_DESCRIPTION_ID>
+				</UseTemplate>
+			</Do>
+		</Loop>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_ELAC_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>AIRBUS_Push_ELAC_#ID#</NODE_ID>
+			<ANIM_NAME>AIRBUS_Push_ELAC_#ID#</ANIM_NAME>
+			<PART_ID>AIRBUS_Push_ELAC</PART_ID>
+			<SEQ1_EMISSIVE_CODE>(A:FLY BY WIRE ELAC FAILED:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
+			<SEQ2_EMISSIVE_CODE>(A:FLY BY WIRE ELAC SWITCH:#ID#, Bool) !</SEQ2_EMISSIVE_CODE>
+			<WWISE_PREFIX>elac</WWISE_PREFIX>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_OVHD_PUSH_FLTCTL_ELAC_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_OVHD_PUSH_FLTCTL_ELAC_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<SEQ1_NODE_ID>#NODE_ID#_SEQ1</SEQ1_NODE_ID>
+			<SEQ2_NODE_ID>#NODE_ID#_SEQ2</SEQ2_NODE_ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>FBW_ELAC_Button_#ID#</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IS_AIRLINER>True</IS_AIRLINER>
+			<SET_STATE_EXTERNAL>p0 (A:FLY BY WIRE ELAC SWITCH:#ID#, Bool) != if{ #ID# (&gt;K:FLY_BY_WIRE_ELAC_TOGGLE) }</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:FLY BY WIRE ELAC SWITCH:#ID#, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIMVAR_TO_WATCH_0>FLY BY WIRE ELAC SWITCH:#ID#</SIMVAR_TO_WATCH_0>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_SEC_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>AIRBUS_Push_SEC_#ID#</NODE_ID>
+			<ANIM_NAME>AIRBUS_Push_SEC_#ID#</ANIM_NAME>
+			<PART_ID>AIRBUS_Push_SEC</PART_ID>
+			<SEQ1_EMISSIVE_CODE>(A:FLY BY WIRE SEC FAILED:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
+			<SEQ2_EMISSIVE_CODE>(A:FLY BY WIRE SEC SWITCH:#ID#, Bool) !</SEQ2_EMISSIVE_CODE>
+			<WWISE_PREFIX>elac</WWISE_PREFIX>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_OVHD_PUSH_FLTCTL_FAC_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_OVHD_PUSH_FLTCTL_FAC_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<SEQ1_NODE_ID>#NODE_ID#_SEQ1</SEQ1_NODE_ID>
+			<SEQ2_NODE_ID>#NODE_ID#_SEQ2</SEQ2_NODE_ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>FBW_SEC_Button_#ID#</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IS_AIRLINER>True</IS_AIRLINER>
+			<SET_STATE_EXTERNAL>p0 (A:FLY BY WIRE SEC SWITCH:#ID#, Bool) != if{ #ID# (&gt;K:FLY_BY_WIRE_SEC_TOGGLE) }</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:FLY BY WIRE SEC SWITCH:#ID#, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIMVAR_TO_WATCH_0>FLY BY WIRE SEC SWITCH:#ID#</SIMVAR_TO_WATCH_0>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Push_FAC_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>AIRBUS_Push_FAC_#ID#</NODE_ID>
+			<ANIM_NAME>AIRBUS_Push_FAC_#ID#</ANIM_NAME>
+			<PART_ID>AIRBUS_Push_FAC</PART_ID>
+			<SEQ1_EMISSIVE_CODE>(A:FLY BY WIRE FAC FAILED:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
+			<SEQ2_EMISSIVE_CODE>(A:FLY BY WIRE FAC SWITCH:#ID#, Bool) !</SEQ2_EMISSIVE_CODE>
+			<WWISE_PREFIX>elac</WWISE_PREFIX>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_OVHD_PUSH_FLTCTL_FAC_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_OVHD_PUSH_FLTCTL_FAC_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<SEQ1_NODE_ID>#NODE_ID#_SEQ1</SEQ1_NODE_ID>
+			<SEQ2_NODE_ID>#NODE_ID#_SEQ2</SEQ2_NODE_ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>FBW_FAC_Button_#ID#</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IS_AIRLINER>True</IS_AIRLINER>
+			<SET_STATE_EXTERNAL>p0 (A:FLY BY WIRE FAC SWITCH:#ID#, Bool) != if{ #ID# (&gt;K:FLY_BY_WIRE_FAC_TOGGLE) }</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:FLY BY WIRE FAC SWITCH:#ID#, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIMVAR_TO_WATCH_0>FLY BY WIRE FAC SWITCH:#ID#</SIMVAR_TO_WATCH_0>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AIRBUS_Update_PTU_Template">
+		<Parameters Type="Default">
+			<MIN_N1>19</MIN_N1>
+		</Parameters>
 		<UseTemplate Name="ASOBO_GT_Update">
 			<FREQUENCY>1</FREQUENCY>
 			<UPDATE_CODE>
-				(L:XMLVAR_RMP_#SIDE#_INIT) ! if{
-					1 (&gt;L:XMLVAR_RMP_#SIDE#_On)								(* Start with the switch on *)
-					1 (&gt;L:XMLVAR_RMP_#SIDE#_GROUP_MODE_IS_DISABLED)			(* MODE group disabled *)
-					1 (&gt;L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_FREQ)	(* Default FREQ group is button 1 (VHF1) *)
-					(&gt;H:A320_Neo_FDW_SWITCH_#SIDE#_TOGGLE)
-					1 (&gt;L:XMLVAR_RMP_#SIDE#_INIT)							(* INIT complete *)
-				}
+				(A:TURB ENG N1:1, Percent) #MIN_N1# &gt; (A:GENERAL ENG COMBUSTION:1, Bool) and
+				(A:TURB ENG N1:2, Percent) #MIN_N1# &gt; (A:GENERAL ENG COMBUSTION:2, Bool) and + 1 == (&gt;L:XMLVAR_PTU_ON)
 			</UPDATE_CODE>
 		</UseTemplate>
-	</Component>
-	
-	<Component ID="RMP_DIAL_LARGE_#SIDE#" Node="KNOB_RADIO#SIDE#_BIG">
-		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
-			<ANIM_NAME>KNOB_RADIO#SIDE#_BIG</ANIM_NAME>
-			<CLOCKWISE_CODE>(&gt;H:A320_Neo_FDW_DIAL_#SIDE#_INTEGER_INC)</CLOCKWISE_CODE>
-			<ANTICLOCKWISE_CODE>(&gt;H:A320_Neo_FDW_DIAL_#SIDE#_INTEGER_DEC)</ANTICLOCKWISE_CODE>
-			<WWISE_EVENT>radio_big_knob</WWISE_EVENT>
-			<COUNT>36</COUNT>
-			<ANIMREF_ID>0</ANIMREF_ID>
-			<ANIMCURSOR_MIN>-1</ANIMCURSOR_MIN>
-			<ANIMCURSOR_MAX>-1</ANIMCURSOR_MAX>
-			<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
-			<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.RADIO_TUNE_SBY_FREQUENCY_DEC</ANIMTIP_0>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.RADIO_TUNE_SBY_FREQUENCY_INC</ANIMTIP_1>
-			<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
-			<THRESHOLD_MOUSE>0.025</THRESHOLD_MOUSE>
-		</UseTemplate>
-	</Component>
-	
-	<Component ID="RMP_DIAL_SMALL_#SIDE#" Node="KNOB_RADIO#SIDE#_SMALL">
-		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
-			<ANIM_NAME>KNOB_RADIO#SIDE#_SMALL</ANIM_NAME>
-			<CLOCKWISE_CODE>(&gt;H:A320_Neo_FDW_DIAL_#SIDE#_DECIMAL_INC)</CLOCKWISE_CODE>
-			<ANTICLOCKWISE_CODE>(&gt;H:A320_Neo_FDW_DIAL_#SIDE#_DECIMAL_DEC)</ANTICLOCKWISE_CODE>
-			<WWISE_EVENT>radio_small_knob</WWISE_EVENT>
-			<COUNT>36</COUNT>
-			<ANIMREF_ID>0</ANIMREF_ID>
-			<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
-			<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
-			<ANIMCURSOR_MIN>-1</ANIMCURSOR_MIN>
-			<ANIMCURSOR_MAX>-1</ANIMCURSOR_MAX>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.RADIO_TUNE_SBY_FREQUENCY_DEC</ANIMTIP_0>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.RADIO_TUNE_SBY_FREQUENCY_INC</ANIMTIP_1>
-			<THRESHOLD_INPUT>0.00025</THRESHOLD_INPUT>
-			<THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE>
-		</UseTemplate>
-	</Component>
-	
-	<Component ID="RMP_ARROWS_#SIDE#" Node="PUSH_RADIO#SIDE#_ARROWS">
-		<UseTemplate Name="ASOBO_GT_Push_Button">
-			<ANIM_NAME>PUSH_RADIO#SIDE#_ARROWS</ANIM_NAME>
-			<LEFT_SINGLE_CODE>(L:XMLVAR_RMP_#SIDE#_On) if{ (&gt;H:A320_Neo_FDW_BTN_#SIDE#_TRANSFER) }</LEFT_SINGLE_CODE>
-			<WWISE_EVENT_1>radio_push_button_on</WWISE_EVENT_1>
-			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-			<WWISE_EVENT_2>radio_push_button_off</WWISE_EVENT_2>
-			<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-			<TOOLTIPID>TT:COCKPIT.TOOLTIPS.RADIO_FREQUENCY_TRANSFER_KEY</TOOLTIPID>
-		</UseTemplate>
-		
-		<UseTemplate Name="ASOBO_RMP_BACKLIGHT_Template">
-			<BASE_NAME>ARROWS</BASE_NAME>
-		</UseTemplate>
-	</Component>
-	
-	<UseTemplate Name="ASOBO_RMP_RADIO_SELECTION_Template">
-	</UseTemplate>
-	
-	<Component ID="RMP_SEL_#SIDE#">
-		<UseTemplate Name="ASOBO_RMP_BACKLIGHT_Template">
-		<BASE_NAME>SEL</BASE_NAME>
-		</UseTemplate>
-		
-		<Component ID="PUSH_RADIO#SIDE#_SEL_SEQ2" Node="PUSH_RADIO#SIDE#_SEL_SEQ2">
-			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-				<EMISSIVE_CODE>
-					(* Both RMPs must be on *)
-					(L:XMLVAR_RMP_L_On, bool) (L:XMLVAR_RMP_R_On, bool) and if{
-						(* Both frequency groups must be active *)
-						(L:XMLVAR_RMP_L_GROUP_FREQ_IS_DISABLED) ! (L:XMLVAR_RMP_R_GROUP_FREQ_IS_DISABLED) ! and if{
-							(* The currently selected frequency must be valid *)
-							(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_FREQ) 0 &gt; if{
-								(* Both RMPs must be in the default mode *)
-								(L:XMLVAR_RMP_L_CURRENT_BUTTON_IN_GROUP_MODE) 0 == (L:XMLVAR_RMP_R_CURRENT_BUTTON_IN_GROUP_MODE) 0 == and if{ 
-									(* SEL will now be highlighted when both RMPs have the same frequency set *)
-									(L:XMLVAR_RMP_L_CURRENT_BUTTON_IN_GROUP_FREQ) (L:XMLVAR_RMP_R_CURRENT_BUTTON_IN_GROUP_FREQ) ==
-								}
-								els{ 0 }
-							}
-							els{ 0 }
-						}
-						els{ 0 }
-					}
-					els{ 0 }
-				</EMISSIVE_CODE>
-			</UseTemplate>
-		</Component>
-	</UseTemplate>
-	
-	<Component ID="RMP_NAV_LOCK_#SIDE#" Node="LOCK_RADIO#SIDE#_NAV">
-		<UseTemplate Name="ASOBO_GT_Switch_Code">
-			<ANIM_NAME>LOCK_RADIO#SIDE#_NAV</ANIM_NAME>
-			<ANIM_LENGTH>100</ANIM_LENGTH>
-			<ANIM_CODE>(L:XMLVAR_RMP_#SIDE#_NavLockOff) 100 *</ANIM_CODE>
-			<LEFT_SINGLE_CODE>(L:XMLVAR_RMP_#SIDE#_NavLockOff) ! (&gt;L:XMLVAR_RMP_#SIDE#_NavLockOff)</LEFT_SINGLE_CODE>
-			<WWISE_EVENT_1>radio_lock_on</WWISE_EVENT_1>
-			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-			<WWISE_EVENT_2>radio_lock_off</WWISE_EVENT_2>
-			<NORMALIZED_TIME_2>0.</NORMALIZED_TIME_2>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.GENERIC_BUTTON_GUARD_ON</ANIMTIP_0>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.GENERIC_BUTTON_GUARD_OFF</ANIMTIP_1>		
-		</UseTemplate>
-	</Component>
-	
-	<UseTemplate Name="ASOBO_RMP_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>NAV</BASE_NAME>
-		<!--When the NAV button is inactive, the MODE buttons are disabled-->
-		<RUN_ON_PRESS>
-			0 (L:XMLVAR_RMP_#SIDE#_NAV_Active) == if{
-				1 (&gt;L:XMLVAR_RMP_#SIDE#_GROUP_MODE_IS_DISABLED)
-				0 (&gt;L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE)
-			}
-			els{
-				0 (&gt;L:XMLVAR_RMP_#SIDE#_GROUP_MODE_IS_DISABLED)
-			}
-		</RUN_ON_PRESS>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>VOR</BASE_NAME>
-		<GROUP_NAME>MODE</GROUP_NAME>
-		<GROUP_INDEX>1</GROUP_INDEX>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>ILS</BASE_NAME>
-		<GROUP_NAME>MODE</GROUP_NAME>
-		<GROUP_INDEX>2</GROUP_INDEX>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>MLS</BASE_NAME>
-		<GROUP_NAME>MODE</GROUP_NAME>
-		<GROUP_INDEX>3</GROUP_INDEX>
-		<OPTIONAL_ACTIVE_IF>
-			(* MLS isn't working in videos showing RMP functionality. It is also not working in X-Plane. Ours now doesn't work either! *)
-			0
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_GROUPED_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>ADF</BASE_NAME>
-		<GROUP_NAME>MODE</GROUP_NAME>
-		<GROUP_INDEX>4</GROUP_INDEX>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_RMP_BUTTON_WITH_LIGHTS_Template">
-		<BASE_NAME>BFO</BASE_NAME>
-		<OPTIONAL_ACTIVE_IF>
-			(* BFO is only available when ADF is active *)
-			(L:XMLVAR_RMP_#SIDE#_GROUP_MODE_IS_DISABLED) ! if{
-				(L:XMLVAR_RMP_#SIDE#_CURRENT_BUTTON_IN_GROUP_MODE) 4 == 
-			}
-		</OPTIONAL_ACTIVE_IF>
-	</UseTemplate>
 	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_Dummy_Template">
-	<DefaultTemplateParameters>
-		<Condition Check="FAULT_NODE_ID">
-			<NODE_ID_SEQ1>#FAULT_NODE_ID#</NODE_ID_SEQ1>
-		</Condition>
-		<Condition Check="OFF_NODE_ID">
-			<NODE_ID_SEQ2>#OFF_NODE_ID#</NODE_ID_SEQ2>
-		</Condition>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_ILS_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-		<!--<ON_TOOLTIP>COCKPIT.TOOLTIPS.EFIS_PANEL_ILS_INFO_TURN_OFF</ON_TOOLTIP>
-		<OFF_TOOLTIP>COCKPIT.TOOLTIPS.EFIS_PANEL_ILS_INFO_TURN_ON</OFF_TOOLTIP> -->
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
-		<BTN_ID>LS</BTN_ID>
-		<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_CSTR_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
-		<BTN_ID>CSTR</BTN_ID>
-		<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_VORD_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
-		<BTN_ID>VORD</BTN_ID>
-		<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_WPT_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
-		<BTN_ID>WPT</BTN_ID>
-		<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_NDB_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
-		<BTN_ID>NDB</BTN_ID>
-		<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_ARPT_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
-		<BTN_ID>ARPT</BTN_ID>
-		<PLANE_PREFIX>A320_Neo</PLANE_PREFIX>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_Heading_Track_Template">
-		<DefaultTemplateParameters>
-			<NODE_ID>AIRBUS_Push_Heading_Track</NODE_ID>
-			<ANIM_NAME>AIRBUS_Push_Heading_Track</ANIM_NAME>
-			<PART_ID>AIRBUS_Push_Heading_Track</PART_ID> 
-			<WWISE_EVENT_1>autopilot_push_button2_on</WWISE_EVENT_1>
-			<WWISE_EVENT_2>autopilot_push_button2_off</WWISE_EVENT_2>
-			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-			<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>  
-			<TOOLTIPID>%((L:XMLVAR_TRK_FPA_MODE_ACTIVE, bool))%{if}TT:COCKPIT.TOOLTIPS.HDGVS_TRK_SET_HDG%{else}TT:COCKPIT.TOOLTIPS.HDGVS_TRK_SET_TRK%{end}</TOOLTIPID>
-		</DefaultTemplateParameters>
-		
-		<Component ID="#NODE_ID#" Node="#NODE_ID#">
-			<UseTemplate Name="ASOBO_GT_Push_Button">
-				<LEFT_SINGLE_CODE>
-					(L:XMLVAR_TRK_FPA_MODE_ACTIVE) ! (&gt;L:XMLVAR_TRK_FPA_MODE_ACTIVE)
-					(&gt;H:A320_Neo_CDU_AP_TRK_FPA)
-				</LEFT_SINGLE_CODE><!-- TODO -->
-			</UseTemplate>
-		</Component>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_Metric_Alt_Template">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_Metric_Alt</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_Metric_Alt</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_Metric_Alt</PART_ID>
-		<WWISE_EVENT_1>autopilot_push_button2_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>autopilot_push_button2_off</WWISE_EVENT_2>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-		<!--<TOOLTIPID>%((L:XMLVAR_PLACEHOLDER_PMA_VAR, bool))%{if}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_METRIC_ALT_TURN_OFF%{else}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_METRIC_ALT_TURN_OFF%{end}</TOOLTIPID>-->
-		<!-- !!NOTE TO DEV !!
-		REPLACE L:XMLVAR_PLACEHOLDER_PMA_VAR by the actual name of the correct variable when this button is coded !! (+uncomment the TT) -->
- 		
-	</DefaultTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Push_Button">
-			<LEFT_SINGLE_CODE>0</LEFT_SINGLE_CODE><!-- TODO -->
-		</UseTemplate>
-	</Component>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_Transfer_Template">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_Transfer</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_Transfer</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_Transfer</PART_ID> 
-		<ID>1</ID>
-		<WWISE_EVENT_1>transfer_push_button_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>transfer_push_button_on</WWISE_EVENT_2>
-	</DefaultTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Push_Button">
-			<LEFT_SINGLE_CODE>0</LEFT_SINGLE_CODE><!-- TODO -->
-		</UseTemplate>
-	</Component>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_NAV_AID_SWITCH_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>#BASE_NAME#</ANIM_NAME>
-		<NODE_ID>#BASE_NAME#</NODE_ID>
-		<PART_ID>#BASE_NAME#</PART_ID>
-		<STATE_VAR_NAME>XMLVAR_#BASE_NAME#_State</STATE_VAR_NAME>
-		<WWISE_EVENT>nav_aid_switch</WWISE_EVENT>
-
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Switch_3States">
-			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
-			<CODE_POS_0>
-				(* LEFT *)
-				1 (&gt;L:#STATE_VAR_NAME#)
-			</CODE_POS_0>
-			<CODE_POS_1>
-				(* OFF *)
-				0 (&gt;L:#STATE_VAR_NAME#)
-			</CODE_POS_1>
-			<CODE_POS_2>
-				(* RIGHT *)
-				2 (&gt;L:#STATE_VAR_NAME#)
-			</CODE_POS_2>
-			<STATE0_TEST>(L:#STATE_VAR_NAME#) 1 ==</STATE0_TEST>
-			<STATE1_TEST>(L:#STATE_VAR_NAME#) 0 ==</STATE1_TEST>
-			<STATE2_TEST>(L:#STATE_VAR_NAME#) 2 ==</STATE2_TEST>
-			
-		</UseTemplate>
-	</Component>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_NAV_AID_SWITCH_Template">
-	<DefaultTemplateParameters>
-		<BASE_NAME>UNKNOWN</BASE_NAME>
-		<ANIMREF_ID>0</ANIMREF_ID>
-		<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
-		<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-		<ANIMTIP_1_ON_PERCENT>.5</ANIMTIP_1_ON_PERCENT>
-		<ANIMTIP_2_ON_PERCENT>1</ANIMTIP_2_ON_PERCENT>
-		<ANIMTIP_0>EE</ANIMTIP_0>
-		<ANIMTIP_1>FF</ANIMTIP_1>
-		<ANIMTIP_2>CC</ANIMTIP_2>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRBUS_NAV_AID_SWITCH_SubTemplate">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_TERRONND_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRBUS_Push_TERRONND_SubTemplate">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_TERRONND_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_TERRONND</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_TERRONND</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_TERRONND</PART_ID>  
-		<WWISE_EVENT_1>autopilot_push_button_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>autopilot_push_button_off</WWISE_EVENT_2>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-		<TOOLTIPID>%((L:BTN_TERRONND_ACTIVE, Bool))%{if}TT:COCKPIT.TOOLTIPS.TERRAIN_ON_ND_TURN_OFF%{else}TT:COCKPIT.TOOLTIPS.TERRAIN_ON_ND_TURN_ON%{en}</TOOLTIPID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_SubNodes_Setter_Template">
-		<TEMPLATE_TO_CALL>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_CALL>
-		<LEFT_SINGLE_CODE>(&gt;H:A320_Neo_MFD_BTN_TERRONND)</LEFT_SINGLE_CODE>
-		<SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
-		<SEQ2_EMISSIVE_CODE>(L:BTN_TERRONND_ACTIVE)</SEQ2_EMISSIVE_CODE>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_ECAM_PAGE_BUTTON_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>PUSH_ECAM_#BASE_NAME#</NODE_ID>
-		<ANIM_NAME_BUTTON>PUSH_ECAM_#BASE_NAME#</ANIM_NAME_BUTTON>
-		<LED_NODE_ID>PUSH_ECAM_#BASE_NAME#_SEQ2</LED_NODE_ID>
-		<BACKLIGHT_NODE_ID>PUSH_ECAM_#BASE_NAME#_SEQ1</BACKLIGHT_NODE_ID>
-		<EVENT_NAME>A320_Neo_EICAS_2_ECAM_CHANGE_PAGE_#BASE_NAME#</EVENT_NAME>
-		<CURRENT_BUTTON_VAR_NAME>XMLVAR_ECAM_CURRENT_PAGE</CURRENT_BUTTON_VAR_NAME>
-		<WWISE_EVENT_1>radio_push_button_on</WWISE_EVENT_1>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<WWISE_EVENT_2>radio_push_button_off</WWISE_EVENT_2>
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-	</DefaultTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Push_Button">
-			<ANIM_NAME>#ANIM_NAME_BUTTON#</ANIM_NAME>
-			<LEFT_SINGLE_CODE>
-				#GROUP_INDEX# -1 &gt; if{
-					(&gt;H:#EVENT_NAME#) #GROUP_INDEX# (&gt;L:#CURRENT_BUTTON_VAR_NAME#)
-				}
-			</LEFT_SINGLE_CODE>
-		</UseTemplate>
-	</Component>
-	
-	<Component ID="#LED_NODE_ID#" Node="#LED_NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-			<EMISSIVE_CODE>
-				#GROUP_INDEX# -1 &gt; if{
-					(L:#CURRENT_BUTTON_VAR_NAME#) #GROUP_INDEX# ==
-				}
-			</EMISSIVE_CODE>
-		</UseTemplate>
-	</Component>
-	
-	<Condition Check="POTENTIOMETER">
-		<True>
-			<Component ID="#BACKLIGHT_NODE_ID#" Node="#BACKLIGHT_NODE_ID#">
-				<UseTemplate Name="ASOBO_GT_Emissive_Potentiometer">
-				</UseTemplate>
-			</Component>
-		</True>
-	</Condition>
-	</Template>
-
-	<Template Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-	<DefaultTemplateParameters>
-		<BASE_NAME>UNKNOWN</BASE_NAME>
-		<GROUP_INDEX>-1</GROUP_INDEX>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_SubTemplate">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_ECAM_PAGE_SELECTION_Template">
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>FUEL</BASE_NAME>
-		<GROUP_INDEX>0</GROUP_INDEX>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PUSH_ECAM_FUEL</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>ENG</BASE_NAME>
-		<GROUP_INDEX>1</GROUP_INDEX>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PUSH_ECAM_ENG</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>BLEED</BASE_NAME>
-		<GROUP_INDEX>-2</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_FUEL</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>PRESS</BASE_NAME>
-		<GROUP_INDEX>-3</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_PRESS</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>ELEC</BASE_NAME>
-		<GROUP_INDEX>-4</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_ELEC</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>HYD</BASE_NAME>
-		<GROUP_INDEX>-5</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_HYD</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>APU</BASE_NAME>
-		<GROUP_INDEX>-6</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_APU</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>COND</BASE_NAME>
-		<GROUP_INDEX>-7</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_COND</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>DOOR</BASE_NAME>
-		<GROUP_INDEX>-8</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_DOOR</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>WHEEL</BASE_NAME>
-		<GROUP_INDEX>-9</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_WHEEL</TOOLTIPID>
-	</UseTemplate>
-	
-	<UseTemplate Name="ASOBO_ECAM_PAGE_BUTTON_Template">
-		<BASE_NAME>FTCL</BASE_NAME>
-		<GROUP_INDEX>-10</GROUP_INDEX> <!--Change to positive to activate-->
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP TT:COCKPIT.TOOLTIPS.PUSH_ECAM_FCTL</TOOLTIPID>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_Fuel_Pump_Template">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_Fuel_Pump</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_Fuel_Pump</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_Fuel_Pump</PART_ID> 
-		<ID>1</ID>
-		<LEFT_SINGLE_CODE/>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_SubNodes_Setter_Template">
-		<TEMPLATE_TO_CALL>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_CALL>
-		<LEFT_SINGLE_CODE>#LEFT_SINGLE_CODE# #ID# (&gt;K:FUELSYSTEM_PUMP_TOGGLE)</LEFT_SINGLE_CODE>
-		<SEQ1_EMISSIVE_CODE>0</SEQ1_EMISSIVE_CODE>
-		<SEQ2_EMISSIVE_CODE>(A:FUELSYSTEM PUMP SWITCH:#ID#, Enum) 0 ==</SEQ2_EMISSIVE_CODE>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_Fuel_Valve_Template">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_Fuel_Valve</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_Fuel_Valve</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_Fuel_Valve</PART_ID> 
-		<ID>1</ID>
-		<SEQ1_EMISSIVE_CODE>(A:FUELSYSTEM VALVE OPEN:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
-		<SEQ2_EMISSIVE_CODE>(A:FUELSYSTEM VALVE SWITCH:#ID#, Bool)</SEQ2_EMISSIVE_CODE>
-		<LEFT_SINGLE_CODE/>
-		<OFF_TOOLTIP></OFF_TOOLTIP>
-		<ON_TOOLTIP></ON_TOOLTIP>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_SubNodes_Setter_Template">
-		<TEMPLATE_TO_CALL>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_CALL>
-		<LEFT_SINGLE_CODE> #LEFT_SINGLE_CODE# #ID# (&gt;K:FUELSYSTEM_VALVE_TOGGLE)</LEFT_SINGLE_CODE>
-		<TOOLTIPID>%((A:FUELSYSTEM VALVE SWITCH:#ID#, Bool) !)%{if}TT:#OFF_TOOLTIP#%{else}TT:#ON_TOOLTIP#%{end}</TOOLTIPID> <!-- use <OFF_TOOLTIP></OFF_TOOLTIP> <ON_TOOLTIP></ON_TOOLTIP> to define tooltips -->
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Dummy_Radio">
-	<DefaultTemplateParameters>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_CALL1#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_CALL2#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_CALL3#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_CALL4#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_CALL5#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_MECH#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_ATT#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_VOICE#</NODE_ID>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_RESET#</NODE_ID>
-		<ONLY_SEQ2/>
-		<POTENTIOMETER_SEQ2>#POTENTIOMETER#</POTENTIOMETER_SEQ2>
-	</UseTemplate>
-	<UseTemplate Name="ASOBO_AIRBUS_Push_Dummy_Template">
-		<NODE_ID>#NODE_ID_PA#</NODE_ID>
-		<ONLY_SEQ1/>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_ELAC_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRBUS_Push_ELAC_SubTemplate">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_ELAC_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_ELAC_#ID#</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_ELAC_#ID#</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_ELAC</PART_ID> 
-		<SEQ1_EMISSIVE_CODE>(A:FLY BY WIRE ELAC FAILED:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
-		<SEQ2_EMISSIVE_CODE>(A:FLY BY WIRE ELAC SWITCH:#ID#, Bool) !</SEQ2_EMISSIVE_CODE>
-		<LEFT_SINGLE_CODE/>
-		<WWISE_EVENT_1>elac_push_button_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>elac_push_button_off</WWISE_EVENT_2>
-		<TOOLTIPID>%((A:FLY BY WIRE ELAC SWITCH:#ID#, Bool) !)%{if}TT:COCKPIT.TOOLTIPS.ELAC#ID#_TURN_ON%{else}TT:COCKPIT.TOOLTIPS.ELAC#ID#_TURN_OFF%{end}</TOOLTIPID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_SubNodes_Setter_Template">
-		<TEMPLATE_TO_CALL>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_CALL>
-		<LEFT_SINGLE_CODE> #LEFT_SINGLE_CODE# #ID# (&gt;K:FLY_BY_WIRE_ELAC_TOGGLE)</LEFT_SINGLE_CODE>
-		
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_SEC_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRBUS_Push_SEC_SubTemplate">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_SEC_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_SEC_#ID#</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_SEC_#ID#</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_SEC</PART_ID> 
-		<SEQ1_EMISSIVE_CODE>(A:FLY BY WIRE SEC FAILED:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
-		<SEQ2_EMISSIVE_CODE>(A:FLY BY WIRE SEC SWITCH:#ID#, Bool) !</SEQ2_EMISSIVE_CODE>
-		<LEFT_SINGLE_CODE/>
-		<WWISE_EVENT_1>elac_push_button_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>elac_push_button_off</WWISE_EVENT_2>
-		<TOOLTIPID>%((A:FLY BY WIRE SEC SWITCH:#ID#, Bool) !)%{if}TT:COCKPIT.TOOLTIPS.SEC#ID#_TURN_ON%{else}TT:COCKPIT.TOOLTIPS.SEC#ID#_TURN_OFF%{end}</TOOLTIPID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_SubNodes_Setter_Template">
-		<TEMPLATE_TO_CALL>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_CALL>
-		<LEFT_SINGLE_CODE> #LEFT_SINGLE_CODE# #ID# (&gt;K:FLY_BY_WIRE_SEC_TOGGLE)</LEFT_SINGLE_CODE>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_FAC_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-		<WWISE_EVENT_1>elac_push_button_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>elac_push_button_off</WWISE_EVENT_2>
-		<TOOLTIPID>%((A:FLY BY WIRE FAC SWITCH:#ID#, Bool) !)%{if}TT:COCKPIT.TOOLTIPS.FAC#ID#_TURN_ON%{else}TT:COCKPIT.TOOLTIPS.FAC#ID#_TURN_OFF%{end}</TOOLTIPID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRBUS_Push_FAC_SubTemplate">
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Push_FAC_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>AIRBUS_Push_FAC_#ID#</NODE_ID>
-		<ANIM_NAME>AIRBUS_Push_FAC_#ID#</ANIM_NAME>
-		<PART_ID>AIRBUS_Push_FAC</PART_ID> 
-		<SEQ1_EMISSIVE_CODE>(A:FLY BY WIRE FAC FAILED:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
-		<SEQ2_EMISSIVE_CODE>(A:FLY BY WIRE FAC SWITCH:#ID#, Bool) !</SEQ2_EMISSIVE_CODE>
-		<LEFT_SINGLE_CODE/>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_AIRLINER_SubNodes_Setter_Template">
-		<TEMPLATE_TO_CALL>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_CALL>
-		<LEFT_SINGLE_CODE> #LEFT_SINGLE_CODE# #ID# (&gt;K:FLY_BY_WIRE_FAC_TOGGLE)</LEFT_SINGLE_CODE>
-	</UseTemplate>
-	</Template>
-
-	<Template Name="ASOBO_AIRBUS_Update_PTU_Template">
-	<DefaultTemplateParameters>
-		<MIN_N1>19</MIN_N1>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_GT_Update">
-		<FREQUENCY>1</FREQUENCY>
-		<UPDATE_CODE>
-			(A:TURB ENG N1:1, Percent) #MIN_N1# &gt; (A:GENERAL ENG COMBUSTION:1, Bool) and
-			(A:TURB ENG N1:2, Percent) #MIN_N1# &gt; (A:GENERAL ENG COMBUSTION:2, Bool) and + 1 == (&gt;L:XMLVAR_PTU_ON)
-		</UPDATE_CODE>
-	</UseTemplate>
-	</Template>
-
 	<Template Name="ASOBO_AIRBUS_WeatherRadar_Template">
-	<DefaultTemplateParameters>
-		<NODE_ID_MODE_KNOB>AIRBUS_Knob_WeatherRader_Mode</NODE_ID_MODE_KNOB>
-		<ANIM_NAME_MODE_KNOB>AIRBUS_Knob_WeatherRader_Mode</ANIM_NAME_MODE_KNOB>
-		<NODE_ID_ONOFF_SWITCH>AIRBUS_Switch_WeatherRader_OnOff</NODE_ID_ONOFF_SWITCH>
-		<ANIM_NAME_ONOFF_SWITCH>AIRBUS_Switch_WeatherRader_OnOff</ANIM_NAME_ONOFF_SWITCH>
-		<WWISE_EVENT>radar_mode_knob</WWISE_EVENT>
-		<WWISE_EVENT_1>radar_sys_switch_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>radar_sys_switch_off</WWISE_EVENT_2>
-	</DefaultTemplateParameters>
-	
-	<Component ID="#NODE_ID_ONOFF_SWITCH#" Node="#NODE_ID_ONOFF_SWITCH#">
-		<UseTemplate Name="ASOBO_GT_Switch_XStates">
-			<ANIM_NAME>#ANIM_NAME_ONOFF_SWITCH#</ANIM_NAME>
+		<Parameters Type="Default">
+			<NODE_ID_MODE_KNOB>AIRBUS_Knob_WeatherRader_Mode</NODE_ID_MODE_KNOB>
+			<ANIM_NAME_MODE_KNOB>AIRBUS_Knob_WeatherRader_Mode</ANIM_NAME_MODE_KNOB>
+			<NODE_ID_ONOFF_SWITCH>AIRBUS_Switch_WeatherRader_OnOff</NODE_ID_ONOFF_SWITCH>
+			<ANIM_NAME_ONOFF_SWITCH>AIRBUS_Switch_WeatherRader_OnOff</ANIM_NAME_ONOFF_SWITCH>
+			<STATE_VAR_MODE_NAME>XMLVAR_A320_WeatherRadar_Mode</STATE_VAR_MODE_NAME>
+			<STATE_VAR_SYS_NAME>XMLVAR_A320_WeatherRadar_Sys</STATE_VAR_SYS_NAME>
+			<WWISE_PREFIX_SYS>radar_sys</WWISE_PREFIX_SYS>
+			<WWISE_PREFIX_MODE>radar_mode</WWISE_PREFIX_MODE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Weather_System</IE_NAME>
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
 			<NUM_STATES>3</NUM_STATES>
-			<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
-			<SWITCH_POSITION_VAR>XMLVAR_A320_WeatherRadar_Sys</SWITCH_POSITION_VAR>
 			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
-			<ANIMREF_ID>0</ANIMREF_ID>
-			<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-			<ANIMTIP_1_ON_PERCENT>.5</ANIMTIP_1_ON_PERCENT>
-			<ANIMTIP_2_ON_PERCENT>1</ANIMTIP_2_ON_PERCENT>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.RADAR_SYS_SET_1</ANIMTIP_0>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.RADAR_SYS_SET_OFF</ANIMTIP_1>
-			<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.RADAR_SYS_SET_2</ANIMTIP_2>
+			<STR_STATE_0>Sys_1</STR_STATE_0>
+			<STR_STATE_1>Off</STR_STATE_1>
+			<STR_STATE_2>Sys_2</STR_STATE_2>
+			<TT_VALUE_0>'SYS 1'</TT_VALUE_0>
+			<TT_VALUE_0_IS_DYNAMIC>True</TT_VALUE_0_IS_DYNAMIC>
+			<TT_VALUE_1>@TT_Package.GT_STATE_OFF</TT_VALUE_1>
+			<TT_VALUE_2>'SYS 2'</TT_VALUE_2>
+			<TT_VALUE_2_IS_DYNAMIC>True</TT_VALUE_2_IS_DYNAMIC>
+			<SET_STATE_0>0 (&gt;L:#STATE_VAR_SYS_NAME#)</SET_STATE_0>
+			<SET_STATE_1>1 (&gt;L:#STATE_VAR_SYS_NAME#)</SET_STATE_1>
+			<SET_STATE_2>2 (&gt;L:#STATE_VAR_SYS_NAME#)</SET_STATE_2>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_SYS_NAME#) sp0</GET_STATE_EXTERNAL>
+			<ENUM_VAL_TO_POS_EXTERNAL>l0</ENUM_VAL_TO_POS_EXTERNAL>
+			<WWISE_PREFIX>#WWISE_PREFIX_SYS#</WWISE_PREFIX>
+			<ANIM_NAME>#ANIM_NAME_ONOFF_SWITCH#</ANIM_NAME>
+			<NODE_ID>#NODE_ID_ONOFF_SWITCH#</NODE_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_SWITCH_RADAR_SYS_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_SWITCH_RADAR_SYS_ACTION</TT_DESCRIPTION_ID>
 		</UseTemplate>
-	</Component>
-	<Component ID="#NODE_ID_MODE_KNOB#" Node="#NODE_ID_MODE_KNOB#">
-		<UseTemplate Name="ASOBO_GT_Switch_XStates">
-			<ANIM_NAME>#ANIM_NAME_MODE_KNOB#</ANIM_NAME>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Weather_Mode</IE_NAME>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<KNOB_TYPE>X_STATES</KNOB_TYPE>
 			<NUM_STATES>4</NUM_STATES>
-			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
-			<ARROW_TYPE>Curved</ARROW_TYPE>
-			<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
-			<SWITCH_POSITION_VAR>XMLVAR_A320_WeatherRadar_Mode</SWITCH_POSITION_VAR>
-			<ANIMREF_ID>0</ANIMREF_ID>
-			<ANIMCURSOR_MIN>0</ANIMCURSOR_MIN>
-			<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
-			<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-			<ANIMTIP_1_ON_PERCENT>.33</ANIMTIP_1_ON_PERCENT>
-			<ANIMTIP_2_ON_PERCENT>.66</ANIMTIP_2_ON_PERCENT>
-			<ANIMTIP_3_ON_PERCENT>1</ANIMTIP_3_ON_PERCENT>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.RADAR_MODE_SET_WX</ANIMTIP_0>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.RADAR_MODE_SET_WX_PLUS_T</ANIMTIP_1>
-			<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.RADAR_MODE_SET_TURB</ANIMTIP_2>
-			<ANIMTIP_3>TT:COCKPIT.TOOLTIPS.RADAR_MODE_SET_MAP</ANIMTIP_3>
+			<STR_STATE_0>WX</STR_STATE_0>
+			<STR_STATE_1>WX_PLUS_T</STR_STATE_1>
+			<STR_STATE_2>TURB</STR_STATE_2>
+			<STR_STATE_3>MAP</STR_STATE_3>
+			<TT_VALUE_0>@TT_Package.GT_STATE_WX</TT_VALUE_0>
+			<TT_VALUE_1>(R:1:@TT_Package.GT_STATE_WX) '%s+T' @sprintf</TT_VALUE_1>
+			<TT_VALUE_1_IS_DYNAMIC>True</TT_VALUE_1_IS_DYNAMIC>
+			<TT_VALUE_2>@TT_Package.GT_STATE_WXTURB</TT_VALUE_2>
+			<TT_VALUE_3>@TT_Package.GT_STATE_MAP</TT_VALUE_3>
+			<SET_STATE_0>0 (&gt;L:#STATE_VAR_MODE_NAME#)</SET_STATE_0>
+			<SET_STATE_1>1 (&gt;L:#STATE_VAR_MODE_NAME#)</SET_STATE_1>
+			<SET_STATE_2>2 (&gt;L:#STATE_VAR_MODE_NAME#)</SET_STATE_2>
+			<SET_STATE_3>3 (&gt;L:#STATE_VAR_MODE_NAME#)</SET_STATE_3>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_MODE_NAME#) sp0</GET_STATE_EXTERNAL>
+			<ENUM_VAL_TO_POS_EXTERNAL>l0</ENUM_VAL_TO_POS_EXTERNAL>
+			<WWISE_PREFIX>#WWISE_PREFIX_MODE#</WWISE_PREFIX>
+			<ANIM_NAME>#ANIM_NAME_MODE_KNOB#</ANIM_NAME>
+			<NODE_ID>#NODE_ID_MODE_KNOB#</NODE_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_SWITCH_RADAR_MODE_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_SWITCH_RADAR_MODE_ACTION</TT_DESCRIPTION_ID>
 		</UseTemplate>
-	</Component>
+	</Template>
+	<!-- INOP -->
+	<Template Name="ASOBO_AIRBUS_Push_Dummy_Template">
+		<Parameters Type="Default">
+			<Condition Check="FAULT_NODE_ID">
+				<NODE_ID_SEQ1>#FAULT_NODE_ID#</NODE_ID_SEQ1>
+			</Condition>
+			<Condition Check="OFF_NODE_ID">
+				<NODE_ID_SEQ2>#OFF_NODE_ID#</NODE_ID_SEQ2>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy"/>
 	</Template>
 </ModelBehaviors>

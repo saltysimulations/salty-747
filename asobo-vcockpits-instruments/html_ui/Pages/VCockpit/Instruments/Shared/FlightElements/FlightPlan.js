@@ -132,7 +132,7 @@ class FlightPlan {
         else {
             Html += '<div><div class="Third AlignLeft SelectableElement" id="FlightPlanElement_' + (this.wayPoints.length - _startIndex) + '"></div></div>';
         }
-        _element.innerHTML = Html;
+        diffAndSetHTML(_element, Html);
     }
 }
 FlightPlan.readManager = new InstrumentDataReadManager();
@@ -174,7 +174,7 @@ class FlightPlanAlternate {
                             waypoint = new WayPoint(this.instrument);
                             waypoint.infos = new WayPointInfo(this.instrument);
                             waypoint.infos.name = "User-Defined";
-                            waypoint.infos.ident = "U" + Math.random().toFixed(4).substr(2);
+                            waypoint.infos.ident = "U" + fastToFixed(Math.random(), 4).substr(2);
                             waypoint.infos.lat = SimVar.GetSimVarValue("C:fs9gps:FlightPlanWaypointLatitude", "degree", this.instrument.instrumentIdentifier);
                             waypoint.infos.long = SimVar.GetSimVarValue("C:fs9gps:FlightPlanWaypointLongitude", "degree", this.instrument.instrumentIdentifier);
                         }

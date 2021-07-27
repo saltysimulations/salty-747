@@ -1,140 +1,169 @@
 <ModelBehaviors>
 	<Include RelativeFile="Subtemplates\\Deice_Subtemplates.xml"/>
-	<!-- DEICE ################################################################ -->
+	<Include RelativeFile="Inputs\\Deice_Inputs.xml"/>
+	<!-- ################################### DEICE #################################### -->
+	<!-- ############################################################################## -->
+	<Template Name="ASOBO_DEICE_Engine_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Engine_SubTemplate"/>
+	</Template>
 	<Template Name="ASOBO_DEICE_Switch_Engine_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID> 
-		<INTERACTION>Switch</INTERACTION>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_DEICE_Switch_Engine_SubTemplate">
-	</UseTemplate>
+		<UseTemplate Name="ASOBO_DEICE_Engine_Template">
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Knob_Engine_Template">
+		<UseTemplate Name="ASOBO_DEICE_Engine_Template">
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Push_Engine_Template">
+		<UseTemplate Name="ASOBO_DEICE_Engine_Template">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+		</UseTemplate>
 	</Template>
 	<Template Name="ASOBO_DEICE_Lever_Engine_Template">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>DEICE_Lever_Engine</ANIM_NAME>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_DEICE_Lever_Engine_SubTemplate">
-	</UseTemplate>
+		<UseTemplate Name="ASOBO_DEICE_Engine_Template">
+			<INTERACTION_TYPE>Lever</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Airframe_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Airframe_SubTemplate"/>
 	</Template>
 	<Template Name="ASOBO_DEICE_Switch_Airframe_Template">
-	<DefaultTemplateParameters>
-		<SWITCH_TYPE>ON_OFF</SWITCH_TYPE>
-		<INTERACTION>Switch</INTERACTION>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_DEICE_Switch_Airframe_SubTemplate"></UseTemplate>
+		<Parameters Type="Default">
+			<SWITCH_TYPE>ON_OFF</SWITCH_TYPE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Airframe_Template">
+			<INTERACTION_TYPE>SWITCH</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Push_Airframe_Template">
+		<UseTemplate Name="ASOBO_DEICE_Airframe_Template">
+			<INTERACTION_TYPE>PUSH</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Push_Propeller_Template">
+		<Parameters Type="Default">
+			<INTERACTION_TYPE>PUSH</INTERACTION_TYPE>
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Propeller_Template"/>
 	</Template>
 	<Template Name="ASOBO_DEICE_Switch_Propeller_Template">
-	<DefaultTemplateParameters>
-		<SWITCH_TYPE>ON_OFF</SWITCH_TYPE>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	
-	<UseTemplate Name="ASOBO_DEICE_Switch_Propeller_SubTemplate">
-	</UseTemplate>
+		<Parameters Type="Default">
+			<INTERACTION_TYPE>SWITCH</INTERACTION_TYPE>
+			<SWITCH_TYPE>ON_OFF</SWITCH_TYPE>
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Propeller_Template"/>
+	</Template>
+	<Template Name="ASOBO_DEICE_Windshield_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Windshield_SubTemplate"/>
 	</Template>
 	<Template Name="ASOBO_DEICE_Switch_Windshield_Template">
-	<DefaultTemplateParameters>
-		<SWITCH_TYPE>ON_OFF</SWITCH_TYPE>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_DEICE_Switch_Windshield_SubTemplate">
-	</UseTemplate>
+		<UseTemplate Name="ASOBO_DEICE_Windshield_Template">
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Push_Windshield_Template">
+		<UseTemplate Name="ASOBO_DEICE_Windshield_Template">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Push_Pitot_Template">
+		<Parameters Type="Default">
+			<INTERACTION_TYPE>PUSH</INTERACTION_TYPE>
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Pitot_Template"/>
 	</Template>
 	<Template Name="ASOBO_DEICE_Switch_Pitot_Template">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
+			<INTERACTION_TYPE>SWITCH</INTERACTION_TYPE>
 			<ID>1</ID>
-		</DefaultTemplateParameters>
-		<EditableTemplateParameters>
-			<AddParams>
-				<NUM_PITOTS></NUM_PITOTS>
-				<NODE_ID_LEFT_PITOT></NODE_ID_LEFT_PITOT>
-				<NODE_ID_RIGHT_PITOT></NODE_ID_RIGHT_PITOT>
-				<ANIM_NAME_LEFT_PITOT></ANIM_NAME_LEFT_PITOT>
-				<ANIM_NAME_RIGHT_PITOT></ANIM_NAME_RIGHT_PITOT>
-			</AddParams>
-		</EditableTemplateParameters>
-		<UseTemplate Name="ASOBO_DEICE_Switch_Pitot_SubTemplate">
-		</UseTemplate>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Pitot_Template"/>
 	</Template>
 	<Template Name="ASOBO_DEICE_Switch_InertSep_Template">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>DEICE_Switch_InertSep</ANIM_NAME>
-		<PART_ID>DEICE_Switch_InertSep</PART_ID>
-		<NODE_ID>DEICE_Switch_InertSep</NODE_ID>
-		<WWISE_EVENT_1>deice_inertsep_switch_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>deice_inertsep_switch_off</WWISE_EVENT_2>
-		<ID>1</ID>
-		<TIME_TO_DEPLOY_SEC>40</TIME_TO_DEPLOY_SEC>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<DEPLOYMENT_PER_SECOND Process="Float">1 #TIME_TO_DEPLOY_SEC# /</DEPLOYMENT_PER_SECOND>
-	</OverrideTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Update Frequency="1">
-			<!-- 
-			This update represents the deployment of the Inert Sep.
-			It takes 40sec to deploy (0.025 = 1/40) fully.
-			The LocalVar is used in the checklist to ensure the Inert Sep is 
-			retracted before turning off the battery during the shutdown stage
-			-->
-			(L:XMLVAR_InertSep#ID#_Switch) if{
-				(L:XMLVAR_InertSep#ID#_Deployment) 1 &lt; (&gt;L:XMLVAR_InertSep#ID#_Active)
-				(L:XMLVAR_InertSep#ID#_Deployment) #DEPLOYMENT_PER_SECOND# +  1 min (&gt;L:XMLVAR_InertSep#ID#_Deployment)
-			} els{
-				(L:XMLVAR_InertSep#ID#_Deployment) 0 &gt; (&gt;L:XMLVAR_InertSep#ID#_Active)
-				(L:XMLVAR_InertSep#ID#_Deployment) #DEPLOYMENT_PER_SECOND# - 0 max (&gt;L:XMLVAR_InertSep#ID#_Deployment)
-			}
-			(L:XMLVAR_InertSep#ID#_Active) if{
-				(L:XMLVAR_InertSep#ID#_Deployment) 16384 * (&gt;K:ANTI_ICE_GRADUAL_SET_ENG#ID#)
-			}
-		</Update>
-		<Update Once="True">
-			(A:ENG ANTI ICE:#ID#, Bool) (&gt;L:XMLVAR_InertSep#ID#_Switch)
-			(L:XMLVAR_InertSep#ID#_Switch) (&gt;L:XMLVAR_InertSep#ID#_Deployment) 
-		</Update>
-		<UseTemplate Name="ASOBO_GT_Switch_Code">
-			<ANIM_LENGTH>100</ANIM_LENGTH>
-			<ANIM_CODE>(L:XMLVAR_InertSep#ID#_Switch) 100 *</ANIM_CODE>
-			<LEFT_SINGLE_CODE>
-				(L:XMLVAR_InertSep#ID#_Switch) ! (&gt;L:XMLVAR_InertSep#ID#_Switch)
-			</LEFT_SINGLE_CODE>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.PANEL_DEICE_INERT_SEP_ON</ANIMTIP_1>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.PANEL_DEICE_INERT_SEP_OFF</ANIMTIP_0>
-		</UseTemplate>
-	</Component>
-
+		<Parameters Type="Default">
+			<INTERACTION_TYPE>SWITCH</INTERACTION_TYPE>
+			<TYPE>INERT_SEP</TYPE>
+			<ID>1</ID>
+			<ANIM_NAME>DEICE_Switch_InertSep</ANIM_NAME>
+			<PART_ID>DEICE_Switch_InertSep</PART_ID>
+			<NODE_ID>DEICE_Switch_InertSep</NODE_ID>
+			<WWISE_EVENT_1>deice_inertsep_switch_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>deice_inertsep_switch_off</WWISE_EVENT_2>
+			<TIME_TO_DEPLOY_SEC>40</TIME_TO_DEPLOY_SEC>
+		</Parameters>
+		<Parameters Type="Override">
+			<DEPLOYMENT_PER_SECOND Process="Float">1 #TIME_TO_DEPLOY_SEC# /</DEPLOYMENT_PER_SECOND>
+			<INIT>(A:GENERAL ENG ANTI ICE POSITION:#ID#, percent) 0 &gt; if{ (&gt;B:DEICE_Engine_1_On) }</INIT>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Engine_Template"/>
 	</Template>
 	<Template Name="ASOBO_DEICE_Switch_Light_Template">
-	<DefaultTemplateParameters>
-		<PART_ID>DEICE_Switch_Light</PART_ID>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_DEICE_Switch_Light_SubTemplate">
-	</UseTemplate>
+		<Parameters Type="Default">
+			<PART_ID>DEICE_Switch_Light</PART_ID>
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_DEICE_Switch_Light_SubTemplate"/>
 	</Template>
+	<!-- MISC -->
 	<Template Name="ASOBO_DEICE_Update_Pitot_On">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_GT_Update">
-		<FREQUENCY>0.33</FREQUENCY>
-		<Switch Param="TYPE">
-			<Case Value="ON_WHEN_ENGINE_ON">
-				<UPDATE_CODE>
-					(A:PITOT HEAT SWITCH:#ID#, Enum) (A:GENERAL ENG COMBUSTION:#ID#, Bool) != if{
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Update">
+			<FREQUENCY>0.33</FREQUENCY>
+			<Switch Param="TYPE">
+				<Case Value="ON_WHEN_ENGINE_ON">
+					<UPDATE_CODE>
+						(A:PITOT HEAT SWITCH:#ID#, Enum) (A:GENERAL ENG COMBUSTION:#ID#, Bool) != if{
 						#ID# (&gt;K:PITOT_HEAT_TOGGLE)
-					}
-				</UPDATE_CODE>
-			</Case>
-			<Default>
-				<UPDATE_CODE>
-					(A:PITOT HEAT SWITCH:#ID#, Enum) 0 == if{
+						}
+					</UPDATE_CODE>
+				</Case>
+				<Default>
+					<UPDATE_CODE>
+						(A:PITOT HEAT SWITCH:#ID#, Enum) 0 == if{
 						#ID# (&gt;K:PITOT_HEAT_ON)
-					}
-				</UPDATE_CODE>
-			</Default>
-		</Switch>
-	</UseTemplate>
+						}
+					</UPDATE_CODE>
+				</Default>
+			</Switch>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Panel_Template">
+		<UseTemplate Name="ASOBO_DEICE_Panel_SubTemplate"/>
+	</Template>
+	<!-- ####################################### -->
+	<!-- DEICE Interaction inputs setup template -->
+	<Template Name="ASOBO_DEICE_Base_Template">
+		<Parameters Type="Default">
+			<INPUT_EVENT_ID_SOURCE>DEICE</INPUT_EVENT_ID_SOURCE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_Interaction_Base_Template">
+			<USE_INPUT_EVENT_ID>DEICE</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Push_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Push_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>DEICE</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_DEICE_Pull_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Pull_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>DEICE</USE_INPUT_EVENT_ID>
+		</UseTemplate>
 	</Template>
 </ModelBehaviors>

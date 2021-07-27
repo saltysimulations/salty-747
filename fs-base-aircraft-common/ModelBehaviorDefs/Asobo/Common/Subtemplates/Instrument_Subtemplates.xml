@@ -1,99 +1,73 @@
 <ModelBehaviors>
 <Template Name="ASOBO_INSTRUMENT_Needle_Airspeed_SubTemplate">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<UNITS>knots</UNITS>
 		<MIN_VALUE>0</MIN_VALUE>
 		<MAX_VALUE>200</MAX_VALUE>
 		<ANIM_NAME>INSTRUMENT_Needle_Airspeed#SUFFIX_ID#</ANIM_NAME>
 		<NODE_ID>INSTRUMENT_Needle_Airspeed#SUFFIX_ID#</NODE_ID>
 		<PART_ID>INSTRUMENT_Needle_Airspeed_Highlight</PART_ID>
-		<Condition Check="USE_TRUE_AIRSPEED_CALIBRATOR">
+		<Condition Valid="USE_TRUE_AIRSPEED_CALIBRATOR">
 			<KNOB_NODE_ID>INSTRUMENT_Knob_Airspeed#SUFFIX_ID#</KNOB_NODE_ID>
 			<KNOB_ANIM_NAME>INSTRUMENT_Knob_Airspeed#SUFFIX_ID#</KNOB_ANIM_NAME>
 			<STRIP_NODE_ID>INSTRUMENT_Strip_Airspeed#SUFFIX_ID#</STRIP_NODE_ID>
 			<STRIP_ANIM_NAME>INSTRUMENT_Strip_Airspeed#SUFFIX_ID#</STRIP_ANIM_NAME>
-			<ANIMREF_ID>-1</ANIMREF_ID>
-			<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.TRUE_AIRSPEED_INDICATOR_CALIBRATION_KNOB_INCREASE</ANIMTIP_0>
-			<ANIMTIP_0_ON_CURSOR>TurnRight</ANIMTIP_0_ON_CURSOR>
-			<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.TRUE_AIRSPEED_INDICATOR_CALIBRATION_KNOB_DECREASE</ANIMTIP_1>
-			<ANIMTIP_1_ON_CURSOR>TurnLeft</ANIMTIP_1_ON_CURSOR>
 			<MIN_AIRSPEED_CALIBRATOR_VALUE>0</MIN_AIRSPEED_CALIBRATOR_VALUE>
 			<MAX_AIRSPEED_CALIBRATOR_VALUE>30</MAX_AIRSPEED_CALIBRATOR_VALUE>
 			<INCREMENT>0.5</INCREMENT>
 		</Condition>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<Condition Check="USE_TRUE_AIRSPEED_CALIBRATOR">
+	</Parameters>
+	<Parameters Type="Override">
+		<Condition Valid="USE_TRUE_AIRSPEED_CALIBRATOR">
 			<CLAMP_VALUE>#MIN_AIRSPEED_CALIBRATOR_VALUE# max #MAX_AIRSPEED_CALIBRATOR_VALUE# min</CLAMP_VALUE>
+			<NORMALIZE_VALUE>#MIN_AIRSPEED_CALIBRATOR_VALUE# - #MAX_AIRSPEED_CALIBRATOR_VALUE# #MIN_AIRSPEED_CALIBRATOR_VALUE# - /</NORMALIZE_VALUE>
+			<KNOB_ID>Airspeed_Calibrator</KNOB_ID>
 		</Condition>
-	</OverrideTemplateParameters>
-	<EditableTemplateParameters>
-		<AddParams>
-			<KNOB_NODE_ID></KNOB_NODE_ID>
-			<KNOB_ANIM_NAME></KNOB_ANIM_NAME>
-			<STRIP_NODE_ID></STRIP_NODE_ID>
-			<STRIP_ANIM_NAME></STRIP_ANIM_NAME>
-		</AddParams>
-		<AddOptions>
-			<USE_TRUE_AIRSPEED_CALIBRATOR></USE_TRUE_AIRSPEED_CALIBRATOR>
-		</AddOptions>
-	</EditableTemplateParameters>
-	
+	</Parameters>
 	<Component ID="INSTRUMENT_Airspeed_#ID#">
 		<UseTemplate Name="ASOBO_GT_Needle_Code">
 			<SIMVAR>AIRSPEED INDICATED</SIMVAR>
 		</UseTemplate>
-		<Condition Check="USE_TRUE_AIRSPEED_CALIBRATOR">
-			<Switch Param="USE_TRUE_AIRSPEED_CALIBRATOR">
-				<Case Value="SIMVAR_SET"><!-- let us bypass hardcoded limit of -27° and +27° -->
-					<UseTemplate Name="ASOBO_GT_Update">
-						<UPDATE_ONCE>True</UPDATE_ONCE>
-						<UPDATE_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #CLAMP_VALUE# (&gt;A:AIRSPEED TRUE CALIBRATE, degrees)</UPDATE_CODE>
-					</UseTemplate>
-					<Component ID="#STRIP_NODE_ID#" Node="#STRIP_NODE_ID#">
-						<UseTemplate Name="ASOBO_GT_Anim_Code">
-							<ANIM_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #MIN_AIRSPEED_CALIBRATOR_VALUE# - #MAX_AIRSPEED_CALIBRATOR_VALUE# #MIN_AIRSPEED_CALIBRATOR_VALUE# - / 100 *</ANIM_CODE>
-							<ANIM_NAME>#STRIP_ANIM_NAME#</ANIM_NAME>
-						</UseTemplate>
-					</Component>
-					<Component ID="#KNOB_NODE_ID#" Node="#KNOB_NODE_ID#">
-						<UseTemplate Name="ASOBO_GT_Anim_Code">
-							<ANIM_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #MIN_AIRSPEED_CALIBRATOR_VALUE# - #MAX_AIRSPEED_CALIBRATOR_VALUE# #MIN_AIRSPEED_CALIBRATOR_VALUE# - / 100 *</ANIM_CODE>
-							<ANIM_NAME>#KNOB_ANIM_NAME#</ANIM_NAME>
-						</UseTemplate>
-						<UseTemplate Name="ASOBO_GT_Interaction_WheelAndContinuousLeft_Horizontal">
-							<CLOCKWISE_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #INCREMENT# + #CLAMP_VALUE# (&gt;A:AIRSPEED TRUE CALIBRATE, degrees)</CLOCKWISE_CODE>
-							<ANTICLOCKWISE_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #INCREMENT# - #CLAMP_VALUE# (&gt;A:AIRSPEED TRUE CALIBRATE, degrees)</ANTICLOCKWISE_CODE>
-							<Condition Valid="KNOB_HIGHLIGHT_NODE_ID">
-								<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID#</HIGHLIGHT_NODE_ID>
-							</Condition>
-						</UseTemplate>
-					</Component>
-				</Case>
-				<Default>
-					<Component ID="#STRIP_NODE_ID#" Node="#STRIP_NODE_ID#">
-						<UseTemplate Name="ASOBO_GT_Anim_Code">
-							<ANIM_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) 14 + 0 max 50 min</ANIM_CODE>
-							<ANIM_LENGTH>50</ANIM_LENGTH>
-							<ANIM_NAME>#STRIP_ANIM_NAME#</ANIM_NAME>
-						</UseTemplate>
-					</Component>
-					<Component ID="#KNOB_NODE_ID#" Node="#KNOB_NODE_ID#">
-						<UseTemplate Name="ASOBO_GT_Anim_Code">
-							<ANIM_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) 20 * dnor</ANIM_CODE>
-							<ANIM_LENGTH>360</ANIM_LENGTH>
-							<ANIM_NAME>#KNOB_ANIM_NAME#</ANIM_NAME>
-						</UseTemplate>
-						<UseTemplate Name="ASOBO_GT_Interaction_WheelAndContinuousLeft_Horizontal">
-							<CLOCKWISE_CODE>(&gt;K:TRUE_AIRSPEED_CAL_INC)</CLOCKWISE_CODE>
-							<ANTICLOCKWISE_CODE>(&gt;K:TRUE_AIRSPEED_CAL_DEC)</ANTICLOCKWISE_CODE>
-							<Condition Valid="KNOB_HIGHLIGHT_NODE_ID">
-								<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID#</HIGHLIGHT_NODE_ID>
-							</Condition>
-						</UseTemplate>
-					</Component>
-				</Default>
-			</Switch>
+		<Condition Valid="USE_TRUE_AIRSPEED_CALIBRATOR">
+			<UseTemplate Name="ASOBO_GT_Update">
+				<UPDATE_ONCE>True</UPDATE_ONCE>
+				<UPDATE_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #CLAMP_VALUE# (&gt;A:AIRSPEED TRUE CALIBRATE, degrees)</UPDATE_CODE>
+			</UseTemplate>
+			<Component ID="#STRIP_NODE_ID#" Node="#STRIP_NODE_ID#">
+				<UseTemplate Name="ASOBO_GT_Anim_Code">
+					<ANIM_CODE>(A:AIRSPEED TRUE CALIBRATE, degrees) #NORMALIZE_VALUE# 100 *</ANIM_CODE>
+					<ANIM_NAME>#STRIP_ANIM_NAME#</ANIM_NAME>
+				</UseTemplate>
+			</Component>
+			<Component ID="#KNOB_NODE_ID#" Node="#KNOB_NODE_ID#">
+				<Parameters Type="Default">
+					<TOOLTIP_AIRSPEED_TITLE>@TT_Package.INSTRUMENT_KNOB_TRUEAIRSPEED_TITLE</TOOLTIP_AIRSPEED_TITLE>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>#TOOLTIP_AIRSPEED_TITLE#</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>INSTRUMENT_#KNOB_ID#</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="INSTRUMENT">
+					<MIN_VALUE>#MIN_AIRSPEED_CALIBRATOR_VALUE#</MIN_VALUE>
+					<MAX_VALUE>#MAX_AIRSPEED_CALIBRATOR_VALUE#</MAX_VALUE>
+					<SET_STATE_EXTERNAL>(&gt;A:AIRSPEED TRUE CALIBRATE, degrees)</SET_STATE_EXTERNAL>
+					<GET_STATE_EXTERNAL>(A:AIRSPEED TRUE CALIBRATE, degrees)</GET_STATE_EXTERNAL>
+					<FORMAT_VALUE>'%d°C' @sprintf</FORMAT_VALUE>
+					<TT_DESCRIPTION_ID>@TT_Package.INSTRUMENT_KNOB_TRUEAIRSPEED_ACTION</TT_DESCRIPTION_ID>
+					<INC_PARAM_0>#INCREMENT# p0 *</INC_PARAM_0>
+					<INC_PARAM_0_IS_DYNAMIC>True</INC_PARAM_0_IS_DYNAMIC>
+					<DEC_PARAM_0>#INCREMENT# p0 *</DEC_PARAM_0>
+					<DEC_PARAM_0_IS_DYNAMIC>True</DEC_PARAM_0_IS_DYNAMIC>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+					<ANIM_NAME>#KNOB_ANIM_NAME#</ANIM_NAME>
+					<CLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<Condition Valid="KNOB_HIGHLIGHT_NODE_ID">
+						<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID#</HIGHLIGHT_NODE_ID>
+					</Condition>
+				</UseTemplate>
+			</Component>
 		</Condition>
 	</Component>
 </Template>
@@ -204,7 +178,7 @@
 </Template>
 
 <Template Name="ASOBO_INSTRUMENT_Knob_Altimeter_SubTemplate">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<NODE_ID>INSTRUMENT_Knob_Altimeter#SUFFIX_ID#</NODE_ID>
 		<ANIM_NAME>INSTRUMENT_Knob_Altimeter#SUFFIX_ID#</ANIM_NAME>
 		<SIMVAR>KOHLSMAN SETTING HG</SIMVAR>
@@ -215,16 +189,23 @@
 		<INCREMENT>0.01 33.8639 *</INCREMENT> <!-- 10 MB -->
 		<THRESHOLD_INPUT>0.0001</THRESHOLD_INPUT>
 		<THRESHOLD_MOUSE>0.003</THRESHOLD_MOUSE>
-	</DefaultTemplateParameters>
+		<REPEAT_ANIM>3</REPEAT_ANIM>
+		<TOOLTIP_ALTIMETER_TITLE>@TT_Package.INSTRUMENT_KNOB_ALTIMETER_TITLE</TOOLTIP_ALTIMETER_TITLE>
+	</Parameters>
+	<Parameters Type="Override">
+		<TOOLTIP_TITLE>#TOOLTIP_ALTIMETER_TITLE#</TOOLTIP_TITLE>
+		<TOOLTIP_ENTRY_0>INSTRUMENT_Altimeter_#BARO_ID#</TOOLTIP_ENTRY_0>
+	</Parameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
-			<TOOLTIPID>%((P:Units of measure, enum) 2 == )%{if}%((A:KOHLSMAN SETTING HG, mbar))%!d!TT:COCKPIT.TOOLTIPS.MBAR%{else}TT:COCKPIT.TOOLTIPS.ALTIMETER_CALIBRATION_KNOB_INHG</TOOLTIPID>
-			<CLOCKWISE_CODE_DEFAULT_IM>(&gt;K:KOHLSMAN_DEC)</CLOCKWISE_CODE_DEFAULT_IM>
-			<ANTICLOCKWISE_CODE_DEFAULT_IM>(&gt;K:KOHLSMAN_INC)</ANTICLOCKWISE_CODE_DEFAULT_IM>
-			<CLOCKWISE_CODE_DRAG_IM>#BARO_ID# (A:KOHLSMAN SETTING MB, Millibar) #INCREMENT# - #MIN_VALUE# 33.8639 * max 16 * (&gt;K:2:KOHLSMAN_SET)</CLOCKWISE_CODE_DRAG_IM>
-			<ANTICLOCKWISE_CODE_DRAG_IM>#BARO_ID# (A:KOHLSMAN SETTING MB, Millibar) #INCREMENT# + #MAX_VALUE# 33.8639 * min 16 * (&gt;K:2:KOHLSMAN_SET)</ANTICLOCKWISE_CODE_DRAG_IM>
-			<CLOCKWISE_CONDITION> (A:#SIMVAR#, #UNITS#) #MIN_VALUE# &gt; </CLOCKWISE_CONDITION>
-			<ANTICLOCKWISE_CONDITION> (A:#SIMVAR#, #UNITS#) #MAX_VALUE# &lt; </ANTICLOCKWISE_CONDITION>
+		<UseInputEvent ID="INSTRUMENT"/>
+		<UseTemplate Name="ASOBO_GT_Knob_Finite_Code">
+			<ANIM_CODE>
+				(A:#SIMVAR#, #UNITS#) #MIN_VALUE# - #MAX_VALUE# #MIN_VALUE# - / 100 * 
+			</ANIM_CODE>
+			<CLOCKWISE_CODE_DEFAULT_IM>1 (&gt;B:INSTRUMENT_Altimeter_#BARO_ID#_Inc)</CLOCKWISE_CODE_DEFAULT_IM>
+			<ANTICLOCKWISE_CODE_DEFAULT_IM>1 (&gt;B:INSTRUMENT_Altimeter_#BARO_ID#_Dec)</ANTICLOCKWISE_CODE_DEFAULT_IM>
+			<CLOCKWISE_CODE_DRAG_IM>1 (&gt;B:INSTRUMENT_Altimeter_#BARO_ID#_Inc)</CLOCKWISE_CODE_DRAG_IM>
+			<ANTICLOCKWISE_CODE_DRAG_IM>1 (&gt;B:INSTRUMENT_Altimeter_#BARO_ID#_Dec)</ANTICLOCKWISE_CODE_DRAG_IM>
 		</UseTemplate>
 	</Component>
 </Template>
@@ -386,78 +367,129 @@ NO_BARS_POSTION_ADJUSTEMENT: remove the bars position djustement interaction & b
 NO_CAGE: Remove the cage interaction & behaviour
 -->
 <Template Name="ASOBO_INSTRUMENT_Knob_AttitudeCage_SubTemplate">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<NODE_ID>INSTRUMENT_Knob_AttitudeCage#SUFFIX_ID#</NODE_ID>
 		<ANIM_NAME_KNOB>INSTRUMENT_Knob_AttitudeCage#SUFFIX_ID#</ANIM_NAME_KNOB>
 		<ANIM_NAME_PULL>INSTRUMENT_Knob_AttitudeCage_Pull#SUFFIX_ID#</ANIM_NAME_PULL>
-		<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.ATTITUDE_INDICATOR_CALIBRATION_KNOB_DECREASE</ANIMTIP_0>
-		<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
-		<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.ATTITUDE_INDICATOR_CALIBRATION_KNOB_INCREASE</ANIMTIP_1>
-		<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
-		<ANIMTIP_2_ON_CURSOR>Hand</ANIMTIP_2_ON_CURSOR>
-		<ANIMTIP_2>%((A:Attitude cage:1,bool) 0 >)%{if}TT:COCKPIT.TOOLTIPS.ATTITUDE_INDICATOR_CAGED%{else}TT:COCKPIT.TOOLTIPS.ATTITUDE_INDICATOR_UNCAGED%{end}</ANIMTIP_2>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<Condition Check="NO_CAGE">
-			<True>
-				<Condition Check="NO_BARS_POSTION_ADJUSTEMENT">
-					<False>
-						<USE_TEMPLATE_NAME>ASOBO_GT_Knob_Infinite</USE_TEMPLATE_NAME>
-						<ANIM_NAME>#ANIM_NAME_KNOB#</ANIM_NAME>
-					</False>
-				</Condition>
-			</True>
-			<False>
-				<Condition Check="NO_BARS_POSTION_ADJUSTEMENT">
-					<True>
-						<USE_TEMPLATE_NAME>ASOBO_GT_Push_Button_Held_Simple</USE_TEMPLATE_NAME>
-						<ANIM_NAME>#ANIM_NAME_PULL#</ANIM_NAME>
-						<WWISE_EVENT_1>attitudecage_knob_push_on</WWISE_EVENT_1>
-						<WWISE_EVENT_2>attitudecage_knob_push_off</WWISE_EVENT_2> 
-					</True>
-					<False>
-						<USE_TEMPLATE_NAME>ASOBO_GT_Knob_Infinite_Pull</USE_TEMPLATE_NAME>
-					</False>
-				</Condition>
-			</False>
-		</Condition>
-	</OverrideTemplateParameters>
-	<EditableTemplateParameters>
-		<AddParams>
-			<NODE_ID></NODE_ID>
-			<ANIM_NAME_KNOB></ANIM_NAME_KNOB>
-			<ANIM_NAME_PULL></ANIM_NAME_PULL>
-		</AddParams>
-		<AddOptions>
-			<NO_CAGE></NO_CAGE>
-			<NO_BARS_POSTION_ADJUSTEMENT></NO_BARS_POSTION_ADJUSTEMENT>
-		</AddOptions>
-		<RemoveParams>
-			<ANIM_NAME></ANIM_NAME>
-		</RemoveParams>
-	</EditableTemplateParameters>
-
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch>
+			<Case Check="NO_CAGE">
+				<TYPE>BARS_ADJUSTEMENT_ONLY</TYPE>
+				<CAN_ADJUST_BARS>True</CAN_ADJUST_BARS>
+			</Case>
+			<Case Check="NO_BARS_POSTION_ADJUSTEMENT">
+				<TYPE>CAGE_ONLY</TYPE>
+				<CAN_CAGE>True</CAN_CAGE>
+			</Case>
+			<Default>
+				<TYPE>BOTH</TYPE>
+				<CAN_ADJUST_BARS>True</CAN_ADJUST_BARS>
+				<CAN_CAGE>True</CAN_CAGE>
+			</Default>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch Param="TYPE">
+			<Case Value="BARS_ADJUSTEMENT_ONLY">
+				<USE_TEMPLATE_NAME>ASOBO_GT_Knob_Infinite</USE_TEMPLATE_NAME>
+				<ANIM_NAME>#ANIM_NAME_KNOB#</ANIM_NAME>
+				<WWISE_EVENT>attitudecage_knob_rotate</WWISE_EVENT>
+			</Case>
+			<Case Value="CAGE_ONLY">
+				<USE_TEMPLATE_NAME>ASOBO_GT_Push_Button_Held_Simple</USE_TEMPLATE_NAME>
+				<ANIM_NAME>#ANIM_NAME_PULL#</ANIM_NAME>
+				<WWISE_EVENT_1>attitudecage_knob_push_on</WWISE_EVENT_1>
+				<WWISE_EVENT_2>attitudecage_knob_push_off</WWISE_EVENT_2> 
+			</Case>
+			<Default>
+				<USE_TEMPLATE_NAME>ASOBO_GT_Knob_Infinite_Pull</USE_TEMPLATE_NAME>
+				<WWISE_EVENT_1>attitudecage_knob_push_on</WWISE_EVENT_1>
+				<WWISE_EVENT_2>attitudecage_knob_push_off</WWISE_EVENT_2> 
+				<WWISE_EVENT>attitudecage_knob_rotate</WWISE_EVENT>
+			</Default>
+		</Switch>
+	</Parameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Parameters Type="Default">
+			<TOOLTIP_ATT_INDIC_KNOB_TITLE>@TT_Package.INSTRUMENT_KNOB_ATITUDE_TITLE</TOOLTIP_ATT_INDIC_KNOB_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="CAN_ADJUST_BARS">
+				<KNOB_ID_EXTERNAL>Attitude_Indicator_Bars</KNOB_ID_EXTERNAL>
+			</Condition>
+			<Condition Valid="CAN_CAGE">
+				<BTN_ID_EXTERNAL>Attitude_Indicator_Cage</BTN_ID_EXTERNAL>				
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_ATT_INDIC_KNOB_TITLE#</TOOLTIP_TITLE>
+			<Switch Param="TYPE">
+				<Case Value="BARS_ADJUSTEMENT_ONLY">
+					<TOOLTIP_ENTRY_0>INSTRUMENT_#KNOB_ID_EXTERNAL#</TOOLTIP_ENTRY_0>
+				</Case>
+				<Case Value="CAGE_ONLY">
+					<TOOLTIP_ENTRY_0>INSTRUMENT_#BTN_ID_EXTERNAL#</TOOLTIP_ENTRY_0>
+				</Case>
+				<Default>
+					<TOOLTIP_ENTRY_0>INSTRUMENT_#KNOB_ID_EXTERNAL#</TOOLTIP_ENTRY_0>
+					<TOOLTIP_ENTRY_1>INSTRUMENT_#BTN_ID_EXTERNAL#</TOOLTIP_ENTRY_1>
+				</Default>
+			</Switch>
+		</Parameters>
+		<Condition Valid="CAN_CAGE">
+			<UseInputEvent ID="INSTRUMENT">
+				<BTN_ID>#BTN_ID_EXTERNAL#</BTN_ID>
+				<SET_STATE_ON>(A:ATTITUDE CAGE, Bool) ! if{ (&gt;K:ATTITUDE_CAGE_BUTTON) }</SET_STATE_ON>
+				<SET_STATE_OFF>(A:ATTITUDE CAGE, Bool) if{ (&gt;K:ATTITUDE_CAGE_BUTTON) }</SET_STATE_OFF>
+				<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_CAGED)</TT_VALUE_ON>
+				<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_RELEASED)</TT_VALUE_OFF>
+				<STR_STATE_ON>Cage</STR_STATE_ON>
+				<STR_STATE_OFF>Release</STR_STATE_OFF>
+				<GET_STATE_EXTERNAL>(A:ATTITUDE CAGE, Bool) sp0</GET_STATE_EXTERNAL>
+				<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+				<TT_DESCRIPTION_ID>@TT_Package.INSTRUMENT_KNOB_ATITUDE_ACTION_CAGE</TT_DESCRIPTION_ID>
+				<TT_ICON>Pull</TT_ICON>
+			</UseInputEvent>
+		</Condition>
+		<Condition Valid="CAN_ADJUST_BARS">
+			<UseInputEvent ID="INSTRUMENT">
+				<KNOB_ID>#KNOB_ID_EXTERNAL#</KNOB_ID>
+				<GET_STATE_EXTERNAL>(A:ATTITUDE BARS POSITION, percent) s0</GET_STATE_EXTERNAL>
+				<SET_STATE_EXTERNAL>0 (&gt;K:2:ATTITUDE_BARS_POSITION_SET)</SET_STATE_EXTERNAL>
+				<MIN_VALUE>-100</MIN_VALUE>
+				<MAX_VALUE>100</MAX_VALUE>
+				<FORMAT_VALUE>'%d%%' @sprintf</FORMAT_VALUE>
+				<BINDING_SET_0>Center</BINDING_SET_0>
+				<BINDING_SET_0_PARAM_0>0</BINDING_SET_0_PARAM_0>
+				<BINDING_SET_1>Position_Set</BINDING_SET_1>
+				<BINDING_SET_1_EVENT_ID_ONLY>True</BINDING_SET_1_EVENT_ID_ONLY>
+				<BINDING_SET_1_EVENT_ID>ATTITUDE_BARS_POSITION_SET</BINDING_SET_1_EVENT_ID>
+				<BINDING_SET_1_PARAM_0>p0</BINDING_SET_1_PARAM_0>
+				<BINDING_SET_1_PARAM_0_IS_DYNAMIC>True</BINDING_SET_1_PARAM_0_IS_DYNAMIC>
+				<BINDING_INC_0>Position_Up</BINDING_INC_0>
+				<BINDING_INC_0_EVENT_ID>ATTITUDE_BARS_POSITION_UP</BINDING_INC_0_EVENT_ID>
+				<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+				<BINDING_DEC_0>Position_Down</BINDING_DEC_0>
+				<BINDING_DEC_0_EVENT_ID>ATTITUDE_BARS_POSITION_DOWN</BINDING_DEC_0_EVENT_ID>
+				<BINDING_DEC_0_PARAM_0>1</BINDING_DEC_0_PARAM_0>
+				<TT_DESCRIPTION_ID>@TT_Package.INSTRUMENT_KNOB_ATITUDE_ACTION_BARS</TT_DESCRIPTION_ID>
+			</UseInputEvent>
+		</Condition>
 		<UseTemplate Name="#USE_TEMPLATE_NAME#">
+			<Condition Valid="CAN_ADJUST_BARS">
+				<CLOCKWISE_CODE>(&gt;B:INSTRUMENT_#KNOB_ID_EXTERNAL#_Position_Up)</CLOCKWISE_CODE>
+				<ANTICLOCKWISE_CODE>(&gt;B:INSTRUMENT_#KNOB_ID_EXTERNAL#_Position_Down)</ANTICLOCKWISE_CODE>
+			</Condition>
+			<Condition Valid="CAN_CAGE">
+				<ANIM_SIMVAR>ATTITUDE CAGE</ANIM_SIMVAR>
+				<ANIM_SIMVAR_UNITS>Bool</ANIM_SIMVAR_UNITS>
+				<ANIM_SIMVAR_SCALE>100</ANIM_SIMVAR_SCALE>
+				<LEFT_SINGLE_CODE>(&gt;B:INSTRUMENT_#BTN_ID_EXTERNAL#_Cage)</LEFT_SINGLE_CODE>
+				<LEFT_LEAVE_CODE>(&gt;B:INSTRUMENT_#BTN_ID_EXTERNAL#_Release)</LEFT_LEAVE_CODE>
+			</Condition>
 			<Condition Check="KNOB_HIGHLIGHT_NODE_ID">
 				<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID#</HIGHLIGHT_NODE_ID>
-			</Condition>
-			<Condition Check="NO_CAGE">
-				<False>
-					<LEFT_SINGLE_CODE>(A:ATTITUDE CAGE, Bool) ! if{ (&gt;K:ATTITUDE_CAGE_BUTTON) }</LEFT_SINGLE_CODE>
-					<LEFT_LEAVE_CODE>(A:ATTITUDE CAGE, Bool) if{ (&gt;K:ATTITUDE_CAGE_BUTTON) }</LEFT_LEAVE_CODE>
-					<ANIM_SIMVAR>ATTITUDE CAGE</ANIM_SIMVAR>
-					<ANIM_SIMVAR_UNITS>Bool</ANIM_SIMVAR_UNITS>
-					<ANIM_SIMVAR_SCALE>100</ANIM_SIMVAR_SCALE>
-				</False>
-			</Condition>
-			<Condition Check="NO_BARS_POSTION_ADJUSTEMENT">
-				<False>
-					<CLOCKWISE_CODE>(&gt;K:ATTITUDE_BARS_POSITION_UP)</CLOCKWISE_CODE>
-					<ANTICLOCKWISE_CODE>(&gt;K:ATTITUDE_BARS_POSITION_DOWN)</ANTICLOCKWISE_CODE>
-					<WWISE_EVENT_1>attitudecage_knob_push_on</WWISE_EVENT_1>
-					<WWISE_EVENT_2>attitudecage_knob_push_off</WWISE_EVENT_2> 
-				</False>
 			</Condition>
 		</UseTemplate>
 	</Component>
@@ -624,6 +656,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 		<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.OBS_BEARING_SELECT_COUNTERCLOCKWISE</ANIMTIP_0>
 		<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.OBS_BEARING_SELECT_CLOCKWISE</ANIMTIP_1>
 		<THRESHOLD_INPUT>0.00005</THRESHOLD_INPUT><!-- COURSE_KNOB -->
+		<NO_ANIM_LAG_ON_COMPASS>True</NO_ANIM_LAG_ON_COMPASS>
 	</DefaultTemplateParameters>
 	<OverrideTemplateParameters>
 		<Condition Check="HIGHLIGHT_NODE_ID">
@@ -673,11 +706,15 @@ NO_CAGE: Remove the cage interaction & behaviour
 	<Component ID="#NODE_ID#_#ID#" Node="#NODE_ID#">
 		<UseTemplate Name="ASOBO_GT_Anim_Sim">
 			<ANIM_NAME>#ANIM_NAME_COMPASS#</ANIM_NAME>
+			<Condition Check="NO_ANIM_LAG_ON_COMPASS">
+				<False>						
+					<ANIM_LAG>400</ANIM_LAG>
+				</False>
+			</Condition>
+			<!-- [0, 360] -->
 			<ANIM_LENGTH>360</ANIM_LENGTH>
 			<ANIM_SIMVAR>NAV OBS:#ID#</ANIM_SIMVAR>
 			<ANIM_SIMVAR_UNITS>degrees</ANIM_SIMVAR_UNITS>
-			<!-- [0, 360] -->
-			<ANIM_LAG>400</ANIM_LAG>
 			<PART_ID/>
 			<ANIM_WRAP>1</ANIM_WRAP>
 		</UseTemplate>
@@ -729,15 +766,27 @@ NO_CAGE: Remove the cage interaction & behaviour
 		</Condition>
 	</Component>
 	<Component ID="#COURSE_KNOB_NODE_ID#" Node="#COURSE_KNOB_NODE_ID#">
+		<Parameters Type="Default">
+			<TOOLTIP_COURSE_TITLE>@TT_Package.AUTOPILOT_KNOB_COURSE_TITLE</TOOLTIP_COURSE_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_COURSE_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>INSTRUMENT_Course_#ID#</TOOLTIP_ENTRY_0>
+		</Parameters>
+		<UseInputEvent ID="INSTRUMENT">
+			<CRS_ID>#ID#</CRS_ID>
+			<ON_AFTER_INC_EXTERNAL_CODE>(O:_KnobAnimVar) 10 + dnor (&gt;O:_KnobAnimVar)</ON_AFTER_INC_EXTERNAL_CODE>
+			<ON_AFTER_DEC_EXTERNAL_CODE>(O:_KnobAnimVar) 10 - dnor (&gt;O:_KnobAnimVar)</ON_AFTER_DEC_EXTERNAL_CODE>
+		</UseInputEvent>
 		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 			<Condition Check="KNOB_HIGHLIGHT_NODE_ID">
 				<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID#</HIGHLIGHT_NODE_ID>
 			</Condition>
 			<ANIM_NAME>#COURSE_KNOB_ANIM_NAME#</ANIM_NAME>
-			<CLOCKWISE_CODE_DEFAULT_IM>(&gt;K:VOR#ID#_OBI_DEC)</CLOCKWISE_CODE_DEFAULT_IM>
-			<ANTICLOCKWISE_CODE_DEFAULT_IM>(&gt;K:VOR#ID#_OBI_INC)</ANTICLOCKWISE_CODE_DEFAULT_IM>
-			<CLOCKWISE_CODE_DRAG_IM>(A:NAV OBS:#ID#, Degree) 1 + dnor (&gt;K:VOR#ID#_SET)</CLOCKWISE_CODE_DRAG_IM>
-			<ANTICLOCKWISE_CODE_DRAG_IM>(A:NAV OBS:#ID#, Degree) 1 - dnor (&gt;K:VOR#ID#_SET)</ANTICLOCKWISE_CODE_DRAG_IM>
+			<CLOCKWISE_CODE_DEFAULT_IM>1 (&gt;B:INSTRUMENT_Course_#ID#_Inc)</CLOCKWISE_CODE_DEFAULT_IM>
+			<ANTICLOCKWISE_CODE_DEFAULT_IM>1 (&gt;B:INSTRUMENT_Course_#ID#_Dec)</ANTICLOCKWISE_CODE_DEFAULT_IM>
+			<CLOCKWISE_CODE_DRAG_IM>1 (&gt;B:INSTRUMENT_Course_#ID#_Inc)</CLOCKWISE_CODE_DRAG_IM>
+			<ANTICLOCKWISE_CODE_DRAG_IM>1 (&gt;B:INSTRUMENT_Course_#ID#_Dec)</ANTICLOCKWISE_CODE_DRAG_IM>
 		</UseTemplate>
 	</Component>
 	<Condition Check="NO_EMISSIVE_NAV">
@@ -809,6 +858,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 				<MIN_VOLTAGE>14</MIN_VOLTAGE>
 			</Condition>
 		</Condition>
+		<NO_ANIM_LAG_ON_NEEDLE>True</NO_ANIM_LAG_ON_NEEDLE>
 	</DefaultTemplateParameters>
 	<EditableTemplateParameters>
 		<AddParams>
@@ -875,9 +925,19 @@ NO_CAGE: Remove the cage interaction & behaviour
 			</UseTemplate>
 		</Component>
 		<Component ID="#COMPASS_KNOB_NODE_ID#" Node="#COMPASS_KNOB_NODE_ID#">
-			<DefaultTemplateParameters>
+			<Parameters Type="Default">
+				<TOOLTIP_COMPASS_TITLE>@TT_Package.INSTRUMENT_KNOB_HEADING_COMPASS_TITLE</TOOLTIP_COMPASS_TITLE>
 				<INCREMENT>1</INCREMENT> <!-- 1° increment -->
-			</DefaultTemplateParameters>
+			</Parameters>
+			<Parameters Type="Override">
+				<TOOLTIP_TITLE>#TOOLTIP_COMPASS_TITLE#</TOOLTIP_TITLE>
+				<TOOLTIP_ENTRY_0>INSTRUMENT_Gyro_Drift</TOOLTIP_ENTRY_0>
+			</Parameters>
+			<UseInputEvent ID="INSTRUMENT">
+				<GYRO_ID>1</GYRO_ID>
+				<ON_AFTER_INC_EXTERNAL_CODE>(O:_KnobAnimVar) 10 + dnor (&gt;O:_KnobAnimVar)</ON_AFTER_INC_EXTERNAL_CODE>
+				<ON_AFTER_DEC_EXTERNAL_CODE>(O:_KnobAnimVar) 10 - dnor (&gt;O:_KnobAnimVar)</ON_AFTER_DEC_EXTERNAL_CODE>
+			</UseInputEvent>
 			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 				<Condition Check="DONT_FAIL_HEADING_INDICATOR_ANIMATION">
 					<ANIM_NEVER_FAILS/>
@@ -886,17 +946,8 @@ NO_CAGE: Remove the cage interaction & behaviour
 					<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID#</HIGHLIGHT_NODE_ID>
 				</Condition>
 				<ANIM_NAME>#COMPASS_KNOB_ANIM_NAME#</ANIM_NAME>
-				<ANIMREF_ID>-1</ANIMREF_ID>
-				<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
-				<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
-				<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.DIRECTIONAL_GYRO_TUNING_L %((A:PLANE HEADING DEGREES GYRO, degrees))%!d!°)</ANIMTIP_0>
-				<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.DIRECTIONAL_GYRO_TUNING_R %((A:PLANE HEADING DEGREES GYRO, degrees))%!d!°)</ANIMTIP_1>
-				<CLOCKWISE_CODE_DEFAULT_IM>(&gt;K:GYRO_DRIFT_DEC)</CLOCKWISE_CODE_DEFAULT_IM>
-				<ANTICLOCKWISE_CODE_DEFAULT_IM>(&gt;K:GYRO_DRIFT_INC)</ANTICLOCKWISE_CODE_DEFAULT_IM>
-				<CLOCKWISE_CODE_DRAG_IM>-#INCREMENT# (&gt;K:GYRO_DRIFT_SET)</CLOCKWISE_CODE_DRAG_IM>
-				<ANTICLOCKWISE_CODE_DRAG_IM>#INCREMENT# (&gt;K:GYRO_DRIFT_SET)</ANTICLOCKWISE_CODE_DRAG_IM>
-				<THRESHOLD_INPUT>0.00005</THRESHOLD_INPUT>
-				<THRESHOLD_MOUSE>0.001</THRESHOLD_MOUSE>
+				<CLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_Gyro_Drift_Inc)</CLOCKWISE_CODE>
+				<ANTICLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_Gyro_Drift_Dec)</ANTICLOCKWISE_CODE>
 				<Condition Check="HIGHLIGHT_NODE_ID">
 					<PART_ID/>
 				</Condition>
@@ -911,7 +962,11 @@ NO_CAGE: Remove the cage interaction & behaviour
 					</Condition>
 					<ANIM_NAME>#NEEDLE_ANIM_NAME#</ANIM_NAME>
 					<ANIM_LENGTH>360</ANIM_LENGTH>
-					<ANIM_LAG>200</ANIM_LAG>
+					<Condition Check="NO_ANIM_LAG_ON_NEEDLE">
+						<False>
+							<ANIM_LAG>200</ANIM_LAG>
+						</False>
+					</Condition>
 					<ANIM_WRAP>TRUE</ANIM_WRAP>
 					<ANIM_SIMVAR>AUTOPILOT HEADING LOCK DIR</ANIM_SIMVAR>
 					<ANIM_SIMVAR_UNITS>degrees</ANIM_SIMVAR_UNITS>
@@ -923,6 +978,24 @@ NO_CAGE: Remove the cage interaction & behaviour
 				</UseTemplate>
 			</Component>
 			<Component ID="#HEADING_KNOB_NODE_ID#" Node="#HEADING_KNOB_NODE_ID#">
+				<Parameters Type="Default">
+					<TOOLTIP_HEADING_TITLE>@TT_Package.INSTRUMENT_KNOB_HEADING_BUG_TITLE</TOOLTIP_HEADING_TITLE>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>#TOOLTIP_HEADING_TITLE#</TOOLTIP_TITLE>
+					<TOOLTTIP_TITLE_IS_DYNAMIC>True</TOOLTTIP_TITLE_IS_DYNAMIC>
+					<TOOLTIP_ENTRY_0>INSTRUMENT_Heading_Bug</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="INSTRUMENT">
+					<KNOB_ID>Heading_Bug</KNOB_ID>
+					<SET_STATE_EXTERNAL>p0 360 / 16384 * (&gt;K:AP_HEADING_BUG_SET_EX1)</SET_STATE_EXTERNAL>
+					<GET_STATE_EXTERNAL>(A:AUTOPILOT HEADING LOCK DIR, degrees)</GET_STATE_EXTERNAL>
+					<FORMAT_VALUE>'%d°' @sprintf</FORMAT_VALUE>
+					<TT_DESCRIPTION_ID>@TT_Package.INSTRUMENT_KNOB_HEADING_BUG_ACTION</TT_DESCRIPTION_ID>
+					<!-- <TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC> -->
+					<INC_CODE_ADJUST_VALUE>dnor</INC_CODE_ADJUST_VALUE>
+					<DEC_CODE_ADJUST_VALUE>dnor</DEC_CODE_ADJUST_VALUE>
+				</UseInputEvent>
 				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 					<Condition Check="DONT_FAIL_HEADING_INDICATOR_ANIMATION">
 						<ANIM_NEVER_FAILS/>
@@ -931,10 +1004,13 @@ NO_CAGE: Remove the cage interaction & behaviour
 						<HIGHLIGHT_NODE_ID>#KNOB_HIGHLIGHT_NODE_ID_2#</HIGHLIGHT_NODE_ID>
 					</Condition>
 					<ANIM_NAME>#HEADING_KNOB_ANIM_NAME#</ANIM_NAME>
-					<CLOCKWISE_CODE>(&gt;K:HEADING_BUG_INC)</CLOCKWISE_CODE>
-					<ANTICLOCKWISE_CODE>(&gt;K:HEADING_BUG_DEC)</ANTICLOCKWISE_CODE>
+					<CLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_Heading_Bug_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_Heading_Bug_Dec)</ANTICLOCKWISE_CODE>
 					<THRESHOLD_INPUT>0.00005</THRESHOLD_INPUT>
 					<THRESHOLD_MOUSE>0.001</THRESHOLD_MOUSE>
+					<Condition Check="HIGHLIGHT_NODE_ID">
+						<PART_ID/>
+					</Condition>
 				</UseTemplate>
 			</Component>
 		</Condition>
@@ -960,6 +1036,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 				<NODE_ID>INSTRUMENT_Needle_Fuel_Quantity#SUFFIX_ID#</NODE_ID>
 			</False>
 		</Condition>
+		<ANIM_LAG>100</ANIM_LAG>
 		<PART_ID>INSTRUMENT_Needle_Fuel_Quantity</PART_ID>
 		<Switch>
 			<Case Valid="USE_SELECTABLE">
@@ -1136,7 +1213,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 		</RemoveParams>
 	</EditableTemplateParameters>
 
-	<Component ID="INSTRUMENT_AttitudeIndicator">
+	<Component ID="INSTRUMENT_AttitudeIndicator#SUFFIX_ID#">
 		<DefaultTemplateParameters>
 			<Condition Valid="USE_DEFAULT_CONTAINER_VALUES">
 				<Switch>
@@ -1215,6 +1292,9 @@ NO_CAGE: Remove the cage interaction & behaviour
 				<SIMVAR>ATTITUDE INDICATOR PITCH DEGREES</SIMVAR>
 				<UNITS>degrees</UNITS>
 				<NODE_ID>#PITCH_DEGREES_NODE_ID#</NODE_ID>
+				<Condition Valid="PITCH_INVERT_ANIM">
+					<INVERT_ANIM>True</INVERT_ANIM>
+				</Condition>
 			</UseTemplate>
 		</Component>
 		<Component ID="#BANK_DEGREES_NODE_ID#" Node="#BANK_DEGREES_NODE_ID#">
@@ -1239,6 +1319,9 @@ NO_CAGE: Remove the cage interaction & behaviour
 				<!-- [-180, 180] + 180 => [0, 360] -->
 				<NODE_ID>#BANK_DEGREES_NODE_ID#</NODE_ID>
 				<ANIM_WRAP>True</ANIM_WRAP>
+				<Condition Valid="BANK_INVERT_ANIM">
+					<INVERT_ANIM>True</INVERT_ANIM>
+				</Condition>
 			</UseTemplate>
 		</Component>
 		<Condition Check="NO_BARS_POSITION_ANIMATION">
@@ -1264,6 +1347,9 @@ NO_CAGE: Remove the cage interaction & behaviour
 						<ANIM_SIMVAR_BIAS>100</ANIM_SIMVAR_BIAS>
 						<!-- [-100, 100] + 100 => [0, 200] -->
 						<NODE_ID>#BARS_POSITION_NODE_ID#</NODE_ID>
+						<Condition Valid="BARS_INVERT_ANIM">
+							<INVERT_ANIM>True</INVERT_ANIM>
+						</Condition>
 					</UseTemplate>
 				</Component>
 			</False>
@@ -1285,6 +1371,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 		<ANIM_NAME>INSTRUMENT_Needle_Oil_Temperature#SUFFIX_ID#</ANIM_NAME>
 		<NODE_ID>INSTRUMENT_Needle_Oil_Temperature#SUFFIX_ID#</NODE_ID>
 		<PART_ID>INSTRUMENT_Needle_Oil_Temperature</PART_ID>
+		<HIGHLIGHT_PART_ID>INSTRUMENT_Oil_Temperature_Highlight</HIGHLIGHT_PART_ID>
 	</DefaultTemplateParameters>
 
 	<UseTemplate Name="ASOBO_GT_Needle_Code">
@@ -1312,21 +1399,49 @@ NO_CAGE: Remove the cage interaction & behaviour
 </Template>
 
 <Template Name="ASOBO_INSTRUMENT_Switch_Select_Tank_Source_Fuel_Quantity_SubTemplate">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<ANIM_NAME>INSTRUMENT_Switch_Select_Tank_Source_#ID#</ANIM_NAME>
 		<NODE_ID>INSTRUMENT_Switch_Select_Tank_Source_#ID#</NODE_ID>
 		<PART_ID>INSTRUMENT_Switch_Select_Tank_Source</PART_ID>
-		<SWITCH_POSITION_TYPE>I</SWITCH_POSITION_TYPE>
-		<SWITCH_POSITION_VAR>XMLVAR_Selected_TANK_QUANTITY</SWITCH_POSITION_VAR>	
-	</DefaultTemplateParameters>
+		<WWISE_EVENT>fuel_select_tanksource_switch</WWISE_EVENT>
+		<POS_TEST>0</POS_TEST>
+		<POS_MAIN>1</POS_MAIN>
+		<POS_AUX>2</POS_AUX>
+		<TT_DESCRIPTION_ID>@TT_Package.FUEL_SWITCH_TANK_SELECTION_SOURCE_ACTION</TT_DESCRIPTION_ID>
+		<TOOLTIP_TITLE>@TT_Package.FUEL_SWITCH_TANK_SELECTION_SOURCE_TITLE</TOOLTIP_TITLE>
+	</Parameters>
+	<Parameters Type="Override">
+		<BTN_ID>Tank_Source</BTN_ID>
+		<INPUT_EVENT_ID_SOURCE>INSTRUMENT</INPUT_EVENT_ID_SOURCE>
+		<NUM_STATES>3</NUM_STATES>
+	</Parameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseInputEvent ID="INSTRUMENT">
+			<GET_STATE_EXTERNAL>(O:XMLVAR_INSTRUMENT_Tank_Selection_Source) sp0</GET_STATE_EXTERNAL>
+			<ENUM_VAL_TO_POS_EXTERNAL>l0</ENUM_VAL_TO_POS_EXTERNAL>
+			<SET_STATE_#POS_TEST#>#POS_TEST# (&gt;O:XMLVAR_INSTRUMENT_Tank_Selection_Source)</SET_STATE_#POS_TEST#>
+			<SET_STATE_#POS_MAIN#>#POS_MAIN# (&gt;O:XMLVAR_INSTRUMENT_Tank_Selection_Source)</SET_STATE_#POS_MAIN#>
+			<SET_STATE_#POS_AUX#>#POS_AUX# (&gt;O:XMLVAR_INSTRUMENT_Tank_Selection_Source)</SET_STATE_#POS_AUX#>
+			<STR_STATE_#POS_TEST#>Test</STR_STATE_#POS_TEST#>
+			<STR_STATE_#POS_MAIN#>Main</STR_STATE_#POS_MAIN#>
+			<STR_STATE_#POS_AUX#>Aux</STR_STATE_#POS_AUX#>
+			<TT_VALUE_#POS_TEST#>@TT_Package.GT_STATE_TEST</TT_VALUE_#POS_TEST#>
+			<TT_VALUE_#POS_MAIN#>@TT_Package.GT_STATE_MAIN</TT_VALUE_#POS_MAIN#>
+			<TT_VALUE_#POS_AUX#>@TT_Package.GT_STATE_AUX</TT_VALUE_#POS_AUX#>
+		</UseInputEvent>
 		<UseTemplate Name="ASOBO_GT_Switch_3States">
 			<MOMENTARY_SWITCH/>
 			<SWITCH_POSITION_TYPE_ISDOWN>L</SWITCH_POSITION_TYPE_ISDOWN>
 			<SWITCH_POSITION_VAR_ISDOWN>XMLVAR_TANK_QUANTITY_Test_IsHeld</SWITCH_POSITION_VAR_ISDOWN>
 			<STATE_MAX_TIMER>0</STATE_MAX_TIMER>
 			<STATE0_TIMER>0.1</STATE0_TIMER>
-			<WWISE_EVENT>fuel_select_tanksource_switch</WWISE_EVENT>
+			<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<CODE_POS_#POS_TEST#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Test)</CODE_POS_#POS_TEST#>
+			<CODE_POS_#POS_MAIN#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Main)</CODE_POS_#POS_MAIN#>
+			<CODE_POS_#POS_AUX#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Aux)</CODE_POS_#POS_AUX#>
+			<STATE#POS_TEST#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_TEST# ==</STATE#POS_TEST#_TEST>
+			<STATE#POS_MAIN#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_MAIN# ==</STATE#POS_MAIN#_TEST>
+			<STATE#POS_AUX#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_AUX# ==</STATE#POS_AUX#_TEST>
 		</UseTemplate>
 	</Component>
 </Template>
@@ -1393,12 +1508,22 @@ NO_CAGE: Remove the cage interaction & behaviour
 		</Component>
 		<Condition Check="ADF_KNOB">
 			<Component ID="#KNOB_NODE_ID#" Node="#KNOB_NODE_ID#">
+				<Parameters Type="Default">
+					<TOOLTIP_ADF_TITLE>@TT_Package.ADF_KNOB_COURSESELECTOR_TITLE</TOOLTIP_ADF_TITLE>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>#TOOLTIP_ADF_TITLE#</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>INSTRUMENT_ADF</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="INSTRUMENT">
+					<ADF_ID>1</ADF_ID>
+					<ON_AFTER_INC_EXTERNAL_CODE>(O:_KnobAnimVar) 10 + dnor (&gt;O:_KnobAnimVar)</ON_AFTER_INC_EXTERNAL_CODE>
+					<ON_AFTER_DEC_EXTERNAL_CODE>(O:_KnobAnimVar) 10 - dnor (&gt;O:_KnobAnimVar)</ON_AFTER_DEC_EXTERNAL_CODE>
+				</UseInputEvent>
 				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 					<ANIM_NAME>#KNOB_ANIM_NAME#</ANIM_NAME>
-					<HELPID>HELPID_GAUGE_VOR1_OBS </HELPID>
-					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.COURSE_SELECT (%((A:ADF CARD, Degrees))%!d!°) </TOOLTIPID> 
-					<CLOCKWISE_CODE>(&gt;K:ADF_CARD_INC)</CLOCKWISE_CODE>
-					<ANTICLOCKWISE_CODE>(&gt;K:ADF_CARD_DEC)</ANTICLOCKWISE_CODE>
+					<CLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_ADF_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_ADF_Dec)</ANTICLOCKWISE_CODE>
 					<Condition Check="HIGHLIGHT_NODE_ID">
 						<PART_ID/>
 					</Condition>
@@ -1480,10 +1605,26 @@ NO_CAGE: Remove the cage interaction & behaviour
 			</UseTemplate>
 			
 			<Component ID="#KNOB_NODE_ID#" Node="#KNOB_NODE_ID#">
+				<Parameters Type="Default">
+					<TOOLTIP_EGT_TITLE>@TT_Package.INSTRUMENT_KNOB_EGT_TITLE</TOOLTIP_EGT_TITLE>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>#TOOLTIP_EGT_TITLE#</TOOLTIP_TITLE>
+					<!-- <TOOLTIP_TITLE_IS_DYNAMIC>True</TOOLTIP_TITLE_IS_DYNAMIC> -->
+					<TOOLTIP_ENTRY_0>INSTRUMENT_EGT_Bug</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="INSTRUMENT">
+					<KNOB_ID>EGT_Bug</KNOB_ID>
+					<SET_STATE_EXTERNAL>100 / 32768 * (&gt;K:EGT1_SET)</SET_STATE_EXTERNAL>
+					<GET_STATE_EXTERNAL>(A:ENG EXHAUST GAS TEMPERATURE GES:1, percent)</GET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.INSTRUMENT_KNOB_EGT_ACTION</TT_DESCRIPTION_ID>
+					<MIN_VALUE>0</MIN_VALUE>
+					<MAX_VALUE>100</MAX_VALUE>
+				</UseInputEvent>
 				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
 					<ANIM_NAME>#KNOB_ANIM_NAME#</ANIM_NAME>
-					<CLOCKWISE_CODE>(&gt;K:EGT1_INC)</CLOCKWISE_CODE>
-					<ANTICLOCKWISE_CODE>(&gt;K:EGT1_DEC)</ANTICLOCKWISE_CODE>
+					<CLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_EGT_Bug_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:INSTRUMENT_EGT_Bug_Dec)</ANTICLOCKWISE_CODE>
 					<Condition Check="HIGHLIGHT_NODE_ID">
 						<PART_ID/>
 					</Condition>
@@ -1552,13 +1693,89 @@ NO_CAGE: Remove the cage interaction & behaviour
 	</UseTemplate>
 </Template>
 
+
+<Template Name="ASOBO_INSTRUMENT_Knob_BusSelector_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>INSTRUMENT_Knob_BusSelector</NODE_ID>
+		<PART_ID>INSTRUMENT_Knob_BusSelector</PART_ID>
+		<ANIM_NAME>INSTRUMENT_Knob_BusSelector</ANIM_NAME>
+		<BUS_COUNT>6</BUS_COUNT>
+		<ARROW_TYPE>Curved</ARROW_TYPE>
+		<UPARROW/>
+		<DOWNARROW/>
+		<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+		<LEFTARROW>TurnLeft</LEFTARROW>
+		<RIGHTARROW>TurnRight</RIGHTARROW>
+		<WWISE_EVENT>instrument_bus_selector_knob</WWISE_EVENT>			
+		<WWISE_EVENT_1>instrument_bus_selector_knob_on</WWISE_EVENT_1>	
+		<WWISE_EVENT_2>instrument_bus_selector_knob_off</WWISE_EVENT_2>
+		<POS_EXT_PWR>0</POS_EXT_PWR>
+		<POS_CTR>1</POS_CTR>
+		<POS_LGEN>2</POS_LGEN>
+		<POS_RGEN>3</POS_RGEN>
+		<POS_TPLFED>4</POS_TPLFED>
+		<POS_BAT>5</POS_BAT>
+		<TOOLTIP_TITLE>@TT_Package.INSTRUMENT_KNOB_BUSSELECTOR_TITLE</TOOLTIP_TITLE>
+		<TT_DESCRIPTION_ID>@TT_Package.INSTRUMENT_KNOB_BUSSELECTOR_ACTION_SET</TT_DESCRIPTION_ID>
+		<TT_ICON>ROTATE</TT_ICON>
+	</Parameters>
+	<Parameters Type="Override">
+		<BTN_ID>Bus_Selector</BTN_ID>
+		<ANIM>EXTERNAL</ANIM>
+		<NUM_STATES>#BUS_COUNT#</NUM_STATES>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseInputEvent ID="INSTRUMENT">
+			<GET_STATE_EXTERNAL>(O:XMLVAR_Bus_Selector) sp0</GET_STATE_EXTERNAL>
+			<ENUM_VAL_TO_POS_EXTERNAL>l0</ENUM_VAL_TO_POS_EXTERNAL>
+			<SET_STATE_#POS_EXT_PWR#>#POS_EXT_PWR# (&gt;O:XMLVAR_Bus_Selector)</SET_STATE_#POS_EXT_PWR#>
+			<SET_STATE_#POS_CTR#>#POS_CTR# (&gt;O:XMLVAR_Bus_Selector)</SET_STATE_#POS_CTR#>
+			<SET_STATE_#POS_LGEN#>#POS_LGEN# (&gt;O:XMLVAR_Bus_Selector)</SET_STATE_#POS_LGEN#>
+			<SET_STATE_#POS_RGEN#>#POS_RGEN# (&gt;O:XMLVAR_Bus_Selector)</SET_STATE_#POS_RGEN#>
+			<SET_STATE_#POS_TPLFED#>#POS_TPLFED# (&gt;O:XMLVAR_Bus_Selector)</SET_STATE_#POS_TPLFED#>
+			<SET_STATE_#POS_BAT#>#POS_BAT# (&gt;O:XMLVAR_Bus_Selector)</SET_STATE_#POS_BAT#>
+			<STR_STATE_#POS_EXT_PWR#>External_Power</STR_STATE_#POS_EXT_PWR#>
+			<STR_STATE_#POS_CTR#>Center</STR_STATE_#POS_CTR#>
+			<STR_STATE_#POS_LGEN#>Left_Gen</STR_STATE_#POS_LGEN#>
+			<STR_STATE_#POS_RGEN#>Right_Gen</STR_STATE_#POS_RGEN#>
+			<STR_STATE_#POS_TPLFED#>Triple_Fed</STR_STATE_#POS_TPLFED#>
+			<STR_STATE_#POS_BAT#>Battery</STR_STATE_#POS_BAT#>
+			<TT_VALUE_#POS_EXT_PWR#>@TT_Package.GT_STATE_EXTERNALPOWER</TT_VALUE_#POS_EXT_PWR#>
+			<TT_VALUE_#POS_CTR#>@TT_Package.GT_STATE_CENTER</TT_VALUE_#POS_CTR#>
+			<TT_VALUE_#POS_LGEN#>@TT_Left (R:1:@TT_Package.GT_STATE_GENERATOR) @sprintf</TT_VALUE_#POS_LGEN#>
+			<TT_VALUE_#POS_LGEN#_IS_DYNAMIC>True</TT_VALUE_#POS_LGEN#_IS_DYNAMIC>
+			<TT_VALUE_#POS_RGEN#>@TT_Right (R:1:@TT_Package.GT_STATE_GENERATOR) @sprintf</TT_VALUE_#POS_RGEN#>
+			<TT_VALUE_#POS_RGEN#_IS_DYNAMIC>True</TT_VALUE_#POS_RGEN#_IS_DYNAMIC>
+			<TT_VALUE_#POS_TPLFED#>@TT_Package.GT_STATE_TRIPLEFED</TT_VALUE_#POS_TPLFED#>
+			<TT_VALUE_#POS_BAT#>@TT_Package.GT_STATE_BATTERY</TT_VALUE_#POS_BAT#>
+		</UseInputEvent>
+		<UseTemplate Name="ASOBO_GT_Switch_XStates">
+			<TOOLTIP_ENTRY_0>INSTRUMENT_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<CODE_POS_#POS_EXT_PWR#>(&gt;B:INSTRUMENT_#BTN_ID#_External_Power)</CODE_POS_#POS_EXT_PWR#>
+			<CODE_POS_#POS_CTR#>(&gt;B:INSTRUMENT_#BTN_ID#_Center)</CODE_POS_#POS_CTR#>
+			<CODE_POS_#POS_LGEN#>(&gt;B:INSTRUMENT_#BTN_ID#_Left_Gen)</CODE_POS_#POS_LGEN#>
+			<CODE_POS_#POS_RGEN#>(&gt;B:INSTRUMENT_#BTN_ID#_Right_Gen)</CODE_POS_#POS_RGEN#>
+			<CODE_POS_#POS_TPLFED#>(&gt;B:INSTRUMENT_#BTN_ID#_Triple_Fed)</CODE_POS_#POS_TPLFED#>
+			<CODE_POS_#POS_BAT#>(&gt;B:INSTRUMENT_#BTN_ID#_Battery)</CODE_POS_#POS_BAT#>
+			<STATE#POS_EXT_PWR#_TEST>(B:INSTRUMENT_#BTN_ID#) #POS_EXT_PWR# ==</STATE#POS_EXT_PWR#_TEST>
+			<STATE#POS_CTR#_TEST>(B:INSTRUMENT_#BTN_ID#) #POS_CTR# ==</STATE#POS_CTR#_TEST>
+			<STATE#POS_LGEN#_TEST>(B:INSTRUMENT_#BTN_ID#) #POS_LGEN# ==</STATE#POS_LGEN#_TEST>
+			<STATE#POS_RGEN#_TEST>(B:INSTRUMENT_#BTN_ID#) #POS_RGEN# ==</STATE#POS_RGEN#_TEST>
+			<STATE#POS_TPLFED#_TEST>(B:INSTRUMENT_#BTN_ID#) #POS_TPLFED# ==</STATE#POS_TPLFED#_TEST>
+			<STATE#POS_BAT#_TEST>(B:INSTRUMENT_#BTN_ID#) #POS_BAT# ==</STATE#POS_BAT#_TEST>
+		</UseTemplate>
+	</Component>
+</Template>
+
 <Template Name="ASOBO_INSTRUMENT_Needle_MultiBus_Voltage_SubTemplate">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<NODE_ID>INSTRUMENT_Needle_MultiBus_Voltage_#ID#</NODE_ID>
 		<ANIM_NAME>INSTRUMENT_Needle_MultiBus_Voltage_#ID#</ANIM_NAME>
 		<PART_ID>INSTRUMENT_Needle_BusVoltage</PART_ID>
+		<MAX_VOLTAGE_DISPLAYED>30</MAX_VOLTAGE_DISPLAYED>
+		<MIN_VOLTAGE_DISPLAYED>10</MIN_VOLTAGE_DISPLAYED>
 		<BUS_COUNT>6</BUS_COUNT>
-		<BUS_ID_SELECTED>(I:XMLVAR_Selected_Bus)</BUS_ID_SELECTED>
+		<BUS_ID_SELECTED>(B:INSTRUMENT_Bus_Selector)</BUS_ID_SELECTED>
 		<SELECTION>
 			(A:ELECTRICAL MAIN BUS VOLTAGE:1, volt)
 			(A:ELECTRICAL MAIN BUS VOLTAGE:1, volt)
@@ -1569,7 +1786,10 @@ NO_CAGE: Remove the cage interaction & behaviour
 		</SELECTION>
 		<FAILURE>(A:CIRCUIT GENERAL PANEL ON, Bool)</FAILURE>
 		<FAILURE_CODE>0</FAILURE_CODE>
-	</DefaultTemplateParameters>
+	</Parameters>
+	<Parameters Type="Override">
+		<VOLTAGE_RANGE_DISPLAYED Process="Int">#MAX_VOLTAGE_DISPLAYED# #MIN_VOLTAGE_DISPLAYED# -</VOLTAGE_RANGE_DISPLAYED>
+	</Parameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
 		<UseTemplate Name="ASOBO_GT_Anim_Code">
 			<ANIM_CODE>
@@ -1701,6 +1921,9 @@ NO_CAGE: Remove the cage interaction & behaviour
 				<Condition Check="HIGHLIGHT_NODE_ID">
 					<PART_ID/>
 				</Condition>
+				<Condition Valid="BALL_PART_ID">
+					<PART_ID>#BALL_PART_ID#</PART_ID>
+				</Condition>
 			</UseTemplate>
 		</Component>
 		
@@ -1767,6 +1990,7 @@ NO_CAGE: Remove the cage interaction & behaviour
 
 		<Condition Check="HIGHLIGHT_NODE_ID">
 			<UseTemplate Name="ASOBO_GT_Highlight_Template">
+				<HIGHLIGHT_NODE_ID>Instrument_VerticalSpeed_Highlight</HIGHLIGHT_NODE_ID>
 			</UseTemplate>
 		</Condition>
 	</Component>
@@ -1781,6 +2005,10 @@ NO_CAGE: Remove the cage interaction & behaviour
 		<ANIM_NAME_DIM_MORE>INSTRUMENT_Push_RCA2610_DIM_More#SUFFIX_ID#</ANIM_NAME_DIM_MORE>
 		<NODE_ID_PITCH_SYNC>INSTRUMENT_Push_RCA2610_Pitch_Sync#SUFFIX_ID#</NODE_ID_PITCH_SYNC>
 		<PART_ID>INSTRUMENT_Push_RCA2610</PART_ID>
+		<WWISE_EVENT_1>RCA2610_push_button_on</WWISE_EVENT_1>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>		
+		<WWISE_EVENT_2>RCA2610_push_button_off</WWISE_EVENT_2>
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>	
 	</DefaultTemplateParameters>
 
 	<Component ID="INSTRUMENT_RCA2610#SUFFIX_ID#">

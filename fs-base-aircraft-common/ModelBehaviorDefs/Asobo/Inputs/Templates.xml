@@ -1,0 +1,551 @@
+<ModelBehaviors>
+	<!-- ################################################### -->
+	<!-- #### Templates simplifying setup of InputEvents ### -->
+	<!-- ################################################### -->
+	<!-- Required: -->
+	<!-- WWISE_PREFIX: for sound events (depending on INTERACTION_TYPE) -->
+	<!-- USE_INPUT_EVENT_ID: which InputEvent to use (useInputEvent ID) -->
+	<!-- INPUT_EVENT_ID_SOURCE: The prefix given to the InputEventPreset instance -->
+	<!-- IE_NAME: The suffix given to the InputEventPreset instance -->
+	<!-- INTERACTION_TYPE: One of the following - Push/Switch/Knob/Lever -->
+	<!-- ############ -->
+	<!-- Overridable: -->
+	<!-- > INTERACTION_TYPE:Knob -->
+	<!-- ## KNOB_TYPE: Unspecified:Float IE, X_STATES:Integer IE -->
+	<!-- ## IS_INFINITE: if true the knob can rotate indefinitely -->
+	<!-- > INTERACTION_TYPE:Lever -->
+	<!-- ## LEVER_TYPE: Unspecified:Float IE, 2_STATES:Integer IE -->
+	<!-- ############ -->
+	<!-- Optional: -->
+	<!-- IE_ID_EXTERNAL_X: (starting at 0) additional TOOLTIP_ENTRY_X for the same interaction (IE_NAMES without INPUT_EVENT_ID_SOURCE) -->
+	<Template Name="ASOBO_Interaction_Base_Template">
+		<Parameters Type="Default">
+			<WWISE_PREFIX/>
+			<IS_EMISSIVE>True</IS_EMISSIVE>
+			<USE_SEPARATE_ON_OFF_ANIM>False</USE_SEPARATE_ON_OFF_ANIM>
+			<CREATE_COMPONENT>True</CREATE_COMPONENT>
+			<IE_PRESET_ID>#INPUT_EVENT_ID_SOURCE#_#IE_NAME#</IE_PRESET_ID>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Push">
+					<EXTRA_OPTION/>
+					<NUM_STATES>2</NUM_STATES>
+				</Case>
+				<Case Value="Switch">
+					<NUM_STATES>2</NUM_STATES>
+				</Case>
+				<Case Value="Knob">
+					<IS_INFINITE>False</IS_INFINITE>
+					<Switch Param="KNOB_TYPE">
+						<Case Value="X_STATES">
+							<NUM_STATES>2</NUM_STATES>
+							<INTERACTION_AXIS>X</INTERACTION_AXIS>
+						</Case>
+					</Switch>
+				</Case>
+				<Case Value="Lever">
+					<INTERACTION_AXIS>Y</INTERACTION_AXIS>
+					<DRAG_VALUE_TO_EVENT_SET/>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Push">
+					<BTN_ID>#IE_NAME#</BTN_ID>
+				</Case>
+				<Case Value="Switch">
+					<BTN_ID>#IE_NAME#</BTN_ID>
+					<ANIM>EXTERNAL</ANIM>
+				</Case>
+				<Case Value="Knob">
+					<Switch Param="KNOB_TYPE">
+						<Case Value="X_STATES">
+							<BTN_ID>#IE_NAME#</BTN_ID>
+							<TT_ICON>ROTATE</TT_ICON>
+							<ANIM>EXTERNAL</ANIM>
+							<Switch Param="NUM_STATES">
+								<Case Value="2">
+									<TT_INTERACTION>PRIMARY_DOWN</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>LOCK</TT_INTERACTION_LOCKABLE>
+								</Case>
+								<Default>
+									<TT_INTERACTION>PRIMARY_DOWN+#INTERACTION_AXIS#_AXIS</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>#INTERACTION_AXIS#_AXIS</TT_INTERACTION_LOCKABLE>
+									<Switch Param="INTERACTION_AXIS">
+										<Case Value="X">
+											<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+										</Case>
+										<Case Value="Y">
+											<SWITCH_DIRECTION>Vertical</SWITCH_DIRECTION>
+										</Case>
+									</Switch>
+								</Default>
+							</Switch>
+						</Case>
+						<Default>
+							<KNOB_ID>#IE_NAME#</KNOB_ID>
+							<Condition Valid="IS_INFINITE">
+								<True>
+									<KNOB_INTERACTION_TYPE>Infinite</KNOB_INTERACTION_TYPE>
+								</True>
+								<False>
+									<Condition NotEmpty="TEMPLATE_VARIANT">
+										<True>
+											<KNOB_INTERACTION_TYPE>Finite</KNOB_INTERACTION_TYPE>	
+										</True>
+										<False>
+											<KNOB_INTERACTION_TYPE>Finite_Code</KNOB_INTERACTION_TYPE>											
+										</False>
+									</Condition>
+								</False>
+							</Condition>
+							<Condition>
+								<Test>
+									<And>
+										<Arg NotEmpty="IE_ID_EXTERNAL_0"/>
+										<Arg NotEmpty="IE_ID_EXTERNAL_1"/>
+									</And>
+								</Test>
+								<True>
+									<TEMPLATE_VARIANT>PushPull</TEMPLATE_VARIANT>
+									<IE_ID_EXTERNAL_0_BINDING_NAME>Push</IE_ID_EXTERNAL_0_BINDING_NAME>
+									<IE_ID_EXTERNAL_1_BINDING_NAME>Pull</IE_ID_EXTERNAL_1_BINDING_NAME>
+								</True>
+								<False>
+									<Condition NotEmpty="IE_ID_EXTERNAL_0">
+										<True>
+											<Condition Valid="IS_TIMED">
+												<True>
+													<TEMPLATE_VARIANT>Push_Timed</TEMPLATE_VARIANT>
+													<IE_ID_EXTERNAL_0_BINDING_NAME_RELEASE>Release</IE_ID_EXTERNAL_0_BINDING_NAME_RELEASE>
+												</True>
+												<False>
+													<TEMPLATE_VARIANT>Push</TEMPLATE_VARIANT>
+												</False>
+											</Condition>
+											<Condition Valid="IS_PULL">
+												<True>
+													<IE_ID_EXTERNAL_0_BINDING_NAME>Pull</IE_ID_EXTERNAL_0_BINDING_NAME>
+												</True>
+												<False>
+													<Switch Param="TEMPLATE_VARIANT">
+														<Case Value="Switch">
+															<IE_ID_EXTERNAL_0_BINDING_NAME>Toggle</IE_ID_EXTERNAL_0_BINDING_NAME>
+														</Case>
+														<Default>
+															<IE_ID_EXTERNAL_0_BINDING_NAME>Push</IE_ID_EXTERNAL_0_BINDING_NAME>															
+														</Default>
+													</Switch>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<TEMPLATE_VARIANT/>
+										</False>
+									</Condition>
+								</False>
+							</Condition>
+						</Default>
+					</Switch>
+				</Case>
+				<Case Value="Lever">
+					<Switch Param="LEVER_TYPE">
+						<Case Value="2_STATES">
+							<BTN_ID>#IE_NAME#</BTN_ID>
+							<TT_ICON>MOVE_AXIS_#INTERACTION_AXIS#</TT_ICON>
+							<TT_INTERACTION>PRIMARY_DOWN+#INTERACTION_AXIS#_AXIS</TT_INTERACTION>
+							<TT_INTERACTION_LOCKABLE>#INTERACTION_AXIS#_AXIS</TT_INTERACTION_LOCKABLE>
+							<ANIM>EXTERNAL</ANIM>
+							<NUM_STATES>2</NUM_STATES>
+							<ANIM_LAG>400</ANIM_LAG>
+							<DRAG_SCALAR>10</DRAG_SCALAR>
+							<ALWAYS_USE_ANIM_LAG>True</ALWAYS_USE_ANIM_LAG>
+						</Case>
+						<Default>
+							<LEVER_ID>#IE_NAME#</LEVER_ID>
+						</Default>
+					</Switch>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch>
+				<Case NotEmpty="BTN_ID">
+					<Switch Param="INTERACTION_TYPE">
+						<Case Value="Push">
+							<WWISE_EVENT_1>#WWISE_PREFIX#_push_button_on</WWISE_EVENT_1>
+							<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+							<WWISE_EVENT_2>#WWISE_PREFIX#_push_button_off</WWISE_EVENT_2>
+							<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+						</Case>
+						<Case Value="Lever">
+							<WWISE_EVENT_1>#WWISE_PREFIX#_lever_on</WWISE_EVENT_1>
+							<NORMALIZED_TIME_1>0.25</NORMALIZED_TIME_1>
+							<WWISE_EVENT_2>#WWISE_PREFIX#_lever_off</WWISE_EVENT_2>
+							<NORMALIZED_TIME_2>0.75</NORMALIZED_TIME_2>
+						</Case>
+						<Default>
+							<Switch Param="NUM_STATES">
+								<Case Value="2">
+									<WWISE_EVENT_1>#WWISE_PREFIX#_switch_on</WWISE_EVENT_1>
+									<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+									<WWISE_EVENT_2>#WWISE_PREFIX#_switch_off</WWISE_EVENT_2>
+									<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+								</Case>
+								<Default>
+									<Switch Param="INTERACTION_TYPE">
+										<Case Value="Knob">
+											<WWISE_EVENT>#WWISE_PREFIX#_knob</WWISE_EVENT>
+										</Case>
+										<Default>
+											<WWISE_EVENT>#WWISE_PREFIX#_switch</WWISE_EVENT>
+										</Default>
+									</Switch>
+									<MAX_POS Process="Int">#NUM_STATES# 1 -</MAX_POS>
+								</Default>
+							</Switch>
+						</Default>
+					</Switch>
+				</Case>
+				<Case NotEmpty="KNOB_ID">
+					<WWISE_EVENT>#WWISE_PREFIX#_knob</WWISE_EVENT>
+					<Switch>
+						<Case NotEmpty="TEMPLATE_VARIANT">
+							<WWISE_EVENT_1>#WWISE_PREFIX#_push_button_on</WWISE_EVENT_1>
+							<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+							<WWISE_EVENT_2>#WWISE_PREFIX#_push_button_off</WWISE_EVENT_2>
+							<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+						</Case>
+					</Switch>
+				</Case>
+				<Case NotEmpty="LEVER_ID">
+					<WWISE_EVENT>#WWISE_PREFIX#_lever</WWISE_EVENT>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Condition>
+				<Test>
+					<Or>
+						<Arg Valid="TOOLTIP_TITLE"/>
+						<Arg Valid="TOOLTIP_TITLE_ID"/>
+					</Or>
+				</Test>
+				<True>
+					<TOOLTIP_ENTRY_0>#IE_PRESET_ID#</TOOLTIP_ENTRY_0>
+					<Loop>
+						<Setup>
+							<Param>CUR_ID</Param>
+							<From>0</From>
+							<Inc>1</Inc>
+							<While>
+								<Arg NotEmpty="IE_ID_EXTERNAL_#CUR_ID#"/>
+							</While>
+						</Setup>
+						<Do>
+							<Parameters Type="Override">
+								<CUR_TT_ID Process="Int">#CUR_ID# 1 +</CUR_TT_ID>
+								<CUR_IE_ID_EXTERNAL Process="Param">IE_ID_EXTERNAL_#CUR_ID#</CUR_IE_ID_EXTERNAL>
+							</Parameters>
+							<TOOLTIP_ENTRY_#CUR_TT_ID#>#INPUT_EVENT_ID_SOURCE#_#CUR_IE_ID_EXTERNAL#</TOOLTIP_ENTRY_#CUR_TT_ID#>
+						</Do>
+					</Loop>
+				</True>
+			</Condition>
+			<Switch>
+				<Case NotEmpty="BTN_ID">
+					<Condition NotEmpty="GET_STATE_EXTERNAL">
+						<True>
+							<Switch Param="NUM_STATES">
+								<Case Value="2">
+									<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+									<Switch Param="INTERACTION_TYPE">
+										<Case Value="Push">
+											<Condition Valid="IS_AIRLINER">
+												<True>
+													<TEMPLATE_TO_USE>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_USE>
+												</True>
+												<False>
+													<TEMPLATE_TO_USE>ASOBO_GT_Push_Button#EXTRA_OPTION#</TEMPLATE_TO_USE>
+												</False>
+											</Condition>
+											<LEFT_SINGLE_CODE>(&gt;B:#IE_PRESET_ID#_Toggle)</LEFT_SINGLE_CODE>
+										</Case>
+										<Case Value="Lever">
+											<TEMPLATE_TO_USE>ASOBO_GT_Lever_DraggingYAxis_Code</TEMPLATE_TO_USE>
+											<ANIM_CODE>(B:#IE_PRESET_ID#, Bool) 100 *</ANIM_CODE>
+											<UP_CODE>1 (&gt;B:#IE_PRESET_ID#_Inc)</UP_CODE>
+											<DOWN_CODE>1 (&gt;B:#IE_PRESET_ID#_Dec)</DOWN_CODE>
+										</Case>
+										<Default>
+											<TEMPLATE_TO_USE>ASOBO_GT_Switch_Code</TEMPLATE_TO_USE>
+											<ANIM_CODE>(B:#IE_PRESET_ID#, Bool) 100 *</ANIM_CODE>
+											<LEFT_SINGLE_CODE>(&gt;B:#IE_PRESET_ID#_Toggle)</LEFT_SINGLE_CODE>
+										</Default>
+									</Switch>
+								</Case>
+								<Default>
+									<TEMPLATE_TO_USE>ASOBO_GT_Switch_XStates</TEMPLATE_TO_USE>
+									<Condition NotEmpty="ON_STATE_CHANGED_EXTERNAL_CODE">
+										<DISABLE_ON_STATE_CHANGED_EXTERNAL_CODE_IN_MR>True</DISABLE_ON_STATE_CHANGED_EXTERNAL_CODE_IN_MR>
+									</Condition>
+									<Loop>
+										<Setup>
+											<Param>CUR_ID</Param>
+											<From>0</From>
+											<Inc>1</Inc>
+											<To>#MAX_POS#</To>
+										</Setup>
+										<Do>
+											<Parameters Type="Override">
+												<ID_POS Process="Param">STR_STATE_#CUR_ID#</ID_POS>
+											</Parameters>
+											<Condition NotEmpty="TT_VALUE_#CUR_ID#">
+												<False>
+													<TT_VALUE_#CUR_ID#>@TT_OverrideMe_Value</TT_VALUE_#CUR_ID#>
+													<TT_VALUE_#CUR_ID#_IS_DYNAMIC>True</TT_VALUE_#CUR_ID#_IS_DYNAMIC>
+												</False>
+											</Condition>
+											<CODE_POS_#CUR_ID#>(&gt;B:#IE_PRESET_ID#_#ID_POS#)</CODE_POS_#CUR_ID#>
+											<STATE#CUR_ID#_TEST>(B:#IE_PRESET_ID#) #CUR_ID# ==</STATE#CUR_ID#_TEST>
+										</Do>
+									</Loop>
+								</Default>
+							</Switch>
+						</True>
+						<False>
+							<Condition Valid="IS_AIRLINER">
+								<True>
+									<TEMPLATE_TO_USE>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_USE>
+								</True>
+								<False>
+									<TEMPLATE_TO_USE>ASOBO_GT_Push_Button#EXTRA_OPTION#</TEMPLATE_TO_USE>
+								</False>
+							</Condition>
+							<LEFT_SINGLE_CODE>(&gt;B:#IE_PRESET_ID#_Push)</LEFT_SINGLE_CODE>
+							<BINDING_INC_0>Push</BINDING_INC_0>
+							<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+							<Condition NotEmpty="EVENT_ID">
+								<BINDING_INC_0_EVENT_ID>#EVENT_ID#</BINDING_INC_0_EVENT_ID>
+							</Condition>
+							<Switch Param="EXTRA_OPTION">
+								<Case Value="_Timed">
+									<BINDING_DEC_0>Release</BINDING_DEC_0>
+									<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+									<SHORT_CLICK_CODE>(&gt;B:#IE_PRESET_ID#_Release)</SHORT_CLICK_CODE>
+									<LONG_CLICK_CODE>(&gt;B:#IE_PRESET_ID#_Release)</LONG_CLICK_CODE>									
+								</Case>
+								<Case Value="_Held">
+									<BINDING_DEC_0>Release</BINDING_DEC_0>
+									<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+									<ANIM_HANDLED_SEPARATELY>True</ANIM_HANDLED_SEPARATELY>
+									<LEFT_LEAVE_CODE>(&gt;B:#IE_PRESET_ID#_Release)</LEFT_LEAVE_CODE>									
+								</Case>
+							</Switch>
+						</False>
+					</Condition>
+				</Case>
+				<Case NotEmpty="KNOB_ID">
+					<Condition NotEmpty="TEMPLATE_VARIANT">
+						<True>
+							<TEMPLATE_TO_USE>ASOBO_GT_Knob_#KNOB_INTERACTION_TYPE#_#TEMPLATE_VARIANT#</TEMPLATE_TO_USE>
+						</True>
+						<False>
+							<TEMPLATE_TO_USE>ASOBO_GT_Knob_#KNOB_INTERACTION_TYPE#</TEMPLATE_TO_USE>
+						</False>
+					</Condition>
+					<CLOCKWISE_CODE>1 (&gt;B:#IE_PRESET_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:#IE_PRESET_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<Switch Param="TEMPLATE_VARIANT">
+						<Case Value="Switch">
+							<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_ID_EXTERNAL_0#_#IE_ID_EXTERNAL_0_BINDING_NAME#)</LEFT_SINGLE_CODE>
+						</Case>
+						<Case Value="Push">
+							<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_ID_EXTERNAL_0#_#IE_ID_EXTERNAL_0_BINDING_NAME#)</LEFT_SINGLE_CODE>
+						</Case>
+						<Case Value="PushPull">
+							<PUSH_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_ID_EXTERNAL_0#_#IE_ID_EXTERNAL_0_BINDING_NAME#)</PUSH_CODE>
+							<PULL_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_ID_EXTERNAL_1#_#IE_ID_EXTERNAL_1_BINDING_NAME#)</PULL_CODE>
+						</Case>
+						<Case Value="Push_Timed">
+							<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_ID_EXTERNAL_0#_#IE_ID_EXTERNAL_0_BINDING_NAME#)</LEFT_SINGLE_CODE>
+							<LEFT_LEAVE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_ID_EXTERNAL_0#_#IE_ID_EXTERNAL_0_BINDING_NAME_RELEASE#)</LEFT_LEAVE_CODE>
+						</Case>
+					</Switch>
+					<ANIM_CODE>(B:#IE_PRESET_ID#, percent)</ANIM_CODE>
+				</Case>
+				<Case NotEmpty="LEVER_ID">
+					<TEMPLATE_TO_USE>ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis</TEMPLATE_TO_USE>
+					<CURSOR>Grab</CURSOR>
+					<NO_ARROWS/>
+					<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
+					<DRAG_CODE>(M:DragPercent) #DRAG_VALUE_TO_EVENT_SET# (&gt;B:#IE_PRESET_ID#_Set)</DRAG_CODE>
+					<POSITIVE_AXIS_CODE>1 (&gt;B:#IE_PRESET_ID#_Inc)</POSITIVE_AXIS_CODE>
+					<NEGATIVE_AXIS_CODE>1 (&gt;B:#IE_PRESET_ID#_Dec)</NEGATIVE_AXIS_CODE>
+					<ANIM_CODE>(B:#IE_PRESET_ID#, percent)</ANIM_CODE>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TEMPLATE_TO_USE">
+				<Case Value="ASOBO_GT_Push_Button_Airliner">
+					<CREATE_COMPONENT>Airliner</CREATE_COMPONENT>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Switch Param="CREATE_COMPONENT">
+			<Case Value="True">
+				<Component ID="#NODE_ID#" Node="#NODE_ID#">
+					<UseTemplate Name="ASOBO_Interaction_Base_SubTemplate"/>
+				</Component>
+			</Case>
+			<Case Value="Airliner">
+				<Component ID="#NODE_ID#_IE_Container">
+					<UseTemplate Name="ASOBO_Interaction_Base_SubTemplate">
+						<INPUT_EVENT_ID>#USE_INPUT_EVENT_ID#</INPUT_EVENT_ID>
+					</UseTemplate>
+				</Component>
+			</Case>
+			<Default>
+				<UseTemplate Name="ASOBO_Interaction_Base_SubTemplate"/>
+			</Default>
+		</Switch>
+	</Template>
+	<Template Name="ASOBO_Interaction_Base_SubTemplate">
+		<Parameters Type="Default">
+			<Condition>
+				<Test>
+					<And>
+						<Arg Valid="IS_EMISSIVE"/>
+						<Arg NotEmpty="EMISSIVE_CODE"/>
+					</And>
+				</Test>
+				<True>
+					<EMISSIVE_TEMPLATE_TO_USE>ASOBO_GT_Emissive_Gauge</EMISSIVE_TEMPLATE_TO_USE>
+				</True>
+			</Condition>
+		</Parameters>
+		<Condition NotEmpty="COMP_INIT_CODE">
+			<UseTemplate Name="ASOBO_GT_Update">
+				<UPDATE_ONCE>True</UPDATE_ONCE>
+				<UPDATE_CODE>#COMP_INIT_CODE#</UPDATE_CODE>
+			</UseTemplate>
+		</Condition>
+		<Condition NotEmpty="COMP_UPDATE_CODE">
+			<UseTemplate Name="ASOBO_GT_Update">
+				<UPDATE_CODE>#COMP_UPDATE_CODE#</UPDATE_CODE>
+			</UseTemplate>
+		</Condition>
+		<Condition Valid="INPUT_EVENT_ID">
+			<False>
+				<UseInputEvent ID="#USE_INPUT_EVENT_ID#"/>
+			</False>
+		</Condition>
+		<UseTemplate Name="#TEMPLATE_TO_USE#">
+			<Condition Valid="IS_INOP">
+				<TOOLTIP_TITLE/>
+				<TOOLTIP_TITLE_ID/>
+				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.INOP</TOOLTIPID>
+				<DISABLE_MOUSERECT>True</DISABLE_MOUSERECT>
+			</Condition>
+		</UseTemplate>
+		<Condition NotEmpty="EMISSIVE_TEMPLATE_TO_USE">
+			<UseTemplate Name="#EMISSIVE_TEMPLATE_TO_USE#"/>
+		</Condition>
+	</Template>
+	<Template Name="ASOBO_Interaction_Push_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Single_Event_Base_Template">
+			<EVENT_TYPE>Push</EVENT_TYPE>
+			<Condition Valid="IS_TIMED">
+				<Condition NotEmpty="ON_PUSH_EVENT_LONG">
+					<ON_EVENT_LONG>#ON_PUSH_EVENT_LONG#</ON_EVENT_LONG>
+				</Condition>
+			</Condition>
+			<Condition NotEmpty="ON_PUSH_EVENT">
+				<ON_EVENT>#ON_PUSH_EVENT#</ON_EVENT>
+			</Condition>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_Interaction_Pull_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Single_Event_Base_Template">
+			<EVENT_TYPE>Pull</EVENT_TYPE>
+			<Condition Valid="IS_TIMED">
+				<Condition NotEmpty="ON_PULL_EVENT_LONG">
+					<ON_EVENT_LONG>#ON_PULL_EVENT_LONG#</ON_EVENT_LONG>
+				</Condition>
+			</Condition>
+			<Condition NotEmpty="ON_PULL_EVENT">
+				<ON_EVENT>#ON_PULL_EVENT#</ON_EVENT>
+			</Condition>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_Interaction_Single_Event_Base_Template">
+		<Parameters Type="Default">
+			<EVENT_TYPE>Push</EVENT_TYPE>
+			<Condition Valid="IS_TIMED">
+				<LONG_CLICK_TIME>1</LONG_CLICK_TIME>
+				<RELEASE_EVENT>True</RELEASE_EVENT>
+				<ON_EVENT_LONG/>
+			</Condition>
+			<ON_EVENT/>
+			<Condition NotEmpty="IE_NAME">
+				<BTN_ID>#IE_NAME#</BTN_ID>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Default">
+			<Condition Valid="IS_TIMED">
+				<True>
+					<SET_ARG_COUNT>2</SET_ARG_COUNT>
+					<!-- p0: Press/Release, p1:PressDuration, 0 = infinite (if pressing) -->
+					<SET_STATE_EXTERNAL>p0 sp0
+						l0 0 == if{ (O:_PressTime) 0 &gt; if{ (E:SIMULATION TIME, second) (O:_PressTime) - #LONG_CLICK_TIME# &lt; if{ #ON_EVENT# 0 (&gt;O:_PressTime) } els{ #ON_EVENT_LONG# 0 (&gt;O:_PressTime) } } }
+						l0 1 == if{ (E:SIMULATION TIME, second) (&gt;O:_PressTime) p1 (&gt;O:_PressForDuration) }
+					</SET_STATE_EXTERNAL>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>if{ #ON_EVENT# }</SET_STATE_EXTERNAL>
+				</False>
+			</Condition>
+			<Switch Param="EVENT_TYPE">
+				<Case Value="Push">
+					<DEFAULT_BINDING_STR>Push</DEFAULT_BINDING_STR>
+					<Condition Valid="IS_TIMED">
+						<DEFAULT_BINDING_STR_LONG>Push_Long</DEFAULT_BINDING_STR_LONG>
+					</Condition>
+					<TT_INTERACTION>PRIMARY_DOWN+SECONDARY_DOWN</TT_INTERACTION>
+					<TT_INTERACTION_LOCKABLE>PRIMARY_DOWN</TT_INTERACTION_LOCKABLE>
+					<ANIM_VAR>_PushAnimVar</ANIM_VAR>
+					<TT_ICON>Push</TT_ICON>
+				</Case>
+				<Case Value="Pull">
+					<DEFAULT_BINDING_STR>Pull</DEFAULT_BINDING_STR>
+					<Condition Valid="IS_TIMED">
+						<DEFAULT_BINDING_STR_LONG>Pull_Long</DEFAULT_BINDING_STR_LONG>
+					</Condition>
+					<TT_INTERACTION>PRIMARY_DOWN+TERTIARY_DOWN</TT_INTERACTION>
+					<TT_INTERACTION_LOCKABLE>SECONDARY_DOWN</TT_INTERACTION_LOCKABLE>
+					<ANIM_VAR>_PullAnimVar</ANIM_VAR>
+					<TT_ICON>Pull</TT_ICON>
+				</Case>
+			</Switch>
+			<ANIM>HOLD</ANIM>
+			<Condition Valid="RELEASE_EVENT">
+				<DEFAULT_BINDING_STR_RELEASE>Release</DEFAULT_BINDING_STR_RELEASE>
+				<ANIM>EXTERNAL</ANIM>
+			</Condition>
+		</Parameters>
+		<UseInputEvent ID="#USE_INPUT_EVENT_ID#">
+			<BINDING_INC_0>#DEFAULT_BINDING_STR#</BINDING_INC_0>
+			<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+			<Condition Valid="IS_TIMED">
+				<BINDING_SET_0>#DEFAULT_BINDING_STR_LONG#</BINDING_SET_0>
+				<BINDING_SET_0_PARAM_0>1</BINDING_SET_0_PARAM_0>
+				<BINDING_SET_0_PARAM_1>#LONG_CLICK_TIME#</BINDING_SET_0_PARAM_1>
+			</Condition>
+			<Condition Valid="RELEASE_EVENT">
+				<BINDING_DEC_0>#DEFAULT_BINDING_STR_RELEASE#</BINDING_DEC_0>
+				<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+			</Condition>
+		</UseInputEvent>
+	</Template>
+</ModelBehaviors>

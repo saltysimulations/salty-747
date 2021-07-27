@@ -1,0 +1,19 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+	<InputEvent ID="NAVCOM">
+		<Presets>
+			<Extend Target="ASOBO_GIE_Anim_Handling">
+				<Parameters Type="Default">
+					<Switch>
+						<Case Valid="IS_AUDIO">
+							<INPUT_EVENT_ID_SOURCE>NAVCOM_AUDIO</INPUT_EVENT_ID_SOURCE>
+						</Case>
+						<Default>
+							<INPUT_EVENT_ID_SOURCE>NAVCOM</INPUT_EVENT_ID_SOURCE>
+						</Default>
+					</Switch>
+				</Parameters>
+			</Extend>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

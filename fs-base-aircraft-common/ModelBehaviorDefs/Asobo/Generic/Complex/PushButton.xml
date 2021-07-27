@@ -111,7 +111,7 @@
 </Template>
 
 <Template Name = "ASOBO_GT_Push_Button_Airliner_SubTemplate">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<Condition Check="POTENTIOMETER">
 			<True>
 				<POTENTIOMETER_SEQ1>#POTENTIOMETER#</POTENTIOMETER_SEQ1>
@@ -134,10 +134,6 @@
 		<Condition Check="ONLY_SEQ2">
 			<NO_SEQ1/>
 		</Condition>
-		<Condition Check="COVER_NODE_ID">
-			<OPENEDGUARD_TOOLTIP>TT:COCKPIT.TOOLTIPS.GENERIC_BUTTON_GUARD_OFF</OPENEDGUARD_TOOLTIP>
-			<CLOSEDGUARD_TOOLTIP>TT:COCKPIT.TOOLTIPS.GENERIC_BUTTON_GUARD_ON</CLOSEDGUARD_TOOLTIP>
-		</Condition>
 		<SEQ1_EMISSIVE_DRIVES_VISIBILITY>True</SEQ1_EMISSIVE_DRIVES_VISIBILITY>
 		<SEQ2_EMISSIVE_DRIVES_VISIBILITY>True</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
 		<SEQ1_CODE_DRIVES_VISIBILITY>False</SEQ1_CODE_DRIVES_VISIBILITY>
@@ -153,14 +149,40 @@
 			</False>
 		</Condition>
 		<IS_SWITCH>False</IS_SWITCH>
-	</DefaultTemplateParameters>
-	<EditableTemplateParameters>
-		<AddParams>
-			<SEQ1_NODE_ID></SEQ1_NODE_ID>
-			<SEQ2_NODE_ID></SEQ2_NODE_ID>
-		</AddParams>
-	</EditableTemplateParameters>
-	<OverrideTemplateParameters>
+	</Parameters>
+	<Parameters Type="Default">
+		<Condition Check="COVER_NODE_ID">
+			<COVER_INIT_VALUE>0</COVER_INIT_VALUE>
+			<COVER_IE_NAME>#NODE_ID#_Cover</COVER_IE_NAME>
+			<Condition NotEmpty="INPUT_EVENT_ID">
+				<True>
+					<COVER_IE_ID_SOURCE>#INPUT_EVENT_ID#</COVER_IE_ID_SOURCE>
+				</True>
+				<False>
+					<COVER_IE_ID_SOURCE>COMMON</COVER_IE_ID_SOURCE>					
+				</False>
+			</Condition>
+			<COVER_USE_INPUT_EVENT>COMMON</COVER_USE_INPUT_EVENT>
+			<COVER_INVERT_SWITCH_ON_CONDITION>False</COVER_INVERT_SWITCH_ON_CONDITION>
+			<COVER_INVERT_WHEEL_INTERACTION>False</COVER_INVERT_WHEEL_INTERACTION>
+			<TT_DESCRIPTION_ID_COVER>@TT_Package.COMMON_COVER_ACTION</TT_DESCRIPTION_ID_COVER>
+			<TOOLTIP_TITLE_COVER>@TT_Package.COMMON_COVER_TITLE</TOOLTIP_TITLE_COVER>
+			<ON_COVER_OPENED/>
+			<ON_COVER_CLOSED/>
+			<TT_ICON_COVER>MOVE_Y</TT_ICON_COVER>
+			<NO_INTERACTION_WHEN_COVERED>True</NO_INTERACTION_WHEN_COVERED>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Default">
+		<Condition Check="COVER_NODE_ID">
+			<IS_COVER_OPENED>(B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#, Bool)</IS_COVER_OPENED>
+			<COVER_VAR_NAME>#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#_Position</COVER_VAR_NAME>
+			<COVER_VAR_TYPE>O</COVER_VAR_TYPE>
+			<WWISE_COVER_EVENT_OPEN>cover_open</WWISE_COVER_EVENT_OPEN>
+			<WWISE_COVER_EVENT_CLOSE>cover_close</WWISE_COVER_EVENT_CLOSE>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Override">
 		<Condition Check="DOWN_STATE_CODE">
 			<False>
 				<Condition Valid="SEQ1_CODE_DRIVES_DOWN_STATE">
@@ -175,40 +197,37 @@
 				</Condition>
 			</False>
 		</Condition>
-	</OverrideTemplateParameters>
+	</Parameters>
+	<EditableTemplateParameters>
+		<AddParams>
+			<SEQ1_NODE_ID></SEQ1_NODE_ID>
+			<SEQ2_NODE_ID></SEQ2_NODE_ID>
+		</AddParams>
+	</EditableTemplateParameters>
 
 	<Condition Check="DUMMY_BUTTON">
 		<False>
-			<Condition Check="COVER_NODE_ID">
-				<True>
-					<Component ID="#COVER_NODE_ID#" Node="#COVER_NODE_ID#">
-						<UseTemplate Name = "ASOBO_GT_Switch_Code">
-							<Condition Valid="COVER_INVERT_WHEEL_INTERACTION">
-								<INVERT_WHEEL_INTERACTION>#COVER_INVERT_WHEEL_INTERACTION#</INVERT_WHEEL_INTERACTION>
-							</Condition>
-							<Condition Valid="COVER_INVERT_SWITCH_ON_CONDITION">
-								<INVERT_SWITCH_ON_CONDITION>#COVER_INVERT_SWITCH_ON_CONDITION#</INVERT_SWITCH_ON_CONDITION>
-							</Condition>
-							<LEFT_SINGLE_CODE>(I:XMLVAR_#COVER_NODE_ID#_Up) ! (&gt;I:XMLVAR_#COVER_NODE_ID#_Up)</LEFT_SINGLE_CODE>
-							<ANIM_CODE>(I:XMLVAR_#COVER_NODE_ID#_Up) 100 *</ANIM_CODE>
-							<ANIM_NAME>#COVER_ANIM_NAME#</ANIM_NAME>
-							<ANIMTIP_0>#CLOSEDGUARD_TOOLTIP#</ANIMTIP_0>
-							<ANIMTIP_1>#OPENEDGUARD_TOOLTIP#</ANIMTIP_1>
-							<WWISE_EVENT_1>cover_open</WWISE_EVENT_1>
-							<WWISE_EVENT_2>cover_close</WWISE_EVENT_2>
-						</UseTemplate>
-					</Component>
-				</True>
-			</Condition>
-			
 			<Component ID="#NODE_ID#" Node="#NODE_ID#">
-				<OverrideTemplateParameters>
+				<Parameters Type="Default">
+					<Switch>
+						<Case Valid="HAS_LONG_PRESS">
+							<PUSH_TEMPLATE_TO_USE>ASOBO_GT_Push_Button_Timed</PUSH_TEMPLATE_TO_USE>
+						</Case>
+						<Default>
+							<PUSH_TEMPLATE_TO_USE>ASOBO_GT_Push_Button</PUSH_TEMPLATE_TO_USE>
+						</Default>
+					</Switch>
+				</Parameters>
+				<Parameters Type="Override">
 					<Condition Check="COVER_NODE_ID">
 						<True>
-							<LEFT_SINGLE_CODE>(I:XMLVAR_#COVER_NODE_ID#_Up) if{ #LEFT_SINGLE_CODE# }</LEFT_SINGLE_CODE>
+							<LEFT_SINGLE_CODE>(B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#, Bool) if{ #LEFT_SINGLE_CODE# }</LEFT_SINGLE_CODE>
 						</True>
 					</Condition>
-				</OverrideTemplateParameters>
+				</Parameters>
+				<Condition Check="INPUT_EVENT_ID">
+					<UseInputEvent ID="#INPUT_EVENT_ID#"/>					
+				</Condition>
 				<Condition Check="DOWN_STATE_CODE">
 					<True>
 						<UseTemplate Name = "ASOBO_GT_Switch_Code">
@@ -216,19 +235,76 @@
 						</UseTemplate>
 					</True>
 					<False>
-						<Condition Valid="HAS_LONG_PRESS">
-							<True>
-								<UseTemplate Name = "ASOBO_GT_Push_Button_Timed">
-								</UseTemplate>
-							</True>
-							<False>
-						<UseTemplate Name = "ASOBO_GT_Push_Button">
-						</UseTemplate>
-					</False>
-				</Condition>
+						<UseTemplate Name="#PUSH_TEMPLATE_TO_USE#"/>
 					</False>
 				</Condition>
 			</Component>
+			
+			<Condition Check="COVER_NODE_ID">
+				<True>
+					<Component ID="#COVER_NODE_ID#" Node="#COVER_NODE_ID#">
+						<Parameters Type="Override">
+							<Condition NotEmpty="INVERT_COVER_ANIM">
+								<INVERT_ANIM>#INVERT_COVER_ANIM#</INVERT_ANIM>
+							</Condition>
+							<INVERT_SWITCH_ON_CONDITION>#COVER_INVERT_SWITCH_ON_CONDITION#</INVERT_SWITCH_ON_CONDITION>
+							<INVERT_WHEEL_INTERACTION>#COVER_INVERT_WHEEL_INTERACTION#</INVERT_WHEEL_INTERACTION>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Condition NotEmpty="OPEN_COVER_CONDITION">
+							<UseTemplate Name="ASOBO_GT_Update">
+								<FREQUENCY>5</FREQUENCY>
+								<UPDATE_CODE>#OPEN_COVER_CONDITION# != if{ (&gt;B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#_Open) }</UPDATE_CODE>
+							</UseTemplate>
+						</Condition>
+						<UseTemplate Name="ASOBO_GT_Update">
+							<UPDATE_ONCE>True</UPDATE_ONCE>
+							<UPDATE_CODE>#COVER_INIT_VALUE# (&gt;B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#_Set)</UPDATE_CODE>
+						</UseTemplate>
+						<UseInputEvent ID="#COVER_USE_INPUT_EVENT#">
+							<BTN_ID>#COVER_IE_NAME#</BTN_ID>
+							<INPUT_EVENT_ID_SOURCE>#COVER_IE_ID_SOURCE#</INPUT_EVENT_ID_SOURCE>
+							<TT_ICON>#TT_ICON_COVER#</TT_ICON>
+							<Condition Check="NUM_STATES" Match="3">
+								<True>
+									<SET_STATE_1>1 (&gt;#COVER_VAR_TYPE#:#COVER_VAR_NAME#) #ON_COVER_OPENED#</SET_STATE_1>
+									<SET_STATE_0>0 (&gt;#COVER_VAR_TYPE#:#COVER_VAR_NAME#) #ON_COVER_CLOSED#</SET_STATE_0>
+									<SET_STATE_2/>
+								</True>
+								<False>
+									<SET_STATE_ON>1 (&gt;#COVER_VAR_TYPE#:#COVER_VAR_NAME#) #ON_COVER_OPENED#</SET_STATE_ON>
+									<SET_STATE_OFF>0 (&gt;#COVER_VAR_TYPE#:#COVER_VAR_NAME#) #ON_COVER_CLOSED#</SET_STATE_OFF>
+								</False>
+							</Condition>
+							<ON_BEFORE_INC_CODE/>
+							<ON_BEFORE_DEC_CODE/>
+							<ON_BEFORE_SET_CODE/>
+							<ON_AFTER_INC_CODE/>
+							<ON_AFTER_DEC_CODE/>
+							<ON_AFTER_SET_CODE/>
+							<GET_STATE_EXTERNAL>(#COVER_VAR_TYPE#:#COVER_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+							<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+							<TT_DESCRIPTION_ID>#TT_DESCRIPTION_ID_COVER#</TT_DESCRIPTION_ID>
+							<STR_STATE_OFF>Close</STR_STATE_OFF>
+							<STR_STATE_ON>Open</STR_STATE_ON>
+							<TT_VALUE_OFF>@TT_Closed</TT_VALUE_OFF>
+							<TT_VALUE_ON>@TT_Open</TT_VALUE_ON>
+							<NUM_STATES>2</NUM_STATES>
+							<SIMVAR_TO_WATCH_0/>
+							<LOCAL_VAR_TO_WATCH_0/>
+						</UseInputEvent>
+						<UseTemplate Name="ASOBO_GT_Switch_Code">
+							<TOOLTIP_TITLE>#TOOLTIP_TITLE_COVER#</TOOLTIP_TITLE>
+							<TOOLTIP_ENTRY_0>#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#</TOOLTIP_ENTRY_0>
+							<ANIM_NAME>#COVER_ANIM_NAME#</ANIM_NAME>
+							<ANIM_CODE>#IS_COVER_OPENED# 100 *</ANIM_CODE>
+							<LEFT_SINGLE_CODE>(&gt;B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#_Toggle)</LEFT_SINGLE_CODE>
+							<WWISE_EVENT_1>#WWISE_COVER_EVENT_OPEN#</WWISE_EVENT_1>
+							<WWISE_EVENT_2>#WWISE_COVER_EVENT_CLOSE#</WWISE_EVENT_2>
+						</UseTemplate>
+					</Component>
+				</True>
+			</Condition>
 		</False>
 		<True>
 			<Condition Valid="IS_INOP">
@@ -410,81 +486,121 @@
 		<MIN_HELD_DURATION>0.0</MIN_HELD_DURATION>
 	</DefaultTemplateParameters>
 	<OverrideTemplateParameters>
-		<Condition>
-			<Test>
-				<Greater>
-					<Value>MIN_HELD_DURATION</Value>
-					<Number>0.0</Number>
-				</Greater>
-			</Test>
+		<Condition Valid="ANIM_HANDLED_SEPARATELY">
 			<True>
-				<MOMENTARY_CONDITION>
-					(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_MinReleaseTime)  (E:SIMULATION TIME, seconds) &gt;
-				</MOMENTARY_CONDITION>
-				<UPDATE_RELEASE_CODE>
-					(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_LeftLeaveToRun) if{
-						#LEFT_LEAVE_CODE# 
-						0 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_LeftLeaveToRun) 
-					}
-				</UPDATE_RELEASE_CODE>
-				<LEFT_LEAVE_CODE_MOMENTARY>
-					(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_MinReleaseTime)  (E:SIMULATION TIME, seconds) &lt; if{
-						#LEFT_LEAVE_CODE# 
-					} els{
-						1 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_LeftLeaveToRun)
-					}
-				</LEFT_LEAVE_CODE_MOMENTARY>
+				<Condition>
+					<Test>
+						<Greater>
+							<Value>MIN_HELD_DURATION</Value>
+							<Number>0.0</Number>
+						</Greater>
+					</Test>
+					<True>
+						<USE_MIN_HELD_DURATION>True</USE_MIN_HELD_DURATION>
+						<LEFT_SINGLE_CODE>1 (&gt;O:_Is_Held) #LEFT_SINGLE_CODE# (E:ABSOLUTE TIME, second) #MIN_HELD_DURATION# + (&gt;O:_DelayedReleaseTime)</LEFT_SINGLE_CODE>
+						<LEFT_LEAVE_CODE>0 (&gt;O:_Is_Held) (E:ABSOLUTE TIME, second) (O:_DelayedReleaseTime) &gt; if{ #LEFT_LEAVE_CODE# }</LEFT_LEAVE_CODE>
+						<LEFT_LEAVE_CODE_DELAYED>#LEFT_LEAVE_CODE#</LEFT_LEAVE_CODE_DELAYED>
+					</True>
+				</Condition>
 			</True>
 			<False>
-				<MOMENTARY_CONDITION>0</MOMENTARY_CONDITION>
-				<UPDATE_RELEASE_CODE></UPDATE_RELEASE_CODE>
-				<LEFT_LEAVE_CODE_MOMENTARY>
-					#LEFT_LEAVE_CODE# 
-				</LEFT_LEAVE_CODE_MOMENTARY>
+				<Condition>
+					<Test>
+						<Greater>
+							<Value>MIN_HELD_DURATION</Value>
+							<Number>0.0</Number>
+						</Greater>
+					</Test>
+					<True>
+						<MOMENTARY_CONDITION>
+							(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_MinReleaseTime)  (E:SIMULATION TIME, seconds) &gt;
+						</MOMENTARY_CONDITION>
+						<UPDATE_RELEASE_CODE>
+							(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_LeftLeaveToRun) if{
+								#LEFT_LEAVE_CODE# 
+								0 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_LeftLeaveToRun) 
+							}
+						</UPDATE_RELEASE_CODE>
+						<LEFT_LEAVE_CODE_MOMENTARY>
+							(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_MinReleaseTime)  (E:SIMULATION TIME, seconds) &lt; if{
+								#LEFT_LEAVE_CODE# 
+							} els{
+								1 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_LeftLeaveToRun)
+							}
+						</LEFT_LEAVE_CODE_MOMENTARY>
+					</True>
+					<False>
+						<MOMENTARY_CONDITION>0</MOMENTARY_CONDITION>
+						<UPDATE_RELEASE_CODE></UPDATE_RELEASE_CODE>
+						<LEFT_LEAVE_CODE_MOMENTARY>
+							#LEFT_LEAVE_CODE# 
+						</LEFT_LEAVE_CODE_MOMENTARY>
+					</False>
+				</Condition>
 			</False>
 		</Condition>
 	</OverrideTemplateParameters>
 
-
-	<Update Frequency = "10">
-		(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0 &gt; (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) 0 &gt; or if{
-			(O:AnimGoingForward) #MOMENTARY_CONDITION# or if{
-				(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0.1 #ANIM_DURATION# / + 1 min (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
-				(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 1 == if{
-					0 (&gt;O:AnimGoingForward)
-		}
-		} els{
-				#UPDATE_RELEASE_CODE#
-				(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0.1 #ANIM_DURATION# / - (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) max (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
-			}
-		}
-	</Update>
+	<Condition Valid="ANIM_HANDLED_SEPARATELY">
+		<True>
+			<Condition Valid="USE_MIN_HELD_DURATION">
+				<UseTemplate Name="ASOBO_GT_Update">
+					<UPDATE_CODE>
+						(O:_DelayedReleaseTime) 0 &gt; if{
+							(E:ABSOLUTE TIME, second) (O:_DelayedReleaseTime) &gt; if{ (O:_Is_Held) ! if{ #LEFT_LEAVE_CODE_DELAYED# } 0 (&gt;O:_DelayedReleaseTime) }
+						}
+					</UPDATE_CODE>
+					<FREQUENCY>5</FREQUENCY>
+				</UseTemplate>
+			</Condition>
+		</True>
+		<False>
+			<Update Frequency = "10">
+				(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0 &gt; (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) 0 &gt; or if{
+					(O:AnimGoingForward) #MOMENTARY_CONDITION# or if{
+						(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0.1 #ANIM_DURATION# / + 1 min (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
+						(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 1 == if{
+							0 (&gt;O:AnimGoingForward)
+				}
+				} els{
+						#UPDATE_RELEASE_CODE#
+						(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0.1 #ANIM_DURATION# / - (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) max (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
+					}
+				}
+			</Update>
+			<UseTemplate Name = "ASOBO_GT_Anim_Code">
+				<Condition Check="OVERRIDE_ANIM_CODE">
+					<True>
+						<ANIM_CODE>#OVERRIDE_ANIM_CODE#</ANIM_CODE>
+					</True>
+					<False>
+						<ANIM_CODE>#ANIM_LENGTH# (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) *</ANIM_CODE>
+					</False>
+				</Condition>
+			</UseTemplate>
+		</False>
+		
+	</Condition>
 	
-	<UseTemplate Name = "ASOBO_GT_Anim_Code">
-		<Condition Check="OVERRIDE_ANIM_CODE">
-			<True>
-				<ANIM_CODE>#OVERRIDE_ANIM_CODE#</ANIM_CODE>
-			</True>
-			<False>
-				<ANIM_CODE>#ANIM_LENGTH# (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) *</ANIM_CODE>
-			</False>
-		</Condition>
-	</UseTemplate>
 
 	<UseTemplate Name = "ASOBO_GT_AnimTriggers_2SoundEvents">
 	</UseTemplate>
 
 	<UseTemplate Name = "ASOBO_GT_Interaction_LeftSingle_Leave_Code">
-		<LEFT_SINGLE_CODE>
-			1 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) 
-			(E:SIMULATION TIME, seconds) #MIN_HELD_DURATION# + (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_MinReleaseTime)
-			1 (&gt;O:AnimGoingForward) 
-			#LEFT_SINGLE_CODE#
-		</LEFT_SINGLE_CODE>
-		<LEFT_LEAVE_CODE>
-			0 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) 
-			#LEFT_LEAVE_CODE_MOMENTARY#
-		</LEFT_LEAVE_CODE>
+		<Condition Valid="ANIM_HANDLED_SEPARATELY">
+			<False>
+				<LEFT_SINGLE_CODE>
+					1 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) 
+					(E:SIMULATION TIME, seconds) #MIN_HELD_DURATION# + (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_MinReleaseTime)
+					1 (&gt;O:AnimGoingForward) 
+					#LEFT_SINGLE_CODE#
+				</LEFT_SINGLE_CODE>
+				<LEFT_LEAVE_CODE>
+					0 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown) 
+					#LEFT_LEAVE_CODE_MOMENTARY#
+				</LEFT_LEAVE_CODE>
+			</False>
+		</Condition>
 	</UseTemplate>
 
 	<Condition NotEmpty="EMISSIVE_CODE">

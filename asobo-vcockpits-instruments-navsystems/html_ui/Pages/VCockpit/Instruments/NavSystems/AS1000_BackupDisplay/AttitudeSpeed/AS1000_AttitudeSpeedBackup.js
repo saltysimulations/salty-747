@@ -27,35 +27,35 @@ class ASBackup_Airspeed extends NavSystemElement {
     }
     init(root) {
         this.airspeedElement = this.gps.getChildById("SvgMain");
-        this.airspeedElement.setAttribute("is-backup", "true");
+        diffAndSetAttribute(this.airspeedElement, "is-backup", "true");
         var cockpitSettings = SimVar.GetGameVarValue("", "GlassCockpitSettings");
         if (cockpitSettings && cockpitSettings.AirSpeed.Initialized) {
-            this.airspeedElement.setAttribute("min-speed", cockpitSettings.AirSpeed.lowLimit.toString());
-            this.airspeedElement.setAttribute("green-begin", cockpitSettings.AirSpeed.greenStart.toString());
-            this.airspeedElement.setAttribute("green-end", cockpitSettings.AirSpeed.greenEnd.toString());
-            this.airspeedElement.setAttribute("flaps-begin", cockpitSettings.AirSpeed.whiteStart.toString());
-            this.airspeedElement.setAttribute("flaps-end", cockpitSettings.AirSpeed.whiteEnd.toString());
-            this.airspeedElement.setAttribute("yellow-begin", cockpitSettings.AirSpeed.yellowStart.toString());
-            this.airspeedElement.setAttribute("yellow-end", cockpitSettings.AirSpeed.yellowEnd.toString());
-            this.airspeedElement.setAttribute("red-begin", cockpitSettings.AirSpeed.redStart.toString());
-            this.airspeedElement.setAttribute("red-end", cockpitSettings.AirSpeed.redEnd.toString());
-            this.airspeedElement.setAttribute("max-speed", cockpitSettings.AirSpeed.highLimit.toString());
+            diffAndSetAttribute(this.airspeedElement, "min-speed", cockpitSettings.AirSpeed.lowLimit + '');
+            diffAndSetAttribute(this.airspeedElement, "green-begin", cockpitSettings.AirSpeed.greenStart + '');
+            diffAndSetAttribute(this.airspeedElement, "green-end", cockpitSettings.AirSpeed.greenEnd + '');
+            diffAndSetAttribute(this.airspeedElement, "flaps-begin", cockpitSettings.AirSpeed.whiteStart + '');
+            diffAndSetAttribute(this.airspeedElement, "flaps-end", cockpitSettings.AirSpeed.whiteEnd + '');
+            diffAndSetAttribute(this.airspeedElement, "yellow-begin", cockpitSettings.AirSpeed.yellowStart + '');
+            diffAndSetAttribute(this.airspeedElement, "yellow-end", cockpitSettings.AirSpeed.yellowEnd + '');
+            diffAndSetAttribute(this.airspeedElement, "red-begin", cockpitSettings.AirSpeed.redStart + '');
+            diffAndSetAttribute(this.airspeedElement, "red-end", cockpitSettings.AirSpeed.redEnd + '');
+            diffAndSetAttribute(this.airspeedElement, "max-speed", cockpitSettings.AirSpeed.highLimit + '');
         }
         else {
             var designSpeeds = Simplane.getDesignSpeeds();
-            this.airspeedElement.setAttribute("green-begin", designSpeeds.VS1.toString());
-            this.airspeedElement.setAttribute("green-end", designSpeeds.VNo.toString());
-            this.airspeedElement.setAttribute("flaps-begin", designSpeeds.VS0.toString());
-            this.airspeedElement.setAttribute("flaps-end", designSpeeds.VFe.toString());
-            this.airspeedElement.setAttribute("yellow-begin", designSpeeds.VNo.toString());
-            this.airspeedElement.setAttribute("yellow-end", designSpeeds.VNe.toString());
-            this.airspeedElement.setAttribute("red-begin", designSpeeds.VNe.toString());
-            this.airspeedElement.setAttribute("red-end", designSpeeds.VMax.toString());
-            this.airspeedElement.setAttribute("max-speed", designSpeeds.VNe.toString());
+            diffAndSetAttribute(this.airspeedElement, "green-begin", designSpeeds.VS1 + '');
+            diffAndSetAttribute(this.airspeedElement, "green-end", designSpeeds.VNo + '');
+            diffAndSetAttribute(this.airspeedElement, "flaps-begin", designSpeeds.VS0 + '');
+            diffAndSetAttribute(this.airspeedElement, "flaps-end", designSpeeds.VFe + '');
+            diffAndSetAttribute(this.airspeedElement, "yellow-begin", designSpeeds.VNo + '');
+            diffAndSetAttribute(this.airspeedElement, "yellow-end", designSpeeds.VNe + '');
+            diffAndSetAttribute(this.airspeedElement, "red-begin", designSpeeds.VNe + '');
+            diffAndSetAttribute(this.airspeedElement, "red-end", designSpeeds.VMax + '');
+            diffAndSetAttribute(this.airspeedElement, "max-speed", designSpeeds.VNe + '');
         }
         if (this.gps) {
             var aspectRatio = this.gps.getAspectRatio();
-            this.airspeedElement.setAttribute("aspect-ratio", aspectRatio.toString());
+            diffAndSetAttribute(this.airspeedElement, "aspect-ratio", aspectRatio + '');
         }
     }
     onEnter() {
@@ -66,7 +66,7 @@ class ASBackup_Airspeed extends NavSystemElement {
     onUpdate(_deltaTime) {
         var indicatedSpeed = Simplane.getIndicatedSpeed();
         if (indicatedSpeed != this.lastIndicatedSpeed) {
-            this.airspeedElement.setAttribute("airspeed", indicatedSpeed.toFixed(1));
+            diffAndSetAttribute(this.airspeedElement, "airspeed", fastToFixed(indicatedSpeed, 1));
             this.lastIndicatedSpeed = indicatedSpeed;
         }
     }
@@ -83,10 +83,10 @@ class ASBackup_Altimeter extends NavSystemElement {
     }
     init(root) {
         this.altimeterElement = this.gps.getChildById("SvgMain");
-        this.altimeterElement.setAttribute("is-backup", "true");
+        diffAndSetAttribute(this.altimeterElement, "is-backup", "true");
         if (this.gps) {
             var aspectRatio = this.gps.getAspectRatio();
-            this.altimeterElement.setAttribute("aspect-ratio", aspectRatio.toString());
+            diffAndSetAttribute(this.altimeterElement, "aspect-ratio", aspectRatio + '');
         }
     }
     onEnter() {
@@ -99,13 +99,13 @@ class ASBackup_Altimeter extends NavSystemElement {
         var altitude = SimVar.GetSimVarValue("INDICATED ALTITUDE:" + this.gps.altimeterIndex, "feet");
         if (altitude != this.lastAltitude) {
             this.lastAltitude = altitude;
-            this.altimeterElement.setAttribute("altitude", altitude);
+            diffAndSetAttribute(this.altimeterElement, "altitude", altitude);
         }
         var pressure = SimVar.GetSimVarValue("KOHLSMAN SETTING HG:" + this.gps.altimeterIndex, "inches of mercury");
         pressure = fastToFixed(pressure, 2);
         if (pressure != this.lastPressure) {
             this.lastPressure = pressure;
-            this.altimeterElement.setAttribute("pressure", pressure);
+            diffAndSetAttribute(this.altimeterElement, "pressure", pressure);
         }
     }
     onExit() {
@@ -128,10 +128,10 @@ class ASBackup_Attitude extends NavSystemElement {
     }
     init(root) {
         this.attitudeElement = this.gps.getChildById("Horizon");
-        this.attitudeElement.setAttribute("is-backup", "true");
+        diffAndSetAttribute(this.attitudeElement, "is-backup", "true");
         if (this.gps) {
             var aspectRatio = this.gps.getAspectRatio();
-            this.attitudeElement.setAttribute("aspect-ratio", aspectRatio.toString());
+            diffAndSetAttribute(this.attitudeElement, "aspect-ratio", aspectRatio + '');
         }
     }
     onEnter() {
@@ -139,9 +139,9 @@ class ASBackup_Attitude extends NavSystemElement {
     onUpdate(_deltaTime) {
         var xyz = Simplane.getOrientationAxis();
         if (xyz) {
-            this.attitudeElement.setAttribute("pitch", (xyz.pitch / Math.PI * 180).toString());
-            this.attitudeElement.setAttribute("bank", (xyz.bank / Math.PI * 180).toString());
-            this.attitudeElement.setAttribute("slip_skid", Simplane.getInclinometer().toString());
+            diffAndSetAttribute(this.attitudeElement, "pitch", (xyz.pitch / Math.PI * 180) + '');
+            diffAndSetAttribute(this.attitudeElement, "bank", (xyz.bank / Math.PI * 180) + '');
+            diffAndSetAttribute(this.attitudeElement, "slip_skid", Simplane.getInclinometer() + '');
         }
     }
     onExit() {

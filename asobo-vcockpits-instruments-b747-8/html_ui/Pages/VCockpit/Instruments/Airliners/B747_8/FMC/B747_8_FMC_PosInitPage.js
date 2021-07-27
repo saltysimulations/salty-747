@@ -3,7 +3,7 @@ class FMCPosInitPage {
         let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
         console.log(currPos);
         let date = new Date();
-        let dateString = date.getHours().toFixed(0).padStart(2, "0") + date.getMinutes().toFixed(0).padStart(2, "0") + "z";
+        let dateString = fastToFixed(date.getHours(), 0).padStart(2, "0") + fastToFixed(date.getMinutes(), 0).padStart(2, "0") + "z";
         let lastPos = "";
         if (fmc.lastPos) {
             lastPos = fmc.lastPos;
@@ -22,7 +22,7 @@ class FMCPosInitPage {
         }
         let heading = "---°";
         if (fmc.refHeading) {
-            heading = fmc.refHeading.toFixed(0).padStart(3, "0") + "°";
+            heading = fastToFixed(fmc.refHeading, 0).padStart(3, "0") + "°";
         }
         let irsPos = "□□□°□□.□ □□□□°□□.□";
         if (fmc.initCoordinates) {

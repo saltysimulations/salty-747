@@ -82,7 +82,7 @@ class NearestAirport extends NearestWaypoint {
         if (this.longestRunwayLength < 5000) {
             return AirportSize.Small;
         }
-        if (this.longestRunwayLength > 8100) {
+        if (this.longestRunwayLength < 8100) {
             return AirportSize.Large;
         }
         if (this.towered) {
@@ -93,6 +93,10 @@ class NearestAirport extends NearestWaypoint {
 }
 class FullDataNearestAirportList {
     constructor(_instrument) {
+        this.nbMax = 10;
+        this.milesDistance = 200;
+        this._referentialLatLong = new LatLong();
+        this._currentLatLong = new LatLong();
         this.instrument = _instrument;
         this.airports = [];
         this.batch = new SimVar.SimVarBatch("C:fs9gps:NearestAirportItemsNumber", "C:fs9gps:NearestAirportCurrentLine");
@@ -104,29 +108,38 @@ class FullDataNearestAirportList {
         this.batch.add("C:fs9gps:NearestAirportCurrentTrueBearing", "degrees", "number");
     }
     Update(_nbMax = 9, _milesDistance = 200) {
-        this.nbMax = _nbMax;
-        this.milesDistance = _milesDistance;
-        if (NearestAirportList.readManager.AddToQueue(this.instrument, this)) {
-            this.loadState = 0;
-            this.needUpdate = false;
+        if (this.IsIdle()) {
+            let lat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", this.instrument.instrumentIdentifier);
+            let long = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", this.instrument.instrumentIdentifier);
+            this._currentLatLong.set(lat, long);
+            if (Avionics.Utils.computeDistance(this._currentLatLong, this._referentialLatLong) > 1) {
+                this._referentialLatLong.set(this._currentLatLong.lat, this._currentLatLong.long);
+                this.loadState = 0;
+            }
+            if (this.nbMax != _nbMax || this.milesDistance != _milesDistance) {
+                this.nbMax = _nbMax;
+                this.milesDistance = _milesDistance;
+                this.loadState = 0;
+            }
         }
-        else {
-            this.needUpdate = true;
+        if (!this.IsUpToDate()) {
+            this.LoadData();
         }
     }
     LoadData() {
-        var instrId = this.instrument.instrumentIdentifier;
+        let instrId = this.instrument.instrumentIdentifier;
         switch (this.loadState) {
             case 0:
-                this._referentialLat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLatitude", "degree latitude", this._referentialLat, instrId);
-                this._referentialLong = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLongitude", "degree longitude", this._referentialLong, instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumItems", "number", this.nbMax, instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumDistance", "nautical miles", this.milesDistance, instrId);
                 this.loadState++;
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLatitude", "degree latitude", this._referentialLatLong.lat, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLongitude", "degree longitude", this._referentialLatLong.long, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumItems", "number", this.nbMax, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumDistance", "nautical miles", this.milesDistance, instrId).then(function () {
+                    this.loadState++;
+                }.bind(this));
                 break;
-            case 1:
+            case 2:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.batch, function (_Values) {
                     for (var j = 0; j < this.airports.length; j++) {
                         this.airports[j].toDelete = true;
@@ -162,21 +175,25 @@ class FullDataNearestAirportList {
                     }
                     this.loadState++;
                 }.bind(this), instrId);
-                this.loadState++;
                 break;
         }
     }
     IsUpToDate() {
-        return this.loadState == 3;
+        return this.loadState == 4;
     }
-    EndLoad() {
-        if (this.needUpdate) {
-            this.Update(this.nbMax, this.milesDistance);
-        }
+    IsIdle() {
+        return (this.IsUpToDate() || this.loadState == 0);
     }
 }
 class NearestAirportList {
     constructor(_instrument) {
+        this.loadState = 0;
+        this.nbMax = 10;
+        this.milesDistance = 200;
+        this._timer = 0;
+        this._referentialLatLong = new LatLong();
+        this._currentLatLong = new LatLong();
+        NearestAirportList.DEBUG_INSTANCE = this;
         this.instrument = _instrument;
         this.airports = [];
         this.airportLineBatch = new SimVar.SimVarBatch("C:fs9gps:NearestAirportItemsNumber", "C:fs9gps:NearestAirportCurrentLine");
@@ -199,55 +216,46 @@ class NearestAirportList {
         this.airportSelectedBatch.add("C:fs9gps:NearestAirportSelectedLongitude", "degree longitude");
     }
     Update(_nbMax = 20, _milesDistance = 200) {
-        this.nbMax = _nbMax;
-        this.milesDistance = _milesDistance;
-        if (NearestAirportList.readManager.AddToQueue(this.instrument, this)) {
-            this.loadState = 0;
-            this.needUpdate = false;
+        if (this.IsIdle()) {
+            let lat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", this.instrument.instrumentIdentifier);
+            let long = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", this.instrument.instrumentIdentifier);
+            this._currentLatLong.set(lat, long);
+            if (!isFinite(this._referentialLatLong.lat) ||
+                !isFinite(this._referentialLatLong.long) ||
+                Avionics.Utils.computeDistance(this._currentLatLong, this._referentialLatLong) > 1) {
+                this._referentialLatLong.set(this._currentLatLong.lat, this._currentLatLong.long);
+                this.loadState = 0;
+            }
+            if (this.nbMax != _nbMax || this.milesDistance != _milesDistance) {
+                this.nbMax = _nbMax;
+                this.milesDistance = _milesDistance;
+                this.loadState = 0;
+            }
+            SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumDistance", "nautical miles", this.milesDistance, this.instrument.instrumentIdentifier);
+            this._timer++;
+            if (this._timer > 300 || this.airports.length === 0) {
+                this._timer = 0;
+                this.loadState = 0;
+            }
         }
-        else {
-            this.needUpdate = true;
+        if (!this.IsUpToDate()) {
+            this.LoadData();
         }
-    }
-    GetTable(_startIndex, _prefix) {
-        var html = "";
-        var index;
-        for (var i = 0; i < 3; i++) {
-            index = i + _startIndex;
-            html += "<tr>";
-            if (index > this.airports.length) {
-                html += "<td></td><td></td><td></td><td></td><td></td>";
-            }
-            else {
-                html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.airports[index].ident + '</td>';
-                html += '<td><img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.airports[index].imageFileName() + '" class="imgSizeS"/> </td>';
-                html += '<td>' + fastToFixed(this.airports[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
-                html += '<td>' + fastToFixed(this.airports[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
-                html += '<td>' + this.airports[index].bestApproach + '</td>';
-            }
-            html += "</tr>";
-            html += "<tr>";
-            if (index > this.airports.length) {
-                html += "<td></td><td></td><td></td><td></td><td></td>";
-            }
-            else {
-                html += '<td>' + this.airports[index].frequencyName + '</td>';
-                html += '<td colspan="2" class="SelectableElement" id="' + _prefix + "_Freq_" + i + '">' + fastToFixed(this.airports[index].frequencyMHz, 3) + '</td>';
-                html += '<td>rwy</td>';
-                html += '<td>' + fastToFixed(this.airports[index].longestRunwayLength, 0) + '<div class="Align unit">f<br />t</div></td>';
-            }
-            html += "</tr>";
-        }
-        return html;
     }
     LoadData() {
         var instrId = this.instrument.instrumentIdentifier;
         switch (this.loadState) {
             case 0:
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLatitude", "degree latitude", SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", instrId), instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLongitude", "degree longitude", SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", instrId), instrId);
+                this.loadState++;
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLatitude", "degree latitude", this._referentialLatLong.lat, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirportCurrentLongitude", "degree longitude", this._referentialLatLong.long, instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumItems", "number", this.nbMax, instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumDistance", "nautical miles", this.milesDistance, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirportMaximumDistance", "nautical miles", this.milesDistance, instrId).then(function () {
+                    this.loadState++;
+                }.bind(this));
+                break;
+            case 2:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.airportLineBatch, function (_Values) {
                     for (var i = 0; i < _Values.length; i++) {
                         if (this.airports.length < i + 1) {
@@ -265,11 +273,14 @@ class NearestAirportList {
                         this.airports[i].longestRunwayDirection = _Values[i][11];
                         this.airports[i].airportClass = _Values[i][12];
                     }
-                    this.loadState++;
                     while (this.airports.length > _Values.length) {
                         this.airports.pop();
                     }
+                    this.loadState++;
                 }.bind(this), instrId);
+                break;
+            case 4:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.airportSelectedBatch, function (_Values) {
                     for (var i = 0; i < _Values.length; i++) {
                         if (this.airports.length < i + 1) {
@@ -280,20 +291,16 @@ class NearestAirportList {
                     }
                     this.loadState++;
                 }.bind(this), instrId);
-                this.loadState++;
                 break;
         }
     }
     IsUpToDate() {
-        return this.loadState == 3;
+        return this.loadState == 6;
     }
-    EndLoad() {
-        if (this.needUpdate) {
-            this.Update(this.nbMax, this.milesDistance);
-        }
+    IsIdle() {
+        return (this.IsUpToDate() || this.loadState == 0);
     }
 }
-NearestAirportList.readManager = new InstrumentDataReadManager();
 class NearestWaypointRoute {
     constructor(nearestIntersection) {
         this.nearestIntersection = nearestIntersection;
@@ -320,8 +327,12 @@ class NearestIntersection extends NearestWaypoint {
 }
 class NearestIntersectionList {
     constructor(_instrument) {
-        this.lastBearing = 0;
-        this.lastDistance = 0;
+        this.loadState = 0;
+        this.nbMax = 10;
+        this.milesDistance = 200;
+        this._timer = 0;
+        this._referentialLatLong = new LatLong();
+        this._currentLatLong = new LatLong();
         this.instrument = _instrument;
         this.intersections = [];
         this.batch = new SimVar.SimVarBatch("C:fs9gps:NearestIntersectionItemsNumber", "C:fs9gps:NearestIntersectionCurrentLine");
@@ -331,46 +342,46 @@ class NearestIntersectionList {
         this.batch.add("C:fs9gps:NearestIntersectionCurrentTrueBearing", "degrees", "number");
     }
     Update(_nbMax = 20, _milesDistance = 200) {
-        this.nbMax = _nbMax;
-        this.milesDistance = _milesDistance;
-        if (NearestIntersectionList.readManager.AddToQueue(this.instrument, this)) {
-            this.loadState = 0;
-            this.needUpdate = false;
-        }
-        else {
-            this.needUpdate = true;
-        }
-    }
-    GetTable(_startIndex, _prefix) {
-        var html = "";
-        var index;
-        for (var i = 0; i < 5; i++) {
-            index = i + _startIndex;
-            html += "<tr>";
-            if (index > this.intersections.length) {
-                html += "<td></td><td></td><td></td><td></td>";
+        if (this.IsIdle()) {
+            let lat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", this.instrument.instrumentIdentifier);
+            let long = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", this.instrument.instrumentIdentifier);
+            this._currentLatLong.set(lat, long);
+            if (!isFinite(this._referentialLatLong.lat) ||
+                !isFinite(this._referentialLatLong.long) ||
+                Avionics.Utils.computeDistance(this._currentLatLong, this._referentialLatLong) > 1) {
+                this._referentialLatLong.set(this._currentLatLong.lat, this._currentLatLong.long);
+                this.loadState = 0;
             }
-            else {
-                html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.intersections[index].ident + '</td>';
-                html += '<td><img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.intersections[index].imageFileName() + '"/></td>';
-                html += '<td>' + fastToFixed(this.intersections[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
-                html += '<td>' + fastToFixed(this.intersections[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
+            if (this.nbMax != _nbMax || this.milesDistance != _milesDistance) {
+                this.nbMax = _nbMax;
+                this.milesDistance = _milesDistance;
+                this.loadState = 0;
             }
-            html += "</tr>";
+            SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionMaximumDistance", "nautical miles", this.milesDistance, this.instrument.instrumentIdentifier);
+            this._timer++;
+            if (this._timer > 300 || this.intersections.length === 0) {
+                this._timer = 0;
+                this.loadState = 0;
+            }
         }
-        return html;
+        if (!this.IsUpToDate()) {
+            this.LoadData();
+        }
     }
     LoadData() {
         var instrId = this.instrument.instrumentIdentifier;
         switch (this.loadState) {
             case 0:
-                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionCurrentLatitude", "degree latitude", SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", instrId), instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionCurrentLongitude", "degree longitude", SimVar.GetSimVarValue("GPS POSITION LON", "degree latitude", instrId), instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionMaximumItems", "number", this.nbMax, instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionMaximumDistance", "nautical miles", this.milesDistance, instrId);
                 this.loadState++;
+                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionCurrentLatitude", "degree latitude", this._referentialLatLong.lat, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionCurrentLongitude", "degree longitude", this._referentialLatLong.long, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionMaximumItems", "number", this.nbMax, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestIntersectionMaximumDistance", "nautical miles", this.milesDistance, instrId).then(function () {
+                    this.loadState++;
+                }.bind(this));
                 break;
-            case 1:
+            case 2:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.batch, function (_Values) {
                     this.intersections = [];
                     for (var i = 0; i < _Values.length; i++) {
@@ -383,20 +394,16 @@ class NearestIntersectionList {
                     }
                     this.loadState++;
                 }.bind(this), instrId);
-                this.loadState++;
                 break;
         }
     }
     IsUpToDate() {
-        return this.loadState == 3;
+        return this.loadState == 4;
     }
-    EndLoad() {
-        if (this.needUpdate) {
-            this.Update(this.nbMax, this.milesDistance);
-        }
+    IsIdle() {
+        return (this.IsUpToDate() || this.loadState == 0);
     }
 }
-NearestIntersectionList.readManager = new InstrumentDataReadManager();
 class NearestNDB extends NearestWaypoint {
     get svgMapElement() {
         if (!this._svgMapElement) {
@@ -421,6 +428,12 @@ class NearestNDB extends NearestWaypoint {
 }
 class NearestNDBList {
     constructor(_instrument) {
+        this.loadState = 0;
+        this.nbMax = 10;
+        this.milesDistance = 200;
+        this._timer = 0;
+        this._referentialLatLong = new LatLong();
+        this._currentLatLong = new LatLong();
         this.instrument = _instrument;
         this.ndbs = [];
         this.ndbLinesBatch = new SimVar.SimVarBatch("C:fs9gps:NearestNdbItemsNumber", "C:fs9gps:NearestNdbCurrentLine");
@@ -434,44 +447,46 @@ class NearestNDBList {
         this.ndbSelectedBatch.add("C:fs9gps:NearestNdbSelectedNdbName", "string", "string");
     }
     Update(_nbMax = 9, _milesDistance = 200) {
-        this.nbMax = _nbMax;
-        this.milesDistance = _milesDistance;
-        if (NearestNDBList.readManager.AddToQueue(this.instrument, this)) {
-            this.loadState = 0;
-            this.needUpdate = false;
-        }
-        else {
-            this.needUpdate = true;
-        }
-    }
-    GetTable(_startIndex, _prefix) {
-        var html = "";
-        var index;
-        for (var i = 0; i < 5; i++) {
-            index = i + _startIndex;
-            html += "<tr>";
-            if (index > this.ndbs.length) {
-                html += "<td></td><td></td><td></td><td></td><td></td>";
+        if (this.IsIdle()) {
+            let lat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", this.instrument.instrumentIdentifier);
+            let long = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", this.instrument.instrumentIdentifier);
+            this._currentLatLong.set(lat, long);
+            if (!isFinite(this._referentialLatLong.lat) ||
+                !isFinite(this._referentialLatLong.long) ||
+                Avionics.Utils.computeDistance(this._currentLatLong, this._referentialLatLong) > 1) {
+                this._referentialLatLong.set(this._currentLatLong.lat, this._currentLatLong.long);
+                this.loadState = 0;
             }
-            else {
-                html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.ndbs[index].ident + '</td>';
-                html += '<td><img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.ndbs[index].imageFileName() + '"/></td>';
-                html += '<td>' + fastToFixed(this.ndbs[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
-                html += '<td>' + fastToFixed(this.ndbs[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
-                html += '<td>' + fastToFixed(this.ndbs[index].frequencyMHz, 1) + '</td>';
+            if (this.nbMax != _nbMax || this.milesDistance != _milesDistance) {
+                this.nbMax = _nbMax;
+                this.milesDistance = _milesDistance;
+                this.loadState = 0;
             }
-            html += "</tr>";
+            SimVar.SetSimVarValue("C:fs9gps:NearestNdbMaximumDistance", "nautical miles", this.milesDistance, this.instrument.instrumentIdentifier);
+            this._timer++;
+            if (this._timer > 300 || this.ndbs.length === 0) {
+                this._timer = 0;
+                this.loadState = 0;
+            }
         }
-        return html;
+        if (!this.IsUpToDate()) {
+            this.LoadData();
+        }
     }
     LoadData() {
         var instrId = this.instrument.instrumentIdentifier;
         switch (this.loadState) {
             case 0:
-                SimVar.SetSimVarValue("C:fs9gps:NearestNdbCurrentLatitude", "degree latitude", SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", instrId), instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestNdbCurrentLongitude", "degree longitude", SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", instrId), instrId);
+                this.loadState++;
+                SimVar.SetSimVarValue("C:fs9gps:NearestNdbCurrentLatitude", "degree latitude", this._referentialLatLong.lat, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestNdbCurrentLongitude", "degree longitude", this._referentialLatLong.long, instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestNdbMaximumItems", "number", this.nbMax, instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestNdbMaximumDistance", "nautical miles", this.milesDistance, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestNdbMaximumDistance", "nautical miles", this.milesDistance, instrId).then(function () {
+                    this.loadState++;
+                }.bind(this));
+                break;
+            case 2:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.ndbLinesBatch, function (_Values) {
                     this.ndbs = [];
                     for (var i = 0; i < _Values.length; i++) {
@@ -490,6 +505,9 @@ class NearestNDBList {
                     }
                     this.loadState++;
                 }.bind(this), instrId);
+                break;
+            case 4:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.ndbSelectedBatch, function (_Values) {
                     for (var i = 0; i < _Values.length; i++) {
                         if (i > this.ndbs.length - 1) {
@@ -499,19 +517,16 @@ class NearestNDBList {
                     }
                     this.loadState++;
                 }.bind(this), instrId);
-                this.loadState++;
+                break;
         }
     }
     IsUpToDate() {
-        return this.loadState == 3;
+        return this.loadState == 6;
     }
-    EndLoad() {
-        if (this.needUpdate) {
-            this.Update(this.nbMax, this.milesDistance);
-        }
+    IsIdle() {
+        return (this.IsUpToDate() || this.loadState == 0);
     }
 }
-NearestNDBList.readManager = new InstrumentDataReadManager();
 class NearestVOR extends NearestWaypoint {
     get svgMapElement() {
         if (!this._svgMapElement) {
@@ -544,6 +559,12 @@ class NearestVOR extends NearestWaypoint {
 }
 class NearestVORList {
     constructor(_instrument) {
+        this.loadState = 0;
+        this.nbMax = 10;
+        this.milesDistance = 200;
+        this._timer = 0;
+        this._referentialLatLong = new LatLong();
+        this._currentLatLong = new LatLong();
         this.instrument = _instrument;
         this.vors = [];
         this.vorLinesBatch = new SimVar.SimVarBatch("C:fs9gps:NearestVorItemsNumber", "C:fs9gps:NearestVorCurrentLine");
@@ -558,44 +579,46 @@ class NearestVORList {
         this.vorSelectedBatch.add("C:fs9gps:NearestVorSelectedVorName", "string", "string");
     }
     Update(_nbMax = 9, _milesDistance = 200) {
-        this.nbMax = _nbMax;
-        this.milesDistance = _milesDistance;
-        if (NearestVORList.readManager.AddToQueue(this.instrument, this)) {
-            this.loadState = 0;
-            this.needUpdate = false;
-        }
-        else {
-            this.needUpdate = true;
-        }
-    }
-    GetTable(_startIndex, _prefix) {
-        var html = "";
-        var index;
-        for (var i = 0; i < 5; i++) {
-            index = i + _startIndex;
-            html += "<tr>";
-            if (index > this.vors.length) {
-                html += "<td></td><td></td><td></td><td></td><td></td>";
+        if (this.IsIdle()) {
+            let lat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", this.instrument.instrumentIdentifier);
+            let long = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", this.instrument.instrumentIdentifier);
+            this._currentLatLong.set(lat, long);
+            if (!isFinite(this._referentialLatLong.lat) ||
+                !isFinite(this._referentialLatLong.long) ||
+                Avionics.Utils.computeDistance(this._currentLatLong, this._referentialLatLong) > 1) {
+                this._referentialLatLong.set(this._currentLatLong.lat, this._currentLatLong.long);
+                this.loadState = 0;
             }
-            else {
-                html += '<td class="SelectableElement" id="' + _prefix + "_" + i + '">' + this.vors[index].ident + '</td>';
-                html += '<td> <img src="/Pages/VCockpit/Instruments/Shared/Map/Images/' + this.vors[index].imageFileName() + '"></td>';
-                html += '<td>' + fastToFixed(this.vors[index].bearing, 0) + '<div class="Align unit">o<br />M</div></td>';
-                html += '<td>' + fastToFixed(this.vors[index].distance, 1) + '<div class="Align unit">n<br />m</div></td>';
-                html += '<td class="SelectableElement" id="' + _prefix + '_Freq_' + i + '">' + fastToFixed(this.vors[index].frequencyMHz, 2) + '</td>';
+            if (this.nbMax != _nbMax || this.milesDistance != _milesDistance) {
+                this.nbMax = _nbMax;
+                this.milesDistance = _milesDistance;
+                this.loadState = 0;
             }
-            html += "</tr>";
+            SimVar.SetSimVarValue("C:fs9gps:NearestVorMaximumDistance", "nautical miles", this.milesDistance, this.instrument.instrumentIdentifier);
+            this._timer++;
+            if (this._timer > 300 || this.vors.length === 0) {
+                this._timer = 0;
+                this.loadState = 0;
+            }
         }
-        return html;
+        if (!this.IsUpToDate()) {
+            this.LoadData();
+        }
     }
     LoadData() {
         var instrId = this.instrument.instrumentIdentifier;
         switch (this.loadState) {
             case 0:
-                SimVar.SetSimVarValue("C:fs9gps:NearestVorCurrentLatitude", "degree latitude", SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", instrId), instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestVorCurrentLongitude", "degree longitude", SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", instrId), instrId);
+                this.loadState++;
+                SimVar.SetSimVarValue("C:fs9gps:NearestVorCurrentLatitude", "degree latitude", this._referentialLatLong.lat, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestVorCurrentLongitude", "degree longitude", this._referentialLatLong.long, instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestVorMaximumItems", "number", this.nbMax, instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestVorMaximumDistance", "nautical miles", this.milesDistance, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestVorMaximumDistance", "nautical miles", this.milesDistance, instrId).then(function () {
+                    this.loadState++;
+                }.bind(this));
+                break;
+            case 2:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.vorLinesBatch, function (_Values) {
                     for (var i = 0; i < _Values.length; i++) {
                         if (i > this.vors.length - 1) {
@@ -614,6 +637,9 @@ class NearestVORList {
                     }
                     this.loadState++;
                 }.bind(this), instrId);
+                break;
+            case 4:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.vorSelectedBatch, function (_Values) {
                     for (var i = 0; i < _Values.length; i++) {
                         if (i > this.vors.length - 1) {
@@ -623,20 +649,16 @@ class NearestVORList {
                     }
                     this.loadState++;
                 }.bind(this), instrId);
-                this.loadState++;
                 break;
         }
     }
     IsUpToDate() {
-        return this.loadState == 3;
+        return this.loadState == 6;
     }
-    EndLoad() {
-        if (this.needUpdate) {
-            this.Update(this.nbMax, this.milesDistance);
-        }
+    IsIdle() {
+        return (this.IsUpToDate() || this.loadState == 0);
     }
 }
-NearestVORList.readManager = new InstrumentDataReadManager();
 class NearestAirspace {
     constructor() {
         this.svgMapElement = new SvgAirspaceElement();
@@ -662,6 +684,11 @@ class NearestAirspace {
 NearestAirspace.I = 0;
 class NearestAirspaceList {
     constructor(_instrument) {
+        this.loadState = 0;
+        this.nbMax = 10;
+        this.milesDistance = 200;
+        this._referentialLatLong = new LatLong();
+        this._currentLatLong = new LatLong();
         this.instrument = _instrument;
         this.airspaces = [];
         this.batch = new SimVar.SimVarBatch("C:fs9gps:NearestAirspaceItemsNumber", "C:fs9gps:NearestAirspaceCurrentLine");
@@ -670,25 +697,33 @@ class NearestAirspaceList {
         this.batch.add("C:fs9gps:NearestAirspaceCurrentStatus", "number", "number");
         this.batch.add("C:fs9gps:NearestAirspaceCurrentNearDistance", "nautical mile", "number");
         this.batch.add("C:fs9gps:NearestAirspaceCurrentAheadTime", "seconds", "number");
-        this.batch.add("C:fs9gps:NearestAirspaceCurrentGeometry", "string", "string");
     }
     Update(_nbMax = 9, _milesDistance = 200) {
-        this.nbMax = _nbMax;
-        this.milesDistance = _milesDistance;
-        if (NearestAirspaceList.readManager.AddToQueue(this.instrument, this)) {
-            this.loadState = 0;
-            this.needUpdate = false;
+        if (this.IsIdle()) {
+            let lat = SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", this.instrument.instrumentIdentifier);
+            let long = SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", this.instrument.instrumentIdentifier);
+            this._currentLatLong.set(lat, long);
+            if (Avionics.Utils.computeDistance(this._currentLatLong, this._referentialLatLong) > 1) {
+                this._referentialLatLong.set(this._currentLatLong.lat, this._currentLatLong.long);
+                this.loadState = 0;
+            }
+            if (this.nbMax != _nbMax || this.milesDistance != _milesDistance) {
+                this.nbMax = _nbMax;
+                this.milesDistance = _milesDistance;
+                this.loadState = 0;
+            }
         }
-        else {
-            this.needUpdate = true;
+        if (!this.IsUpToDate()) {
+            this.LoadData();
         }
     }
     LoadData() {
         var instrId = this.instrument.instrumentIdentifier;
         switch (this.loadState) {
             case 0:
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceCurrentLatitude", "degree latitude", SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude", instrId), instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceCurrentLongitude", "degree longitude", SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude", instrId), instrId);
+                this.loadState++;
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceCurrentLatitude", "degree latitude", this._referentialLatLong.lat, instrId);
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceCurrentLongitude", "degree longitude", this._referentialLatLong.long, instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceCurrentAltitude", "meter", SimVar.GetSimVarValue("GPS POSITION ALT", "meter", instrId), instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceTrueGroundTrack", "degree", SimVar.GetSimVarValue("GPS GROUND TRUE TRACK", "degree", instrId), instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceGroundSpeed", "meter per second", SimVar.GetSimVarValue("GPS GROUND SPEED", "meter per second", instrId), instrId);
@@ -697,10 +732,12 @@ class NearestAirspaceList {
                 SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceAheadTime", "minute", 10, instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceMaximumItems", "number", this.nbMax, instrId);
                 SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceMaximumDistance", "nautical miles", this.milesDistance, instrId);
-                SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceQuery", "number", 0xEFC038, instrId);
-                this.loadState++;
+                SimVar.SetSimVarValue("C:fs9gps:NearestAirspaceQuery", "number", 0xEFC038, instrId).then(function () {
+                    this.loadState++;
+                }.bind(this));
                 break;
-            case 1:
+            case 2:
+                this.loadState++;
                 SimVar.GetSimVarArrayValues(this.batch, function (_Values) {
                     this.airspaces = [];
                     for (var i = 0; i < _Values.length && i < 100; i++) {
@@ -712,23 +749,18 @@ class NearestAirspaceList {
                         airspace.status = _Values[i][2];
                         airspace.nearDistance = _Values[i][3];
                         airspace.aheadTime = _Values[i][4];
-                        airspace.geometry = _Values[i][5];
                         this.airspaces.push(airspace);
                     }
                     this.loadState++;
                 }.bind(this), instrId);
-                this.loadState++;
                 break;
         }
     }
     IsUpToDate() {
-        return this.loadState == 3;
+        return this.loadState == 4;
     }
-    EndLoad() {
-        if (this.needUpdate) {
-            this.Update(this.nbMax, this.milesDistance);
-        }
+    IsIdle() {
+        return (this.IsUpToDate() || this.loadState == 0);
     }
 }
-NearestAirspaceList.readManager = new InstrumentDataReadManager();
 //# sourceMappingURL=NearestWaypoint.js.map

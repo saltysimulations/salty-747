@@ -1,0 +1,930 @@
+<ModelBehaviors>
+	<InputEvent ID="FUEL">
+		<Presets>
+			<Switch>
+				<Case Valid="MIXTURE_ID">
+					<Preset ID="FUEL_Mixture_#MIXTURE_ID#">
+						<Parameters Type="Default">
+							<INCREMENT>256</INCREMENT>
+							<UPPER_LIMIT>16384</UPPER_LIMIT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_AFTER_SET/>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>#MIXTURE_ID# (R:1:@TT_Package.FUEL_MIXTURE_ACTION_SOLO) @sprintf</TT_DESCRIPTION>
+									<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">(B:FUEL_Mixture_#MIXTURE_ID#, percent) s0 0 &gt; if{ l0 '%.1f%%' @sprintf } els{ (R:1:@TT_Package.FUEL_MIXTURE_STATE_CUT) }</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(O:FUEL_Mixture_#MIXTURE_ID#_Position) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>(A:GENERAL ENG MIXTURE LEVER POSITION:#ID#, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;O:FUEL_Mixture_#MIXTURE_ID#_Position)</Init>
+							<WatchVars>
+								<Simvar ID="GENERAL ENG MIXTURE LEVER POSITION:#MIXTURE_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# (A:GENERAL ENG MIXTURE LEVER POSITION:#MIXTURE_ID#, position 16k) p0 + 16384 / (&gt;B:FUEL_Mixture_#MIXTURE_ID#_Set) #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="MIXTURE#MIXTURE_ID#_INCR">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="MIXTURE#MIXTURE_ID#_INCR_SMALL">
+									<Param>0.5</Param>
+								</Binding>
+								<!-- Events bound to all presets instances -->
+								<Binding EventID="MIXTURE_INCR">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="MIXTURE_INCR_SMALL">
+									<Param>0.5</Param>
+								</Binding>
+							</Bindings>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# (A:GENERAL ENG MIXTURE LEVER POSITION:#MIXTURE_ID#, position 16k) p0 - 16384 / (&gt;B:FUEL_Mixture_#MIXTURE_ID#_Set) #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="MIXTURE#MIXTURE_ID#_DECR">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="MIXTURE#MIXTURE_ID#_DECR_SMALL">
+									<Param>0.5</Param>
+								</Binding>
+								<!-- Events bound to all presets instances -->
+								<Binding EventID="MIXTURE_DECR">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="MIXTURE_DECR_SMALL">
+									<Param>0.5</Param>
+								</Binding>
+							</Bindings>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:MIXTURE#MIXTURE_ID#_SET) l0 (&gt;O:FUEL_Mixture_#MIXTURE_ID#_Position) #ON_AFTER_SET#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 16384 *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="FUEL_Mixture_#MIXTURE_ID#_Rich">
+									<Param>1</Param>
+								</Binding>
+								<Binding Alias="FUEL_Mixture_#MIXTURE_ID#_Cut">
+									<Param>0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="IE_PUMP_ID">
+					<Preset ID="FUEL_Pump_#IE_PUMP_ID#">
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_ON>1</STATE_ON>
+									<MAX_POS>1</MAX_POS>
+								</Case>
+								<Case Value="AUTO_ON">
+									<STATE_AUTO>0</STATE_AUTO>
+									<STATE_ON>1</STATE_ON>	
+									<MAX_POS>1</MAX_POS>					
+								</Case>
+								<Case Value="OFF_AUTO_ON">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_AUTO>1</STATE_AUTO>
+									<STATE_ON>2</STATE_ON>
+									<MAX_POS>2</MAX_POS>
+								</Case>
+								<Case Value="OFF_LOW_HIGH">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_LOW>1</STATE_LOW>
+									<STATE_HIGH>2</STATE_HIGH>
+									<MAX_POS>2</MAX_POS>
+								</Case>
+							</Switch>
+							<Condition Valid="USE_FUELSYSTEM">
+								<True>
+									<GET_PUMP>(A:FUELSYSTEM PUMP SWITCH:#PUMP_ID#, Bool)</GET_PUMP>
+								</True>
+								<False>
+									<GET_PUMP>(A:GENERAL ENG FUEL PUMP SWITCH EX1:#PUMP_ID#, Enum)</GET_PUMP>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition Valid="USE_FUELSYSTEM">
+								<True>
+									<SET_PUMP>s0 #GET_PUMP# != if{ #PUMP_ID# (&gt;K:FUELSYSTEM_PUMP_TOGGLE) }</SET_PUMP>
+								</True>
+								<False>
+									<SET_PUMP>s0 #GET_PUMP# != if{ l0 (&gt;K:ELECT_FUEL_PUMP#PUMP_ID#_SET) }</SET_PUMP>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<SET_STATE_OFF>0 #SET_PUMP#</SET_STATE_OFF>
+									<SET_STATE_ON>1 #SET_PUMP#</SET_STATE_ON>	
+								</Case>
+								<Case Value="AUTO_ON">
+									<SET_STATE_AUTO>2 #SET_PUMP#</SET_STATE_AUTO>
+									<SET_STATE_ON>1 #SET_PUMP#</SET_STATE_ON>						
+								</Case>
+								<Case Value="OFF_AUTO_ON">
+									<SET_STATE_OFF>0 #SET_PUMP#</SET_STATE_OFF>
+									<SET_STATE_AUTO>2 #SET_PUMP#</SET_STATE_AUTO>
+									<SET_STATE_ON>1 #SET_PUMP#</SET_STATE_ON>
+								</Case>
+								<Case Value="OFF_LOW_HIGH">
+									<SET_STATE_OFF>0 #SET_PUMP#</SET_STATE_OFF>
+									<SET_STATE_LOW>1 #SET_PUMP#</SET_STATE_LOW>
+									<SET_STATE_HIGH>1 #SET_PUMP#</SET_STATE_HIGH>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<ON_STATE_CHANGED>
+										(O:FUEL_Pump_#IE_PUMP_ID#_Position) sp0
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										#GET_PUMP# sp0
+										l0 0 == if{ #STATE_OFF# sp1 }
+										l0 1 == if{ #STATE_ON# sp1 }
+										l0 1 &gt; if{ #STATE_ON# sp1 1 #SET_PUMP# }
+										l1 (&gt;O:FUEL_Pump_#IE_PUMP_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>(B:FUEL_Pump_#IE_PUMP_ID#) #STATE_ON# == if{ @TT_On } els{ @TT_Off }</TT_VALUE>
+								</Case>
+								<Case Value="AUTO_ON">
+									<ON_STATE_CHANGED>
+										(O:FUEL_Pump_#IE_PUMP_ID#_Position) sp0
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										l0 #STATE_AUTO# == if{ #SET_STATE_AUTO# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										#GET_PUMP# sp0
+										l0 2 == if{ #STATE_AUTO# sp1 }
+										l0 1 == if{ #STATE_ON# sp1 }
+										l0 0 == if{ #STATE_AUTO# sp1 2 #SET_PUMP# }
+										l1 (&gt;O:FUEL_Pump_#IE_PUMP_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>(B:FUEL_Pump_#IE_PUMP_ID#) #STATE_ON# == if{ @TT_On } els{ @TT_Auto }</TT_VALUE>
+								</Case>
+								<Case Value="OFF_AUTO_ON">
+									<ON_STATE_CHANGED>
+										(O:FUEL_Pump_#IE_PUMP_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_AUTO# == if{ #SET_STATE_AUTO# g1 }
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										#GET_PUMP# sp0
+										l0 0 == if{ #STATE_OFF# sp1 }
+										l0 2 == if{ #STATE_AUTO# sp1 }
+										l0 1 == if{ #STATE_ON# sp1 }
+										l1 (&gt;O:FUEL_Pump_#IE_PUMP_ID#_Position)
+									</ON_INIT>
+									<Switch Param="VARIANT_TYPE">
+										<Case Value="PRIME_OFF_BOOST">
+											<TT_VALUE>
+												(B:FUEL_Pump_#IE_PUMP_ID#) sp0 
+												l0 #STATE_OFF# == if{ @TT_Off quit }
+												l0 #STATE_AUTO# == if{ (R:1:@TT_Package.GT_STATE_BOOST) quit }
+												l0 #STATE_ON# == if{ (R:1:@TT_Package.GT_STATE_PRIME) quit }
+											</TT_VALUE>
+										</Case>
+										<Default>
+											<TT_VALUE>
+												(B:FUEL_Pump_#IE_PUMP_ID#) sp0 
+												l0 #STATE_OFF# == if{ @TT_Off quit }
+												l0 #STATE_AUTO# == if{ @TT_Auto quit }
+												l0 #STATE_ON# == if{ @TT_On quit }
+											</TT_VALUE>
+										</Default>
+									</Switch>
+								</Case>
+								<Case Value="OFF_LOW_HIGH">
+									<ON_STATE_CHANGED>
+										(O:FUEL_Pump_#IE_PUMP_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_LOW# == if{ #SET_STATE_LOW# g1 }
+										l0 #STATE_HIGH# == if{ #SET_STATE_HIGH# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										#GET_PUMP# sp0
+										l0 0 == if{ #STATE_OFF# sp1 }
+										l0 1 == if{ #STATE_HIGH# sp1 }
+										l0 2 == if{ #STATE_HIGH# sp1 1 #SET_PUMP# }
+										l1 (&gt;O:FUEL_Pump_#IE_PUMP_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:FUEL_Pump_#IE_PUMP_ID#) sp0 
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+										l0 #STATE_LOW# == if{ (R:1:@TT_Package.GT_STATE_LOW) quit }
+										l0 #STATE_HIGH# == if{ (R:1:@TT_Package.GT_STATE_HIGH) quit }
+									</TT_VALUE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<GET_VALUE>(O:FUEL_Pump_#IE_PUMP_ID#_Position)</GET_VALUE>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="Switch">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Case Value="Push">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+							</Switch>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>@TT_Package.FUEL_PUSH_PUMP_ACTION</TT_DESCRIPTION><!-- si ca marche pas remettre %s -->
+									<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>
+							<Switch Param="MAX_POS">
+								<Case Value="1">
+									<TT_INTERACTION>PRIMARY_DOWN</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>LOCK</TT_INTERACTION_LOCKABLE>
+								</Case>
+								<Case Value="2">
+									<TT_INTERACTION>PRIMARY_DOWN+Y_AXIS</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>Y_AXIS</TT_INTERACTION_LOCKABLE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#TT_INTERACTION#</Interaction>
+							<InteractionLockable>#TT_INTERACTION_LOCKABLE#</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Number</Units>
+							<Code>#GET_VALUE#</Code>
+							<Init>#ON_INIT#</Init>
+							<WatchVars>
+								<Condition Valid="USE_FUELSYSTEM">
+									<True>
+										<Simvar ID="FUELSYSTEM PUMP SWITCH:#PUMP_ID#"/>
+									</True>
+									<False>
+										<Simvar ID="GENERAL ENG FUEL PUMP SWITCH EX1:#PUMP_ID#"/>
+									</False>
+								</Condition>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>p0 1 + (&gt;B:FUEL_Pump_#IE_PUMP_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>p0 1 - (&gt;B:FUEL_Pump_#IE_PUMP_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #MAX_POS# min 0 max (&gt;O:FUEL_Pump_#IE_PUMP_ID#_Position) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Condition Check="STATE_ON">
+									<Binding Alias="FUEL_Pump_#IE_PUMP_ID#_On">
+										<Param>#STATE_ON#</Param>
+									</Binding>
+									<Binding EventID="FUELSYSTEM_PUMP_ON">
+										<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_ON# } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_OFF">
+									<Binding Alias="FUEL_Pump_#IE_PUMP_ID#_Off">
+										<Param>#STATE_OFF#</Param>
+									</Binding>
+									<Binding EventID="FUELSYSTEM_PUMP_OFF">
+										<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_OFF# } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_AUTO">
+									<Binding Alias="FUEL_Pump_#IE_PUMP_ID#_Auto">
+										<Param>#STATE_AUTO#</Param>
+									</Binding>
+									<Condition Check="STATE_OFF">
+										<False>
+											<Binding EventID="FUELSYSTEM_PUMP_OFF">
+												<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_AUTO# } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+											</Binding>											
+										</False>
+									</Condition>
+								</Condition>
+								<Condition Check="STATE_HIGH">
+									<Binding Alias="FUEL_Pump_#IE_PUMP_ID#_High">
+										<Param>#STATE_HIGH#</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_LOW">
+									<Binding Alias="FUEL_Pump_#IE_PUMP_ID#_Low">
+										<Param>#STATE_LOW#</Param>
+									</Binding>
+								</Condition>
+								<Switch Param="TYPE">
+									<Case Value="ON_OFF">
+										<Binding Alias="FUEL_Pump_#IE_PUMP_ID#_Toggle">
+											<Param RPN="True">#STATE_ON# #STATE_OFF# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# == ?</Param>
+										</Binding>
+										<Condition Valid="USE_FUELSYSTEM">
+											<True>
+												<Binding EventID="FUELSYSTEM_PUMP_TOGGLE">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_ON# #STATE_OFF# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# == ? } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+												<Binding EventID="FUELSYSTEM_PUMP_SET">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_ON# #STATE_ON# #STATE_OFF# 3 p2 case } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+											</True>
+											<False>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP#PUMP_ID#">
+													<Param RPN="True">#STATE_ON# #STATE_OFF# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# == ?</Param>
+												</Binding>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP">
+													<Param RPN="True">#STATE_ON# #STATE_OFF# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# == ?</Param>
+												</Binding>
+												<Binding EventID="ELECT_FUEL_PUMP#PUMP_ID#_SET">
+													<Param RPN="True">#STATE_ON# #STATE_ON# #STATE_OFF# 3 p1 case</Param>
+												</Binding>
+											</False>
+										</Condition>
+									</Case>
+									<Case Value="AUTO_ON">
+										<Binding Alias="FUEL_Pump_#IE_PUMP_ID#_Toggle">
+											<Param RPN="True">#STATE_ON# #STATE_AUTO# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_AUTO# == ?</Param>
+										</Binding>
+										<Condition Valid="USE_FUELSYSTEM">
+											<True>
+												<Binding EventID="FUELSYSTEM_PUMP_TOGGLE">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_ON# #STATE_AUTO# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_AUTO# == ? } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+												<Binding EventID="FUELSYSTEM_PUMP_SET">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_AUTO# #STATE_ON# #STATE_AUTO# 3 p2 case } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+											</True>
+											<False>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP#PUMP_ID#">
+													<Param RPN="True">#STATE_ON# #STATE_AUTO# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_AUTO# == ?</Param>
+												</Binding>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP">
+													<Param RPN="True">#STATE_ON# #STATE_AUTO# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_AUTO# == ?</Param>
+												</Binding>
+												<Binding EventID="ELECT_FUEL_PUMP#PUMP_ID#_SET">
+													<Param RPN="True">#STATE_AUTO# #STATE_ON# #STATE_AUTO# 3 p1 case</Param>
+												</Binding>
+											</False>
+										</Condition>
+									</Case>
+									<Case Value="OFF_AUTO_ON">
+										<Condition Valid="USE_FUELSYSTEM">
+											<True>
+												<Binding EventID="FUELSYSTEM_PUMP_TOGGLE">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_OFF# #STATE_ON# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# != ? } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+												<Binding EventID="FUELSYSTEM_PUMP_SET">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_AUTO# #STATE_ON# #STATE_OFF# 3 p2 case } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+											</True>
+											<False>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP#PUMP_ID#">
+													<Param RPN="True">#STATE_OFF# #STATE_ON# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# != ?</Param>
+												</Binding>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP">
+													<Param RPN="True">#STATE_OFF# #STATE_ON# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# != ?</Param>
+												</Binding>
+												<Binding EventID="ELECT_FUEL_PUMP#PUMP_ID#_SET">
+													<Param RPN="True">#STATE_AUTO# #STATE_ON# #STATE_OFF# 3 p1 case</Param>
+												</Binding>
+											</False>
+										</Condition>
+									</Case>
+									<Case Value="OFF_LOW_HIGH">
+										<Condition Valid="USE_FUELSYSTEM">
+											<True>
+												<Binding EventID="FUELSYSTEM_PUMP_TOGGLE">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_OFF# #STATE_HIGH# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# != ? } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+												<Binding EventID="FUELSYSTEM_PUMP_SET">
+													<Param RPN="True">p1 #PUMP_ID# == if{ #STATE_HIGH# #STATE_HIGH# #STATE_OFF# 3 p2 case } els{ (B:FUEL_Pump_#IE_PUMP_ID#) }</Param>
+												</Binding>
+											</True>
+											<False>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP#PUMP_ID#">
+													<Param RPN="True">#STATE_OFF# #STATE_HIGH# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# != ?</Param>
+												</Binding>
+												<Binding EventID="TOGGLE_ELECT_FUEL_PUMP">
+													<Param RPN="True">#STATE_OFF# #STATE_HIGH# (O:FUEL_Pump_#IE_PUMP_ID#_Position) #STATE_OFF# != ?</Param>
+												</Binding>
+												<Binding EventID="ELECT_FUEL_PUMP#PUMP_ID#_SET">
+													<Param RPN="True">#STATE_HIGH# #STATE_HIGH# #STATE_OFF# 3 p1 case</Param>
+												</Binding>
+											</False>
+										</Condition>
+									</Case>
+								</Switch>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="MANUAL_PUMP_ID">					
+					<Preset ID="FUEL_Manual_Pump_#MANUAL_PUMP_ID#">
+						<Parameters Type="Default">
+							<UPPER_LIMIT>16384</UPPER_LIMIT>
+							<INCREMENT>1638.4</INCREMENT>
+							<GET_PUMP>(A:MANUAL FUEL PUMP HANDLE:#MANUAL_PUMP_ID#, position 16k)</GET_PUMP>
+						</Parameters>
+						<Parameters Type="Default">
+							<SET_PUMP>s0 #GET_PUMP# != if{ l0 #MANUAL_PUMP_ID# (&gt;K:2:MANUAL_FUEL_PRESSURE_PUMP_SET) }</SET_PUMP>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_Y</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="True">'FUEL_Manual_Pump n°#MANUAL_PUMP_ID#'</TTDescription>
+							<TTValue RPN="True">(B:FUEL_Manual_Pump_#MANUAL_PUMP_ID#, percent) '%.1f%%' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Percent</Units>
+							<Code>(O:FUEL_Manual_Pump_#MANUAL_PUMP_ID#_Position) #UPPER_LIMIT# / 100 *</Code>
+							<Init>#GET_PUMP# (&gt;O:FUEL_Manual_Pump_#MANUAL_PUMP_ID#_Position)</Init>
+						</Value>
+						<Inc>
+							<Code>#GET_PUMP# p0 + #UPPER_LIMIT# / (&gt;B:FUEL_Manual_Pump_#MANUAL_PUMP_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#GET_PUMP# p0 - #UPPER_LIMIT# / (&gt;B:FUEL_Manual_Pump_#MANUAL_PUMP_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #UPPER_LIMIT# min 0 max #SET_PUMP# l0 (&gt;O:FUEL_Manual_Pump_#MANUAL_PUMP_ID#_Position)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #UPPER_LIMIT# *</Param>
+							</Parameters>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="IE_VALVE_ID">
+					<Preset ID="FUEL_Valve_#IE_VALVE_ID#">
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<STATE_OFF>0</STATE_OFF>
+							<STATE_ON>1</STATE_ON>
+							<MAX_POS>1</MAX_POS>
+							<GET_VALVE_ALL/>
+							<SET_VALVE_ALL/>
+							<CHECK_VALVE_ALL/>
+						</Parameters>
+						<Parameters Type="Override">
+							<Loop>
+								<Setup>
+									<Param>ID</Param>
+									<From>1</From>
+									<Inc>1</Inc>
+									<While>
+										<Arg Valid="VALVE_ID_#ID#"/>
+									</While>
+								</Setup>
+								<Do>
+									<Parameters Type="Override">
+										<VALVE_ID Process="Param">VALVE_ID_#ID#</VALVE_ID>
+									</Parameters>
+									<Parameters Type="Override">
+										<GET_VALVE_ID>(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Bool)</GET_VALVE_ID>
+										<SET_VALVE_ID>l0 l#ID# != if{ #VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_TOGGLE) }</SET_VALVE_ID>
+										<CHECK_VALVE_ID>#VALVE_ID# p1 ==</CHECK_VALVE_ID>
+									</Parameters>
+									<Parameters Type="Override" Lifetime="Loop">
+										<GET_VALVE_ALL>#GET_VALVE_ALL# #GET_VALVE_ID# sp#ID#</GET_VALVE_ALL>
+										<SET_VALVE_ALL>#SET_VALVE_ALL# #SET_VALVE_ID#</SET_VALVE_ALL>
+										<Condition NotEmpty="CHECK_VALVE_ALL">
+											<True>
+												<CHECK_VALVE_ALL>#CHECK_VALVE_ALL# #CHECK_VALVE_ID# or</CHECK_VALVE_ALL>
+											</True>
+											<False>
+												<CHECK_VALVE_ALL>#CHECK_VALVE_ID#</CHECK_VALVE_ALL>
+											</False>
+										</Condition>
+									</Parameters>
+								</Do>
+								<Then>
+									<GET_VALVE>#GET_VALVE_ALL#</GET_VALVE>
+									<SET_VALVE>sp0 #GET_VALVE_ALL# #SET_VALVE_ALL#</SET_VALVE>
+									<CHECK_VALVE>#CHECK_VALVE_ALL#</CHECK_VALVE>
+								</Then>
+							</Loop>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>
+								(O:FUEL_Valve_#IE_VALVE_ID#_Position) sp0
+								l0 #STATE_ON# == if{ 1 #SET_VALVE# g1 }
+								l0 #STATE_OFF# == if{ 0 #SET_VALVE# g1 }
+								:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+							</ON_STATE_CHANGED>
+							<ON_INIT>#GET_VALVE# 1 0 l1 ? sp0 l0 #SET_VALVE# #STATE_ON# #STATE_OFF# l0 ? (&gt;O:FUEL_Valve_#IE_VALVE_ID#_Position)</ON_INIT>
+							<TT_VALUE>(B:FUEL_Valve_#IE_VALVE_ID#, Bool) if{ @TT_Open } els{ @TT_Closed }</TT_VALUE>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="Switch">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Case Value="Push">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+							</Switch>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>@TT_Package.FUEL_SWITCH_OPENCLOSED_ACTION_SET</TT_DESCRIPTION><!-- ça faudra le créer a un moment dans KLM, c'est le default -->
+									<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>PRIMARY_DOWN</Interaction>
+							<InteractionLockable>LOCK</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Bool</Units>
+							<Code>(O:FUEL_Valve_#IE_VALVE_ID#_Position) #STATE_ON# ==</Code>
+							<Init>#ON_INIT#</Init>
+							<WatchVars>
+								<Loop>
+									<Setup>
+										<Param>ID</Param>
+										<From>1</From>
+										<Inc>1</Inc>
+										<While>
+											<Arg Valid="VALVE_ID_#ID#"/>
+										</While>
+									</Setup>
+									<Do>
+										<Parameters Type="Override">
+											<VALVE_ID Process="Param">VALVE_ID_#ID#</VALVE_ID>
+										</Parameters>
+										<Simvar ID="FUELSYSTEM VALVE SWITCH:#VALVE_ID#"/>
+									</Do>
+								</Loop>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>p0 1 + (&gt;B:FUEL_Valve_#IE_VALVE_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>p0 1 - (&gt;B:FUEL_Valve_#IE_VALVE_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #MAX_POS# min 0 max (&gt;O:FUEL_Valve_#IE_VALVE_ID#_Position) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="FUEL_Valve_#IE_VALVE_ID#_On">
+									<Param>#STATE_ON#</Param>
+								</Binding>
+								<Binding Alias="FUEL_Valve_#IE_VALVE_ID#_Off">
+									<Param>#STATE_OFF#</Param>
+								</Binding>
+								<Binding Alias="FUEL_Valve_#IE_VALVE_ID#_Toggle">
+									<Param RPN="True">#STATE_ON# #STATE_OFF# (O:FUEL_Valve_#IE_VALVE_ID#_Position) #STATE_OFF# == ?</Param>
+								</Binding>
+								<Binding EventID="FUELSYSTEM_VALVE_OPEN">
+									<Param RPN="True">#CHECK_VALVE# if{ #STATE_ON# } els{ #STATE_ON# #STATE_OFF# (O:FUEL_Valve_#IE_VALVE_ID#_Position) #STATE_ON# == ? }</Param>
+								</Binding>
+								<Binding EventID="FUELSYSTEM_VALVE_CLOSE">
+									<Param RPN="True">#CHECK_VALVE# if{ #STATE_OFF# } els{ #STATE_ON# #STATE_OFF# (O:FUEL_Valve_#IE_VALVE_ID#_Position) #STATE_ON# == ? }</Param>
+								</Binding>
+								<Binding EventID="FUELSYSTEM_VALVE_TOGGLE">
+									<Param RPN="True">#CHECK_VALVE# if{ #STATE_OFF# #STATE_ON# (O:FUEL_Valve_#IE_VALVE_ID#_Position) #STATE_ON# == ? } els{ #STATE_ON# #STATE_OFF# (O:FUEL_Valve_#IE_VALVE_ID#_Position) #STATE_ON# == ? }</Param>
+								</Binding>
+								<Binding EventID="FUELSYSTEM_VALVE_SET">
+									<Param RPN="True">#CHECK_VALVE# if{ #STATE_ON# #STATE_OFF# p2 #STATE_ON# == ? } els{ #STATE_ON# #STATE_OFF# (O:FUEL_Valve_#IE_VALVE_ID#_Position) #STATE_ON# == ? }</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="SELECTOR_ID">
+					<Preset ID="FUEL_Selector_#SELECTOR_ID#">
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<Condition Valid="USE_FUELSYSTEM">
+								<True>
+									<GET_FUEL_SELECTOR>(A:FUELSYSTEM JUNCTION SETTING:#SELECTOR_ID#, Enum)</GET_FUEL_SELECTOR>
+									<SIMVAR_TO_WATCH>FUELSYSTEM JUNCTION SETTING:#SELECTOR_ID#</SIMVAR_TO_WATCH>
+									<SET_FUEL_SELECTOR_EVENT>#SELECTOR_ID# (&gt;K:2:FUELSYSTEM_JUNCTION_SET)</SET_FUEL_SELECTOR_EVENT>
+								</True>
+								<False>
+									<Condition Check="TYPE" Match="INDEPENDANT">
+										<True>
+											<!-- Multiple selectors one engine -->
+											<GET_FUEL_SELECTOR>(A:FUEL TANK SELECTOR:#ENG_ID#, Enum)</GET_FUEL_SELECTOR>
+											<SIMVAR_TO_WATCH>FUEL TANK SELECTOR:#ENG_ID#</SIMVAR_TO_WATCH>
+											<Condition Check="ENG_ID" Match="1">
+												<True>
+													<SET_FUEL_SELECTOR_EVENT>(&gt;K:FUEL_SELECTOR_SET)</SET_FUEL_SELECTOR_EVENT>
+												</True>
+												<False>
+													<SET_FUEL_SELECTOR_EVENT>(&gt;K:FUEL_SELECTOR_#ENG_ID#_SET)</SET_FUEL_SELECTOR_EVENT>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<!-- One selector one engine -->
+											<GET_FUEL_SELECTOR>(A:FUEL TANK SELECTOR:#SELECTOR_ID#, Enum)</GET_FUEL_SELECTOR>
+											<SIMVAR_TO_WATCH>FUEL TANK SELECTOR:#SELECTOR_ID#</SIMVAR_TO_WATCH>
+											<Condition Check="SELECTOR_ID" Match="1">
+												<True>
+													<SET_FUEL_SELECTOR_EVENT>(&gt;K:FUEL_SELECTOR_SET)</SET_FUEL_SELECTOR_EVENT>
+												</True>
+												<False>
+													<SET_FUEL_SELECTOR_EVENT>(&gt;K:FUEL_SELECTOR_#SELECTOR_ID#_SET)</SET_FUEL_SELECTOR_EVENT>
+												</False>
+											</Condition>
+										</False>
+									</Condition>
+								</False>
+							</Condition>
+							<IS_VALID_ENUM_VAL_TEST_EXTERNAL/>
+							<ENUM_VAL_TO_POS_EXTERNAL/>
+							<POS_TO_ENUM_VAL_EXTERNAL/>
+							<ENUM_VAL_TO_TOOLTIP_STATE_EXTERNAL/>
+							<!-- If the fuel selector has an invalid value, his is what will be set -->
+							<ENUM_STATE_POS_INVALID>#ENUM_STATE_0#</ENUM_STATE_POS_INVALID>
+						</Parameters>
+						<Parameters Type="Override">
+							<MAX_POS Process="Int">#SELECTOR_STATE_COUNT# 1 -</MAX_POS>
+							<SET_FUEL_SELECTOR>s0 #GET_FUEL_SELECTOR# != if{ l0 #SET_FUEL_SELECTOR_EVENT# }</SET_FUEL_SELECTOR>
+							<Loop>
+								<Setup>
+									<Param>SEL_ID</Param>
+									<From>0</From>
+									<Inc>1</Inc>
+									<While>
+										<Arg NotEmpty="ENUM_STATE_#SEL_ID#"/>
+									</While>
+								</Setup>
+								<Do>
+									<Parameters Type="Default" Lifetime="Loop">
+										<IS_VALID_ENUM_VAL_TEST_T>#GET_FUEL_SELECTOR# sp0 #IS_VALID_ENUM_VAL_TEST_EXTERNAL#</IS_VALID_ENUM_VAL_TEST_T>
+										<ENUM_VAL_TO_POS_T>#GET_FUEL_SELECTOR# sp0 #ENUM_VAL_TO_POS_EXTERNAL#</ENUM_VAL_TO_POS_T>
+										<POS_TO_ENUM_VAL_T>(O:FUEL_Selector_#SELECTOR_ID#_Position) sp0 #POS_TO_ENUM_VAL_EXTERNAL#</POS_TO_ENUM_VAL_T>
+										<ENUM_VAL_TO_TOOLTIP_STATE_T>(B:FUEL_Selector_#SELECTOR_ID#, Number) sp0 #ENUM_VAL_TO_TOOLTIP_STATE_EXTERNAL#</ENUM_VAL_TO_TOOLTIP_STATE_T>
+									</Parameters>
+									<Parameters Type="Override" Lifetime="Iteration">
+										<ENUM_STATE Process="Param">ENUM_STATE_#SEL_ID#</ENUM_STATE>
+										<Condition Valid="USE_FUELSYSTEM">
+											<True>
+												<SELECTOR_STATE Process="Param">TT_STATE_#SEL_ID#</SELECTOR_STATE>
+											</True>
+											<False>
+												<Condition NotEmpty="TT_STATE_#SEL_ID#">
+													<True>
+														<SELECTOR_STATE Process="Param">TT_STATE_#SEL_ID#</SELECTOR_STATE>
+													</True>
+													<False>
+														<SELECTOR_STATE Process="Param">SELECTOR_STATE_#SEL_ID#</SELECTOR_STATE>
+													</False>
+												</Condition>
+											</False>
+										</Condition>
+										<Condition Check="SEL_ID" Match="0">
+											<True>
+												<Condition NotEmpty="IS_VALID_ENUM_VAL_TEST_EXTERNAL">
+													<True>
+														<TEST> or</TEST>
+													</True>
+													<False>
+														<TEST/>
+													</False>
+												</Condition>
+											</True>
+											<False>
+												<TEST> or</TEST>
+											</False>
+										</Condition>
+									</Parameters>
+									<Parameters Type="Override" Lifetime="Loop">
+										<IS_VALID_ENUM_VAL_TEST_T>#IS_VALID_ENUM_VAL_TEST_T# l0 #ENUM_STATE# ==#TEST#</IS_VALID_ENUM_VAL_TEST_T>
+										<ENUM_VAL_TO_POS_T>#ENUM_VAL_TO_POS_T# l0 #ENUM_STATE# == if{ #SEL_ID# sp1 g1 }</ENUM_VAL_TO_POS_T>
+										<POS_TO_ENUM_VAL_T>#POS_TO_ENUM_VAL_T# l0 #SEL_ID# == if{ #ENUM_STATE# sp1 g1 }</POS_TO_ENUM_VAL_T>
+										<ENUM_VAL_TO_TOOLTIP_STATE_T>#ENUM_VAL_TO_TOOLTIP_STATE_T# l0 #SEL_ID# == if{ (R:1:@TT_Package.GT_STATE_#SELECTOR_STATE#) quit }</ENUM_VAL_TO_TOOLTIP_STATE_T>
+									</Parameters>
+								</Do>
+								<Then>
+									<IS_VALID_ENUM_VAL_TEST>#IS_VALID_ENUM_VAL_TEST_T#</IS_VALID_ENUM_VAL_TEST>
+									<ENUM_VAL_TO_POS>#ENUM_VAL_TO_POS_T# :1 l1</ENUM_VAL_TO_POS>
+									<POS_TO_ENUM_VAL>#POS_TO_ENUM_VAL_T# :1 l1</POS_TO_ENUM_VAL>
+									<ENUM_VAL_TO_TOOLTIP_STATE>#ENUM_VAL_TO_TOOLTIP_STATE_T#</ENUM_VAL_TO_TOOLTIP_STATE>
+								</Then>
+							</Loop>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#POS_TO_ENUM_VAL# #SET_FUEL_SELECTOR# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_INIT>#IS_VALID_ENUM_VAL_TEST# ! if{ #ENUM_STATE_POS_INVALID# #SET_FUEL_SELECTOR# } #ENUM_VAL_TO_POS# (&gt;O:FUEL_Selector_#SELECTOR_ID#_Position)</ON_INIT>
+							<TT_VALUE>#ENUM_VAL_TO_TOOLTIP_STATE#</TT_VALUE>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>MAX_POS</Value>
+										<Number>1</Number>
+									</Greater>
+								</Test>
+								<True>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+								</False>
+							</Condition>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>@TT_Package.FUEL_SELECTOR_ACTION_SET_SOLO</TT_DESCRIPTION><!-- ça faudra le créer a un moment dans KLM, c'est le default -->
+									<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>ROTATE</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Number</Units>
+							<Code>(O:FUEL_Selector_#SELECTOR_ID#_Position)</Code>
+							<Init>#ON_INIT#</Init>
+							<WatchVars>
+								<Simvar ID="#SIMVAR_TO_WATCH#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>p0 1 + (&gt;B:FUEL_Selector_#SELECTOR_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>p0 1 - (&gt;B:FUEL_Selector_#SELECTOR_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #MAX_POS# min 0 max (&gt;O:FUEL_Selector_#SELECTOR_ID#_Position) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Condition Check="SELECTOR_STATE_COUNT" Match="2">
+									<Binding Alias="FUEL_Selector_#SELECTOR_ID#_Toggle">
+										<Param RPN="True">0 1 (O:FUEL_Selector_#SELECTOR_ID#_Position) 1 == ?</Param>
+									</Binding>
+								</Condition>
+								<Loop>
+									<Setup>
+										<Param>SEL_ID</Param>
+										<From>0</From>
+										<Inc>1</Inc>
+										<While>
+											<Arg Valid="STR_STATE_#SEL_ID#"/>
+										</While>
+									</Setup>
+									<Do>
+										<Parameters Type="Override">
+											<SELECTOR_STATE Process="Param">STR_STATE_#SEL_ID#</SELECTOR_STATE>
+										</Parameters>
+										<Binding Alias="FUEL_Selector_#SELECTOR_ID#_#SELECTOR_STATE#">
+											<Param>#SEL_ID#</Param>
+										</Binding>
+									</Do>
+								</Loop>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Default>
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>FUEL</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Default>
+			</Switch>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

@@ -1,4 +1,8 @@
 class SvgNearestVORElement extends SvgWaypointElement {
+    constructor(source) {
+        super(source);
+        this.sortIndex = 2;
+    }
     get vorType() {
         if (this._vorType) {
             return this._vorType;
@@ -9,10 +13,6 @@ class SvgNearestVORElement extends SvgWaypointElement {
     }
     set vorType(v) {
         this._vorType = v;
-    }
-    constructor(source) {
-        super(source);
-        this.sortIndex = 2;
     }
     id(map) {
         return "nrst-vor-" + this.ident + "-map-" + map.index;

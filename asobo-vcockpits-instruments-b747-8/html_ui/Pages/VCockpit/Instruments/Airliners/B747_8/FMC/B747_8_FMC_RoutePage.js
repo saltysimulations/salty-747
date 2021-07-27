@@ -100,7 +100,7 @@ class FMCRoutePage {
             });
         };
         fmc.setTemplate([
-            ["RTE 1", "1", pageCount.toFixed(0)],
+            ["RTE 1", "1", fastToFixed(pageCount, 0)],
             ["ORIGIN", "DEST"],
             [originCell, destinationCell],
             ["RUNWAY", "FLT NO"],
@@ -242,7 +242,7 @@ class FMCRoutePage {
             };
         }
         fmc.setTemplate([
-            ["RTE 1", page.toFixed(0), pageCount.toFixed(0)],
+            ["RTE 1", fastToFixed(page, 0), fastToFixed(pageCount, 0)],
             ["VIA", "TO"],
             rows[0],
             [""],

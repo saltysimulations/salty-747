@@ -21,13 +21,13 @@ class SelectableElement {
     }
     updateSelection(_selected) {
         if (!this.isActive) {
-            this.element.setAttribute("state", "Greyed");
+            diffAndSetAttribute(this.element, "state", "Greyed");
         }
         else if (_selected) {
-            this.element.setAttribute("state", "Selected");
+            diffAndSetAttribute(this.element, "state", "Selected");
         }
         else {
-            this.element.setAttribute("state", "Unselected");
+            diffAndSetAttribute(this.element, "state", "Unselected");
         }
     }
     onSelection(_event) {
@@ -36,7 +36,7 @@ class SelectableElement {
     setActive(_active) {
         this.isActive = _active;
         if (_active) {
-            this.element.setAttribute("state", "Unselected");
+            diffAndSetAttribute(this.element, "state", "Unselected");
         }
         else {
             if (this.gps.currentSelectableArray && this.gps.currentSelectableArray[this.gps.cursorIndex] == this) {
@@ -50,7 +50,7 @@ class SelectableElement {
                     }
                 }
             }
-            this.element.setAttribute("state", "Greyed");
+            diffAndSetAttribute(this.element, "state", "Greyed");
         }
     }
 }
@@ -64,10 +64,10 @@ class DynamicSelectableElement extends SelectableElement {
     }
     updateSelection(_selected) {
         if (_selected) {
-            this.GetElement().setAttribute("state", "Selected");
+            diffAndSetAttribute(this.GetElement(), "state", "Selected");
         }
         else {
-            this.GetElement().setAttribute("state", "Unselected");
+            diffAndSetAttribute(this.GetElement(), "state", "Unselected");
         }
     }
 }
@@ -141,10 +141,10 @@ class SelectableElementGroup extends SelectableElement {
             var element = this.element.getElementsByClassName("Select" + i)[0];
             if (element) {
                 if (_selected && i == this.index) {
-                    element.setAttribute("state", "Selected");
+                    diffAndSetAttribute(element, "state", "Selected");
                 }
                 else {
-                    element.setAttribute("state", "Unselected");
+                    diffAndSetAttribute(element, "state", "Unselected");
                 }
             }
             if (i == this.index && !element) {
@@ -359,22 +359,18 @@ class SelectableElementSliderGroup extends SelectableElement {
         var nbElements = this.stringElements.length;
         var maxDisplayedElements = this.elements.length;
         if (nbElements > maxDisplayedElements) {
-            this.slider.setAttribute("state", "Active");
-            this.sliderCursor.setAttribute("style", "height:" + (maxDisplayedElements * 100 / nbElements) +
+            diffAndSetAttribute(this.slider, "state", "Active");
+            diffAndSetAttribute(this.sliderCursor, "style", "height:" + (maxDisplayedElements * 100 / nbElements) +
                 "%;top:" + (this.offset * 100 / nbElements) + "%");
         }
         else {
-            this.slider.setAttribute("state", "Inactive");
+            diffAndSetAttribute(this.slider, "state", "Inactive");
         }
         for (let i = 0; i < Math.min(this.elements.length, this.stringElements.length); i++) {
-            if (this.elements[i].GetLineElement().innerHTML != this.stringElements[this.offset + i]) {
-                this.elements[i].GetLineElement().innerHTML = this.stringElements[this.offset + i];
-            }
+            diffAndSetHTML(this.elements[i].GetLineElement(), this.stringElements[this.offset + i]);
         }
         for (let i = this.stringElements.length; i < this.elements.length; i++) {
-            if (this.elements[i].GetLineElement().innerHTML != this.emptyLine) {
-                this.elements[i].GetLineElement().innerHTML = this.emptyLine;
-            }
+            diffAndSetHTML(this.elements[i].GetLineElement(), this.emptyLine);
         }
     }
     updateDisplayWithData() {

@@ -1,174 +1,371 @@
 <ModelBehaviors>
 	<Include ModelBehaviorFile="Asobo\Generic.xml"/>
+	<Include RelativeFile="AS3000.xml"/>
 
-	<Template Name="ASOBO_AS580">
-		<DefaultTemplateParameters>
+	<!-- AS580 -->
+	<Template Name="ASOBO_AS580_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<Switch Param="TYPE">
+				<Case Value="VARIANT">
+					<TEMPLATE_TO_CALL>ASOBO_AS580_Variant_SubTemplate</TEMPLATE_TO_CALL>
+				</Case>
+				<Default>
+					<TEMPLATE_TO_CALL>ASOBO_AS580_SubTemplate</TEMPLATE_TO_CALL>
+				</Default>
+			</Switch>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="ASOBO_AS580_SubTemplate">
+		<Parameters Type="Default">
+			<AS3000>AS580</AS3000>
+			<ORIENTATION>Vertical</ORIENTATION>
+		</Parameters>
+		<Parameters Type="Default">
+			<SCREEN_NODE_ID>#AS3000#_Screen#SUFFIX_ID#</SCREEN_NODE_ID>
+			<INPUT_EVENT_ID_SOURCE>AS3000_TSC_#ORIENTATION##SUFFIX_ID#</INPUT_EVENT_ID_SOURCE>
+			<Switch Param="TYPE">
+				<Case Value="PFD">
+					<KEY_PREFIX>AS3000_TSC_#ORIENTATION#_1</KEY_PREFIX>
+				</Case>
+				<Case Value="MFD">
+					<KEY_PREFIX>AS3000_TSC_#ORIENTATION#_2</KEY_PREFIX>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Component ID="AS580_Knobs_#ID#">
+			<Parameters Type="Default">
+				<WWISE_EVENT_LARGE_KNOB>AS580_big_knob_turn</WWISE_EVENT_LARGE_KNOB>
+				<WWISE_EVENT_SMALL_KNOB>AS580_knob_turn</WWISE_EVENT_SMALL_KNOB>
+				<WWISE_EVENT_PUSH_1>AS580_knob_push_button_on</WWISE_EVENT_PUSH_1>
+				<WWISE_EVENT_PUSH_2>AS580_knob_push_button_off</WWISE_EVENT_PUSH_2>
+				<COUNT>36</COUNT>
+				<NODE_ID_RIGHT_OUTER_KNOB>AS580_KNOB_01#SUFFIX_ID#</NODE_ID_RIGHT_OUTER_KNOB>
+				<ANIM_NAME_RIGHT_OUTER_KNOB>AS580_KNOB_01#SUFFIX_ID#</ANIM_NAME_RIGHT_OUTER_KNOB>
+				<NODE_ID_RIGHT_INNER_KNOB>AS580_KNOB_01_SMALL#SUFFIX_ID#</NODE_ID_RIGHT_INNER_KNOB>
+				<ANIM_NAME_RIGHT_INNER_KNOB>AS580_KNOB_01_SMALL#SUFFIX_ID#</ANIM_NAME_RIGHT_INNER_KNOB>
+				<ANIM_NAME_RIGHT_INNER_KNOB_PUSH>AS580_KNOB_01_SMALL_PUSH#SUFFIX_ID#</ANIM_NAME_RIGHT_INNER_KNOB_PUSH>
+				<NODE_ID_LEFT_KNOB>AS580_KNOB_02#SUFFIX_ID#</NODE_ID_LEFT_KNOB>
+				<ANIM_NAME_LEFT_KNOB>AS580_KNOB_02#SUFFIX_ID#</ANIM_NAME_LEFT_KNOB>
+				<NODE_ID_MIDDLE_KNOB>AS580_KNOB_03#SUFFIX_ID#</NODE_ID_MIDDLE_KNOB>
+				<ANIM_NAME_MIDDLE_KNOB>AS580_KNOB_03#SUFFIX_ID#</ANIM_NAME_MIDDLE_KNOB>
+				<LONG_CLICK_TIME>2</LONG_CLICK_TIME>
+			</Parameters>
+			<!-- <Component ID="#NODE_ID_RIGHT_OUTER_KNOB#" Node="#NODE_ID_RIGHT_OUTER_KNOB#"> -->
+				<!-- <Parameters Type="Override"> -->
+					<!-- <KNOB_ID>Right_Outer_Knob</KNOB_ID> -->
+				<!-- </Parameters> -->
+				<!-- <Parameters Type="Override"> -->
+					<!-- <TOOLTIP_TITLE>@TT_Package.AS580_RIGHT_OUTER_KNOB_TITLE</TOOLTIP_TITLE> -->
+					<!-- <TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</TOOLTIP_ENTRY_0> -->
+				<!-- </Parameters> -->
+				<!-- <UseInputEvent ID="AS3000"> -->
+					<!-- <SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:#KEY_PREFIX#_BottomKnob_Large_INC) } els{ (&gt;H:#KEY_PREFIX#_BottomKnob_Large_DEC) }</SET_STATE_EXTERNAL> -->
+					<!-- <TT_DESCRIPTION_ID>@TT_Package.AS580_KNOB_STDBY_MHZ_ACTION</TT_DESCRIPTION_ID> -->
+					<!-- <TT_DESCRIPTION_ID>@TT_Package.AS580_RIGHT_OUTER_KNOB_ACTION</TT_DESCRIPTION_ID> -->
+				<!-- </UseInputEvent> -->
+				<!-- <UseTemplate Name="ASOBO_GT_Knob_Infinite"> -->
+					<!-- <ANIM_NAME>#ANIM_NAME_RIGHT_OUTER_KNOB#</ANIM_NAME> -->
+					<!-- <PART_ID>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</PART_ID> -->
+					<!-- <CLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Inc)</CLOCKWISE_CODE> -->
+					<!-- <ANTICLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE> -->
+					<!-- <WWISE_EVENT>#WWISE_EVENT_LARGE_KNOB#</WWISE_EVENT> -->
+					<!-- <THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT> -->
+					<!-- <THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE> -->
+				<!-- </UseTemplate> -->
+			<!-- </Component> -->
+			<Component ID="#NODE_ID_RIGHT_INNER_KNOB#" Node="#NODE_ID_RIGHT_INNER_KNOB#">
+				<Parameters Type="Override">
+					<KNOB_ID>Right_Inner_Knob</KNOB_ID>
+					<BTN_ID_EXTERNAL>Right_Inner_Knob_Button</BTN_ID_EXTERNAL>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>@TT_Package.AS580_RIGHT_INNER_KNOB_TITLE</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</TOOLTIP_ENTRY_0>
+					<TOOLTIP_ENTRY_1>#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#</TOOLTIP_ENTRY_1>
+				</Parameters>
+				<UseInputEvent ID="AS3000">
+					<TT_INTERACTION>PRIMARY_DOWN+SECONDARY_DOWN</TT_INTERACTION>
+					<TT_INTERACTION_LOCKABLE>PRIMARY_DOWN</TT_INTERACTION_LOCKABLE>
+					<BTN_ID>#BTN_ID_EXTERNAL#</BTN_ID>
+					<!-- Configure event processing -->
+					<SET_ARG_COUNT>2</SET_ARG_COUNT><!-- p0: Press/Release, p1:PressDuration, 0 = infinite (if pressing) -->
+					<SET_STATE_EXTERNAL>p0 sp0
+						l0 0 == if{ (O:_PressTime) 0 &gt; if{ (E:SIMULATION TIME, second) (O:_PressTime) - #LONG_CLICK_TIME# &lt; if{ (&gt;H:#KEY_PREFIX#_BottomKnob_Push) 0 (&gt;O:_PressTime) } els{ (&gt;H:#KEY_PREFIX#_BottomKnob_Push_Long) 0 (&gt;O:_PressTime) } } }
+						l0 1 == if{ (E:SIMULATION TIME, second) (&gt;O:_PressTime) p1 (&gt;O:_PressForDuration) }
+					</SET_STATE_EXTERNAL>
+					<ANIM>EXTERNAL</ANIM>
+					<BINDING_INC_0>Push</BINDING_INC_0>
+					<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+					<BINDING_DEC_0>Release</BINDING_DEC_0>
+					<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+					<!-- Configure binding for longpress event -->
+					<BINDING_SET_0>Push_Long</BINDING_SET_0>
+					<BINDING_SET_0_PARAM_0>1</BINDING_SET_0_PARAM_0>
+					<BINDING_SET_0_PARAM_1>#LONG_CLICK_TIME#</BINDING_SET_0_PARAM_1>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_RIGHT_INNER_KNOB_ACTION_PUSH</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseInputEvent ID="AS3000">
+					<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:#KEY_PREFIX#_BottomKnob_Small_INC) } els{ (&gt;H:#KEY_PREFIX#_BottomKnob_Small_DEC) }</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_RIGHT_INNER_KNOB_ACTION</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push_Timed">
+					<CURSOR_LEFT>TurnLeftSmall</CURSOR_LEFT>
+					<CURSOR_RIGHT>TurnRightSmall</CURSOR_RIGHT>
+					<ANIM_NAME_KNOB>#ANIM_NAME_RIGHT_INNER_KNOB#</ANIM_NAME_KNOB>
+					<ANIM_NAME_PUSH>#ANIM_NAME_RIGHT_INNER_KNOB_PUSH#</ANIM_NAME_PUSH>
+					<PART_ID>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</PART_ID>
+					<CLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#_Push)</LEFT_SINGLE_CODE>
+					<LEFT_LEAVE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#_Release)</LEFT_LEAVE_CODE>
+					<TIMER_EVENTS_HANDLED_EXTERNALLY>True</TIMER_EVENTS_HANDLED_EXTERNALLY>
+					<LOCKABLE_EVENT_SECONDARY>LeftRelease</LOCKABLE_EVENT_SECONDARY>
+					<NO_LOCK_EVENT_SECONDARY>RightRelease</NO_LOCK_EVENT_SECONDARY>
+					<MOUSEFLAGS_DRAG_IM>RightAll+LeftAll+Wheel+Lock+Unlock</MOUSEFLAGS_DRAG_IM>
+					<WWISE_EVENT>#WWISE_EVENT_SMALL_KNOB#</WWISE_EVENT>
+					<WWISE_EVENT_1>#WWISE_EVENT_PUSH_1#</WWISE_EVENT_1>
+					<WWISE_EVENT_2>#WWISE_EVENT_PUSH_2#</WWISE_EVENT_2>
+					<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+					<THRESHOLD_X_MOUSE>0.001</THRESHOLD_X_MOUSE>
+				</UseTemplate>
+			</Component>
+			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
+				<NODE_ID>#NODE_ID_RIGHT_OUTER_KNOB#</NODE_ID>
+			</UseTemplate>
+			<Component ID="#NODE_ID_MIDDLE_KNOB#" Node="#NODE_ID_MIDDLE_KNOB#">
+				<Parameters Type="Override">
+					<KNOB_ID>Middle_Knob</KNOB_ID>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>@TT_Package.AS580_MIDDLE_KNOB_TITLE</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="AS3000">
+					<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:#KEY_PREFIX#_TopKnob_Small_INC) } els{ (&gt;H:#KEY_PREFIX#_TopKnob_Small_DEC) }</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_MIDDLE_KNOB_ACTION</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+					<ANIM_NAME>#ANIM_NAME_MIDDLE_KNOB#</ANIM_NAME>
+					<PART_ID>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</PART_ID>
+					<CLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<WWISE_EVENT>#WWISE_EVENT_SMALL_KNOB#</WWISE_EVENT>
+					<THRESHOLD_MOUSE>0.01</THRESHOLD_MOUSE>
+					<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
+				</UseTemplate>
+			</Component>
+			<Component ID="#NODE_ID_LEFT_KNOB#" Node="#NODE_ID_LEFT_KNOB#">
+				<Parameters Type="Override">
+					<KNOB_ID>Left_Knob</KNOB_ID>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>@TT_Package.AS580_LEFT_KNOB_TITLE</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="AS3000">
+					<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:#KEY_PREFIX#_TopKnob_Large_INC) } els{ (&gt;H:#KEY_PREFIX#_TopKnob_Large_DEC) }</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_LEFT_KNOB_ACTION</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+					<ANIM_NAME>#ANIM_NAME_LEFT_KNOB#</ANIM_NAME>
+					<PART_ID>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</PART_ID>
+					<CLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<WWISE_EVENT>#WWISE_EVENT_LARGE_KNOB#</WWISE_EVENT>
+					<THRESHOLD_MOUSE>0.01</THRESHOLD_MOUSE>
+					<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
+				</UseTemplate>
+			</Component>
+			<UseTemplate Name="ASOBO_AS3000_TSC_Screen_Template">
+				<NODE_ID>#SCREEN_NODE_ID#</NODE_ID>
+				<AS3000>AS3000</AS3000>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_AS580_Variant_SubTemplate">
+		<Parameters Type="Default">
 			<EMISSIVE_CODE>(A:LIGHT POTENTIOMETER:4, Percent over 100)</EMISSIVE_CODE>
 			<FAILURE>(A:CIRCUIT AVIONICS ON, Bool)</FAILURE>
 			<ANIM_NEVER_FAILS>True</ANIM_NEVER_FAILS>
-		</DefaultTemplateParameters>
-		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-			<NODE_ID>AS580_text</NODE_ID>
+			<INPUT_EVENT_ID_SOURCE>AS3000_TSC_#ID#</INPUT_EVENT_ID_SOURCE>
+			<SCREEN_NODE_ID>AS3000_TSC_#ID#</SCREEN_NODE_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<AS3000>AS580</AS3000>
+			<TOOLTIP_TITLE_SOFTKEY_1>@TT_Package.AS580_PUSH_SOFTKEY_TITLE_PFD</TOOLTIP_TITLE_SOFTKEY_1>
+			<TT_DESCRIPTION_ID_SOFTKEY_1>@TT_Package.AS580_PUSH_SOFTKEY_ACTION_PFD</TT_DESCRIPTION_ID_SOFTKEY_1>
+			<TOOLTIP_TITLE_SOFTKEY_2>@TT_Package.AS580_PUSH_SOFTKEY_TITLE_MFD</TOOLTIP_TITLE_SOFTKEY_2>
+			<TT_DESCRIPTION_ID_SOFTKEY_2>@TT_Package.AS580_PUSH_SOFTKEY_ACTION_MFD</TT_DESCRIPTION_ID_SOFTKEY_2>
+			<TOOLTIP_TITLE_SOFTKEY_3>@TT_Package.AS580_PUSH_SOFTKEY_TITLE_NAV_COM</TOOLTIP_TITLE_SOFTKEY_3>
+			<TT_DESCRIPTION_ID_SOFTKEY_3>@TT_Package.AS580_PUSH_SOFTKEY_ACTION_NAV_COM</TT_DESCRIPTION_ID_SOFTKEY_3>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AS3000_TSC_Screen_Template">
+			<NODE_ID>#SCREEN_NODE_ID#</NODE_ID>
+			<AS3000>AS3000</AS3000>
+			<USE_STATIC_SCREEN_EMISSIVE>True</USE_STATIC_SCREEN_EMISSIVE>
 		</UseTemplate>
-		<Component ID="AS580_PUSH_01_L" Node="AS580_PUSH_01_L">
-			<UseTemplate Name="ASOBO_GT_Push_Button_Emissive">
-				<ANIM_NAME>AS580_PUSH_01_L</ANIM_NAME>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_SoftKey_1)</LEFT_SINGLE_CODE>
-				<WWISE_EVENT_1>AS580_push_button_on</WWISE_EVENT_1>  
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-				<WWISE_EVENT_2>AS580_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>	 
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_PUSH_02_L" Node="AS580_PUSH_02_L">
-			<UseTemplate Name="ASOBO_GT_Push_Button_Emissive">
-				<ANIM_NAME>AS580_PUSH_02_L</ANIM_NAME>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_SoftKey_2)</LEFT_SINGLE_CODE>
-				<WWISE_EVENT_1>AS580_push_button_on</WWISE_EVENT_1>  
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-				<WWISE_EVENT_2>AS580_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_PUSH_03_L" Node="AS580_PUSH_03_L">
-			<UseTemplate Name="ASOBO_GT_Push_Button_Emissive">
-				<ANIM_NAME>AS580_PUSH_03_L</ANIM_NAME>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_SoftKey_3)</LEFT_SINGLE_CODE>
-				<WWISE_EVENT_1>AS580_push_button_on</WWISE_EVENT_1>  
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-				<WWISE_EVENT_2>AS580_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>	 
-			</UseTemplate>
-			<PartID>SET_XPDR_AS3000_BUTTON</PartID>
-		</Component>
-		<Component ID="AS580_KNOB_01_L" Node="AS580_KNOB_01_L">
-			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
-				<ANIM_NAME>AS580_KNOB_01_L</ANIM_NAME>
-				<CLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_TopKnob_Large_INC)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_TopKnob_Large_DEC)</ANTICLOCKWISE_CODE>
-				<WWISE_EVENT>AS580_big_knob_turn</WWISE_EVENT>
+		<Condition NotEmpty="FRAME_NODE_ID">
+			<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+				<NODE_ID>#FRAME_NODE_ID#</NODE_ID>
+			</UseTemplate>			
+		</Condition>
+		<Loop>
+			<Setup>
+				<Param>KEY_ID</Param>
+				<From>1</From>
+				<Inc>1</Inc>
+				<To>3</To>
+			</Setup>
+			<Do>
+				<UseTemplate Name="ASOBO_AS3000_Softkey_Template">
+					<NODE_ID>AS580_Push_0#KEY_ID#_#DISPLAY_POS##SUFFIX_ID#</NODE_ID>
+					<ANIM_NAME>AS580_Push_0#KEY_ID#_#DISPLAY_POS##SUFFIX_ID#</ANIM_NAME>
+					<PART_ID>AS580_Push_0#KEY_ID#_#DISPLAY_POS#</PART_ID>
+					<HTML_KEY>AS3000_TSC_Horizontal_#ID#_SoftKey_#KEY_ID#</HTML_KEY>
+					<BTN_ID>Softkey_#KEY_ID#</BTN_ID>
+					<TOOLTIP_TITLE_SOFTKEY Process="Param">TOOLTIP_TITLE_SOFTKEY_#KEY_ID#</TOOLTIP_TITLE_SOFTKEY>
+					<TT_DESCRIPTION_ID_SOFTKEY Process="Param">TT_DESCRIPTION_ID_SOFTKEY_#KEY_ID#</TT_DESCRIPTION_ID_SOFTKEY>
+					<TT_DESCRIPTION_INDEX/>
+				</UseTemplate>
+			</Do>
+		</Loop>
+		<Component ID="AS580_Knobs_#ID#">
+			<Parameters Type="Default">
+				<WWISE_EVENT_LARGE_KNOB>AS580_big_knob_turn</WWISE_EVENT_LARGE_KNOB>
+				<WWISE_EVENT_SMALL_KNOB>AS580_knob_turn</WWISE_EVENT_SMALL_KNOB>
+				<WWISE_EVENT_PUSH_1>AS580_knob_push_button_on</WWISE_EVENT_PUSH_1>
+				<WWISE_EVENT_PUSH_2>AS580_knob_push_button_off</WWISE_EVENT_PUSH_2>
 				<COUNT>36</COUNT>
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_KNOB_01_SMALL_L" Node="AS580_KNOB_01_SMALL_L">
-			<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push_Timed">
-				<CURSOR_LEFT>TurnLeftSmall</CURSOR_LEFT>
-				<CURSOR_RIGHT>TurnRightSmall</CURSOR_RIGHT>
-				
-				<ANIM_NAME_KNOB>AS580_KNOB_01_SMALL_L</ANIM_NAME_KNOB>
-				<ANIM_NAME_PUSH>AS580_push_KNOB_01_SMALL_L</ANIM_NAME_PUSH>
-				<CLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_TopKnob_Small_INC)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_TopKnob_Small_DEC)</ANTICLOCKWISE_CODE>
-				<LONG_CLICK_CODE>(&gt;H:AS3000_TSC_Horizontal_1_TopKnob_Push_Long)</LONG_CLICK_CODE>
-				<SHORT_CLICK_CODE>(&gt;H:AS3000_TSC_Horizontal_1_TopKnob_Push)</SHORT_CLICK_CODE>
+				<NODE_ID_LARGE_KNOB>AS580_KNOB_01_#DISPLAY_POS#</NODE_ID_LARGE_KNOB>
+				<ANIM_NAME_LARGE_KNOB>AS580_KNOB_01_#DISPLAY_POS#</ANIM_NAME_LARGE_KNOB>
+				<NODE_ID_SMALL_KNOB>AS580_KNOB_01_SMALL_#DISPLAY_POS#</NODE_ID_SMALL_KNOB>
+				<ANIM_NAME_SMALL_KNOB>AS580_KNOB_01_SMALL_#DISPLAY_POS#</ANIM_NAME_SMALL_KNOB>
+				<ANIM_NAME_SMALL_KNOB_PUSH>AS580_Push_KNOB_01_SMALL_#DISPLAY_POS#</ANIM_NAME_SMALL_KNOB_PUSH>
+				<NODE_ID_LOWER_KNOB>AS580_KNOB_02_#DISPLAY_POS#</NODE_ID_LOWER_KNOB>
+				<ANIM_NAME_LOWER_KNOB>AS580_KNOB_02_#DISPLAY_POS#</ANIM_NAME_LOWER_KNOB>
+				<ANIM_NAME_LOWER_KNOB_PUSH>AS580_Push_KNOB_02_#DISPLAY_POS#</ANIM_NAME_LOWER_KNOB_PUSH>
 				<LONG_CLICK_TIME>2</LONG_CLICK_TIME>
-				<ANIMREF_ID>0</ANIMREF_ID>
-				<ANIMCURSOR_DIR>-1.0</ANIMCURSOR_DIR>
-				<ANIMCURSOR_MIN>-1</ANIMCURSOR_MIN>
-				<ANIMCURSOR_MAX>2</ANIMCURSOR_MAX>
-				<WWISE_EVENT>AS580_knob_turn</WWISE_EVENT>
-				<COUNT>36</COUNT>
-				<WWISE_EVENT_1>AS580_knob_push_button_on</WWISE_EVENT_1>  
-				<WWISE_EVENT_2>AS580_knob_push_button_off</WWISE_EVENT_2> 
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_KNOB_02_L" Node="AS580_KNOB_02_L">
-			<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
-				<CURSOR_LEFT>TurnLeftSmall</CURSOR_LEFT>
-				<CURSOR_RIGHT>TurnRightSmall</CURSOR_RIGHT>
-				<ANIM_NAME_KNOB>AS580_KNOB_02_L</ANIM_NAME_KNOB>
-				<ANIM_NAME_PUSH>AS580_push_KNOB_02_L</ANIM_NAME_PUSH>
-				<CLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_BottomKnob_Small_INC)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_BottomKnob_Small_DEC)</ANTICLOCKWISE_CODE>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_1_BottomKnob_Push)</LEFT_SINGLE_CODE>
-				<ANIMREF_ID>0</ANIMREF_ID>
-				<ANIMCURSOR_DIR>-1.0</ANIMCURSOR_DIR>
-				<ANIMCURSOR_MIN>-1</ANIMCURSOR_MIN>
-				<ANIMCURSOR_MAX>2</ANIMCURSOR_MAX>
-				<WWISE_EVENT>AS580_big_knob_turn</WWISE_EVENT>
-				<COUNT>36</COUNT>
-				<WWISE_EVENT_1>AS580_knob_push_button_on</WWISE_EVENT_1>  
-				<WWISE_EVENT_2>AS580_knob_push_button_off</WWISE_EVENT_2> 
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_PUSH_01_R" Node="AS580_PUSH_01_R">
-			<UseTemplate Name="ASOBO_GT_Push_Button_Emissive">
-				<ANIM_NAME>AS580_PUSH_01_R</ANIM_NAME>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_SoftKey_1)</LEFT_SINGLE_CODE>
-				<WWISE_EVENT_1>AS580_push_button_on</WWISE_EVENT_1>  
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-				<WWISE_EVENT_2>AS580_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>	 
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_PUSH_02_R" Node="AS580_PUSH_02_R">
-			<UseTemplate Name="ASOBO_GT_Push_Button_Emissive">
-				<ANIM_NAME>AS580_PUSH_02_R</ANIM_NAME>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_SoftKey_2)</LEFT_SINGLE_CODE>
-				<WWISE_EVENT_1>AS580_push_button_on</WWISE_EVENT_1>  
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-				<WWISE_EVENT_2>AS580_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>	 
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_PUSH_03_R" Node="AS580_PUSH_03_R">
-			<UseTemplate Name="ASOBO_GT_Push_Button_Emissive">
-				<ANIM_NAME>AS580_PUSH_03_R</ANIM_NAME>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_SoftKey_3)</LEFT_SINGLE_CODE>
-				<WWISE_EVENT_1>AS580_push_button_on</WWISE_EVENT_1>  
-				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-				<WWISE_EVENT_2>AS580_push_button_off</WWISE_EVENT_2> 
-				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>	 
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_KNOB_01_R" Node="AS580_KNOB_01_R">
-			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
-				<ANIM_NAME>AS580_KNOB_01_R</ANIM_NAME>
-				<CLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_TopKnob_Large_INC)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_TopKnob_Large_DEC)</ANTICLOCKWISE_CODE>
-				<WWISE_EVENT>AS580_big_knob_turn</WWISE_EVENT>
-				<COUNT>36</COUNT>
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_KNOB_01_SMALL_R" Node="AS580_KNOB_01_SMALL_R">
-			<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push_Timed">
-				<CURSOR_LEFT>TurnLeftSmall</CURSOR_LEFT>
-				<CURSOR_RIGHT>TurnRightSmall</CURSOR_RIGHT>
-				<ANIM_NAME_KNOB>AS580_KNOB_01_SMALL_R</ANIM_NAME_KNOB>
-				<ANIM_NAME_PUSH>AS580_push_KNOB_01_SMALL_R</ANIM_NAME_PUSH>
-				<CLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_TopKnob_Small_INC)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_TopKnob_Small_DEC)</ANTICLOCKWISE_CODE>
-				<LONG_CLICK_CODE>(&gt;H:AS3000_TSC_Horizontal_2_TopKnob_Push_Long)</LONG_CLICK_CODE>
-				<SHORT_CLICK_CODE>(&gt;H:AS3000_TSC_Horizontal_2_TopKnob_Push)</SHORT_CLICK_CODE>
-				<LONG_CLICK_TIME>2</LONG_CLICK_TIME>
-				<ANIMREF_ID>0</ANIMREF_ID>
-				<ANIMCURSOR_DIR>-1.0</ANIMCURSOR_DIR>
-				<ANIMCURSOR_MIN>-1</ANIMCURSOR_MIN>
-				<ANIMCURSOR_MAX>2</ANIMCURSOR_MAX>
-				<WWISE_EVENT>AS580_knob_turn</WWISE_EVENT>
-				<COUNT>36</COUNT>
-				<WWISE_EVENT_1>AS580_knob_push_button_on</WWISE_EVENT_1>  
-				<WWISE_EVENT_2>AS580_knob_push_button_off</WWISE_EVENT_2> 
-			</UseTemplate>
-		</Component>
-		<Component ID="AS580_KNOB_02_R" Node="AS580_KNOB_02_R">
-			<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
-				<CURSOR_LEFT>TurnLeftSmall</CURSOR_LEFT>
-				<CURSOR_RIGHT>TurnRightSmall</CURSOR_RIGHT>
-				<ANIM_NAME_KNOB>AS580_KNOB_02_R</ANIM_NAME_KNOB>
-				<ANIM_NAME_PUSH>AS580_push_KNOB_02_R</ANIM_NAME_PUSH>
-				<CLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_BottomKnob_Small_INC)</CLOCKWISE_CODE>
-				<ANTICLOCKWISE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_BottomKnob_Small_DEC)</ANTICLOCKWISE_CODE>
-				<LEFT_SINGLE_CODE>(&gt;H:AS3000_TSC_Horizontal_2_BottomKnob_Push)</LEFT_SINGLE_CODE>
-				<ANIMREF_ID>0</ANIMREF_ID>
-				<ANIMCURSOR_DIR>-1.0</ANIMCURSOR_DIR>
-				<ANIMCURSOR_MIN>-1</ANIMCURSOR_MIN>
-				<ANIMCURSOR_MAX>2</ANIMCURSOR_MAX>
-				<WWISE_EVENT>AS580_big_knob_turn</WWISE_EVENT>
-				<COUNT>36</COUNT>
-				<WWISE_EVENT_1>AS580_knob_push_button_on</WWISE_EVENT_1>  
-				<WWISE_EVENT_2>AS580_knob_push_button_off</WWISE_EVENT_2>     
-			</UseTemplate>
+			</Parameters>
+			<Component ID="#NODE_ID_LARGE_KNOB#" Node="#NODE_ID_LARGE_KNOB#">
+				<Parameters Type="Override">
+					<KNOB_ID>Frequency_Knob_Mhz</KNOB_ID>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>@TT_Package.AS580_KNOB_STDBY_MHZ_TITLE</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="AS3000">
+					<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:AS3000_TSC_Horizontal_#ID#_TopKnob_Large_INC) } els{ (&gt;H:AS3000_TSC_Horizontal_#ID#_TopKnob_Large_DEC) }</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_KNOB_STDBY_MHZ_ACTION</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+					<ANIM_NAME>#ANIM_NAME_LARGE_KNOB#</ANIM_NAME>
+					<PART_ID>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</PART_ID>
+					<CLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<WWISE_EVENT>#WWISE_EVENT_LARGE_KNOB#</WWISE_EVENT>
+					<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
+					<THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE>
+				</UseTemplate>
+			</Component>
+			<Component ID="#NODE_ID_SMALL_KNOB#" Node="#NODE_ID_SMALL_KNOB#">
+				<Parameters Type="Override">
+					<KNOB_ID>Frequency_Knob_Khz</KNOB_ID>
+					<BTN_ID_EXTERNAL>Frequency_Swap</BTN_ID_EXTERNAL>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>@TT_Package.AS580_KNOB_STDBY_KHZ_TITLE</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</TOOLTIP_ENTRY_0>
+					<TOOLTIP_ENTRY_1>#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#</TOOLTIP_ENTRY_1>
+				</Parameters>
+				<UseInputEvent ID="AS3000">
+					<TT_INTERACTION>PRIMARY_DOWN+SECONDARY_DOWN</TT_INTERACTION>
+					<TT_INTERACTION_LOCKABLE>PRIMARY_DOWN</TT_INTERACTION_LOCKABLE>
+					<BTN_ID>#BTN_ID_EXTERNAL#</BTN_ID>
+					<!-- Configure event processing -->
+					<SET_ARG_COUNT>2</SET_ARG_COUNT><!-- p0: Press/Release, p1:PressDuration, 0 = infinite (if pressing) -->
+					<SET_STATE_EXTERNAL>p0 sp0
+						l0 0 == if{ (O:_PressTime) 0 &gt; if{ (E:SIMULATION TIME, second) (O:_PressTime) - #LONG_CLICK_TIME# &lt; if{ (&gt;H:AS3000_TSC_Horizontal_#ID#_TopKnob_Push) 0 (&gt;O:_PressTime) } els{ (&gt;H:AS3000_TSC_Horizontal_#ID#_TopKnob_Push_Long) 0 (&gt;O:_PressTime) } } }
+						l0 1 == if{ (E:SIMULATION TIME, second) (&gt;O:_PressTime) p1 (&gt;O:_PressForDuration) }
+					</SET_STATE_EXTERNAL>
+					<ANIM>EXTERNAL</ANIM>
+					<BINDING_INC_0>Push</BINDING_INC_0>
+					<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+					<BINDING_DEC_0>Release</BINDING_DEC_0>
+					<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+					<!-- Configure binding for longpress event -->
+					<BINDING_SET_0>Push_Long</BINDING_SET_0>
+					<BINDING_SET_0_PARAM_0>1</BINDING_SET_0_PARAM_0>
+					<BINDING_SET_0_PARAM_1>#LONG_CLICK_TIME#</BINDING_SET_0_PARAM_1>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_KNOB_STDBY_KHZ_ACTION_PUSH</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseInputEvent ID="AS3000">
+					<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:AS3000_TSC_Horizontal_#ID#_TopKnob_Small_INC) } els{ (&gt;H:AS3000_TSC_Horizontal_#ID#_TopKnob_Small_DEC) }</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_KNOB_STDBY_KHZ_ACTION</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push_Timed">
+					<CURSOR_LEFT>TurnLeftSmall</CURSOR_LEFT>
+					<CURSOR_RIGHT>TurnRightSmall</CURSOR_RIGHT>
+					<ANIM_NAME_KNOB>#ANIM_NAME_SMALL_KNOB#</ANIM_NAME_KNOB>
+					<ANIM_NAME_PUSH>#ANIM_NAME_SMALL_KNOB_PUSH#</ANIM_NAME_PUSH>
+					<PART_ID>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</PART_ID>
+					<CLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#_Push)</LEFT_SINGLE_CODE>
+					<LEFT_LEAVE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#_Release)</LEFT_LEAVE_CODE>
+					<TIMER_EVENTS_HANDLED_EXTERNALLY>True</TIMER_EVENTS_HANDLED_EXTERNALLY>
+					<LOCKABLE_EVENT_SECONDARY>LeftRelease</LOCKABLE_EVENT_SECONDARY>
+					<NO_LOCK_EVENT_SECONDARY>RightRelease</NO_LOCK_EVENT_SECONDARY>
+					<MOUSEFLAGS_DRAG_IM>RightAll+LeftAll+Wheel+Lock+Unlock</MOUSEFLAGS_DRAG_IM>
+					<WWISE_EVENT>#WWISE_EVENT_SMALL_KNOB#</WWISE_EVENT>
+					<WWISE_EVENT_1>#WWISE_EVENT_PUSH_1#</WWISE_EVENT_1>
+					<WWISE_EVENT_2>#WWISE_EVENT_PUSH_2#</WWISE_EVENT_2>
+					<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+					<THRESHOLD_X_MOUSE>0.001</THRESHOLD_X_MOUSE>
+				</UseTemplate>
+			</Component>
+			<Component ID="#NODE_ID_LOWER_KNOB#" Node="#NODE_ID_LOWER_KNOB#">
+				<Parameters Type="Override">
+					<KNOB_ID>Multifunction_Knob</KNOB_ID>
+					<BTN_ID_EXTERNAL>Multifunction_Knob_Button</BTN_ID_EXTERNAL>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>@TT_Package.AS580_LOWER_KNOB_TITLE</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</TOOLTIP_ENTRY_0>
+					<TOOLTIP_ENTRY_1>#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#</TOOLTIP_ENTRY_1>
+				</Parameters>
+				<UseInputEvent ID="AS3000">
+					<BTN_ID>#BTN_ID_EXTERNAL#</BTN_ID>
+					<ANIM>HOLD</ANIM>
+					<ANIM_VAR>_PushAnimVar</ANIM_VAR>
+					<TT_INTERACTION>PRIMARY_DOWN+SECONDARY_DOWN</TT_INTERACTION>
+					<TT_INTERACTION_LOCKABLE>PRIMARY_DOWN</TT_INTERACTION_LOCKABLE>
+					<BINDING_INC_0>Push</BINDING_INC_0>
+					<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+					<SET_STATE_EXTERNAL>p0 if{ (&gt;H:AS3000_TSC_Horizontal_#ID#_BottomKnob_Push) }</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_LOWER_KNOB_ACTION_PUSH</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseInputEvent ID="AS3000">
+					<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:AS3000_TSC_Horizontal_#ID#_BottomKnob_Small_INC) } els{ (&gt;H:AS3000_TSC_Horizontal_#ID#_BottomKnob_Small_DEC) }</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AS580_LOWER_KNOB_ACTION</TT_DESCRIPTION_ID>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
+					<ANIM_NAME_KNOB>#ANIM_NAME_LOWER_KNOB#</ANIM_NAME_KNOB>
+					<ANIM_NAME_PUSH>#ANIM_NAME_LOWER_KNOB_PUSH#</ANIM_NAME_PUSH>
+					<PART_ID>#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#</PART_ID>
+					<CLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+					<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID_EXTERNAL#_Push)</LEFT_SINGLE_CODE>
+					<WWISE_EVENT>#WWISE_EVENT_SMALL_KNOB#</WWISE_EVENT>
+					<WWISE_EVENT_1>#WWISE_EVENT_PUSH_1#</WWISE_EVENT_1>
+					<WWISE_EVENT_2>#WWISE_EVENT_PUSH_2#</WWISE_EVENT_2>
+				</UseTemplate>
+			</Component>
 		</Component>
 	</Template>
 </ModelBehaviors>

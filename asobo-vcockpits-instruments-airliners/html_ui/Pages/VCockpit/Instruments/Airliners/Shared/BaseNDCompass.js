@@ -100,11 +100,11 @@ class Jet_NDCompass extends HTMLElement {
     }
     showArcRange(_show) {
         if (this.arcRangeGroup)
-            this.arcRangeGroup.setAttribute("visibility", (_show) ? "visible" : "hidden");
+            diffAndSetAttribute(this.arcRangeGroup, "visibility", (_show) ? "visible" : "hidden");
     }
     showArcMask(_val) {
         if (this.arcMaskGroup)
-            this.arcMaskGroup.setAttribute("visibility", (_val) ? "visible" : "hidden");
+            diffAndSetAttribute(this.arcMaskGroup, "visibility", (_val) ? "visible" : "hidden");
     }
     setFullscreen(_val) {
         if (this._fullscreen != _val) {
@@ -240,17 +240,20 @@ class Jet_NDCompass extends HTMLElement {
         this.updateMapRange();
     }
     updateCompass(_deltaTime) {
-        var simHeading = SimVar.GetSimVarValue("PLANE HEADING DEGREES MAGNETIC", "degree");
+        var simHeading = Simplane.getHeadingMagnetic();
         var simSelectedHeading = 0;
         if (this.aircraft === Aircraft.B747_8 || this.aircraft === Aircraft.AS01B) {
             simSelectedHeading = Simplane.getAutoPilotSelectedHeadingLockValue(false);
+        }
+        else if (this.aircraft === Aircraft.CJ4) {
+            simSelectedHeading = Simplane.getAutoPilotHeadingLockValueDegrees();
         }
         else {
             simSelectedHeading = Simplane.getAutoPilotDisplayedHeadingValue(false);
         }
         var simTrack = Simplane.getTrackAngle();
         var simSelectedTrack = Simplane.getAutoPilotDisplayedHeadingValue(false);
-        var simGroundSpeed = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
+        var simGroundSpeed = Simplane.getGroundSpeed();
         if (Simplane.getAutoPilotTRKModeActive() || Simplane.getAutoPilotTRKFPAModeActive())
             this._referenceMode = Jet_NDCompass_Reference.TRACK;
         else
@@ -266,24 +269,24 @@ class Jet_NDCompass extends HTMLElement {
             if (this.referenceMode == Jet_NDCompass_Reference.TRACK) {
                 compass = simTrack;
                 if (this.currentRefMode) {
-                    this.currentRefMode.textContent = "TRK";
+                    diffAndSetText(this.currentRefMode, "TRK");
                 }
             }
             else {
                 compass = simHeading;
                 if (this.currentRefMode) {
-                    this.currentRefMode.textContent = "HDG";
+                    diffAndSetText(this.currentRefMode, "HDG");
                 }
             }
             var roundedCompass = fastToFixed(compass, 2);
-            this.setAttribute("rotation", roundedCompass);
+            diffAndSetAttribute(this, "rotation", roundedCompass);
             if (this.currentRefGroup)
                 this.currentRefGroup.classList.toggle('hide', false);
             if (this.currentRefValue)
-                this.currentRefValue.textContent = Utils.leadingZeros(compass % 360, 3, 0);
+                diffAndSetText(this.currentRefValue, Utils.leadingZeros(compass % 360, 3, 0));
         }
         else {
-            this.setAttribute("rotation", "0");
+            diffAndSetAttribute(this, "rotation", "0");
             if (this.currentRefGroup)
                 this.currentRefGroup.classList.toggle('hide', true);
         }
@@ -300,7 +303,7 @@ class Jet_NDCompass extends HTMLElement {
                         selectedHeading = Simplane.getAutoPilotDisplayedHeadingValue(false);
                 }
                 var roundedSelectedHeading = fastToFixed(selectedHeading, 3);
-                this.setAttribute("selected_heading_bug_rotation", roundedSelectedHeading);
+                diffAndSetAttribute(this, "selected_heading_bug_rotation", roundedSelectedHeading);
                 if (this.trackingLine)
                     this.trackingLine.classList.toggle('hide', !showTrackLine);
                 if (this.navigationMode == Jet_NDCompass_Navigation.NAV) {
@@ -315,7 +318,7 @@ class Jet_NDCompass extends HTMLElement {
                     this.selectedTrackGroup.classList.toggle('hide', true);
                 if (this.selectedRefGroup) {
                     if (this.selectedRefValue)
-                        this.selectedRefValue.textContent = selectedHeading.toString();
+                        diffAndSetText(this.selectedRefValue, selectedHeading + '');
                     this.selectedRefGroup.classList.toggle('hide', false);
                 }
                 if (this.headingGroup)
@@ -341,7 +344,7 @@ class Jet_NDCompass extends HTMLElement {
                     this.showSelectedHeadingTimer = 0;
                 }
                 var roundedSelectedHeading = fastToFixed(selectedHeading, 3);
-                this.setAttribute("selected_heading_bug_rotation", roundedSelectedHeading);
+                diffAndSetAttribute(this, "selected_heading_bug_rotation", roundedSelectedHeading);
                 if (this.navigationMode == Jet_NDCompass_Navigation.NAV) {
                     if (this.selectedHeadingGroup)
                         this.selectedHeadingGroup.classList.toggle('hide', false);
@@ -356,7 +359,7 @@ class Jet_NDCompass extends HTMLElement {
                     this.selectedTrackGroup.classList.toggle('hide', true);
                 if (this.selectedRefGroup) {
                     if (this.selectedRefValue)
-                        this.selectedRefValue.textContent = selectedHeading.toString();
+                        diffAndSetText(this.selectedRefValue, selectedHeading + '');
                     this.selectedRefGroup.classList.toggle('hide', false);
                 }
             }
@@ -380,7 +383,7 @@ class Jet_NDCompass extends HTMLElement {
                 }
                 if (showSelectedHeading) {
                     selectedHeading = simSelectedHeading;
-                    this.setAttribute("selected_heading_bug_rotation", fastToFixed(selectedHeading, 3));
+                    diffAndSetAttribute(this, "selected_heading_bug_rotation", fastToFixed(selectedHeading, 3));
                     if (this.navigationMode == Jet_NDCompass_Navigation.NAV) {
                         if (this.selectedHeadingGroup)
                             this.selectedHeadingGroup.classList.toggle('hide', false);
@@ -404,7 +407,7 @@ class Jet_NDCompass extends HTMLElement {
                         this.selectedTrackGroup.classList.toggle('hide', true);
                     if (this.selectedRefGroup) {
                         if (this.selectedRefValue)
-                            this.selectedRefValue.textContent = selectedHeading.toString();
+                            diffAndSetText(this.selectedRefValue, selectedHeading + '');
                         this.selectedRefGroup.classList.toggle('hide', false);
                     }
                 }
@@ -421,7 +424,7 @@ class Jet_NDCompass extends HTMLElement {
         else {
             showSelectedHeading = true;
             selectedHeading = simSelectedTrack;
-            this.setAttribute("selected_tracking_bug_rotation", fastToFixed(selectedHeading, 3));
+            diffAndSetAttribute(this, "selected_tracking_bug_rotation", fastToFixed(selectedHeading, 3));
             if (this.trackingLine)
                 this.trackingLine.classList.toggle('hide', false);
             if (this.selectedHeadingGroup)
@@ -430,7 +433,7 @@ class Jet_NDCompass extends HTMLElement {
                 this.selectedTrackGroup.classList.toggle('hide', false);
             if (this.selectedRefGroup) {
                 if (this.selectedRefValue)
-                    this.selectedRefValue.textContent = selectedHeading.toString();
+                    diffAndSetText(this.selectedRefValue, selectedHeading + '');
                 this.selectedRefGroup.classList.toggle('hide', false);
             }
             if (this.headingGroup)
@@ -454,9 +457,9 @@ class Jet_NDCompass extends HTMLElement {
                         this.selectedHeadingLeftText.classList.toggle('hide', true);
                         this.selectedHeadingRightText.classList.toggle('hide', true);
                     }
-                    let text = selectedHeading.toFixed(0).padStart(3, "0");
-                    this.selectedHeadingLeftText.textContent = text;
-                    this.selectedHeadingRightText.textContent = text;
+                    let text = fastToFixed(selectedHeading, 0).padStart(3, "0");
+                    diffAndSetText(this.selectedHeadingLeftText, text);
+                    diffAndSetText(this.selectedHeadingRightText, text);
                 }
                 else {
                     this.selectedHeadingLeftText.classList.toggle('hide', true);
@@ -470,17 +473,17 @@ class Jet_NDCompass extends HTMLElement {
         }
         var heading = simHeading;
         var roundedHeading = fastToFixed(heading, 3);
-        this.setAttribute("heading_bug_rotation", roundedHeading);
+        diffAndSetAttribute(this, "heading_bug_rotation", roundedHeading);
         if (simGroundSpeed <= 10)
             simTrack = simHeading;
         var roundedTracking = fastToFixed(simTrack, 3);
-        this.setAttribute("tracking_bug_rotation", roundedTracking);
+        diffAndSetAttribute(this, "tracking_bug_rotation", roundedTracking);
         if (this.ilsGroup) {
             if (this._showILS || this.navigationMode == Jet_NDCompass_Navigation.ILS) {
                 let localizer = this.gps.radioNav.getBestILSBeacon();
                 if (localizer && localizer.id > 0) {
                     var roundedCourse = fastToFixed(localizer.course, 3);
-                    this.setAttribute("ils_bug_rotation", roundedCourse);
+                    diffAndSetAttribute(this, "ils_bug_rotation", roundedCourse);
                     this.ilsGroup.classList.toggle('hide', false);
                 }
                 else
@@ -496,12 +499,12 @@ class Jet_NDCompass extends HTMLElement {
             for (let i = 0; i < this.mapRanges.length; i++) {
                 let range = this.mapRange * this.mapRanges[i].factor;
                 if (range < 1.0 && this.mapRanges[i].removeInteger) {
-                    let rangeText = (Math.floor(range * 100) / 100).toFixed(2);
+                    let rangeText = fastToFixed((Math.floor(range * 100) / 100), 2);
                     var radixPos = rangeText.indexOf('.');
-                    this.mapRanges[i].text.textContent = rangeText.slice(radixPos);
+                    diffAndSetText(this.mapRanges[i].text, rangeText.slice(radixPos));
                 }
                 else {
-                    this.mapRanges[i].text.textContent = range.toString();
+                    diffAndSetText(this.mapRanges[i].text, range + '');
                 }
             }
         }
@@ -526,19 +529,19 @@ class Jet_NDCompass extends HTMLElement {
                         let backCourse = SimVar.GetSimVarValue("AUTOPILOT BACKCOURSE HOLD", "bool");
                         if (backCourse)
                             deviation = -deviation;
-                        this.setAttribute("course", beacon.course.toString());
-                        this.setAttribute("course_deviation", deviation.toString());
+                        diffAndSetAttribute(this, "course", beacon.course + '');
+                        diffAndSetAttribute(this, "course_deviation", deviation + '');
                         if (SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + beacon.id, "Bool")) {
                             displayVerticalDeviation = true;
-                            this.setAttribute("vertical_deviation", (SimVar.GetSimVarValue("NAV GSI:" + beacon.id, "number") / 127.0).toString());
+                            diffAndSetAttribute(this, "vertical_deviation", (SimVar.GetSimVarValue("NAV GSI:" + beacon.id, "number") / 127.0) + '');
                         }
                     }
                     else {
-                        this.setAttribute("course", compass.toString());
-                        this.setAttribute("course_deviation", "0");
+                        diffAndSetAttribute(this, "course", compass + '');
+                        diffAndSetAttribute(this, "course_deviation", "0");
                     }
-                    this.setAttribute("display_course_deviation", displayCourseDeviation ? "True" : "False");
-                    this.setAttribute("display_vertical_deviation", displayVerticalDeviation ? "True" : "False");
+                    diffAndSetAttribute(this, "display_course_deviation", displayCourseDeviation ? "True" : "False");
+                    diffAndSetAttribute(this, "display_vertical_deviation", displayVerticalDeviation ? "True" : "False");
                     this.course.classList.toggle('hide', false);
                 }
                 else {
@@ -573,67 +576,67 @@ class Jet_NDCompass extends HTMLElement {
             case "vertical_deviation":
                 if (this.glideSlopeCursor) {
                     let y = (parseFloat(newValue) * 25 * factor) + (50 * factor);
-                    this.glideSlopeCursor.setAttribute("transform", "translate(" + (95 * factor) + " " + y.toFixed(0) + ")");
+                    diffAndSetAttribute(this.glideSlopeCursor, "transform", "translate(" + (95 * factor) + " " + fastToFixed(y, 0) + ")");
                 }
                 break;
             case "display_vertical_deviation":
                 if (newValue == "True") {
                     if (this.glideSlopeCursor)
-                        this.glideSlopeCursor.setAttribute("visibility", "visible");
+                        diffAndSetAttribute(this.glideSlopeCursor, "visibility", "visible");
                 }
                 else {
                     if (this.glideSlopeCursor) {
-                        this.glideSlopeCursor.setAttribute("visibility", "hidden");
+                        diffAndSetAttribute(this.glideSlopeCursor, "visibility", "hidden");
                     }
                 }
                 break;
             case "display_course_deviation":
                 if (newValue == "True") {
-                    this.courseTO.setAttribute("fill", this.courseColor.toString());
-                    this.courseDeviation.setAttribute("visibility", "visible");
-                    this.courseFROM.setAttribute("fill", this.courseColor.toString());
+                    diffAndSetAttribute(this.courseTO, "fill", this.courseColor + '');
+                    diffAndSetAttribute(this.courseDeviation, "visibility", "visible");
+                    diffAndSetAttribute(this.courseFROM, "fill", this.courseColor + '');
                     if (this.courseTOLine)
-                        this.courseTOLine.setAttribute("visibility", "visible");
+                        diffAndSetAttribute(this.courseTOLine, "visibility", "visible");
                     if (this.courseFROMLine)
-                        this.courseFROMLine.setAttribute("visibility", "visible");
+                        diffAndSetAttribute(this.courseFROMLine, "visibility", "visible");
                 }
                 else {
-                    this.courseTO.setAttribute("fill", "none");
-                    this.courseDeviation.setAttribute("visibility", "hidden");
-                    this.courseFROM.setAttribute("fill", "none");
+                    diffAndSetAttribute(this.courseTO, "fill", "none");
+                    diffAndSetAttribute(this.courseDeviation, "visibility", "hidden");
+                    diffAndSetAttribute(this.courseFROM, "fill", "none");
                     if (this.courseTOLine)
-                        this.courseTOLine.setAttribute("visibility", "hidden");
+                        diffAndSetAttribute(this.courseTOLine, "visibility", "hidden");
                     if (this.courseFROMLine)
-                        this.courseFROMLine.setAttribute("visibility", "hidden");
+                        diffAndSetAttribute(this.courseFROMLine, "visibility", "hidden");
                 }
                 break;
             case "course":
                 if (this.course) {
-                    this.course.setAttribute("transform", "rotate(" + (newValue) + " " + (50 * factor) + " " + (50 * factor) + ")");
+                    diffAndSetAttribute(this.course, "transform", "rotate(" + (newValue) + " " + (50 * factor) + " " + (50 * factor) + ")");
                 }
                 break;
             case "course_deviation":
                 if (this.courseDeviation) {
                     if (this.displayMode == Jet_NDCompass_Display.ARC)
-                        this.courseDeviation.setAttribute("transform", "translate(" + (Math.min(Math.max(parseFloat(newValue), -1), 1) * 100 * factor) + ")");
+                        diffAndSetAttribute(this.courseDeviation, "transform", "translate(" + (Math.min(Math.max(parseFloat(newValue), -1), 1) * 100 * factor) + ")");
                     else
-                        this.courseDeviation.setAttribute("transform", "translate(" + (Math.min(Math.max(parseFloat(newValue), -1), 1) * 20 * factor) + ")");
+                        diffAndSetAttribute(this.courseDeviation, "transform", "translate(" + (Math.min(Math.max(parseFloat(newValue), -1), 1) * 20 * factor) + ")");
                 }
                 break;
             case "bearing1_bearing":
                 if (newValue != "") {
                     if (this.bearing1_Vor)
-                        this.bearing1_Vor.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
+                        diffAndSetAttribute(this.bearing1_Vor, "transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
                     if (this.bearing1_Adf)
-                        this.bearing1_Adf.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
+                        diffAndSetAttribute(this.bearing1_Adf, "transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
                 }
                 break;
             case "bearing2_bearing":
                 if (newValue != "") {
                     if (this.bearing1_Vor)
-                        this.bearing2_Vor.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
+                        diffAndSetAttribute(this.bearing2_Vor, "transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
                     if (this.bearing1_Adf)
-                        this.bearing2_Adf.setAttribute("transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
+                        diffAndSetAttribute(this.bearing2_Adf, "transform", "rotate(" + newValue + " " + (50 * factor) + " " + (50 * factor) + ")");
                 }
                 break;
             case "hud":
@@ -646,24 +649,24 @@ class Jet_NDCompass extends HTMLElement {
             this.isBearing1Displayed = _show;
             if (this.bearingCircle) {
                 if (this.isBearing1Displayed || this.isBearing2Displayed) {
-                    this.bearingCircle.setAttribute("visibility", "visible");
+                    diffAndSetAttribute(this.bearingCircle, "visibility", "visible");
                 }
                 else {
-                    this.bearingCircle.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.bearingCircle, "visibility", "hidden");
                 }
             }
             if (this.bearing1_Vor || this.bearing1_Adf) {
                 if (this.isBearing1Displayed && this.bearing1_State == NAV_AID_STATE.VOR) {
-                    this.bearing1_Vor.setAttribute("visibility", "visible");
-                    this.bearing1_Adf.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.bearing1_Vor, "visibility", "visible");
+                    diffAndSetAttribute(this.bearing1_Adf, "visibility", "hidden");
                 }
                 else if (this.isBearing1Displayed && this.bearing1_State == NAV_AID_STATE.ADF) {
-                    this.bearing1_Vor.setAttribute("visibility", "hidden");
-                    this.bearing1_Adf.setAttribute("visibility", "visible");
+                    diffAndSetAttribute(this.bearing1_Vor, "visibility", "hidden");
+                    diffAndSetAttribute(this.bearing1_Adf, "visibility", "visible");
                 }
                 else {
-                    this.bearing1_Vor.setAttribute("visibility", "hidden");
-                    this.bearing1_Adf.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.bearing1_Vor, "visibility", "hidden");
+                    diffAndSetAttribute(this.bearing1_Adf, "visibility", "hidden");
                 }
             }
         }
@@ -671,24 +674,24 @@ class Jet_NDCompass extends HTMLElement {
             this.isBearing2Displayed = _show;
             if (this.bearingCircle) {
                 if (this.isBearing1Displayed || this.isBearing2Displayed) {
-                    this.bearingCircle.setAttribute("visibility", "visible");
+                    diffAndSetAttribute(this.bearingCircle, "visibility", "visible");
                 }
                 else {
-                    this.bearingCircle.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.bearingCircle, "visibility", "hidden");
                 }
             }
             if (this.bearing2_Vor || this.bearing2_Adf) {
                 if (this.isBearing2Displayed && this.bearing2_State == NAV_AID_STATE.VOR) {
-                    this.bearing2_Vor.setAttribute("visibility", "visible");
-                    this.bearing2_Adf.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.bearing2_Vor, "visibility", "visible");
+                    diffAndSetAttribute(this.bearing2_Adf, "visibility", "hidden");
                 }
                 else if (this.isBearing2Displayed && this.bearing2_State == NAV_AID_STATE.ADF) {
-                    this.bearing2_Vor.setAttribute("visibility", "hidden");
-                    this.bearing2_Adf.setAttribute("visibility", "visible");
+                    diffAndSetAttribute(this.bearing2_Vor, "visibility", "hidden");
+                    diffAndSetAttribute(this.bearing2_Adf, "visibility", "visible");
                 }
                 else {
-                    this.bearing2_Vor.setAttribute("visibility", "hidden");
-                    this.bearing2_Adf.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.bearing2_Vor, "visibility", "hidden");
+                    diffAndSetAttribute(this.bearing2_Adf, "visibility", "hidden");
                 }
             }
         }
@@ -700,7 +703,7 @@ class Jet_NDCompass extends HTMLElement {
             if (beacon.id > 0) {
                 wantedState = NAV_AID_STATE.VOR;
                 let degree = (180 + beacon.radial) % 360;
-                this.setAttribute("bearing" + _index + "_bearing", degree.toString());
+                diffAndSetAttribute(this, "bearing" + _index + "_bearing", degree + '');
             }
         }
         else if (_state == NAV_AID_STATE.ADF) {
@@ -708,16 +711,16 @@ class Jet_NDCompass extends HTMLElement {
             if (hasNav) {
                 wantedState = NAV_AID_STATE.ADF;
                 let degree = (180 + SimVar.GetSimVarValue("ADF RADIAL MAG:" + _index, "degree")) % 360;
-                this.setAttribute("bearing" + _index + "_bearing", degree.toString());
+                diffAndSetAttribute(this, "bearing" + _index + "_bearing", degree + '');
             }
         }
         if (_index == 1 && wantedState != this.bearing1_State) {
             this.bearing1_State = wantedState;
-            this.setAttribute("show_bearing1", (wantedState == NAV_AID_STATE.OFF) ? "false" : "true");
+            diffAndSetAttribute(this, "show_bearing1", (wantedState == NAV_AID_STATE.OFF) ? "false" : "true");
         }
         else if (_index == 2 && wantedState != this.bearing2_State) {
             this.bearing2_State = wantedState;
-            this.setAttribute("show_bearing2", (wantedState == NAV_AID_STATE.OFF) ? "false" : "true");
+            diffAndSetAttribute(this, "show_bearing2", (wantedState == NAV_AID_STATE.OFF) ? "false" : "true");
         }
     }
     applyRotation() {
@@ -737,19 +740,19 @@ class Jet_NDCompass extends HTMLElement {
             ilsBug = this.degreeToArc(ilsBug);
         }
         if (this.rotatingCircle)
-            this.rotatingCircle.setAttribute("transform", this.rotatingCircleTrs + " rotate(" + (-course) + " " + factor + " " + factor + ")");
+            diffAndSetAttribute(this.rotatingCircle, "transform", this.rotatingCircleTrs + " rotate(" + (-course) + " " + factor + " " + factor + ")");
         if (this.graduations)
-            this.graduations.setAttribute("transform", "rotate(" + (-course) + " " + factor + " " + factor + ")");
+            diffAndSetAttribute(this.graduations, "transform", "rotate(" + (-course) + " " + factor + " " + factor + ")");
         if (this.trackingGroup)
-            this.trackingGroup.setAttribute("transform", "rotate(" + trackingBug + " " + factor + " " + factor + ")");
+            diffAndSetAttribute(this.trackingGroup, "transform", "rotate(" + trackingBug + " " + factor + " " + factor + ")");
         if (this.headingGroup)
-            this.headingGroup.setAttribute("transform", "rotate(" + headingBug + " " + factor + " " + factor + ")");
+            diffAndSetAttribute(this.headingGroup, "transform", "rotate(" + headingBug + " " + factor + " " + factor + ")");
         if (this.selectedHeadingGroup)
-            this.selectedHeadingGroup.setAttribute("transform", "rotate(" + selectedHeadingBug + " " + factor + " " + factor + ")");
+            diffAndSetAttribute(this.selectedHeadingGroup, "transform", "rotate(" + selectedHeadingBug + " " + factor + " " + factor + ")");
         if (this.selectedTrackGroup)
-            this.selectedTrackGroup.setAttribute("transform", "rotate(" + selectedTrackingBug + " " + factor + " " + factor + ")");
+            diffAndSetAttribute(this.selectedTrackGroup, "transform", "rotate(" + selectedTrackingBug + " " + factor + " " + factor + ")");
         if (this.ilsGroup)
-            this.ilsGroup.setAttribute("transform", "rotate(" + ilsBug + " " + factor + " " + factor + ")");
+            diffAndSetAttribute(this.ilsGroup, "transform", "rotate(" + ilsBug + " " + factor + " " + factor + ")");
     }
     degreeToArc(_wantedAngle) {
         let tracking = _wantedAngle;
@@ -769,14 +772,14 @@ class Jet_NDCompass extends HTMLElement {
         let range = new Jet_NDCompass_Range();
         {
             range.text = document.createElementNS(Avionics.SVG.NS, "text");
-            range.text.textContent = "";
-            range.text.setAttribute("x", _x.toString());
-            range.text.setAttribute("y", _y.toString());
-            range.text.setAttribute("fill", _color);
-            range.text.setAttribute("font-size", _size.toString());
-            range.text.setAttribute("font-family", "Roboto-Light");
-            range.text.setAttribute("text-anchor", "middle");
-            range.text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(range.text, "");
+            diffAndSetAttribute(range.text, "x", _x + '');
+            diffAndSetAttribute(range.text, "y", _y + '');
+            diffAndSetAttribute(range.text, "fill", _color);
+            diffAndSetAttribute(range.text, "font-size", _size + '');
+            diffAndSetAttribute(range.text, "font-family", "Roboto-Light");
+            diffAndSetAttribute(range.text, "text-anchor", "middle");
+            diffAndSetAttribute(range.text, "alignment-baseline", "central");
             range.factor = _rangeFactor;
             range.removeInteger = _removeInteger;
             this.mapRanges.push(range);
@@ -785,11 +788,11 @@ class Jet_NDCompass extends HTMLElement {
             let w = 80;
             let h = 40;
             let bg = document.createElementNS(Avionics.SVG.NS, "rect");
-            bg.setAttribute("x", (_x - w * 0.5).toString());
-            bg.setAttribute("y", (_y - h * 0.5).toString());
-            bg.setAttribute("width", w.toString());
-            bg.setAttribute("height", h.toString());
-            bg.setAttribute("fill", "black");
+            diffAndSetAttribute(bg, "x", (_x - w * 0.5) + '');
+            diffAndSetAttribute(bg, "y", (_y - h * 0.5) + '');
+            diffAndSetAttribute(bg, "width", w + '');
+            diffAndSetAttribute(bg, "height", h + '');
+            diffAndSetAttribute(bg, "fill", "black");
             _parent.appendChild(bg);
         }
         _parent.appendChild(range.text);

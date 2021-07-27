@@ -80,7 +80,7 @@ class SearchFieldWaypointICAO {
             }
         }
         for (let i = 0; i < this.elements.length; i++) {
-            this.elements[i].innerHTML = ident;
+            diffAndSetHTML(this.elements[i], ident);
         }
     }
     SetWaypoint(_type, _icao) {
@@ -256,7 +256,7 @@ class SearchFieldWaypointName {
             }
         }
         for (let i = 0; i < this.elements.length; i++) {
-            this.elements[i].innerHTML = name;
+            diffAndSetHTML(this.elements[i], name);
         }
     }
     SetWaypoint(_type, _icao) {
@@ -320,7 +320,7 @@ class SearchFieldAdfFrequency {
         if (this.isActive && !this.container.IsEditingSearchField()) {
             this.isActive = false;
         }
-        var freq = SimVar.GetSimVarValue("ADF STANDBY FREQUENCY:1", "KHz").toFixed(1);
+        var freq = fastToFixed(SimVar.GetSimVarValue("ADF STANDBY FREQUENCY:1", "KHz"), 1);
         if (this.isActive) {
             freq = "000000".slice(freq.length) + freq;
             var state = this.container.blinkGetState(400, 200) ? "Blink" : "Off";
@@ -329,7 +329,7 @@ class SearchFieldAdfFrequency {
             freq = freq.replace(regex, replace);
         }
         for (let i = 0; i < this.elements.length; i++) {
-            this.elements[i].innerHTML = freq;
+            diffAndSetHTML(this.elements[i], freq);
         }
     }
     StartSearch(_callback = null) {
@@ -417,13 +417,13 @@ class SearchFieldTime {
         if (this.isActive && !this.container.IsEditingSearchField()) {
             this.isActive = false;
         }
-        let display = this.values[0].toString() + this.values[1].toString() + ":" + this.values[2].toString() + this.values[3].toString() + ":" + this.values[4].toString() + this.values[5].toString();
+        let display = this.values[0] + '' + this.values[1] + '' + ":" + this.values[2] + '' + this.values[3] + '' + ":" + this.values[4] + '' + this.values[5] + '';
         var state = this.container.blinkGetState(400, 200) ? "Blink" : "Off";
         var regex = new RegExp('^(.{' + Math.floor(this.cursorPos * 1.5) + '})(.)(.*)');
         var replace = '$1<span class="Blinking" state="' + state + '">$2</span>$3';
         let finalDisplay = display.replace(regex, replace);
         for (let i = 0; i < this.elements.length; i++) {
-            Avionics.Utils.diffAndSet(this.elements[i], finalDisplay);
+            diffAndSetText(this.elements[i], finalDisplay);
         }
     }
     StartSearch(_callback = null) {
@@ -487,13 +487,13 @@ class SearchFieldAltitude {
             this.isActive = false;
         }
         if (this.isActive) {
-            let display = this.values[0].toString() + this.values[1].toString() + this.values[2].toString() + this.values[3].toString() + this.values[4].toString() + "FT";
+            let display = this.values[0] + '' + this.values[1] + '' + this.values[2] + '' + this.values[3] + '' + this.values[4] + '' + "FT";
             var state = this.container.blinkGetState(400, 200) ? "Blink" : "Off";
             var regex = new RegExp('^(.{' + this.cursorPos + '})(.)(.*)');
             var replace = '$1<span class="Blinking" state="' + state + '">$2</span>$3';
             let finalDisplay = display.replace(regex, replace);
             for (let i = 0; i < this.elements.length; i++) {
-                Avionics.Utils.diffAndSet(this.elements[i], finalDisplay);
+                diffAndSetHTML(this.elements[i], finalDisplay);
             }
         }
     }

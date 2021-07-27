@@ -24,17 +24,17 @@ class B747_8_RUDDER extends BaseAirliners {
         if (this.rootSVG != null) {
             var xStr = _x + "%";
             var line = document.createElementNS(Avionics.SVG.NS, "line");
-            line.setAttribute("x1", xStr);
-            line.setAttribute("x2", xStr);
-            line.setAttribute("y1", B747_8_RUDDER.MARKER_LINE_POS_Y_STRING);
-            line.setAttribute("y2", (B747_8_RUDDER.MARKER_LINE_POS_Y - _lineHeight) + "%");
+            diffAndSetAttribute(line, "x1", xStr);
+            diffAndSetAttribute(line, "x2", xStr);
+            diffAndSetAttribute(line, "y1", B747_8_RUDDER.MARKER_LINE_POS_Y_STRING);
+            diffAndSetAttribute(line, "y2", (B747_8_RUDDER.MARKER_LINE_POS_Y - _lineHeight) + "%");
             this.rootSVG.appendChild(line);
             if (_displayValue.length > 0) {
                 var text = document.createElementNS(Avionics.SVG.NS, "text");
-                text.setAttribute("x", xStr);
-                text.setAttribute("y", B747_8_RUDDER.MARKER_TEXT_POS_Y_STRING);
-                text.setAttribute("class", B747_8_RUDDER.MARKER_TEXT_STYLE_CLASS);
-                text.textContent = _displayValue;
+                diffAndSetAttribute(text, "x", xStr);
+                diffAndSetAttribute(text, "y", B747_8_RUDDER.MARKER_TEXT_POS_Y_STRING);
+                diffAndSetAttribute(text, "class", B747_8_RUDDER.MARKER_TEXT_STYLE_CLASS);
+                diffAndSetText(text, _displayValue);
                 this.rootSVG.appendChild(text);
             }
         }
@@ -60,7 +60,7 @@ class B747_8_RUDDER extends BaseAirliners {
                     this.valueToArrowXPos = (minToMaxMarkerLength * 0.5) * 0.1;
                 }
                 var x = this.currentValue * this.valueToArrowXPos;
-                this.arrow.setAttribute("transform", "translate(" + x + ", 0)");
+                diffAndSetAttribute(this.arrow, "transform", "translate(" + x + ", 0)");
             }
         }
     }

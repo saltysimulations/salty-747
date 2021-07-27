@@ -40,13 +40,13 @@ class SvgRoadElement extends SvgMapElement {
     createDraw(map) {
         let container = document.createElementNS(Avionics.SVG.NS, "svg");
         container.id = this.id(map);
-        container.setAttribute("overflow", "visible");
+        diffAndSetAttribute(container, "overflow", "visible");
         let shape = document.createElementNS(Avionics.SVG.NS, "path");
         shape.classList.add("map-road");
         shape.classList.add("map-road-" + this.roadType);
-        shape.setAttribute("fill", "none");
-        shape.setAttribute("stroke", "gray");
-        shape.setAttribute("stroke-width", "3");
+        diffAndSetAttribute(shape, "fill", "none");
+        diffAndSetAttribute(shape, "stroke", "gray");
+        diffAndSetAttribute(shape, "stroke-width", "3");
         container.appendChild(shape);
         return container;
     }
@@ -96,7 +96,7 @@ class SvgRoadElement extends SvgMapElement {
         }
         let polyline = this.svgElement.children[0];
         if (polyline instanceof SVGPathElement) {
-            polyline.setAttribute("d", points);
+            diffAndSetAttribute(polyline, "d", points);
         }
         let text = this.svgElement.children[1];
         if (text instanceof SVGTextElement) {
@@ -119,8 +119,8 @@ class SvgRoadElement extends SvgMapElement {
                 pCenter.y = p2.y;
             }
             if (isFinite(pCenter.x) && isFinite(pCenter.y)) {
-                text.setAttribute("x", fastToFixed(pCenter.x, 0));
-                text.setAttribute("y", fastToFixed(pCenter.y, 0));
+                diffAndSetAttribute(text, "x", fastToFixed(pCenter.x, 0));
+                diffAndSetAttribute(text, "y", fastToFixed(pCenter.y, 0));
             }
         }
         if (outOfFrame) {

@@ -1,20 +1,72 @@
 <ModelBehaviors>
 	<Include RelativeFile="Subtemplates\\Passenger_Subtemplates.xml"/>
-	<!-- Passenger ############################################## -->
-	<Template Name="ASOBO_PASSENGER_Switch_Cabin_Heat_Template">
-		<DefaultTemplateParameters>
+	<Include RelativeFile="Inputs\\Passenger_Inputs.xml"/>
+	<!-- ################################## PASSENGER ################################# -->
+	<!-- ############################################################################## -->
+	<Template Name="ASOBO_PASSENGER_Cabin_Heat_Template">
+		<Parameters Type="Default">
 			<ID>1</ID>
-		</DefaultTemplateParameters>
-		<UseTemplate Name="ASOBO_PASSENGER_Switch_Cabin_Heat_SubTemplate">
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_PASSENGER_Cabin_Heat_SubTemplate</TEMPLATE_TO_CALL>
 		</UseTemplate>
 	</Template>
-
-	<Template Name="ASOBO_PASSENGER_Switch_Cabin_Air_Template">
-		<DefaultTemplateParameters>
+	<Template Name="ASOBO_PASSENGER_Switch_Cabin_Heat_Template">
+		<UseTemplate Name="ASOBO_PASSENGER_Cabin_Heat_Template">
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Lever_Cabin_Heat_Template">
+		<UseTemplate Name="ASOBO_PASSENGER_Cabin_Heat_Template">
+			<INTERACTION_TYPE>Lever</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Knob_Cabin_Heat_Template">
+		<UseTemplate Name="ASOBO_PASSENGER_Cabin_Heat_Template">
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Cabin_Air_Template">
+		<Parameters Type="Default">
 			<ID>1</ID>
-			<TOOLTIPID>TT:COCKPIT.TOOLTIPS.SWITCH_CABIN_AIR</TOOLTIPID>
-		</DefaultTemplateParameters>
-		<UseTemplate Name="ASOBO_PASSENGER_Switch_Cabin_Air_SubTemplate">
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_PASSENGER_Cabin_Air_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Switch_Cabin_Air_Template">
+		<UseTemplate Name="ASOBO_PASSENGER_Cabin_Air_Template">
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Lever_Cabin_Air_Template">
+		<UseTemplate Name="ASOBO_PASSENGER_Cabin_Air_Template">
+			<INTERACTION_TYPE>Lever</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Knob_Cabin_Air_Template">
+		<UseTemplate Name="ASOBO_PASSENGER_Cabin_Air_Template">
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+	<!-- ########################################### -->
+	<!-- PASSENGER Interaction inputs setup template -->
+	<Template Name="ASOBO_PASSENGER_Base_Template">
+		<Parameters Type="Default">
+			<INPUT_EVENT_ID_SOURCE>PASSENGER</INPUT_EVENT_ID_SOURCE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_Interaction_Base_Template">
+			<USE_INPUT_EVENT_ID>PASSENGER</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Push_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Push_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>PASSENGER</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_PASSENGER_Pull_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Pull_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>PASSENGER</USE_INPUT_EVENT_ID>
 		</UseTemplate>
 	</Template>
 </ModelBehaviors>

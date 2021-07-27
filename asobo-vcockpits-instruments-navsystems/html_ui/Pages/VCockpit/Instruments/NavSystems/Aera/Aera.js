@@ -4,7 +4,7 @@ class Aera extends NavSystemTouch {
         this.lastPageIndex = NaN;
         this.lastPageGroup = "";
         this.isVertical = false;
-        this.initDuration = 4000;
+        this.initDuration = 1000;
     }
     get templateID() { return "Aera"; }
     get IsGlassCockpit() { return false; }
@@ -35,6 +35,8 @@ class Aera extends NavSystemTouch {
         this.duplicateWaypointSelection.setGPS(this);
         this.pfdElement = new Aera_PFD();
         this.pfdElement.setVertical(this.isVertical);
+        this.approachSelection = new NavSystemElementContainer("ApproachSelection", "ApproachSelection", new Aera_ApproachSelection());
+        this.approachSelection.setGPS(this);
         this.pageGroups = [
             new Aera_PageGroup("MFD", this, [
                 new Aera_NavSystemPage("Map", "Map", new Aera_MapContainer("Map"), "Map", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_SMALL_1.png"),
@@ -42,7 +44,8 @@ class Aera extends NavSystemTouch {
                 new Aera_NavSystemPage("Active FPL", "FPL", new NavSystemElementGroup([
                     new NavSystemTouch_ActiveFPL(),
                     new Aera_MapContainer("Afpl_Map")
-                ]), "FPL", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_FLIGHT_PLAN_MED_1.png")
+                ]), "FPL", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_FLIGHT_PLAN_MED_1.png"),
+                new Aera_NavSystemPage("Procedures", "Procedures", new Aera_Touch_Procedures(), "Proc", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_PROCEDURES_1.png")
             ], [
                 new Aera_MenuButton("Direct-To", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_DIRECT_TO_1.png", this.switchToPopUpPage.bind(this, this.directToWindow), true),
                 new Aera_MenuButton("Nearest", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_NEAREST_MED_1.png", this.SwitchToPageGroupMenu.bind(this, "NRST"), true),
@@ -58,6 +61,7 @@ class Aera extends NavSystemTouch {
             ]),
             new Aera_PageGroup("TOOLS", this, [
                 new Aera_NavSystemPage("Lighting Configs", "LightingConfigs", new Aera_LightingConfigs(), "LGT", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_LIGHTING_CONFIG.png"),
+                new Aera_NavSystemPage("Map Orientation", "MapOrientationSetup", new Aera_MapOrientation(), "ORT", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_SMALL_INSET_SETTINGS_1.png"),
             ], [
                 new Aera_MenuButton("Main Menu", "/Pages/VCockpit/Instruments/NavSystems/Shared/Images/TSC/Icons/ICON_MAP_BUTTONBAR_BACK_1.png", this.SwitchToPageGroupMenu.bind(this, "MFD"), true),
             ]),
@@ -68,7 +72,6 @@ class Aera extends NavSystemTouch {
         this.makeButton(this.drctButton, this.switchToPopUpPage.bind(this, this.directToWindow));
         this.makeButton(this.fplButton, this.closePopupAndSwitchToPageName.bind(this, "MFD", "Active FPL"));
         this.makeButton(this.menuButton, this.SwitchToPageGroupMenu.bind(this, "MFD"));
-        this.maxUpdateBudget = 12;
         SimVar.SetSimVarValue("L:Aera_Brightness_Manual", "number", 1);
     }
     closePopupAndSwitchToPageName(_menu, _page) {
@@ -80,8 +83,9 @@ class Aera extends NavSystemTouch {
         if (this.instrumentXmlConfig) {
             let displayModeConfig = this.instrumentXmlConfig.getElementsByTagName("DisplayMode");
             if (displayModeConfig.length > 0 && displayModeConfig[0].textContent.toLowerCase() == "vertical") {
-                this.setAttribute("state", "vertical");
+                diffAndSetAttribute(this, "state", "vertical");
                 this.isVertical = true;
+                SimVar.SetSimVarValue("L:Aera_Orientation", "boolean", this.isVertical);
                 if (this.pfdElement)
                     this.pfdElement.setVertical(true);
             }
@@ -118,13 +122,13 @@ class Aera extends NavSystemTouch {
         if (this.lastPageIndex != this.getCurrentPageGroup().pageIndex || this.getCurrentPageGroup().name != this.lastPageGroup) {
             this.lastPageIndex = this.getCurrentPageGroup().pageIndex;
             this.lastPageGroup = this.getCurrentPageGroup().name;
-            this.currentPageName.textContent = this.getCurrentPageGroup().pages[this.lastPageIndex].name;
+            diffAndSetText(this.currentPageName, this.getCurrentPageGroup().pages[this.lastPageIndex].name);
         }
         let time = SimVar.GetSimVarValue("E:LOCAL TIME", "seconds");
         let seconds = Math.floor(time % 60);
         let minutes = Math.floor((time / 60) % 60);
         let hours = Math.floor(Math.min(time / 3600, 99));
-        Avionics.Utils.diffAndSet(this.topLineLocalTime, (hours < 10 ? "0" : "") + hours + (minutes < 10 ? ":0" : ":") + minutes + (seconds < 10 ? ":0" : ":") + seconds);
+        diffAndSetText(this.topLineLocalTime, (hours < 10 ? "0" : "") + hours + (minutes < 10 ? ":0" : ":") + minutes + (seconds < 10 ? ":0" : ":") + seconds);
         let timeOfDay = SimVar.GetSimVarValue("E:TIME OF DAY", "number");
         let autoBright = (timeOfDay == 1 ? 1 : timeOfDay == 3 ? 0.1 : 0.35);
         let manualfactor = SimVar.GetSimVarValue("L:Aera_Brightness_Manual", "number");
@@ -287,13 +291,13 @@ class Aera_Map extends MapInstrumentElement {
     }
     moveMode(_event) {
         if (_event.button == 0) {
-            this.instrument.setAttribute("bing-mode", "vfr");
-            this.mapCenter.setAttribute("state", "Active");
+            diffAndSetAttribute(this.instrument, "bing-mode", "vfr");
+            diffAndSetAttribute(this.mapCenter, "state", "Active");
         }
     }
     centerOnPlane() {
         this.instrument.setCenteredOnPlane();
-        this.mapCenter.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.mapCenter, "state", "Inactive");
     }
 }
 class Aera_Com extends NavSystemElement {
@@ -332,7 +336,7 @@ class Aera_Com extends NavSystemElement {
         this.gps.makeButton(this.NK_9, this.onDigitPress.bind(this, 9));
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
     }
     onUpdate(_deltaTime) {
         let com1Stby;
@@ -343,12 +347,12 @@ class Aera_Com extends NavSystemElement {
             let state = this.gps.blinkGetState(1000, 500) ? "Blink" : "Off";
             var regex = new RegExp('^(.{' + (this.inputIndex > 2 ? this.inputIndex + 1 : this.inputIndex) + '})(.)(.*)');
             var replace = '<span class="Writed">$1</span><span class="Writing" state="' + state + '">$2</span><span class = "ToWrite">$3</span>';
-            com1Stby = (this.currentInput.toFixed(2) + " ").replace(regex, replace);
+            com1Stby = (fastToFixed(this.currentInput, 2) + " ").replace(regex, replace);
         }
-        Avionics.Utils.diffAndSet(this.frequency, com1Stby);
+        diffAndSetHTML(this.frequency, com1Stby);
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -439,43 +443,43 @@ class Aera_PageMenu extends NavSystemElement {
         this.menuElements = root.getElementsByClassName("menuElements")[0];
     }
     onEnter() {
-        this.root.setAttribute("state", "Active");
+        diffAndSetAttribute(this.root, "state", "Active");
         let pageGroup = this.gps.getCurrentPageGroup();
         for (let i = 0; i < (pageGroup.pages.length + pageGroup.additionalMenuButtons.length); i++) {
             if (i >= this.buttons.length) {
                 let button = new Aera_PageMenu_Button();
                 this.buttons.push(button);
                 button.base = document.createElement("div");
-                button.base.setAttribute("class", "gradientButton");
+                diffAndSetAttribute(button.base, "class", "gradientButton");
                 button.image = document.createElement("img");
-                button.image.setAttribute("class", "img");
+                diffAndSetAttribute(button.image, "class", "img");
                 button.title = document.createElement("div");
-                button.title.setAttribute("class", "title");
+                diffAndSetAttribute(button.title, "class", "title");
                 button.base.appendChild(button.image);
                 button.base.appendChild(button.title);
                 this.menuElements.appendChild(button.base);
                 this.gps.makeButton(button.base, this.switchToPage.bind(this, i));
             }
             else {
-                this.buttons[i].base.style.display = "";
+                diffAndSetStyle(this.buttons[i].base, StyleProperty.display, "");
             }
             if (i < pageGroup.pages.length) {
-                this.buttons[i].image.setAttribute("src", pageGroup.pages[i].imagePath);
-                this.buttons[i].title.textContent = pageGroup.pages[i].name;
+                diffAndSetAttribute(this.buttons[i].image, "src", pageGroup.pages[i].imagePath);
+                diffAndSetText(this.buttons[i].title, pageGroup.pages[i].name);
             }
             else {
-                this.buttons[i].image.setAttribute("src", pageGroup.additionalMenuButtons[i - pageGroup.pages.length].imagePath);
-                this.buttons[i].title.textContent = pageGroup.additionalMenuButtons[i - pageGroup.pages.length].name;
+                diffAndSetAttribute(this.buttons[i].image, "src", pageGroup.additionalMenuButtons[i - pageGroup.pages.length].imagePath);
+                diffAndSetText(this.buttons[i].title, pageGroup.additionalMenuButtons[i - pageGroup.pages.length].name);
             }
         }
         for (let i = pageGroup.pages.length + pageGroup.additionalMenuButtons.length; i < this.buttons.length; i++) {
-            this.buttons[i].base.style.display = "none";
+            diffAndSetStyle(this.buttons[i].base, StyleProperty.display, "none");
         }
     }
     onUpdate(_deltaTime) {
     }
     onExit() {
-        this.root.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.root, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -546,7 +550,7 @@ class Aera_elevatorTrim extends NavSystemElement {
     onEnter() {
     }
     onUpdate(_deltaTime) {
-        this.element.setAttribute("trim", (SimVar.GetSimVarValue("ELEVATOR TRIM PCT", "percent") / 100).toString());
+        diffAndSetAttribute(this.element, "trim", (SimVar.GetSimVarValue("ELEVATOR TRIM PCT", "percent") / 100) + '');
     }
     onExit() {
     }
@@ -576,11 +580,11 @@ class Aera_DirectTo extends NavSystemTouch_DirectTo {
     }
     onEnter() {
         super.onEnter();
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
     }
     onExit() {
         super.onExit();
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
     }
     openKeyboard() {
         this.gps.fullKeyboard.getElementOfType(Aera_FullKeyboard).setContext(this.endKeyboard.bind(this));
@@ -595,8 +599,8 @@ class Aera_NRST_Airport extends NavSystemTouch_NRST_Airport {
         if (this.selectedElement != -1) {
             this.gps.lastRelevantICAOType = "A";
             this.gps.lastRelevantICAO = this.nearestAirports.airports[this.selectedElement].icao;
-            this.menu.setAttribute("state", "Inactive");
-            this.airportLines[this.selectedElement].identButton.setAttribute("state", "None");
+            diffAndSetAttribute(this.menu, "state", "Inactive");
+            diffAndSetAttribute(this.airportLines[this.selectedElement].identButton, "state", "None");
             this.selectedElement = -1;
         }
         this.gps.computeEvent("DirectTo_Push");
@@ -611,8 +615,8 @@ class Aera_NRST_NDB extends NavSystemTouch_NRST_NDB {
         if (this.selectedElement != -1) {
             this.gps.lastRelevantICAOType = "A";
             this.gps.lastRelevantICAO = this.nearest.ndbs[this.selectedElement].icao;
-            this.menu.setAttribute("state", "Inactive");
-            this.lines[this.selectedElement].identButton.setAttribute("state", "None");
+            diffAndSetAttribute(this.menu, "state", "Inactive");
+            diffAndSetAttribute(this.lines[this.selectedElement].identButton, "state", "None");
             this.selectedElement = -1;
         }
         this.gps.computeEvent("DirectTo_Push");
@@ -627,8 +631,8 @@ class Aera_NRST_VOR extends NavSystemTouch_NRST_VOR {
         if (this.selectedElement != -1) {
             this.gps.lastRelevantICAOType = "A";
             this.gps.lastRelevantICAO = this.nearest.vors[this.selectedElement].icao;
-            this.menu.setAttribute("state", "Inactive");
-            this.lines[this.selectedElement].identButton.setAttribute("state", "None");
+            diffAndSetAttribute(this.menu, "state", "Inactive");
+            diffAndSetAttribute(this.lines[this.selectedElement].identButton, "state", "None");
             this.selectedElement = -1;
         }
         this.gps.computeEvent("DirectTo_Push");
@@ -643,8 +647,8 @@ class Aera_NRST_Intersection extends NavSystemTouch_NRST_Intersection {
         if (this.selectedElement != -1) {
             this.gps.lastRelevantICAOType = "A";
             this.gps.lastRelevantICAO = this.nearest.intersections[this.selectedElement].icao;
-            this.menu.setAttribute("state", "Inactive");
-            this.lines[this.selectedElement].identButton.setAttribute("state", "None");
+            diffAndSetAttribute(this.menu, "state", "Inactive");
+            diffAndSetAttribute(this.lines[this.selectedElement].identButton, "state", "None");
             this.selectedElement = -1;
         }
         this.gps.computeEvent("DirectTo_Push");
@@ -657,19 +661,19 @@ class Aera_NRST_Intersection extends NavSystemTouch_NRST_Intersection {
 class Aera_WaypointButtonElement {
     constructor() {
         this.base = window.document.createElement("div");
-        this.base.setAttribute("class", "line");
+        diffAndSetAttribute(this.base, "class", "line");
         {
             this.button = window.document.createElement("div");
-            this.button.setAttribute("class", "gradientButton");
+            diffAndSetAttribute(this.button, "class", "gradientButton");
             {
                 this.ident = window.document.createElement("div");
-                this.ident.setAttribute("class", "mainValue");
+                diffAndSetAttribute(this.ident, "class", "mainValue");
                 this.button.appendChild(this.ident);
                 this.name = window.document.createElement("div");
-                this.name.setAttribute("class", "title");
+                diffAndSetAttribute(this.name, "class", "title");
                 this.button.appendChild(this.name);
                 this.symbol = window.document.createElement("img");
-                this.symbol.setAttribute("class", "symbol");
+                diffAndSetAttribute(this.symbol, "class", "symbol");
                 this.button.appendChild(this.symbol);
             }
             this.base.appendChild(this.button);
@@ -693,7 +697,7 @@ class Aera_InsertBeforeWaypoint extends NavSystemElement {
         this.gps.makeButton(this.endButton, this.endButtonClick.bind(this));
     }
     onEnter() {
-        this.window.setAttribute("state", "Active");
+        diffAndSetAttribute(this.window, "state", "Active");
     }
     onUpdate(_deltaTime) {
         if (this.scrollElement.elementSize == 0) {
@@ -708,17 +712,17 @@ class Aera_InsertBeforeWaypoint extends NavSystemElement {
                 this.elements.push(newElem);
             }
             let infos = this.gps.currFlightPlanManager.getWaypoint(i).infos;
-            Avionics.Utils.diffAndSet(this.elements[i].ident, infos.ident);
-            Avionics.Utils.diffAndSet(this.elements[i].name, infos.name);
+            diffAndSetText(this.elements[i].ident, infos.ident);
+            diffAndSetText(this.elements[i].name, infos.name);
             let symbol = infos.imageFileName();
-            Avionics.Utils.diffAndSetAttribute(this.elements[i].symbol, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
+            diffAndSetAttribute(this.elements[i].symbol, "src", symbol != "" ? "/Pages/VCockpit/Instruments/Shared/Map/Images/" + symbol : "");
         }
         for (let i = this.gps.currFlightPlanManager.getWaypointsCount(); i < this.elements.length; i++) {
-            Avionics.Utils.diffAndSetAttribute(this.elements[i].base, "state", "Inactive");
+            diffAndSetAttribute(this.elements[i].base, "state", "Inactive");
         }
     }
     onExit() {
-        this.window.setAttribute("state", "Inactive");
+        diffAndSetAttribute(this.window, "state", "Inactive");
     }
     onEvent(_event) {
     }
@@ -761,6 +765,7 @@ class Aera_LightingConfigs extends NavSystemElement {
         root.addEventListener("mouseup", this.cursorMouseUp.bind(this));
         root.addEventListener("mouseleave", this.cursorMouseUp.bind(this));
         root.addEventListener("mousemove", this.mouseMove.bind(this));
+        this.orientation = SimVar.GetSimVarValue("L:Aera_Orientation", "boolean");
     }
     onEnter() {
     }
@@ -772,10 +777,10 @@ class Aera_LightingConfigs extends NavSystemElement {
         let backLightManual = SimVar.GetSimVarValue("L:Aera_Brightness_Manual", "number");
         let backLightAuto = SimVar.GetSimVarValue("L:Aera_Brightness_Auto", "number");
         let backLightValue = Math.min(1, Math.max(0, backLightManual * backLightAuto));
-        Avionics.Utils.diffAndSet(this.masterPercentText, (backLightValue * 100).toFixed(0));
+        diffAndSetText(this.masterPercentText, (backLightValue * 100).toFixed(0));
         let length = backLightValue * 100;
         let height = backLightValue * 30;
-        Avionics.Utils.diffAndSetAttribute(this.masterBGTriangle, "points", "0,30 " + length + "," + (30 - height) + " " + length + ",30");
+        diffAndSetAttribute(this.masterBGTriangle, "points", "0,30 " + length + "," + (30 - height) + " " + length + ",30");
         this.masterCursor.style.left = (this.cursorStartVH + (this.cursorBGWidthVH * backLightValue)) + "vh";
     }
     onLessPress() {
@@ -793,18 +798,106 @@ class Aera_LightingConfigs extends NavSystemElement {
     cursorMouseDown(event) {
         this.isCursorMoving = true;
         let clientRect = this.masterBG.getBoundingClientRect();
-        this.leftY = clientRect.bottom;
-        this.heightY = clientRect.height;
+        if (this.orientation) {
+            this.leftRectangleBoundary = clientRect.bottom;
+            this.rightRectangleBoundary = clientRect.height;
+        }
+        else {
+            this.leftRectangleBoundary = clientRect.left;
+            this.rightRectangleBoundary = clientRect.width;
+        }
     }
     cursorMouseUp() {
         this.isCursorMoving = false;
     }
     mouseMove(event) {
+        let pos, auto;
+        auto = SimVar.GetSimVarValue("L:Aera_Brightness_Auto", "number");
         if (this.isCursorMoving) {
-            let pos = Math.max(0, Math.min(1, (this.leftY - event.clientY) / this.heightY));
-            let auto = SimVar.GetSimVarValue("L:Aera_Brightness_Auto", "number");
+            if (this.orientation) {
+                pos = Math.max(0, Math.min(1, (this.leftRectangleBoundary - event.clientY) / this.rightRectangleBoundary));
+            }
+            else {
+                pos = Math.max(0, Math.min(1, (event.clientX - this.leftRectangleBoundary) / this.rightRectangleBoundary));
+            }
             SimVar.SetSimVarValue("L:Aera_Brightness_Manual", "number", pos / auto);
         }
+    }
+}
+class Aera_MapOrientation extends NavSystemElement {
+    init(root) {
+        this.root = root;
+        this.NorthUpButton = this.gps.getChildById("MapOrientation_North");
+        this.TrackUpButton = this.gps.getChildById("MapOrientation_Track");
+        this.HDGUpButton = this.gps.getChildById("MapOrientation_HDG");
+        this.MapOrientation_value = this.gps.getChildById("MapOrientation");
+        this.gps.makeButton(this.NorthUpButton, this.setOrientation.bind(this, EMapRotationMode.NorthUp));
+        this.gps.makeButton(this.TrackUpButton, this.setOrientation.bind(this, EMapRotationMode.TrackUp));
+        this.gps.makeButton(this.HDGUpButton, this.setOrientation.bind(this, EMapRotationMode.HDGUp));
+        this.mapElement = this.gps.getElementOfType(MapInstrumentElement);
+        diffAndSetAttribute(this.NorthUpButton, "state", "Active");
+    }
+    setOrientation(_newValue, _event) {
+        switch (_newValue) {
+            case EMapRotationMode.NorthUp:
+                this.mapElement.setRotationMode(_newValue);
+                diffAndSetText(this.MapOrientation_value, "North Up");
+                diffAndSetAttribute(this.NorthUpButton, "state", "Active");
+                diffAndSetAttribute(this.TrackUpButton, "state", "");
+                diffAndSetAttribute(this.HDGUpButton, "state", "");
+                break;
+            case EMapRotationMode.TrackUp:
+                this.mapElement.setRotationMode(_newValue);
+                diffAndSetText(this.MapOrientation_value, "Track Up");
+                diffAndSetAttribute(this.NorthUpButton, "state", "");
+                diffAndSetAttribute(this.TrackUpButton, "state", "Active");
+                diffAndSetAttribute(this.HDGUpButton, "state", "");
+                break;
+            case EMapRotationMode.HDGUp:
+                this.mapElement.setRotationMode(_newValue);
+                diffAndSetText(this.MapOrientation_value, "DTK Up");
+                diffAndSetAttribute(this.NorthUpButton, "state", "");
+                diffAndSetAttribute(this.TrackUpButton, "state", "");
+                diffAndSetAttribute(this.HDGUpButton, "state", "Active");
+                break;
+        }
+    }
+    onEnter() { }
+    onExit() { }
+    onEvent() { }
+    onUpdate() { }
+}
+class Aera_Touch_Procedures extends NavSystemTouch_Procedures {
+    openApproach() {
+        this.gps.switchToPopUpPage(this.gps.approachSelection);
+    }
+}
+class Aera_ApproachSelection extends NavSystemTouch_ApproachSelection {
+    init(_root) {
+        super.init(_root);
+        this.window = _root;
+    }
+    onEnter() {
+        super.onEnter();
+        diffAndSetAttribute(this.window, "state", "Active");
+    }
+    onExit() {
+        super.onExit();
+        diffAndSetAttribute(this.window, "state", "Inactive");
+    }
+    selectApproach(_index) {
+        super.selectApproach(_index);
+        this.gps.switchToPopUpPage(this.container);
+    }
+    selectTransition(_index) {
+        super.selectTransition(_index);
+        this.gps.switchToPopUpPage(this.container);
+    }
+    close() {
+        this.gps.closePopUpElement();
+    }
+    back() {
+        this.gps.closePopUpElement();
     }
 }
 registerInstrument("aera-element", Aera);

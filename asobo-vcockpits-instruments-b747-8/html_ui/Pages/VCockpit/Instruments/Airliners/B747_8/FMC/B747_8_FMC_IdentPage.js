@@ -11,7 +11,7 @@ class FMCIdentPage {
             ["MODEL", "ENGINES"],
             ["747-8i", "GEnx-2B67B"],
             ["NAV DATA", "ACTIVE"],
-            ["AIRAC", date.toString()],
+            ["AIRAC", date + ''],
             ["DRAG/FF"],
             [""],
             ["OP PROGRAM", "CO DATA"],

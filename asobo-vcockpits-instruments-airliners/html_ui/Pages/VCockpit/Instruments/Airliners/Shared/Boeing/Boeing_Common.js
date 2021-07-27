@@ -48,7 +48,7 @@ var Boeing;
             if ((_text != this.currentText) || _force) {
                 this.currentText = _text;
                 if (this.rootElement != null) {
-                    this.rootElement.innerHTML = this.currentText;
+                    diffAndSetHTML(this.rootElement, this.currentText);
                 }
             }
         }
@@ -68,7 +68,7 @@ var Boeing;
                 this.timeout -= _deltaTime;
                 if (this.timeout <= 0) {
                     if (this.rootElement != null) {
-                        this.rootElement.setAttribute("class", "inactive");
+                        diffAndSetAttribute(this.rootElement, "class", "inactive");
                     }
                 }
             }
@@ -78,13 +78,13 @@ var Boeing;
                 this.currentValue = _value;
                 if (this.rootElement != null) {
                     if (this.currentValue <= 0) {
-                        this.rootElement.setAttribute("class", "up");
+                        diffAndSetAttribute(this.rootElement, "class", "up");
                     }
                     else if (this.currentValue >= 100) {
-                        this.rootElement.setAttribute("class", "down");
+                        diffAndSetAttribute(this.rootElement, "class", "down");
                     }
                     else {
-                        this.rootElement.setAttribute("class", "transit");
+                        diffAndSetAttribute(this.rootElement, "class", "transit");
                     }
                 }
                 if (this.currentValue <= 0) {
@@ -97,69 +97,88 @@ var Boeing;
     Boeing.GearDisplay = GearDisplay;
     class FlapsDisplay {
         constructor(_rootElement, _marker, _valueText, _bar, _gauge) {
+            this.barHeight = 0;
+            this.barTop = 0;
+            this.flapsAngles = [];
+            this.flapsHandlePercents = [];
             this.rootElement = _rootElement;
             this.marker = _marker;
             this.valueText = _valueText;
             this.bar = _bar;
             this.gauge = _gauge;
+            if (this.bar) {
+                this.barTop = this.bar.y.baseVal.value;
+                this.barHeight = this.bar.height.baseVal.value;
+            }
+            let flapsNbHandles = Simplane.getFlapsNbHandles();
+            this.flapsHandlePercents = new Array();
+            this.flapsAngles = new Array();
+            for (let i = 0; i <= flapsNbHandles; i++) {
+                this.flapsAngles[i] = Simplane.getFlapsHandleAngle(i);
+                this.flapsHandlePercents[i] = i / flapsNbHandles;
+            }
             this.cockpitSettings = SimVar.GetGameVarValue("", "GlassCockpitSettings");
-            this.refreshValue(0, 0, 0, true);
+            this.refreshValue(0, true);
         }
         update(_deltaTime) {
-            var leverPos = Simplane.getFlapsHandleIndex();
-            var flapsPercent = ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT PERCENT", "percent") + SimVar.GetSimVarValue("TRAILING EDGE FLAPS RIGHT PERCENT", "percent")) * 0.5) * 0.01;
-            var flapsAngle = (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees") + SimVar.GetSimVarValue("TRAILING EDGE FLAPS RIGHT ANGLE", "degrees")) * 0.5;
-            this.refreshValue(leverPos, flapsPercent, flapsAngle);
-            if ((this.currentAngle <= 0) && (this.timeout > 0)) {
+            this.refreshValue(Simplane.getFlapsAngle());
+            if ((this.realFlapsAngle <= 0) && (this.timeout > 0)) {
                 this.timeout -= _deltaTime;
                 if (this.timeout <= 0) {
                     if (this.rootElement != null) {
-                        this.rootElement.setAttribute("class", "inactive");
+                        diffAndSetAttribute(this.rootElement, "class", "inactive");
                     }
                 }
             }
         }
-        refreshValue(_leverPos, _realFlapsPercent, _realFlapsAngle, _force = false) {
-            if ((_leverPos != this.currentLeverPosition) || (_realFlapsPercent != this.currentPercent) || (_realFlapsAngle != this.currentAngle) || _force) {
-                this.currentLeverPosition = _leverPos;
-                this.currentPercent = _realFlapsPercent;
-                this.currentAngle = _realFlapsAngle;
-                var targetAngle = this.flapsLeverPositionToAngle(this.currentLeverPosition);
-                var barTop = 0;
-                var barBottom = 0;
-                var barHeight = 0;
-                if (this.bar != null) {
-                    barTop = this.bar.y.baseVal.value;
-                    barBottom = barTop + this.bar.height.baseVal.value;
-                    barHeight = (barBottom - barTop);
+        refreshValue(_realFlapsAngle, _force = false) {
+            if ((_realFlapsAngle != this.realFlapsAngle) || _force) {
+                this.realFlapsAngle = _realFlapsAngle;
+                let currentHandlePos = Simplane.getFlapsHandleIndex();
+                let targetAnglePercent = Simplane.getFlapsHandlePercent();
+                let targetAngle = Simplane.getFlapsHandleAngle(currentHandlePos);
+                let currentAngle = this.realFlapsAngle;
+                if (this.cockpitSettings && this.cockpitSettings.FlapsLevels.initialised) {
+                    targetAngle = this.cockpitSettings.FlapsLevels.flapsAngle[currentHandlePos];
+                    for (let i = 0; i < this.flapsAngles.length - 1; i++) {
+                        if (this.realFlapsAngle >= this.flapsAngles[i] && this.realFlapsAngle < this.flapsAngles[i + 1]) {
+                            let ratio = (this.realFlapsAngle - this.flapsAngles[i]) / (this.flapsAngles[i + 1] - this.flapsAngles[i]);
+                            currentAngle = this.cockpitSettings.FlapsLevels.flapsAngle[i] + (this.cockpitSettings.FlapsLevels.flapsAngle[i + 1] - this.cockpitSettings.FlapsLevels.flapsAngle[i]) * ratio;
+                            break;
+                        }
+                    }
+                    if (this.realFlapsAngle >= this.flapsAngles[this.flapsAngles.length - 1]) {
+                        currentAngle = this.cockpitSettings.FlapsLevels.flapsAngle[this.flapsAngles.length - 1];
+                    }
                 }
-                var markerY = barTop + (barHeight * this.currentPercent);
-                var markerYStr = markerY.toString();
+                let currentAnglePercent = 1;
+                for (let i = 0; i < this.flapsAngles.length - 1; i++) {
+                    if (this.realFlapsAngle >= this.flapsAngles[i] && this.realFlapsAngle < this.flapsAngles[i + 1]) {
+                        let ratio = (this.realFlapsAngle - this.flapsAngles[i]) / (this.flapsAngles[i + 1] - this.flapsAngles[i]);
+                        currentAnglePercent = this.flapsHandlePercents[i] + (this.flapsHandlePercents[i + 1] - this.flapsHandlePercents[i]) * ratio;
+                        break;
+                    }
+                }
+                let markerY = this.barTop + (this.barHeight * targetAnglePercent);
                 if (this.marker != null) {
-                    this.marker.setAttribute("y1", markerYStr);
-                    this.marker.setAttribute("y2", markerYStr);
+                    diffAndSetAttribute(this.marker, "y1", markerY + '');
+                    diffAndSetAttribute(this.marker, "y2", markerY + '');
                 }
                 if (this.valueText != null) {
-                    this.valueText.textContent = (targetAngle <= 0) ? "UP" : targetAngle.toFixed(0);
-                    this.valueText.setAttribute("y", markerYStr);
+                    diffAndSetText(this.valueText, (targetAngle <= 0) ? "UP" : fastToFixed(targetAngle, 0));
+                    diffAndSetAttribute(this.valueText, "y", markerY + '');
                 }
                 if (this.gauge != null) {
-                    var height = barHeight * this.currentPercent;
-                    this.gauge.setAttribute("height", height.toString());
+                    let height = this.barHeight * currentAnglePercent;
+                    diffAndSetAttribute(this.gauge, "height", height + '');
                 }
                 if (this.rootElement != null) {
-                    this.rootElement.setAttribute("class", (Math.round(this.currentAngle) == Math.round(targetAngle)) ? "static" : "transit");
+                    diffAndSetAttribute(this.rootElement, "class", (currentAngle == targetAngle) ? "static" : "transit");
                 }
-                if (this.currentAngle <= 0) {
+                if (currentAngle <= 0) {
                     this.timeout = Boeing.FlapsDisplay.TIMEOUT_LENGTH;
                 }
             }
-        }
-        flapsLeverPositionToAngle(_leverPos) {
-            if (this.cockpitSettings && this.cockpitSettings.FlapsLevels.initialised) {
-                return this.cockpitSettings.FlapsLevels.flapsAngle[_leverPos];
-            }
-            return Simplane.getFlapsHandleAngle(_leverPos);
         }
     }
     FlapsDisplay.TIMEOUT_LENGTH = 3000;
@@ -181,31 +200,30 @@ var Boeing;
                 this.valueText = _root.querySelector(".value");
                 this.arrow = _root.querySelector(".arrow");
                 this.trimBand = _root.querySelector(".trimBand");
-                var bar = _root.querySelector(".bar");
+                let bar = _root.querySelector(".bar");
                 if (bar != null) {
-                    var barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value;
+                    let barHeight = bar.y2.baseVal.value - bar.y1.baseVal.value;
                     this.valueToArrowY = (barHeight * 0.5) / this.maxValue;
                 }
                 if (this.takeoffText != null) {
-                    this.takeoffText.style.display = "none";
+                    diffAndSetStyle(this.takeoffText, StyleProperty.display, "none");
                 }
             }
             this.refreshValue(0, true);
         }
         update(_deltaTime) {
-            this.refreshValue(SimVar.GetSimVarValue("ELEVATOR TRIM POSITION", "degree"));
+            this.refreshValue(Simplane.getTrimPos());
         }
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
-                this.currentValue = Utils.Clamp(_value, 0, this.maxValue);
-                var displayValue = (this.currentValue + this.maxValue) * 0.5;
+                this.currentValue = Utils.Clamp(_value, -this.maxValue, this.maxValue);
+                let displayValue = (this.currentValue + this.maxValue) * 0.5;
                 if (this.valueText != null) {
-                    this.valueText.textContent = displayValue.toFixed(this.valueDecimals);
+                    diffAndSetText(this.valueText, fastToFixed(displayValue, this.valueDecimals));
                 }
                 if (this.arrow != null) {
-                    let clampedVal = Utils.Clamp(this.currentValue, -this.maxValue, this.maxValue);
-                    var arrowY = clampedVal * this.valueToArrowY;
-                    this.arrow.setAttribute("transform", "translate(0," + arrowY + ")");
+                    let arrowY = this.currentValue * this.valueToArrowY;
+                    diffAndSetAttribute(this.arrow, "transform", "translate(0," + arrowY + ")");
                 }
             }
         }
@@ -226,23 +244,23 @@ var Boeing;
                 this.leftText = _root.querySelector(".left");
                 this.rightText = _root.querySelector(".right");
                 this.arrow = _root.querySelector(".arrow");
-                var bar = _root.querySelector(".bar");
+                let bar = _root.querySelector(".bar");
                 if (bar != null) {
-                    var barLength = bar.x2.baseVal.value - bar.x1.baseVal.value;
+                    let barLength = bar.x2.baseVal.value - bar.x1.baseVal.value;
                     this.valueToArrowX = (barLength * 0.5) / this.maxValue;
                 }
             }
             this.refreshValue(0, true);
         }
         update(_deltaTime) {
-            this.refreshValue(SimVar.GetSimVarValue("RUDDER TRIM", "degrees"));
+            this.refreshValue(Simplane.getRudTrimPos());
         }
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
                 this.currentValue = Utils.Clamp(_value, -this.maxValue, this.maxValue);
-                var bShowLeft = false;
-                var bShowRight = false;
-                var displayValue = Math.abs(this.currentValue);
+                let bShowLeft = false;
+                let bShowRight = false;
+                let displayValue = Math.abs(this.currentValue);
                 if (displayValue <= 0.05) {
                     displayValue = 0;
                 }
@@ -251,17 +269,17 @@ var Boeing;
                     bShowRight = !bShowLeft;
                 }
                 if (this.valueText != null) {
-                    this.valueText.textContent = displayValue.toFixed(1);
+                    diffAndSetText(this.valueText, fastToFixed(displayValue, 1));
                 }
                 if (this.leftText != null) {
-                    this.leftText.style.display = bShowLeft ? "block" : "none";
+                    diffAndSetStyle(this.leftText, StyleProperty.display, bShowLeft ? "block" : "none");
                 }
                 if (this.rightText != null) {
-                    this.rightText.style.display = bShowRight ? "block" : "none";
+                    diffAndSetStyle(this.rightText, StyleProperty.display, bShowRight ? "block" : "none");
                 }
                 if (this.arrow != null) {
-                    var arrowX = this.currentValue * this.valueToArrowX;
-                    this.arrow.setAttribute("transform", "translate(" + arrowX + ",0)");
+                    let arrowX = this.currentValue * this.valueToArrowX;
+                    diffAndSetAttribute(this.arrow, "transform", "translate(" + arrowX + ",0)");
                 }
             }
         }
@@ -285,14 +303,14 @@ var Boeing;
             this.refresh(false, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.index, "gallons per hour") > 0.05);
+            this.refresh(Simplane.getEngFuelFlow(this.index) > 0.05);
         }
         refresh(_isActive, _force = false) {
             if (_force || (this.isActive != _isActive)) {
                 this.isActive = _isActive;
                 if (this.element != null) {
-                    var className = this.isActive ? "active" : "inactive";
-                    this.element.setAttribute("class", "fuelengine-" + className);
+                    let className = this.isActive ? "active" : "inactive";
+                    diffAndSetAttribute(this.element, "class", "fuelengine-" + className);
                 }
             }
         }
@@ -308,16 +326,16 @@ var Boeing;
             this.refresh(false, false, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"));
+            this.refresh(Simplane.getEngFuelPumpSwitch(this.index), Simplane.getEngFuelPumpActive(this.index));
         }
         refresh(_isSwitched, _isActive, _force = false) {
             if (_force || (this.isSwitched != _isSwitched) || (this.isActive != _isActive)) {
                 this.isSwitched = _isSwitched;
                 this.isActive = _isActive;
                 if (this.element != null) {
-                    var className = this.isSwitched ? "switched" : "notswitched";
+                    let className = this.isSwitched ? "switched" : "notswitched";
                     className += this.isActive ? "-active" : "-inactive";
-                    this.element.setAttribute("class", "fuelpump-" + className);
+                    diffAndSetAttribute(this.element, "class", "fuelpump-" + className);
                 }
             }
         }
@@ -333,27 +351,27 @@ var Boeing;
         }
         init() {
             if (this.element != null) {
-                var baseTransform = this.element.getAttribute("transform");
-                var rotateIndex = baseTransform.search("rotate");
+                let baseTransform = this.element.getAttribute("transform");
+                let rotateIndex = baseTransform.search("rotate");
                 if (rotateIndex < 0) {
                     this.transformStringClosed = baseTransform + " rotate(0)";
                     this.transformStringOpen = baseTransform + " rotate(90)";
                 }
                 else {
                     this.transformStringClosed = baseTransform;
-                    var rotateStartIndex = baseTransform.indexOf("rotate(") + 7;
-                    var rotateEndIndex = baseTransform.indexOf(")", rotateStartIndex);
-                    var angle = parseFloat(baseTransform.slice(rotateStartIndex, rotateEndIndex));
+                    let rotateStartIndex = baseTransform.indexOf("rotate(") + 7;
+                    let rotateEndIndex = baseTransform.indexOf(")", rotateStartIndex);
+                    let angle = parseFloat(baseTransform.slice(rotateStartIndex, rotateEndIndex));
                     this.transformStringOpen = baseTransform.replace("rotate(" + angle + ")", "rotate(" + (angle + 90) + ")");
                 }
             }
             this.refresh(false, 0, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM VALVE SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:" + this.index, "number"));
+            this.refresh(Simplane.getEngFuelValveSwitch(this.index), Simplane.getEngFuelValveOpen(this.index));
         }
         refresh(_isSwitched, _openLevel, _force = false) {
-            var open = this.isOpen;
+            let open = this.isOpen;
             if (_openLevel >= 1) {
                 open = true;
             }
@@ -365,12 +383,12 @@ var Boeing;
                 this.isOpen = open;
                 if (this.element != null) {
                     if (this.isSwitched || this.isOpen) {
-                        this.element.setAttribute("class", this.isSwitched ? "fuelvalve-open" : "fuelvalve-closing");
-                        this.element.setAttribute("transform", this.transformStringOpen);
+                        diffAndSetAttribute(this.element, "class", this.isSwitched ? "fuelvalve-open" : "fuelvalve-closing");
+                        diffAndSetAttribute(this.element, "transform", this.transformStringOpen);
                     }
                     else {
-                        this.element.setAttribute("class", "fuelvalve-closed");
-                        this.element.setAttribute("transform", this.transformStringClosed);
+                        diffAndSetAttribute(this.element, "class", "fuelvalve-closed");
+                        diffAndSetAttribute(this.element, "transform", this.transformStringClosed);
                     }
                 }
             }
@@ -386,14 +404,14 @@ var Boeing;
             this.refresh(false, true);
         }
         update(_deltaTime) {
-            this.refresh(SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:" + this.index, "number") > 0);
+            this.refresh(Simplane.getEngFuelLineFlow(this.index) > 0);
         }
         refresh(_isActive, _force = false) {
             if (_force || (this.isActive != _isActive)) {
                 this.isActive = _isActive;
                 if (this.element != null) {
-                    var className = this.isActive ? "active" : "inactive";
-                    this.element.setAttribute("class", "fuelline-" + className);
+                    let className = this.isActive ? "active" : "inactive";
+                    diffAndSetAttribute(this.element, "class", "fuelline-" + className);
                 }
             }
         }
@@ -447,7 +465,7 @@ var Boeing;
         }
         onInfoPanelEvent(_type, ..._args) {
             if ((_args != null) && (_args.length > 0)) {
-                var strings = _args[0];
+                let strings = _args[0];
                 if ((strings != null) && (strings.length > 0)) {
                     let panelId;
                     if (strings[0] == "primary") {
@@ -510,7 +528,7 @@ var Boeing;
             }
         }
         createDiv(_id, _class = "", _text = "") {
-            var div = document.createElement("div");
+            let div = document.createElement("div");
             if (_id.length > 0) {
                 div.id = _id;
             }
@@ -518,18 +536,18 @@ var Boeing;
                 div.className = _class;
             }
             if (_text.length > 0) {
-                div.textContent = _text;
+                diffAndSetText(div, _text);
             }
             return div;
         }
         getNextAvailableDiv() {
-            for (var i = 0; i < this.allDivs.length; ++i) {
+            for (let i = 0; i < this.allDivs.length; ++i) {
                 if (this.allDivs[i].textContent.length == 0) {
                     return this.allDivs[i];
                 }
             }
             if (this.divMain != null) {
-                var newDiv = document.createElement("div");
+                let newDiv = document.createElement("div");
                 this.allDivs.push(newDiv);
                 this.divMain.appendChild(newDiv);
                 return newDiv;
@@ -537,7 +555,7 @@ var Boeing;
             return null;
         }
         getDivFromMessage(_message) {
-            for (var i = 0; i < this.allDivs.length; ++i) {
+            for (let i = 0; i < this.allDivs.length; ++i) {
                 if (this.allDivs[i].textContent == _message) {
                     return this.allDivs[i];
                 }
@@ -553,37 +571,37 @@ var Boeing;
             return "";
         }
         addMessage(_message, _style) {
-            var div = this.getNextAvailableDiv();
+            let div = this.getNextAvailableDiv();
             if (div != null) {
-                div.textContent = _message;
+                diffAndSetText(div, _message);
                 div.className = this.getClassNameFromStyle(_style);
             }
         }
         removeMessage(_message) {
-            var div = this.getDivFromMessage(_message);
+            let div = this.getDivFromMessage(_message);
             if (div != null) {
-                div.textContent = "";
-                for (var i = 0; i < (this.allDivs.length - 1); ++i) {
+                diffAndSetText(div, "");
+                for (let i = 0; i < (this.allDivs.length - 1); ++i) {
                     if (this.allDivs[i].textContent.length == 0) {
                         if (this.allDivs[i + 1].textContent.length > 0) {
-                            this.allDivs[i].textContent = this.allDivs[i + 1].textContent;
+                            diffAndSetText(this.allDivs[i], this.allDivs[i + 1].textContent);
                             this.allDivs[i].className = this.allDivs[i + 1].className;
-                            this.allDivs[i + 1].textContent = "";
+                            diffAndSetText(this.allDivs[i + 1], "");
                         }
                     }
                 }
             }
         }
         modifyMessage(_currentMessage, _newMessage, _newStyle) {
-            var div = this.getDivFromMessage(_currentMessage);
+            let div = this.getDivFromMessage(_currentMessage);
             if (div != null) {
-                div.textContent = _newMessage;
+                diffAndSetText(div, _newMessage);
                 div.className = this.getClassNameFromStyle(_newStyle);
             }
         }
         clearScreen() {
-            for (var i = 0; i < this.allDivs.length; ++i) {
-                this.allDivs[i].textContent = "";
+            for (let i = 0; i < this.allDivs.length; ++i) {
+                diffAndSetText(this.allDivs[i], "");
             }
         }
     }

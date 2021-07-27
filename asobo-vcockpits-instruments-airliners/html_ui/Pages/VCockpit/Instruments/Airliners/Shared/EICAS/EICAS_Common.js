@@ -37,10 +37,10 @@ class EICASCommonDisplay extends Airliners.EICASTemplateElement {
             this.currentTAT = _value;
             if (this.tatText != null) {
                 if (this.currentTAT > 0) {
-                    this.tatText.textContent = "+" + this.currentTAT.toString();
+                    diffAndSetText(this.tatText, "+" + this.currentTAT + '');
                 }
                 else {
-                    this.tatText.textContent = this.currentTAT.toString();
+                    diffAndSetText(this.tatText, this.currentTAT + '');
                 }
             }
         }
@@ -50,10 +50,10 @@ class EICASCommonDisplay extends Airliners.EICASTemplateElement {
             this.currentSAT = _value;
             if (this.satText != null) {
                 if (this.currentSAT > 0) {
-                    this.satText.textContent = "+" + this.currentSAT.toString();
+                    diffAndSetText(this.satText, "+" + this.currentSAT + '');
                 }
                 else {
-                    this.satText.textContent = this.currentSAT.toString();
+                    diffAndSetText(this.satText, this.currentSAT + '');
                 }
             }
         }
@@ -67,10 +67,10 @@ class EICASCommonDisplay extends Airliners.EICASTemplateElement {
             if (minutes != this.currentMinutes) {
                 this.currentMinutes = minutes;
                 if (this.hoursText != null) {
-                    this.hoursText.textContent = hours.toString().padStart(2, "0");
+                    diffAndSetText(this.hoursText, (hours + '').padStart(2, "0"));
                 }
                 if (this.minutesText != null) {
-                    this.minutesText.textContent = minutes.toString().padStart(2, "0");
+                    diffAndSetText(this.minutesText, (minutes + '').padStart(2, "0"));
                 }
             }
         }
@@ -81,17 +81,17 @@ class EICASCommonDisplay extends Airliners.EICASTemplateElement {
         if (isInMetric) {
             gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "kg"));
             if (this.gwUnit)
-                this.gwUnit.textContent = "KG";
+                diffAndSetText(this.gwUnit, "KG");
         }
         else {
             gw = Math.round(SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs"));
             if (this.gwUnit)
-                this.gwUnit.textContent = "LBS";
+                diffAndSetText(this.gwUnit, "LBS");
         }
         if ((gw != this.currentGW) || _force) {
             this.currentGW = gw;
             if (this.gwValue != null) {
-                this.gwValue.textContent = this.currentGW.toString();
+                diffAndSetText(this.gwValue, this.currentGW + '');
             }
         }
     }

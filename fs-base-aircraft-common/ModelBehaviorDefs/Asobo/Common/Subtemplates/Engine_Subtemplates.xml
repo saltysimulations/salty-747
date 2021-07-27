@@ -1,761 +1,60 @@
 <ModelBehaviors>
-<Template Name="ASOBO_ENGINE_Switch_AlternateAir_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Switch_AlternateAir_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Switch_AlternateAir_#ID#</ANIM_NAME>
-		<PART_ID>ENGINE_Switch_AlternateAir</PART_ID>
-		<Switch>
-			<Case Check="USE_DRAGGING_INTERACTION">
-				<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
-				<SCROLL_INCREMENT>701</SCROLL_INCREMENT>
-				<Case Check="USE_BUTTON">
-					<BUTTON_ANIM_NAME>ENGINE_Switch_AlternateAir_#ID#_Button</BUTTON_ANIM_NAME>
-				</Case>
-			</Case>
-		</Switch>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Switch>
-			<Case Check="USE_DRAGGING_INTERACTION">
-				<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
-					<CURSOR>Grab</CURSOR>
-					<NO_ARROWS/>
-					<DRAG_CODE>
-						16384 (M:DragPercent) *
-						16384 min 0 max (&gt;K:ANTI_ICE_GRADUAL_SET_ENG#ID#)
-					</DRAG_CODE>
-					<ANIM_CODE>(A:RECIP ENG ALTERNATE AIR POSITION:#ID#, position 16k) 16384 / 100 *</ANIM_CODE>
-					<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
-					<POSITIVE_AXIS_CODE>(A:RECIP ENG ALTERNATE AIR POSITION:#ID#, position 16k) #SCROLL_INCREMENT# + 16384 min (&gt;K:ANTI_ICE_GRADUAL_SET_ENG#ID#)</POSITIVE_AXIS_CODE>
-					<NEGATIVE_AXIS_CODE>(A:RECIP ENG ALTERNATE AIR POSITION:#ID#, position 16k) #SCROLL_INCREMENT# - 0 max (&gt;K:ANTI_ICE_GRADUAL_SET_ENG#ID#)</NEGATIVE_AXIS_CODE>
-					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.ALTERNATE_AIR_LEVER</TOOLTIPID>
-					<WWISE_EVENT_1>engine_alternate_air_switch_on</WWISE_EVENT_1>
-					<WWISE_EVENT_2>engine_alternate_air_switch_off</WWISE_EVENT_2>
-				</UseTemplate>
-				<Case Check="USE_BUTTON">
-					<UseTemplate Name="ASOBO_GT_Anim_Code">
-						<ANIM_NAME>#BUTTON_ANIM_NAME#</ANIM_NAME>
-						<ANIM_CODE>(O:_Interacting) 100 *</ANIM_CODE>
-					</UseTemplate>
-				</Case>
-			</Case>
-			<Default>
-				<UseTemplate Name="ASOBO_GT_Switch">
-					<ANIM_SIMVAR>RECIP ENG ALTERNATE AIR POSITION:#ID#</ANIM_SIMVAR>
-					<EVENTID>ANTI_ICE_TOGGLE_ENG#ID#</EVENTID>
-					<WWISE_EVENT_1>engine_alternate_air_switch_on</WWISE_EVENT_1>
-					<WWISE_EVENT_2>engine_alternate_air_switch_off</WWISE_EVENT_2>
-					<ANIMREF_ID>0</ANIMREF_ID>
-					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.ALTERNATE_AIR_OFF</ANIMTIP_0>
-					<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.ALTERNATE_AIR_ON</ANIMTIP_1>
-					<ANIMTIP_1_ON_PERCENT>1</ANIMTIP_1_ON_PERCENT>
-				</UseTemplate>
-			</Default>
-		</Switch>
-	</Component>
-</Template>
 
-<Template Name="ASOBO_ENGINE_Switch_Starter_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Switch_Starter_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Switch_Starter_#ID#</ANIM_NAME>
-		<PART_ID>ENGINE_Switch_Starter</PART_ID>
-		<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
-		<SWITCH_POSITION_VAR>XMLVAR_Starter#ID#</SWITCH_POSITION_VAR>
-		<SWITCH_POSITION_TYPE_TIMER>L</SWITCH_POSITION_TYPE_TIMER>
-		<SWITCH_POSITION_VAR_TIMER>XMLVAR_Starter#ID#_EndTimeDown</SWITCH_POSITION_VAR_TIMER>
-		<WWISE_EVENT>engine_starter_switch</WWISE_EVENT>
-		<WWISE_EVENT_1>engine_starter_switch_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>engine_starter_switch_off</WWISE_EVENT_2>
-		<Switch Param="TYPE">
-			<Case Value="2Values_StarterIgnition">
-				<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.STARTER_OFF</ANIMTIP_0>
-				<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.STARTER_ON</ANIMTIP_1>
-				<IGNITION_ACTIVE_TYPE>1</IGNITION_ACTIVE_TYPE>
-			</Case>
-			<Case Value="3Values_StarterIgnition">
-				<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.STARTER_ON</ANIMTIP_0>
-				<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.STARTER_OFF</ANIMTIP_1>
-				<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.STARTER_MOTOR</ANIMTIP_2>
-				<REENERGIZE_IGNITION_CIRCUIT_CODE>
-					(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) 0 == if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)
-					}
-				</REENERGIZE_IGNITION_CIRCUIT_CODE>
-				<DEENERGIZE_IGNITION_CIRCUIT_CODE>
-					(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) 1 == if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)
-					}
-				</DEENERGIZE_IGNITION_CIRCUIT_CODE>
-			</Case>
-			<Case Value="AS02A">
-				<ANIMREF_ID>0</ANIMREF_ID>
-				<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-				<ANIMTIP_1_ON_PERCENT>.25</ANIMTIP_1_ON_PERCENT>
-				<ANIMTIP_2_ON_PERCENT>.50</ANIMTIP_2_ON_PERCENT>
-				<ANIMTIP_3_ON_PERCENT>.75</ANIMTIP_3_ON_PERCENT>
-				<ANIMTIP_4_ON_PERCENT>1</ANIMTIP_4_ON_PERCENT>
-				<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.ENG_STARTER_START_AB</ANIMTIP_0>
-				<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.ENG_STARTER_START_B</ANIMTIP_1>
-				<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.ENG_STARTER_START_A</ANIMTIP_2>
-				<ANIMTIP_3>TT:COCKPIT.TOOLTIPS.ENG_STARTER_CRANK</ANIMTIP_3>
-				<ANIMTIP_4>TT:COCKPIT.TOOLTIPS.ENG_STARTER_OFF_START_ABORT</ANIMTIP_4>
-				<ANIMCURSOR_MIN>0</ANIMCURSOR_MIN>
-				<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
-			</Case>
-		</Switch>	
-	</DefaultTemplateParameters>
-	
-	<OverrideTemplateParameters>
-		<Switch Param="TYPE">
-			<Case Value="AS02A">
-				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_5States</TEMPLATE_TO_CALL>
-				<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
-				<ARROW_TYPE>Curved</ARROW_TYPE>
-				<CODE_POS_0>
-					(* Ignition BOTH *)
-					(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 1 != if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
-					}
-					(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 1 != if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
-					}
-				</CODE_POS_0>
-				<CODE_POS_1>
-					(* Ignition RIGHT *)
-					(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
-					}
-					(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 1 != if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
-					}
-				</CODE_POS_1>
-				<CODE_POS_2>
-					(* Ignition LEFT *)
-					(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 1 != if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
-					}
-					(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
-					}
-				</CODE_POS_2>
-				<CODE_POS_3>
-					(* Ignition OFF *)
-					(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
-					}
-					(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
-					}
-				</CODE_POS_3>
-				<CODE_POS_4>
-					(* Ignition OFF + Starter OFF *)
-					(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
-					}
-					(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
-					}
-					(A:GENERAL ENG STARTER:#ID1#, Bool) 
-					if{ (&gt;K:TOGGLE_STARTER#ID1#) } 
-					(A:GENERAL ENG STARTER:#ID2#, Bool) 
-					if{ (&gt;K:TOGGLE_STARTER#ID2#) } 
-				</CODE_POS_4>
-				<STATE0_TEST>(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 0 != (A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 0 != and </STATE0_TEST>
-				<STATE1_TEST>(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 1 != (A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 0 != and </STATE1_TEST>
-				<STATE2_TEST>(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 0 != (A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 1 != and </STATE2_TEST>
-				<STATE3_TEST> 0 </STATE3_TEST>
-				<STATE4_TEST>(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 1 != (A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 1 != and (#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 3 != </STATE4_TEST>
-			</Case>
-			<Case Value="AS01B">
-				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_2States</TEMPLATE_TO_CALL>
-				<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
-				<ARROW_TYPE>Curved</ARROW_TYPE>
-				<CODE_POS_0>
-					(* Starter *)
-					(A:GENERAL ENG STARTER:#ID#, Bool) ! 
-					if{ 1 (&gt;K:TOGGLE_STARTER#ID#) } 
-				</CODE_POS_0>
-				<CODE_POS_1>
-					(* Norm *)
-					(A:GENERAL ENG STARTER:#ID#, Bool)
-					if{ 0 (&gt;K:TOGGLE_STARTER#ID#) } 
-				</CODE_POS_1>
-				<UPDATE_CODE>
-					(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) 1 != if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)
-					}
-				</UPDATE_CODE>
-				<STATE0_TEST>(A:GENERAL ENG STARTER ACTIVE:#ID#, Bool) </STATE0_TEST>
-				<STATE1_TEST>(A:GENERAL ENG STARTER ACTIVE:#ID#, Bool) ! </STATE1_TEST>
-			</Case>
-			<Case Value="2Values_StarterIgnition">
-				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_Code</TEMPLATE_TO_CALL>
-				<LEFT_SINGLE_CODE>
-					(&gt;K:TOGGLE_STARTER#ID#)
-					(A:GENERAL ENG STARTER:#ID#, Bool) if{
-						(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #IGNITION_ACTIVE_TYPE# != if{
-							#IGNITION_ACTIVE_TYPE# (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)
-						}
-					} els{
-						(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) 0 != if{
-							0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)
-						}
-					}
-				</LEFT_SINGLE_CODE>
-				<ANIM_CODE>(A:GENERAL ENG STARTER:#ID#, Bool) 100 *</ANIM_CODE>
-				<WWISE_EVENT_1>engine_starter_switch_on</WWISE_EVENT_1>
-				<WWISE_EVENT_2>engine_starter_switch_off</WWISE_EVENT_2>
-			</Case>
-			<Case Value="3Values_StarterIgnition">
-				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_3States</TEMPLATE_TO_CALL>
-				<CODE_POS_0>
-					(* Starter *)
-					#REENERGIZE_IGNITION_CIRCUIT_CODE#
-					(A:GENERAL ENG STARTER:#ID#, Bool) ! 
-					if{ 1 (&gt;K:SET_STARTER#ID#_HELD) } 
-				</CODE_POS_0>
-				<CODE_POS_1>
-					(* Off *)
-					0 (&gt;O:XMLVAR_Engine#ID#_Clearing)
-					#DEENERGIZE_IGNITION_CIRCUIT_CODE#
-					(A:GENERAL ENG STARTER:#ID#, Bool)
-					if{ 
-						0 (&gt;K:SET_STARTER#ID#_HELD) 
-						(&gt;K:TOGGLE_STARTER#ID#)(* Force disable starter *)
-					} 
-				</CODE_POS_1>
-				<CODE_POS_2>
-					(* Motor *)
-					1 (&gt;O:XMLVAR_Engine#ID#_Clearing)
-					#DEENERGIZE_IGNITION_CIRCUIT_CODE#
-					(A:GENERAL ENG STARTER:#ID#, Bool) !
-					if{ 1 (&gt;K:SET_STARTER#ID#_HELD) } 
-				</CODE_POS_2>
-				<STATE0_TEST>(A:GENERAL ENG STARTER:#ID#, Bool) (O:XMLVAR_Engine#ID#_Clearing) ! and</STATE0_TEST>
-				<STATE1_TEST>(A:GENERAL ENG STARTER:#ID#, Bool) ! </STATE1_TEST>
-				<STATE2_TEST>(A:GENERAL ENG STARTER:#ID#, Bool) (O:XMLVAR_Engine#ID#_Clearing) and</STATE2_TEST>
-			</Case>
-			<Case Value="OnOffMomentary">
-				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_3States</TEMPLATE_TO_CALL>
-				<CODE_POS_0>
-					(A:GENERAL ENG STARTER:#ID#, Bool) !
-					if{ (&gt;K:TOGGLE_STARTER#ID#) } 
-				</CODE_POS_0>
-				<CODE_POS_2>
-					(A:GENERAL ENG STARTER:#ID#, Bool)
-					if{ (&gt;K:TOGGLE_STARTER#ID#) }
-				</CODE_POS_2>
-				<MOMENTARY_SWITCH/>
-				<STATE_MAX_TIMER>1</STATE_MAX_TIMER>
-				<STATE0_TIMER>1</STATE0_TIMER>
-			</Case>
-			<Case Value="AS04F">
-				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_3States</TEMPLATE_TO_CALL>
-				<CODE_POS_0>
-					(A:GENERAL ENG STARTER:#ID1#, Bool) !
-					if{ (&gt;K:TOGGLE_STARTER#ID1#) } 
-					1 (&gt;K:APU_BLEED_AIR_SOURCE_SET)
-					(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 1 != if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
-					}
-				</CODE_POS_0>
-				<CODE_POS_1>
-					(A:GENERAL ENG STARTER:#ID1#, Bool)
-					if{ (&gt;K:TOGGLE_STARTER#ID1#) } 
-					(A:GENERAL ENG STARTER:#ID2#, Bool)
-					if{ (&gt;K:TOGGLE_STARTER#ID2#) }
-					0 (&gt;K:APU_BLEED_AIR_SOURCE_SET) 
-					(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
-					}
-					(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 0 != if{
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
-					}
-				</CODE_POS_1>
-				<CODE_POS_2>
-					(A:GENERAL ENG STARTER:#ID2#, Bool) !
-					if{ (&gt;K:TOGGLE_STARTER#ID2#) }
-					1 (&gt;K:APU_BLEED_AIR_SOURCE_SET)
-					(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 1 != if{
-						1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
-					}
-				</CODE_POS_2>
-				<STATE0_TEST>(A:BLEED AIR APU, Bool) (A:GENERAL ENG STARTER:#ID1#, Bool) and (A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) 1 == and</STATE0_TEST>
-				<STATE1_TEST>(A:BLEED AIR APU, Bool) ! (A:GENERAL ENG STARTER:#ID1#, Bool) and ! (A:GENERAL ENG STARTER:#ID1#, Bool) ! and </STATE1_TEST>
-				<STATE2_TEST>(A:BLEED AIR APU, Bool) (A:GENERAL ENG STARTER:#ID2#, Bool) and (A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) 1 == and</STATE2_TEST>
-			</Case>
-			<Default>
-				<TEMPLATE_TO_CALL>ASOBO_GT_Switch_Code</TEMPLATE_TO_CALL>
-				<LEFT_SINGLE_CODE>
-					(&gt;K:TOGGLE_STARTER#ID#)
-				</LEFT_SINGLE_CODE>
-				<ANIM_CODE>
-					(A:GENERAL ENG STARTER:#ID#, Bool) 100 *
-				</ANIM_CODE>
-			</Default>
-		</Switch>
-	</OverrideTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="#TEMPLATE_TO_CALL#">
-		</UseTemplate>
-		<Condition Check="UPDATE_CODE">
-			<True>
-				<UseTemplate Name="ASOBO_GT_Update">
-					<FREQUENCY>1</FREQUENCY>
-				</UseTemplate>
-			</True>
-		</Condition>
-	</Component>
-</Template>
+<!-- #################################################### -->
+<!-- Template converted and now working using InputEvents -->
+<!-- #################################################### -->
 
-<Template Name="ASOBO_ENGINE_Push_Ignition_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Push_Ignition_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Push_Ignition_#ID#</ANIM_NAME>
-		<PART_ID>ENGINE_Push_Ignition</PART_ID>
-		<Switch Param="TYPE">
-			<Case Value="AUTO_ON">
-				<STATE_ON>2</STATE_ON><!-- ON -->
-				<STATE_OFF>1</STATE_OFF><!-- AUTO -->
-			</Case>
-			<Default>
-				<STATE_ON>2</STATE_ON><!-- ON -->
-				<STATE_OFF>0</STATE_OFF><!-- OFF -->
-			</Default>
-		</Switch>
-		<WWISE_EVENT_1>engine_ignition_button_on</WWISE_EVENT_1> 
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<WWISE_EVENT_2>engine_ignition_button_off</WWISE_EVENT_2> 
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<Switch Param="ID"> <!-- differenciate between LH and RH tooltips, to be reworked if we get planes w/ more than 2 ignition push switches -->
-			<Case Value="1">
-				<TOOLTIPID>%((A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #STATE_ON#)%{if}TT:COCKPIT.TOOLTIPS.IGNITION_LH_ON%{else}TT:COCKPIT.TOOLTIPS.IGNITION_LH_OFF%{end}</TOOLTIPID>
-			</Case>
-			<Case Value="2">
-				<TOOLTIPID>%((A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #STATE_ON#)%{if}TT:COCKPIT.TOOLTIPS.IGNITION_RH_ON%{else}TT:COCKPIT.TOOLTIPS.IGNITION_RH_OFF%{end}</TOOLTIPID>
-			</Case>
-		</Switch>
-	</OverrideTemplateParameters>
-	<Condition Valid="PREVENT_UNKNOWN_IGNITION_VALUE">
-		<UseTemplate Name="ASOBO_GT_Update">
-			<UPDATE_CODE>
-				(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) sp0
-				l0 #STATE_OFF# != l0 #STATE_ON# != and if{ #STATE_OFF# (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#) }
-			</UPDATE_CODE>
-		</UseTemplate>
-	</Condition>
-	<UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
-		<SEQ1_EMISSIVE_CODE>(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #STATE_ON# ==</SEQ1_EMISSIVE_CODE>
-		<SEQ2_EMISSIVE_CODE>(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #STATE_OFF# ==</SEQ2_EMISSIVE_CODE>
-		<LEFT_SINGLE_CODE>#STATE_ON# #STATE_OFF# (A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #STATE_OFF# == ? (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)</LEFT_SINGLE_CODE>
-	</UseTemplate>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Switch_Ignition_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Switch_Ignition_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Switch_Ignition_#ID#</ANIM_NAME>
-		<PART_ID>ENGINE_Switch_Ignition</PART_ID>
-		<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
-		<SWITCH_POSITION_VAR>XMLVAR_Ignition</SWITCH_POSITION_VAR>
-		<Condition Check="NUM_STATES" match="2">
-			<True>
-				<STATE_OFF>1</STATE_OFF>
-				<!-- Auto -->
-				<STATE_ON>2</STATE_ON>
-				<!-- ON -->
-				<WWISE_EVENT_1>engine_ignition_switch_on</WWISE_EVENT_1> 
-				<WWISE_EVENT_2>engine_ignition_switch_off</WWISE_EVENT_2> 
-				<Condition Check="UNDER_STARTER_AUTHORITY">
+<Template Name="ASOBO_ENGINE_Throttle_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_Throttle_#ID_NODE#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Throttle_#ID_NODE#</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_Throttle</PART_ID>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<Condition Check="AIRBUS_TYPE">
 					<True>
-						<STARTER_AUTHORITY_TEST>(A:GENERAL ENG STARTER:#ID#, Bool)</STARTER_AUTHORITY_TEST>
+						<LEVER_TYPE>AIRBUS</LEVER_TYPE>
 					</True>
-					<False>
-						<STARTER_AUTHORITY_TEST>0</STARTER_AUTHORITY_TEST>
-					</False>
 				</Condition>
-			</True>
-			<False>
-				<WWISE_EVENT>engine_ignition_switch</WWISE_EVENT> 
-			</False>
-		</Condition>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Condition Check="NUM_STATES" match="2">
-			<True>
-				<!-- preserve variable consistancy -->
-				<Update Frequency="2">
-					#STARTER_AUTHORITY_TEST# ! if{
-						(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
-					}
-				</Update>
-				<UseTemplate Name="ASOBO_GT_Switch_Code">
-					<LEFT_SINGLE_CODE>
-						(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) #STATE_ON# == if{
-							#STATE_OFF# (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
-						} els{
-							#STATE_ON# (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
-						}
-						#STARTER_AUTHORITY_TEST# ! if{
-							(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)
-						}
-					</LEFT_SINGLE_CODE>
-					<ANIM_CODE>
-						(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) #STATE_ON# == 100 *
-					</ANIM_CODE>
-				</UseTemplate>
-			</True>
-			<False>
-				<UseTemplate Name="ASOBO_GT_Switch_3States">
-					<ENUM_SIMVAR>TURB ENG IGNITION SWITCH EX1:#ID#</ENUM_SIMVAR>
-					<ENUM_KEY>TURBINE_IGNITION_SWITCH_SET#ID#</ENUM_KEY>
-					<ENUM_VAL_POS_0>1</ENUM_VAL_POS_0>
-					<ENUM_VAL_POS_1>2</ENUM_VAL_POS_1>
-					<ENUM_VAL_POS_2>0</ENUM_VAL_POS_2>
-				</UseTemplate>
-			</False>
-		</Condition>
-	
-	</Component>
-</Template>
-
-<!-- Airliner start -->
-<Template Name="ASOBO_ENGINE_Push_Starter_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Push_Starter_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Push_Starter_#ID#</ANIM_NAME>
-		<WWISE_EVENT_1>engine_start_push_button_on</WWISE_EVENT_1> 
-		<WWISE_EVENT_2>engine_start_push_button_off</WWISE_EVENT_2>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-		<Switch Param="TYPE">
-			<Case Value="AS02A">
-				<SEQ1_EMISSIVE_CODE> 0 </SEQ1_EMISSIVE_CODE>
-				<SEQ2_EMISSIVE_CODE>(A:GENERAL ENG STARTER:#ID#, Bool)</SEQ2_EMISSIVE_CODE>
-			</Case>
-			<Default>
-				<ONLY_SEQ1/>
-				<SEQ1_EMISSIVE_CODE>(A:GENERAL ENG STARTER:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
-			</Default>
-		</Switch>
-		<TOOLTIPID>%((A:GENERAL ENG STARTER:#ID#, Bool))%{if}TT:COCKPIT.TOOLTIPS.FUEL_PUSH_STARTER_ON_#ID#%{else}TT:COCKPIT.TOOLTIPS.FUEL_PUSH_STARTER_OFF_#ID#%{end}</TOOLTIPID>
-		<PART_ID>ENGINE_Push_Starter</PART_ID>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
-			<LEFT_SINGLE_CODE>
-				(&gt;K:TOGGLE_STARTER#ID#)
-			</LEFT_SINGLE_CODE>
-		</UseTemplate>
-	</Component>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Push_Starter_Disengage_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Push_Starter_Disengage_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Push_Starter_Disengage_#ID#</ANIM_NAME>
-		<WWISE_EVENT_1>engine_start_push_button_on</WWISE_EVENT_1> 
-		<WWISE_EVENT_2>engine_start_push_button_off</WWISE_EVENT_2>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-		<ONLY_SEQ1/>
-		<SEQ1_EMISSIVE_CODE>(A:GENERAL ENG STARTER:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.FUEL_PUSH_STARTER_DISENGAGE</TOOLTIPID>
-		<Switch Param="TYPE">
-			<Case Value="TWO_ENGINES">
-				<ID_ENG_1>1</ID_ENG_1>
-				<ID_ENG_2>2</ID_ENG_2>
-			</Case>
-			<Case Value="ALL_ENGINES">
-				<ID_ENG_1>1</ID_ENG_1>
-				<ID_ENG_2>2</ID_ENG_2>
-				<ID_ENG_3>3</ID_ENG_3>
-				<ID_ENG_4>4</ID_ENG_4>
+				<RESET_LIMITS/>
+				<PROCESS_LIMITS>
+					(A:THROTTLE LOWER LIMIT, position 16k) (&gt;O:XMLVAR_MIN_Limit)
+					16384 (&gt;O:XMLVAR_MAX_Limit)
+				</PROCESS_LIMITS>	
+				<DRAG_AXIS_SCALE>-450</DRAG_AXIS_SCALE>	
+				<POSITION_TYPE>O</POSITION_TYPE>
+				<POSITION_VAR>Position</POSITION_VAR>
+				<DELTA_MIN>0.00025</DELTA_MIN>
+				<AXIS>Y</AXIS>
+				<USE_TRAJECTORY_DRAG_MODE>true</USE_TRAJECTORY_DRAG_MODE>
+				<NO_ARROWS/>
+				<Condition NotEmpty="AFTERBURNER_GATE_POS">
+					<AFTERBURNER_GATE_POS_16K Process="Int">#AFTERBURNER_GATE_POS# 16384 *</AFTERBURNER_GATE_POS_16K>
+				</Condition>
+				<Condition NotEmpty="OFF_GATE_POS">
+					<OFF_GATE_POS_16K Process="Int">#OFF_GATE_POS# 16384 *</OFF_GATE_POS_16K>
+				</Condition>
+				<GATE_MARGIN>256</GATE_MARGIN>
 			</Case>
 		</Switch>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Push_Button">
-			<Switch Param="TYPE">
-				<Case Value="TWO_ENGINES">
-					<LEFT_SINGLE_CODE>
-						(A:GENERAL ENG STARTER:#ID_ENG_1#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_1#) }
-						(A:GENERAL ENG STARTER:#ID_ENG_2#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_2#) }
-					</LEFT_SINGLE_CODE>
-				</Case>
-				<Case Value="ALL_ENGINES">
-					<LEFT_SINGLE_CODE>
-						(A:GENERAL ENG STARTER:#ID_ENG_1#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_1#) }
-						(A:GENERAL ENG STARTER:#ID_ENG_2#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_2#) }
-						(A:GENERAL ENG STARTER:#ID_ENG_3#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_3#) }
-						(A:GENERAL ENG STARTER:#ID_ENG_4#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_4#) }
-					</LEFT_SINGLE_CODE>
-				</Case>
-				<Default>
-					<LEFT_SINGLE_CODE>(A:GENERAL ENG STARTER:#ID#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID#) }</LEFT_SINGLE_CODE>
-				</Default>
-			</Switch>
-		</UseTemplate>
-	</Component>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Switch_Magneto_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Switch_Magneto_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Switch_Magneto_#ID#</ANIM_NAME>
-		<WWISE_EVENT_1>engine_magneto_switch_on</WWISE_EVENT_1> 
-		<WWISE_EVENT_2>engine_magneto_switch_off</WWISE_EVENT_2> 
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Condition Check="MAGNETO_SIDE">
-			<True>
-				<UseTemplate Name="ASOBO_GT_Switch_Code">
-					<ANIM_CODE>
-						(A:RECIP ENG #MAGNETO_SIDE# MAGNETO:#ID#, Bool) 100 *
-					</ANIM_CODE>
-					<LEFT_SINGLE_CODE>
-						(&gt;K:MAGNETO#ID#_#MAGNETO_SIDE#)
-					</LEFT_SINGLE_CODE>
-				</UseTemplate>
-			</True>
-			<False>
-				<UseTemplate Name="ASOBO_GT_Switch_Code">
-					<ANIM_CODE>
-						(A:RECIP ENG LEFT MAGNETO:#ID#, Bool)
-						(A:RECIP ENG RIGHT MAGNETO:#ID#, Bool) and 100 *
-					</ANIM_CODE>
-					<LEFT_SINGLE_CODE>
-						(&gt;K:MAGNETO#ID#_LEFT)
-						(&gt;K:MAGNETO#ID#_RIGHT) 
-					</LEFT_SINGLE_CODE>
-				</UseTemplate>
-			</False>
-		</Condition>
-	</Component>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Switch_Master_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Switch_Master_#ID#</NODE_ID>
-		<ANIM_NAME>ENGINE_Switch_Master_#ID#</ANIM_NAME>
-		<WWISE_EVENT_1>engine_master_switch_on</WWISE_EVENT_1> 
-		<WWISE_EVENT_2>engine_master_switch_off</WWISE_EVENT_2> 
-		<PART_ID>ENGINE_Switch_Master</PART_ID>
-		<Switch Param="TYPE">
-			<Case Value="LOCKED">
-				<LOCK_NODE_ID>ENGINE_Switch_Master_#ID#_Lock</LOCK_NODE_ID>
-				<LOCK_ANIM_NAME>ENGINE_Switch_Master_#ID#_Lock</LOCK_ANIM_NAME>
-				<VAR_SCOPE>I</VAR_SCOPE> <!-- I or L -->
-			</Case>
-		</Switch>
-		<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.ENGINE#ID#_MASTER_TURN_ON</ANIMTIP_0>
-		<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.ENGINE#ID#_MASTER_TURN_OFF</ANIMTIP_1>
-	</DefaultTemplateParameters>
-	
-	<Condition Check="AIRBUS_TYPE">
-		<True>
-			<Component ID="#NODE_ID#" Node="#NODE_ID#">
-				<Update Once="True">
-					(* This Update Ensures that the initial state of some simvars that are linked to the same button is consistent. *)
-					(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Bool) sp1
-					(A:GENERAL ENG STARTER:#ID#, Bool) l1 != if{ 
-						(&gt;K:TOGGLE_STARTER#ID#)
-					}
-				</Update>
-				<UseTemplate Name="ASOBO_GT_Switch_Code">
-					<ANIM_CODE>
-						(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Bool) 100 *
-					</ANIM_CODE>
-					<LEFT_SINGLE_CODE>
-						(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Bool) if{
-							#VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_CLOSE)
-							(A:GENERAL ENG STARTER:#ID#, Bool) if{
-								(&gt;K:TOGGLE_STARTER#ID#)
-							}
-						} els{
-							#VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_OPEN)
-							(A:GENERAL ENG STARTER:#ID#, Bool) ! if{
-								(&gt;K:TOGGLE_STARTER#ID#)
-							}
-						}
-					</LEFT_SINGLE_CODE>
-				</UseTemplate>
-			</Component>
-			<Condition Check="POTENTIOMETER">
-				<Component ID="#NODE_ID#_SEQ1" Node="#NODE_ID#_SEQ1">
-					<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-						<EMISSIVE_CODE>(A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent over 100)</EMISSIVE_CODE>
-					</UseTemplate>
-				</Component>
-			</Condition>
-		</True>
-		<False>
-			<Switch Param="TYPE">
-				<Case Value="LOCKED">
-					<Component ID="#NODE_ID#" Node="#NODE_ID#">
-						<UseTemplate Name="ASOBO_GT_Switch_Code">
-							<ANIM_CODE>
-								(A:RECIP ENG ENGINE MASTER SWITCH:#ID#, Bool) 100 *
-							</ANIM_CODE>
-							<LEFT_SINGLE_CODE>
-								(#VAR_SCOPE#:XMLVAR_ENGINE_Switch_Master_Cover_Opened) if{
-									(&gt;K:ENGINE_MASTER_#ID#_TOGGLE)						
-								}
-							</LEFT_SINGLE_CODE>
-						</UseTemplate>
-					</Component>
-					<Component ID="#LOCK_NODE_ID#" Node="#LOCK_NODE_ID#">
-						<UseTemplate Name="ASOBO_GT_Switch_Code">
-							<ANIM_CODE>(#VAR_SCOPE#:XMLVAR_ENGINE_Switch_Master_Cover_Opened) 100 *</ANIM_CODE>
-							<LEFT_SINGLE_CODE>
-								(#VAR_SCOPE#:XMLVAR_ENGINE_Switch_Master_Cover_Opened) ! (&gt;#VAR_SCOPE#:XMLVAR_ENGINE_Switch_Master_Cover_Opened)
-							</LEFT_SINGLE_CODE>
-							<ANIM_NAME>#LOCK_ANIM_NAME#</ANIM_NAME>
-							<WWISE_EVENT_1>engine_cover_master_switch_on</WWISE_EVENT_1> 
-							<WWISE_EVENT_2>engine_cover_master_switch_off</WWISE_EVENT_2> 
-						</UseTemplate>
-					</Component>
-				</Case>
-				<Default>
-					<Component ID="#NODE_ID#" Node="#NODE_ID#">
-						<UseTemplate Name="ASOBO_GT_Switch_Code">
-							<ANIM_CODE>
-								(A:RECIP ENG ENGINE MASTER SWITCH:#ID#, Bool) 100 *
-							</ANIM_CODE>
-							<LEFT_SINGLE_CODE>
-								(&gt;K:ENGINE_MASTER_#ID#_TOGGLE)
-							</LEFT_SINGLE_CODE>
-						</UseTemplate>
-					</Component>
-				</Default>
-			</Switch>
-		</False>
-	</Condition>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Switch_Engine_Mode_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Switch_Engine_Mode</NODE_ID>
-		<ANIM_NAME>ENGINE_Switch_Engine_Mode</ANIM_NAME>
-		<PART_ID>ENGINE_Switch_Engine_Mode</PART_ID>
-		<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
-		<ARROW_TYPE>Curved</ARROW_TYPE>
-		<CODE_POS_1></CODE_POS_1>
-		<CODE_POS_2></CODE_POS_2>
-		<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
-		<SWITCH_POSITION_VAR>XMLVAR_ENG_MODE_SEL</SWITCH_POSITION_VAR>
-		<STATE0_TEST>1</STATE0_TEST>
-		<STATE1_TEST>1</STATE1_TEST>
-		<STATE2_TEST>1</STATE2_TEST>
-		<WWISE_EVENT>engine_mode_switch</WWISE_EVENT>
-	</DefaultTemplateParameters>
-	
-	<Condition>
-		<Test>
-			<Greater>
-				<Value>ENGINE_CURRENT</Value>
-				<Number>0</Number>
-			</Greater>
-		</Test>
-		<True>
-			<UseTemplate Name="ASOBO_ENGINE_Switch_Engine_Mode_SubTemplate">
-				<CODE_POS_1>
-					1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ENGINE_CURRENT#)
-					#CODE_POS_1#
-				</CODE_POS_1>
-				<CODE_POS_2>
-					2 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ENGINE_CURRENT#)
-					#CODE_POS_2#
-				</CODE_POS_2>
-				
-				<STATE0_TEST> (A:TURB ENG IGNITION SWITCH EX1:#ENGINE_CURRENT#, Enum) 0 == #STATE0_TEST# and</STATE0_TEST>
-				<STATE1_TEST> (A:TURB ENG IGNITION SWITCH EX1:#ENGINE_CURRENT#, Enum) 1 == #STATE1_TEST# and</STATE1_TEST>
-				<STATE2_TEST> (A:TURB ENG IGNITION SWITCH EX1:#ENGINE_CURRENT#, Enum) 2 == #STATE2_TEST# and</STATE2_TEST>
-				<ENGINE_CURRENT Process="Int">#ENGINE_CURRENT# 1 -</ENGINE_CURRENT>
-			</UseTemplate>
-		</True>
-		<False>
-			<Component ID="#NODE_ID#" Node="#NODE_ID#">
-				<UseTemplate Name="ASOBO_GT_Switch_3States">
-					<CODE_POS_0>
-						0 (&gt;K:TURBINE_IGNITION_SWITCH_SET)
-					</CODE_POS_0>
-				<CODE_POS_2>
-					#CODE_POS_2#
-					(&gt;H:A320_Neo_EICAS_2_ECAM_CHANGE_PAGE_ENG)
-					(&gt;H:A320_Neo_EICAS_2_Ignition_Start)
-				</CODE_POS_2>
-				</UseTemplate>
-			</Component>
-		</False>
-	</Condition>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Lever_Throttle_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>ENGINE_Lever_Throttle_#ID_NODE#</ANIM_NAME>
-		<NODE_ID>ENGINE_Lever_Throttle_#ID_NODE#</NODE_ID>
-		<PART_ID>ENGINE_Lever_Throttle</PART_ID>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<PROCESS_LIMITS>
-			(A:THROTTLE LOWER LIMIT, position 16k) (&gt;O:XMLVAR_MIN_Limit)
-			16384 (&gt;O:XMLVAR_MAX_Limit)
-		</PROCESS_LIMITS>
-	</OverrideTemplateParameters>
-
-	<UseTemplate Name="ASOBO_ENGINE_Lever_Throttle_SubTemplate2">
-	</UseTemplate>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Lever_Throttle_SubTemplate2">
-	<DefaultTemplateParameters>
-		<DRAG_AXIS_SCALE>-450</DRAG_AXIS_SCALE>
 		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.THROTTLE_CONTROL</TOOLTIPID>
-		<POSITION_TYPE>O</POSITION_TYPE>
-		<POSITION_VAR>Position</POSITION_VAR>
-		<DRAG_ANIMATION_VARIABLE_TYPE>O</DRAG_ANIMATION_VARIABLE_TYPE>
-		<DRAG_ANIMATION_VARIABLE_NAME>XMLVAR_#NODE_ID#_Animation_Position</DRAG_ANIMATION_VARIABLE_NAME>
-		<AXIS>Y</AXIS>
-		<NO_ARROWS/>
-		<CURSOR>Hand</CURSOR>
 		<INCREMENT>163.84</INCREMENT>
 		<SCROLL_INCREMENT>701</SCROLL_INCREMENT>
-		<DELTA_MIN>0.00025</DELTA_MIN>
-		<USE_TRAJECTORY_DRAG_MODE>true</USE_TRAJECTORY_DRAG_MODE>
-		<Condition NotEmpty="AFTERBURNER_GATE_POS">
-			<True>
-				<AFTERBURNER_GATE_POS_16K Process="Int">#AFTERBURNER_GATE_POS# 16384 *</AFTERBURNER_GATE_POS_16K>
-			</True>
-		</Condition>
-		<Condition NotEmpty="OFF_GATE_POS">
-			<True>
-				<OFF_GATE_POS_16K Process="Int">#OFF_GATE_POS# 16384 *</OFF_GATE_POS_16K>
-			</True>
-		</Condition>
-		<GATE_MARGIN>256</GATE_MARGIN>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<RESET_LIMITS/>
-		<Condition Check="LEVER_TYPE" Match="BOEING">
-			<True>
-				<DRAG_MAX_VALUE>16384</DRAG_MAX_VALUE>
-				<DRAG_MIN_VALUE>0</DRAG_MIN_VALUE>
-			</True>
-			<False>
+		<CURSOR>Hand</CURSOR>
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
 				<Condition Check="LEVER_TYPE" Match="AIRBUS">
-					<True>
-						<CLIMB_LEVEL>89</CLIMB_LEVEL>
-						<FLEX_LEVEL>95</FLEX_LEVEL>
-						<TOGA_LEVEL>100</TOGA_LEVEL>
-					</True>
+					<CLIMB_LEVEL>89</CLIMB_LEVEL>
+					<FLEX_LEVEL>95</FLEX_LEVEL>
+					<TOGA_LEVEL>100</TOGA_LEVEL>
 				</Condition>
 				<Switch>
+					<Case Check="LEVER_TYPE" Match="BOEING">
+						<DRAG_MAX_VALUE>16384</DRAG_MAX_VALUE>
+						<DRAG_MIN_VALUE>0</DRAG_MIN_VALUE>
+					</Case>
 					<Case Check="HAS_IDLE_GATE">
 						<DRAG_MAX_VALUE>16384 (O:XMLVAR_MAX_Limit) min</DRAG_MAX_VALUE>
 						<PROCESS_LIMITS>
@@ -772,6 +71,10 @@
 							0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
 						</RESET_LIMITS>
 						<DRAG_MIN_VALUE>(A:THROTTLE LOWER LIMIT, position 16k) (O:XMLVAR_MIN_Limit) max</DRAG_MIN_VALUE>
+						<Condition Check="IDLE_GATE_ANIM_POS">
+							<IDLE>#IDLE_GATE_ANIM_POS#</IDLE>
+							<TRUE_IDLE_01 Process="Float">0 (A:THROTTLE LOWER LIMIT, percent) - 100 (A:THROTTLE LOWER LIMIT, percent) - /</TRUE_IDLE_01>
+						</Condition>
 					</Case>
 					<Case NotEmpty="OFF_GATE_POS">
 						<DRAG_MAX_VALUE>16384 (O:XMLVAR_MAX_Limit) min</DRAG_MAX_VALUE>
@@ -793,359 +96,386 @@
 						<DRAG_MIN_VALUE Process="Int">(A:THROTTLE LOWER LIMIT, position 16k)</DRAG_MIN_VALUE>
 					</Default>
 				</Switch>
-			</False>
-		</Condition>
-		<DRAG_ANIM_VAR>(#DRAG_ANIMATION_VARIABLE_TYPE#:#DRAG_ANIMATION_VARIABLE_NAME#)</DRAG_ANIM_VAR>
-	</OverrideTemplateParameters>
-
-	<UseTemplate Name="ASOBO_ENGINE_Lever_Throttle_SubTemplate3">
-	</UseTemplate>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Lever_Throttle_SubTemplate3">
-	<DefaultTemplateParameters>
-		<MIN_DIFF_POS_16K>819.2</MIN_DIFF_POS_16K>
-		<Condition Valid="USE_TRAJECTORY_DRAG_MODE">
-			<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
-		</Condition>
-		<MAIN_LEVER_REVERSE_POSITION Process="Int">(A:THROTTLE LOWER LIMIT, position 16k)</MAIN_LEVER_REVERSE_POSITION>
-		<MAIN_LEVER_REVERSE_POSITION_PCT Process="Int">(A:THROTTLE LOWER LIMIT, percent)</MAIN_LEVER_REVERSE_POSITION_PCT>
-		<SNAP_DISTANCE>1</SNAP_DISTANCE>
-		<ADJUST_RAW_DRAG_VALUE/>
-		<Condition Check="USE_BUTTON">
-			<BUTTON_NODE_ID>ENGINE_Lever_Throttle_#ID#_Button</BUTTON_NODE_ID>
-			<BUTTON_ANIM_NAME>ENGINE_Lever_Throttle_#ID#_Button</BUTTON_ANIM_NAME>
-		</Condition>
-		<Condition Check="BUTTON_NODE_ID">
-			<BUTTON_ANIM_NAME>#BUTTON_NODE_ID#</BUTTON_ANIM_NAME>
-		</Condition>
-		<DRAG_VALUE_OVERRIDE/>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<Condition NotEmpty="AFTERBURNER_GATE_POS_16K">
-			<DRAG_MIN_VALUE>(A:THROTTLE LOWER LIMIT, position 16k) (O:XMLVAR_MIN_Limit) max</DRAG_MIN_VALUE>
-			<DRAG_MAX_VALUE>16384 (O:XMLVAR_MAX_Limit) min</DRAG_MAX_VALUE>
-			<PROCESS_LIMITS>
-				#PROCESS_LIMITS#
-				(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #AFTERBURNER_GATE_POS_16K# - abs #GATE_MARGIN# &gt; if{
-					(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #AFTERBURNER_GATE_POS_16K# &gt; if{
-						#AFTERBURNER_GATE_POS_16K# (&gt;O:XMLVAR_MIN_Limit)
-					} els{
-						#AFTERBURNER_GATE_POS_16K# (&gt;O:XMLVAR_MAX_Limit)
-					}
-				}
-			</PROCESS_LIMITS>
-			<RESET_LIMITS>
-				(A:THROTTLE LOWER LIMIT, position 16k) (&gt;O:XMLVAR_MIN_Limit)
-				16384 (&gt;O:XMLVAR_MAX_Limit)
-				0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
-			</RESET_LIMITS>
-		</Condition>
-		<ANIMATION_CODE_SETTER>(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, Percent)</ANIMATION_CODE_SETTER>
-		<Switch Param="LEVER_TYPE">
-			<Case Value="AIRBUS">
-				<ANIMATION_CODE_SETTER>(#POSITION_TYPE#:#POSITION_VAR#) 4 / 100 *</ANIMATION_CODE_SETTER>
-				<THROTTLE_ANIM_CODE>
-					(A:THROTTLE LOWER LIMIT, percent) sp0
-					(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, Percent) s1 0 &lt; if{
-						1 l1 l0 / - 25 * sp2
-						0 sp3
-						#MAIN_LEVER_REVERSE_POSITION_PCT# sp4
-						0 sp5
-					} els{
-						l1 #CLIMB_LEVEL# &lt; if{
-							1 sp3
-							0 sp4
-							#CLIMB_LEVEL# sp5
-						} els{
-							l1 #FLEX_LEVEL# &lt; if{
-								2 sp3
-								#CLIMB_LEVEL# sp4
-								#FLEX_LEVEL# sp5
-							} els{
-								3 sp3
-								#FLEX_LEVEL# sp4
-								#TOGA_LEVEL# sp5
-							}
-						}
-						l1 l4 - l5 l4 - / l3 + 25 * sp2
-					}
-					
-					(O:IsDragging) ! if{
-						-200 sp6
-						l1 l4 - #SNAP_DISTANCE# &lt; if{
-							l3 25 * sp6
-						} els{
-							l5 l1 - #SNAP_DISTANCE# &lt; if{
-								l3 1 + 25 * sp6
-							}
-						}
-						
-						l6 -200 != if{
-							l6 sp2
-						}
-						
-						l2 0.04 * (&gt;#POSITION_TYPE#:#POSITION_VAR#)
-					}
-					l2 (&gt;O:XMLVAR_AnimationPosition_PostSnap)
-					l2
-				</THROTTLE_ANIM_CODE>
 			</Case>
-			<Case Value="BOEING">
-				<THROTTLE_ANIM_CODE>
-					#DRAG_ANIM_VAR#
-				</THROTTLE_ANIM_CODE>
-				<MAIN_LEVER_REVERSE_POSITION>0</MAIN_LEVER_REVERSE_POSITION>
-			</Case>
-			<Case NotEmpty="OFF_GATE_POS">
-				<THROTTLE_ANIM_CODE>
-						(#DRAG_ANIMATION_VARIABLE_TYPE#:#DRAG_ANIMATION_VARIABLE_NAME#) (A:THROTTLE LOWER LIMIT, percent) -
-						100 (A:THROTTLE LOWER LIMIT, percent) - / 
-						1 #OFF_GATE_POS# - *
-						(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Boolean) #OFF_GATE_POS# * +
-						100 *
-				</THROTTLE_ANIM_CODE>
-				<ADJUST_RAW_DRAG_VALUE>
-					#OFF_GATE_POS# max #OFF_GATE_POS# - 1 #OFF_GATE_POS# - /
-				</ADJUST_RAW_DRAG_VALUE>
-				<DRAG_VALUE_OVERRIDE>
-					(M:DragPercent) #OFF_GATE_POS# 0.5 * &lt; (O:XMLVAR_MIN_Limit) #OFF_GATE_POS# &lt; and if{
-						(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Boolean) if{
-							#VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_CLOSE)
-						}
-					} els{
-						(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Boolean) ! if{
-							#VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_OPEN)
-						}
-					}
-				</DRAG_VALUE_OVERRIDE>
-			</Case>
-			<Default>
-				<THROTTLE_ANIM_CODE>
-						(#DRAG_ANIMATION_VARIABLE_TYPE#:#DRAG_ANIMATION_VARIABLE_NAME#) (A:THROTTLE LOWER LIMIT, percent) -
-						100 (A:THROTTLE LOWER LIMIT, percent) - / 
-						100 *
-				</THROTTLE_ANIM_CODE>
-			</Default>
 		</Switch>
-	</OverrideTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Condition Check="ANIM_NAME_REVERSE_LOCK">
-			<UseTemplate Name="ASOBO_GT_Anim_Code">
-				<Switch Param="LEVER_TYPE">
-					<Case Value="AIRBUS">
-						<ANIM_CODE>
-							(#POSITION_TYPE#:#POSITION_VAR#) 1 &lt; 100 *
-						</ANIM_CODE>
-					</Case>
-					<Default>
-						<ANIM_CODE>
-							(#DRAG_ANIMATION_VARIABLE_TYPE#:#DRAG_ANIMATION_VARIABLE_NAME#) 0 &lt; 100 *
-						</ANIM_CODE>
-					</Default>
-				</Switch>
-				<ANIM_NAME>#ANIM_NAME_REVERSE_LOCK#</ANIM_NAME>
-			</UseTemplate>
-			<UseTemplate Name = "ASOBO_GT_AnimTriggers_2SoundEvents">
-				<ANIM_NAME>#ANIM_NAME_REVERSE_LOCK#</ANIM_NAME>
-				<WWISE_EVENT_1>throttle_lever_lock_on</WWISE_EVENT_1>
-				<WWISE_EVENT_2>throttle_lever_lock_off</WWISE_EVENT_2>
-			</UseTemplate>
-		</Condition>
-			<UseTemplate Name="ASOBO_GT_Anim_Code">
-				<Condition Valid="OVERRIDE_ANIM_CODE">
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<MIN_DIFF_POS_16K>819.2</MIN_DIFF_POS_16K>
+				<Condition Valid="USE_TRAJECTORY_DRAG_MODE">
+					<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
+				</Condition>
+				<MAIN_LEVER_REVERSE_POSITION Process="Int">(A:THROTTLE LOWER LIMIT, position 16k)</MAIN_LEVER_REVERSE_POSITION>
+				<MAIN_LEVER_REVERSE_POSITION_PCT Process="Int">(A:THROTTLE LOWER LIMIT, percent)</MAIN_LEVER_REVERSE_POSITION_PCT>
+				<SNAP_DISTANCE>1</SNAP_DISTANCE>
+				<DRAG_VALUE_OVERRIDE/>
+				<Condition>
+					<Test>
+						<And>
+							<Arg Check="HAS_IDLE_GATE"/>
+							<Arg Check="IDLE_GATE_ANIM_POS"/>
+						</And>
+					</Test>
 					<True>
-						<ANIM_CODE>#OVERRIDE_ANIM_CODE#</ANIM_CODE>
+						<!-- adjust drag value based on anim value (positive range) -->
+						<LERP_IDLE_FULL>l0 #IDLE# - 1 #IDLE# - / 1 #TRUE_IDLE_01# - * #TRUE_IDLE_01# +</LERP_IDLE_FULL>
+						<!-- adjust drag value based on anim value (negative range) -->
+						<LERP_IDLE_REVERSE>l0 #IDLE# - #IDLE# / #TRUE_IDLE_01# * #TRUE_IDLE_01# +</LERP_IDLE_REVERSE>
+					</True>
+				</Condition>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<Condition>
+					<Test>
+						<And>
+							<Arg Check="HAS_IDLE_GATE"/>
+							<Arg Check="IDLE_GATE_ANIM_POS"/>
+						</And>
+					</Test>
+					<True>
+						<ADJUST_RAW_DRAG_VALUE>sp0 #LERP_IDLE_FULL# #LERP_IDLE_REVERSE# l0 #IDLE# &gt; ?</ADJUST_RAW_DRAG_VALUE>
 					</True>
 					<False>
-						<ANIM_CODE>#THROTTLE_ANIM_CODE#</ANIM_CODE>
+						<ADJUST_RAW_DRAG_VALUE/>
 					</False>
 				</Condition>
-			</UseTemplate>
-		<Switch Param="LEVER_TYPE">
-			<Case Value="AIRBUS">
-				<Update Once="true">
-					(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, percent over 100) (A:THROTTLE LOWER LIMIT, percent over 100) - 4 * (&gt;#POSITION_TYPE#:#POSITION_VAR#)
-				</Update>
-				<Update Frequency="5">					
-					(* Keep Track of Airbus Throttle Setting *)
-					0 (&gt;L:XML_Airbus_Throttle#ID#_TOGA)
-					0 (&gt;L:XML_Airbus_Throttle#ID#_Flex_MCT)
-					0 (&gt;L:XML_Airbus_Throttle#ID#_Climb)
-					0 (&gt;L:XML_Airbus_Throttle#ID#_Idle)
-					0 (&gt;L:XML_Airbus_Throttle#ID#_Rev)
-					
-					(O:XMLVAR_AnimationPosition_PostSnap) 25 &lt; if{
-						1 (&gt;L:XML_Airbus_Throttle#ID#_Rev)
-					} els{
-						(O:XMLVAR_AnimationPosition_PostSnap) 50 &lt; if{
-							1 (&gt;L:XML_Airbus_Throttle#ID#_Idle)
-						} els{
-							(O:XMLVAR_AnimationPosition_PostSnap) 75 &lt; if{
-								1 (&gt;L:XML_Airbus_Throttle#ID#_Climb)
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<Condition NotEmpty="AFTERBURNER_GATE_POS_16K">
+					<DRAG_MAX_VALUE>16384 (O:XMLVAR_MAX_Limit) min</DRAG_MAX_VALUE>
+					<DRAG_MIN_VALUE>(A:THROTTLE LOWER LIMIT, position 16k) (O:XMLVAR_MIN_Limit) max</DRAG_MIN_VALUE>
+					<PROCESS_LIMITS>
+						#PROCESS_LIMITS#
+						(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #AFTERBURNER_GATE_POS_16K# - abs #GATE_MARGIN# &gt; if{
+							(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #AFTERBURNER_GATE_POS_16K# &gt; if{
+								#AFTERBURNER_GATE_POS_16K# (&gt;O:XMLVAR_MIN_Limit)
 							} els{
-								(O:XMLVAR_AnimationPosition_PostSnap) 100 &lt; if{
-									1 (&gt;L:XML_Airbus_Throttle#ID#_Flex_MCT)
-								} els{
-									1 (&gt;L:XML_Airbus_Throttle#ID#_TOGA)
-								}
+								#AFTERBURNER_GATE_POS_16K# (&gt;O:XMLVAR_MAX_Limit)
 							}
 						}
-					}
-				(O:XMLVAR_AnimationPosition_PostSnap) 25 % 25 / (&gt;L:XML_Airbus_Throttle#ID#_Value)
-				</Update>
-				<UseTemplate Name="ASOBO_GT_Interaction_DraggingYAxis_Gates">
-					<HELPID>HELPID_GAUGE_THROTTLE_THROTTLE</HELPID>
-					<STEPS_NUMBER>4</STEPS_NUMBER>
-					<DRAG_CODE>
-						(#POSITION_TYPE#:#POSITION_VAR#) s0 flr sp1 l0 dec sp2
-						l1 1 &lt; if{
-							#MAIN_LEVER_REVERSE_POSITION_PCT# sp4
-							0 sp5
-						} els{
-							l1 2 &lt; if{
-								0 sp4
-								#CLIMB_LEVEL# sp5
+					</PROCESS_LIMITS>
+					<RESET_LIMITS>
+						(A:THROTTLE LOWER LIMIT, position 16k) (&gt;O:XMLVAR_MIN_Limit)
+						16384 (&gt;O:XMLVAR_MAX_Limit)
+						0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+					</RESET_LIMITS>
+				</Condition>
+				<Switch Param="LEVER_TYPE">
+					<Case Value="AIRBUS">
+						<THROTTLE_ANIM_CODE>
+							(A:THROTTLE LOWER LIMIT, percent) sp0
+							(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, Percent) s1 0 &lt; if{
+								1 l1 l0 / - 25 * sp2
+								0 sp3
+								#MAIN_LEVER_REVERSE_POSITION_PCT# sp4
+								0 sp5
 							} els{
-								l1 3 &lt; if{
-									#CLIMB_LEVEL# sp4
-									#FLEX_LEVEL# sp5
+								l1 #CLIMB_LEVEL# &lt; if{
+									1 sp3
+									0 sp4
+									#CLIMB_LEVEL# sp5
 								} els{
-									l1 4 &lt; if{
+									l1 #FLEX_LEVEL# &lt; if{
+										2 sp3
+										#CLIMB_LEVEL# sp4
+										#FLEX_LEVEL# sp5
+									} els{
+										3 sp3
 										#FLEX_LEVEL# sp4
 										#TOGA_LEVEL# sp5
+									}
+								}
+								l1 l4 - l5 l4 - / l3 + 25 * sp2
+							}
+							
+							(O:IsDragging) ! if{
+								-200 sp6
+								l1 l4 - #SNAP_DISTANCE# &lt; if{
+									l3 25 * sp6
+								} els{
+									l5 l1 - #SNAP_DISTANCE# &lt; if{
+										l3 1 + 25 * sp6
+									}
+								}
+								
+								l6 -200 != if{
+									l6 sp2
+								}
+								
+								l2 0.04 * (&gt;#POSITION_TYPE#:#POSITION_VAR#)
+							}
+							l2 (&gt;O:XMLVAR_AnimationPosition_PostSnap)
+							l2
+						</THROTTLE_ANIM_CODE>
+					</Case>
+					<Case Value="BOEING">
+						<THROTTLE_ANIM_CODE>(B:ENGINE_Throttle_#ID#, percent)</THROTTLE_ANIM_CODE>
+						<MAIN_LEVER_REVERSE_POSITION>0</MAIN_LEVER_REVERSE_POSITION>
+						<USE_SEPARATE_REVERSER>True</USE_SEPARATE_REVERSER>
+					</Case>
+					<Case NotEmpty="OFF_GATE_POS">
+						<THROTTLE_ANIM_CODE>
+								(B:ENGINE_Throttle_#ID#, percent over 100)
+								1 #OFF_GATE_POS# - *
+								(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Boolean) #OFF_GATE_POS# * +
+								100 *
+						</THROTTLE_ANIM_CODE>
+						<ADJUST_RAW_DRAG_VALUE>
+							#OFF_GATE_POS# max #OFF_GATE_POS# - 1 #OFF_GATE_POS# - /
+						</ADJUST_RAW_DRAG_VALUE>
+						<DRAG_VALUE_OVERRIDE>
+							(M:DragPercent) #OFF_GATE_POS# 0.5 * &lt; (O:XMLVAR_MIN_Limit) #OFF_GATE_POS# &lt; and if{
+								(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Boolean) if{
+									#VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_CLOSE)
+								}
+							} els{
+								(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Boolean) ! if{
+									#VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_OPEN)
+								}
+							}
+						</DRAG_VALUE_OVERRIDE>
+					</Case>
+					<Default>
+						<Condition>
+							<Test>
+								<And>
+									<Arg Check="HAS_IDLE_GATE"/>
+									<Arg Check="IDLE_GATE_ANIM_POS"/>
+								</And>
+							</Test>
+							<True>
+								<THROTTLE_ANIM_CODE>
+									(B:ENGINE_Throttle_#ID#, percent over 100) sp0
+									l0 #TRUE_IDLE_01# - 1 #TRUE_IDLE_01# - / 1 #IDLE# - * #IDLE# + (* Upper part of throttle *)
+									l0 #TRUE_IDLE_01# / #IDLE# * (* Reverse *)
+									l0 #TRUE_IDLE_01# &gt; ? 100 *
+								</THROTTLE_ANIM_CODE>
+							</True>
+							<False>
+								<THROTTLE_ANIM_CODE>(B:ENGINE_Throttle_#ID#, percent)</THROTTLE_ANIM_CODE>
+							</False>
+						</Condition>
+					</Default>
+				</Switch>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Parameters Type="Default">
+			<TOOLTIP_THROTTLE_TITLE>@TT_Package.ENGINE_THROTTLE_TITLE</TOOLTIP_THROTTLE_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_THROTTLE_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_Throttle_#ID#</TOOLTIP_ENTRY_0>
+		</Parameters>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<Condition Check="ANIM_NAME_REVERSE_LOCK">
+					<UseTemplate Name="ASOBO_GT_Anim_Code">
+						<Switch Param="LEVER_TYPE">
+							<Case Value="AIRBUS">
+								<ANIM_CODE>
+									(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, percent over 100) 0 &lt; 100 *
+								</ANIM_CODE>
+							</Case>
+							<Default>
+								<ANIM_CODE>
+									(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, percent over 100) 0 &lt; 100 *
+								</ANIM_CODE>
+							</Default>
+						</Switch>
+						<ANIM_NAME>#ANIM_NAME_REVERSE_LOCK#</ANIM_NAME>
+					</UseTemplate>
+					<UseTemplate Name = "ASOBO_GT_AnimTriggers_2SoundEvents">
+						<ANIM_NAME>#ANIM_NAME_REVERSE_LOCK#</ANIM_NAME>
+						<WWISE_EVENT_1>throttle_lever_lock_on</WWISE_EVENT_1>
+						<WWISE_EVENT_2>throttle_lever_lock_off</WWISE_EVENT_2>
+					</UseTemplate>
+				</Condition>
+				<UseInputEvent ID="ENGINE">
+					<THROTTLE_ID>#ID#</THROTTLE_ID>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Anim_Code">
+					<Condition Valid="OVERRIDE_ANIM_CODE">
+						<True>
+							<ANIM_CODE>#OVERRIDE_ANIM_CODE#</ANIM_CODE>
+						</True>
+						<False>
+							<ANIM_CODE>#THROTTLE_ANIM_CODE#</ANIM_CODE>
+						</False>
+					</Condition>
+				</UseTemplate>
+				<Switch Param="LEVER_TYPE">
+					<Case Value="AIRBUS">
+						<Update Once="true">
+							(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, percent over 100) (A:THROTTLE LOWER LIMIT, percent over 100) - 4 * (&gt;#POSITION_TYPE#:#POSITION_VAR#)
+						</Update>
+						<Update Frequency="5">					
+							(* Keep Track of Airbus Throttle Setting *)
+							0 (&gt;L:XML_Airbus_Throttle#ID#_TOGA)
+							0 (&gt;L:XML_Airbus_Throttle#ID#_Flex_MCT)
+							0 (&gt;L:XML_Airbus_Throttle#ID#_Climb)
+							0 (&gt;L:XML_Airbus_Throttle#ID#_Idle)
+							0 (&gt;L:XML_Airbus_Throttle#ID#_Rev)
+							
+							(O:XMLVAR_AnimationPosition_PostSnap) 25 &lt; if{
+								1 (&gt;L:XML_Airbus_Throttle#ID#_Rev)
+							} els{
+								(O:XMLVAR_AnimationPosition_PostSnap) 50 &lt; if{
+									1 (&gt;L:XML_Airbus_Throttle#ID#_Idle)
+								} els{
+									(O:XMLVAR_AnimationPosition_PostSnap) 75 &lt; if{
+										1 (&gt;L:XML_Airbus_Throttle#ID#_Climb)
 									} els{
-										#TOGA_LEVEL# sp4
-										#TOGA_LEVEL# sp5
+										(O:XMLVAR_AnimationPosition_PostSnap) 100 &lt; if{
+											1 (&gt;L:XML_Airbus_Throttle#ID#_Flex_MCT)
+										} els{
+											1 (&gt;L:XML_Airbus_Throttle#ID#_TOGA)
+										}
 									}
 								}
 							}
-						}
-						l5 l4 - l2 * l4 + 163.84 * (&gt;K:THROTTLE#ID#_SET)
-					</DRAG_CODE>
-					<GATE_DIRECTION>0</GATE_DIRECTION>
-				</UseTemplate>
-			</Case>
-			<Default>
-				<Condition Check="USE_BUTTON">
-					<True>
-						<UseTemplate Name="ASOBO_GT_Anim_Code">
-							<ANIM_LAG>800</ANIM_LAG>
-							<ANIM_NAME>#BUTTON_ANIM_NAME#</ANIM_NAME>
-							<ANIM_CODE>
-								(I:XMLVAR_Interacting_With_Lever_Throttle_#ID#) 100 *
-							</ANIM_CODE>
-							<ANIM_LENGTH>100</ANIM_LENGTH>
-						</UseTemplate>
-						<UseTemplate Name="ASOBO_GT_AnimTriggers_2SoundEvents">
-							<ANIM_NAME>#BUTTON_ANIM_NAME#</ANIM_NAME>
-							<WWISE_EVENT_1>throttle_lever_button_on</WWISE_EVENT_1>
-							<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-							<DIRECTION_1>Forward</DIRECTION_1>
-							<WWISE_EVENT_2>throttle_lever_button_off</WWISE_EVENT_2>
-							<NORMALIZED_TIME_2>0.9</NORMALIZED_TIME_2>
-							<DIRECTION_2>Backward</DIRECTION_2>
-						</UseTemplate>
-					</True>
-				</Condition>
-				<Update Once="True">
-					#RESET_LIMITS#
-				</Update>
-				<UseTemplate Name="ASOBO_GT_Interaction_WheelLeftDrag_Axis">
-					<LOCK_CODE>
-						(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &lt; if{
-							1 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
-						} els{
-							#PROCESS_LIMITS#
-						}
-					</LOCK_CODE>
-					<UNLOCK_CODE>
-						#RESET_LIMITS#
-					</UNLOCK_CODE>
-					<HELPID>HELPID_GAUGE_THROTTLE_THROTTLE</HELPID>
-					<DRAG_SIMVAR>GENERAL ENG THROTTLE LEVER POSITION:#ID#</DRAG_SIMVAR>
-					<Condition Valid="USE_TRAJECTORY_DRAG_MODE">
-						<True>
+							(O:XMLVAR_AnimationPosition_PostSnap) 25 % 25 / (&gt;L:XML_Airbus_Throttle#ID#_Value)
+						</Update>
+						<UseTemplate Name="ASOBO_GT_Interaction_DraggingYAxis_Gates">
+							<HELPID>HELPID_GAUGE_THROTTLE_THROTTLE</HELPID>
+							<STEPS_NUMBER>4</STEPS_NUMBER>
 							<DRAG_CODE>
-								(M:InputType) 1 == if{
-									(O:_ResetLimitsTime) (E:SIMULATION TIME, second) &lt; if{
-										(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &lt; if{
-											#RESET_LIMITS#
-											1 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+								(#POSITION_TYPE#:#POSITION_VAR#) s0 flr sp1 l0 dec sp2
+								l1 1 &lt; if{
+									#MAIN_LEVER_REVERSE_POSITION_PCT# sp4
+									0 sp5
+								} els{
+									l1 2 &lt; if{
+										0 sp4
+										#CLIMB_LEVEL# sp5
+									} els{
+										l1 3 &lt; if{
+											#CLIMB_LEVEL# sp4
+											#FLEX_LEVEL# sp5
+										} els{
+											l1 4 &lt; if{
+												#FLEX_LEVEL# sp4
+												#TOGA_LEVEL# sp5
+											} els{
+												#TOGA_LEVEL# sp4
+												#TOGA_LEVEL# sp5
+											}
 										}
 									}
-									(E:SIMULATION TIME, second) 0.1 + (&gt;O:_ResetLimitsTime)
 								}
-								16384 #MAIN_LEVER_REVERSE_POSITION# - (M:DragPercent) #ADJUST_RAW_DRAG_VALUE# * #MAIN_LEVER_REVERSE_POSITION# + sp0
-								#DRAG_VALUE_OVERRIDE#
-								l0 #DRAG_MAX_VALUE# min #DRAG_MIN_VALUE# max (&gt;K:THROTTLE#ID#_SET)
-								(O:XMLVAR_Limits_Needs_Recalculation) if{
-									(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &gt; if{
-										#PROCESS_LIMITS#
-										0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
-									}
-								}
+								l5 l4 - l2 * l4 + 163.84 * (&gt;K:THROTTLE#ID#_SET)
 							</DRAG_CODE>
-						</True>
-						<False>
-							<DRAG_CODE>
-								(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #INCREMENT# (O:DragScale) * + #DRAG_MAX_VALUE# min #DRAG_MIN_VALUE# max (&gt;K:THROTTLE#ID#_SET)
-								(O:XMLVAR_Limits_Needs_Recalculation) if{
-									(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &gt; if{
-										#PROCESS_LIMITS#
-										0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
-									}
+							<GATE_DIRECTION>0</GATE_DIRECTION>
+						</UseTemplate>
+					</Case>
+					<Default>
+						<Update Once="True">
+							#RESET_LIMITS#
+						</Update>
+						<UseTemplate Name="ASOBO_GT_Interaction_WheelLeftDrag_Axis">
+							<LOCK_CODE>
+								(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &lt; if{
+									1 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+								} els{
+									#PROCESS_LIMITS#
 								}
-							</DRAG_CODE>
-						</False>
-					</Condition>
-					<POSITIVE_AXIS_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# + #DRAG_MAX_VALUE# min (&gt;K:THROTTLE#ID#_SET)</POSITIVE_AXIS_CODE>
-					<NEGATIVE_AXIS_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# - #DRAG_MIN_VALUE# max (&gt;K:THROTTLE#ID#_SET)</NEGATIVE_AXIS_CODE>
+							</LOCK_CODE>
+							<UNLOCK_CODE>
+								#RESET_LIMITS#
+							</UNLOCK_CODE>
+							<HELPID>HELPID_GAUGE_THROTTLE_THROTTLE</HELPID>
+							<DRAG_SIMVAR>GENERAL ENG THROTTLE LEVER POSITION:#ID#</DRAG_SIMVAR>
+							<Condition Valid="USE_TRAJECTORY_DRAG_MODE">
+								<True>
+									<DRAG_CODE>
+										(M:InputType) 1 == if{
+											(O:_ResetLimitsTime) (E:SIMULATION TIME, second) &lt; if{
+												(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &lt; if{
+													#RESET_LIMITS#
+													1 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+												}
+											}
+											(E:SIMULATION TIME, second) 0.1 + (&gt;O:_ResetLimitsTime)
+										}
+										16384 #MAIN_LEVER_REVERSE_POSITION# - (M:DragPercent) #ADJUST_RAW_DRAG_VALUE# * #MAIN_LEVER_REVERSE_POSITION# + sp0
+										#DRAG_VALUE_OVERRIDE#
+										l0 #DRAG_MAX_VALUE# min #DRAG_MIN_VALUE# max 16384 / (&gt;B:ENGINE_Throttle_#ID#_Set)
+										(O:XMLVAR_Limits_Needs_Recalculation) if{
+											(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &gt; if{
+												#PROCESS_LIMITS#
+												0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+											}
+										}
+									</DRAG_CODE>
+								</True>
+								<False>
+									<DRAG_CODE>
+										(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) #INCREMENT# (O:DragScale) * + #DRAG_MAX_VALUE# min #DRAG_MIN_VALUE# max 16384 / (&gt;B:ENGINE_Throttle_#ID#_Set)
+										(O:XMLVAR_Limits_Needs_Recalculation) if{
+											(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &gt; if{
+												#PROCESS_LIMITS#
+												0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+											}
+										}
+									</DRAG_CODE>
+								</False>
+							</Condition>
+							<POSITIVE_AXIS_CODE>1 (&gt;B:ENGINE_Throttle_#ID#_Inc)</POSITIVE_AXIS_CODE>
+							<NEGATIVE_AXIS_CODE>1 (&gt;B:ENGINE_Throttle_#ID#_Dec)</NEGATIVE_AXIS_CODE>
+						</UseTemplate>
+					</Default>
+				</Switch>
+				<UseTemplate Name="ASOBO_GT_Visibility_Code">
+					<VISIBILITY_CODE>(L:XMLVAR_LeverThrottleHidden#ID#) !</VISIBILITY_CODE>
 				</UseTemplate>
-			</Default>
+			</Case>
 		</Switch>
-		<UseTemplate Name="ASOBO_GT_Visibility_Code">
-			<VISIBILITY_CODE>(L:XMLVAR_LeverThrottleHidden#ID#) !</VISIBILITY_CODE>
-		</UseTemplate>
 	</Component>
 	
 	<Condition Check="LEVER_TYPE" Match="BOEING">
 		<True>
 			<Component ID="#NODE_ID_REVERSER#" Node="#NODE_ID_REVERSER#">
-				<OverrideTemplateParameters>
-					<DRAG_ANIMATION_VARIABLE_TYPE>O</DRAG_ANIMATION_VARIABLE_TYPE>
-					<DRAG_ANIMATION_VARIABLE_NAME>XMLVAR_#NODE_ID_REVERSER#_Animation_Position</DRAG_ANIMATION_VARIABLE_NAME>
+				<Parameters Type="Override">
 					<ANIM_NAME>#ANIM_NAME_REVERSER#</ANIM_NAME>
 					<DRAG_ANIM_NAME>#ANIM_NAME_REVERSER#</DRAG_ANIM_NAME>
 					<DRAG_NODE_ID>#NODE_ID_REVERSER#</DRAG_NODE_ID>
 					<Condition Valid="REVERSER_INVERT_IM_DRAG_INPUT_SCALAR">
 						<INVERT_IM_DRAG_INPUT_SCALAR>#REVERSER_INVERT_IM_DRAG_INPUT_SCALAR#</INVERT_IM_DRAG_INPUT_SCALAR>
-					</Condition>
-				</OverrideTemplateParameters>
-			
+					</Condition>					
+				</Parameters>
+				<Parameters Type="Default">
+					<TOOLTIP_THROTTLE_REVERSER_TITLE>@TT_Package.ENGINE_THROTTLE_REVERSE_TITLE</TOOLTIP_THROTTLE_REVERSER_TITLE>
+				</Parameters>
+				<Parameters Type="Override">
+					<TOOLTIP_TITLE>#TOOLTIP_THROTTLE_REVERSER_TITLE#</TOOLTIP_TITLE>
+					<TOOLTIP_ENTRY_0>ENGINE_Throttle_Reverser_#ID#</TOOLTIP_ENTRY_0>
+				</Parameters>
+				<UseInputEvent ID="ENGINE">
+					<REVERSER_ID>#ID#</REVERSER_ID>
+				</UseInputEvent>
 				<UseTemplate Name="ASOBO_GT_Anim_Code">
-					<ANIM_CODE>
-						(#DRAG_ANIMATION_VARIABLE_TYPE#:#DRAG_ANIMATION_VARIABLE_NAME#) (A:THROTTLE LOWER LIMIT, percent) / 100 *
-					</ANIM_CODE>
+					<ANIM_CODE>(B:ENGINE_Throttle_Reverser_#ID#, percent)</ANIM_CODE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Interaction_WheelLeftDrag_Axis">
 					<POSITION_TYPE>O</POSITION_TYPE>
 					<POSITION_VAR>XMLVAR_Reverser#ID#_Position</POSITION_VAR>
-					<DRAG_CODE>
-						(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, Percent) 0 &lt;= if{
-							(A:THROTTLE LOWER LIMIT, position 16k) (M:DragPercent) * (&gt;K:THROTTLE#ID#_SET)
-						} els{
-							0 (&gt;O:XMLVAR_Reverser#ID#_Position) 
-						}
-					</DRAG_CODE>
-					<POSITIVE_AXIS_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) s0 0 &lt;= if{ l0 #SCROLL_INCREMENT# - (A:THROTTLE LOWER LIMIT, position 16k) max (&gt;K:THROTTLE#ID#_SET) }</POSITIVE_AXIS_CODE>
-					<NEGATIVE_AXIS_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) s0 0 &lt;= if{ l0 #SCROLL_INCREMENT# + 0 min (&gt;K:THROTTLE#ID#_SET) }</NEGATIVE_AXIS_CODE>
+					<DRAG_CODE>(M:DragPercent) (&gt;B:ENGINE_Throttle_Reverser_#ID#_Set)</DRAG_CODE>
+					<POSITIVE_AXIS_CODE>1 (&gt;B:ENGINE_Throttle_Reverser_#ID#_Inc)</POSITIVE_AXIS_CODE>
+					<NEGATIVE_AXIS_CODE>1 (&gt;B:ENGINE_Throttle_Reverser_#ID#_Dec)</NEGATIVE_AXIS_CODE>
 				</UseTemplate>
 			</Component>
 		</True>
 	</Condition>
-	
 	<Condition Check="HIGHLIGHT_NODE_ID">
 		<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
 			<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
@@ -1153,162 +483,125 @@
 	</Condition>
 </Template>
 
-<Template Name="ASOBO_ENGINE_Lever_Propeller_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>ENGINE_Lever_Propeller_#ID#</ANIM_NAME>
-		<NODE_ID>ENGINE_Lever_Propeller_#ID#</NODE_ID>
-		<PART_ID>ENGINE_Lever_Propeller</PART_ID>
-		<PROP_LEVER_MIN_POSITION_16K Process="Int">(A:THROTTLE LOWER LIMIT, position 16k)</PROP_LEVER_MIN_POSITION_16K>
-	</DefaultTemplateParameters>
-
-	<UseTemplate Name="ASOBO_ENGINE_Lever_Propeller_SubTemplate2">
-	</UseTemplate>
-</Template>
-<Template Name="ASOBO_ENGINE_Lever_Propeller_SubTemplate2">
-	<DefaultTemplateParameters>
+<Template Name="ASOBO_ENGINE_Propeller_Control_SubTemplate">
+	<Parameters Type="Default">
+		<MIN_POS_16K Process="Int">@FeatherPropPos 16384 * 0 (A:THROTTLE LOWER LIMIT, position 16k) 0 &lt; ?</MIN_POS_16K>
+	</Parameters>
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_Propeller_#ID_NODE#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Propeller_#ID_NODE#</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_Propeller</PART_ID>
 		<Switch Param="INTERACTION_TYPE">
-			<Case Value="KNOB">
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PROP_RPM_LEVER</TOOLTIPID>
-				<LIMIT_MIN>0</LIMIT_MIN>
-				<LIMIT_MAX>16384</LIMIT_MAX>
-				<SCROLL_INCREMENT>701</SCROLL_INCREMENT>
+			<Case Value="Lever">
+				<LEVER_TYPE>IDLE_FULL</LEVER_TYPE>
 			</Case>
-			<Case Value="SWITCH">
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PROP_RPM_LEVER</TOOLTIPID>
-				<LIMIT_MIN>0</LIMIT_MIN>
-				<LIMIT_MAX>16384</LIMIT_MAX>
-				<SCROLL_INCREMENT>163.84</SCROLL_INCREMENT>
-				<UPDATE_FREQ>10</UPDATE_FREQ>
-				<UPDATE_COUNT_BEFORE_REPEAT>5</UPDATE_COUNT_BEFORE_REPEAT>
-				<ADDITIONAL_TESTS/>
-				<MOMENTARY_MIN_DURATION>0.1</MOMENTARY_MIN_DURATION>
-				<SWITCH_DIRECTION>Vertical</SWITCH_DIRECTION>
-				<THRESHOLD_INPUT>0.00025</THRESHOLD_INPUT>
-				<THRESHOLD_MOUSE>0.005</THRESHOLD_MOUSE>
+		</Switch>
+		<MAIN_LEVER_REVERSE_POSITION Process="Int">@FeatherPropPos 16384 * 0 #MIN_POS_16K# 0 &lt; ?</MAIN_LEVER_REVERSE_POSITION>
+		<MAIN_LEVER_REVERSE_POSITION_PCT Process="Int">@FeatherPropPos 100 * 0 #MIN_POS_16K# 0 &lt; ?</MAIN_LEVER_REVERSE_POSITION_PCT>
+		<LOWER_LIMIT>#MIN_POS_16K#</LOWER_LIMIT>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<Condition Check="IDLE_GATE_ANIM_POS">
+					<IDLE>#IDLE_GATE_ANIM_POS#</IDLE>
+					<TRUE_IDLE_01 Process="Float">0 #MAIN_LEVER_REVERSE_POSITION_PCT# - 100 #MAIN_LEVER_REVERSE_POSITION_PCT# - /</TRUE_IDLE_01>
+				</Condition>
 			</Case>
-			<Default>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
 				<AXIS>Y</AXIS>
 				<NO_ARROWS/>
 				<DRAG_AXIS_SCALE>-163.84</DRAG_AXIS_SCALE>
-				<DRAG_MIN_VALUE_OVERRIDE>0</DRAG_MIN_VALUE_OVERRIDE>
-				<DRAG_MAX_VALUE_OVERRIDE>16384</DRAG_MAX_VALUE_OVERRIDE>
-				<DRAG_ANIMATION_VARIABLE_TYPE>O</DRAG_ANIMATION_VARIABLE_TYPE>
-				<DRAG_ANIMATION_VARIABLE_NAME>XMLVAR_#NODE_ID#_Animation_Position</DRAG_ANIMATION_VARIABLE_NAME>
 				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PROP_RPM_LEVER</TOOLTIPID>
-				<ANIMATION_CODE_SETTER>(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, Percent)</ANIMATION_CODE_SETTER>
-				<USE_TRAJECTORY_DRAG_MODE>true</USE_TRAJECTORY_DRAG_MODE>
 				<CURSOR>Hand</CURSOR>
 				<INCREMENT>163.84</INCREMENT>
 				<DELTA_MIN>0.00025</DELTA_MIN>
-				<SCROLL_INCREMENT>701</SCROLL_INCREMENT>
-			</Default>
+				<Switch Param="LEVER_TYPE">
+					<Case Value="IDLE_FULL">
+						<Condition Check="USE_BUTTON">
+							<BUTTON_NODE_ID>ENGINE_Lever_Propeller_#ID#_Button</BUTTON_NODE_ID>
+							<BUTTON_ANIM_NAME>ENGINE_Lever_Propeller_#ID#_Button</BUTTON_ANIM_NAME>
+						</Condition>
+						<Condition Check="BUTTON_NODE_ID">
+							<BUTTON_ANIM_NAME>#BUTTON_NODE_ID#</BUTTON_ANIM_NAME>
+						</Condition>
+					</Case>
+				</Switch>
+				<Condition Check="IDLE_GATE_ANIM_POS">
+					<!-- adjust drag value based on anim value (positive range) -->
+					<LERP_IDLE_FULL>l0 #IDLE# - 1 #IDLE# - / 1 #TRUE_IDLE_01# - * #TRUE_IDLE_01# +</LERP_IDLE_FULL>
+					<!-- adjust drag value based on anim value (negative range) -->
+					<LERP_IDLE_REVERSE>l0 #IDLE# - #IDLE# / #TRUE_IDLE_01# * #TRUE_IDLE_01# +</LERP_IDLE_REVERSE>
+				</Condition>
+			</Case>
 		</Switch>
+		<SCROLL_INCREMENT>701</SCROLL_INCREMENT>
 		<!-- <TOOLTIPID>TT:COCKPIT.TOOLTIPS.PROP_RPM_LEVER (%((A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, percent))%!d!% %%) </TOOLTIPID> -->
-		<Switch Param="LEVER_TYPE">
-			<Case Value="IDLE_FULL">
-				<Condition Check="USE_BUTTON">
-					<BUTTON_NODE_ID>ENGINE_Lever_Propeller_#ID#_Button</BUTTON_NODE_ID>
-					<BUTTON_ANIM_NAME>ENGINE_Lever_Propeller_#ID#_Button</BUTTON_ANIM_NAME>
-				</Condition>
-				<Condition Check="BUTTON_NODE_ID">
-					<BUTTON_ANIM_NAME>#BUTTON_NODE_ID#</BUTTON_ANIM_NAME>
-				</Condition>
-			</Case>
-		</Switch>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
+	</Parameters>
+	<Parameters Type="Default">
+		<Condition Check="IDLE_GATE_ANIM_POS">
+			<True>
+				<ADJUST_RAW_DRAG_VALUE>sp0 #LERP_IDLE_FULL# #LERP_IDLE_REVERSE# l0 #IDLE# &gt; ?</ADJUST_RAW_DRAG_VALUE>	
+				<PROPELLER_ANIM_CODE>
+					(B:ENGINE_Propeller_#ID#, percent over 100) sp0
+					l0 #TRUE_IDLE_01# - 1 #TRUE_IDLE_01# - / 1 #IDLE# - * #IDLE# + (* Upper part of propeller *)
+					l0 #TRUE_IDLE_01# / #IDLE# * (* Reverse *)
+					l0 #TRUE_IDLE_01# &gt; ? 100 *
+				</PROPELLER_ANIM_CODE>			
+			</True>
+			<False>
+				<ADJUST_RAW_DRAG_VALUE/>
+				<PROPELLER_ANIM_CODE>(B:ENGINE_Propeller_#ID#, percent)</PROPELLER_ANIM_CODE>
+			</False>
+		</Condition>
+		<MIN_DIFF_POS_16K>819.2</MIN_DIFF_POS_16K>
+		<DRAG_VALUE_OVERRIDE/>
+	</Parameters>
+	<Parameters Type="Override">
 		<Switch Param="INTERACTION_TYPE">
-			<Case Value="KNOB">
-				<LIMIT_MIN process="Int">#PROP_LEVER_MIN_POSITION_16K# #LIMIT_MIN# max</LIMIT_MIN>
-			</Case>
-			<Case Value="SWITCH">
-				<LIMIT_MIN process="Int">#PROP_LEVER_MIN_POSITION_16K# #LIMIT_MIN# max</LIMIT_MIN>
-			</Case>
-			<Default>
+			<Case Value="Lever">
 				<Switch Param="LEVER_TYPE">
 					<Case Value="REVERSE_IDLE_FULL">
-						<DRAG_MIN_VALUE>#PROP_LEVER_MIN_POSITION_16K# (O:XMLVAR_MIN_Limit) max</DRAG_MIN_VALUE>
+						<DRAG_MIN_VALUE>#MAIN_LEVER_REVERSE_POSITION# (O:XMLVAR_MIN_Limit) max</DRAG_MIN_VALUE>
 						<DRAG_MAX_VALUE>16384 (O:XMLVAR_MAX_Limit) min</DRAG_MAX_VALUE>
 						<PROCESS_LIMITS>
 							(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) 0 &gt; if{
 								0 (&gt;O:XMLVAR_MIN_Limit)
 								16384 (&gt;O:XMLVAR_MAX_Limit)
 							} els{
-								#PROP_LEVER_MIN_POSITION_16K# (&gt;O:XMLVAR_MIN_Limit)
+								#MAIN_LEVER_REVERSE_POSITION# (&gt;O:XMLVAR_MIN_Limit)
 								0 (&gt;O:XMLVAR_MAX_Limit)
 							}
 						</PROCESS_LIMITS>
 						<RESET_LIMITS>
-							#PROP_LEVER_MIN_POSITION_16K# (&gt;O:XMLVAR_MIN_Limit)
+							#MAIN_LEVER_REVERSE_POSITION# (&gt;O:XMLVAR_MIN_Limit)
 							16384 (&gt;O:XMLVAR_MAX_Limit)
 							0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
 						</RESET_LIMITS>
 					</Case>
 				</Switch>
-			</Default>
+			</Case>
 		</Switch>
-	</OverrideTemplateParameters>
+	</Parameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Parameters Type="Default">
+			<TOOLTIP_PROPELLER_TITLE>@TT_Package.ENGINE_PROPELLER_TITLE</TOOLTIP_PROPELLER_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_PROPELLER_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_Propeller_#ID#</TOOLTIP_ENTRY_0>
+		</Parameters>
+		<UseInputEvent ID="ENGINE">
+			<PROPELLER_ID>#ID#</PROPELLER_ID>
+		</UseInputEvent>
 		<Switch Param="INTERACTION_TYPE">
-			<Case Value="KNOB">
-				<UseTemplate Name="ASOBO_GT_Knob_Infinite">
-					<CLOCKWISE_CODE>(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# + #LIMIT_MAX# min (&gt;K:PROP_PITCH#ID#_SET)</CLOCKWISE_CODE>
-					<ANTICLOCKWISE_CODE>(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# - #LIMIT_MIN# max (&gt;K:PROP_PITCH#ID#_SET)</ANTICLOCKWISE_CODE>
-				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_AnimTriggers_SoundEvents_Same">
-					<WWISE_EVENT>lever_propeller_knob</WWISE_EVENT>
-					<COUNT>24</COUNT>
-				</UseTemplate>
-			</Case>
-			<Case Value="SWITCH">
-				<UseTemplate Name="ASOBO_GT_Update">
-					<FREQUENCY>#UPDATE_FREQ#</FREQUENCY>
-					<UPDATE_CODE>
-						(O:_Delta) 0 != #ADDITIONAL_TESTS# if{
-							(O:_UPDATE_Count) #UPDATE_COUNT_BEFORE_REPEAT# &gt;= if{
-								(O:_Delta) 0 &gt; if{
-									(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# + #LIMIT_MAX# min (&gt;K:PROP_PITCH#ID#_SET)
-								} els{
-									(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# - #LIMIT_MIN# max (&gt;K:PROP_PITCH#ID#_SET)
-								}
-							}
-							(O:_UPDATE_Count) 1 + (&gt;O:_UPDATE_Count)
-						}
-					</UPDATE_CODE>
-				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Switch_3States">
-					<CODE_POS_0>
-						1 (&gt;O:_Delta)
-						(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# + #LIMIT_MAX# min (&gt;K:PROP_PITCH#ID#_SET)
-					</CODE_POS_0>
-					<CODE_POS_1>
-						0 (&gt;O:_Delta)
-						0 (&gt;O:_UPDATE_Count)
-					</CODE_POS_1>
-					<CODE_POS_2>
-						-1 (&gt;O:_Delta)
-						(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# - #LIMIT_MIN# max (&gt;K:PROP_PITCH#ID#_SET)
-					</CODE_POS_2>
-					<MOMENTARY_SWITCH/>
-					<STATE_MAX_TIMER>#MOMENTARY_MIN_DURATION#</STATE_MAX_TIMER>
-					<STATE0_TIMER>#MOMENTARY_MIN_DURATION#</STATE0_TIMER>
-					<STATE0_TEST>
-						(O:_Delta) 0 &gt;
-					</STATE0_TEST>
-					<STATE1_TEST>
-						(O:_Delta) 0 ==
-					</STATE1_TEST>
-					<STATE2_TEST>
-						(O:_Delta) 0 &lt;
-					</STATE2_TEST>
-				</UseTemplate>
-			</Case>
-			<Default>
+			<Case Value="Lever">
 				<UseTemplate Name="ASOBO_GT_Anim_Code">
-					<ANIM_CODE>
-						(#DRAG_ANIMATION_VARIABLE_TYPE#:#DRAG_ANIMATION_VARIABLE_NAME#) 100 / #DRAG_MAX_VALUE_OVERRIDE# * #DRAG_MIN_VALUE_OVERRIDE# abs + sp0
-						l0 #DRAG_MAX_VALUE_OVERRIDE# #DRAG_MIN_VALUE_OVERRIDE# abs + / 100 *
-					</ANIM_CODE>
+					<ANIM_CODE>#PROPELLER_ANIM_CODE#</ANIM_CODE>
 				</UseTemplate>
 				<Switch Param="LEVER_TYPE">
 					<Case Value="IDLE_FULL">
@@ -1334,29 +627,14 @@
 							</True>
 						</Condition>
 						<UseTemplate Name="ASOBO_GT_Interaction_WheelLeftDrag_Axis">
-							<DOWN_CODE>
-								1 (&gt;I:XMLVAR_Interacting_With_Lever_Propeller_#ID#)
-							</DOWN_CODE>
-							<RELEASE_CODE>
-								0 (&gt;I:XMLVAR_Interacting_With_Lever_Propeller_#ID#)
-							</RELEASE_CODE>
+							<DOWN_CODE>1 (&gt;I:XMLVAR_Interacting_With_Lever_Propeller_#ID#)</DOWN_CODE>
+							<RELEASE_CODE>0 (&gt;I:XMLVAR_Interacting_With_Lever_Propeller_#ID#)</RELEASE_CODE>
 							<HELPID>HELPID_GAUGE_THROTTLE_THROTTLE</HELPID>
-							<Condition Valid="USE_TRAJECTORY_DRAG_MODE">
-								<True>
-									<DRAG_CODE>
-										#DRAG_MAX_VALUE_OVERRIDE# #DRAG_MIN_VALUE_OVERRIDE# - (M:DragPercent) * #DRAG_MIN_VALUE_OVERRIDE# +
-										#DRAG_MAX_VALUE_OVERRIDE# min #DRAG_MIN_VALUE_OVERRIDE# max (&gt;K:PROP_PITCH#ID#_SET)
-									</DRAG_CODE>
-									<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
-								</True>
-								<False>
-									<DRAG_CODE>
-										(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #INCREMENT# (O:DragScale) * + #DRAG_MAX_VALUE_OVERRIDE# min #DRAG_MIN_VALUE_OVERRIDE# max (&gt;K:PROP_PITCH#ID#_SET)
-									</DRAG_CODE>
-								</False>
-							</Condition>
-							<POSITIVE_AXIS_CODE>(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# + #DRAG_MAX_VALUE_OVERRIDE# min (&gt;K:PROP_PITCH#ID#_SET)</POSITIVE_AXIS_CODE>
-							<NEGATIVE_AXIS_CODE>(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# - #DRAG_MIN_VALUE_OVERRIDE# max (&gt;K:PROP_PITCH#ID#_SET)</NEGATIVE_AXIS_CODE>
+							<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
+							<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
+							<DRAG_CODE>(M:DragPercent) #ADJUST_RAW_DRAG_VALUE# (&gt;B:ENGINE_Propeller_#ID#_Set)</DRAG_CODE>
+							<POSITIVE_AXIS_CODE>1 (&gt;B:ENGINE_Propeller_#ID#_Inc)</POSITIVE_AXIS_CODE>
+							<NEGATIVE_AXIS_CODE>1 (&gt;B:ENGINE_Propeller_#ID#_Dec)</NEGATIVE_AXIS_CODE>
 						</UseTemplate>
 						<UseTemplate Name="ASOBO_GT_AnimTriggers_SoundEvents_Same">
 							<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
@@ -1380,33 +658,37 @@
 								#RESET_LIMITS#
 							</RELEASE_CODE>
 							<HELPID>HELPID_GAUGE_THROTTLE_THROTTLE</HELPID>
-							<Condition Valid="USE_TRAJECTORY_DRAG_MODE">
-								<True>
-									<DRAG_CODE>
-										#DRAG_MAX_VALUE_OVERRIDE# #DRAG_MIN_VALUE_OVERRIDE# - (M:DragPercent) * #DRAG_MIN_VALUE_OVERRIDE# +
-										#DRAG_MAX_VALUE# min #DRAG_MIN_VALUE# max (&gt;K:PROP_PITCH#ID#_SET)
-									</DRAG_CODE>
-									<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
-								</True>
-								<False>
-									<DRAG_CODE>
-										(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #INCREMENT# (O:DragScale) * + #DRAG_MAX_VALUE# min #DRAG_MIN_VALUE# max (&gt;K:PROP_PITCH#ID#_SET)
-										(O:XMLVAR_Limits_Needs_Recalculation) if{
-											#PROCESS_LIMITS#
-											0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+							<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
+							<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
+							<DRAG_CODE>
+								(M:InputType) 1 == if{
+									(O:_ResetLimitsTime) (E:SIMULATION TIME, second) &lt; if{
+										(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &lt; if{
+											#RESET_LIMITS#
+											1 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
 										}
-									</DRAG_CODE>
-								</False>
-							</Condition>
-							<POSITIVE_AXIS_CODE>(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# + #DRAG_MAX_VALUE# min (&gt;K:PROP_PITCH#ID#_SET)</POSITIVE_AXIS_CODE>
-							<NEGATIVE_AXIS_CODE>(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) #SCROLL_INCREMENT# - #DRAG_MIN_VALUE# max (&gt;K:PROP_PITCH#ID#_SET)</NEGATIVE_AXIS_CODE>
+									}
+									(E:SIMULATION TIME, second) 0.1 + (&gt;O:_ResetLimitsTime)
+								}
+								16384 #MAIN_LEVER_REVERSE_POSITION# - (M:DragPercent) #ADJUST_RAW_DRAG_VALUE# * #MAIN_LEVER_REVERSE_POSITION# + sp0
+								#DRAG_VALUE_OVERRIDE#
+								l0 #DRAG_MAX_VALUE# min #DRAG_MIN_VALUE# max 16384 / (&gt;B:ENGINE_Propeller_#ID#_Set)
+								(O:XMLVAR_Limits_Needs_Recalculation) if{
+									(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) abs #MIN_DIFF_POS_16K# &gt; if{
+										#PROCESS_LIMITS#
+										0 (&gt;O:XMLVAR_Limits_Needs_Recalculation)
+									}
+								}
+							</DRAG_CODE>
+							<POSITIVE_AXIS_CODE>1 (&gt;B:ENGINE_Propeller_#ID#_Inc)</POSITIVE_AXIS_CODE>
+							<NEGATIVE_AXIS_CODE>1 (&gt;B:ENGINE_Propeller_#ID#_Dec)</NEGATIVE_AXIS_CODE>
 						</UseTemplate>
 					</Case>
 				</Switch>
 				<UseTemplate Name="ASOBO_GT_Visibility_Code">
 					<VISIBILITY_CODE>(L:XMLVAR_LeverPropellerHidden#ID#) !</VISIBILITY_CODE>
 				</UseTemplate>
-			</Default>
+			</Case>
 		</Switch>
 	</Component>
 	<Condition Check="HIGHLIGHT_NODE_ID">
@@ -1416,18 +698,1168 @@
 	</Condition>
 </Template>
 
+<Template Name="ASOBO_ENGINE_Starter_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_Starter_#ID#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Starter_#ID#</ANIM_NAME> 
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_Starter</PART_ID>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
+				<SWITCH_POSITION_VAR>XMLVAR_Starter#ID#</SWITCH_POSITION_VAR>
+				<SWITCH_POSITION_TYPE_TIMER>L</SWITCH_POSITION_TYPE_TIMER>
+				<SWITCH_POSITION_VAR_TIMER>XMLVAR_Starter#ID#_EndTimeDown</SWITCH_POSITION_VAR_TIMER>
+				<WWISE_EVENT>engine_starter_switch</WWISE_EVENT>
+				<WWISE_EVENT_1>engine_starter_switch_on</WWISE_EVENT_1>
+				<WWISE_EVENT_2>engine_starter_switch_off</WWISE_EVENT_2>
+				<Switch Param="TYPE">
+					<Case Value="2Values_StarterIgnition">
+						<STATE_START>0</STATE_START>
+						<STATE_OFF>1</STATE_OFF>
+					</Case>
+					<Case Value="3Values_StarterIgnition">
+						<STATE_START>0</STATE_START>
+						<STATE_OFF>1</STATE_OFF>
+						<STATE_MOTOR>2</STATE_MOTOR>
+						<Condition Check="MOMENTARY_SWITCH">
+							<REST_STATE>1</REST_STATE>
+							<CODE_POS_RETURN>(&gt;B:ENGINE_Starter_Ignition_#ID#_Off)</CODE_POS_RETURN>
+						</Condition>
+					</Case>
+					<Case Value="ON_OFF_ABORT">
+						<POS_ON>0</POS_ON>
+						<POS_OFF>1</POS_OFF>
+						<POS_ABORT>2</POS_ABORT>
+					</Case>
+					<Case Value="AS02A">
+						<STATE_BOTH>0</STATE_BOTH>
+						<STATE_R>1</STATE_R>
+						<STATE_L>2</STATE_L>
+						<STATE_IGN_OFF>3</STATE_IGN_OFF>
+						<STATE_ALL_OFF>4</STATE_ALL_OFF>
+					</Case>
+					<Case Value="AS04F">
+						<STATE_ENG1>0</STATE_ENG1>
+						<STATE_OFF>1</STATE_OFF>
+						<STATE_ENG2>2</STATE_ENG2>
+					</Case>
+				</Switch>
+			</Case>
+			<Case Value="Push">
+				<WWISE_EVENT_1>engine_start_push_button_on</WWISE_EVENT_1> 
+				<WWISE_EVENT_2>engine_start_push_button_off</WWISE_EVENT_2>
+				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+				<Switch Param="TYPE">
+					<Case Value="AS02A">
+						<SEQ1_EMISSIVE_CODE> 0 </SEQ1_EMISSIVE_CODE>
+						<SEQ2_EMISSIVE_CODE>(A:GENERAL ENG STARTER:#ID#, Bool)</SEQ2_EMISSIVE_CODE>
+					</Case>
+					<Default>
+						<ONLY_SEQ1/>
+						<SEQ1_EMISSIVE_CODE>(A:GENERAL ENG STARTER:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
+					</Default>
+				</Switch>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<Switch Param="TYPE">
+					<Case Value="AS02A">
+						<STARTER_TYPE>STARTER_IGNITION</STARTER_TYPE>
+						<IGNITION_TYPE>BOTH_R_L_OFF_STARTOFF</IGNITION_TYPE>
+						<TEMPLATE_TO_CALL>ASOBO_GT_Switch_5States</TEMPLATE_TO_CALL>
+						<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+						<ARROW_TYPE>Curved</ARROW_TYPE>
+						<CODE_POS_0>(* Ignition BOTH *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Both)</CODE_POS_0>
+						<CODE_POS_1>(* Ignition RIGHT *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Right)</CODE_POS_1>
+						<CODE_POS_2>(* Ignition LEFT *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Left)</CODE_POS_2>
+						<CODE_POS_3>(* Ignition OFF *) (&gt;B:ENGINE_Starter_Ignition_#ID#_IgnOff)</CODE_POS_3>
+						<CODE_POS_4>(* Ignition OFF + Starter OFF *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Off)</CODE_POS_4>
+						<STATE0_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_BOTH# ==</STATE0_TEST>
+						<STATE1_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_R# ==</STATE1_TEST>
+						<STATE2_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_L# ==</STATE2_TEST>
+						<STATE3_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_IGNOFF# ==</STATE3_TEST>
+						<STATE4_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_ALLOFF# == </STATE4_TEST>
+					</Case>
+					<Case Value="AS01B">
+						<TEMPLATE_TO_CALL>ASOBO_GT_Switch_2States</TEMPLATE_TO_CALL>
+						<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+						<ARROW_TYPE>Curved</ARROW_TYPE>
+						<CODE_POS_0>(&gt;B:ENGINE_Starter_#ID#_On)</CODE_POS_0>
+						<CODE_POS_1>(&gt;B:ENGINE_Starter_#ID#_Off)</CODE_POS_1>
+						<STARTER_ON_SIMVAR>GENERAL ENG STARTER</STARTER_ON_SIMVAR>
+						<STATE0_TEST>(B:ENGINE_Starter_#ID#, Bool) </STATE0_TEST>
+						<STATE1_TEST>(B:ENGINE_Starter_#ID#, Bool) ! </STATE1_TEST>
+						<UPDATE_CODE>
+							(A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) 1 != if{
+								1 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID#)
+							}
+						</UPDATE_CODE>
+					</Case>
+					<Case Value="2Values_StarterIgnition">
+						<STARTER_TYPE>STARTER_IGNITION</STARTER_TYPE>
+						<IGNITION_TYPE>START_OFF</IGNITION_TYPE>
+						<TEMPLATE_TO_CALL>ASOBO_GT_Switch_Code</TEMPLATE_TO_CALL>
+						<LEFT_SINGLE_CODE>
+							(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_START# == if{
+								(* Off *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Off)
+							} els{
+								(* Starter *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Start)
+							}
+						</LEFT_SINGLE_CODE>
+						<ANIM_CODE>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_START# == 100 *</ANIM_CODE>
+						<WWISE_EVENT_1>engine_starter_switch_on</WWISE_EVENT_1>
+						<WWISE_EVENT_2>engine_starter_switch_off</WWISE_EVENT_2>
+					</Case>
+					<Case Value="3Values_StarterIgnition">
+						<STARTER_TYPE>STARTER_IGNITION</STARTER_TYPE>
+						<IGNITION_TYPE>START_OFF_MOTOR</IGNITION_TYPE>
+						<TEMPLATE_TO_CALL>ASOBO_GT_Switch_3States</TEMPLATE_TO_CALL>
+						<CODE_POS_0>(* Starter *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Start)</CODE_POS_0>
+						<CODE_POS_1>(* Off *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Off)</CODE_POS_1>
+						<CODE_POS_2>(* Motor *) (&gt;B:ENGINE_Starter_Ignition_#ID#_Motor)</CODE_POS_2>
+						<STATE0_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_START# ==</STATE0_TEST>
+						<STATE1_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_OFF# == </STATE1_TEST>
+						<STATE2_TEST>(B:ENGINE_Starter_Ignition_#ID#, number) #STATE_MOTOR# ==</STATE2_TEST>
+					</Case>
+					<Case Value="ON_OFF_ABORT">
+						<WWISE_PREFIX>engine_starter</WWISE_PREFIX>
+						<MOMENTARY_SWITCH/>
+						<STATE_MAX_TIMER>1</STATE_MAX_TIMER>
+						<STATE0_TIMER>1</STATE0_TIMER>
+						<NUM_STATES>3</NUM_STATES>
+						<STR_STATE_#POS_ON#>On</STR_STATE_#POS_ON#>
+						<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+						<STR_STATE_#POS_ABORT#>Abort</STR_STATE_#POS_ABORT#>
+						<SET_STATE_#POS_ON#>(A:GENERAL ENG STARTER:#ID#, Bool) ! if{ 1 (&gt;K:SET_STARTER#ID#_HELD)  } 0 (&gt;O:_Abort)</SET_STATE_#POS_ON#>
+						<SET_STATE_#POS_OFF#>(A:GENERAL ENG STARTER:#ID#, Bool) if{ 0 (&gt;K:SET_STARTER#ID#_HELD) } 0 (&gt;O:_Abort)</SET_STATE_#POS_OFF#>
+						<SET_STATE_#POS_ABORT#>(A:GENERAL ENG STARTER:#ID#, Bool) if{ 0 (&gt;K:SET_STARTER#ID#_HELD) } 1 (&gt;O:_Abort)</SET_STATE_#POS_ABORT#>
+						<TT_VALUE_#POS_ON#>@TT_Package.GT_STATE_ON</TT_VALUE_#POS_ON#>
+						<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+						<TT_VALUE_#POS_ABORT#>@TT_Package.GT_STATE_ABORT</TT_VALUE_#POS_ABORT#>
+						<GET_STATE_EXTERNAL>(A:GENERAL ENG STARTER:#ID#, Bool) sp0 (O:_Abort) sp1</GET_STATE_EXTERNAL>
+						<ENUM_VAL_TO_POS_EXTERNAL>l0 if{ #POS_ON# sp2 } els{ #POS_ABORT# #POS_OFF# (O:_Abort) ? sp2 } l2</ENUM_VAL_TO_POS_EXTERNAL>
+						<SIMVAR_TO_WATCH_0>GENERAL ENG STARTER:#ID#</SIMVAR_TO_WATCH_0>
+					</Case>
+					<Case Value="AS04F">
+						<TEMPLATE_TO_CALL>ASOBO_GT_Switch_3States</TEMPLATE_TO_CALL>
+						<STARTER_TYPE>STARTER_IGNITION</STARTER_TYPE>
+						<IGNITION_TYPE>ENG1_OFF_ENG2</IGNITION_TYPE>
+						<CODE_POS_0>(&gt;B:ENGINE_Starter_Ignition_#ID#_Eng1)</CODE_POS_0>
+						<CODE_POS_1>(&gt;B:ENGINE_Starter_Ignition_#ID#_Off)</CODE_POS_1>
+						<CODE_POS_2>(&gt;B:ENGINE_Starter_Ignition_#ID#_Eng2)</CODE_POS_2>
+						<STATE0_TEST>(B:ENGINE_Starter_Ignition_#ID#, Bool) #STATE_ENG1# ==</STATE0_TEST>
+						<STATE1_TEST>(B:ENGINE_Starter_Ignition_#ID#, Bool) #STATE_OFF# ==</STATE1_TEST>
+						<STATE2_TEST>(B:ENGINE_Starter_Ignition_#ID#, Bool) #STATE_ENG2# ==</STATE2_TEST>
+					</Case>
+					<Default>
+						<TEMPLATE_TO_CALL>ASOBO_GT_Switch_Code</TEMPLATE_TO_CALL>
+						<LEFT_SINGLE_CODE>(&gt;B:ENGINE_Starter_#ID#_Toggle)</LEFT_SINGLE_CODE>
+						<ANIM_CODE>(B:ENGINE_Starter_#ID#, Bool) 100 *</ANIM_CODE>
+					</Default>
+				</Switch>
+			</Case>
+			<Case Value="Push">
+				<TEMPLATE_TO_CALL>ASOBO_GT_Push_Button_Airliner</TEMPLATE_TO_CALL>
+				<LEFT_SINGLE_CODE>(&gt;B:ENGINE_Starter_#ID#_Toggle)</LEFT_SINGLE_CODE>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<TOOLTIP_TITLE>@TT_Package.ENGINE_STARTER_TITLE</TOOLTIP_TITLE>
+		<Switch Param="STARTER_TYPE">
+			<Case Value="STARTER_IGNITION">
+				<TOOLTIP_ENTRY_0>ENGINE_Starter_Ignition_#ID#</TOOLTIP_ENTRY_0>
+			</Case>
+			<Default>
+				<TOOLTIP_ENTRY_0>ENGINE_Starter_#ID#</TOOLTIP_ENTRY_0>				
+			</Default>
+		</Switch>
+	</Parameters>
+	<Switch Param="TYPE">
+		<Case Value="ON_OFF_ABORT">
+			<UseTemplate Name="ASOBO_ENGINE_Base_Template">
+				<IE_NAME>Starter_#ID#</IE_NAME>
+			</UseTemplate>
+		</Case>
+		<Default>
+			<Component ID="#NODE_ID#" Node="#NODE_ID#">
+				<UseInputEvent ID="ENGINE">
+					<Switch Param="STARTER_TYPE">
+						<Case Value="STARTER_IGNITION">
+							<STARTER_IGNITER_ID>#ID#</STARTER_IGNITER_ID>
+						</Case>
+						<Default>
+							<STARTER_ID>#ID#</STARTER_ID>					
+						</Default>
+					</Switch>
+				</UseInputEvent>
+				<UseTemplate Name="#TEMPLATE_TO_CALL#"/>
+				<Condition Check="UPDATE_CODE">
+					<True>
+						<UseTemplate Name="ASOBO_GT_Update">
+							<FREQUENCY>1</FREQUENCY>
+						</UseTemplate>
+					</True>
+				</Condition>
+			</Component>
+		</Default>
+	</Switch>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Ignition_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_Ignition_#ID#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Ignition_#ID#</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_Ignition</PART_ID>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<NUM_STATES>3</NUM_STATES>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
+				<SWITCH_POSITION_VAR>XMLVAR_Ignition</SWITCH_POSITION_VAR>
+				<Condition Check="NUM_STATES" match="2">
+					<True>
+						<TYPE>AUTO_ON</TYPE>
+						<WWISE_EVENT_1>engine_ignition_switch_on</WWISE_EVENT_1> 
+						<WWISE_EVENT_2>engine_ignition_switch_off</WWISE_EVENT_2> 
+					</True>
+					<False>
+						<TYPE>OFF_ON_AUTO</TYPE> 
+						<WWISE_EVENT>engine_ignition_switch</WWISE_EVENT>
+					</False>
+				</Condition>
+			</Case>
+			<Case Value="Push">
+				<TYPE>AUTO_ON</TYPE>
+				<WWISE_EVENT_1>engine_ignition_button_on</WWISE_EVENT_1> 
+				<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+				<WWISE_EVENT_2>engine_ignition_button_off</WWISE_EVENT_2> 
+				<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="TYPE">
+			<Case Value="OFF_AUTO">
+				<STATE_OFF>0</STATE_OFF>
+				<STATE_AUTO>1</STATE_AUTO>
+				<TOOLTIP_IGNITION_TITLE>@TT_Package.ENGINE_AUTO_IGNITION_TITLE</TOOLTIP_IGNITION_TITLE>
+			</Case>
+			<Case Value="AUTO_ON">
+				<STATE_AUTO>0</STATE_AUTO>
+				<STATE_ON>1</STATE_ON>
+			</Case>
+			<Case Value="OFF_ON_AUTO">
+				<STATE_AUTO>0</STATE_AUTO>
+				<STATE_ON>1</STATE_ON>
+				<STATE_OFF>2</STATE_OFF>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<Condition Check="UNDER_STARTER_AUTHORITY">
+					<True>
+						<STARTER_AUTHORITY_TEST>(A:GENERAL ENG STARTER:#ID#, Bool) ! if{ quit }</STARTER_AUTHORITY_TEST>
+					</True>
+					<False>
+						<STARTER_AUTHORITY_TEST/>
+					</False>
+				</Condition>
+			</Case>
+			<Case Value="Push">
+				<Switch Param="ID"> <!-- differenciate between LH and RH tooltips, to be reworked if we get planes w/ more than 2 ignition push switches -->
+					<Case Value="1">
+						<TOOLTIPID>%((A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #STATE_ON#)%{if}TT:COCKPIT.TOOLTIPS.IGNITION_LH_ON%{else}TT:COCKPIT.TOOLTIPS.IGNITION_LH_OFF%{end}</TOOLTIPID>
+					</Case>
+					<Case Value="2">
+						<TOOLTIPID>%((A:TURB ENG IGNITION SWITCH EX1:#ID#, enum) #STATE_ON#)%{if}TT:COCKPIT.TOOLTIPS.IGNITION_RH_ON%{else}TT:COCKPIT.TOOLTIPS.IGNITION_RH_OFF%{end}</TOOLTIPID>
+					</Case>
+				</Switch>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Parameters Type="Default">
+			<Switch Param="TYPE">
+				<Case Value="OFF_AUTO">
+					<IS_ON>(B:ENGINE_Ignition_#ID#, Number) #STATE_AUTO# ==</IS_ON>
+				</Case>
+				<Case Value="AUTO_ON">
+					<IS_ON>(B:ENGINE_Ignition_#ID#, Number) #STATE_ON# ==</IS_ON>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<TOOLTIP_IGNITION_TITLE>@TT_Package.ENGINE_IGNITION_TITLE</TOOLTIP_IGNITION_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_IGNITION_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_Ignition_#ID#</TOOLTIP_ENTRY_0>
+		</Parameters>
+		<UseInputEvent ID="ENGINE">
+			<IGNITER_ID>#ID#</IGNITER_ID>
+		</UseInputEvent>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<Condition Check="NUM_STATES" match="2">
+					<True>
+						<UseTemplate Name="ASOBO_GT_Switch_Code">
+							<LEFT_SINGLE_CODE>(&gt;B:ENGINE_Ignition_#ID#_Toggle)</LEFT_SINGLE_CODE>
+							<ANIM_CODE>#IS_ON# 100 *</ANIM_CODE>
+						</UseTemplate>
+					</True>
+					<False>
+						<UseTemplate Name="ASOBO_GT_Switch_3States">
+							<CODE_POS_#STATE_AUTO#>(&gt;B:ENGINE_Ignition_#IGNITER_ID#_Auto)</CODE_POS_#STATE_AUTO#>
+							<CODE_POS_#STATE_ON#>(&gt;B:ENGINE_Ignition_#IGNITER_ID#_On)</CODE_POS_#STATE_ON#>
+							<CODE_POS_#STATE_OFF#>(&gt;B:ENGINE_Ignition_#IGNITER_ID#_Off)</CODE_POS_#STATE_OFF#>
+							<STATE#STATE_AUTO#_TEST>(B:ENGINE_Ignition_#IGNITER_ID#, Number) #STATE_AUTO# ==</STATE#STATE_AUTO#_TEST>
+							<STATE#STATE_ON#_TEST>(B:ENGINE_Ignition_#IGNITER_ID#, Number) #STATE_ON# ==</STATE#STATE_ON#_TEST>
+							<STATE#STATE_OFF#_TEST>(B:ENGINE_Ignition_#IGNITER_ID#, Number) #STATE_OFF# ==</STATE#STATE_OFF#_TEST>
+						</UseTemplate>
+					</False>
+				</Condition>
+			</Case>
+			<Case Value="Push">
+				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
+					<SEQ1_EMISSIVE_CODE>#IS_ON#</SEQ1_EMISSIVE_CODE>
+					<SEQ2_EMISSIVE_CODE>#IS_ON# !</SEQ2_EMISSIVE_CODE>
+					<LEFT_SINGLE_CODE>(&gt;B:ENGINE_Ignition_#ID#_Toggle)</LEFT_SINGLE_CODE>
+				</UseTemplate>
+			</Case>
+		</Switch>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Magneto_SubTemplate">
+	<Parameters Type="Default">
+		<Condition Valid="USE_LEGACY_NAMES">
+			<True>
+				<CATEGORY>ELECTRICAL</CATEGORY>
+			</True>
+			<False>
+				<CATEGORY>ENGINE</CATEGORY>
+			</False>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Default">
+		<NODE_ID>#CATEGORY#_#INTERACTION_TYPE#_Magneto_#ID#</NODE_ID>
+		<ANIM_NAME>#CATEGORY#_#INTERACTION_TYPE#_Magneto_#ID#</ANIM_NAME>
+		<PART_ID>#CATEGORY#_#INTERACTION_TYPE#_Magneto</PART_ID>
+		<OTHER_PART_ID>#CATEGORY#_#INTERACTION_TYPE#_Master</OTHER_PART_ID>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<Switch Param="SWITCH_TYPE">
+					<Case Value="ON_OFF">
+						<WWISE_EVENT_1>magneto_switch_on</WWISE_EVENT_1>
+						<WWISE_EVENT_2>magneto_switch_off</WWISE_EVENT_2>
+					</Case>
+					<Default>
+						<INDEX_OFF>0</INDEX_OFF>
+						<INDEX_LEFT>1</INDEX_LEFT>
+						<INDEX_RIGHT>2</INDEX_RIGHT>
+						<INDEX_BOTH>3</INDEX_BOTH>	
+						<WWISE_EVENT>magneto_switch</WWISE_EVENT>
+					</Default>
+				</Switch>				
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<Switch Param="SWITCH_TYPE">
+					<Case Value="ON_OFF">
+						<TYPE>ON_OFF</TYPE>
+						<MAGNETO_SIDE>#MAGNETO_ID#</MAGNETO_SIDE>
+						<IE_MAGNETO_ID>#MAGNETO_ID#</IE_MAGNETO_ID>
+					</Case>
+					<Default>
+						<IE_MAGNETO_ID>#ID#</IE_MAGNETO_ID>
+						<Condition Check="USE_STARTER">
+							<True>
+								<TYPE>OFF_L_R_BOTH_START</TYPE>
+								<NUMSTATES>5</NUMSTATES>
+								<INDEX_STARTER>4</INDEX_STARTER>
+								<STATE_MAX_TIMER>1</STATE_MAX_TIMER>
+								<STATE0_TIMER>0</STATE0_TIMER>
+							</True>
+							<False>
+								<TYPE>OFF_L_R_BOTH</TYPE>
+								<NUMSTATES>4</NUMSTATES>
+							</False>
+						</Condition>
+					</Default>
+				</Switch>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<Switch Param="TYPE">
+			<Case Value="ON_OFF">
+				<STATE_OFF>0</STATE_OFF>
+				<STATE_ON>1</STATE_ON>
+			</Case>
+			<Case Value="OFF_L_R_BOTH">
+				<STATE_OFF>#INDEX_OFF#</STATE_OFF>
+				<STATE_L>#INDEX_LEFT#</STATE_L>
+				<STATE_R>#INDEX_RIGHT#</STATE_R>
+				<STATE_BOTH>#INDEX_BOTH#</STATE_BOTH>
+			</Case>
+			<Case Value="OFF_L_R_BOTH_START">
+				<STATE_OFF>#INDEX_OFF#</STATE_OFF>
+				<STATE_L>#INDEX_LEFT#</STATE_L>
+				<STATE_R>#INDEX_RIGHT#</STATE_R>
+				<STATE_BOTH>#INDEX_BOTH#</STATE_BOTH>
+				<STATE_START>#INDEX_STARTER#</STATE_START>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Parameters Type="Default">
+			<TOOLTIP_MAGNETO_TITLE>@TT_Package.ENGINE_MAGNETO_TITLE</TOOLTIP_MAGNETO_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_MAGNETO_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_Magneto_#IE_MAGNETO_ID#</TOOLTIP_ENTRY_0>
+		</Parameters>
+		<UseInputEvent ID="ENGINE">
+			<MAGNETO_ID>#ID#</MAGNETO_ID>
+		</UseInputEvent>
+		<Switch Param="SWITCH_TYPE">
+			<Case Value="ON_OFF">
+				<UseTemplate Name="ASOBO_GT_Switch_Code">
+					<LEFT_SINGLE_CODE>(&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Toggle)</LEFT_SINGLE_CODE>
+					<ANIM_CODE>(B:ENGINE_Magneto_#IE_MAGNETO_ID#, Number) #STATE_ON# == 100 *</ANIM_CODE>
+				</UseTemplate>
+			</Case>
+			<Default>
+				<UseTemplate Name="ASOBO_GT_Switch_#NUMSTATES#States">
+					<CODE_POS_#INDEX_OFF#>(&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Off)</CODE_POS_#INDEX_OFF#>
+					<CODE_POS_#INDEX_LEFT#>(&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Left)</CODE_POS_#INDEX_LEFT#>
+					<CODE_POS_#INDEX_RIGHT#>(&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Right)</CODE_POS_#INDEX_RIGHT#>
+					<CODE_POS_#INDEX_BOTH#>(&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Both)</CODE_POS_#INDEX_BOTH#>
+					<Condition Check="USE_STARTER">
+						<CODE_POS_#INDEX_STARTER#>(&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Start)</CODE_POS_#INDEX_STARTER#>
+						<MOMENTARY_SWITCH/>
+						<SWITCH_POSITION_VAR_ISDOWN>XMLVAR_Magneto_Starter_IsHeld</SWITCH_POSITION_VAR_ISDOWN>
+						<SWITCH_POSITION_TYPE_ISDOWN>L</SWITCH_POSITION_TYPE_ISDOWN>
+					</Condition>
+					<STATE#INDEX_OFF#_TEST>(B:ENGINE_Magneto_#IE_MAGNETO_ID#, Number) #STATE_OFF# ==</STATE#INDEX_OFF#_TEST>
+					<STATE#INDEX_LEFT#_TEST>(B:ENGINE_Magneto_#IE_MAGNETO_ID#, Number) #STATE_L# ==</STATE#INDEX_LEFT#_TEST>
+					<STATE#INDEX_RIGHT#_TEST>(B:ENGINE_Magneto_#IE_MAGNETO_ID#, Number) #STATE_R# ==</STATE#INDEX_RIGHT#_TEST>
+					<STATE#INDEX_BOTH#_TEST>(B:ENGINE_Magneto_#IE_MAGNETO_ID#, Number) #STATE_BOTH# ==</STATE#INDEX_BOTH#_TEST>
+					<Condition Check="USE_STARTER">
+						<STATE#INDEX_STARTER#_TEST>(B:ENGINE_Magneto_#IE_MAGNETO_ID#, Number) #STATE_START# ==</STATE#INDEX_STARTER#_TEST>
+					</Condition>
+				</UseTemplate>
+				
+			</Default>
+		</Switch>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Master_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_Master_#ID#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Master_#ID#</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_Master</PART_ID>
+		<WWISE_PREFIX>engine_master</WWISE_PREFIX>
+		<ENGINE_ID>#ID#</ENGINE_ID>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<Switch Param="TYPE">
+					<Case Value="AIRBUS">
+						<USE_FUELSYSTEM>True</USE_FUELSYSTEM>
+						<VALVE_ID>#ID#</VALVE_ID>
+						<SEQ1_NODE_ID>#NODE_ID#_SEQ1</SEQ1_NODE_ID>
+					</Case>
+					<Case Value="LOCKED">
+						<LOCK_NODE_ID>ENGINE_#INTERACTION_TYPE#_Master_#ID#_Lock</LOCK_NODE_ID>
+						<LOCK_ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Master_#ID#_Lock</LOCK_ANIM_NAME>
+						<WWISE_COVER_EVENT_OPEN>engine_cover_master_switch_on</WWISE_COVER_EVENT_OPEN>
+						<WWISE_COVER_EVENT_CLOSE>engine_cover_master_switch_off</WWISE_COVER_EVENT_CLOSE>
+						<COVER_IE_NAME>Master_#ID#_Cover</COVER_IE_NAME>
+						<COVER_IE_ID_SOURCE>ENGINE</COVER_IE_ID_SOURCE>
+					</Case>
+				</Switch>
+			</Case>
+		</Switch>
+		<TOOLTIP_TITLE>@TT_Package.ENGINE_SWITCH_MASTER_TITLE</TOOLTIP_TITLE>
+		<TT_DESCRIPTION_ID>@TT_Package.ENGINE_SWITCH_MASTER_ACTION</TT_DESCRIPTION_ID>
+	</Parameters>
+	<Parameters Type="Default">
+		<Condition Valid="USE_FUELSYSTEM">
+			<True>
+				<GET_MASTER>(A:FUELSYSTEM VALVE SWITCH:#VALVE_ID#, Bool)</GET_MASTER>	
+				<GET_STARTER>(A:GENERAL ENG STARTER:#ENGINE_ID#, Bool)</GET_STARTER>
+				<SIMVAR_TO_WATCH_0>FUELSYSTEM VALVE SWITCH:#VALVE_ID#</SIMVAR_TO_WATCH_0>
+				<SIMVAR_TO_WATCH_1>GENERAL ENG STARTER:#ENGINE_ID#</SIMVAR_TO_WATCH_1>
+			</True>
+			<False>
+				<GET_MASTER>(A:RECIP ENG ENGINE MASTER SWITCH:#ENGINE_ID#, Bool)</GET_MASTER>
+				<SIMVAR_TO_WATCH_0>RECIP ENG ENGINE MASTER SWITCH:#ENGINE_ID#</SIMVAR_TO_WATCH_0>							
+			</False>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Default">
+		<Condition Valid="USE_FUELSYSTEM">
+			<True>
+				<SET_STARTER>s0 #GET_STARTER# != if{ (&gt;K:TOGGLE_STARTER#ENGINE_ID#) }</SET_STARTER>
+				<SET_MASTER>s0 #GET_MASTER# != if{ l0 if{ #VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_OPEN) } els{ #VALVE_ID# (&gt;K:FUELSYSTEM_VALVE_CLOSE) } }</SET_MASTER>
+			</True>
+			<False>
+				<SET_MASTER>s0 #GET_MASTER# != if{ (&gt;K:ENGINE_MASTER_#ENGINE_ID#_TOGGLE) }</SET_MASTER>						
+			</False>
+		</Condition>
+	</Parameters>
+	<UseTemplate Name="ASOBO_ENGINE_Base_Template">
+		<IE_NAME>Master_#ID#</IE_NAME>
+		<Switch Param="TYPE">
+			<Case Value="LOCKED">
+				<TEMPLATE_TO_USE>ASOBO_GT_Switch_Covered</TEMPLATE_TO_USE>
+				<CREATE_COMPONENT>False</CREATE_COMPONENT>
+				<SWITCH_NODE_ID>#NODE_ID#</SWITCH_NODE_ID>
+				<SWITCH_ANIM_NAME>#ANIM_NAME#</SWITCH_ANIM_NAME>
+				<COVER_NODE_ID>#LOCK_NODE_ID#</COVER_NODE_ID>
+				<COVER_ANIM_NAME>#LOCK_ANIM_NAME#</COVER_ANIM_NAME>
+				<COVER_VAR_NAME>XMLVAR_ENGINE_Switch_Master_Cover_Opened</COVER_VAR_NAME>
+				<COVER_VAR_TYPE>O</COVER_VAR_TYPE>
+				<ON_STATE_CHANGED_EXTERNAL_CODE>(B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#, Bool) ! if{ (&gt;B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#_Open) }</ON_STATE_CHANGED_EXTERNAL_CODE>					
+			</Case>
+		</Switch>
+		<Condition Valid="USE_FUELSYSTEM">
+			<True>
+				<SET_STATE_EXTERNAL>p0 #SET_MASTER# p0 #SET_STARTER#</SET_STATE_EXTERNAL>
+				<GET_STATE_EXTERNAL>#GET_MASTER# s0 #GET_STARTER# != if{ #GET_MASTER# #SET_STARTER# } l0</GET_STATE_EXTERNAL>
+				<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			</True>
+			<False>
+				<SET_STATE_EXTERNAL>p0 #SET_MASTER#</SET_STATE_EXTERNAL>	
+				<GET_STATE_EXTERNAL>#GET_MASTER# sp0</GET_STATE_EXTERNAL>			
+			</False>
+		</Condition>
+	</UseTemplate>
+	<Switch Param="TYPE">
+		<Case Value="AIRBUS">
+			<Condition Check="POTENTIOMETER">
+				<Component ID="#SEQ1_NODE_ID#" Node="#SEQ1_NODE_ID#">
+					<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+						<EMISSIVE_CODE>(A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent over 100)</EMISSIVE_CODE>
+					</UseTemplate>
+				</Component>
+			</Condition>
+		</Case>
+	</Switch>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Choke_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_Choke</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Choke</ANIM_NAME>
+		<VAR_NAME>XMLVAR_ENGINE_#INTERACTION_TYPE#_Choke_Pulled</VAR_NAME>
+		<VAR_SCOPE>L</VAR_SCOPE>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_CHOKE</PART_ID>
+		<WWISE_EVENT_1>lever_choke_switch_on</WWISE_EVENT_1>
+		<WWISE_EVENT_2>lever_choke_switch_off</WWISE_EVENT_2>
+		<TT_DESCRIPTION_ID>@TT_Package.ENGINE_CHOKE_ACTION_SET</TT_DESCRIPTION_ID>
+		<TOOLTIP_TITLE>@TT_Package.ENGINE_CHOKE_TITLE</TOOLTIP_TITLE>
+		<TOOLTIP_ENTRY_0>ENGINE_Choke_#ID#</TOOLTIP_ENTRY_0>
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<Switch>
+					<Case Valid="USE_DRAGGING_INTERACTION">
+						<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
+						<SCROLL_INCREMENT>10</SCROLL_INCREMENT>
+					</Case>
+				</Switch>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Switch Param="INTERACTION_TYPE">
+		<Case Value="Lever">
+			<Switch>
+				<Case Valid="USE_DRAGGING_INTERACTION">
+					<Component ID="#NODE_ID#_#ID#" Node="#NODE_ID#">
+						<Parameters Type="Override">
+							<LEVER_ID>Choke_#ID#</LEVER_ID>
+						</Parameters>
+						<UseInputEvent ID="ENGINE">
+							<GET_STATE_EXTERNAL>(#VAR_SCOPE#:#VAR_NAME#)</GET_STATE_EXTERNAL>
+							<SET_STATE_EXTERNAL>(&gt;#VAR_SCOPE#:#VAR_NAME#)</SET_STATE_EXTERNAL>
+						</UseInputEvent>
+						<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
+							<CURSOR>Grab</CURSOR>
+							<NO_ARROWS/>
+							<DRAG_CODE>100 (M:DragPercent) * 100 min 0 max (&gt;B:ENGINE_#LEVER_ID#_Set)</DRAG_CODE>
+							<ANIM_CODE>(B:ENGINE_#LEVER_ID#, percent)</ANIM_CODE>
+							<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
+							<POSITIVE_AXIS_CODE>#SCROLL_INCREMENT# (&gt;B:ENGINE_#LEVER_ID#_Inc)</POSITIVE_AXIS_CODE>
+							<NEGATIVE_AXIS_CODE>#SCROLL_INCREMENT# (&gt;B:ENGINE_#LEVER_ID#_Dec)</NEGATIVE_AXIS_CODE>
+						</UseTemplate>
+					</Component>
+				</Case>
+				<Default>
+					<Component ID="#NODE_ID#_#ID#" Node="#NODE_ID#">
+						<Parameters Type="Override">
+							<BTN_ID>Choke_#ID#</BTN_ID>
+						</Parameters>
+						<UseInputEvent ID="ENGINE">
+							<SET_STATE_ON>1 (&gt;#VAR_SCOPE#:#VAR_NAME#)</SET_STATE_ON>
+							<SET_STATE_OFF>0 (&gt;#VAR_SCOPE#:#VAR_NAME#)</SET_STATE_OFF>
+							<GET_STATE_EXTERNAL>(#VAR_SCOPE#:#VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+							<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+						</UseInputEvent>
+						<UseTemplate Name="ASOBO_GT_Switch_Code">
+							<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+							<ANIM_CODE>(B:ENGINE_#BTN_ID#, percent)</ANIM_CODE>
+						</UseTemplate>
+					</Component>
+				</Default>
+			</Switch>
+		</Case>
+	</Switch>
+	<Condition Check="HIGHLIGHT_NODE_ID">
+		<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
+			<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
+		</UseTemplate>
+	</Condition>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Primer_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_Primer_#ID#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Primer_#ID#</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_Primer</PART_ID>
+		<THRESHOLD>0.75</THRESHOLD>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Lever">
+				<WWISE_EVENT_1>engine_primer_lever</WWISE_EVENT_1>
+			</Case>
+			<Case Value="Switch">
+				<WWISE_EVENT_1>engine_primer_switch_on</WWISE_EVENT_1>		
+				<WWISE_EVENT_2>engine_primer_switch_off</WWISE_EVENT_2>	
+				<MOMENTARY>True</MOMENTARY>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Default">
+		<TT_DESCRIPTION_ID>@TT_Package.ENGINE_PRIMER_ACTION</TT_DESCRIPTION_ID>
+		<TOOLTIP_PRIMER_TITLE>@TT_Package.ENGINE_PRIMER_TITLE</TOOLTIP_PRIMER_TITLE>
+	</Parameters>
+	<Parameters Type="Default">
+		<COVER_NODE_ID>ENGINE_#INTERACTION_TYPE#_Primer_#ID#_Cover</COVER_NODE_ID>
+		<COVER_ANIM_NAME>ENGINE_#INTERACTION_TYPE#_Primer_#ID#_Cover</COVER_ANIM_NAME>
+	</Parameters>
+	
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_PRIMER_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_Primer_#ID#</TOOLTIP_ENTRY_0>
+			<IE_NAME_BASE>Primer_#ID#</IE_NAME_BASE>
+		</Parameters>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="LEVER">
+				<UseInputEvent ID="ENGINE">
+					<BTN_ID>#IE_NAME_BASE#</BTN_ID>
+					<TT_ICON>MOVE_AXIS_Y</TT_ICON>
+					<ANIM>EXTERNAL</ANIM>
+					<SET_STATE_EXTERNAL>if{ (&gt;K:TOGGLE_PRIMER#ID#) }</SET_STATE_EXTERNAL>
+					<BINDING_SET_0>Toggle</BINDING_SET_0>
+					<BINDING_SET_0_PARAM_0>0 1 (A:RECIP ENG PRIMER:#ID#, position) #THRESHOLD# &gt; ?</BINDING_SET_0_PARAM_0>
+					<BINDING_SET_0_PARAM_0_IS_DYNAMIC>True</BINDING_SET_0_PARAM_0_IS_DYNAMIC>
+					<TT_VALUE>(A:RECIP ENG PRIMER:#ID#, percent) '%d%%' @sprintf</TT_VALUE>
+					<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Switch_Code">
+					<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#IE_NAME_BASE#_Toggle)</LEFT_SINGLE_CODE>
+					<ANIM_CODE>(A:RECIP ENG PRIMER:#ID#, percent)</ANIM_CODE>
+				</UseTemplate>
+			</Case>
+			<Case Value="SWITCH">
+				<UseInputEvent ID="ENGINE">
+					<BTN_ID>#IE_NAME_BASE#</BTN_ID>
+					<SET_STATE_ON>1 (&gt;O:XMLVAR_PRIMER#ID#_SWITCH_ON)</SET_STATE_ON>
+					<SET_STATE_OFF>0 (&gt;O:XMLVAR_PRIMER#ID#_SWITCH_ON)</SET_STATE_OFF>
+					<GET_STATE_EXTERNAL>(O:XMLVAR_PRIMER#ID#_SWITCH_ON) sp0</GET_STATE_EXTERNAL>
+					<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Update">
+					<FREQUENCY>2</FREQUENCY>
+					<UPDATE_CODE>
+						(B:ENGINE_#IE_NAME_BASE#, Bool) if{
+							(A:RECIP ENG PRIMER:#ID#, Position) #THRESHOLD# &lt; if{
+								(&gt;K:TOGGLE_PRIMER#ID#)
+							}
+						}
+					</UPDATE_CODE>
+				</UseTemplate>
+				<Condition Valid="MOMENTARY">
+					<True>
+						<UseTemplate Name="ASOBO_GT_Push_Button">
+							<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#IE_NAME_BASE#_On)</LEFT_SINGLE_CODE>
+							<LEFT_LEAVE_CODE>(&gt;B:ENGINE_#IE_NAME_BASE#_Off)</LEFT_LEAVE_CODE>
+							<OVERRIDE_ANIM_CODE>(B:ENGINE_#IE_NAME_BASE#, percent)</OVERRIDE_ANIM_CODE>	
+						</UseTemplate>
+					</True>
+					<False>
+						<UseTemplate Name="ASOBO_GT_Switch_Code">
+							<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#IE_NAME_BASE#_Toggle)</LEFT_SINGLE_CODE>
+							<OVERRIDE_ANIM_CODE>(B:ENGINE_#IE_NAME_BASE#, percent)</OVERRIDE_ANIM_CODE>		
+						</UseTemplate>
+					</False>
+				</Condition>
+			</Case>
+		</Switch>
+	</Component>
+	<Condition Valid="COVERED">
+		<Component ID="#COVER_NODE_ID#" Node="#COVER_NODE_ID#">
+			<UseTemplate Name = "ASOBO_GT_Switch_Code">
+				<LEFT_SINGLE_CODE>(I:XMLVAR_#COVER_NODE_ID#_Up) ! (&gt;I:XMLVAR_#COVER_NODE_ID#_Up)</LEFT_SINGLE_CODE>
+				<ANIM_CODE>(I:XMLVAR_#COVER_NODE_ID#_Up) 100 *</ANIM_CODE>
+				<ANIM_NAME>#COVER_ANIM_NAME#</ANIM_NAME>
+			</UseTemplate>
+		</Component>
+	</Condition>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Alternate_Air_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_AlternateAir_#ID#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_AlternateAir_#ID#</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_AlternateAir</PART_ID>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<WWISE_EVENT_1>engine_alternate_air_switch_on</WWISE_EVENT_1>
+				<WWISE_EVENT_2>engine_alternate_air_switch_off</WWISE_EVENT_2>
+			</Case>
+			<Case Value="Lever">
+				<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
+				<SCROLL_INCREMENT Process="Int">16384 20 /</SCROLL_INCREMENT>
+				<WWISE_EVENT_1>engine_alternate_air_switch_on</WWISE_EVENT_1>
+				<WWISE_EVENT_2>engine_alternate_air_switch_off</WWISE_EVENT_2>
+				<Condition Check="USE_BUTTON">
+					<BUTTON_ANIM_NAME>ENGINE_Switch_AlternateAir_#ID#_Button</BUTTON_ANIM_NAME>
+
+				</Condition>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Override">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<BTN_ID>Alternate_Air</BTN_ID>
+			</Case>
+			<Case Value="Lever">
+				<LEVER_ID>Alternate_Air</LEVER_ID>
+			</Case>
+		</Switch>
+		<TOOLTIP_TITLE>@TT_Package.CABIN_ALTERNATE_AIR_TITLE</TOOLTIP_TITLE>
+		<TOOLTIP_ENTRY_0>ENGINE_Alternate_Air</TOOLTIP_ENTRY_0>
+		<TT_DESCRIPTION_ID>@TT_Package.CABIN_ALTERNATE_AIR_ACTION</TT_DESCRIPTION_ID>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Switch">
+				<UseInputEvent ID="ENGINE">
+					<SET_STATE_ON>1 (&gt;K:ANTI_ICE_SET_ENG#ID#)</SET_STATE_ON>
+					<SET_STATE_OFF>0 (&gt;K:ANTI_ICE_SET_ENG#ID#)</SET_STATE_OFF>
+					<GET_STATE_EXTERNAL>(A:RECIP ENG ALTERNATE AIR POSITION:#ID#, Bool) sp0</GET_STATE_EXTERNAL>
+					<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Switch_Code">
+					<ANIM_CODE>(B:ENGINE_#BTN_ID#, Bool) 100 *</ANIM_CODE>
+					<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+				</UseTemplate>
+			</Case>
+			<Case Value="Lever">
+				<UseInputEvent ID="ENGINE">
+					<SET_STATE_EXTERNAL>(&gt;K:ANTI_ICE_GRADUAL_SET_ENG#ID#)</SET_STATE_EXTERNAL>
+					<GET_STATE_EXTERNAL>(A:RECIP ENG ALTERNATE AIR POSITION:#ID#, position 16k)</GET_STATE_EXTERNAL>
+					<GET_TT_VALUE_STATE>(A:RECIP ENG ALTERNATE AIR POSITION:#ID#, percent)</GET_TT_VALUE_STATE>
+					<INC_PARAM_0>p0 #SCROLL_INCREMENT# *</INC_PARAM_0>
+					<INC_PARAM_0_IS_DYNAMIC>True</INC_PARAM_0_IS_DYNAMIC>
+					<DEC_PARAM_0>p0 #SCROLL_INCREMENT# *</DEC_PARAM_0>
+					<DEC_PARAM_0_IS_DYNAMIC>True</DEC_PARAM_0_IS_DYNAMIC>
+					<SET_PARAM_0>p0 16384 *</SET_PARAM_0>
+					<SET_PARAM_0_IS_DYNAMIC>True</SET_PARAM_0_IS_DYNAMIC>
+					<INC_CODE_ADJUST_VALUE>16384 /</INC_CODE_ADJUST_VALUE>
+					<DEC_CODE_ADJUST_VALUE>16384 /</DEC_CODE_ADJUST_VALUE>
+					<MIN_VALUE>0</MIN_VALUE>
+					<MAX_VALUE>16384</MAX_VALUE>
+					<VALUE_UNITS>position 16k</VALUE_UNITS>
+				</UseInputEvent>
+				<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
+					<CURSOR>Grab</CURSOR>
+					<NO_ARROWS/>
+					<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
+					<DRAG_CODE>(M:DragPercent) (&gt;B:ENGINE_#LEVER_ID#_Set)</DRAG_CODE>
+					<ANIM_CODE>(B:ENGINE_#LEVER_ID#, percent)</ANIM_CODE>
+					<POSITIVE_AXIS_CODE>1 (&gt;B:ENGINE_#LEVER_ID#_Inc)</POSITIVE_AXIS_CODE>
+					<NEGATIVE_AXIS_CODE>1 (&gt;B:ENGINE_#LEVER_ID#_Dec)</NEGATIVE_AXIS_CODE>
+				</UseTemplate>
+				<Case Check="USE_BUTTON">
+					<UseTemplate Name="ASOBO_GT_Anim_Code">
+						<ANIM_NAME>#BUTTON_ANIM_NAME#</ANIM_NAME>
+						<ANIM_CODE>(O:_Interacting) 100 *</ANIM_CODE>
+					</UseTemplate>
+				</Case>
+			</Case>
+		</Switch>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_ENGINE_ECU_Swap_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_ECU_Swap</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_ECU_Swap</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_ECU_Swap</PART_ID>
+		<WWISE_EVENT_1>ecu_swap_switch_on</WWISE_EVENT_1>
+		<WWISE_EVENT_2>ecu_swap_switch_off</WWISE_EVENT_2>
+		<TOOLTIP_ECU_SWAP_TITLE>@TT_Package.ECU_SWAP_TITLE</TOOLTIP_ECU_SWAP_TITLE>
+		<TT_DESCRIPTION_ID>@TT_Package.ECU_SWAP_ACTION</TT_DESCRIPTION_ID>
+	</Parameters>
+	<Parameters Type="Override">
+		<BTN_ID>ECU_Swap</BTN_ID>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseInputEvent ID="ENGINE">
+			<SET_STATE_EXTERNAL>p0 (&gt;L:XMLVAR_SwitchECUSwap)</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:XMLVAR_SwitchECUSwap) sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<STR_STATE_OFF>Automatic</STR_STATE_OFF>
+			<STR_STATE_ON>Ecu_B</STR_STATE_ON>
+			<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_AUTO)</TT_VALUE_OFF>
+			<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_ECU_B)</TT_VALUE_ON>
+			<TT_ICON>MOVE_Y</TT_ICON>
+		</UseInputEvent>
+		<UseTemplate Name="ASOBO_GT_Switch_Code">
+			<TOOLTIP_TITLE>#TOOLTIP_ECU_SWAP_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+			<ANIM_CODE>(B:ENGINE_#BTN_ID#, Bool) 100 *</ANIM_CODE>
+		</UseTemplate>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_ENGINE_ECU_Test_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_ECU_Test</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_ECU_Test</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_ECU_Test</PART_ID>
+		<WWISE_EVENT_1>ecu_swap_button_on</WWISE_EVENT_1>
+		<WWISE_EVENT_2>ecu_swap_button_off</WWISE_EVENT_2>
+		<TOOLTIP_ECU_TEST_TITLE>@TT_Package.SWITCH_ECU_TEST_TITLE</TOOLTIP_ECU_TEST_TITLE>
+		<TT_DESCRIPTION_ID>@TT_Package.SWITCH_ECU_TEST_ACTION</TT_DESCRIPTION_ID>
+	</Parameters>
+	<Parameters Type="Override">
+		<BTN_ID>ECU_Test</BTN_ID>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseInputEvent ID="ENGINE">
+			<BINDING_DEC_0>Release</BINDING_DEC_0>
+			<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+			<SET_STATE_EXTERNAL>p0 if{ 1 (&gt;L:XMLVAR_SwitchECUBtn) } els{ 0 (&gt;L:XMLVAR_SwitchECUBtn) }</SET_STATE_EXTERNAL>
+			<BINDING_INC_0>Push</BINDING_INC_0>
+			<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+			<ANIM>EXTERNAL</ANIM>
+		</UseInputEvent>
+		<UseTemplate Name="ASOBO_GT_Push_Button_Held">
+			<TOOLTIP_TITLE>#TOOLTIP_ECU_TEST_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#BTN_ID#_Push)</LEFT_SINGLE_CODE>
+			<LEFT_LEAVE_CODE>(&gt;B:ENGINE_#BTN_ID#_Release)</LEFT_LEAVE_CODE>
+			<OVERRIDE_ANIM_CODE>(L:XMLVAR_SwitchECUBtn) 100 *</OVERRIDE_ANIM_CODE>
+		</UseTemplate>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Switch_Engine_Mode_SubTemplate">
+	<Parameters Type="Default">
+		<ENGINE_COUNT>2</ENGINE_COUNT>
+		<NODE_ID>ENGINE_Switch_Engine_Mode</NODE_ID>
+		<ANIM_NAME>ENGINE_Switch_Engine_Mode</ANIM_NAME>
+		<PART_ID>ENGINE_Switch_Engine_Mode</PART_ID>
+		<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+		<ARROW_TYPE>Curved</ARROW_TYPE>
+		<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
+		<SWITCH_POSITION_VAR>XMLVAR_ENG_MODE_SEL</SWITCH_POSITION_VAR>
+		<WWISE_EVENT>engine_mode_switch</WWISE_EVENT>
+		<TOOLTIP_ENG_MODE_TITLE>@TT_Package.ENGINE_SWITCH_ENGINE_MODE_TITLE</TOOLTIP_ENG_MODE_TITLE>
+		<TT_DESCRIPTION_ID>@TT_Package.ENGINE_SWITCH_ENGINE_MODE_ACTION</TT_DESCRIPTION_ID>
+		<POS_CRANK>0</POS_CRANK>
+		<POS_NORM>1</POS_NORM>
+		<POS_IGN_START>2</POS_IGN_START>
+		<ON_STATE_CRANK/>
+		<ON_STATE_NORM/>
+		<ON_STATE_IGN_START/>
+	</Parameters>
+	<Parameters Type="Override">
+		<BTN_ID>Mode</BTN_ID>
+		<NUM_STATES>3</NUM_STATES>
+	</Parameters>
+	<Parameters Type="Override">
+		<Loop>
+			<Setup>
+				<Param>ENG_ID</Param>
+				<From>1</From>
+				<Inc>1</Inc>
+				<To>#ENGINE_COUNT#</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Default" Lifetime="Loop">
+					<GET_STATE_EXTERNAL_T/>
+					<ENUM_VAL_TO_POS_EXTERNAL_T_CRANK>1</ENUM_VAL_TO_POS_EXTERNAL_T_CRANK>
+					<ENUM_VAL_TO_POS_EXTERNAL_T_NORM>1</ENUM_VAL_TO_POS_EXTERNAL_T_NORM>
+					<ENUM_VAL_TO_POS_EXTERNAL_T_IGN_START>1</ENUM_VAL_TO_POS_EXTERNAL_T_IGN_START>
+				</Parameters>
+				<Parameters Type="Override" Lifetime="Loop">
+					<GET_STATE_EXTERNAL_T>#GET_STATE_EXTERNAL_T# (A:TURB ENG IGNITION SWITCH EX1:#ENG_ID#, Enum) sp#ENG_ID#</GET_STATE_EXTERNAL_T>
+					<ENUM_VAL_TO_POS_EXTERNAL_T_CRANK>#ENUM_VAL_TO_POS_EXTERNAL_T_CRANK# l#ENG_ID# 0 == and</ENUM_VAL_TO_POS_EXTERNAL_T_CRANK>
+					<ENUM_VAL_TO_POS_EXTERNAL_T_NORM>#ENUM_VAL_TO_POS_EXTERNAL_T_NORM# l#ENG_ID# 1 == and</ENUM_VAL_TO_POS_EXTERNAL_T_NORM>
+					<ENUM_VAL_TO_POS_EXTERNAL_T_IGN_START>#ENUM_VAL_TO_POS_EXTERNAL_T_IGN_START# l#ENG_ID# 2 == and</ENUM_VAL_TO_POS_EXTERNAL_T_IGN_START>
+				</Parameters>
+			</Do>
+			<Then>
+				<SET_STATE_#POS_CRANK#>0 (&gt;K:TURBINE_IGNITION_SWITCH_SET) #ON_STATE_CRANK#</SET_STATE_#POS_CRANK#>
+				<SET_STATE_#POS_NORM#>1 (&gt;K:TURBINE_IGNITION_SWITCH_SET) #ON_STATE_NORM#</SET_STATE_#POS_NORM#>
+				<SET_STATE_#POS_IGN_START#>2 (&gt;K:TURBINE_IGNITION_SWITCH_SET) #ON_STATE_IGN_START#</SET_STATE_#POS_IGN_START#>
+				<ENUM_VAL_TO_POS_EXTERNAL>#POS_NORM# sp0
+					#ENUM_VAL_TO_POS_EXTERNAL_T_CRANK# if{ #POS_CRANK# sp0 g2 }
+					#ENUM_VAL_TO_POS_EXTERNAL_T_NORM# if{ #POS_NORM# sp0 g2 }
+					#ENUM_VAL_TO_POS_EXTERNAL_T_IGN_START# if{ #POS_IGN_START# sp0 g2 }
+					:2 l0
+				</ENUM_VAL_TO_POS_EXTERNAL>
+				<GET_STATE_EXTERNAL>#GET_STATE_EXTERNAL_T#</GET_STATE_EXTERNAL>
+			</Then>
+		</Loop>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseInputEvent ID="ENGINE">
+			<STR_STATE_#POS_CRANK#>Crank</STR_STATE_#POS_CRANK#>
+			<STR_STATE_#POS_NORM#>Norm</STR_STATE_#POS_NORM#>
+			<STR_STATE_#POS_IGN_START#>Ignition_Start</STR_STATE_#POS_IGN_START#>
+			<TT_VALUE_#POS_CRANK#>@TT_Package.GT_STATE_CRANK</TT_VALUE_#POS_CRANK#>
+			<TT_VALUE_#POS_NORM#>@TT_Package.GT_STATE_NORMAL</TT_VALUE_#POS_NORM#>
+			<TT_VALUE_#POS_IGN_START#>@TT_Package.GT_STATE_IGNITION</TT_VALUE_#POS_IGN_START#>
+		</UseInputEvent>
+		<UseTemplate Name="ASOBO_GT_Switch_3States">
+			<TOOLTIP_TITLE>#TOOLTIP_ENG_MODE_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<CODE_POS_#POS_CRANK#>(&gt;B:ENGINE_#BTN_ID#_Crank)</CODE_POS_#POS_CRANK#>
+			<CODE_POS_#POS_NORM#>(&gt;B:ENGINE_#BTN_ID#_Norm)</CODE_POS_#POS_NORM#>
+			<CODE_POS_#POS_IGN_START#>(&gt;B:ENGINE_#BTN_ID#_Ignition_Start)</CODE_POS_#POS_IGN_START#>
+			<STATE#POS_CRANK#_TEST>(B:ENGINE_#BTN_ID#) #POS_CRANK# ==</STATE#POS_CRANK#_TEST>
+			<STATE#POS_NORM#_TEST>(B:ENGINE_#BTN_ID#) #POS_NORM# ==</STATE#POS_NORM#_TEST>
+			<STATE#POS_IGN_START#_TEST>(B:ENGINE_#BTN_ID#) #POS_IGN_START# ==</STATE#POS_IGN_START#_TEST>
+		</UseTemplate>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Push_Starter_Disengage_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_Push_Starter_Disengage_#ID#</NODE_ID>
+		<ANIM_NAME>ENGINE_Push_Starter_Disengage_#ID#</ANIM_NAME>
+		<WWISE_EVENT_1>engine_start_push_button_on</WWISE_EVENT_1> 
+		<WWISE_EVENT_2>engine_start_push_button_off</WWISE_EVENT_2>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+		<TOOLTIP_STARTER_DISENGAGE_TITLE>@TT_Package.ENGINE_STARTER_DISENGAGE_TITLE</TOOLTIP_STARTER_DISENGAGE_TITLE>
+		<TT_DESCRIPTION_ID>@TT_Package.ENGINE_STARTER_DISENGAGE_ACTION</TT_DESCRIPTION_ID>
+		<ONLY_SEQ1/>
+		<SEQ1_EMISSIVE_CODE>(A:GENERAL ENG STARTER:#ID#, Bool)</SEQ1_EMISSIVE_CODE>
+		<Switch Param="TYPE">
+			<Case Value="TWO_ENGINES">
+				<ID_ENG_1>1</ID_ENG_1>
+				<ID_ENG_2>2</ID_ENG_2>
+			</Case>
+			<Case Value="ALL_ENGINES">
+				<ID_ENG_1>1</ID_ENG_1>
+				<ID_ENG_2>2</ID_ENG_2>
+				<ID_ENG_3>3</ID_ENG_3>
+				<ID_ENG_4>4</ID_ENG_4>
+			</Case>
+		</Switch>
+	</Parameters>
+	<Parameters Type="Override">
+		<BTN_ID>Starter_Disengage</BTN_ID>
+		<Switch Param="TYPE">
+			<Case Value="TWO_ENGINES">
+				<DISENGAGE_STARTER>
+					(A:GENERAL ENG STARTER:#ID_ENG_1#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_1#) }
+					(A:GENERAL ENG STARTER:#ID_ENG_2#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_2#) }
+				</DISENGAGE_STARTER>
+			</Case>
+			<Case Value="ALL_ENGINES">
+				<DISENGAGE_STARTER>
+					(A:GENERAL ENG STARTER:#ID_ENG_1#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_1#) }
+					(A:GENERAL ENG STARTER:#ID_ENG_2#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_2#) }
+					(A:GENERAL ENG STARTER:#ID_ENG_3#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_3#) }
+					(A:GENERAL ENG STARTER:#ID_ENG_4#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID_ENG_4#) }
+				</DISENGAGE_STARTER>
+			</Case>
+			<Default>
+				<DISENGAGE_STARTER>(A:GENERAL ENG STARTER:#ID#, Boolean) if{ (&gt;K:TOGGLE_STARTER#ID#) }</DISENGAGE_STARTER>
+			</Default>
+		</Switch>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseInputEvent ID="ENGINE">
+			<SET_STATE_EXTERNAL>p0 if{ #DISENGAGE_STARTER# }</SET_STATE_EXTERNAL>
+			<BINDING_INC_0>Push</BINDING_INC_0>
+			<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+		</UseInputEvent>
+		<UseTemplate Name="ASOBO_GT_Push_Button">
+			<TOOLTIP_TITLE>#TOOLTIP_STARTER_DISENGAGE_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>ENGINE_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#BTN_ID#_Push)</LEFT_SINGLE_CODE>
+		</UseTemplate>
+	</Component>
+</Template>
+
+<Template Name="ASOBO_ENGINE_Lever_CowlFlaps_SubTemplate">
+	<Parameters Type="Default">
+		<ANIM_NAME>ENGINE_Lever_CowlFlaps_#ID#</ANIM_NAME>
+		<NODE_ID>ENGINE_Lever_CowlFlaps_#ID#</NODE_ID>
+		<PART_ID>ENGINE_Lever_CowlFlaps</PART_ID>
+		<IE_COWLFLAPS_ID>CowlFlaps</IE_COWLFLAPS_ID>
+		<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
+		<SCROLL_INCREMENT Process="Int">16384 20 /</SCROLL_INCREMENT>
+		<TOOLTIP_TITLE>@TT_Package.ENGINE_COWFLAPS_TITLE</TOOLTIP_TITLE>
+		<TT_DESCRIPTION_ID>@TT_Package.ENGINE_COWFLAPS_ACTION</TT_DESCRIPTION_ID>
+		<TT_DESCRIPTION_INDEX>#ID#</TT_DESCRIPTION_INDEX>
+	</Parameters>
+	<Parameters Type="Default">
+		<Condition Check="USE_BUTTON">				
+				<BUTTON_NODE_ID>HANDLING_COWLFLAPS</BUTTON_NODE_ID>
+				<BUTTON_ANIM_NAME>ENGINE_LEVER_COWLFLAPS_PUSH</BUTTON_ANIM_NAME>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Default">
+		<Condition Check="BUTTON_NODE_ID">
+			<BUTTON_VAR_NAME>XMLVAR_Interacting_With_Lever_CowlFlaps</BUTTON_VAR_NAME>
+			<BUTTON_VAR_SCOPE>I</BUTTON_VAR_SCOPE>
+		</Condition>
+	</Parameters>
+	<Parameters Type="Override">		
+		<Condition Check="BUTTON_NODE_ID">
+			<LOCK_CODE>1 (&gt;#BUTTON_VAR_SCOPE#:#BUTTON_VAR_NAME#)</LOCK_CODE>
+			<UNLOCK_CODE>0 (&gt;#BUTTON_VAR_SCOPE#:#BUTTON_VAR_NAME#)</UNLOCK_CODE>
+		</Condition>
+		<LEVER_ID>#IE_COWLFLAPS_ID#</LEVER_ID>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseInputEvent ID="ENGINE">
+			<SIMVAR_TO_WATCH_0>RECIP ENG COWL FLAP POSITION:#ID#</SIMVAR_TO_WATCH_0>
+			<SET_STATE_EXTERNAL>(&gt;K:COWLFLAP#ID#_SET)</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:RECIP ENG COWL FLAP POSITION:#ID#, position 16k)</GET_STATE_EXTERNAL>
+			<GET_TT_VALUE_STATE>(A:RECIP ENG COWL FLAP POSITION:#ID#, percent)</GET_TT_VALUE_STATE>
+			<INC_PARAM_0>p0 #SCROLL_INCREMENT# *</INC_PARAM_0>
+			<INC_PARAM_0_IS_DYNAMIC>True</INC_PARAM_0_IS_DYNAMIC>
+			<DEC_PARAM_0>p0 #SCROLL_INCREMENT# *</DEC_PARAM_0>
+			<DEC_PARAM_0_IS_DYNAMIC>True</DEC_PARAM_0_IS_DYNAMIC>
+			<SET_PARAM_0>p0 16384 *</SET_PARAM_0>
+			<SET_PARAM_0_IS_DYNAMIC>True</SET_PARAM_0_IS_DYNAMIC>
+			<INC_CODE_ADJUST_VALUE>16384 /</INC_CODE_ADJUST_VALUE>
+			<DEC_CODE_ADJUST_VALUE>16384 /</DEC_CODE_ADJUST_VALUE>
+			<MIN_VALUE>0</MIN_VALUE>
+			<MAX_VALUE>16384</MAX_VALUE>
+			<VALUE_UNITS>position 16k</VALUE_UNITS>
+		</UseInputEvent>
+		<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
+			<TOOLTIP_ENTRY_0>ENGINE_#LEVER_ID#</TOOLTIP_ENTRY_0>
+			<CURSOR>Grab</CURSOR>
+			<NO_ARROWS/>
+			<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
+			<DRAG_CODE>(M:DragPercent) (&gt;B:ENGINE_#LEVER_ID#_Set)</DRAG_CODE>
+			<ANIM_CODE>(B:ENGINE_#LEVER_ID#, percent)</ANIM_CODE>
+			<POSITIVE_AXIS_CODE>1 (&gt;B:ENGINE_#LEVER_ID#_Inc)</POSITIVE_AXIS_CODE>
+			<NEGATIVE_AXIS_CODE>1 (&gt;B:ENGINE_#LEVER_ID#_Dec)</NEGATIVE_AXIS_CODE>
+		</UseTemplate>
+		<Condition Check="BUTTON_NODE_ID">
+			<UseTemplate Name="ASOBO_GT_Anim_Code">
+				<ANIM_LAG>800</ANIM_LAG>
+				<ANIM_NAME>#BUTTON_ANIM_NAME#</ANIM_NAME>
+				<ANIM_CODE>(#BUTTON_VAR_SCOPE#:#BUTTON_VAR_NAME#) 100 *</ANIM_CODE>
+			</UseTemplate>
+		</Condition>
+	</Component>
+	<Condition Check="HIGHLIGHT_NODE_ID">
+		<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
+			<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
+		</UseTemplate>
+	</Condition>
+</Template>
+
+<Template Name="ASOBO_ENGINE_TOGA_SubTemplate">
+	<Parameters Type="Default">
+		<NODE_ID>ENGINE_#INTERACTION_TYPE#_TOGA_#ID#</NODE_ID>
+		<ANIM_NAME>ENGINE_#INTERACTION_TYPE#_TOGA_#ID#</ANIM_NAME>
+		<PART_ID>ENGINE_#INTERACTION_TYPE#_TOGA</PART_ID>
+		<WWISE_EVENT_1>engine_toga_switch_on</WWISE_EVENT_1>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>			
+		<WWISE_EVENT_2>engine_toga_switch_off</WWISE_EVENT_2>		
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+		<ON_PUSH_TO_GA/>
+	</Parameters>
+	<Parameters Type="Override">
+		<BTN_ID>TOGA_#ID#</BTN_ID>
+	</Parameters>
+	<Parameters Type="Default">
+		<TOOLTIP_TITLE>@TT_Package.ENGINE_PUSH_TOGA_TITLE</TOOLTIP_TITLE>	
+		<TT_DESCRIPTION_ID>@TT_Package.ENGINE_PUSH_TOGA_ACTION</TT_DESCRIPTION_ID>
+	</Parameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<Parameters Type="Override">
+			<TOOLTIP_ENTRY_0>ENGINE_#BTN_ID#</TOOLTIP_ENTRY_0>
+		</Parameters>
+		<UseInputEvent ID="ENGINE">
+			<SET_STATE_EXTERNAL>p0 (A:AUTOPILOT TAKEOFF POWER ACTIVE, Bool) != if{ (&gt;K:AUTO_THROTTLE_TO_GA) #ON_PUSH_TO_GA# }</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT TAKEOFF POWER ACTIVE, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+		</UseInputEvent>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Push">
+				<UseTemplate Name="ASOBO_GT_Push_Button">
+					<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+				</UseTemplate>
+			</Case>
+			<Case Value="Switch">
+				<UseTemplate Name="ASOBO_GT_Switch_Code">
+					<LEFT_SINGLE_CODE>(&gt;B:ENGINE_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+					<ANIM_CODE>(B:ENGINE_#BTN_ID#, Bool) 100 *</ANIM_CODE>
+				</UseTemplate>
+			</Case>
+		</Switch>
+	</Component>
+</Template>
+
+<!-- #################################################### -->
+
 <Template Name="ASOBO_ENGINE_Lever_Condition_SubTemplate">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<ANIM_NAME>ENGINE_Lever_Condition_#ID#</ANIM_NAME>
 		<NODE_ID>ENGINE_Lever_Condition_#ID#</NODE_ID>
 		<PART_ID>ENGINE_Lever_Condition</PART_ID>
-	</DefaultTemplateParameters>
-
-	<UseTemplate Name="ASOBO_ENGINE_Lever_Condition_SubTemplate2">
-	</UseTemplate>
-</Template>
-<Template Name="ASOBO_ENGINE_Lever_Condition_SubTemplate2">
-	<DefaultTemplateParameters>
+	</Parameters>
+	<Parameters Type="Default">
 		<DRAG_AXIS_SCALE>-450</DRAG_AXIS_SCALE>
 		<POSITION_TYPE>L</POSITION_TYPE>
 		<POSITION_VAR>XMLVAR_ConditionLever_#ID#_Position</POSITION_VAR>
@@ -1440,8 +1872,7 @@
 		<DRAG_ANIM_NAME>#ANIM_NAME#</DRAG_ANIM_NAME>
 		<DRAG_NODE_ID>#NODE_ID#</DRAG_NODE_ID>
 		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.ENG_#ID#_CONDITION_LEVER</TOOLTIPID>
-	</DefaultTemplateParameters>
-	
+	</Parameters>
 	<Component ID="#NODE_ID#" Node="#NODE_ID#">
 		<UseTemplate Name="ASOBO_GT_Anim_Code">
 			<ANIM_CODE>(#DRAG_ANIMATION_VARIABLE_TYPE#:#DRAG_ANIMATION_VARIABLE_NAME#)</ANIM_CODE>
@@ -1518,47 +1949,6 @@
 	</Component>
 </Template>
 
-<Template Name="ASOBO_ENGINE_Lever_Propeller_Throttle_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>ENGINE_Lever_Propeller_Throttle_#ID#</ANIM_NAME>
-		<NODE_ID>ENGINE_Lever_Propeller_Throttle_#ID#</NODE_ID>
-		<PART_ID>ENGINE_Lever_Throttle</PART_ID>
-		<OTHER_PART_ID>ENGINE_Lever_Propeller</OTHER_PART_ID>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Update Frequency="1">
-			(O:IsInit) 0 == if{
-				1 (&gt;O:IsInit)
-				(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, percent) (&gt;O:Position)
-			}
-			(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) 163.84 * (&gt;K:PROP_PITCH#ID#_SET)
-		</Update>
-		<UseTemplate Name="ASOBO_GT_Anim_Code">
-			<ANIM_CODE>
-				100 (A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, percent) -
-			</ANIM_CODE>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_GT_Interaction_DraggingYAxis_Code">
-			<HELPID>HELPID_GAUGE_THROTTLE_THROTTLE</HELPID>
-			<TOOLTIPID>TOOLTIPTEXT_THROTTLE_THROTTLE_PERCENT</TOOLTIPID>
-			<DRAG_DELTA>2</DRAG_DELTA>
-			<UP_CODE>
-				(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) 163.84 (O:DragFactor) * + (&gt;K:PROP_PITCH#ID#_SET)
-				(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) 163.84 (O:DragFactor) * + (&gt;K:THROTTLE#ID#_SET)
-			</UP_CODE>
-			<DOWN_CODE>
-				(A:GENERAL ENG PROPELLER LEVER POSITION:#ID#, position 16k) 163.84 (O:DragFactor) * - (&gt;K:PROP_PITCH#ID#_SET)
-				(A:GENERAL ENG THROTTLE LEVER POSITION:#ID#, position 16k) 163.84 (O:DragFactor) * - (&gt;K:THROTTLE#ID#_SET)
-			</DOWN_CODE>
-		</UseTemplate>
-	</Component>
-	<Condition Check="HIGHLIGHT_NODE_ID">
-		<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
-			<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
-		</UseTemplate>
-	</Condition>
-</Template>
-
 <Template Name="ASOBO_ENGINE_Switch_PropSync_SubTemplate">
 	<DefaultTemplateParameters>
 		<NODE_ID>ENGINE_Switch_PropSync</NODE_ID>
@@ -1571,98 +1961,6 @@
 			<WWISE_EVENT_1>propsync_switch_on</WWISE_EVENT_1>
 			<WWISE_EVENT_2>propsync_switch_off</WWISE_EVENT_2>
 		</UseTemplate>
-	</Component>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Lever_CowlFlaps_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>ENGINE_Lever_CowlFlaps_#ID#</ANIM_NAME>
-		<NODE_ID>ENGINE_Lever_CowlFlaps_#ID#</NODE_ID>
-		<PART_ID>ENGINE_Lever_CowlFlaps</PART_ID>
-		<DRAG_AXIS_SCALE>163.84</DRAG_AXIS_SCALE>
-		<DRAG_MIN_VALUE_OVERRIDE>0</DRAG_MIN_VALUE_OVERRIDE>
-		<DRAG_MAX_VALUE_OVERRIDE>16384.0</DRAG_MAX_VALUE_OVERRIDE>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.COWLFLAPS_LEVER</TOOLTIPID>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Anim_Code">
-			<ANIM_CODE>
-				(A:RECIP ENG COWL FLAP POSITION:#ID#, percent over 100) #DRAG_MAX_VALUE_OVERRIDE# * #DRAG_MIN_VALUE_OVERRIDE# abs + sp0
-				l0 #DRAG_MAX_VALUE_OVERRIDE# #DRAG_MIN_VALUE_OVERRIDE# abs + / 100 *
-			</ANIM_CODE>
-		</UseTemplate>
-		<UseTemplate Name="ASOBO_GT_Interaction_DraggingYAxis_EventSet">
-			<DRAG_SIMVAR>RECIP ENG COWL FLAP POSITION:#ID#</DRAG_SIMVAR>
-			<DRAG_SIMVAR_UNITS>percent</DRAG_SIMVAR_UNITS>
-			<DRAG_SCALE>163.84</DRAG_SCALE>
-			<DRAG_MIN_VALUE>#DRAG_MIN_VALUE_OVERRIDE#</DRAG_MIN_VALUE>
-			<DRAG_MAX_VALUE>#DRAG_MAX_VALUE_OVERRIDE#</DRAG_MAX_VALUE>
-			<DRAG_EVENTID_SET>COWLFLAP#ID#_SET</DRAG_EVENTID_SET>
-		</UseTemplate>
-	</Component>
-	<Condition Check="HIGHLIGHT_NODE_ID">
-		<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
-			<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
-		</UseTemplate>
-	</Condition>
-</Template>
-
-<Template Name="ASOBO_ENGINE_Primer_SubTemplate">
-	<DefaultTemplateParameters>
-		<Switch Param="INTERACTION_TYPE">
-			<Case Value="LEVER">
-				<NODE_ID>ENGINE_Lever_Primer_#ID#</NODE_ID>
-				<ANIM_NAME>ENGINE_Lever_Primer_#ID#</ANIM_NAME>
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PRIMER_LEVER</TOOLTIPID>
-				<WWISE_EVENT_1>engine_primer_lever</WWISE_EVENT_1>
-				<PART_ID>ENGINE_Lever_Primer</PART_ID>
-			</Case>
-			<Case Value="SWITCH">
-				<MOMENTARY>True</MOMENTARY>
-				<THRESHOLD>0.75</THRESHOLD>
-				<NODE_ID>ENGINE_Switch_Primer_#ID#</NODE_ID>
-				<ANIM_NAME>ENGINE_Switch_Primer_#ID#</ANIM_NAME>
-				<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PRIMER_LEVER</TOOLTIPID>
-				<PART_ID>ENGINE_Switch_Primer</PART_ID>
-			</Case>
-		</Switch>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Switch Param="INTERACTION_TYPE">
-			<Case Value="LEVER">
-		<UseTemplate Name="ASOBO_GT_Switch">
-			<EVENTID>TOGGLE_PRIMER#ID#</EVENTID>
-			<ANIM_SIMVAR>RECIP ENG PRIMER:#ID#</ANIM_SIMVAR>
-		</UseTemplate>
-			</Case>
-			<Case Value="SWITCH">
-				<UseTemplate Name="ASOBO_GT_Update">
-					<FREQUENCY>2</FREQUENCY>
-					<UPDATE_CODE>
-						(O:XMLVAR_PRIMER#ID#_SWITCH_ON) if{
-							(A:RECIP ENG PRIMER:#ID#, Position) #THRESHOLD# &lt; if{
-								(&gt;K:TOGGLE_PRIMER#ID#)
-							}
-						}
-					</UPDATE_CODE>
-				</UseTemplate>
-				<Condition Valid="MOMENTARY">
-					<True>
-						<UseTemplate Name="ASOBO_GT_Push_Button">
-							<LEFT_SINGLE_CODE>1 (&gt;O:XMLVAR_PRIMER#ID#_SWITCH_ON)</LEFT_SINGLE_CODE>
-							<LEFT_LEAVE_CODE>0 (&gt;O:XMLVAR_PRIMER#ID#_SWITCH_ON)</LEFT_LEAVE_CODE>
-							<OVERRIDE_ANIM_CODE>(O:XMLVAR_PRIMER#ID#_SWITCH_ON) 100 *</OVERRIDE_ANIM_CODE>
-						</UseTemplate>
-					</True>
-					<False>
-						<UseTemplate Name="ASOBO_GT_Switch_Code">
-							<LEFT_SINGLE_CODE>(O:XMLVAR_PRIMER#ID#_SWITCH_ON) ! (&gt;O:XMLVAR_PRIMER#ID#_SWITCH_ON)</LEFT_SINGLE_CODE>
-							<OVERRIDE_ANIM_CODE>(O:XMLVAR_PRIMER#ID#_SWITCH_ON) 100 *</OVERRIDE_ANIM_CODE>
-						</UseTemplate>
-					</False>
-				</Condition>
-			</Case>
-		</Switch>
 	</Component>
 </Template>
 
@@ -1690,50 +1988,4 @@
 
 </Template>
 
-<Template Name="ASOBO_ENGINE_Switch_TOGA_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>ENGINE_Switch_TOGA</NODE_ID>
-		<ANIM_NAME>ENGINE_Switch_TOGA</ANIM_NAME>
-		<WWISE_EVENT_1>engine_toga_switch_on</WWISE_EVENT_1>
-		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>			
-		<WWISE_EVENT_2>engine_toga_switch_off</WWISE_EVENT_2>		
-		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
-	</DefaultTemplateParameters>
-
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Switch Param="INTERACTION">
-			<Case Value="PUSH">
-				<UseTemplate Name="ASOBO_GT_Push_Button">
-					<LEFT_SINGLE_CODE>(&gt;K:AUTO_THROTTLE_TO_GA)</LEFT_SINGLE_CODE>
-					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.THROTTLE_LEVER_TOGA</TOOLTIPID>
-				</UseTemplate>
-			</Case>
-			<Case Value="B747">
-				<UseTemplate Name="ASOBO_GT_Push_Button">
-					<LEFT_SINGLE_CODE>
-						(&gt;H:B747_8_FMC_1_THROTTLE_TO_GA)
-						(&gt;K:AUTO_THROTTLE_TO_GA)
-					</LEFT_SINGLE_CODE>
-					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.THROTTLE_LEVER_TOGA</TOOLTIPID>
-				</UseTemplate>
-			</Case>
-			<Case Value="AS01B">
-				<UseTemplate Name="ASOBO_GT_Push_Button">
-					<LEFT_SINGLE_CODE>
-						(&gt;H:AS01B_FMC_1_THROTTLE_TO_GA)
-						(&gt;K:AUTO_THROTTLE_TO_GA)
-					</LEFT_SINGLE_CODE>
-					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.THROTTLE_LEVER_TOGA</TOOLTIPID>
-				</UseTemplate>
-			</Case>
-			<Default>
-				<UseTemplate Name="ASOBO_GT_Switch">
-					<ANIM_SIMVAR>AUTOPILOT TAKEOFF POWER ACTIVE</ANIM_SIMVAR>
-					<EVENTID>AUTO_THROTTLE_TO_GA</EVENTID>
-					<TOOLTIPID>TT:COCKPIT.TOOLTIPS.THROTTLE_LEVER_TOGA</TOOLTIPID>
-				</UseTemplate>
-			</Default>
-		</Switch>
-	</Component>
-</Template>
 </ModelBehaviors>

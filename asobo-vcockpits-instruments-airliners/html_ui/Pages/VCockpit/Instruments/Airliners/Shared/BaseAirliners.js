@@ -30,8 +30,8 @@ class BaseAirliners extends NavSystem {
         return BaseAirliners.isMetric;
     }
     updateMachTransition() {
-        let crossSpeed = SimVar.GetGameVarValue("AIRCRAFT CROSSOVER SPEED", "knots");
-        let cruiseMach = SimVar.GetGameVarValue("AIRCRAFT CRUISE MACH", "mach");
+        let crossSpeed = Simplane.getCrossoverSpeed();
+        let cruiseMach = Simplane.getCruiseMach();
         let crossAltitude = Simplane.getCrossoverAltitude(crossSpeed, cruiseMach);
         let mach = Simplane.getMachSpeed();
         let altitude = Simplane.getAltitude();
@@ -39,54 +39,54 @@ class BaseAirliners extends NavSystem {
             case -1:
                 if (mach >= cruiseMach && altitude >= crossAltitude) {
                     this.machTransition = 1;
-                    SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", true);
-                    SimVar.SetSimVarValue("L:AIRLINER_FMC_FORCE_NEXT_UPDATE", "number", 1);
+                    Simplane.setAutoPilotMachModeActive(true);
+                    Simplane.setAutoPilotFMCForceNextUpdate(1);
                 }
                 break;
             case 0:
                 if (mach >= cruiseMach && altitude >= crossAltitude) {
                     this.machTransition = 1;
-                    SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", true);
-                    SimVar.SetSimVarValue("L:AIRLINER_FMC_FORCE_NEXT_UPDATE", "number", 1);
+                    Simplane.setAutoPilotMachModeActive(true);
+                    Simplane.setAutoPilotFMCForceNextUpdate(1);
                 }
                 else {
                     this.machTransition = -1;
-                    SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", false);
-                    SimVar.SetSimVarValue("L:AIRLINER_FMC_FORCE_NEXT_UPDATE", "number", 1);
+                    Simplane.setAutoPilotMachModeActive(false);
+                    Simplane.setAutoPilotFMCForceNextUpdate(1);
                 }
                 break;
             case 1:
                 if (altitude < crossAltitude) {
                     this.machTransition = -1;
-                    SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", false);
-                    SimVar.SetSimVarValue("L:AIRLINER_FMC_FORCE_NEXT_UPDATE", "number", 1);
+                    Simplane.setAutoPilotMachModeActive(false);
+                    Simplane.setAutoPilotFMCForceNextUpdate(1);
                 }
                 break;
         }
-        let isMachActive = SimVar.GetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool");
+        let isMachActive = Simplane.getAutoPilotMachModeActive();
         if (this.isMachActive != isMachActive) {
             this.isMachActive = isMachActive;
             if (isMachActive) {
                 console.log("Switching from IAS to MACH");
-                let mach = SimVar.GetGameVarValue("FROM KIAS TO MACH", "number", Simplane.getAutoPilotSelectedAirspeedHoldValue());
+                let mach = Simplane.getKiasToMach(Simplane.getAutoPilotSelectedAirspeedHoldValue());
                 Coherent.call("AP_MACH_VAR_SET", 1, mach);
-                mach = SimVar.GetGameVarValue("FROM KIAS TO MACH", "number", Simplane.getAutoPilotManagedAirspeedHoldValue());
+                mach = Simplane.getKiasToMach(Simplane.getAutoPilotManagedAirspeedHoldValue());
                 Coherent.call("AP_MACH_VAR_SET", 2, mach);
-                SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
-                if (SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
-                    SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
+                Simplane.setAutoPilotManSpdIsMachOn(1);
+                if (Simplane.getAutoPilotAirspeedHold()) {
+                    Simplane.setAutoPilotPanMachHold(1);
                     console.log("Switching SPEED HOLD to Knots");
                 }
             }
             else {
                 console.log("Switching from MACH to IAS");
-                let knots = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", Simplane.getAutoPilotSelectedMachHoldValue());
+                let knots = Simplane.getMachToKias(Simplane.getAutoPilotSelectedMachHoldValue());
                 Coherent.call("AP_SPD_VAR_SET", 1, knots);
-                knots = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", Simplane.getAutoPilotManagedMachHoldValue());
+                knots = Simplane.getMachToKias(Simplane.getAutoPilotManagedMachHoldValue());
                 Coherent.call("AP_SPD_VAR_SET", 2, knots);
-                SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
-                if (SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
-                    SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
+                Simplane.setAutoPilotManSpdIsMachOff(1);
+                if (Simplane.getAutoPilotMachHold()) {
+                    Simplane.setAutoPilotPanMachHold(1);
                     console.log("Switching SPEED HOLD to Mach");
                 }
             }
@@ -106,7 +106,7 @@ var Airliners;
         connectedCallback() {
             super.connectedCallback();
             if (this.urlConfig.index) {
-                this.setAttribute("index", this.urlConfig.index.toString());
+                diffAndSetAttribute(this, "index", this.urlConfig.index + '');
             }
             this.createUpperScreenPage();
             this.createLowerScreenPages();
@@ -144,7 +144,7 @@ var Airliners;
             this.SwitchToPageName(BaseEICAS.LOWER_SCREEN_GROUP_NAME, pageName);
             for (var i = 0; i < this.lowerScreenPages.length; i++) {
                 if (this.lowerScreenPages[i].name == pageName) {
-                    SimVar.SetSimVarValue("L:XMLVAR_ECAM_CURRENT_PAGE", "number", i);
+                    Simplane.setECAMCurPage(i);
                     break;
                 }
             }
@@ -233,7 +233,7 @@ var Airliners;
         }
         onEnter() {
             if (this.page != null) {
-                this.page.style.display = "block";
+                diffAndSetStyle(this.page, StyleProperty.display, "block");
             }
         }
         onUpdate(_deltaTime) {
@@ -248,7 +248,7 @@ var Airliners;
         }
         onExit() {
             if (this.page != null) {
-                this.page.style.display = "none";
+                diffAndSetStyle(this.page, StyleProperty.display, "none");
             }
         }
     }
@@ -278,7 +278,7 @@ var Airliners;
             }
             else {
                 if (this.text != null) {
-                    this.text.textContent = "";
+                    diffAndSetText(this.text, "");
                 }
             }
         }
@@ -294,25 +294,25 @@ var Airliners;
                 this.currentValue = _value;
                 if (this.text != null) {
                     if (this.hideCbk && this.hideCbk()) {
-                        this.text.textContent = "";
+                        diffAndSetText(this.text, "");
                         this.currentValue = -1;
                     }
                     else {
                         if (this.formatCbk != null) {
-                            this.text.textContent = this.formatCbk(_value, this.roundToDP);
+                            diffAndSetText(this.text, this.formatCbk(_value, this.roundToDP));
                         }
                         else {
-                            this.text.textContent = DynamicValueComponent.formatValueToString(_value, this.roundToDP);
+                            diffAndSetText(this.text, DynamicValueComponent.formatValueToString(_value, this.roundToDP));
                         }
                     }
                 }
             }
         }
         static formatValueToString(_value, _dp = 0) {
-            return _value.toFixed(_dp);
+            return fastToFixed(_value, _dp);
         }
         static formatValueToPosNegString(_value, _dp = 0) {
-            return ((_value > 0) ? "+" : "") + _value.toFixed(_dp);
+            return ((_value > 0) ? "+" : "") + fastToFixed(_value, _dp);
         }
         static formatValueToPosNegTemperature(_value, _dp = 0) {
             return (DynamicValueComponent.formatValueToPosNegString(_value, _dp) + "c");
@@ -322,7 +322,7 @@ var Airliners;
                 return "REV";
             }
             else {
-                return _value.toFixed(_dp);
+                return fastToFixed(_value, _dp);
             }
         }
     }
@@ -348,7 +348,7 @@ var Airliners;
         }
         onUpdate(_deltaTime) {
             super.onUpdate(_deltaTime);
-            let code = SimVar.GetSimVarValue("TRANSPONDER CODE:1", "number");
+            let code = Simplane.getTransponderCode1();
             if (code != this.currentCode) {
                 this.currentCode = code;
                 this.currentDigits = [Math.floor(code / 1000), Math.floor((code % 1000) / 100), Math.floor((code % 100) / 10), code % 10];
@@ -359,14 +359,14 @@ var Airliners;
             var code = "";
             for (var i = 0; i <= 3; i++) {
                 if (this.currentDigits[i] >= 0) {
-                    code += this.currentDigits[i].toString();
+                    code += this.currentDigits[i] + '';
                 }
                 else {
                     code += this.emptySlot;
                 }
             }
             if (this.valueText != null) {
-                this.valueText.textContent = code;
+                diffAndSetText(this.valueText, code);
             }
         }
         onEvent(_event) {
@@ -411,7 +411,7 @@ var Airliners;
                     this.refreshValue();
                     if (slot == 3 && this.currentDigits[3] >= 0) {
                         let code = (this.currentDigits[0] * 4096) + (this.currentDigits[1] * 256) + (this.currentDigits[2] * 16) + this.currentDigits[3];
-                        SimVar.SetSimVarValue("K:XPNDR_SET", "Bco16", code);
+                        Simplane.setXPnderCode(code);
                     }
                     this.bLastInputIsCLR = false;
                 }
@@ -565,7 +565,7 @@ var Airliners;
                     case PopupMenu_ItemType.RADIO_LIST:
                         if (this.highlightItem.listVal > 0) {
                             this.highlightItem.listVal--;
-                            this.highlightItem.listElem.textContent = this.highlightItem.listValues[this.highlightItem.listVal];
+                            diffAndSetText(this.highlightItem.listElem, this.highlightItem.listValues[this.highlightItem.listVal]);
                             this.onChanged(this.highlightItem);
                         }
                         break;
@@ -574,7 +574,7 @@ var Airliners;
                         if (this.highlightItem.rangeVal > this.highlightItem.rangeMin) {
                             this.highlightItem.rangeVal -= this.highlightItem.rangeStep * this.getSpeedAccel();
                             this.highlightItem.rangeVal = Math.max(this.highlightItem.rangeVal, this.highlightItem.rangeMin);
-                            this.highlightItem.rangeElem.textContent = this.highlightItem.rangeVal.toFixed(this.highlightItem.rangeDecimals);
+                            diffAndSetText(this.highlightItem.rangeElem, fastToFixed(this.highlightItem.rangeVal, this.highlightItem.rangeDecimals));
                             this.onChanged(this.highlightItem);
                             this.speedInc += this.speedInc_UpFactor;
                         }
@@ -589,7 +589,7 @@ var Airliners;
                     case PopupMenu_ItemType.RADIO_LIST:
                         if (this.highlightItem.listVal < this.highlightItem.listValues.length - 1) {
                             this.highlightItem.listVal++;
-                            this.highlightItem.listElem.textContent = this.highlightItem.listValues[this.highlightItem.listVal];
+                            diffAndSetText(this.highlightItem.listElem, this.highlightItem.listValues[this.highlightItem.listVal]);
                             this.onChanged(this.highlightItem);
                         }
                         break;
@@ -598,7 +598,7 @@ var Airliners;
                         if (this.highlightItem.rangeVal < this.highlightItem.rangeMax) {
                             this.highlightItem.rangeVal += this.highlightItem.rangeStep * this.getSpeedAccel();
                             this.highlightItem.rangeVal = Math.min(this.highlightItem.rangeVal, this.highlightItem.rangeMax);
-                            this.highlightItem.rangeElem.textContent = this.highlightItem.rangeVal.toFixed(this.highlightItem.rangeDecimals);
+                            diffAndSetText(this.highlightItem.rangeElem, fastToFixed(this.highlightItem.rangeVal, this.highlightItem.rangeDecimals));
                             this.onChanged(this.highlightItem);
                             this.speedInc += this.speedInc_UpFactor;
                         }
@@ -624,25 +624,25 @@ var Airliners;
             this.highlightId = 0;
             this.escapeCbk = null;
             this.sectionRoot = document.createElementNS(Avionics.SVG.NS, "g");
-            this.sectionRoot.setAttribute("transform", "translate(" + this.menuLeft + " " + this.menuTop + ")");
+            diffAndSetAttribute(this.sectionRoot, "transform", "translate(" + this.menuLeft + " " + this.menuTop + ")");
             return this.sectionRoot;
         }
         closeMenu() {
             let bg = document.createElementNS(Avionics.SVG.NS, "rect");
-            bg.setAttribute("x", "0");
-            bg.setAttribute("y", "0");
-            bg.setAttribute("width", this.menuWidth.toString());
-            bg.setAttribute("height", this.height.toString());
-            bg.setAttribute("fill", "black");
+            diffAndSetAttribute(bg, "x", "0");
+            diffAndSetAttribute(bg, "y", "0");
+            diffAndSetAttribute(bg, "width", this.menuWidth + '');
+            diffAndSetAttribute(bg, "height", this.height + '');
+            diffAndSetAttribute(bg, "fill", "black");
             this.sectionRoot.insertBefore(bg, this.sectionRoot.firstChild);
             this.highlightElem = document.createElementNS(Avionics.SVG.NS, "rect");
-            this.highlightElem.setAttribute("x", "0");
-            this.highlightElem.setAttribute("y", "0");
-            this.highlightElem.setAttribute("width", this.menuWidth.toString());
-            this.highlightElem.setAttribute("height", this.lineHeight.toString());
-            this.highlightElem.setAttribute("fill", "none");
-            this.highlightElem.setAttribute("stroke", this.highlightColor);
-            this.highlightElem.setAttribute("stroke-width", (this.sectionBorderSize + 1).toString());
+            diffAndSetAttribute(this.highlightElem, "x", "0");
+            diffAndSetAttribute(this.highlightElem, "y", "0");
+            diffAndSetAttribute(this.highlightElem, "width", this.menuWidth + '');
+            diffAndSetAttribute(this.highlightElem, "height", this.lineHeight + '');
+            diffAndSetAttribute(this.highlightElem, "fill", "none");
+            diffAndSetAttribute(this.highlightElem, "stroke", this.highlightColor);
+            diffAndSetAttribute(this.highlightElem, "stroke-width", (this.sectionBorderSize + 1) + '');
             this.sectionRoot.appendChild(this.highlightElem);
             if (this.dictionary)
                 this.dictionary.changed = false;
@@ -658,13 +658,13 @@ var Airliners;
         }
         endSection() {
             let stroke = document.createElementNS(Avionics.SVG.NS, "rect");
-            stroke.setAttribute("x", "0");
-            stroke.setAttribute("y", this.section.startY.toString());
-            stroke.setAttribute("width", this.menuWidth.toString());
-            stroke.setAttribute("height", (this.section.endY - this.section.startY).toString());
-            stroke.setAttribute("fill", "none");
-            stroke.setAttribute("stroke", "white");
-            stroke.setAttribute("stroke-width", this.sectionBorderSize.toString());
+            diffAndSetAttribute(stroke, "x", "0");
+            diffAndSetAttribute(stroke, "y", this.section.startY + '');
+            diffAndSetAttribute(stroke, "width", this.menuWidth + '');
+            diffAndSetAttribute(stroke, "height", (this.section.endY - this.section.startY) + '');
+            diffAndSetAttribute(stroke, "fill", "none");
+            diffAndSetAttribute(stroke, "stroke", "white");
+            diffAndSetAttribute(stroke, "stroke-width", this.sectionBorderSize + '');
             this.sectionRoot.appendChild(stroke);
             let defaultRadio = null;
             for (let i = 0; i < this.section.items.length; i++) {
@@ -703,7 +703,7 @@ var Airliners;
                             }
                         }
                     }
-                    item.listElem.textContent = item.listValues[item.listVal];
+                    diffAndSetText(item.listElem, item.listValues[item.listVal]);
                     changed = true;
                 }
                 if (item.rangeElem) {
@@ -712,7 +712,7 @@ var Airliners;
                         item.rangeVal = parseFloat(this.dictionary.get(item.dictKeys[dictIndex]));
                         item.rangeVal = Math.max(item.rangeMin, Math.min(item.rangeVal, item.rangeMax));
                     }
-                    item.rangeElem.textContent = item.rangeVal.toFixed(item.rangeDecimals);
+                    diffAndSetText(item.rangeElem, fastToFixed(item.rangeVal, item.rangeDecimals));
                     changed = true;
                 }
                 if (item.checkboxElem) {
@@ -731,30 +731,30 @@ var Airliners;
         }
         addTitle(_text, _textSize, _bgFactor, _bgColor = "blue", _showEscapeIcon = false) {
             let bg = document.createElementNS(Avionics.SVG.NS, "rect");
-            bg.setAttribute("x", "0");
-            bg.setAttribute("y", this.section.endY.toString());
-            bg.setAttribute("width", (this.menuWidth * _bgFactor).toString());
-            bg.setAttribute("height", this.lineHeight.toString());
-            bg.setAttribute("fill", _bgColor);
+            diffAndSetAttribute(bg, "x", "0");
+            diffAndSetAttribute(bg, "y", this.section.endY + '');
+            diffAndSetAttribute(bg, "width", (this.menuWidth * _bgFactor) + '');
+            diffAndSetAttribute(bg, "height", this.lineHeight + '');
+            diffAndSetAttribute(bg, "fill", _bgColor);
             this.sectionRoot.appendChild(bg);
             let posX = this.columnLeft1;
             if (_showEscapeIcon) {
                 let arrow = document.createElementNS(Avionics.SVG.NS, "path");
-                arrow.setAttribute("d", "M" + posX + " " + (this.section.endY + 2) + " l0 " + (this.lineHeight * 0.38) + " l13 0 l0 -2 l2 2 l-2 2 l0 -2");
-                arrow.setAttribute("fill", "none");
-                arrow.setAttribute("stroke", "white");
-                arrow.setAttribute("stroke-width", "1.5");
+                diffAndSetAttribute(arrow, "d", "M" + posX + " " + (this.section.endY + 2) + " l0 " + (this.lineHeight * 0.38) + " l13 0 l0 -2 l2 2 l-2 2 l0 -2");
+                diffAndSetAttribute(arrow, "fill", "none");
+                diffAndSetAttribute(arrow, "stroke", "white");
+                diffAndSetAttribute(arrow, "stroke-width", "1.5");
                 this.sectionRoot.appendChild(arrow);
                 posX += 20;
             }
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", posX.toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", "white");
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", posX + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", "white");
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let item = new PopupMenu_Item(PopupMenu_ItemType.TITLE, this.section, this.section.endY, this.lineHeight);
             this.section.items.push(item);
@@ -763,30 +763,30 @@ var Airliners;
         addList(_text, _textSize, _values, _dictKeys) {
             let enabled = (_dictKeys != null) ? true : false;
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", (this.columnLeft2 + this.textMarginX).toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", (this.columnLeft2 + this.textMarginX) + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let hl = document.createElementNS(Avionics.SVG.NS, "rect");
-            hl.setAttribute("x", (this.columnLeft3 - 2).toString());
-            hl.setAttribute("y", (this.section.endY + 2).toString());
-            hl.setAttribute("width", (this.menuWidth - 2 - (this.columnLeft3 - 2)).toString());
-            hl.setAttribute("height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)).toString());
-            hl.setAttribute("fill", (enabled) ? this.interactionColor : this.disabledColor);
-            hl.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(hl, "x", (this.columnLeft3 - 2) + '');
+            diffAndSetAttribute(hl, "y", (this.section.endY + 2) + '');
+            diffAndSetAttribute(hl, "width", (this.menuWidth - 2 - (this.columnLeft3 - 2)) + '');
+            diffAndSetAttribute(hl, "height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)) + '');
+            diffAndSetAttribute(hl, "fill", (enabled) ? this.interactionColor : this.disabledColor);
+            diffAndSetAttribute(hl, "visibility", "hidden");
             this.sectionRoot.appendChild(hl);
             let choice = document.createElementNS(Avionics.SVG.NS, "text");
-            choice.textContent = _values[0];
-            choice.setAttribute("x", this.columnLeft3.toString());
-            choice.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            choice.setAttribute("fill", (enabled) ? this.interactionColor : this.disabledColor);
-            choice.setAttribute("font-size", _textSize.toString());
-            choice.setAttribute("font-family", this.textStyle);
-            choice.setAttribute("alignment-baseline", "central");
+            diffAndSetText(choice, _values[0]);
+            diffAndSetAttribute(choice, "x", this.columnLeft3 + '');
+            diffAndSetAttribute(choice, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(choice, "fill", (enabled) ? this.interactionColor : this.disabledColor);
+            diffAndSetAttribute(choice, "font-size", _textSize + '');
+            diffAndSetAttribute(choice, "font-family", this.textStyle);
+            diffAndSetAttribute(choice, "alignment-baseline", "central");
             this.sectionRoot.appendChild(choice);
             let item = new PopupMenu_Item(PopupMenu_ItemType.LIST, this.section, this.section.endY, this.lineHeight);
             item.dictKeys = _dictKeys;
@@ -799,29 +799,29 @@ var Airliners;
         addRange(_text, _textSize, _min, _max, _step, _dictKeys) {
             let enabled = (_dictKeys != null) ? true : false;
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", (this.columnLeft2 + this.textMarginX).toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", (this.columnLeft2 + this.textMarginX) + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let hl = document.createElementNS(Avionics.SVG.NS, "rect");
-            hl.setAttribute("x", (this.columnLeft3 - 2).toString());
-            hl.setAttribute("y", (this.section.endY + 2).toString());
-            hl.setAttribute("width", (this.menuWidth - 2 - (this.columnLeft3 - 2)).toString());
-            hl.setAttribute("height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)).toString());
-            hl.setAttribute("fill", (enabled) ? this.interactionColor : this.disabledColor);
-            hl.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(hl, "x", (this.columnLeft3 - 2) + '');
+            diffAndSetAttribute(hl, "y", (this.section.endY + 2) + '');
+            diffAndSetAttribute(hl, "width", (this.menuWidth - 2 - (this.columnLeft3 - 2)) + '');
+            diffAndSetAttribute(hl, "height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)) + '');
+            diffAndSetAttribute(hl, "fill", (enabled) ? this.interactionColor : this.disabledColor);
+            diffAndSetAttribute(hl, "visibility", "hidden");
             this.sectionRoot.appendChild(hl);
             let range = document.createElementNS(Avionics.SVG.NS, "text");
-            range.setAttribute("x", this.columnLeft3.toString());
-            range.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            range.setAttribute("fill", (enabled) ? this.interactionColor : this.disabledColor);
-            range.setAttribute("font-size", _textSize.toString());
-            range.setAttribute("font-family", this.textStyle);
-            range.setAttribute("alignment-baseline", "central");
+            diffAndSetAttribute(range, "x", this.columnLeft3 + '');
+            diffAndSetAttribute(range, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(range, "fill", (enabled) ? this.interactionColor : this.disabledColor);
+            diffAndSetAttribute(range, "font-size", _textSize + '');
+            diffAndSetAttribute(range, "font-family", this.textStyle);
+            diffAndSetAttribute(range, "alignment-baseline", "central");
             this.sectionRoot.appendChild(range);
             let item = new PopupMenu_Item(PopupMenu_ItemType.RANGE, this.section, this.section.endY, this.lineHeight);
             item.dictKeys = _dictKeys;
@@ -846,42 +846,42 @@ var Airliners;
                 let w = h * 0.75;
                 if (enabled) {
                     let leftBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                    leftBorder.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " Z");
-                    leftBorder.setAttribute("fill", this.shape3DBorderLeft);
+                    diffAndSetAttribute(leftBorder, "d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " Z");
+                    diffAndSetAttribute(leftBorder, "fill", this.shape3DBorderLeft);
                     this.sectionRoot.appendChild(leftBorder);
                     let rightBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                    rightBorder.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " Z");
-                    rightBorder.setAttribute("fill", this.shape3DBorderRight);
+                    diffAndSetAttribute(rightBorder, "d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " Z");
+                    diffAndSetAttribute(rightBorder, "fill", this.shape3DBorderRight);
                     this.sectionRoot.appendChild(rightBorder);
                 }
                 shape = document.createElementNS(Avionics.SVG.NS, "path");
-                shape.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5 + b) + " L" + (cx - w * 0.5 + b) + " " + (cy) + " L" + (cx) + " " + (cy + h * 0.5 - b) + " L" + (cx + w * 0.5 - b) + " " + (cy) + " Z");
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "d", "M" + (cx) + " " + (cy - h * 0.5 + b) + " L" + (cx - w * 0.5 + b) + " " + (cy) + " L" + (cx) + " " + (cy + h * 0.5 - b) + " L" + (cx + w * 0.5 - b) + " " + (cy) + " Z");
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
                 if (!enabled) {
-                    shape.setAttribute("stroke", this.disabledColor);
-                    shape.setAttribute("stroke-width", "1");
+                    diffAndSetAttribute(shape, "stroke", this.disabledColor);
+                    diffAndSetAttribute(shape, "stroke-width", "1");
                 }
                 this.sectionRoot.appendChild(shape);
             }
             else {
                 let size = Math.min(this.lineHeight, this.columnLeft2) * 0.33;
                 shape = document.createElementNS(Avionics.SVG.NS, "circle");
-                shape.setAttribute("cx", cx.toString());
-                shape.setAttribute("cy", cy.toString());
-                shape.setAttribute("r", size.toString());
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
-                shape.setAttribute("stroke", (enabled) ? "white" : this.disabledColor);
-                shape.setAttribute("stroke-width", "1");
+                diffAndSetAttribute(shape, "cx", cx + '');
+                diffAndSetAttribute(shape, "cy", cy + '');
+                diffAndSetAttribute(shape, "r", size + '');
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "stroke", (enabled) ? "white" : this.disabledColor);
+                diffAndSetAttribute(shape, "stroke-width", "1");
                 this.sectionRoot.appendChild(shape);
             }
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", (this.columnLeft2 + this.textMarginX).toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", (this.columnLeft2 + this.textMarginX) + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let item = new PopupMenu_Item(PopupMenu_ItemType.RADIO, this.section, this.section.endY, this.lineHeight);
             item.dictKeys = _dictKeys;
@@ -902,59 +902,59 @@ var Airliners;
                 let w = h * 0.75;
                 if (enabled) {
                     let leftBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                    leftBorder.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " Z");
-                    leftBorder.setAttribute("fill", this.shape3DBorderLeft);
+                    diffAndSetAttribute(leftBorder, "d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " Z");
+                    diffAndSetAttribute(leftBorder, "fill", this.shape3DBorderLeft);
                     this.sectionRoot.appendChild(leftBorder);
                     let rightBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                    rightBorder.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " Z");
-                    rightBorder.setAttribute("fill", this.shape3DBorderRight);
+                    diffAndSetAttribute(rightBorder, "d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " Z");
+                    diffAndSetAttribute(rightBorder, "fill", this.shape3DBorderRight);
                     this.sectionRoot.appendChild(rightBorder);
                 }
                 shape = document.createElementNS(Avionics.SVG.NS, "path");
-                shape.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5 + b) + " L" + (cx - w * 0.5 + b) + " " + (cy) + " L" + (cx) + " " + (cy + h * 0.5 - b) + " L" + (cx + w * 0.5 - b) + " " + (cy) + " Z");
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "d", "M" + (cx) + " " + (cy - h * 0.5 + b) + " L" + (cx - w * 0.5 + b) + " " + (cy) + " L" + (cx) + " " + (cy + h * 0.5 - b) + " L" + (cx + w * 0.5 - b) + " " + (cy) + " Z");
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
                 if (!enabled) {
-                    shape.setAttribute("stroke", this.disabledColor);
-                    shape.setAttribute("stroke-width", "1");
+                    diffAndSetAttribute(shape, "stroke", this.disabledColor);
+                    diffAndSetAttribute(shape, "stroke-width", "1");
                 }
                 this.sectionRoot.appendChild(shape);
             }
             else {
                 let size = Math.min(this.lineHeight, this.columnLeft2) * 0.33;
                 shape = document.createElementNS(Avionics.SVG.NS, "circle");
-                shape.setAttribute("cx", cx.toString());
-                shape.setAttribute("cy", cy.toString());
-                shape.setAttribute("r", size.toString());
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
-                shape.setAttribute("stroke", (enabled) ? "white" : this.disabledColor);
-                shape.setAttribute("stroke-width", "1");
+                diffAndSetAttribute(shape, "cx", cx + '');
+                diffAndSetAttribute(shape, "cy", cy + '');
+                diffAndSetAttribute(shape, "r", size + '');
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "stroke", (enabled) ? "white" : this.disabledColor);
+                diffAndSetAttribute(shape, "stroke-width", "1");
                 this.sectionRoot.appendChild(shape);
             }
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", (this.columnLeft2 + this.textMarginX).toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", (this.columnLeft2 + this.textMarginX) + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let hl = document.createElementNS(Avionics.SVG.NS, "rect");
-            hl.setAttribute("x", (this.columnLeft3 - 2).toString());
-            hl.setAttribute("y", (this.section.endY + 2).toString());
-            hl.setAttribute("width", (this.menuWidth - 2 - (this.columnLeft3 - 2)).toString());
-            hl.setAttribute("height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)).toString());
-            hl.setAttribute("fill", this.interactionColor);
-            hl.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(hl, "x", (this.columnLeft3 - 2) + '');
+            diffAndSetAttribute(hl, "y", (this.section.endY + 2) + '');
+            diffAndSetAttribute(hl, "width", (this.menuWidth - 2 - (this.columnLeft3 - 2)) + '');
+            diffAndSetAttribute(hl, "height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)) + '');
+            diffAndSetAttribute(hl, "fill", this.interactionColor);
+            diffAndSetAttribute(hl, "visibility", "hidden");
             this.sectionRoot.appendChild(hl);
             let choice = document.createElementNS(Avionics.SVG.NS, "text");
-            choice.textContent = _values[0];
-            choice.setAttribute("x", this.columnLeft3.toString());
-            choice.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            choice.setAttribute("fill", (enabled) ? this.interactionColor : this.disabledColor);
-            choice.setAttribute("font-size", _textSize.toString());
-            choice.setAttribute("font-family", this.textStyle);
-            choice.setAttribute("alignment-baseline", "central");
+            diffAndSetText(choice, _values[0]);
+            diffAndSetAttribute(choice, "x", this.columnLeft3 + '');
+            diffAndSetAttribute(choice, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(choice, "fill", (enabled) ? this.interactionColor : this.disabledColor);
+            diffAndSetAttribute(choice, "font-size", _textSize + '');
+            diffAndSetAttribute(choice, "font-family", this.textStyle);
+            diffAndSetAttribute(choice, "alignment-baseline", "central");
             this.sectionRoot.appendChild(choice);
             let item = new PopupMenu_Item(PopupMenu_ItemType.RADIO_LIST, this.section, this.section.endY, this.lineHeight);
             item.dictKeys = _dictKeys;
@@ -978,58 +978,58 @@ var Airliners;
                 let w = h * 0.75;
                 if (enabled) {
                     let leftBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                    leftBorder.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " Z");
-                    leftBorder.setAttribute("fill", this.shape3DBorderLeft);
+                    diffAndSetAttribute(leftBorder, "d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " Z");
+                    diffAndSetAttribute(leftBorder, "fill", this.shape3DBorderLeft);
                     this.sectionRoot.appendChild(leftBorder);
                     let rightBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                    rightBorder.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " Z");
-                    rightBorder.setAttribute("fill", this.shape3DBorderRight);
+                    diffAndSetAttribute(rightBorder, "d", "M" + (cx) + " " + (cy - h * 0.5) + " l" + (w * 0.5) + " " + (h * 0.5) + " l" + (-w * 0.5) + " " + (h * 0.5) + " l0" + (-b) + " l" + (w * 0.5 - b) + " " + (-h * 0.5 + b) + " l" + (-w * 0.5 + b) + " " + (-h * 0.5 + b) + " Z");
+                    diffAndSetAttribute(rightBorder, "fill", this.shape3DBorderRight);
                     this.sectionRoot.appendChild(rightBorder);
                 }
                 shape = document.createElementNS(Avionics.SVG.NS, "path");
-                shape.setAttribute("d", "M" + (cx) + " " + (cy - h * 0.5 + b) + " L" + (cx - w * 0.5 + b) + " " + (cy) + " L" + (cx) + " " + (cy + h * 0.5 - b) + " L" + (cx + w * 0.5 - b) + " " + (cy) + " Z");
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "d", "M" + (cx) + " " + (cy - h * 0.5 + b) + " L" + (cx - w * 0.5 + b) + " " + (cy) + " L" + (cx) + " " + (cy + h * 0.5 - b) + " L" + (cx + w * 0.5 - b) + " " + (cy) + " Z");
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
                 if (!enabled) {
-                    shape.setAttribute("stroke", this.disabledColor);
-                    shape.setAttribute("stroke-width", "1");
+                    diffAndSetAttribute(shape, "stroke", this.disabledColor);
+                    diffAndSetAttribute(shape, "stroke-width", "1");
                 }
                 this.sectionRoot.appendChild(shape);
             }
             else {
                 let size = Math.min(this.lineHeight, this.columnLeft2) * 0.33;
                 shape = document.createElementNS(Avionics.SVG.NS, "circle");
-                shape.setAttribute("cx", cx.toString());
-                shape.setAttribute("cy", cy.toString());
-                shape.setAttribute("r", size.toString());
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
-                shape.setAttribute("stroke", (enabled) ? "white" : this.disabledColor);
-                shape.setAttribute("stroke-width", "1");
+                diffAndSetAttribute(shape, "cx", cx + '');
+                diffAndSetAttribute(shape, "cy", cy + '');
+                diffAndSetAttribute(shape, "r", size + '');
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "stroke", (enabled) ? "white" : this.disabledColor);
+                diffAndSetAttribute(shape, "stroke-width", "1");
                 this.sectionRoot.appendChild(shape);
             }
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", (this.columnLeft2 + this.textMarginX).toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", (this.columnLeft2 + this.textMarginX) + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let hl = document.createElementNS(Avionics.SVG.NS, "rect");
-            hl.setAttribute("x", (this.columnLeft3 - 2).toString());
-            hl.setAttribute("y", (this.section.endY + 2).toString());
-            hl.setAttribute("width", (this.menuWidth - 2 - (this.columnLeft3 - 2)).toString());
-            hl.setAttribute("height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)).toString());
-            hl.setAttribute("fill", this.interactionColor);
-            hl.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(hl, "x", (this.columnLeft3 - 2) + '');
+            diffAndSetAttribute(hl, "y", (this.section.endY + 2) + '');
+            diffAndSetAttribute(hl, "width", (this.menuWidth - 2 - (this.columnLeft3 - 2)) + '');
+            diffAndSetAttribute(hl, "height", ((this.section.endY + this.lineHeight - 2) - (this.section.endY + 2)) + '');
+            diffAndSetAttribute(hl, "fill", this.interactionColor);
+            diffAndSetAttribute(hl, "visibility", "hidden");
             this.sectionRoot.appendChild(hl);
             let range = document.createElementNS(Avionics.SVG.NS, "text");
-            range.setAttribute("x", this.columnLeft3.toString());
-            range.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            range.setAttribute("fill", (enabled) ? this.interactionColor : this.disabledColor);
-            range.setAttribute("font-size", _textSize.toString());
-            range.setAttribute("font-family", this.textStyle);
-            range.setAttribute("alignment-baseline", "central");
+            diffAndSetAttribute(range, "x", this.columnLeft3 + '');
+            diffAndSetAttribute(range, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(range, "fill", (enabled) ? this.interactionColor : this.disabledColor);
+            diffAndSetAttribute(range, "font-size", _textSize + '');
+            diffAndSetAttribute(range, "font-family", this.textStyle);
+            diffAndSetAttribute(range, "alignment-baseline", "central");
             this.sectionRoot.appendChild(range);
             let item = new PopupMenu_Item(PopupMenu_ItemType.RADIO_RANGE, this.section, this.section.endY, this.lineHeight);
             item.dictKeys = _dictKeys;
@@ -1054,47 +1054,47 @@ var Airliners;
             if (this.shape3D && enabled) {
                 let b = this.shape3DBorderSize;
                 let topLeftBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                topLeftBorder.setAttribute("d", "M" + (cx - size * 0.5) + " " + (cy - size * 0.5) + " l" + (size) + " 0 l" + (-b) + " " + (b) + " l" + (-(size - b * 2)) + " 0 l0 " + (size - b * 2) + " l" + (-b) + " " + (b) + " Z");
-                topLeftBorder.setAttribute("fill", this.shape3DBorderLeft);
+                diffAndSetAttribute(topLeftBorder, "d", "M" + (cx - size * 0.5) + " " + (cy - size * 0.5) + " l" + (size) + " 0 l" + (-b) + " " + (b) + " l" + (-(size - b * 2)) + " 0 l0 " + (size - b * 2) + " l" + (-b) + " " + (b) + " Z");
+                diffAndSetAttribute(topLeftBorder, "fill", this.shape3DBorderLeft);
                 this.sectionRoot.appendChild(topLeftBorder);
                 let bottomRightBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                bottomRightBorder.setAttribute("d", "M" + (cx + size * 0.5) + " " + (cy + size * 0.5) + " l" + (-size) + " 0 l" + (b) + " " + (-b) + " l" + (size - b * 2) + " 0 l0 " + (-(size - b * 2)) + " l" + (b) + " " + (-b) + " Z");
-                bottomRightBorder.setAttribute("fill", this.shape3DBorderRight);
+                diffAndSetAttribute(bottomRightBorder, "d", "M" + (cx + size * 0.5) + " " + (cy + size * 0.5) + " l" + (-size) + " 0 l" + (b) + " " + (-b) + " l" + (size - b * 2) + " 0 l0 " + (-(size - b * 2)) + " l" + (b) + " " + (-b) + " Z");
+                diffAndSetAttribute(bottomRightBorder, "fill", this.shape3DBorderRight);
                 this.sectionRoot.appendChild(bottomRightBorder);
                 shape = document.createElementNS(Avionics.SVG.NS, "rect");
-                shape.setAttribute("x", (cx - size * 0.5 + b).toString());
-                shape.setAttribute("y", (cy - size * 0.5 + b).toString());
-                shape.setAttribute("width", (size - b * 2).toString());
-                shape.setAttribute("height", (size - b * 2).toString());
-                shape.setAttribute("fill", this.shapeFillColor);
+                diffAndSetAttribute(shape, "x", (cx - size * 0.5 + b) + '');
+                diffAndSetAttribute(shape, "y", (cy - size * 0.5 + b) + '');
+                diffAndSetAttribute(shape, "width", (size - b * 2) + '');
+                diffAndSetAttribute(shape, "height", (size - b * 2) + '');
+                diffAndSetAttribute(shape, "fill", this.shapeFillColor);
                 this.sectionRoot.appendChild(shape);
             }
             else {
                 shape = document.createElementNS(Avionics.SVG.NS, "rect");
-                shape.setAttribute("x", (cx - size * 0.5).toString());
-                shape.setAttribute("y", (cy - size * 0.5).toString());
-                shape.setAttribute("width", size.toString());
-                shape.setAttribute("height", size.toString());
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
-                shape.setAttribute("stroke", (enabled) ? "white" : this.disabledColor);
-                shape.setAttribute("stroke-width", "1");
+                diffAndSetAttribute(shape, "x", (cx - size * 0.5) + '');
+                diffAndSetAttribute(shape, "y", (cy - size * 0.5) + '');
+                diffAndSetAttribute(shape, "width", size + '');
+                diffAndSetAttribute(shape, "height", size + '');
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "stroke", (enabled) ? "white" : this.disabledColor);
+                diffAndSetAttribute(shape, "stroke-width", "1");
                 this.sectionRoot.appendChild(shape);
             }
             let tick = document.createElementNS(Avionics.SVG.NS, "path");
-            tick.setAttribute("d", "M" + (cx - size * 0.5) + " " + (cy) + " l" + (size * 0.4) + " " + (size * 0.5) + " l" + (size * 0.6) + " " + (-size));
-            tick.setAttribute("fill", "none");
-            tick.setAttribute("stroke", this.interactionColor);
-            tick.setAttribute("stroke-width", "4");
-            tick.setAttribute("visibility", "hidden");
+            diffAndSetAttribute(tick, "d", "M" + (cx - size * 0.5) + " " + (cy) + " l" + (size * 0.4) + " " + (size * 0.5) + " l" + (size * 0.6) + " " + (-size));
+            diffAndSetAttribute(tick, "fill", "none");
+            diffAndSetAttribute(tick, "stroke", this.interactionColor);
+            diffAndSetAttribute(tick, "stroke-width", "4");
+            diffAndSetAttribute(tick, "visibility", "hidden");
             this.sectionRoot.appendChild(tick);
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", (this.columnLeft2 + this.textMarginX).toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", (this.columnLeft2 + this.textMarginX) + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let item = new PopupMenu_Item(PopupMenu_ItemType.CHECKBOX, this.section, this.section.endY, this.lineHeight);
             item.dictKeys = _dictKeys;
@@ -1110,17 +1110,17 @@ var Airliners;
             let cx = this.columnLeft1 + (this.columnLeft2 - this.columnLeft1) * 0.5;
             let cy = this.section.endY + this.lineHeight * 0.5;
             let arrow = document.createElementNS(Avionics.SVG.NS, "path");
-            arrow.setAttribute("d", "M" + (cx - size * 0.5) + " " + (cy - size * 0.5) + " l0 " + (size) + " l" + (size * 0.75) + " " + (-size * 0.5) + " Z");
-            arrow.setAttribute("fill", (enabled) ? this.interactionColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+            diffAndSetAttribute(arrow, "d", "M" + (cx - size * 0.5) + " " + (cy - size * 0.5) + " l0 " + (size) + " l" + (size * 0.75) + " " + (-size * 0.5) + " Z");
+            diffAndSetAttribute(arrow, "fill", (enabled) ? this.interactionColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
             this.sectionRoot.appendChild(arrow);
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", (this.columnLeft2 + this.textMarginX).toString());
-            text.setAttribute("y", (this.section.endY + this.lineHeight * 0.5).toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", (this.columnLeft2 + this.textMarginX) + '');
+            diffAndSetAttribute(text, "y", (this.section.endY + this.lineHeight * 0.5) + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let item = new PopupMenu_Item(PopupMenu_ItemType.SUBMENU, this.section, this.section.endY, this.lineHeight);
             item.subMenu = _callback;
@@ -1138,41 +1138,41 @@ var Airliners;
             if (this.shape3D && enabled) {
                 let b = this.shape3DBorderSize;
                 let topLeftBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                topLeftBorder.setAttribute("d", "M" + (cx - w * 0.5) + " " + (cy - h * 0.5) + " l" + (w) + " 0 l" + (-b) + " " + (b) + " l" + (-(w - b * 2)) + " 0 l0 " + (h - b * 2) + " l" + (-b) + " " + (b) + " Z");
-                topLeftBorder.setAttribute("fill", this.shape3DBorderLeft);
+                diffAndSetAttribute(topLeftBorder, "d", "M" + (cx - w * 0.5) + " " + (cy - h * 0.5) + " l" + (w) + " 0 l" + (-b) + " " + (b) + " l" + (-(w - b * 2)) + " 0 l0 " + (h - b * 2) + " l" + (-b) + " " + (b) + " Z");
+                diffAndSetAttribute(topLeftBorder, "fill", this.shape3DBorderLeft);
                 this.sectionRoot.appendChild(topLeftBorder);
                 let bottomRightBorder = document.createElementNS(Avionics.SVG.NS, "path");
-                bottomRightBorder.setAttribute("d", "M" + (cx + w * 0.5) + " " + (cy + h * 0.5) + " l" + (-w) + " 0 l" + (b) + " " + (-b) + " l" + (w - b * 2) + " 0 l0 " + (-(h - b * 2)) + " l" + (b) + " " + (-b) + " Z");
-                bottomRightBorder.setAttribute("fill", this.shape3DBorderRight);
+                diffAndSetAttribute(bottomRightBorder, "d", "M" + (cx + w * 0.5) + " " + (cy + h * 0.5) + " l" + (-w) + " 0 l" + (b) + " " + (-b) + " l" + (w - b * 2) + " 0 l0 " + (-(h - b * 2)) + " l" + (b) + " " + (-b) + " Z");
+                diffAndSetAttribute(bottomRightBorder, "fill", this.shape3DBorderRight);
                 this.sectionRoot.appendChild(bottomRightBorder);
                 shape = document.createElementNS(Avionics.SVG.NS, "rect");
-                shape.setAttribute("x", (cx - w * 0.5 + b).toString());
-                shape.setAttribute("y", (cy - h * 0.5 + b).toString());
-                shape.setAttribute("width", (w - b * 2).toString());
-                shape.setAttribute("height", (h - b * 2).toString());
-                shape.setAttribute("fill", this.shapeFillColor);
+                diffAndSetAttribute(shape, "x", (cx - w * 0.5 + b) + '');
+                diffAndSetAttribute(shape, "y", (cy - h * 0.5 + b) + '');
+                diffAndSetAttribute(shape, "width", (w - b * 2) + '');
+                diffAndSetAttribute(shape, "height", (h - b * 2) + '');
+                diffAndSetAttribute(shape, "fill", this.shapeFillColor);
                 this.sectionRoot.appendChild(shape);
             }
             else {
                 shape = document.createElementNS(Avionics.SVG.NS, "rect");
-                shape.setAttribute("x", (cx - w * 0.5).toString());
-                shape.setAttribute("y", (cy - h * 0.5).toString());
-                shape.setAttribute("width", w.toString());
-                shape.setAttribute("height", h.toString());
-                shape.setAttribute("fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
-                shape.setAttribute("stroke", (enabled) ? "white" : this.disabledColor);
-                shape.setAttribute("stroke-width", "1");
+                diffAndSetAttribute(shape, "x", (cx - w * 0.5) + '');
+                diffAndSetAttribute(shape, "y", (cy - h * 0.5) + '');
+                diffAndSetAttribute(shape, "width", w + '');
+                diffAndSetAttribute(shape, "height", h + '');
+                diffAndSetAttribute(shape, "fill", (enabled) ? this.shapeFillColor : ((this.shapeFillIfDisabled) ? this.disabledColor : "none"));
+                diffAndSetAttribute(shape, "stroke", (enabled) ? "white" : this.disabledColor);
+                diffAndSetAttribute(shape, "stroke-width", "1");
                 this.sectionRoot.appendChild(shape);
             }
             let text = document.createElementNS(Avionics.SVG.NS, "text");
-            text.textContent = _text;
-            text.setAttribute("x", cx.toString());
-            text.setAttribute("y", cy.toString());
-            text.setAttribute("fill", (enabled) ? "white" : this.disabledColor);
-            text.setAttribute("font-size", _textSize.toString());
-            text.setAttribute("font-family", this.textStyle);
-            text.setAttribute("text-anchor", "middle");
-            text.setAttribute("alignment-baseline", "central");
+            diffAndSetText(text, _text);
+            diffAndSetAttribute(text, "x", cx + '');
+            diffAndSetAttribute(text, "y", cy + '');
+            diffAndSetAttribute(text, "fill", (enabled) ? "white" : this.disabledColor);
+            diffAndSetAttribute(text, "font-size", _textSize + '');
+            diffAndSetAttribute(text, "font-family", this.textStyle);
+            diffAndSetAttribute(text, "text-anchor", "middle");
+            diffAndSetAttribute(text, "alignment-baseline", "central");
             this.sectionRoot.appendChild(text);
             let item = new PopupMenu_Item(PopupMenu_ItemType.SUBMENU, this.section, this.section.endY, this.lineHeight);
             item.subMenu = _callback;
@@ -1213,11 +1213,11 @@ var Airliners;
             if (_item != this.highlightItem) {
                 this.highlightItem = _item;
                 if (this.highlightItem) {
-                    this.highlightElem.setAttribute("y", _item.y.toString());
-                    this.highlightElem.setAttribute("visibility", "visible");
+                    diffAndSetAttribute(this.highlightElem, "y", _item.y + '');
+                    diffAndSetAttribute(this.highlightElem, "visibility", "visible");
                 }
                 else {
-                    this.highlightElem.setAttribute("visibility", "hidden");
+                    diffAndSetAttribute(this.highlightElem, "visibility", "hidden");
                 }
                 this.speedInc = 1.0;
             }
@@ -1231,21 +1231,21 @@ var Airliners;
                 case PopupMenu_ItemType.RADIO_RANGE:
                     if (_val) {
                         _item.radioVal = true;
-                        _item.radioElem.setAttribute("fill", this.interactionColor);
+                        diffAndSetAttribute(_item.radioElem, "fill", this.interactionColor);
                     }
                     else {
                         _item.radioVal = false;
-                        _item.radioElem.setAttribute("fill", this.shapeFillColor);
+                        diffAndSetAttribute(_item.radioElem, "fill", this.shapeFillColor);
                     }
                     break;
                 case PopupMenu_ItemType.CHECKBOX:
                     if (_val) {
                         _item.checkboxVal = true;
-                        _item.checkboxTickElem.setAttribute("visibility", "visible");
+                        diffAndSetAttribute(_item.checkboxTickElem, "visibility", "visible");
                     }
                     else {
                         _item.checkboxVal = false;
-                        _item.checkboxTickElem.setAttribute("visibility", "hidden");
+                        diffAndSetAttribute(_item.checkboxTickElem, "visibility", "hidden");
                     }
                     break;
             }
@@ -1290,7 +1290,7 @@ var Airliners;
                         this.dictionary.set(_item.dictKeys[0], _item.listValues[_item.listVal]);
                         break;
                     case PopupMenu_ItemType.RANGE:
-                        this.dictionary.set(_item.dictKeys[0], _item.rangeVal.toString());
+                        this.dictionary.set(_item.dictKeys[0], _item.rangeVal + '');
                         break;
                     case PopupMenu_ItemType.CHECKBOX:
                         this.dictionary.set(_item.dictKeys[0], (_item.checkboxVal) ? "ON" : "OFF");
@@ -1301,19 +1301,19 @@ var Airliners;
                         this.dictionary.set(_item.dictKeys[1], _item.listValues[_item.listVal]);
                         break;
                     case PopupMenu_ItemType.RADIO_RANGE:
-                        this.dictionary.set(_item.dictKeys[1], _item.rangeVal.toString());
+                        this.dictionary.set(_item.dictKeys[1], _item.rangeVal + '');
                         break;
                 }
             }
         }
         registerWithMouse(_item) {
             let mouseFrame = document.createElementNS(Avionics.SVG.NS, "rect");
-            mouseFrame.setAttribute("x", this.menuLeft.toString());
-            mouseFrame.setAttribute("y", this.section.endY.toString());
-            mouseFrame.setAttribute("width", this.menuWidth.toString());
-            mouseFrame.setAttribute("height", this.lineHeight.toString());
-            mouseFrame.setAttribute("fill", "none");
-            mouseFrame.setAttribute("pointer-events", "visible");
+            diffAndSetAttribute(mouseFrame, "x", this.menuLeft + '');
+            diffAndSetAttribute(mouseFrame, "y", this.section.endY + '');
+            diffAndSetAttribute(mouseFrame, "width", this.menuWidth + '');
+            diffAndSetAttribute(mouseFrame, "height", this.lineHeight + '');
+            diffAndSetAttribute(mouseFrame, "fill", "none");
+            diffAndSetAttribute(mouseFrame, "pointer-events", "visible");
             this.sectionRoot.appendChild(mouseFrame);
             mouseFrame.addEventListener("mouseover", this.onMouseOver.bind(this, _item));
             mouseFrame.addEventListener("mouseup", this.onMousePress.bind(this, _item));

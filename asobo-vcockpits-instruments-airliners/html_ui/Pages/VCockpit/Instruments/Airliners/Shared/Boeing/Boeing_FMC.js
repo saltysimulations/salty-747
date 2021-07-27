@@ -59,6 +59,10 @@ class Boeing_FMC extends FMCMainDisplay {
             this._takeOffFlap = flapAngles[flapIndex];
         }
     }
+    onFMCFlightPlanLoaded() {
+        let vRSpeed = this._getComputedVRSpeed();
+        SimVar.SetSimVarValue("FLY ASSISTANT TAKEOFF SPEED ESTIMATED", "Knots", vRSpeed);
+    }
     onEvent(_event) {
         super.onEvent(_event);
         console.log("B747_8_FMC_MainDisplay onEvent " + _event);
@@ -136,7 +140,7 @@ class Boeing_FMC extends FMCMainDisplay {
         if (this.flightPlanManager.getWaypointsCount() === 0) {
             return;
         }
-        SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 1);
+        Simplane.setAPLNAVArmed(1);
         let altitude = Simplane.getAltitudeAboveGround();
         if (altitude < 50) {
             this._pendingLNAVActivation = true;
@@ -152,14 +156,14 @@ class Boeing_FMC extends FMCMainDisplay {
         if (SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "boolean")) {
             return;
         }
-        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 1);
+        Simplane.setAPLNAVActive(1);
         SimVar.SetSimVarValue("K:AP_NAV1_HOLD_ON", "number", 1);
     }
     deactivateLNAV() {
         this._pendingLNAVActivation = false;
         this._isLNAVActive = false;
-        SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
-        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
+        Simplane.setAPLNAVArmed(0);
+        Simplane.setAPLNAVActive(0);
     }
     getIsVNAVArmed() {
         return this._pendingVNAVActivation;
@@ -181,7 +185,7 @@ class Boeing_FMC extends FMCMainDisplay {
         if (this.flightPlanManager.getWaypointsCount() === 0) {
             return;
         }
-        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 1);
+        Simplane.setAPVNAVArmed(1);
         let altitude = Simplane.getAltitudeAboveGround();
         if (altitude < 400) {
             this._pendingVNAVActivation = true;
@@ -197,7 +201,7 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     doActivateVNAV() {
         this._isVNAVActive = true;
-        SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 1);
+        Simplane.setAPVNAVActive(1);
         SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
         this._pendingVNAVActivation = false;
         this.activateTHRREFMode();
@@ -217,8 +221,8 @@ class Boeing_FMC extends FMCMainDisplay {
         this._pendingVNAVActivation = false;
         this._isVNAVActive = false;
         this._pendingVNAVActivation = false;
-        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
-        SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
+        Simplane.setAPVNAVArmed(0);
+        Simplane.setAPVNAVActive(0);
         this.deactivateSpeedIntervention();
     }
     getIsFLCHArmed() {
@@ -237,7 +241,7 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     activateFLCH() {
         this._isFLCHActive = true;
-        SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 1);
+        Simplane.setAPFLCHActive(1);
         this.deactivateVNAV();
         this.deactivateAltitudeHold();
         this.deactivateVSpeed();
@@ -266,7 +270,7 @@ class Boeing_FMC extends FMCMainDisplay {
     deactivateFLCH() {
         this._isFLCHActive = false;
         this._pendingFLCHActivation = false;
-        SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
+        Simplane.setAPFLCHActive(0);
         this.deactivateSpeedIntervention();
     }
     getIsSPDArmed() {
@@ -451,7 +455,7 @@ class Boeing_FMC extends FMCMainDisplay {
         SimVar.SetSimVarValue("K:ALTITUDE_SLOT_INDEX_SET", "number", 1);
         let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, displayedAltitude, this._forceNextAltitudeUpdate);
-        setTimeout(() => {
+        this.requestCall(() => {
             let currentVSpeed = Simplane.getVerticalSpeed();
             Coherent.call("AP_VS_VAR_SET_ENGLISH", 0, currentVSpeed);
             if (!SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
@@ -494,7 +498,7 @@ class Boeing_FMC extends FMCMainDisplay {
         this.deactivateVSpeed();
         this.activateSPD();
         this._isAltitudeHoldActive = true;
-        SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 1);
+        Simplane.setAPAltHoldActive(1);
         if (useCurrentAutopilotTarget) {
             this._altitudeHoldValue = Simplane.getAutoPilotAltitudeLockValue("feet");
         }
@@ -510,7 +514,7 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     deactivateAltitudeHold() {
         this._isAltitudeHoldActive = false;
-        SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
+        Simplane.setAPAltHoldActive(0);
         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, Simplane.getAutoPilotDisplayedAltitudeLockValue(), this._forceNextAltitudeUpdate);
         if (this._onAltitudeHoldDeactivate) {
             let cb = this._onAltitudeHoldDeactivate;
@@ -522,6 +526,9 @@ class Boeing_FMC extends FMCMainDisplay {
         return 100;
     }
     getThrustClimbLimit() {
+        return 100;
+    }
+    _getComputedVRSpeed() {
         return 100;
     }
     getVRef(flapsHandleIndex = NaN, useCurrentWeight = true) {

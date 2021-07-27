@@ -1,353 +1,297 @@
 <ModelBehaviors>
-<Template Name="ASOBO_LANDING_GEAR_Light_SubTemplate">
-	<DefaultTemplateParameters>
-		<NODE_ID>LANDING_GEAR_Light_#ID#</NODE_ID>
-		<SIMVAR>GEAR POSITION:#GEAR_ID#</SIMVAR>
-		<CHECKED_PERCENT_VALUE>100</CHECKED_PERCENT_VALUE>
-		<PART_ID>LANDING_GEAR_Light</PART_ID>
-		<Condition Valid="INVERT_CONDITION">
-			<True>
-				<Condition NotEmpty="CUSTOM_RANGE">
-					<True>
-						<TEST>rng !</TEST>
-					</True>
-					<False>
-						<TEST>!=</TEST>
-					</False>
-				</Condition>
-			</True>
-			<False>
-				<Condition NotEmpty="CUSTOM_RANGE">
-					<True>
-						<TEST>rng</TEST>
-					</True>
-					<False>
-						<TEST>==</TEST>
-					</False>
-				</Condition>
-			</False>
-		</Condition>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<Condition NotEmpty="SHOULD_BE_ON_TEST">
-			<False>
-		<Condition NotEmpty="CUSTOM_RANGE">
-			<True>
-				<SHOULD_BE_ON_TEST>#CUSTOM_RANGE# (A:#SIMVAR#, Percent) #TEST#</SHOULD_BE_ON_TEST>
-			</True>
-			<False>
-				<SHOULD_BE_ON_TEST>(A:#SIMVAR#, Percent) #CHECKED_PERCENT_VALUE# #TEST#</SHOULD_BE_ON_TEST>
-			</False>
-		</Condition>
-			</False>
-		</Condition>
-	</OverrideTemplateParameters>
-	<Condition Check="AIRBUS_TYPE">
-		<True>
-			<UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
-				<DUMMY_BUTTON>True</DUMMY_BUTTON>
-				<SEQ1_EMISSIVE_CODE>
-					(A:#SIMVAR#, Percent) (O:LastFramePosition) !=
-					(A:#SIMVAR#, Percent) (&gt;O:LastFramePosition)
-				</SEQ1_EMISSIVE_CODE>
-				<SEQ2_EMISSIVE_CODE>#SHOULD_BE_ON_TEST#</SEQ2_EMISSIVE_CODE>
+
+	<Template Name="ASOBO_LANDING_GEAR_Gear_SubTemplate">
+		<Parameters Type="Default">
+			<ANIM_NAME>LANDING_GEAR_Lever_Gear</ANIM_NAME>
+			<PART_ID>LANDING_GEAR_Lever_Gear</PART_ID>
+			<NODE_ID>LANDING_GEAR_Lever_Gear</NODE_ID>
+			<LIGHT_NODE_ID>LANDING_GEAR_Lever_GearLight</LIGHT_NODE_ID>
+			<ANIM_LAG>400</ANIM_LAG>
+			<DRAG_SCALAR>10</DRAG_SCALAR>
+			<TOOLTIP_LANDING_GEAR_TITLE>@TT_Package.LANDING_GEAR_LEVER_GEAR_TITLE</TOOLTIP_LANDING_GEAR_TITLE>
+			<WWISE_EVENT>gear_lever</WWISE_EVENT>	
+			<WWISE_EVENT_1>gear_lever_on</WWISE_EVENT_1>	
+			<WWISE_EVENT_2>gear_lever_off</WWISE_EVENT_2>
+			<ALWAYS_USE_ANIM_LAG>True</ALWAYS_USE_ANIM_LAG> <!-- Only 2 positions so anim lag during drags is wanted -->
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_LANDING_GEAR_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>LANDING_GEAR_Gear</TOOLTIP_ENTRY_0>
+			<UP_CODE>(&gt;B:LANDING_GEAR_Gear_Inc)</UP_CODE>
+			<DOWN_CODE>(&gt;B:LANDING_GEAR_Gear_Dec)</DOWN_CODE>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Check="NO_GEARUP_ON_GROUND">
+				<True>
+					<UP_CODE>(A:SIM ON GROUND, Bool) ! if{ #UP_CODE# }</UP_CODE>
+				</True>
+			</Condition>
+		</Parameters>
+		
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="LANDING_GEAR">
+				<GEAR_ID>1</GEAR_ID>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Lever_DraggingYAxis_Code">
+				<ANIM_CODE>(B:LANDING_GEAR_Gear) 100 *</ANIM_CODE>
 			</UseTemplate>
-		</True>
-		<False>
-			<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		</Component>
+		
+		<Condition Check="EMISSIVE_CODE">
+			<Component ID="#LIGHT_NODE_ID#" Node="#LIGHT_NODE_ID#">
 				<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-					<EMISSIVE_CODE>#SHOULD_BE_ON_TEST#</EMISSIVE_CODE>
+					<PART_ID>#LIGHT_NODE_ID#</PART_ID>
 				</UseTemplate>
 			</Component>
-		</False>
-	</Condition>
-</Template>
+		</Condition>
+	</Template>
 
-<Template Name="ASOBO_LANDING_GEAR_Switch_ParkingBrake_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>LANDING_GEAR_Switch_ParkingBrake</ANIM_NAME>
-		<NODE_ID>LANDING_GEAR_Switch_ParkingBrake</NODE_ID>
-		<PART_ID>LANDING_GEAR_Switch_ParkingBrake</PART_ID>
-		<Condition Check="USE_DRAGGING_INTERACTION">
-			<DRAG_SPEED>5</DRAG_SPEED>
-			<ANIM_LENGTH>100</ANIM_LENGTH>
-			<DELTA_MIN>0.00025</DELTA_MIN>
-			<ANIM_DELTA>#ANIM_SPEED# (O:Delta_SIMULATION_TIME) * (O:Delta_ANIM_POS) abs min</ANIM_DELTA>
-		</Condition>
-		<UPDATE_CODE>
-			(A:BRAKE PARKING POSITION, bool) (O:BrakeIsON) != if{
-				(A:BRAKE PARKING POSITION, bool) (&gt;O:BrakeIsON)
-				(A:BRAKE PARKING POSITION, bool) ! if{
-					(A:BRAKE PARKING POSITION, bool) 100 * (&gt;O:BrakePosition)
-				} els{								
-					(E:SIMULATION TIME, second) #ANIM_DELAY# + (&gt;O:BrakeStartingTime)				
-				}
-			}
-			els{
-				(O:BrakeStartingTime) 0 &gt; if{								
-					(E:SIMULATION TIME, second) (O:BrakeStartingTime) - 0 &gt; if{
-						(A:BRAKE PARKING POSITION, bool) 100 * (&gt;O:BrakePosition)
-						0 (&gt;O:BrakeStartingTime)
-					}
-				}
-			}
-		</UPDATE_CODE>
-		<Condition Check="USE_DRAGGING_INTERACTION">
-			<False>
-				<MOUSEFLAGS>LeftSingle+WheelUp+WheelDown</MOUSEFLAGS>
-				<Condition>
-					<Test>
-						<Greater>
-							<Value>ANIM_DELAY</Value>
-							<Number>0</Number>
-						</Greater>
-					</Test>
-					<True>
-						<LEFT_SINGLE_CODE_DEFAULT_IM>
-							(&gt;K:PARKING_BRAKES) 
-							(A:BRAKE PARKING POSITION, bool) ! if{
-								(A:BRAKE PARKING POSITION, bool) 100 * (&gt;O:BrakePosition)
-								(A:BRAKE PARKING POSITION, bool) (&gt;O:BrakeIsON)	
-							}
-						</LEFT_SINGLE_CODE_DEFAULT_IM>
-						<ANIM_CODE>(O:BrakePosition)</ANIM_CODE>
-					</True>
-					<False>
-						<LEFT_SINGLE_CODE_DEFAULT_IM>(&gt;K:PARKING_BRAKES)</LEFT_SINGLE_CODE_DEFAULT_IM>
-						<ANIM_CODE>(A:BRAKE PARKING POSITION, bool) 100 *</ANIM_CODE>
-					</False>
-				</Condition>
-				<Condition Valid="INVERT_MOUSEWHEEL_INTERACTION">
-					<True>
-						<CLOCKWISE_CODE>(A:BRAKE PARKING POSITION, bool) ! if{ (&gt;K:PARKING_BRAKES) }</CLOCKWISE_CODE>
-						<ANTICLOCKWISE_CODE>(A:BRAKE PARKING POSITION, bool) if{ (&gt;K:PARKING_BRAKES) }</ANTICLOCKWISE_CODE>
-					</True>
-					<False>
-						<CLOCKWISE_CODE>(A:BRAKE PARKING POSITION, bool) if{ (&gt;K:PARKING_BRAKES) }</CLOCKWISE_CODE>
-						<ANTICLOCKWISE_CODE>(A:BRAKE PARKING POSITION, bool) ! if{ (&gt;K:PARKING_BRAKES) }</ANTICLOCKWISE_CODE>
-					</False>
-				</Condition>
-			</False>
-		</Condition>
-		<TOOLTIPID>TT:COCKPIT.TOOLTIPS.PARKBRAKE_GENERIC</TOOLTIPID>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<Condition Check="USE_DRAGGING_INTERACTION">
-			<False>
-				<LEFT_SINGLE_CODE_DEFAULT_IM>
-					(M:Event) 'WheelUp'    scmi 0 == if{ #CLOCKWISE_CODE# } els{
-					(M:Event) 'WheelDown'  scmi 0 == if{ #ANTICLOCKWISE_CODE# } els{
-						#LEFT_SINGLE_CODE_DEFAULT_IM#
-					}
-					}
-				</LEFT_SINGLE_CODE_DEFAULT_IM>
-				<LEFT_SINGLE_CODE_DRAG_IM>
-					(&gt;K:PARKING_BRAKES)
-					(A:BRAKE PARKING POSITION, bool) 100 * (&gt;O:BrakePosition)
-					(A:BRAKE PARKING POSITION, bool) (&gt;O:BrakeIsON)
-				</LEFT_SINGLE_CODE_DRAG_IM>
-			</False>
-		</Condition>
-	</OverrideTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Switch>
-			<Case Check="USE_PEDAL_AS_SWITCH">
-				<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_Code">
-					<HELPID>HELPID_GAUGE_PARKING_BRAKE</HELPID>
-					<TOOLTIPID>TOOLTIPTEXT_PARKING_BRAKE</TOOLTIPID>
-					<WWISE_EVENT_1>parking_brake_switch_on</WWISE_EVENT_1>
-					<WWISE_EVENT_2>parking_brake_switch_off</WWISE_EVENT_2>
-				</UseTemplate>
-			</Case>
-			<Case Check="USE_DRAGGING_INTERACTION">
-				<Update Fraquency="0.1">
-					(O:IsInit) ! if{
-						1 (&gt;O:IsInit)
-						(A:BRAKE PARKING POSITION, bool) 100 * (&gt;O:BrakePosition)
-					}
-				</Update>
-				<Condition>
-					<Test>
-						<Greater>
-							<Value>ANIM_DELAY</Value>
-							<Number>0</Number>
-						</Greater>
-					</Test>
-					<True>
-						<Update Fraquency="5">
-							(O:_Interacting) ! if{
-								#UPDATE_CODE#
-							}
-						</Update>
-					</True>
-				</Condition>
-				<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
-					<ANIM_CODE>
-						(O:_Interacting) if{
-							(O:BrakePosition) (&gt;O:AnimCode)
-						} els{
-							(E:SIMULATION TIME, second) (O:Prev_SIMULATION_TIME) - (&gt;O:Delta_SIMULATION_TIME)
-							(E:SIMULATION TIME, second) (&gt;O:Prev_SIMULATION_TIME)
-							(O:BrakePosition) (O:AnimCode) - (&gt;O:Delta_ANIM_POS)
-							(O:Delta_ANIM_POS) 0 != if{
-								#ANIM_DELTA# #ANIM_DELTA# neg (O:Delta_ANIM_POS) 0 &gt; ? (O:AnimCode) + (&gt;O:AnimCode)
-							}
-						}
-						(O:AnimCode)
-					</ANIM_CODE>
-					<POSITIVE_AXIS_CODE>
-					(O:BrakePosition) #DRAG_SPEED# + #ANIM_LENGTH# min (&gt;O:BrakePosition)
-					(O:BrakePosition) 100 == (A:BRAKE PARKING POSITION, bool) ! and if{
-						(&gt;K:PARKING_BRAKES)
-						(A:BRAKE PARKING POSITION, bool) (&gt;O:BrakeIsON)	
-					}
-					</POSITIVE_AXIS_CODE>
-					<NEGATIVE_AXIS_CODE>
-					(O:BrakePosition) #DRAG_SPEED# - 0 max (&gt;O:BrakePosition)
-					(A:BRAKE PARKING POSITION, bool) if{
-						(&gt;K:PARKING_BRAKES)
-						(A:BRAKE PARKING POSITION, bool) (&gt;O:BrakeIsON)	
-					}
-					</NEGATIVE_AXIS_CODE>
-					<DRAG_CODE>
-					(O:BrakePosition) (O:DragScale) + #ANIM_LENGTH# min 0 max (&gt;O:BrakePosition)
-					(O:BrakePosition) 100 == (A:BRAKE PARKING POSITION, bool) != if{
-						(&gt;K:PARKING_BRAKES)
-						(A:BRAKE PARKING POSITION, bool) (&gt;O:BrakeIsON)	
-					}
-					</DRAG_CODE>
-					<AXIS>Y</AXIS>
-					<NO_ARROWS/>
-					<CURSOR>Grab</CURSOR>
-					<WWISE_EVENT_1>parking_brake_lever_on</WWISE_EVENT_1>
-					<WWISE_EVENT_2>parking_brake_lever_off</WWISE_EVENT_2>
-				</UseTemplate>
-			</Case>
-			<Default>
-				<Condition>
-					<Test>
-						<Greater>
-							<Value>ANIM_DELAY</Value>
-							<Number>0</Number>
-						</Greater>
-					</Test>
-					<True>
-						<Update Fraquency="5">
-							#UPDATE_CODE#
-						</Update>
-					</True>
-				</Condition>
-				<UseTemplate Name="ASOBO_GT_Switch_Code">
-					<HELPID>HELPID_GAUGE_PARKING_BRAKE</HELPID>
-					<TOOLTIPID>TOOLTIPTEXT_PARKING_BRAKE</TOOLTIPID>
-					<WWISE_EVENT_1>parking_brake_switch_on</WWISE_EVENT_1>
-					<WWISE_EVENT_2>parking_brake_switch_off</WWISE_EVENT_2>
-					<ANIMREF_ID>0</ANIMREF_ID>
-					<Condition Valid="INVERT_ANIM">
+	<Template Name="ASOBO_LANDING_GEAR_Floater_Template">
+		<Parameters Type="Default">
+			<ANIM_NAME>LANDING_GEAR_Lever_Floater</ANIM_NAME>
+			<PART_ID>LANDING_GEAR_Lever_Floater</PART_ID>
+			<NODE_ID>LANDING_GEAR_Lever_Floater</NODE_ID>
+			<ANIM_LAG>400</ANIM_LAG>
+			<DRAG_SCALAR>10</DRAG_SCALAR>
+			<TOOLTIP_FLOATER_TITLE>@TT_Package.LANDING_GEAR_LEVER_FLOATER_TITLE</TOOLTIP_FLOATER_TITLE><!-- FLOATER_TITLE -->
+			<TOOLTIP_TITLE_IS_DYNAMIC>True</TOOLTIP_TITLE_IS_DYNAMIC>
+			<ALWAYS_USE_ANIM_LAG>True</ALWAYS_USE_ANIM_LAG> <!-- Only 2 positions so anim lag during drags is wanted -->
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_FLOATER_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>LANDING_GEAR_Floater</TOOLTIP_ENTRY_0>
+			<UP_CODE>(&gt;B:LANDING_GEAR_Floater_Inc)</UP_CODE>
+			<DOWN_CODE>(&gt;B:LANDING_GEAR_Floater_Dec)</DOWN_CODE>
+		</Parameters>
+		
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="LANDING_GEAR">
+				<FLOATER_ID>1</FLOATER_ID>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Lever_DraggingYAxis_Code">
+				<ANIM_CODE>(B:LANDING_GEAR_Floater) 100 *</ANIM_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<!--
+		Turn on the light (NODE_ID) if the Gears are fully down.
+		
+		Optionnal parameters :
+		SHOULD_BE_ON_TEST: define this with the code you want if you need a completely 
+						   different test for the lights
+		INVERT_CONDITION: simply invert test condition
+		CUSTOM_RANGE: override CHECKED_PERCENT_VALUE cap for a range instead
+		CHECK_LEVER: if True, also take in account the handling lever position
+	-->
+	<Template Name="ASOBO_LANDING_GEAR_Light_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>LANDING_GEAR_Light_#ID#</NODE_ID>
+			<SIMVAR>GEAR POSITION:#GEAR_ID#</SIMVAR>
+			<CHECKED_PERCENT_VALUE>100</CHECKED_PERCENT_VALUE>
+			<PART_ID>LANDING_GEAR_Light</PART_ID>
+			<Condition Valid="INVERT_CONDITION">
+				<True>
+					<Condition NotEmpty="CUSTOM_RANGE">
 						<True>
-							<ANIMTIP_0_ON_PERCENT>1</ANIMTIP_0_ON_PERCENT>
-							<ANIMTIP_1_ON_PERCENT>0</ANIMTIP_1_ON_PERCENT>
+							<TEST>rng !</TEST>
 						</True>
 						<False>
-							<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-							<ANIMTIP_1_ON_PERCENT>1</ANIMTIP_1_ON_PERCENT>
+							<TEST>!=</TEST>
 						</False>
 					</Condition>
-					<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.PARKBRAKE_RELEASED</ANIMTIP_0>
-					<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.PARKBRAKE_SET</ANIMTIP_1>
+				</True>
+				<False>
+					<Condition NotEmpty="CUSTOM_RANGE">
+						<True>
+							<TEST>rng</TEST>
+						</True>
+						<False>
+							<TEST>==</TEST>
+						</False>
+					</Condition>
+				</False>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition NotEmpty="SHOULD_BE_ON_TEST">
+				<False>
+					<Condition NotEmpty="CUSTOM_RANGE">
+						<True>
+							<SHOULD_BE_ON_TEST>#CUSTOM_RANGE# (A:#SIMVAR#, Percent) #TEST#</SHOULD_BE_ON_TEST>
+						</True>
+						<False>
+							<SHOULD_BE_ON_TEST>(A:#SIMVAR#, Percent) #CHECKED_PERCENT_VALUE# #TEST#</SHOULD_BE_ON_TEST>
+						</False>
+					</Condition>
+				</False>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="CHECK_LEVER">
+				<True>
+					<SHOULD_BE_ON_TEST>#SHOULD_BE_ON_TEST# (A:GEAR HANDLE POSITION, bool) and</SHOULD_BE_ON_TEST>
+				</True>
+			</Condition>
+		</Parameters>
+		
+		<Condition Check="AIRBUS_TYPE">
+			<True>
+				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
+					<DUMMY_BUTTON>True</DUMMY_BUTTON>
+					<SEQ1_EMISSIVE_CODE>
+						(A:#SIMVAR#, Percent) (O:LastFramePosition) !=
+						(A:#SIMVAR#, Percent) (&gt;O:LastFramePosition)
+					</SEQ1_EMISSIVE_CODE>
+					<SEQ2_EMISSIVE_CODE>#SHOULD_BE_ON_TEST#</SEQ2_EMISSIVE_CODE>
 				</UseTemplate>
-			</Default>
-		</Switch>
-	</Component>
-	<Condition Check="HIGHLIGHT_NODE_ID">
-		<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
-			<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
-		</UseTemplate>
-	</Condition>
-</Template>
+			</True>
+			<False>
+				<Component ID="#NODE_ID#" Node="#NODE_ID#">
+					<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+						<EMISSIVE_CODE>#SHOULD_BE_ON_TEST#</EMISSIVE_CODE>
+					</UseTemplate>
+				</Component>
+			</False>
+		</Condition>
+	</Template>
 
-<Template Name="ASOBO_LANDING_GEAR_Lever_Brake_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>LANDING_GEAR_Lever_Brake</ANIM_NAME>
-		<NODE_ID>LANDING_GEAR_Lever_Brake</NODE_ID>
-		<PART_ID>LANDING_GEAR_Lever_Brake</PART_ID>
-		<INCREMENT>5</INCREMENT><!-- % Fixed step for INCREASE/DECREASE Keys -->
-		<TYPE>BOTH</TYPE><!-- Which brakes does it influence list: LEFT, RIGHT, BOTH -->
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<MAX_BRAKE_VALUE Process="Int">16383 2 *</MAX_BRAKE_VALUE>
-	</OverrideTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<OverrideTemplateParameters>
-			<INCREMENT_16K Process="Int">#MAX_BRAKE_VALUE# #INCREMENT# 100 / *</INCREMENT_16K>
-			<DECREMENT_16K Process="Int">#MAX_BRAKE_VALUE# #INCREMENT# 100 / * -1 *</DECREMENT_16K>
-			<HALF_MAX_BRAKE_VALUE Process="Int">#MAX_BRAKE_VALUE# 2 /</HALF_MAX_BRAKE_VALUE>
-			<Switch Param="TYPE">
-				<Case Value="BOTH">
-					<SET_BRAKE_POSITION>
-						sp0
-						l0 (&gt;K:AXIS_LEFT_BRAKE_SET)
-						l0 (&gt;K:AXIS_RIGHT_BRAKE_SET)
-					</SET_BRAKE_POSITION>
-					<SET_BRAKE_INCREMENT>
-						(A:BRAKE LEFT POSITION EX1, position 16k) 2 * + sp0
-						l0 (&gt;K:AXIS_LEFT_BRAKE_SET)
-						l0 (&gt;K:AXIS_RIGHT_BRAKE_SET)
-					</SET_BRAKE_INCREMENT>
-					<GET_BRAKE_POSITION>
-						(A:BRAKE LEFT POSITION EX1, position)
-						(A:BRAKE RIGHT POSITION EX1, position) + 2 /
-					</GET_BRAKE_POSITION>
+	<Template Name="ASOBO_LANDING_GEAR_ParkingBrake_Template">
+		<Parameters Type="Default">
+			<Condition>
+				<Test>
+					<Greater>
+						<Value>ANIM_DELAY</Value>
+						<Number>0</Number>
+					</Greater>
+				</Test>
+				<True>
+					<HAS_ANIM_DELAY>True</HAS_ANIM_DELAY>
+				</True>
+				<False>
+					<HAS_ANIM_DELAY>False</HAS_ANIM_DELAY>
+					<ANIM_DELAY>0</ANIM_DELAY>
+				</False>
+			</Condition>
+			<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+			<INPUTEVENT_VAR_NAME>ParkingBrake_Position</INPUTEVENT_VAR_NAME>
+		</Parameters>
+		<Parameters Type="Default">
+			<ANIM_NAME>LANDING_GEAR_#INTERACTION_TYPE#_ParkingBrake</ANIM_NAME>
+			<NODE_ID>LANDING_GEAR_#INTERACTION_TYPE#_ParkingBrake</NODE_ID>
+			<PART_ID>LANDING_GEAR_#INTERACTION_TYPE#_ParkingBrake</PART_ID>
+			<MOUSEFLAGS>LeftSingle+WheelUp+WheelDown</MOUSEFLAGS>
+			<LEFT_SINGLE_CODE_DEFAULT_IM>(&gt;B:LANDING_GEAR_ParkingBrake_Toggle)</LEFT_SINGLE_CODE_DEFAULT_IM>
+			<ANIM_CODE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</ANIM_CODE>
+			<WWISE_EVENT_1>parking_brake_switch_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>parking_brake_switch_off</WWISE_EVENT_2>
+			<TOOLTIP_PARKING_BRAKE_TITLE>@TT_Package.LANDING_GEAR_SWITCH_PARKING_BRAKE_TITLE</TOOLTIP_PARKING_BRAKE_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_TITLE>#TOOLTIP_PARKING_BRAKE_TITLE#</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>LANDING_GEAR_ParkingBrake</TOOLTIP_ENTRY_0>
+			<LEFT_SINGLE_CODE_DRAG_IM>#LEFT_SINGLE_CODE_DEFAULT_IM#</LEFT_SINGLE_CODE_DRAG_IM>
+		</Parameters>
+		
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="LANDING_GEAR">
+				<PARKING_BRAKE_ID>1</PARKING_BRAKE_ID>
+			</UseInputEvent>
+			<Switch>
+				<Case Check="USE_PEDAL_AS_SWITCH">
+					<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_Code">
+					</UseTemplate>
 				</Case>
-				<Case Value="LEFT">
-					<SET_BRAKE_POSITION>
-						(&gt;K:AXIS_LEFT_BRAKE_SET)
-					</SET_BRAKE_POSITION>
-					<SET_BRAKE_INCREMENT>
-						(A:BRAKE LEFT POSITION EX1, position 16k) 2 * + (&gt;K:AXIS_LEFT_BRAKE_SET)
-					</SET_BRAKE_INCREMENT>
-					<GET_BRAKE_POSITION>
-						(A:BRAKE LEFT POSITION EX1, position)
-					</GET_BRAKE_POSITION>
-				</Case>
-				<Case Value="RIGHT">
-					<SET_BRAKE_POSITION>
-						(&gt;K:AXIS_RIGHT_BRAKE_SET)
-					</SET_BRAKE_POSITION>
-					<SET_BRAKE_INCREMENT>
-						(A:BRAKE RIGHT POSITION EX1, position 16k) 2 * + (&gt;K:AXIS_RIGHT_BRAKE_SET)
-					</SET_BRAKE_INCREMENT>
-					<GET_BRAKE_POSITION>
-						(A:BRAKE RIGHT POSITION EX1, position)
-					</GET_BRAKE_POSITION>
-				</Case>
+				<Default>
+					<Condition Valid="HAS_ANIM_DELAY">
+						<True>
+							<UseTemplate Name="ASOBO_GT_Update">
+								<FREQUENCY>5</FREQUENCY>
+								<UPDATE_CODE>
+								(O:BrakeStartingTime) 0 &gt; if{								
+									(E:SIMULATION TIME, second) (O:BrakeStartingTime) - 0 &gt; if{
+										(A:BRAKE PARKING POSITION, bool) 100 * (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+										0 (&gt;O:BrakeStartingTime)
+									}
+								}
+								</UPDATE_CODE>
+							</UseTemplate>
+						</True>
+					</Condition>
+					<UseTemplate Name="ASOBO_GT_Switch_Code">
+					</UseTemplate>
+				</Default>
 			</Switch>
-		</OverrideTemplateParameters>
-		<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
-			<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
-			<ANIM_CODE>
-				#GET_BRAKE_POSITION# 100 *
-			</ANIM_CODE>
-			<POSITIVE_AXIS_CODE>
-				#DECREMENT_16K# #HALF_MAX_BRAKE_VALUE# - #SET_BRAKE_INCREMENT#
-			</POSITIVE_AXIS_CODE>
-			<NEGATIVE_AXIS_CODE>
-				#INCREMENT_16K# #HALF_MAX_BRAKE_VALUE# - #SET_BRAKE_INCREMENT#
-			</NEGATIVE_AXIS_CODE>
-			<DRAG_CODE>#MAX_BRAKE_VALUE# (M:DragPercent) * #HALF_MAX_BRAKE_VALUE# - #SET_BRAKE_POSITION#</DRAG_CODE>
-			<AXIS>Y</AXIS>
-			<NO_ARROWS/>
-			<CURSOR>Grab</CURSOR>
-		</UseTemplate>
-	</Component>
-	<Condition Check="HIGHLIGHT_NODE_ID">
-		<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
-			<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
-		</UseTemplate>
-	</Condition>
-</Template>
+		</Component>
+		<Condition Check="HIGHLIGHT_NODE_ID">
+			<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
+				<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
+			</UseTemplate>
+		</Condition>
+	</Template>
 
-<Template Name="ASOBO_LANDING_GEAR_Indicator_SubTemplate">
+	<Template Name="ASOBO_LANDING_GEAR_Brake_SubTemplate">
+		<Parameters Type="Default">
+			<ANIM_NAME>LANDING_GEAR_#INTERACTION_TYPE#_Brake</ANIM_NAME>
+			<NODE_ID>LANDING_GEAR_#INTERACTION_TYPE#_Brake</NODE_ID>
+			<PART_ID>LANDING_GEAR_#INTERACTION_TYPE#_Brake</PART_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.LANDING_GEAR_BRAKES_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.LANDING_GEAR_BRAKES_TITLE</TOOLTIP_TITLE> 
+		</Parameters>
+		<Parameters Type="Override">
+			<INCREMENT Process="Int">16384 20 /</INCREMENT>
+			<U32K Process="Int">16384 2 *</U32K>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="LANDING_GEAR">
+				<LEVER_ID>Brake</LEVER_ID>
+				<GET_STATE_EXTERNAL>(O:LANDING_GEAR_Brake_Position) 100 / 2 * 1 - 16384 *</GET_STATE_EXTERNAL>
+				<SET_PARAM_0>p0 16384 *</SET_PARAM_0>
+				<SET_PARAM_0_IS_DYNAMIC>True</SET_PARAM_0_IS_DYNAMIC>
+				<INC_PARAM_0>p0 #INCREMENT# *</INC_PARAM_0>
+				<INC_PARAM_0_IS_DYNAMIC>True</INC_PARAM_0_IS_DYNAMIC>
+				<INC_CODE_ADJUST_VALUE>16384 /</INC_CODE_ADJUST_VALUE>
+				<DEC_PARAM_0>p0 #INCREMENT# *</DEC_PARAM_0>
+				<DEC_PARAM_0_IS_DYNAMIC>True</DEC_PARAM_0_IS_DYNAMIC>
+				<DEC_CODE_ADJUST_VALUE>16384 /</DEC_CODE_ADJUST_VALUE>
+				<MAX_VALUE>16384</MAX_VALUE>
+				<MIN_VALUE>-16384</MIN_VALUE>
+				<STATE_TO_POS_EXTERNAL>16384 + #U32K# / 100 *</STATE_TO_POS_EXTERNAL>
+				<SET_STATE_EXTERNAL>(A:BRAKE PARKING POSITION, Bool) ! if{ l0 (&gt;K:AXIS_LEFT_BRAKE_SET) l0 (&gt;K:AXIS_RIGHT_BRAKE_SET) }</SET_STATE_EXTERNAL>
+				<GET_TT_VALUE_STATE>(A:BRAKE LEFT POSITION, Percent) (A:BRAKE RIGHT POSITION, Percent) + 2 /</GET_TT_VALUE_STATE>
+				<SIMVAR_TO_WATCH_0>BRAKE LEFT POSITION</SIMVAR_TO_WATCH_0>
+				<SIMVAR_TO_WATCH_1>BRAKE RIGHT POSITION</SIMVAR_TO_WATCH_1>
+				<SIMVAR_TO_WATCH_2>BRAKE PARKING POSITION</SIMVAR_TO_WATCH_2>
+				<INIT_CODE>
+					(A:BRAKE PARKING POSITION, Bool) ! if{
+						(A:BRAKE LEFT POSITION, Position 16k) (A:BRAKE RIGHT POSITION, Position 16k) != if{ (A:BRAKE LEFT POSITION, Position 16k) (&gt;K:AXIS_RIGHT_BRAKE_SET) }
+						(A:BRAKE LEFT POSITION, Percent) (A:BRAKE RIGHT POSITION, Percent) + 2 / (&gt;O:LANDING_GEAR_Brake_Position)
+					} els{
+						100 (&gt;O:LANDING_GEAR_Brake_Position)
+					}
+				</INIT_CODE>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Lever_DraggingWheelLeftDrag_Axis">
+				<ANIM_LAG>200</ANIM_LAG>
+				<TOOLTIP_ENTRY_0>LANDING_GEAR_Brake</TOOLTIP_ENTRY_0>
+				<USE_TRAJECTORY_DRAG_MODE>True</USE_TRAJECTORY_DRAG_MODE>
+				<ANIM_CODE>(B:LANDING_GEAR_Brake, percent)</ANIM_CODE>
+				<POSITIVE_AXIS_CODE>1 (&gt;B:LANDING_GEAR_Brake_Inc)</POSITIVE_AXIS_CODE>
+				<NEGATIVE_AXIS_CODE>1 (&gt;B:LANDING_GEAR_Brake_Dec)</NEGATIVE_AXIS_CODE>
+				<DRAG_CODE>(M:DragPercent) 2 * 1 - (&gt;B:LANDING_GEAR_Brake_Set)</DRAG_CODE>
+				<AXIS>Y</AXIS>
+				<NO_ARROWS/>
+				<CURSOR>Grab</CURSOR>
+			</UseTemplate>
+		</Component>
+		<Condition Check="HIGHLIGHT_NODE_ID">
+			<UseTemplate Name="ASOBO_GT_ComponentWith_PART_ID">
+				<NODE_ID>#HIGHLIGHT_NODE_ID#</NODE_ID>
+			</UseTemplate>
+		</Condition>
+	</Template>
+
+	<Template Name="ASOBO_LANDING_GEAR_Indicator_SubTemplate">
 	<DefaultTemplateParameters>
 		<NODE_ID>LANDING_GEAR_Indicator_#SIDE#</NODE_ID>
 		<ANIM_NAME>LANDING_GEAR_Indicator_#SIDE#</ANIM_NAME>
@@ -361,4 +305,95 @@
 		</UseTemplate>
 	</Component>
 </Template>
+
+	<Template Name="ASOBO_LANDING_GEAR_Emergency_Template">
+		<Parameters Type="Default">
+			<ANIM_NAME>LANDING_GEAR_#INTERACTION_TYPE#_Gear_Emergency</ANIM_NAME>
+			<PART_ID>LANDING_GEAR_#INTERACTION_TYPE#_Gear_Emergency</PART_ID>
+			<NODE_ID>LANDING_GEAR_#INTERACTION_TYPE#_Gear_Emergency</NODE_ID>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Lever">
+					<WWISE_EVENT_1>landing_gear_emergency_lever_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>landing_gear_emergency_lever_off</WWISE_EVENT_2>
+				</Case>
+			</Switch>
+			<ANIM_LAG>400</ANIM_LAG>
+			<DRAG_SCALAR>10</DRAG_SCALAR>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_GT_Switch_Code">
+				<LEFT_SINGLE_CODE>(&gt;K:GEAR_EMERGENCY_HANDLE_TOGGLE)</LEFT_SINGLE_CODE>
+				<ANIM_CODE>(A:GEAR EMERGENCY HANDLE POSITION, Bool) 100 *</ANIM_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	
+	<Template Name="ASOBO_LANDING_GEAR_Light_Test_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>LANDING_GEAR_#INTERACTION_TYPE#_Light_Test</NODE_ID>
+			<ANIM_NAME>LANDING_GEAR_#INTERACTION_TYPE#_Light_Test</ANIM_NAME>
+			<PART_ID>LANDING_GEAR_#INTERACTION_TYPE#_Light_Test</PART_ID>
+			<WWISE_EVENT_1>landing_gear_light_test_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>landing_gear_light_test_push_button_off</WWISE_EVENT_2>
+			<TOOLTIP_TITLE>@TT_Package.LANDING_GEAR_SWITCH_CHECK_LIGHT_TEST_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.LANDING_GEAR_SWITCH_CHECK_LIGHT_TEST_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Light_Test</BTN_ID>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="LANDING_GEAR">
+				<SET_STATE_EXTERNAL>p0 if{ 1 (&gt;O:XMLVAR_Light_Test) } els{ 0 (&gt;O:XMLVAR_Light_Test) }</SET_STATE_EXTERNAL>
+				<TT_VALUE>(O:XMLVAR_Light_Test) if{ @TT_Test } els{ @TT_Standby }</TT_VALUE>
+				<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+				<VALUE_CODE>(O:XMLVAR_Light_Test)</VALUE_CODE>
+				<BINDING_DEC_0>Release</BINDING_DEC_0>
+				<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+				<BINDING_INC_0>Push</BINDING_INC_0>
+				<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+				<ANIM>EXTERNAL</ANIM>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Push_Button_Held">
+				<TOOLTIP_ENTRY_0>LANDING_GEAR_#BTN_ID#</TOOLTIP_ENTRY_0>
+				<LEFT_SINGLE_CODE>(&gt;B:LANDING_GEAR_#BTN_ID#_Push)</LEFT_SINGLE_CODE>
+				<LEFT_LEAVE_CODE>(&gt;B:LANDING_GEAR_#BTN_ID#_Release)</LEFT_LEAVE_CODE>
+				<OVERRIDE_ANIM_CODE>(B:LANDING_GEAR_#BTN_ID#, Bool) 100 *</OVERRIDE_ANIM_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	
+	<Template Name="ASOBO_LANDING_GEAR_Check_Down_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>LANDING_GEAR_#INTERACTION_TYPE#_Check_Down</NODE_ID>
+			<ANIM_NAME>LANDING_GEAR_#INTERACTION_TYPE#_Check_Down</ANIM_NAME>
+			<PART_ID>LANDING_GEAR_#INTERACTION_TYPE#_Check_Down</PART_ID>
+			<WWISE_EVENT_1>landing_gear_checkdown_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>landing_gear_checkdown_push_button_off</WWISE_EVENT_2>
+			<TOOLTIP_TITLE>@TT_Package.LANDING_GEAR_SWITCH_CHECK_DOWN_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.LANDING_GEAR_SWITCH_CHECK_DOWN_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Check_Down</BTN_ID>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="LANDING_GEAR">
+				<SET_STATE_EXTERNAL>p0 if{ 1 (&gt;O:XMLVAR_Check_Down) } els{ 0 (&gt;O:XMLVAR_Check_Down) }</SET_STATE_EXTERNAL>
+				<TT_VALUE>(O:XMLVAR_Check_Down) if{ @TT_Test } els{ @TT_Standby }</TT_VALUE>
+				<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+				<VALUE_CODE>(O:XMLVAR_Check_Down)</VALUE_CODE>
+				<BINDING_DEC_0>Release</BINDING_DEC_0>
+				<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+				<BINDING_INC_0>Push</BINDING_INC_0>
+				<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+				<ANIM>EXTERNAL</ANIM>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Push_Button_Held">
+				<TOOLTIP_ENTRY_0>LANDING_GEAR_#BTN_ID#</TOOLTIP_ENTRY_0>
+				<LEFT_SINGLE_CODE>(&gt;B:LANDING_GEAR_#BTN_ID#_Push)</LEFT_SINGLE_CODE>
+				<LEFT_LEAVE_CODE>(&gt;B:LANDING_GEAR_#BTN_ID#_Release)</LEFT_LEAVE_CODE>
+				<OVERRIDE_ANIM_CODE>(B:LANDING_GEAR_#BTN_ID#, Bool) 100 *</OVERRIDE_ANIM_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	
 </ModelBehaviors>

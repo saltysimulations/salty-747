@@ -1,7 +1,7 @@
 <ModelBehaviors>
 	<Include RelativeFile="Common.xml"/>
 
-	<!-------------------------- DO NOT USE OLD TEMPLATES, SEE BELOW FOR NEW VERSIONS ------------------------------------------------------------------->
+	<!--=========================== DO NOT USE OLD TEMPLATES, SEE BELOW FOR NEW VERSIONS ==============================================-->
 
 	<!-- Propeller ############################################################# -->
 	<Template Name="ASOBO_DEPRECATED_Propeller_Anim_Rotation_Template">
@@ -420,7 +420,14 @@
 		<TemplateAlias>ASOBO_EXTERIOR_Spoilers_Template</TemplateAlias>
 		<TemplateAlias>ASOBO_Spoilers_Template</TemplateAlias>
 		<DefaultTemplateParameters>
-			<ANIM_NAME_LEFT>l_spoiler_key</ANIM_NAME_LEFT>
+			<Condition NotEmpty="ANIM_NAME">
+				<True>
+					<ANIM_NAME_LEFT>#ANIM_NAME#</ANIM_NAME_LEFT>
+				</True>
+				<False>
+					<ANIM_NAME_LEFT>l_spoiler_key</ANIM_NAME_LEFT>
+				</False>
+			</Condition>
 			<ANIM_NAME_RIGHT>r_spoiler_key</ANIM_NAME_RIGHT>
 		</DefaultTemplateParameters>
 
@@ -430,11 +437,15 @@
 				<ANIM_SIMVAR>SPOILERS LEFT POSITION</ANIM_SIMVAR>
 				<ANIM_SIMVAR_UNITS>Percent</ANIM_SIMVAR_UNITS>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Anim">
-				<ANIM_NAME>#ANIM_NAME_RIGHT#</ANIM_NAME>
-				<ANIM_SIMVAR>SPOILERS RIGHT POSITION</ANIM_SIMVAR>
-				<ANIM_SIMVAR_UNITS>Percent</ANIM_SIMVAR_UNITS>
-			</UseTemplate>
+			<Condition Valid="SINGLE_SPOILERS">
+				<False>
+					<UseTemplate Name="ASOBO_GT_Anim">
+						<ANIM_NAME>#ANIM_NAME_RIGHT#</ANIM_NAME>
+						<ANIM_SIMVAR>SPOILERS RIGHT POSITION</ANIM_SIMVAR>
+						<ANIM_SIMVAR_UNITS>Percent</ANIM_SIMVAR_UNITS>
+					</UseTemplate>
+				</False>
+			</Condition>
 		</Component>
 	</Template>
 
@@ -551,7 +562,7 @@
 			<ANIM_NAME>#ANIM_NAME_RIGHT#</ANIM_NAME>
 			<ANIM_LENGTH>100</ANIM_LENGTH>
 			<ANIM_SIMVAR>TRAILING EDGE FLAPS RIGHT PERCENT</ANIM_SIMVAR>
-			<ANIM_SIMVAR_UNITS>Percent</ANIM_SIMLEFTVAR_UNITS>
+			<ANIM_SIMVAR_UNITS>Percent</ANIM_SIMVAR_UNITS>
 		</UseTemplate>
 	</Template>
 
@@ -574,7 +585,7 @@
 			<ANIM_NAME>#ANIM_NAME_RIGHT#</ANIM_NAME>
 			<ANIM_LENGTH>100</ANIM_LENGTH>
 			<ANIM_SIMVAR>LEADING EDGE FLAPS RIGHT PERCENT</ANIM_SIMVAR>
-			<ANIM_SIMVAR_UNITS>Percent</ANIM_SIMLEFTVAR_UNITS>
+			<ANIM_SIMVAR_UNITS>Percent</ANIM_SIMVAR_UNITS>
 		</UseTemplate>
 	</Template>
 
@@ -715,8 +726,8 @@
 		</UseTemplate>
 	</Template>
 
-	<!----------------------------------------------------------------------------------------------------------------------------->
-	<!------------------------ New "Cleaner" version (not deleting the old one as long as it is in use ---------------------------->
+	<!--=========================================================================================================================-->
+	<!--====================== New "Cleaner" version (not deleting the old one as long as it is in use ==========================-->
 
 	<!-- ENGINE ############################################################# -->
 	<!-- PROPELLER ###################################################### -->
@@ -1063,6 +1074,29 @@
 			<ANIM_SIMVAR_UNITS>percent</ANIM_SIMVAR_UNITS>
 		</UseTemplate>
 	</Template>
+	<!-- Animate contact points extension (ID is a the index specified in flight_model.cfg -->
+	<Template Name="ASOBO_Contact_Point_Template">
+		<DefaultTemplateParameters>
+			<ID>0</ID>
+		</DefaultTemplateParameters>
+		<Switch>
+			<Case Valid="ONLY_COMPRESSION">
+				<UseTemplate Name="ASOBO_GT_Anim">
+					<ANIM_CODE>(A:CONTACT POINT COMPRESSION:#ID#, Percent)</ANIM_CODE>
+				</UseTemplate>
+			</Case>
+			<Case Valid="EXTENSION_AND_COMPRESSION">
+				<UseTemplate Name="ASOBO_GT_Anim">
+					<ANIM_CODE>(A:CONTACT POINT POSITION:#ID#, Percent) (A:CONTACT POINT COMPRESSION:#ID#, Percent) + 0.5 *</ANIM_CODE>
+				</UseTemplate>
+			</Case>
+			<Default>
+				<UseTemplate Name="ASOBO_GT_Anim">
+					<ANIM_CODE>(A:CONTACT POINT POSITION:#ID#, Percent)</ANIM_CODE>
+				</UseTemplate>
+			</Default>
+		</Switch>
+	</Template>
 	<!-- Animate steering wheel (ID is a STANDARD_GEAR enum value, default is 0(center)) -->
 	<Template Name="ASOBO_GEAR_Steering_Template">
 		<DefaultTemplateParameters>
@@ -1074,6 +1108,52 @@
 			<ANIM_LENGTH>360</ANIM_LENGTH>
 			<ANIM_WRAP>True</ANIM_WRAP>
 		</UseTemplate>
+	</Template>
+	<!-- Water Floats --> 
+	<Template Name="ASOBO_Float_Retractable_Template">
+		<DefaultTemplateParameters>
+			<ID>0</ID>
+			<SIDE>LEFT</SIDE>
+		</DefaultTemplateParameters>
+		<UseTemplate Name="ASOBO_GT_Anim_Sim">
+			<ANIM_SIMVAR>RETRACT #SIDE# FLOAT EXTENDED</ANIM_SIMVAR>
+			<ANIM_SIMVAR_UNITS>percent</ANIM_SIMVAR_UNITS>
+		</UseTemplate>
+	</Template>
+	<!-- Water Rudder --> 
+	<Template Name="ASOBO_Rudder_Retractable_Template">
+		<DefaultTemplateParameters>
+			<ID>0</ID>
+			<SIDE>LEFT</SIDE>
+		</DefaultTemplateParameters>
+		<UseTemplate Name="ASOBO_GT_Anim_Code">
+			<ANIM_CODE>(A:WATER #SIDE# RUDDER EXTENDED, percent)</ANIM_CODE>
+		</UseTemplate>
+	</Template>
+	<!-- Skis --> 
+	<!-- Requires SKI_ID to get the ID of the contact point -->
+	<Template Name="ASOBO_Ski_Template">
+		<Parameters Type="Default">
+			<ID>0</ID>
+			<TAKEOFF_COMPRESSION_PCT>8</TAKEOFF_COMPRESSION_PCT>
+			<TAKEOFF_ANIM_PCT>52.1</TAKEOFF_ANIM_PCT>
+			<IDLE_COMPRESSION_PCT>20</IDLE_COMPRESSION_PCT>
+			<IDLE_ANIM_PCT>78.2</IDLE_ANIM_PCT>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Non_Linear_Animation_Code">
+			<SELECTION>(A:CONTACT POINT COMPRESSION:#SKI_ID#, percent)</SELECTION>
+			<MIN_DISPLAYABLE>0</MIN_DISPLAYABLE>
+			<MAX_DISPLAYABLE>100</MAX_DISPLAYABLE>
+			<ANIM_VALUE_0>0</ANIM_VALUE_0>
+			<REF_VALUE_0>0</REF_VALUE_0>
+			<ANIM_VALUE_1>#TAKEOFF_ANIM_PCT#</ANIM_VALUE_1>
+			<REF_VALUE_1>#TAKEOFF_COMPRESSION_PCT#</REF_VALUE_1>
+			<ANIM_VALUE_2>#IDLE_ANIM_PCT#</ANIM_VALUE_2>
+			<REF_VALUE_2>#IDLE_COMPRESSION_PCT#</REF_VALUE_2>
+			<ANIM_VALUE_3>100</ANIM_VALUE_3>
+			<REF_VALUE_3>100</REF_VALUE_3>
+			<MAX_POINT_INDEX>2</MAX_POINT_INDEX>
+	  </UseTemplate>
 	</Template>
 	
 	<!-- TIRES ########################################################## -->
@@ -1255,7 +1335,7 @@
 				<True>
 					<LEFTRIGHT_TEMPLATE_TO_CALL>ASOBO_GT_Anim_Code</LEFTRIGHT_TEMPLATE_TO_CALL>
 					<ANIM_CODE_LEFT>(A:#ANIM_SIMVAR_LEFT#, #ANIM_SIMVAR_UNITS#) #MIN_VALUE# - #MAX_VALUE# #MIN_VALUE# - / 100 *</ANIM_CODE_LEFT>
-					<ANIM_CODE_RIGHT>(A:#ANIM_SIMVAR_RIGHT#, #ANIM_SIMVAR_UNITS#) ) #MIN_VALUE# - #MAX_VALUE# #MIN_VALUE# - / 100 *</ANIM_CODE_RIGHT>
+					<ANIM_CODE_RIGHT>(A:#ANIM_SIMVAR_RIGHT#, #ANIM_SIMVAR_UNITS#) #MIN_VALUE# - #MAX_VALUE# #MIN_VALUE# - / 100 *</ANIM_CODE_RIGHT>
 				</True>
 				<False>
 					<LEFTRIGHT_TEMPLATE_TO_CALL>ASOBO_GT_Anim_Sim</LEFTRIGHT_TEMPLATE_TO_CALL>
@@ -1266,19 +1346,15 @@
 		<UseTemplate Name="#LEFTRIGHT_TEMPLATE_TO_CALL#">
 			<ANIM_NAME>#ANIM_NAME_LEFT#</ANIM_NAME>
 			<ANIM_SIMVAR>#ANIM_SIMVAR_LEFT#</ANIM_SIMVAR>
-			<Condition Check="ANIM_CODE_LEFT">
-				<True>
-					<ANIM_CODE>#ANIM_CODE_LEFT#</ANIM_CODE>
-				</True>
+			<Condition NotEmpty="ANIM_CODE_LEFT">
+				<ANIM_CODE>#ANIM_CODE_LEFT#</ANIM_CODE>
 			</Condition>
 		</UseTemplate>
 		<UseTemplate Name="#LEFTRIGHT_TEMPLATE_TO_CALL#">
 			<ANIM_NAME>#ANIM_NAME_RIGHT#</ANIM_NAME>
 			<ANIM_SIMVAR>#ANIM_SIMVAR_RIGHT#</ANIM_SIMVAR>
-			<Condition Check="ANIM_CODE_RIGHT">
-				<True>
-					<ANIM_CODE>#ANIM_CODE_RIGHT#</ANIM_CODE>
-				</True>
+			<Condition NotEmpty="ANIM_CODE_RIGHT">
+				<ANIM_CODE>#ANIM_CODE_RIGHT#</ANIM_CODE>
 			</Condition>
 		</UseTemplate>
 	</Template>

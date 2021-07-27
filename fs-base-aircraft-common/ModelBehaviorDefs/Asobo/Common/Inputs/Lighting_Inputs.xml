@@ -1,0 +1,466 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+	<InputEvent ID="LIGHTING">
+		<Presets>
+			<Switch>
+				<Case NotEmpty="LIGHT_TYPE">
+					<Preset ID="#LIGHT_INPUT_EVENT_ID#">
+						<Parameters Type="Default">
+							<Condition NotEmpty="POTENTIOMETER">
+								<ID>#POTENTIOMETER#</ID>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="KNOB">
+									<UPPER_LIMIT>100</UPPER_LIMIT>
+									<INCREMENT>5</INCREMENT>
+								</Case>
+								<Case Value="SWITCH">
+									<UPPER_LIMIT Process="Int">#NUM_STATES# 1 -</UPPER_LIMIT>
+									<INCREMENT>1</INCREMENT>
+								</Case>
+								<Default>
+									<UPPER_LIMIT>1</UPPER_LIMIT>
+									<INCREMENT>1</INCREMENT>
+								</Default>
+							</Switch>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<TT_STATE_1ST/>
+							<TT_STATE_2ND/>
+							<TT_STATE_ON/>
+							<TT_STATE_OFF/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#LIGHT_INPUT_EVENT_ID#</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="LIGHT_TYPE">
+								<Case Value="Potentiometer">
+									<SET_LIGHT_TYPE>100 * s0 #POTENTIOMETER# (&gt;K:2:LIGHT_POTENTIOMETER_SET)</SET_LIGHT_TYPE>
+									<GET_LIGHT_TYPE>(A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent)</GET_LIGHT_TYPE>
+									<SET_LIGHT_TYPE_2>100 * s0 #POTENTIOMETER_2# (&gt;K:2:LIGHT_POTENTIOMETER_SET)</SET_LIGHT_TYPE_2>
+									<GET_LIGHT_TYPE_2>(A:LIGHT POTENTIOMETER:#POTENTIOMETER_2#, Percent)</GET_LIGHT_TYPE_2>
+								</Case>
+								<Default>
+									<Switch Param="INTERACTION_TYPE">
+										<Case Value="KNOB">
+											<SET_LIGHT_TYPE>100 * s0 #POTENTIOMETER# (&gt;K:2:LIGHT_POTENTIOMETER_SET)</SET_LIGHT_TYPE>
+											<GET_LIGHT_TYPE>(A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent)</GET_LIGHT_TYPE>
+											<SET_LIGHT_TYPE_2>100 * s0 #POTENTIOMETER_2# (&gt;K:2:LIGHT_POTENTIOMETER_SET)</SET_LIGHT_TYPE_2>
+											<GET_LIGHT_TYPE_2>(A:LIGHT POTENTIOMETER:#POTENTIOMETER_2#, Percent)</GET_LIGHT_TYPE_2>
+										</Case>
+										<Default>
+											<SET_LIGHT_TYPE> #SIMVAR_INDEX# l0 (&gt;K:2:#KEY_ID_SET#)</SET_LIGHT_TYPE>
+											<GET_LIGHT_TYPE>(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool)</GET_LIGHT_TYPE>
+											<SET_LIGHT_TYPE_2> #SIMVAR_INDEX_2# l0 (&gt;K:2:#KEY_ID_SET_2#)</SET_LIGHT_TYPE_2>
+											<GET_LIGHT_TYPE_2>(A:#SIMVAR_NAME_2#:#SIMVAR_INDEX_2#, Bool)</GET_LIGHT_TYPE_2>
+										</Default>
+									</Switch>
+								</Default>
+							</Switch>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="KNOB">
+									<Condition>
+										<Test>
+											<And>
+												<Not>
+													<Or>
+														<Arg Valid="USE_INTEGRATED_POWER_SETTING"/>
+														<Arg Check="LIGHT_TYPE" Match="Potentiometer"/>
+													</Or>
+												</Not>
+												<Not>
+													<Arg Check="NO_AUTHORITY_OVER_SWITCH_STATE"/>
+												</Not>										
+											</And>
+										</Test>
+										<True>
+											<CHECK_SIMVAR_ON_INIT>True</CHECK_SIMVAR_ON_INIT>
+											<ON_AFTER_SET>
+												(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) s2
+												(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 0 &gt; != if{ l2 ! #SIMVAR_INDEX# l0 (&gt;K:2:#KEY_ID_SET#) quit }
+											</ON_AFTER_SET>
+										</True>
+									</Condition>
+									<Condition Valid="USE_INTEGRATED_POWER_SETTING">
+										<True>
+											<SIMVAR_TO_WATCH_0>#INTEGRATED_POWER_SETTING_SIMVAR#</SIMVAR_TO_WATCH_0>
+											<SET_KNOB_EVENT>l0 #SIMVAR_INDEX# (&gt;K:2:#KEY_POWER_SETTING_SET#)</SET_KNOB_EVENT>
+											<Condition Check="NO_AUTHORITY_OVER_SWITCH_STATE">
+												<True>
+													<GET_LIGHT_TYPE>(A:#INTEGRATED_POWER_SETTING_SIMVAR#, Percent)</GET_LIGHT_TYPE>
+												</True>
+												<False>
+													<GET_LIGHT_TYPE>
+														(A:#INTEGRATED_POWER_SETTING_SIMVAR#, Percent) s0 0 &gt; sp1
+														(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) ! if{ 
+															#SIMVAR_INDEX# 1 (&gt;K:2:#KEY_ID_SET#)
+															l1 if{ 0 #SIMVAR_INDEX# (&gt;K:2:#KEY_POWER_SETTING_SET#) }
+														} l0
+													</GET_LIGHT_TYPE>
+													<SIMVAR_TO_WATCH_1>#SIMVAR_NAME#:#SIMVAR_INDEX#</SIMVAR_TO_WATCH_1>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<SET_KNOB_EVENT>l0 #POTENTIOMETER# (&gt;K:2:LIGHT_POTENTIOMETER_SET)</SET_KNOB_EVENT>
+										</False>
+									</Condition>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<INC_EVENT>1 (&gt;B:#LIGHT_INPUT_EVENT_ID#_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:#LIGHT_INPUT_EVENT_ID#_Set)</DEC_EVENT>
+							<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 #SET_LIGHT_TYPE# l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</SET_EVENT>
+							<INIT_VALUE>#GET_LIGHT_TYPE# (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<ON_STATE_CHANGED/>
+							<Switch Param="TYPE">
+								<Case Value="TwoSimvars">
+									<Condition NotEmpty="STATE_1ST_ID">
+										<TT_STATE_1ST>l0 #STATE_1ST_ID# == if{ #STATE_1ST_TT# quit }</TT_STATE_1ST>
+									</Condition>
+									<Condition NotEmpty="STATE_2ND_ID">
+										<TT_STATE_2ND>l0 #STATE_2ND_ID# == if{ #STATE_2ND_TT# quit }</TT_STATE_2ND>
+									</Condition>
+									<Condition NotEmpty="STATE_ON_ID">
+										<TT_STATE_ON>l0 #STATE_ON_ID# == if{ @TT_On quit }</TT_STATE_ON>
+									</Condition>
+									<Condition NotEmpty="STATE_OFF_ID">
+										<TT_STATE_OFF>l0 #STATE_OFF_ID# == if{ @TT_Off quit }</TT_STATE_OFF>
+									</Condition>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="KNOB">
+									<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:#LIGHT_INPUT_EVENT_ID#_Set)</INC_EVENT>
+									<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:#LIGHT_INPUT_EVENT_ID#_Set)</DEC_EVENT>
+									<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) '%.0f%%' @sprintf</TOOLTIP_VALUE>
+									<SET_EVENT>
+										p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+										s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+										#SET_KNOB_EVENT#
+									</SET_EVENT>
+									<Condition Valid="CHECK_SIMVAR_ON_INIT">
+										<Condition Valid="USE_INTEGRATED_POWER_SETTING">
+											<True>
+												<Condition>
+													<Test>
+														<Greater>
+															<Value>LOWER_LIMIT</Value>
+															<Number>0</Number>															
+														</Greater>
+													</Test>
+													<True>
+														<INIT_VALUE>(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) #GET_LIGHT_TYPE# * s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) #SET_KNOB_EVENT#</INIT_VALUE>
+													</True>
+													<False>
+														<INIT_VALUE>(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) #GET_LIGHT_TYPE# * s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) #SET_KNOB_EVENT#</INIT_VALUE>
+													</False>
+												</Condition>
+											</True>
+											<False>
+												<INIT_VALUE>(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) #GET_LIGHT_TYPE# * (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+											</False>
+										</Condition>
+									</Condition>
+								</Case>
+								<Case Value="SWITCH">
+									<Switch Param="NUM_STATES">
+										<Case Value="2">
+											<Switch Param="TYPE">
+												<Case Value="OnOff_TwoSimvars"> <!-- Not actually used anymore - kept as it may be useful eventually -->
+													<INIT_VALUE>#GET_LIGHT_TYPE# (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+													<SET_EVENT>
+														p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+														s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+														l0 0 == if{ #SIMVAR_INDEX# 0 (&gt;K:2:#KEY_ID_SET#) #SIMVAR_INDEX_2# 0 (&gt;K:2:#KEY_ID_SET_2#) quit }
+														l0 1 == if{ #SIMVAR_INDEX# 1 (&gt;K:2:#KEY_ID_SET#) #SIMVAR_INDEX_2# 1 (&gt;K:2:#KEY_ID_SET_2#) quit }
+													</SET_EVENT>
+												</Case>
+												<Case Value="ToggleSimvars"> <!-- Not actually used anymore - kept as it may be useful eventually -->
+													<INIT_VALUE>#GET_LIGHT_TYPE_2# (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+													<SET_EVENT>
+														p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+														s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+														l0 0 == if{ #SIMVAR_INDEX# 1 (&gt;K:2:#KEY_ID_SET#) #SIMVAR_INDEX_2# 0 (&gt;K:2:#KEY_ID_SET_2#) quit }
+														l0 1 == if{ #SIMVAR_INDEX# 0 (&gt;K:2:#KEY_ID_SET#) #SIMVAR_INDEX_2# 1 (&gt;K:2:#KEY_ID_SET_2#) quit }
+													</SET_EVENT>
+													<TOOLTIP_VALUE>
+														(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) sp0
+														l0 0 == if{ #TT_STATE_1ST# quit }
+														l0 1 == if{ #TT_STATE_2ND# quit }
+													</TOOLTIP_VALUE>
+												</Case>
+											</Switch>
+										</Case>
+										<Case Value="3">
+											<INIT_VALUE>
+												#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+												#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+											</INIT_VALUE>
+											<SET_EVENT>
+												p0 #LOWER_LIMIT# max #UPPER_LIMIT# min 
+												s0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+												l0 0 == if{ #CODE_POS_0# quit }
+												l0 1 == if{ #CODE_POS_1# quit }
+												l0 2 == if{ #CODE_POS_2# quit }
+											</SET_EVENT>
+											<Switch Param="TYPE">
+												<Case Value="OnOffX">
+													<TOOLTIP_VALUE>
+														(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+														s0 #STATE_OFF_ID# == if{ @TT_Off quit }
+														l0 #STATE_X_ID# == if{ #STATE_X_TT# quit }
+														l0 #STATE_ON_ID# == if{ @TT_On quit }
+													</TOOLTIP_VALUE>
+												</Case>
+												<Case Value="TwoSimvars">
+													<TOOLTIP_VALUE>
+														(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) sp0
+														#TT_STATE_1ST#
+														#TT_STATE_2ND#
+														#TT_STATE_OFF#
+														#TT_STATE_ON#
+													</TOOLTIP_VALUE>
+												</Case>
+												<Case Value="Dimmer">
+													<TOOLTIP_VALUE>
+														(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 
+														s0 #STATE_ON_ID# == if{ @TT_On quit }
+														l0 #STATE_DIM_ID# == if{ (R:1:@TT_Package.GT_STATE_DIM) quit }
+														l0 #STATE_OFF_ID# == if{ @TT_Off quit }
+													</TOOLTIP_VALUE>
+												</Case>
+											</Switch>
+										</Case>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<Switch Param="TYPE">
+										<Case Value="OnOff">
+										</Case>
+										<Default>
+											<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 1 + (&gt;B:#LIGHT_INPUT_EVENT_ID#_Set)</INC_EVENT>
+											<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) 1 - (&gt;B:#LIGHT_INPUT_EVENT_ID#_Set)</DEC_EVENT>
+										</Default>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="KNOB">
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+								<Case Value="SWITCH">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Case Value="PUSH">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+							</Switch>				
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>NUM_STATES</Value>
+										<Number>1</Number>
+									</Greater>
+								</Test>
+								<True>
+									<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+								</True>
+								<False>
+									<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+								</False>
+							</Condition>
+							<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+						</Parameters>				
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>					
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>bool</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Loop>
+									<Setup>
+										<Param>SEL_ID</Param>
+										<From>0</From>
+										<Inc>1</Inc>
+										<While>
+											<Arg Valid="SIMVAR_TO_WATCH_#SEL_ID#"/>
+										</While>
+									</Setup>
+									<Do>
+										<Parameters Type="Override">
+											<SIMVAR_TO_WATCH Process="Param">SIMVAR_TO_WATCH_#SEL_ID#</SIMVAR_TO_WATCH>
+										</Parameters>
+										<Simvar ID="#SIMVAR_TO_WATCH#"/>
+									</Do>
+								</Loop>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="#LIGHT_INPUT_EVENT_ID#_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding Alias="KEY_ALL_LIGHTS_TOGGLE">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Condition NotEmpty="KEY_ID_ON">
+									<Binding EventID="#KEY_ID_ON#">
+										<Param RPN="True">1</Param>
+									</Binding>
+								</Condition>
+								<Condition NotEmpty="KEY_ID_OFF">
+									<Binding EventID="#KEY_ID_OFF#">
+										<Param RPN="True">0</Param>
+									</Binding>
+								</Condition>
+								<Condition NotEmpty="KEY_ID_TOGGLE">
+									<Binding EventID="#KEY_ID_TOGGLE#">
+										<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="LIGHT_TYPE" Match="Potentiometer">
+									<True>
+										<Binding EventID="LIGHT_POTENTIOMETER_#POTENTIOMETER#_SET">
+											<Param RPN="True">p1</Param>
+										</Binding>
+										<Binding EventID="LIGHT_POTENTIOMETER_SET">
+											<Param RPN="True">
+												p1 #POTENTIOMETER# == p1 #POTENTIOMETER_2# ==  or if{ p2 } els{ (B:#LIGHT_INPUT_EVENT_ID#) }
+											</Param>
+										</Binding>
+									</True>
+									<False>
+										<Condition NotEmpty="KEY_ID_SET">
+											<Binding EventID="#KEY_ID_SET#">
+												<Param RPN="True">p1</Param>
+											</Binding>
+										</Condition>
+									</False>
+								</Condition>
+								<Condition>
+									<Test>
+										<Not>
+											<StringEqual>
+												<Value>LIGHT_TYPE</Value>
+												<Value>LIGHT_TYPE_2</Value>
+											</StringEqual>
+										</Not>
+									</Test>
+									<True>
+										<Condition NotEmpty="KEY_ID_SET_2">
+											<Binding EventID="#KEY_ID_SET_2#">
+												<Param RPN="True">p1</Param>
+											</Binding>
+										</Condition>
+										<Condition NotEmpty="KEY_ID_ON_2">
+											<Binding EventID="#KEY_ID_ON_2#">
+												<Param RPN="True">1</Param>
+											</Binding>
+										</Condition>
+										<Condition NotEmpty="KEY_ID_OFF_2">
+											<Binding EventID="#KEY_ID_OFF_2#">
+												<Param RPN="True">0</Param>
+											</Binding>
+										</Condition>
+										<Condition NotEmpty="KEY_ID_TOGGLE_2">
+											<Binding EventID="#KEY_ID_TOGGLE_2#">
+												<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+											</Binding>
+										</Condition>
+										<Condition Check="LIGHT_TYPE_2" Match="Potentiometer">
+											<Binding EventID="LIGHT_POTENTIOMETER_#POTENTIOMETER_2#_SET">
+												<Param RPN="True">p1</Param>
+											</Binding>
+										</Condition>
+									</True>
+								</Condition>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Default>
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>LIGHTING</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Default>
+			</Switch>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

@@ -1,5 +1,6 @@
 <ModelBehaviors>
-<Macro Name="DragLockResetTimer">0.05</Macro>
+<Macro Name="IsUsingRelativePos">(M:InputType) 1 ==</Macro>
+<Macro Name="DragLockResetTimer">0.05 0.10 @IsUsingRelativePos ?</Macro>
 
 <Template Name = "ASOBO_GT_Interaction_LeftSingle_Leave_Code_Subtemplate1">
 	<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_Leave_Code_Subtemplate2">
@@ -27,6 +28,7 @@
 <!-- DO NOT CALL THIS TEMPLATE - Use GT_Interaction_LeftSingle_MultiStates instead -->
 <Template Name = "ASOBO_GT_Interaction_LeftSingle_ParamSetup">
 	<DefaultTemplateParameters>
+		<ON_STATE_CHANGED_EXTERNAL_CODE/>
 		<Condition Check="MOMENTARY_SWITCH">
 			<STATE0_TIMER>0</STATE0_TIMER>
 			<STATE_MAX_TIMER>0</STATE_MAX_TIMER>
@@ -51,6 +53,9 @@
 			<False>
 				<MOMENTARY_UP_0></MOMENTARY_UP_0>
 			</False>
+		</Condition>
+		<Condition Valid="DISABLE_ON_STATE_CHANGED_EXTERNAL_CODE_IN_MR">
+			<ON_STATE_CHANGED_EXTERNAL_CODE/>
 		</Condition>
 	</OverrideTemplateParameters>
 	<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_ParamSetup_Recursive_1">
@@ -168,6 +173,7 @@
 					#NEXT_POS_VERIF# if{
 						#NEXT_ID# (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 
 						#NEXT_CODE_POS#
+						#ON_STATE_CHANGED_EXTERNAL_CODE#
 						#NEXT_MOMENTARY_UP#
 					}
 				} #ELSE_BRACKET_OPENING#
@@ -182,6 +188,7 @@
 							#CURRENT_POS_VERIF# if{
 								#CURRENT_ID# (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 
 								#CURRENT_CODE_POS# 
+								#ON_STATE_CHANGED_EXTERNAL_CODE#
 								#CURRENT_MOMENTARY_UP#
 							}
 						}
@@ -226,7 +233,7 @@
 
 <!-- DO NOT CALL THIS TEMPLATE - Use GT_Interaction_LeftSingle_MultiStates instead -->
 <Template Name = "ASOBO_GT_Interaction_LeftSingle_MultiStates_Base_1">
-	<DefaultTemplateParameters>
+	<Parameters Type="Default">
 		<Condition Check="SWITCH_DIRECTION" Match="Vertical">
 			<UPARROW>UpArrow</UPARROW>
 			<DOWNARROW>DownArrow</DOWNARROW>
@@ -256,21 +263,24 @@
 				<ANIMCURSOR_MAX>100</ANIMCURSOR_MAX>
 			</False>
 		</Condition>
-		<THRESHOLD>#THRESHOLD_INPUT# #THRESHOLD_MOUSE# (M:InputType) 1 == ?</THRESHOLD>
 		<USE_PAD_DRAG_IM_LOCK>True</USE_PAD_DRAG_IM_LOCK>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
+	</Parameters>
+	<Parameters Type="Override">
+		<THRESHOLD_MOUSE>0.001</THRESHOLD_MOUSE>
+	</Parameters>
+	<Parameters Type="Override">
+		<THRESHOLD>#THRESHOLD_INPUT# #THRESHOLD_MOUSE# (M:InputType) 1 == ?</THRESHOLD>
+	</Parameters>
+	<Parameters Type="Override">
 		<Condition Valid="USE_PAD_DRAG_IM_LOCK">
 			<True>
 				<CHECK_AND_RESET_DRAG_LOCK>
-					(M:InputType) 1 == if{ 
-						(O:_ResetDragTime) (E:SIMULATION TIME, second) &lt; if{ 
-							0 (&gt;O:_IsLimited) 
-						} 
-						(E:SIMULATION TIME, second) @DragLockResetTimer + (&gt;O:_ResetDragTime) 
+					(O:_ResetDragTime) (E:SIMULATION TIME, second) &lt; if{ 
+						0 (&gt;O:_IsLimited) 
 					} 
+					(E:SIMULATION TIME, second) @DragLockResetTimer + (&gt;O:_ResetDragTime)
 				</CHECK_AND_RESET_DRAG_LOCK>
-				<CHECK_IS_DRAG_LOCKED>(M:InputType) 1 == (O:_IsLimited) and</CHECK_IS_DRAG_LOCKED>
+				<CHECK_IS_DRAG_LOCKED>(O:_IsLimited)</CHECK_IS_DRAG_LOCKED>
 				<SET_DRAG_LOCK>1 (&gt;O:_IsLimited)</SET_DRAG_LOCK>
 				<UNSET_DRAG_LOCK>0 (&gt;O:_IsLimited)</UNSET_DRAG_LOCK>
 			</True>
@@ -315,8 +325,7 @@
 				<DRAG_IS_POSITIVE_CONDITION>&gt;</DRAG_IS_POSITIVE_CONDITION>
 			</False>
 		</Condition>
-	</OverrideTemplateParameters>
-
+	</Parameters>
 	<UseTemplate Name="ASOBO_GT_Interaction_LeftSingle_MultiStates_Base_2">
 		<Condition Check="IS_LOOPING">
 			<True>
@@ -329,6 +338,7 @@
 						#CODE_POS_MAX_VERIF# if{
 							#POS_MAX# (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 
 							#CODE_POS_MAX# 
+							#ON_STATE_CHANGED_EXTERNAL_CODE#
 						}
 					}
 				}
@@ -338,6 +348,7 @@
 						#CODE_POS_0_VERIF# if{
 							0 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 
 							#CODE_POS_0#
+							#ON_STATE_CHANGED_EXTERNAL_CODE#
 						}
 					}
 					els{
@@ -471,6 +482,11 @@
 		<CODE_REPEAT></CODE_REPEAT>
 		<PERCENT_PER_SECONDS>2000</PERCENT_PER_SECONDS>
 	</DefaultTemplateParameters>
+	<OverrideTemplateParameters>
+		<Condition Check="MOMENTARY_SWITCH">
+			<CODE_POS_REST_STATE Process="Param">CODE_POS_#REST_STATE#</CODE_POS_REST_STATE>
+		</Condition>
+	</OverrideTemplateParameters>
 
 	<Condition Check="REPEAT_FREQUENCY">
 		<Update Frequency="#REPEAT_FREQUENCY#">
@@ -482,18 +498,24 @@
 		<Update Frequency = "5">
 			(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0 == 
 			(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) #MOMENTARY_SWITCH_DOWN_INDEX# == or if{
+				(* On Pad disable IsDown when stick is at center *)
+				(M:InputType) 1 == (M:X) abs #THRESHOLD_INPUT# &lt; (M:Y) abs #THRESHOLD_INPUT# &lt; and and if{
+					0 (&gt;#SWITCH_POSITION_TYPE_ISDOWN#:#SWITCH_POSITION_VAR_ISDOWN#)
+				}
+				
 				(#SWITCH_POSITION_TYPE_TIMER#:#SWITCH_POSITION_VAR_TIMER#) 0 &gt; if{
 					(#SWITCH_POSITION_TYPE_TIMER#:#SWITCH_POSITION_VAR_TIMER#) (E:SIMULATION TIME, seconds) &lt;
 					(#SWITCH_POSITION_TYPE_ISDOWN#:#SWITCH_POSITION_VAR_ISDOWN#) ! and
 					if{ 
 						(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0 == if{ 
 							1 (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
+							#CODE_POS_1#
 						} els{
 							#REST_STATE# (&gt;#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#)
+							#CODE_POS_REST_STATE#
 						}
 						
 						0 (&gt;#SWITCH_POSITION_TYPE_TIMER#:#SWITCH_POSITION_VAR_TIMER#)
-						#CODE_POS_RETURN#
 					}
 				} els{
 					(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#) 0 == if{ 
@@ -583,7 +605,7 @@
 				</And>
 			</Test>
 			<False>
-				<Condition Valid="CLOCKWISE_CODE">
+				<Condition NotEmpty="CLOCKWISE_CODE">
 					<True>
 						<CLOCKWISE_CODE_DEFAULT_IM>#CLOCKWISE_CODE#</CLOCKWISE_CODE_DEFAULT_IM>
 						<CLOCKWISE_CODE_DRAG_IM>#CLOCKWISE_CODE#</CLOCKWISE_CODE_DRAG_IM>
@@ -603,7 +625,7 @@
 				</And>
 			</Test>
 			<False>
-				<Condition Valid="ANTICLOCKWISE_CODE">
+				<Condition NotEmpty="ANTICLOCKWISE_CODE">
 					<True>
 						<ANTICLOCKWISE_CODE_DEFAULT_IM>#ANTICLOCKWISE_CODE#</ANTICLOCKWISE_CODE_DEFAULT_IM>
 						<ANTICLOCKWISE_CODE_DRAG_IM>#ANTICLOCKWISE_CODE#</ANTICLOCKWISE_CODE_DRAG_IM>
@@ -658,7 +680,7 @@
 				</And>
 			</Test>
 			<False>
-				<Condition Valid="CLOCKWISE_CODE">
+				<Condition NotEmpty="CLOCKWISE_CODE">
 					<True>
 						<CLOCKWISE_CODE_DEFAULT_IM>#CLOCKWISE_CODE#</CLOCKWISE_CODE_DEFAULT_IM>
 						<CLOCKWISE_CODE_DRAG_IM>#CLOCKWISE_CODE#</CLOCKWISE_CODE_DRAG_IM>
@@ -678,7 +700,7 @@
 				</And>
 			</Test>
 			<False>
-				<Condition Valid="ANTICLOCKWISE_CODE">
+				<Condition NotEmpty="ANTICLOCKWISE_CODE">
 					<True>
 						<ANTICLOCKWISE_CODE_DEFAULT_IM>#ANTICLOCKWISE_CODE#</ANTICLOCKWISE_CODE_DEFAULT_IM>
 						<ANTICLOCKWISE_CODE_DRAG_IM>#ANTICLOCKWISE_CODE#</ANTICLOCKWISE_CODE_DRAG_IM>

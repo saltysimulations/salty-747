@@ -48,7 +48,7 @@ class AS3000_MFD_MapElement extends MapInstrumentElement {
         let isPositionOverride = SimVar.GetSimVarValue("L:AS3000_MFD_IsPositionOverride", "number") != 0;
         if (isPositionOverride) {
             if (!this.wasOverride) {
-                this.instrument.setAttribute("bing-mode", "vfr");
+                diffAndSetAttribute(this.instrument, "bing-mode", "vfr");
                 this.wasOverride = true;
             }
             this.instrument.setCenter(new LatLong(SimVar.GetSimVarValue("L:AS3000_MFD_OverrideLatitude", "number"), SimVar.GetSimVarValue("L:AS3000_MFD_OverrideLongitude", "number")));
@@ -128,33 +128,33 @@ class AS3000_MFD_NavInfos extends NavSystemElement {
             this.gps.currFlightPlanManager.updateFlightPlan();
             this._t = 0;
         }
-        Avionics.Utils.diffAndSet(this.GS, fastToFixed(SimVar.GetSimVarValue("GPS GROUND SPEED", "knots"), 0) + "KT");
-        Avionics.Utils.diffAndSet(this.DTK, fastToFixed(SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degree"), 0) + "°");
-        Avionics.Utils.diffAndSet(this.TRK, fastToFixed(SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degree"), 0) + "°");
+        diffAndSetText(this.GS, fastToFixed(SimVar.GetSimVarValue("GPS GROUND SPEED", "knots"), 0) + "KT");
+        diffAndSetText(this.DTK, fastToFixed(SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degree"), 0) + "°");
+        diffAndSetText(this.TRK, fastToFixed(SimVar.GetSimVarValue("GPS GROUND MAGNETIC TRACK", "degree"), 0) + "°");
         let ete = SimVar.GetSimVarValue("GPS WP ETE", "seconds");
         if (ete == 0) {
-            Avionics.Utils.diffAndSet(this.ETE, "__:__");
+            diffAndSetText(this.ETE, "__:__");
         }
         else if (ete < 3600) {
             let sec = ete % 60;
-            Avionics.Utils.diffAndSet(this.ETE, Math.floor(ete / 60).toFixed(0) + (sec < 10 ? ":0" : ":") + sec.toFixed(0));
+            diffAndSetText(this.ETE, fastToFixed(Math.floor(ete / 60), 0) + (sec < 10 ? ":0" : ":") + fastToFixed(sec, 0));
         }
         else {
             let min = ((ete % 3600) / 60);
-            Avionics.Utils.diffAndSet(this.ETE, Math.floor(ete / 3600).toFixed(0) + (min < 10 ? "+0" : "+") + min.toFixed(0));
+            diffAndSetText(this.ETE, fastToFixed(Math.floor(ete / 3600), 0) + (min < 10 ? "+0" : "+") + fastToFixed(min, 0));
         }
-        Avionics.Utils.diffAndSet(this.BRG, fastToFixed(this.gps.currFlightPlanManager.getBearingToActiveWaypoint(true), 0) + "°");
-        Avionics.Utils.diffAndSet(this.DIS, fastToFixed(this.gps.currFlightPlanManager.getDistanceToActiveWaypoint(), 0) + "NM");
-        Avionics.Utils.diffAndSet(this.MSA, "____FT");
+        diffAndSetText(this.BRG, fastToFixed(this.gps.currFlightPlanManager.getBearingToActiveWaypoint(true), 0) + "°");
+        diffAndSetText(this.DIS, fastToFixed(this.gps.currFlightPlanManager.getDistanceToActiveWaypoint(), 0) + "NM");
+        diffAndSetText(this.MSA, "____FT");
         if (ete == 0) {
-            Avionics.Utils.diffAndSet(this.ETA, "__:__");
+            diffAndSetText(this.ETA, "__:__");
         }
         else {
             let eteArrival = SimVar.GetSimVarValue("GPS ETE", "seconds");
             let ETA = (SimVar.GetSimVarValue("E:ZULU TIME", "seconds") + eteArrival) % (24 * 3600);
             let hours = Math.floor(ETA / 3600);
             let minutes = Math.floor((ETA / 60) % 60);
-            Avionics.Utils.diffAndSet(this.ETA, (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + "UTC");
+            diffAndSetText(this.ETA, (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + "UTC");
         }
     }
     onExit() {
@@ -183,7 +183,7 @@ class AS3000_Engine extends NavSystemElementContainer {
             let engineRoot = this.gps.xmlConfig.getElementsByTagName("EngineDisplay");
             if (engineRoot.length > 0) {
                 fromConfig = true;
-                this.root.setAttribute("state", "XML");
+                diffAndSetAttribute(this.root, "state", "XML");
                 this.xmlEngineDisplay = this.root.querySelector("glasscockpit-xmlenginedisplay");
                 this.xmlEngineDisplay.setConfiguration(this.gps, engineRoot[0]);
             }
@@ -204,7 +204,7 @@ class AS3000_Engine extends NavSystemElementContainer {
         switch (this.engineType) {
             case EngineType.ENGINE_TYPE_PISTON:
                 {
-                    this.root.setAttribute("state", "piston");
+                    diffAndSetAttribute(this.root, "state", "piston");
                     this.addGauge().Set(this.gps.getChildById("Piston_VacGauge"), this.settings.Vacuum, this.getVAC.bind(this), "VAC", "inHg");
                     this.addGauge().Set(this.gps.getChildById("Piston_FuelGaugeL"), this.settings.FuelQuantity, this.getFuelL.bind(this), "L FUEL QTY", "GAL");
                     this.addGauge().Set(this.gps.getChildById("Piston_FuelGaugeR"), this.settings.FuelQuantity, this.getFuelR.bind(this), "R FUEL QTY", "GAL");
@@ -230,7 +230,7 @@ class AS3000_Engine extends NavSystemElementContainer {
             case EngineType.ENGINE_TYPE_TURBOPROP:
             case EngineType.ENGINE_TYPE_JET:
                 {
-                    this.root.setAttribute("state", "turbo");
+                    diffAndSetAttribute(this.root, "state", "turbo");
                     this.addGauge().Set(this.gps.getChildById("Turbo_AmpGauge1"), this.settings.BatteryBusAmps, this.getAmpsBattery.bind(this), "", "AMPS B");
                     this.addGauge().Set(this.gps.getChildById("Turbo_AmpGauge2"), this.settings.GenAltBusAmps, this.getAmpsGenAlt.bind(this), "", "AMPS G");
                     this.addGauge().Set(this.gps.getChildById("Turbo_VoltsGauge1"), this.settings.MainBusVoltage, this.getVoltsBus.bind(this), "", "VOLTS B");
@@ -602,16 +602,16 @@ class AS3000_MFD_ComFrequencies extends NavSystemElement {
     onUpdate(_deltaTime) {
         var com1Active = SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:1", "MHz");
         if (com1Active)
-            Avionics.Utils.diffAndSet(this.com1Active, com1Active.toFixed(SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
+            diffAndSetText(this.com1Active, fastToFixed(com1Active, SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
         var com1Sby = SimVar.GetSimVarValue("COM STANDBY FREQUENCY:1", "MHz");
         if (com1Sby)
-            Avionics.Utils.diffAndSet(this.com1Stby, com1Sby.toFixed(SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
+            diffAndSetText(this.com1Stby, fastToFixed(com1Sby, SimVar.GetSimVarValue("COM SPACING MODE:1", "Enum") == 0 ? 2 : 3));
         var com2Active = SimVar.GetSimVarValue("COM ACTIVE FREQUENCY:2", "MHz");
         if (com2Active)
-            Avionics.Utils.diffAndSet(this.com2Active, com2Active.toFixed(SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
+            diffAndSetText(this.com2Active, fastToFixed(com2Active, SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
         var com2Sby = SimVar.GetSimVarValue("COM STANDBY FREQUENCY:2", "MHz");
         if (com2Sby)
-            Avionics.Utils.diffAndSet(this.com2Stby, com2Sby.toFixed(SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
+            diffAndSetText(this.com2Stby, fastToFixed(com2Sby, SimVar.GetSimVarValue("COM SPACING MODE:2", "Enum") == 0 ? 2 : 3));
     }
     onExit() {
     }

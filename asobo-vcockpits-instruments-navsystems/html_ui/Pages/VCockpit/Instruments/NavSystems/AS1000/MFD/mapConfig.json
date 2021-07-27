@@ -30,7 +30,6 @@
   "airplaneIcon2": "ICON_MAP_PLANE",
 
   "imagesDir": "/Pages/VCockpit/Instruments/Shared/Map/Images/Outlined/",
-  "delay": 1,
 
   "runwayFillColor": "white",
   "runwayStrokeColor": "gray",
@@ -67,6 +66,11 @@
   "railwayDashLength": 6,
 
   "netBingTextureResolution": 1024,
+
+  "netBingTopViewAltitudeMin": 500,
+  "netBingTopViewAltitudeMax": 15000,
+  "netBingTopViewZoomLevels": 3,
+
   "netBingAltitudeColors1": [],
   "netBingWaterColor1": "#184b77",
   "netBingHeightColor1": [

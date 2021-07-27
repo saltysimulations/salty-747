@@ -74,7 +74,7 @@ class FMCTakeOffPage {
         let flapsCell = "---";
         let flapsAngle = fmc.getTakeOffFlap();
         if (isFinite(flapsAngle) && flapsAngle >= 0) {
-            flapsCell = flapsAngle.toFixed(0) + "°";
+            flapsCell = fastToFixed(flapsAngle, 0) + "°";
         }
         else {
             flapsCell = "□□°";
@@ -88,7 +88,7 @@ class FMCTakeOffPage {
         };
         let thrRedCell = "";
         if (isFinite(fmc.thrustReductionAltitude)) {
-            thrRedCell = fmc.thrustReductionAltitude.toFixed(0);
+            thrRedCell = fastToFixed(fmc.thrustReductionAltitude, 0);
         }
         else {
             thrRedCell = "---";
@@ -108,7 +108,7 @@ class FMCTakeOffPage {
         }
         let cgCell = "--%";
         if (isFinite(fmc.zeroFuelWeightMassCenter)) {
-            cgCell = fmc.zeroFuelWeightMassCenter.toFixed(0) + "%";
+            cgCell = fastToFixed(fmc.zeroFuelWeightMassCenter, 0) + "%";
         }
         fmc.onRightInput[3] = () => {
             let value = fmc.inOut;
@@ -121,7 +121,7 @@ class FMCTakeOffPage {
         };
         let trimCell = "";
         if (isFinite(fmc.takeOffTrim)) {
-            trimCell = fmc.takeOffTrim.toFixed(1);
+            trimCell = fastToFixed(fmc.takeOffTrim, 1);
         }
         fmc.setTemplate([
             ["TAKE OFF"],

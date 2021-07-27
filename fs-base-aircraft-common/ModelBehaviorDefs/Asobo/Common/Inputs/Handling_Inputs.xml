@@ -1,0 +1,772 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+	<InputEvent ID="HANDLING">
+		<Presets>
+			<Switch>
+				<Case NotEmpty="FLAPS_ID">
+					<Preset ID="HANDLING_Flaps">
+						<Parameters Type="Default">
+							<STEP_INCREMENT Process="Int">1 (A:FLAPS NUM HANDLE POSITIONS, Number) / 16384 *</STEP_INCREMENT>
+							<Condition Valid="IS_CONTINUOUS">
+								<True>
+									<INCREMENT>32</INCREMENT>
+								</True>
+								<False>
+									<INCREMENT>1</INCREMENT>
+								</False>
+							</Condition>
+							<UPPER_LIMIT>16384</UPPER_LIMIT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<IS_CONTINUOUS>False</IS_CONTINUOUS>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ON_STATE_CHANGED/>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+							<DEC_EVENT>(A:FLAPS HANDLE PERCENT, position 16k) p0 - (&gt;B:HANDLING_Flaps_Set)</DEC_EVENT>
+							<INC_EVENT>(A:FLAPS HANDLE PERCENT, position 16k) p0 + (&gt;B:HANDLING_Flaps_Set)</INC_EVENT>
+							<Condition Valid="IS_CONTINUOUS">
+								<True>
+									<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:FLAPS_CONTINUOUS_SET) l0 (&gt;O:HANDLING_Flaps_Position) </SET_EVENT>
+								</True>
+								<False>
+									<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;K:FLAPS_SET) (A:FLAPS HANDLE PERCENT, position 16k) (&gt;O:HANDLING_Flaps_Position) </SET_EVENT>
+								</False>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="True">(R:1:@TT_Package.HANDLING_LEVER_FLAPS_ACTION_SET)</TTDescription>
+							<TTValue RPN="True">(A:FLAPS HANDLE PERCENT, Percent) '%.1f%%' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(O:HANDLING_Flaps_Position) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>(A:FLAPS HANDLE PERCENT, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;O:HANDLING_Flaps_Position)</Init>
+							<WatchVars>
+								<Simvar ID="FLAPS HANDLE PERCENT"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="FLAPS_INCR">
+									<Param>#STEP_INCREMENT#</Param>
+								</Binding>
+								<Binding EventID="FLAPS_COUNTINUOUS_INCR">
+									<Param>#INCREMENT#</Param>
+								</Binding>
+							</Bindings>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="FLAPS_DECR">
+									<Param>#STEP_INCREMENT#</Param>
+								</Binding>
+								<Binding EventID="FLAPS_COUNTINUOUS_DECR">
+									<Param>#INCREMENT#</Param>
+								</Binding>
+							</Bindings>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="FLAPS_DOWN">
+									<Param RPN="True">(A:FLAPS NUM HANDLE POSITIONS, Number) 1 - 16384 *</Param>
+								</Binding>
+								<Binding EventID="FLAPS_UP">
+									<Param>0</Param>
+								</Binding>
+								<Binding EventID="FLAPS_1">
+									<Param RPN="True">1 (A:FLAPS NUM HANDLE POSITIONS, Number) / 16384 *</Param>
+								</Binding>
+								<Binding EventID="FLAPS_2">
+									<Param RPN="True">2 (A:FLAPS NUM HANDLE POSITIONS, Number) / 16384 *</Param>
+								</Binding>
+								<Binding EventID="FLAPS_3">
+									<Param RPN="True">3 (A:FLAPS NUM HANDLE POSITIONS, Number) / 16384 *</Param>
+								</Binding>
+								<Binding EventID="FLAPS_SET">
+									<Param RPN="True">p1 @S16KTo01</Param>
+								</Binding>
+								<Binding EventID="AXIS_FLAPS_SET">
+									<Param RPN="True">p1 16384 + 0.5 * #LOWER_LIMIT# max #UPPER_LIMIT# min</Param>
+								</Binding>
+								<Binding EventID="FLAPS_COUNTINUOUS_SET">
+									<Param RPN="True">p1 @S16KTo01</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="HIDER_ID">
+					<Preset ID="HANDLING_Yoke_Hider_#HIDER_ID#">
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>@TT_Package.YOKE_VISIBILITY_ACTION_SET</TT_DESCRIPTION><!-- ?a faudra le cr?er a un moment dans KLM, c'est le default -->
+									<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>	
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+						</Parameters>
+						<Tooltip>
+							<Icon>Push</Icon>
+							<Interaction>PRIMARY_DOWN</Interaction>
+							<InteractionLockable>LOCK</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">(B:HANDLING_Yoke_Hider_#HIDER_ID#, bool) if{ (R:1:@TT_Package.GT_STATE_HIDDEN) } els{ (R:1:@TT_Package.GT_STATE_VISIBLE) }</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Number</Units>
+							<Code>(L:XMLVAR_YokeHidden#HIDER_ID#)</Code>
+						</Value>
+						<Inc>
+							<Code>1 (&gt;B:HANDLING_Yoke_Hider_#HIDER_ID#_Set)</Code>
+						</Inc>
+						<Dec>
+							<Code>0 (&gt;B:HANDLING_Yoke_Hider_#HIDER_ID#_Set)</Code>
+						</Dec>
+						<Set>
+							<Code>p0 0 == ! (&gt;L:XMLVAR_YokeHidden#HIDER_ID#) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="HANDLING_Yoke_Hider_#HIDER_ID#_Toggle">
+									<Param RPN="True">1 0 (B:HANDLING_Yoke_Hider_#HIDER_ID#) 0 == ?</Param>
+								</Binding>
+								<Binding Alias="HANDLING_Yoke_Hider_#HIDER_ID#_Hide">
+									<Param>0</Param>
+								</Binding>
+								<Binding Alias="HANDLING_Yoke_Hider_#HIDER_ID#_Show">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="ELEVATOR_TRIM_ID">
+					<Preset ID="HANDLING_ElevatorTrim_#IE_ELEVATOR_TRIM#">
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<INCREMENT>1</INCREMENT>
+									<UPPER_LIMIT>2</UPPER_LIMIT>
+									<LOWER_LIMIT>0</LOWER_LIMIT>
+								</Case>
+								<Default>
+									<INCREMENT>256</INCREMENT>
+									<UPPER_LIMIT>16384</UPPER_LIMIT>
+									<LOWER_LIMIT>-16384</LOWER_LIMIT>
+								</Default>
+							</Switch>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>HANDLING_ElevatorTrim</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ON_STATE_CHANGED/>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+							<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:ELEVATOR_TRIM_SET) l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</SET_EVENT>
+							<INIT_VALUE>(A:ELEVATOR TRIM PCT, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="WHEEL">
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+								<Case Value="KNOB">
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+								<Case Value="SWITCH">
+									<Condition Check="SWITCH_POSITION_VAR_TIMER">
+										<True>
+											<RESET_TIMER>(&gt;#SWITCH_POSITION_TYPE_TIMER#:#SWITCH_POSITION_VAR_TIMER#)</RESET_TIMER>
+										</True>
+										<False>
+											<RESET_TIMER></RESET_TIMER>
+										</False>
+									</Condition>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<TT_ICON>MOVE_X</TT_ICON>
+										</True>
+										<False>
+											<TT_ICON>MOVE_Y</TT_ICON>
+										</False>
+									</Condition>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="WHEEL">
+									<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:HANDLING_ElevatorTrim_#IE_ELEVATOR_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:HANDLING_ElevatorTrim_#IE_ELEVATOR_TRIM#_Set)</DEC_EVENT>
+								</Case>
+								<Case Value="SWITCH">
+									<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:HANDLING_ElevatorTrim_#IE_ELEVATOR_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:HANDLING_ElevatorTrim_#IE_ELEVATOR_TRIM#_Set)</DEC_EVENT>
+									<INIT_VALUE>
+										#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+										#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+										#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+									</INIT_VALUE>
+									<SET_EVENT>
+										p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 
+										(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) != if{ 
+											l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+											l0 0 == if{ #CODE_POS_0# quit }
+											l0 1 == if{ #CODE_POS_1# quit }
+											l0 2 == if{ #CODE_POS_2# quit }
+										} els{
+											#RESET_TIMER#
+										}
+									</SET_EVENT>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="True">(R:1:@TT_Package.HANDLING_SWITCH_YOKE_ELEVATORTRIM_ACTION)</TTDescription>
+							<TTValue RPN="True">(A:ELEVATOR TRIM POSITION, degrees) '%.1f°' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="ELEVATOR TRIM PCT"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="ELEV_TRIM_UP">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="ELEV_TRIM_DN">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="ELEVATOR_TRIM_SET">
+									<Param RPN="True">p1 @S16KTo01</Param>
+								</Binding>
+								<Binding EventID="AXIS_ELEV_TRIM_SET">
+									<Param RPN="True">p1 @S1To01</Param>
+								</Binding>
+								<Binding Alias="HANDLING_ElevatorTrim_Position_Neutral">
+									<Param RPN="True">0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="RUDDER_TRIM_ID">
+					<Preset ID="HANDLING_RudderTrim_#IE_RUDDER_TRIM#">
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<INCREMENT>1</INCREMENT>
+									<UPPER_LIMIT>2</UPPER_LIMIT>
+									<LOWER_LIMIT>0</LOWER_LIMIT>
+									<STATE0_TIMER>0</STATE0_TIMER>
+									<STATE_MAX_TIMER>0</STATE_MAX_TIMER>
+								</Case>
+								<Default>
+									<INCREMENT>256</INCREMENT>
+									<UPPER_LIMIT>16384</UPPER_LIMIT>
+									<LOWER_LIMIT>-16384</LOWER_LIMIT>
+								</Default>
+							</Switch>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>HANDLING_RudderTrim</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ON_STATE_CHANGED/>
+							<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:RUDDER_TRIM_SET_EX1) l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</SET_EVENT>
+							<INIT_VALUE>(A:RUDDER TRIM PCT, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="WHEEL">
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+								<Case Value="KNOB">
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+								<Case Value="SWITCH">
+									<Condition Check="SWITCH_POSITION_VAR_TIMER">
+										<True>
+											<RESET_TIMER>
+												#STATE0_TEST# if{ #STATE_MAX_TIMER# } 
+												els{ #STATE2_TEST# if{ #STATE0_TIMER# } }
+												(E:SIMULATION TIME, seconds) + (&gt;#SWITCH_POSITION_TYPE_TIMER#:#SWITCH_POSITION_VAR_TIMER#)
+											</RESET_TIMER>
+										</True>
+										<False>
+											<RESET_TIMER></RESET_TIMER>
+										</False>
+									</Condition>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<TT_ICON>MOVE_X</TT_ICON>
+										</True>
+										<False>
+											<TT_ICON>MOVE_Y</TT_ICON>
+										</False>
+									</Condition>
+								</Case>
+							</Switch>					
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:HANDLING_RudderTrim_#IE_RUDDER_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:HANDLING_RudderTrim_#IE_RUDDER_TRIM#_Set)</DEC_EVENT>
+									<INIT_VALUE>
+										#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+										#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+										#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+									</INIT_VALUE>
+									<SET_EVENT>
+										p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 
+										(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) != if{ 
+											l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+											l0 0 == if{ #CODE_POS_0# quit }
+											l0 1 == if{ #CODE_POS_1# quit }
+											l0 2 == if{ #CODE_POS_2# quit }
+										} els{
+											#RESET_TIMER#
+										}
+									</SET_EVENT>
+								</Case>
+								<Case Value="WHEEL">
+									<INC_EVENT>(A:RUDDER TRIM PCT, position 16k) p0 + (&gt;B:HANDLING_RudderTrim_#IE_RUDDER_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(A:RUDDER TRIM PCT, position 16k) p0 - (&gt;B:HANDLING_RudderTrim_#IE_RUDDER_TRIM#_Set)</DEC_EVENT>
+								</Case>
+								<Case Value="KNOB">
+									<INC_EVENT>(A:RUDDER TRIM PCT, position 16k) p0 + (&gt;B:HANDLING_RudderTrim_#IE_RUDDER_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(A:RUDDER TRIM PCT, position 16k) p0 - (&gt;B:HANDLING_RudderTrim_#IE_RUDDER_TRIM#_Set)</DEC_EVENT>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>PRIMARY_DOWN+X_AXIS</Interaction>
+							<InteractionLockable>X_AXIS</InteractionLockable>
+							<TTDescription RPN="True">(R:1:@TT_Package.HANDLING_KNOB_RUDDER_TRIM_ACTION)</TTDescription>
+							<TTValue RPN="True">(A:RUDDER TRIM, degrees) '%.1f°' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="RUDDER TRIM PCT"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="RUDDER_TRIM_RIGHT">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="RUDDER_TRIM_LEFT">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="RUDDER_TRIM_SET">
+									<Param RPN="True">p1 @S1To01</Param>
+								</Binding>
+								<Binding EventID="RUDDER_TRIM_SET_EX1">
+									<Param RPN="True">p1 @S16KTo01</Param>
+								</Binding>
+								<Binding EventID="RUDDER_TRIM_RESET">
+									<Param RPN="True">0</Param>
+								</Binding>
+								<Binding Alias="HANDLING_RudderTrim_Position_Neutral">
+									<Param RPN="True">0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="AILERONS_TRIM_ID">
+					<Preset ID="HANDLING_AileronsTrim_#IE_AILERONS_TRIM#">
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<INCREMENT>1</INCREMENT>
+									<UPPER_LIMIT>2</UPPER_LIMIT>
+									<LOWER_LIMIT>0</LOWER_LIMIT>
+								</Case>
+								<Default>
+									<INCREMENT>256</INCREMENT>
+									<UPPER_LIMIT>16384</UPPER_LIMIT>
+									<LOWER_LIMIT>-16384</LOWER_LIMIT>
+								</Default>
+							</Switch>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>HANDLING_AileronsTrim</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<SET_EVENT> p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:AILERON_TRIM_SET_EX1) l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</SET_EVENT>
+							<INIT_VALUE>(A:AILERON TRIM PCT, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="WHEEL">
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+								<Case Value="KNOB">
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+								<Case Value="SWITCH">
+									<Condition Check="SWITCH_POSITION_VAR_TIMER">
+										<True>
+											<RESET_TIMER>(&gt;#SWITCH_POSITION_TYPE_TIMER#:#SWITCH_POSITION_VAR_TIMER#)</RESET_TIMER>
+										</True>
+										<False>
+											<RESET_TIMER></RESET_TIMER>
+										</False>
+									</Condition>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<TT_ICON>MOVE_X</TT_ICON>
+										</True>
+										<False>
+											<TT_ICON>MOVE_Y</TT_ICON>
+										</False>
+									</Condition>
+								</Case>
+							</Switch>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ON_STATE_CHANGED/>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="SWITCH">
+									<INC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 + (&gt;B:HANDLING_AileronsTrim_#IE_AILERONS_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) p0 - (&gt;B:HANDLING_AileronsTrim_#IE_AILERONS_TRIM#_Set)</DEC_EVENT>
+									<INIT_VALUE>
+										#STATE0_TEST# if{ 0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+										#STATE1_TEST# if{ 1 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+										#STATE2_TEST# if{ 2 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) quit }
+									</INIT_VALUE>
+									<SET_EVENT>
+										p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 
+										(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) != if{ 
+											l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+											l0 0 == if{ #CODE_POS_0# quit }
+											l0 1 == if{ #CODE_POS_1# quit }
+											l0 2 == if{ #CODE_POS_2# quit }
+										} els{
+											#RESET_TIMER#
+										}
+									</SET_EVENT>
+								</Case>
+								<Case Value="WHEEL">
+									<INC_EVENT>(A:AILERON TRIM PCT, position 16k) p0 + (&gt;B:HANDLING_AileronsTrim_#IE_AILERONS_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(A:AILERON TRIM PCT, position 16k) p0 - (&gt;B:HANDLING_AileronsTrim_#IE_AILERONS_TRIM#_Set)</DEC_EVENT>
+								</Case>
+								<Case Value="KNOB">
+									<INC_EVENT>(A:AILERON TRIM PCT, position 16k) p0 + (&gt;B:HANDLING_AileronsTrim_#IE_AILERONS_TRIM#_Set)</INC_EVENT>
+									<DEC_EVENT>(A:AILERON TRIM PCT, position 16k) p0 - (&gt;B:HANDLING_AileronsTrim_#IE_AILERONS_TRIM#_Set)</DEC_EVENT>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>PRIMARY_DOWN+X_AXIS</Interaction>
+							<InteractionLockable>X_AXIS</InteractionLockable>
+							<TTDescription RPN="True">(R:1:@TT_Package.HANDLING_KNOB_AILERON_ACTION)</TTDescription>
+							<TTValue RPN="True">(A:AILERON TRIM, degrees) '%.1f°' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="ELEVATOR TRIM PCT"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Switch Param="INTERACTION_TYPE">
+									<Case Value="SWITCH">
+										<Param Type="Float" RPN="True">p0</Param>
+									</Case>
+									<Default>
+										<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+									</Default>
+								</Switch>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="AILERON_TRIM_RIGHT">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Switch Param="INTERACTION_TYPE">
+									<Case Value="SWITCH">
+										<Param Type="Float" RPN="True">p0</Param>
+									</Case>
+									<Default>
+										<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+									</Default>
+								</Switch>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="AILERON_TRIM_LEFT">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="AILERON_TRIM_SET">
+									<Param RPN="True">p1 @S1To01</Param>
+								</Binding>
+								<Binding EventID="AILERON_TRIM_SET_EX1">
+									<Param RPN="True">p1 @S16KTo01</Param>
+								</Binding>
+								<Binding Alias="HANDLING_AileronsTrim_Position_Neutral">
+									<Param RPN="True">0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="SPOILERS_ID">
+					<Preset ID="HANDLING_Spoilers">
+						<Parameters Type="Default">
+							<INCREMENT>256</INCREMENT>
+							<UPPER_LIMIT>16384</UPPER_LIMIT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ON_STATE_CHANGED/>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="True">(R:1:@TT_Package.HANDLING_LEVER_SPOILERS_ACTION)</TTDescription>
+							<TTValue RPN="True">(A:SPOILERS ARMED, Bool) if{ (R:1:@TT_Package.GT_STATE_ARMED) } els{ (A:SPOILERS HANDLE POSITION, Percent) '%.1f%%' @sprintf }</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(O:HANDLING_Spoilers_Position) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>(A:SPOILERS HANDLE POSITION, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;O:HANDLING_Spoilers_Position)</Init>
+							<WatchVars>
+								<Simvar ID="SPOILERS HANDLE POSITION"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# (A:SPOILERS HANDLE POSITION, position 16k) p0 + (&gt;B:HANDLING_Spoilers_Set) #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# (A:SPOILERS HANDLE POSITION, position 16k) p0 - (&gt;B:HANDLING_Spoilers_Set) #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:SPOILERS_SET) l0 (&gt;O:HANDLING_Spoilers_Position) #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="SPOILERS_ON">
+									<Param>16384</Param>
+								</Binding>
+								<Binding EventID="SPOILERS_OFF">
+									<Param>0</Param>
+								</Binding>
+								<Binding EventID="SPOILERS_TOGGLE">
+									<Param RPN="True">0 1 (B:HANDLING_Spoilers_Set) ?</Param>
+								</Binding>
+								<Binding EventID="SPOILERS_SET">
+									<Param RPN="True">p1 @S16KTo01</Param>
+								</Binding>
+								<Binding EventID="AXIS_SPOILER_SET">
+									<Param RPN="True">p1 16384 + 0.5 * #LOWER_LIMIT# max #UPPER_LIMIT# min</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Default>
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>HANDLING</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Default>
+			</Switch>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>
+
+

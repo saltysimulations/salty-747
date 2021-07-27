@@ -169,7 +169,7 @@ class B747_8_FMC_DepArrIndexPage {
         let rowsCount = Math.max(displayableRunwaysCount, displayableDeparturesCount);
         let pageCount = Math.floor(rowsCount / 5) + 1;
         fmc.setTemplate([
-            [originIdent + " DEPARTURES", currentPage.toFixed(0), pageCount.toFixed(0)],
+            [originIdent + " DEPARTURES", fastToFixed(currentPage, 0), fastToFixed(pageCount, 0)],
             ["SIDS", "RUNWAYS", "RTE 1"],
             ...rows,
             ["__FMCSEPARATOR"],
@@ -348,7 +348,7 @@ class B747_8_FMC_DepArrIndexPage {
         let rowsCount = Math.max(displayableApproachesCount, displayableArrivalsCount);
         let pageCount = Math.floor(rowsCount / 5) + 1;
         fmc.setTemplate([
-            [destinationIdent + " ARRIVALS", currentPage.toFixed(0), pageCount.toFixed(0)],
+            [destinationIdent + " ARRIVALS", fastToFixed(currentPage, 0), fastToFixed(pageCount, 0)],
             ["STAR", "APPROACH", "RTE 1"],
             ...rows,
             ["__FMCSEPARATOR"],

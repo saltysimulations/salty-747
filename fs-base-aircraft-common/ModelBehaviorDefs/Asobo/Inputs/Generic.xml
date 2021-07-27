@@ -1,0 +1,931 @@
+<ModelBehaviors>
+	<!-- ################################# -->
+	<!-- #### GenericInputEvents [GIE] ### -->
+	<!-- ################################# -->
+	
+	<!-- extend ASOBO_GIE adding animation handling -->
+	<InputEvent ID="ASOBO_GIE_Anim_Handling">
+		<Presets>
+			<Switch>
+				<Case NotEmpty="BTN_ID">
+					<Extend Target="ASOBO_GIE">
+						<Parameters Type="Override">
+							<INPUT_EVENT_TYPE>INTEGER</INPUT_EVENT_TYPE>
+							<IE_NAME>#BTN_ID#</IE_NAME>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<NUM_STATES>2</NUM_STATES>
+							<ANIM>DEFAULT</ANIM>
+							<ANIM_VAR>_ButtonAnimVar</ANIM_VAR>
+							<ANIM_VAR_TYPE>O</ANIM_VAR_TYPE>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>NUM_STATES</Value>
+										<Number>2</Number>
+									</Greater>
+								</Test>
+								<True>
+									<SWITCH_DIRECTION>Vertical</SWITCH_DIRECTION>									
+								</True>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="ANIM">
+								<Case Value="DEFAULT">
+									<ON_STATE_CHANGED_EXTERNAL_CODE>#ON_STATE_CHANGED_EXTERNAL_CODE# 1 (>#ANIM_VAR_TYPE#:#ANIM_VAR#)</ON_STATE_CHANGED_EXTERNAL_CODE>
+								</Case>
+								<Case Value="HOLD">
+									<Switch Param="ADDITIONAL_EVENT_TYPE">
+										<Case Value="PUSH_PULL">
+											<Switch Param="EVENT_TYPE">
+												<Case Value="PUSH">
+													<ON_STATE_CHANGED_EXTERNAL_CODE>1 (&gt;O:IsPushed) (E:SIMULATION TIME, second) (&gt;O:_LastPushTime) (O:IsPulled) if{ 0 (&gt;O:IsPulled) }</ON_STATE_CHANGED_EXTERNAL_CODE>
+												</Case>
+												<Case Value="PULL">
+													<ON_STATE_CHANGED_EXTERNAL_CODE>1 (&gt;O:IsPulled) (E:SIMULATION TIME, second) (&gt;O:_LastPullTime) (O:IsPushed) if{ 0 (&gt;O:IsPushed) }</ON_STATE_CHANGED_EXTERNAL_CODE>
+												</Case>
+											</Switch>
+										</Case>
+										<Default>
+											<ON_STATE_CHANGED_EXTERNAL_CODE>#ON_STATE_CHANGED_EXTERNAL_CODE# 100 (>#ANIM_VAR_TYPE#:#ANIM_VAR#)</ON_STATE_CHANGED_EXTERNAL_CODE>
+										</Default>
+									</Switch>
+								</Case>
+							</Switch>
+						</Parameters>
+					</Extend>
+				</Case>
+				<Case NotEmpty="KNOB_ID">
+					<Extend Target="ASOBO_GIE">
+						<Parameters Type="Override">
+							<INPUT_EVENT_TYPE>FLOAT</INPUT_EVENT_TYPE>
+							<IE_NAME>#KNOB_ID#</IE_NAME>
+							<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ROTATION_SPEED>10</ROTATION_SPEED>
+							<ANIM_VAR>_KnobAnimVar</ANIM_VAR>
+							<ANIM_VAR_TYPE>O</ANIM_VAR_TYPE>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition Valid="NO_ANIM_VAR_UPDATE">
+								<False>
+									<Condition NotEmpty="GET_STATE_EXTERNAL">
+										<True>
+											<ON_STATE_CHANGED_EXTERNAL_CODE>#ON_STATE_CHANGED_EXTERNAL_CODE# (O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) 3.6 * (&gt;#ANIM_VAR_TYPE#:#ANIM_VAR#)</ON_STATE_CHANGED_EXTERNAL_CODE>
+										</True>
+										<False>
+											<ON_STATE_CHANGED_EXTERNAL_CODE>#ON_STATE_CHANGED_EXTERNAL_CODE# (#ANIM_VAR_TYPE#:#ANIM_VAR#) #ROTATION_SPEED# p0 * + dnor (&gt;#ANIM_VAR_TYPE#:#ANIM_VAR#)</ON_STATE_CHANGED_EXTERNAL_CODE>
+										</False>
+									</Condition>
+								</False>
+							</Condition>
+						</Parameters>
+					</Extend>
+				</Case>
+				<Case NotEmpty="LEVER_ID">
+					<Extend Target="ASOBO_GIE">
+						<Parameters Type="Override">
+							<INPUT_EVENT_TYPE>FLOAT</INPUT_EVENT_TYPE>
+							<IE_NAME>#LEVER_ID#</IE_NAME>
+							<INTERACTION_TYPE>Lever</INTERACTION_TYPE>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<ROTATION_SPEED>10</ROTATION_SPEED>
+							<ANIM_VAR>_LeverAnimVar</ANIM_VAR>
+							<ANIM_VAR_TYPE>O</ANIM_VAR_TYPE>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition Valid="NO_ANIM_VAR_UPDATE">
+								<False>
+									<ON_STATE_CHANGED_EXTERNAL_CODE>#ON_STATE_CHANGED_EXTERNAL_CODE# (O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) (&gt;#ANIM_VAR_TYPE#:#ANIM_VAR#)</ON_STATE_CHANGED_EXTERNAL_CODE>
+								</False>
+							</Condition>
+						</Parameters>
+					</Extend>
+				</Case>
+			</Switch>
+		</Presets>
+	</InputEvent>
+	
+	<!-- Setup some parameters for most common uses (extending ASOBO_GIE_Base) -->
+	<InputEvent ID="ASOBO_GIE">
+		<Presets>
+			<Switch Param="INPUT_EVENT_TYPE">
+				<!-- Finite and relatively small numbers of states -->
+				<Case Value="INTEGER">
+					<Extend Target="ASOBO_GIE_Base">
+						<Parameters Type="Default">
+							<NUM_STATES>2</NUM_STATES>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<GET_STATE_EXTERNAL/>
+							<SET_STATE_EXTERNAL/>
+							<INC_ARG_COUNT>1</INC_ARG_COUNT>
+							<DEC_ARG_COUNT>1</DEC_ARG_COUNT>
+							<SET_ARG_COUNT>1</SET_ARG_COUNT>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition Check="NUM_STATES" Match="2">
+								<True>
+									<STR_STATE_OFF>Off</STR_STATE_OFF>
+									<STR_STATE_ON>On</STR_STATE_ON>
+									<TT_VALUE_OFF>@TT_Off</TT_VALUE_OFF>
+									<TT_VALUE_ON>@TT_On</TT_VALUE_ON>
+									<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+									<TT_INTERACTION>PRIMARY_DOWN</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>LOCK</TT_INTERACTION_LOCKABLE>
+									<VALUE_UNITS>Bool</VALUE_UNITS>
+									<Condition NotEmpty="SET_STATE_OFF">
+										<SET_STATE_0>#SET_STATE_OFF#</SET_STATE_0>
+									</Condition>
+									<Condition NotEmpty="SET_STATE_ON">
+										<SET_STATE_1>#SET_STATE_ON#</SET_STATE_1>
+									</Condition>
+								</True>
+								<False>
+									<VALUE_UNITS>Number</VALUE_UNITS>
+									<Switch Param="SWITCH_DIRECTION">
+										<Case Value="Horizontal">
+											<TT_INTERACTION>PRIMARY_DOWN+X_AXIS</TT_INTERACTION>
+											<TT_INTERACTION_LOCKABLE>X_AXIS</TT_INTERACTION_LOCKABLE>
+										</Case>
+										<Case Value="Vertical">
+											<TT_INTERACTION>PRIMARY_DOWN+Y_AXIS</TT_INTERACTION>
+											<TT_INTERACTION_LOCKABLE>Y_AXIS</TT_INTERACTION_LOCKABLE>
+										</Case>
+									</Switch>
+								</False>
+							</Condition>
+							<Switch Param="SWITCH_DIRECTION">
+								<Case Value="Horizontal">
+									<TT_ICON>MOVE_X</TT_ICON>
+								</Case>
+								<Case Value="Vertical">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Default>
+									<TT_ICON>Push</TT_ICON>
+								</Default>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<MAX_POSITION Process="Int">#NUM_STATES# 1 -</MAX_POSITION>
+							<GET_STATE>#GET_STATE_EXTERNAL#</GET_STATE>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition NotEmpty="GET_STATE">
+								<True>
+									<Loop>
+										<Setup>
+											<Param>SEL_ID</Param>
+											<From>0</From>
+											<Inc>1</Inc>
+											<While>
+												<Arg NotEmpty="SET_STATE_#SEL_ID#"/>
+											</While>
+										</Setup>
+										<Do>
+											<Parameters Type="Default" Lifetime="Loop">
+												<SET_STATE_T>(O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) s0</SET_STATE_T>
+											</Parameters>
+											<Parameters Type="Override">
+												<SET_STATE_ID Process="Param">SET_STATE_#SEL_ID#</SET_STATE_ID>
+											</Parameters>
+											<Parameters Type="Override" Lifetime="Loop">
+												<SET_STATE_T>#SET_STATE_T# l0 #SEL_ID# == if{ #SET_STATE_ID# g1 }</SET_STATE_T>
+											</Parameters>
+										</Do>
+										<Then>
+											<Condition Valid="SET_STATE_T">
+												<True>
+													<SET_STATE>#SET_STATE_T# :1</SET_STATE>												
+												</True>
+												<False>
+													<SET_STATE>#SET_STATE_EXTERNAL#</SET_STATE>
+												</False>
+											</Condition>
+										</Then>
+									</Loop>
+									<Condition Check="NUM_STATES" Match="2">
+										<True>
+											<ENUM_VAL_TO_POS_EXTERNAL>1 0 #SIM_STATE_IS_ON_EXTERNAL# ?</ENUM_VAL_TO_POS_EXTERNAL>
+										</True>
+										<False>
+											<ENUM_VAL_TO_POS_EXTERNAL/>
+										</False>
+									</Condition>
+									<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+								</True>
+								<False>
+									<SET_STATE>#SET_STATE_EXTERNAL#</SET_STATE>
+									<NO_TT_VALUE>True</NO_TT_VALUE>
+									<TT_VALUE_IS_DYNAMIC>False</TT_VALUE_IS_DYNAMIC>
+								</False>
+							</Condition>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+									<True>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+									</True>
+									<False>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+									</False>
+								</Condition>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED>#SET_STATE# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<Condition Valid="NO_TT_VALUE">
+								<True>
+									<TT_VALUE>@TT_Package.GT_STATE_NA</TT_VALUE>
+								</True>
+								<False>
+									<Condition Check="NUM_STATES" Match="2">
+										<True>
+											<TT_VALUE>(B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#, Bool) if{ #TT_VALUE_ON# } els{ #TT_VALUE_OFF# }</TT_VALUE>
+										</True>
+										<False>
+											<Loop>
+												<Setup>
+													<Param>SEL_ID</Param>
+													<From>0</From>
+													<Inc>1</Inc>
+													<While>
+														<Arg NotEmpty="TT_VALUE_#SEL_ID#"/>
+													</While>
+												</Setup>
+												<Do>
+													<Parameters Type="Default" Lifetime="Loop">
+														<TT_VALUE_T>(B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#, Number) sp0</TT_VALUE_T>
+													</Parameters>
+													<Parameters Type="Override">
+														<TT_VALUE_ID Process="Param">TT_VALUE_#SEL_ID#</TT_VALUE_ID>
+													</Parameters>
+													<Parameters Type="Override" Lifetime="Loop">
+														<Condition Valid="TT_VALUE_#SEL_ID#_IS_DYNAMIC">
+															<True>
+																<TT_VALUE_T>#TT_VALUE_T# l0 #SEL_ID# == if{ #TT_VALUE_ID# quit }</TT_VALUE_T>
+															</True>
+															<False>
+																<TT_VALUE_T>#TT_VALUE_T# l0 #SEL_ID# == if{ (R:1:#TT_VALUE_ID#) quit }</TT_VALUE_T>
+															</False>
+														</Condition>
+													</Parameters>
+												</Do>
+												<Then>
+													<Condition NotEmpty="TT_VALUE_T">
+														<True>
+															<TT_VALUE>#TT_VALUE_T#</TT_VALUE>											
+														</True>
+														<False>
+															<TT_VALUE>@TT_Package.GT_STATE_NA</TT_VALUE>
+														</False>
+													</Condition>
+												</Then>
+											</Loop>
+										</False>
+									</Condition>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition NotEmpty="GET_STATE">
+								<True>
+									<INC_CODE>(O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) p0 + (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</INC_CODE>
+									<DEC_CODE>(O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) p0 - (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</DEC_CODE>
+									<SET_CODE>p0 #MAX_POSITION# min 0 max (&gt;O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) #ON_STATE_CHANGED#</SET_CODE>
+									<Condition Check="NUM_STATES" Match="2">
+										<True>
+											<VALUE_CODE>(O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) 1 ==</VALUE_CODE>
+										</True>
+										<False>
+											<VALUE_CODE>(O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position)</VALUE_CODE>
+										</False>
+									</Condition>
+									<Condition NotEmpty="GET_INIT_STATE_EXTERNAL">
+										<True>
+											<INIT_CODE>#GET_INIT_STATE_EXTERNAL# (&gt;O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position)</INIT_CODE>
+										</True>
+										<False>
+											<INIT_CODE>#GET_STATE# #ENUM_VAL_TO_POS_EXTERNAL# (&gt;O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position)</INIT_CODE>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<INC_CODE>1 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</INC_CODE>
+									<DEC_CODE>0 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</DEC_CODE>
+									<SET_CODE>p0 #ON_STATE_CHANGED#</SET_CODE>
+									<VALUE_CODE/>
+									<INIT_CODE/>
+								</False>
+							</Condition>
+							<ON_BEFORE_INC_CODE/>
+							<ON_BEFORE_DEC_CODE/>
+							<ON_BEFORE_SET_CODE/>
+							<ON_AFTER_INC_CODE/>
+							<ON_AFTER_DEC_CODE/>
+							<ON_AFTER_SET_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<INC_CODE>#ON_BEFORE_INC_CODE##INC_CODE##ON_AFTER_INC_CODE#</INC_CODE>
+							<DEC_CODE>#ON_BEFORE_DEC_CODE##DEC_CODE##ON_AFTER_DEC_CODE#</DEC_CODE>
+							<SET_CODE>#ON_BEFORE_SET_CODE##SET_CODE##ON_AFTER_SET_CODE#</SET_CODE>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition Valid="CHECK_STATE_HAS_CHANGED">
+								<True>
+									<Condition NotEmpty="ON_STATE_CHANGED_NEW_STATE_TO_POS_EXTERNAL">
+										<True>
+											<SET_CODE>#SET_CODE# #ON_STATE_CHANGED_NEW_STATE_TO_POS_EXTERNAL# (&gt;O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position)</SET_CODE>
+										</True>
+										<False>
+											<SET_CODE>#SET_CODE# #INIT_CODE#</SET_CODE>											
+										</False>
+									</Condition>
+								</True>
+							</Condition>
+							<Condition NotEmpty="GET_STATE">
+								<True>
+									<Condition Check="NUM_STATES" Match="2">
+										<True>
+											<BINDING_SET_0>Toggle</BINDING_SET_0>
+											<BINDING_SET_0_PARAM_0>0 1 (O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) 1 == ?</BINDING_SET_0_PARAM_0>
+											<BINDING_SET_0_PARAM_0_IS_DYNAMIC>True</BINDING_SET_0_PARAM_0_IS_DYNAMIC>
+											<BINDING_SET_1>#STR_STATE_ON#</BINDING_SET_1>
+											<BINDING_SET_1_PARAM_0>1</BINDING_SET_1_PARAM_0>
+											<BINDING_SET_2>#STR_STATE_OFF#</BINDING_SET_2>
+											<BINDING_SET_2_PARAM_0>0</BINDING_SET_2_PARAM_0>
+										</True>
+										<False>
+											<Loop>
+												<Setup>
+													<Param>SEL_ID</Param>
+													<From>0</From>
+													<To>#MAX_POSITION#</To>
+													<Inc>1</Inc>
+												</Setup>
+												<Do>
+													<BINDING_SET_#SEL_ID# Process="Param">STR_STATE_#SEL_ID#</BINDING_SET_0>
+													<BINDING_SET_#SEL_ID#_PARAM_0>#SEL_ID#</BINDING_SET_0_PARAM_0>
+												</Do>
+											</Loop>
+										</False>
+									</Condition>
+								</True>
+							</Condition>
+						</Parameters>
+					</Extend>
+				</Case>
+				<!-- Input have a huge numbers of states and they cannot be enumerated -->
+				<Case Value="FLOAT">
+					<Extend Target="ASOBO_GIE_Base">
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<GET_STATE_EXTERNAL/>
+							<SET_STATE_EXTERNAL/>
+							<INC_ARG_COUNT>1</INC_ARG_COUNT>
+							<DEC_ARG_COUNT>1</DEC_ARG_COUNT>
+							<SET_ARG_COUNT>1</SET_ARG_COUNT>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="Lever">
+									<INTERACTION_AXIS>Y</INTERACTION_AXIS>
+									<TT_ICON>MOVE_AXIS_Y</TT_ICON>
+								</Case>
+								<Case Value="Knob">
+									<INTERACTION_AXIS>X</INTERACTION_AXIS>
+									<TT_ICON>ROTATE</TT_ICON>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<GET_STATE>#GET_STATE_EXTERNAL#</GET_STATE>
+							<SET_STATE>#SET_STATE_EXTERNAL#</SET_STATE>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Or>
+										<Arg NotEmpty="GET_STATE"/>
+										<Arg NotEmpty="GET_TT_VALUE_STATE"/>										
+									</Or>
+								</Test>
+								<True>
+									<FORMAT_VALUE>'%.1f%%' @sprintf</FORMAT_VALUE>
+									<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+									<STATE_TO_POS_EXTERNAL/>
+									<GET_TT_VALUE_STATE>#GET_STATE#</GET_TT_VALUE_STATE>
+									<MIN_VALUE>0</MIN_VALUE>
+									<MAX_VALUE>100</MAX_VALUE>
+								</True>
+								<False>
+									<NO_TT_VALUE>True</NO_TT_VALUE>
+									<TT_VALUE_IS_DYNAMIC>False</TT_VALUE_IS_DYNAMIC>
+								</False>
+							</Condition>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+									<True>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+									</True>
+									<False>
+										<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+										<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+									</False>
+								</Condition>
+							</Condition>
+							<TT_INTERACTION>PRIMARY_DOWN+#INTERACTION_AXIS#_AXIS</TT_INTERACTION>
+							<TT_INTERACTION_LOCKABLE>#INTERACTION_AXIS#_AXIS</TT_INTERACTION_LOCKABLE>
+							<VALUE_UNITS>Percent</VALUE_UNITS>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED>#SET_STATE# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<INC_CODE_ADJUST_VALUE/>
+							<DEC_CODE_ADJUST_VALUE/>
+							<Condition Valid="NO_TT_VALUE">
+								<True>
+									<TT_VALUE>@TT_Package.GT_STATE_NA</TT_VALUE>
+								</True>
+								<False>
+									<TT_VALUE>#GET_TT_VALUE_STATE# #FORMAT_VALUE#</TT_VALUE>
+									<CLAMP_VALUE>#MIN_VALUE# max #MAX_VALUE# min</CLAMP_VALUE>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition NotEmpty="GET_STATE">
+								<True>
+									<INIT_CODE>#GET_STATE# #CLAMP_VALUE# #STATE_TO_POS_EXTERNAL# (&gt;O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position)</INIT_CODE>
+									<INC_CODE>#GET_STATE# p0 + #INC_CODE_ADJUST_VALUE# (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</INC_CODE>
+									<DEC_CODE>#GET_STATE# p0 - #DEC_CODE_ADJUST_VALUE# (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</DEC_CODE>
+									<SET_CODE>p0 #CLAMP_VALUE# s0 #STATE_TO_POS_EXTERNAL# (&gt;O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position) l0 #ON_STATE_CHANGED#</SET_CODE>
+									<VALUE_CODE>(O:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Position)</VALUE_CODE>
+								</True>
+								<False>
+									<INC_CODE>p0 (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</INC_CODE>
+									<DEC_CODE>p0 -1 * (&gt;B:#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_Set)</DEC_CODE>
+									<SET_CODE>p0 #ON_STATE_CHANGED#</SET_CODE>
+									<VALUE_CODE/>
+									<INIT_CODE/>
+								</False>
+							</Condition>
+							<ON_BEFORE_INC_CODE/>
+							<ON_BEFORE_DEC_CODE/>
+							<ON_BEFORE_SET_CODE/>
+							<ON_AFTER_INC_CODE/>
+							<ON_AFTER_DEC_CODE/>
+							<ON_AFTER_SET_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<INC_CODE>#ON_BEFORE_INC_CODE##INC_CODE##ON_AFTER_INC_CODE#</INC_CODE>
+							<DEC_CODE>#ON_BEFORE_DEC_CODE##DEC_CODE##ON_AFTER_DEC_CODE#</DEC_CODE>
+							<SET_CODE>#ON_BEFORE_SET_CODE##SET_CODE##ON_AFTER_SET_CODE#</SET_CODE>
+						</Parameters>
+					</Extend>
+				</Case>
+			</Switch>
+		</Presets>
+	</InputEvent>
+	
+	<!-- Base InputEvent expecting a set of pre-defined parameters -->
+	<InputEvent ID="ASOBO_GIE_Base">
+		<!-- No parameters pre-filled, extend on top of this InputEvent to use -->
+		<!-- ######### -->
+		<!-- INPUT_EVENT_ID_SOURCE: InputEvent ID -->
+		<!-- IE_NAME: InputEventPreset ID -->
+		<!-- ######### -->
+		<!-- Tooltips: -->
+		<!-- ### -->
+		<!-- TT_ICON: Icon to use for this InputEvent -->
+		<!-- TT_INTERACTION: Non lockables interaction flags -->
+		<!-- TT_INTERACTION_LOCKABLE: Lockables interaction flags -->
+		<!-- TT_DESCRIPTION: tootlip description, TT_DESCRIPTION_IS_DYNAMIC: True if RPN -->
+		<!-- TT_VALUE: tootlip value, TT_VALUE_IS_DYNAMIC: True if RPN -->
+		<!-- ######### -->
+		<!-- Value: -->
+		<!-- ### -->
+		<!-- VALUE_UNITS: value units -->
+		<!-- VALUE_CODE: value code (RPN) -->
+		<!-- INIT_CODE: code executed when Initializing from a sim value / FLT value -->
+		<!-- SIMVAR_TO_WATCH_X (X being an unsigned integer) -->
+		<!-- LOCAL_VAR_TO_WATCH_X (X being an unsigned integer) -->
+		<!-- ######### -->
+		<!-- Events: INC/DEC/SET using EVT to simplify, but applies to every event type -->
+		<!-- ### -->
+		<!-- EVT_CODE: Code for this event (RPN) -->
+		<!-- EVT_ARG_COUNT: Number of parameters for this event -->
+		<!-- EVT_PARAM_X: value of param X of this event (default: pX) -->
+		<!-- EVT_PARAM_X_TYPE: type of param X of this event (default: Float) -->
+		<!-- EVT_PARAM_X_IS_DYNAMIC: True if param is RPN (default: True if EVT_PARAM_X isn't overriden) -->
+		<!-- ### -->
+		<!-- BINDING_EVT_X: Create an alias to the evt using this syntax: #INPUT_EVENT_ID_SOURCE#_#IE_NAME#_#BINDING_EVT_X# -->
+		<!-- BINDING_EVT_X_EVENT_ID: Bind an EventID to this alias -->
+		<!-- BINDING_EVT_X_PARAM_Y: for each parameter Y (Y < EVT_ARG_COUNT) specify the value (default: 0) -->
+		<!-- BINDING_EVT_X_PARAM_Y_IS_DYNAMIC: Same as above but specify if the value should be read as RPN (default: False) -->
+		<!-- ######### -->
+		<Presets>
+			<Preset ID="#INPUT_EVENT_ID_SOURCE#_#IE_NAME#">
+				<Tooltip>
+					<Icon>#TT_ICON#</Icon>
+					<Interaction>#TT_INTERACTION#</Interaction>
+					<InteractionLockable>#TT_INTERACTION_LOCKABLE#</InteractionLockable>
+					<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+					<TTValue RPN="#TT_VALUE_IS_DYNAMIC#">#TT_VALUE#</TTValue>
+				</Tooltip>
+				<Value>
+					<Units>#VALUE_UNITS#</Units>
+					<Code>#VALUE_CODE#</Code>
+					<Init>#INIT_CODE#</Init>
+					<WatchVars>
+						<Loop>
+							<Setup>
+								<Param>SEL_ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg Valid="SIMVAR_TO_WATCH_#SEL_ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<SIMVAR_TO_WATCH Process="Param">SIMVAR_TO_WATCH_#SEL_ID#</SIMVAR_TO_WATCH>
+								</Parameters>
+								<Simvar ID="#SIMVAR_TO_WATCH#"/>
+							</Do>
+						</Loop>
+						<Loop>
+							<Setup>
+								<Param>SEL_ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg Valid="LOCAL_VAR_TO_WATCH_#SEL_ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<LOCAL_VAR_TO_WATCH Process="Param">LOCAL_VAR_TO_WATCH_#SEL_ID#</LOCAL_VAR_TO_WATCH>
+								</Parameters>
+								<LocalVar ID="#LOCAL_VAR_TO_WATCH#"/>
+							</Do>
+						</Loop>
+					</WatchVars>
+				</Value>
+				<Inc>
+					<Code>#INC_CODE#</Code>
+					<Parameters>
+						<Loop>
+							<Setup>
+								<Param>ARG_ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Lower>
+										<Value>ARG_ID</Value>
+										<Value>INC_ARG_COUNT</Value>
+									</Lower>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Default">
+									<Condition NotEmpty="INC_PARAM_#ARG_ID#">
+										<True>
+											<PARAM_VALUE Process="Param">INC_PARAM_#ARG_ID#</PARAM_VALUE>
+											<Condition NotEmpty="INC_PARAM_#ARG_ID#_TYPE">
+												<True>
+													<PARAM_TYPE Process="Param">INC_PARAM_#ARG_ID#_TYPE</PARAM_TYPE>
+												</True>
+												<False>
+													<PARAM_TYPE>Float</PARAM_TYPE>
+												</False>
+											</Condition>
+											<Condition NotEmpty="INC_PARAM_#ARG_ID#_IS_DYNAMIC">
+												<True>
+													<PARAM_IS_DYNAMIC Process="Param">INC_PARAM_#ARG_ID#_IS_DYNAMIC</PARAM_IS_DYNAMIC>
+												</True>
+												<False>
+													<PARAM_IS_DYNAMIC>False</PARAM_IS_DYNAMIC>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<PARAM_VALUE>p#ARG_ID#</PARAM_VALUE>
+											<PARAM_TYPE>Float</PARAM_TYPE>
+											<PARAM_IS_DYNAMIC>True</PARAM_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</Parameters>
+								<Param Type="#PARAM_TYPE#" RPN="#PARAM_IS_DYNAMIC#">#PARAM_VALUE#</Param>
+							</Do>
+						</Loop>
+					</Parameters>
+					<Bindings>
+						<Loop>
+							<Setup>
+								<Param>ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg NotEmpty="BINDING_INC_#ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<BINDING_ID Process="Param">BINDING_INC_#ID#</BINDING_ID>
+								</Parameters>
+								<Parameters Type="Override">
+									<Condition Check="BINDING_INC_#ID#_EVENT_ID">
+										<True>
+											<EVENT_ID Process="Param">BINDING_INC_#ID#_EVENT_ID</EVENT_ID>
+											<Condition Valid="BINDING_INC_#ID#_EVENT_ID_ONLY">
+												<True>
+													<ALIAS_ID/>
+												</True>
+												<False>
+													<ALIAS_ID>#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_#BINDING_ID#</ALIAS_ID>														
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<EVENT_ID/>
+											<ALIAS_ID>#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_#BINDING_ID#</ALIAS_ID>	
+										</False>
+									</Condition>
+								</Parameters>
+								<Binding Alias="#ALIAS_ID#" EventID="#EVENT_ID#">
+									<Loop>
+										<Setup>
+											<Param>ARG_ID</Param>
+											<From>0</From>
+											<Inc>1</Inc>
+											<While>
+												<Lower>
+													<Value>ARG_ID</Value>
+													<Value>INC_ARG_COUNT</Value>
+												</Lower>
+											</While>
+										</Setup>
+										<Do>
+											<Parameters Type="Default">
+												<IS_RPN>False</IS_RPN>
+												<VALUE>1</VALUE>
+											</Parameters>
+											<Parameters Type="Override">
+												<Condition NotEmpty="BINDING_INC_#ID#_PARAM_#ARG_ID#">
+													<Condition Valid="BINDING_INC_#ID#_PARAM_#ARG_ID#_IS_DYNAMIC">
+														<IS_RPN>True</IS_RPN>
+													</Condition>
+													<VALUE Process="Param">BINDING_INC_#ID#_PARAM_#ARG_ID#</VALUE>
+												</Condition>
+											</Parameters>
+											<Param RPN="#IS_RPN#">#VALUE#</Param>
+										</Do>
+									</Loop>
+								</Binding>
+							</Do>
+						</Loop>
+					</Bindings>
+				</Inc>
+				<Dec>
+					<Code>#DEC_CODE#</Code>
+					<Parameters>
+						<Loop>
+							<Setup>
+								<Param>ARG_ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Lower>
+										<Value>ARG_ID</Value>
+										<Value>DEC_ARG_COUNT</Value>
+									</Lower>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Default">
+									<Condition NotEmpty="DEC_PARAM_#ARG_ID#">
+										<True>
+											<PARAM_VALUE Process="Param">DEC_PARAM_#ARG_ID#</PARAM_VALUE>
+											<Condition NotEmpty="DEC_PARAM_#ARG_ID#_TYPE">
+												<True>
+													<PARAM_TYPE Process="Param">DEC_PARAM_#ARG_ID#_TYPE</PARAM_TYPE>
+												</True>
+												<False>
+													<PARAM_TYPE>Float</PARAM_TYPE>
+												</False>
+											</Condition>
+											<Condition NotEmpty="DEC_PARAM_#ARG_ID#_IS_DYNAMIC">
+												<True>
+													<PARAM_IS_DYNAMIC Process="Param">DEC_PARAM_#ARG_ID#_IS_DYNAMIC</PARAM_IS_DYNAMIC>
+												</True>
+												<False>
+													<PARAM_IS_DYNAMIC>False</PARAM_IS_DYNAMIC>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<PARAM_VALUE>p#ARG_ID#</PARAM_VALUE>
+											<PARAM_TYPE>Float</PARAM_TYPE>
+											<PARAM_IS_DYNAMIC>True</PARAM_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</Parameters>
+								<Param Type="#PARAM_TYPE#" RPN="#PARAM_IS_DYNAMIC#">#PARAM_VALUE#</Param>
+							</Do>
+						</Loop>
+					</Parameters>
+					<Bindings>
+						<Loop>
+							<Setup>
+								<Param>ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg NotEmpty="BINDING_DEC_#ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<BINDING_ID Process="Param">BINDING_DEC_#ID#</BINDING_ID>
+								</Parameters>
+								<Parameters Type="Override">
+									<Condition Check="BINDING_DEC_#ID#_EVENT_ID">
+										<True>
+											<EVENT_ID Process="Param">BINDING_DEC_#ID#_EVENT_ID</EVENT_ID>
+											<Condition Valid="BINDING_DEC_#ID#_EVENT_ID_ONLY">
+												<True>
+													<ALIAS_ID/>
+												</True>
+												<False>
+													<ALIAS_ID>#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_#BINDING_ID#</ALIAS_ID>														
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<EVENT_ID/>
+											<ALIAS_ID>#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_#BINDING_ID#</ALIAS_ID>	
+										</False>
+									</Condition>
+								</Parameters>
+								<Binding Alias="#ALIAS_ID#" EventID="#EVENT_ID#">
+									<Loop>
+										<Setup>
+											<Param>ARG_ID</Param>
+											<From>0</From>
+											<Inc>1</Inc>
+											<While>
+												<Lower>
+													<Value>ARG_ID</Value>
+													<Value>DEC_ARG_COUNT</Value>
+												</Lower>
+											</While>
+										</Setup>
+										<Do>
+											<Parameters Type="Default">
+												<IS_RPN>False</IS_RPN>
+												<VALUE>1</VALUE>
+											</Parameters>
+											<Parameters Type="Override">
+												<Condition NotEmpty="BINDING_DEC_#ID#_PARAM_#ARG_ID#">
+													<Condition Valid="BINDING_DEC_#ID#_PARAM_#ARG_ID#_IS_DYNAMIC">
+														<IS_RPN>True</IS_RPN>
+													</Condition>
+													<VALUE Process="Param">BINDING_DEC_#ID#_PARAM_#ARG_ID#</VALUE>
+												</Condition>
+											</Parameters>
+											<Param RPN="#IS_RPN#">#VALUE#</Param>
+										</Do>
+									</Loop>
+								</Binding>
+							</Do>
+						</Loop>
+					</Bindings>
+				</Dec>
+				<Set>
+					<Code>#SET_CODE#</Code>
+					<Parameters>
+						<Loop>
+							<Setup>
+								<Param>ARG_ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Lower>
+										<Value>ARG_ID</Value>
+										<Value>SET_ARG_COUNT</Value>
+									</Lower>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Default">
+									<Condition NotEmpty="SET_PARAM_#ARG_ID#">
+										<True>
+											<PARAM_VALUE Process="Param">SET_PARAM_#ARG_ID#</PARAM_VALUE>
+											<Condition NotEmpty="SET_PARAM_#ARG_ID#_TYPE">
+												<True>
+													<PARAM_TYPE Process="Param">SET_PARAM_#ARG_ID#_TYPE</PARAM_TYPE>
+												</True>
+												<False>
+													<PARAM_TYPE>Float</PARAM_TYPE>
+												</False>
+											</Condition>
+											<Condition NotEmpty="SET_PARAM_#ARG_ID#_IS_DYNAMIC">
+												<True>
+													<PARAM_IS_DYNAMIC Process="Param">SET_PARAM_#ARG_ID#_IS_DYNAMIC</PARAM_IS_DYNAMIC>
+												</True>
+												<False>
+													<PARAM_IS_DYNAMIC>False</PARAM_IS_DYNAMIC>
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<PARAM_VALUE>p#ARG_ID#</PARAM_VALUE>
+											<PARAM_TYPE>Float</PARAM_TYPE>
+											<PARAM_IS_DYNAMIC>True</PARAM_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</Parameters>
+								<Param Type="#PARAM_TYPE#" RPN="#PARAM_IS_DYNAMIC#">#PARAM_VALUE#</Param>
+							</Do>
+						</Loop>
+					</Parameters>
+					<Bindings>
+						<Loop>
+							<Setup>
+								<Param>ID</Param>
+								<From>0</From>
+								<Inc>1</Inc>
+								<While>
+									<Arg NotEmpty="BINDING_SET_#ID#"/>
+								</While>
+							</Setup>
+							<Do>
+								<Parameters Type="Override">
+									<BINDING_ID Process="Param">BINDING_SET_#ID#</BINDING_ID>
+								</Parameters>
+								<Parameters Type="Override">
+									<Condition Check="BINDING_SET_#ID#_EVENT_ID">
+										<True>
+											<EVENT_ID Process="Param">BINDING_SET_#ID#_EVENT_ID</EVENT_ID>
+											<Condition Valid="BINDING_SET_#ID#_EVENT_ID_ONLY">
+												<True>
+													<ALIAS_ID/>
+												</True>
+												<False>
+													<ALIAS_ID>#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_#BINDING_ID#</ALIAS_ID>														
+												</False>
+											</Condition>
+										</True>
+										<False>
+											<EVENT_ID/>
+											<ALIAS_ID>#INPUT_EVENT_ID_SOURCE#_#IE_NAME#_#BINDING_ID#</ALIAS_ID>	
+										</False>
+									</Condition>
+								</Parameters>
+								<Binding Alias="#ALIAS_ID#" EventID="#EVENT_ID#">
+									<Loop>
+										<Setup>
+											<Param>ARG_ID</Param>
+											<From>0</From>
+											<Inc>1</Inc>
+											<While>
+												<Lower>
+													<Value>ARG_ID</Value>
+													<Value>SET_ARG_COUNT</Value>
+												</Lower>
+											</While>
+										</Setup>
+										<Do>
+											<Parameters Type="Default">
+												<IS_RPN>False</IS_RPN>
+												<VALUE>0</VALUE>
+											</Parameters>
+											<Parameters Type="Override">
+												<Condition NotEmpty="BINDING_SET_#ID#_PARAM_#ARG_ID#">
+													<Condition Valid="BINDING_SET_#ID#_PARAM_#ARG_ID#_IS_DYNAMIC">
+														<IS_RPN>True</IS_RPN>
+													</Condition>
+													<VALUE Process="Param">BINDING_SET_#ID#_PARAM_#ARG_ID#</VALUE>
+												</Condition>
+											</Parameters>
+											<Param RPN="#IS_RPN#">#VALUE#</Param>
+										</Do>
+									</Loop>
+								</Binding>
+							</Do>
+						</Loop>
+					</Bindings>
+				</Set>
+			</Preset>
+		</Presets>
+	</InputEvent>
+	
+</ModelBehaviors>

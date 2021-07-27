@@ -11,7 +11,7 @@ class FMCPerfInitPage {
             };
             let grossWeightCell = "□□□.□";
             if (isFinite(fmc.getFuelVarsUpdatedGrossWeight(true))) {
-                grossWeightCell = fmc.getFuelVarsUpdatedGrossWeight(true).toFixed(1) + " lb";
+                grossWeightCell = fastToFixed(fmc.getFuelVarsUpdatedGrossWeight(true), 1) + " lb";
             }
             fmc.onLeftInput[0] = () => {
                 let value = fmc.inOut;
@@ -24,7 +24,7 @@ class FMCPerfInitPage {
             };
             let crzAltCell = "□□□□□";
             if (isFinite(fmc.cruiseFlightLevel)) {
-                crzAltCell = fmc.cruiseFlightLevel.toFixed(0);
+                crzAltCell = fastToFixed(fmc.cruiseFlightLevel, 0);
             }
             fmc.onRightInput[0] = () => {
                 let value = fmc.inOut;
@@ -35,11 +35,11 @@ class FMCPerfInitPage {
             };
             let blockFuelCell = "□□□.□";
             if (isFinite(fmc.getBlockFuel(true))) {
-                blockFuelCell = fmc.getBlockFuel(true).toFixed(1) + " lb";
+                blockFuelCell = fastToFixed(fmc.getBlockFuel(true), 1) + " lb";
             }
             let zeroFuelWeightCell = "□□□.□";
             if (isFinite(fmc.getZeroFuelWeight(true))) {
-                zeroFuelWeightCell = fmc.getZeroFuelWeight(true).toFixed(1) + " lb";
+                zeroFuelWeightCell = fastToFixed(fmc.getZeroFuelWeight(true), 1) + " lb";
             }
             fmc.onLeftInput[2] = () => {
                 let value = fmc.inOut;
@@ -50,7 +50,7 @@ class FMCPerfInitPage {
             };
             let costIndex = "□□□□";
             if (isFinite(fmc.costIndex)) {
-                costIndex = fmc.costIndex.toFixed(0);
+                costIndex = fastToFixed(fmc.costIndex, 0);
             }
             fmc.onRightInput[1] = () => {
                 let value = fmc.inOut;
@@ -62,7 +62,7 @@ class FMCPerfInitPage {
             let reservesCell = "□□□.□";
             let reserves = fmc.getFuelReserves();
             if (isFinite(reserves)) {
-                reservesCell = reserves.toFixed(1) + " lb";
+                reservesCell = fastToFixed(reserves, 1) + " lb";
             }
             fmc.onLeftInput[3] = () => {
                 let value = fmc.inOut;

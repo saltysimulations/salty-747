@@ -12,7 +12,6 @@ class B747_8_PFD extends BaseAirliners {
                 new B747_8_PFD_MainPage()
             ]),
         ];
-        this.maxUpdateBudget = 12;
     }
     disconnectedCallback() {
         super.disconnectedCallback();
@@ -63,14 +62,14 @@ class B747_8_PFD_VSpeed extends NavSystemElement {
     }
     onUpdate(_deltaTime) {
         var vSpeed = Math.round(Simplane.getVerticalSpeed());
-        this.vsi.setAttribute("vspeed", vSpeed.toString());
+        diffAndSetAttribute(this.vsi, "vspeed", vSpeed + '');
         if (Simplane.getAutoPilotVerticalSpeedHoldActive()) {
             var selVSpeed = Math.round(Simplane.getAutoPilotVerticalSpeedHoldValue());
-            this.vsi.setAttribute("selected_vspeed", selVSpeed.toString());
-            this.vsi.setAttribute("selected_vspeed_active", "true");
+            diffAndSetAttribute(this.vsi, "selected_vspeed", selVSpeed + '');
+            diffAndSetAttribute(this.vsi, "selected_vspeed_active", "true");
         }
         else {
-            this.vsi.setAttribute("selected_vspeed_active", "false");
+            diffAndSetAttribute(this.vsi, "selected_vspeed_active", "false");
         }
     }
     onExit() {
@@ -159,12 +158,12 @@ class B747_8_PFD_Attitude extends NavSystemElement {
             this.hsi.update(_deltaTime);
             var xyz = Simplane.getOrientationAxis();
             if (xyz) {
-                this.hsi.setAttribute("pitch", (xyz.pitch / Math.PI * 180).toString());
-                this.hsi.setAttribute("bank", (xyz.bank / Math.PI * 180).toString());
+                diffAndSetAttribute(this.hsi, "pitch", (xyz.pitch / Math.PI * 180) + '');
+                diffAndSetAttribute(this.hsi, "bank", (xyz.bank / Math.PI * 180) + '');
             }
-            this.hsi.setAttribute("slip_skid", Simplane.getInclinometer().toString());
-            this.hsi.setAttribute("radio_altitude", Simplane.getAltitudeAboveGround().toString());
-            this.hsi.setAttribute("radio_decision_height", this.gps.radioNav.getRadioDecisionHeight().toString());
+            diffAndSetAttribute(this.hsi, "slip_skid", Simplane.getInclinometer() + '');
+            diffAndSetAttribute(this.hsi, "radio_altitude", Simplane.getAltitudeAboveGround() + '');
+            diffAndSetAttribute(this.hsi, "radio_decision_height", this.gps.radioNav.getRadioDecisionHeight() + '');
         }
     }
     onExit() {

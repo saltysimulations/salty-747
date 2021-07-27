@@ -1,0 +1,301 @@
+<ModelBehaviors>
+	<InputEvent ID="LANDING_GEAR">
+		<Presets>
+			<Switch>
+				<Case NotEmpty="GEAR_ID">
+					<Preset ID="LANDING_GEAR_Gear">
+						<Parameters Type="Default">
+							<UPPER_LIMIT>1</UPPER_LIMIT>
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>LANDING_GEAR_Gear</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE> <!-- TODO Use Up/Down TTs instead -->
+							<INC_EVENT>0 (&gt;B:LANDING_GEAR_Gear_Set)</INC_EVENT><!-- Events are reversed because for the simvar 0 = UP 1 = DOWN -->
+							<DEC_EVENT>1 (&gt;B:LANDING_GEAR_Gear_Set)</DEC_EVENT>
+							<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:GEAR_SET) l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</SET_EVENT>
+							<INIT_VALUE>(A:GEAR HANDLE POSITION, Bool) (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<ON_STATE_CHANGED/>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="False">@TT_Package.LANDING_GEAR_LEVER_GEAR_ACTION</TTDescription>
+							<TTValue RPN="True">(B:LANDING_GEAR_Gear_Set, bool) if{ (R:1:@TT_Package.GT_STATE_DOWN) } els{ (R:1:@TT_Package.GT_STATE_UP) }</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>bool</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="GEAR HANDLE POSITION"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="LANDING_GEAR_Gear_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding Alias="LANDING_GEAR_Gear_Up">
+									<Param>0</Param>
+								</Binding>
+								<Binding Alias="LANDING_GEAR_Gear_Down">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="GEAR_TOGGLE">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="GEAR_SET">
+									<Param RPN="True">p1</Param>
+								</Binding>
+								<Binding EventID="GEAR_UP">
+									<Param>0</Param>
+								</Binding>
+								<Binding EventID="GEAR_DOWN">
+									<Param>1</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="FLOATER_ID">
+					<Preset ID="LANDING_GEAR_Floater">
+						<Parameters Type="Default">
+							<UPPER_LIMIT>1</UPPER_LIMIT>
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>LANDING_GEAR_Floater</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE> <!-- TODO Use Up/Down TTs instead -->
+							<INC_EVENT>0 (&gt;B:LANDING_GEAR_Floater_Set)</INC_EVENT>
+							<DEC_EVENT>1 (&gt;B:LANDING_GEAR_Floater_Set)</DEC_EVENT>
+							<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 if{ (&gt;K:RETRACT_FLOAT_SWITCH_INC) (&gt;K:RETRACT_FLOAT_SWITCH_INC) } els{ (&gt;K:RETRACT_FLOAT_SWITCH_DEC) (&gt;K:RETRACT_FLOAT_SWITCH_DEC) } l0 (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</SET_EVENT>
+							<INIT_VALUE>(A:RETRACT FLOAT SWITCH, Bool) (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<ON_STATE_CHANGED/>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="True">@TT_Package.LANDING_GEAR_LEVER_FLOATER_ACTION</TTDescription>
+							<TTValue RPN="True">(B:LANDING_GEAR_Floater_Set, bool) if{ (R:1:@TT_Package.GT_STATE_DOWN) } els{ (R:1:@TT_Package.GT_STATE_UP) }</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>bool</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="LANDING_GEAR_Floater_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="RETRACT_FLOAT_SWITCH_INC">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="RETRACT_FLOAT_SWITCH_DEC">
+									<Param>0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case NotEmpty="PARKING_BRAKE_ID">
+					<Preset ID="LANDING_GEAR_ParkingBrake">
+						<Parameters Type="Default">
+							<UPPER_LIMIT>1</UPPER_LIMIT>
+							<INCREMENT>1</INCREMENT>
+							<LOWER_LIMIT>0</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC_EXTERNAL_CODE/>
+							<ON_AFTER_DEC_EXTERNAL_CODE/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<Condition Check="SWITCH_POSITION_VAR">
+								<True>
+									<INPUTEVENT_VAR_TYPE>#SWITCH_POSITION_TYPE#</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>#SWITCH_POSITION_VAR#</INPUTEVENT_VAR_NAME>
+								</True>
+								<False>
+									<INPUTEVENT_VAR_TYPE>L</INPUTEVENT_VAR_TYPE>
+									<INPUTEVENT_VAR_NAME>LANDING_GEAR_ParkingBrake</INPUTEVENT_VAR_NAME>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<Condition Valid="HAS_ANIM_DELAY">
+								<True>
+									<ON_AFTER_SET>
+										(A:BRAKE PARKING POSITION, bool) ! if{
+											(A:BRAKE PARKING POSITION, bool) 100 * (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+										} els{
+											(E:SIMULATION TIME, second) #ANIM_DELAY# + (&gt;O:BrakeStartingTime)	
+										}
+									</ON_AFTER_SET>
+								</True>
+								<False>
+									<ON_AFTER_SET>
+										(A:BRAKE PARKING POSITION, bool) 100 * (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)
+									</ON_AFTER_SET>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<INC_EVENT>1 (&gt;B:LANDING_GEAR_ParkingBrake_Set)</INC_EVENT>
+							<DEC_EVENT>0 (&gt;B:LANDING_GEAR_ParkingBrake_Set)</DEC_EVENT>
+							<SET_EVENT>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;K:PARKING_BRAKE_SET)</SET_EVENT>
+							<INIT_VALUE>(A:BRAKE PARKING POSITION, Bool) 100 * (&gt;#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</INIT_VALUE>
+							<TOOLTIP_VALUE>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) @TT_OnOff_Cond</TOOLTIP_VALUE>
+							<ON_STATE_CHANGED/>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>#ON_STATE_CHANGED# #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+							<ON_AFTER_INC>#ON_AFTER_INC# #ON_AFTER_INC_EXTERNAL_CODE#</ON_AFTER_INC>
+							<ON_AFTER_DEC>#ON_AFTER_DEC# #ON_AFTER_DEC_EXTERNAL_CODE#</ON_AFTER_DEC>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_Y</Icon>
+							<Interaction>PRIMARY_DOWN</Interaction>
+							<InteractionLockable>LOCK</InteractionLockable>
+							<TTDescription RPN="False">@TT_Package.LANDING_GEAR_SWITCH_PARKING_BRAKE_ACTION_SET</TTDescription>
+							<TTValue RPN="True">#TOOLTIP_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>bool</Units>
+							<Code>(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#)</Code>
+							<Init>#INIT_VALUE#</Init>
+							<WatchVars>
+								<Simvar ID="BRAKE PARKING POSITION"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# #INC_EVENT# #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# #DEC_EVENT# #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# #SET_EVENT# #ON_AFTER_SET# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="LANDING_GEAR_ParkingBrake_Toggle">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="PARKING_BRAKES">
+									<Param RPN="True">(#INPUTEVENT_VAR_TYPE#:#INPUTEVENT_VAR_NAME#) !</Param>
+								</Binding>
+								<Binding EventID="PARKING_BRAKE_SET">
+									<Param RPN="True">p1</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Default>
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>LANDING_GEAR</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Default>
+			</Switch>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>
+

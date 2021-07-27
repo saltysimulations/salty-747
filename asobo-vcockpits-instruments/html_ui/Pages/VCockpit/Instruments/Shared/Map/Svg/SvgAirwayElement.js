@@ -15,8 +15,8 @@ class SvgAirwayElement extends SvgMapElement {
         shape.id = this.id(map);
         shape.classList.add("map-airway");
         shape.classList.add("map-airway-" + this.airwayType);
-        shape.setAttribute("stroke-width", "4");
-        shape.setAttribute("stroke", "#3A7216");
+        diffAndSetAttribute(shape, "stroke-width", "4");
+        diffAndSetAttribute(shape, "stroke", "#3A7216");
         return shape;
     }
     updateDraw(map) {

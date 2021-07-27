@@ -40,7 +40,7 @@ var Boeing_FCU;
             super.connectedCallback();
             this.modeElement = this.querySelector("#mode");
             if (this.modeElement != null) {
-                this.modeElement.textContent = "";
+                diffAndSetText(this.modeElement, "");
             }
             if (this.valueElement != null) {
                 this.valueElement.isVisible = false;
@@ -53,7 +53,7 @@ var Boeing_FCU;
             if ((visible != this.m_isVisible) || machChanged) {
                 this.m_isVisible = visible;
                 if (this.modeElement != null) {
-                    this.modeElement.textContent = this.m_isVisible ? (Simplane.getAutoPilotMachModeActive() ? "MACH" : "IAS") : "";
+                    diffAndSetText(this.modeElement, this.m_isVisible ? (Simplane.getAutoPilotMachModeActive() ? "MACH" : "IAS") : "");
                 }
                 if (this.valueElement != null) {
                     this.valueElement.isVisible = this.m_isVisible;
@@ -71,19 +71,19 @@ var Boeing_FCU;
         formatValueToString(_value, _dp = 0) {
             if (Simplane.getAutoPilotMachModeActive()) {
                 if (_value < 1.0) {
-                    let fixedMach = _value.toFixed(3);
+                    let fixedMach = fastToFixed(_value, 3);
                     var radixPos = fixedMach.indexOf('.');
                     return fixedMach.slice(radixPos);
                 }
-                return _value.toFixed(1);
+                return fastToFixed(_value, 1);
             }
-            return _value.toFixed(0);
+            return fastToFixed(_value, 0);
         }
         shouldBeVisible() {
             if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") === 1) {
                 return true;
             }
-            else if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
+            else if (Simplane.getAPVNAVActive() === 1) {
                 return false;
             }
             return true;
@@ -101,7 +101,7 @@ var Boeing_FCU;
             super.connectedCallback();
             this.modeElement = this.querySelector("#mode");
             if (this.modeElement != null) {
-                this.modeElement.textContent = "";
+                diffAndSetText(this.modeElement, "");
             }
             if (this.valueElement != null) {
                 this.valueElement.isVisible = false;
@@ -120,7 +120,7 @@ var Boeing_FCU;
                 this.m_isVisible = visible;
                 this.isTRKMode = trkMode;
                 if (this.modeElement != null) {
-                    this.modeElement.textContent = this.m_isVisible ? (this.isTRKMode ? "TRK" : "HDG") : "";
+                    diffAndSetText(this.modeElement, this.m_isVisible ? (this.isTRKMode ? "TRK" : "HDG") : "");
                 }
                 if (this.valueElement != null) {
                     this.valueElement.isVisible = this.m_isVisible;
@@ -138,7 +138,7 @@ var Boeing_FCU;
                 return Simplane.getAutoPilotTrackAngle();
             }
             else {
-                return SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK DIR:1", "degrees");
+                return Simplane.getAutoPilotSelectedHeadingLockValueDegrees();
             }
         }
         formatValueToString(_value, _dp = 0) {
@@ -157,7 +157,7 @@ var Boeing_FCU;
             super.connectedCallback();
             this.modeElement = this.querySelector("#mode");
             if (this.modeElement != null) {
-                this.modeElement.textContent = "V/S";
+                diffAndSetText(this.modeElement, "V/S");
             }
             if (this.valueElement != null) {
                 this.valueElement.isVisible = false;
@@ -171,7 +171,7 @@ var Boeing_FCU;
                 this.m_isVisible = visible;
                 this.isFPAMode = fpaMode;
                 if (this.modeElement != null) {
-                    this.modeElement.textContent = this.isFPAMode ? "FPA" : "V/S";
+                    diffAndSetText(this.modeElement, this.isFPAMode ? "FPA" : "V/S");
                 }
                 if (this.valueElement != null) {
                     this.valueElement.isVisible = this.m_isVisible;
@@ -191,10 +191,10 @@ var Boeing_FCU;
         }
         formatValueToString(_value, _dp = 0) {
             if (this.isFPAMode) {
-                return ((_value > 0) ? "+" : "") + _value.toFixed(1);
+                return ((_value > 0) ? "+" : "") + fastToFixed(_value, 1);
             }
             else {
-                return ((_value > 0) ? "+" : "") + _value.toFixed(0);
+                return ((_value > 0) ? "+" : "") + fastToFixed(_value, 0);
             }
         }
     }

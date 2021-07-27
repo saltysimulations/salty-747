@@ -1,0 +1,1474 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+	<InputEvent ID="ENGINE">
+		<Presets>
+			<Switch>
+				<Case Valid="THROTTLE_ID">
+					<Preset ID="ENGINE_Throttle_#THROTTLE_ID#">
+						<Parameters Type="Default">
+							<USE_IDLE_POS_SNAP_ASSISTANCE>@UseIdlePosSnapAssistance</USE_IDLE_POS_SNAP_ASSISTANCE>
+						</Parameters>
+						<Parameters Type="Default">
+							<INCREMENT>256</INCREMENT>
+							<UPPER_LIMIT>16384</UPPER_LIMIT>
+							<LOWER_LIMIT>(A:THROTTLE LOWER LIMIT, position 16k)</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_BEFORE_INC_SET/>
+							<ON_BEFORE_DEC_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_AFTER_SET/>
+							<Condition Valid="USE_IDLE_POS_SNAP_ASSISTANCE">
+								<MIN_TIME_HELD_BEFORE_REVERSE>@IdlePosSnapAssistance_MinTimebeforeReverse</MIN_TIME_HELD_BEFORE_REVERSE>
+								<THRESHOLD_HELD_DETECTION>@IdlePosSnapAssistance_ThresholdHeldDetection</THRESHOLD_HELD_DETECTION>
+								<ON_ALLOW_REVERSE/>
+								<VALUE_IDLE>0</VALUE_IDLE>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition Valid="USE_SEPARATE_REVERSER">
+								<ON_BEFORE_INC_SET>s0 0 &lt; if{ 0 sp0 } l0</ON_BEFORE_INC_SET>
+							</Condition>
+							<Condition Valid="USE_IDLE_POS_SNAP_ASSISTANCE">
+								<Condition Valid="USE_SEPARATE_REVERSER">
+									<ON_ALLOW_REVERSE>#ON_ALLOW_REVERSE# (B:ENGINE_Throttle_#THROTTLE_ID#, percent) 0 == if{ (&gt;B:ENGINE_Throttle_Reverser_#THROTTLE_ID#_Full_Reverse) quit }</ON_ALLOW_REVERSE>
+									<VALUE_IDLE>(B:ENGINE_Throttle_Reverser_#THROTTLE_ID#, percent over 100) -1 *</VALUE_IDLE>
+								</Condition>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition Valid="USE_IDLE_POS_SNAP_ASSISTANCE">
+								<ON_BEFORE_DEC>#ON_BEFORE_DEC# 
+									(O:_Process_Idle_Pose_Snap_Assist) if{ 
+										(A:GENERAL ENG THROTTLE LEVER POSITION:#THROTTLE_ID#, position 16k) sp0
+										(A:GENERAL ENG THROTTLE LEVER POSITION:#THROTTLE_ID#, position 16k) p0 - sp1
+										(O:TS_Last_Dec_Event) (&gt;O:TS_Prev_Last_Dec_Event) (E:ABSOLUTE TIME, second) (&gt;O:TS_Last_Dec_Event)
+									}
+								</ON_BEFORE_DEC>
+								<ON_BEFORE_DEC_SET>#ON_BEFORE_DEC_SET#
+									(O:_Process_Idle_Pose_Snap_Assist) if{ 
+										s2 sign l0 sign != if{
+											(* Considered held if called at an interval lower than #THRESHOLD_HELD_DETECTION#s *)
+											(O:TS_Last_Dec_Event) (O:TS_Prev_Last_Dec_Event) - abs #THRESHOLD_HELD_DETECTION# &lt; if{
+												(O:TS_Last_Dec_Event) (O:TS_First_Dec_Event) - abs #MIN_TIME_HELD_BEFORE_REVERSE# &lt; if{ 
+													#VALUE_IDLE# sp2 
+												} els{  
+													(O:_ReverseInputsAllowed) ! if{ (O:TS_Last_Dec_Event) (&gt;O:TS_First_Dec_Event) #VALUE_IDLE# sp2 } els{ #ON_ALLOW_REVERSE# }
+												}
+											} els{ 
+												(O:TS_Last_Dec_Event) (&gt;O:TS_First_Dec_Event) #VALUE_IDLE# sp2 1 (&gt;O:_ReverseInputsAllowed)
+											}
+										} els{ (O:TS_Last_Dec_Event) (&gt;O:TS_First_Dec_Event) 0 (&gt;O:_ReverseInputsAllowed) } l2
+									}
+								</ON_BEFORE_DEC_SET>
+								<ON_AFTER_DEC>#ON_AFTER_DEC# 0 (&gt;O:_Process_Idle_Pose_Snap_Assist)</ON_AFTER_DEC>
+								<ACTIVATE_IDLE_POS_SNAP_ASSIST>1 (&gt;O:_Process_Idle_Pose_Snap_Assist)</ACTIVATE_IDLE_POS_SNAP_ASSIST>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition Valid="USE_SEPARATE_REVERSER">
+								<True>
+									<LOWER_LIMIT>0</LOWER_LIMIT>
+									<LOWER_POSITION_PCT_OVER_100 Process="Float">0</LOWER_POSITION_PCT_OVER_100>
+									<ON_AFTER_SET>(B:ENGINE_Throttle_Reverser_#THROTTLE_ID#, percent) 0 &gt; p0 0 &gt;= and if{ (&gt;B:ENGINE_Throttle_Reverser_#THROTTLE_ID#_Idle) } #ON_AFTER_SET#</ON_AFTER_SET>
+									<ON_BEFORE_SET>#ON_BEFORE_SET# p0 0 &lt; if{ quit }</ON_BEFORE_SET>
+									<Condition Valid="USE_IDLE_POS_SNAP_ASSISTANCE">
+										<False>
+											<ON_BEFORE_DEC>#ON_BEFORE_DEC# (B:ENGINE_Throttle_#THROTTLE_ID#, percent) 0 == if{ (&gt;B:ENGINE_Throttle_Reverser_#THROTTLE_ID#_Full_Reverse) quit }</ON_BEFORE_DEC>											
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<LOWER_POSITION_PCT_OVER_100 Process="Float">#LOWER_LIMIT# #UPPER_LIMIT# /</LOWER_POSITION_PCT_OVER_100>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>@TT_Package.ENGINE_THROTTLE_ACTION_1ENG</TT_DESCRIPTION>
+									<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">(A:GENERAL ENG THROTTLE LEVER POSITION:#THROTTLE_ID#, percent) '%.1f%%' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(O:ENGINE_Throttle_#THROTTLE_ID#_Position) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>(A:GENERAL ENG THROTTLE LEVER POSITION:#THROTTLE_ID#, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;O:ENGINE_Throttle_#THROTTLE_ID#_Position)</Init>
+							<WatchVars>
+								<Simvar ID="GENERAL ENG THROTTLE LEVER POSITION:#THROTTLE_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# (A:GENERAL ENG THROTTLE LEVER POSITION:#THROTTLE_ID#, position 16k) p0 + 16384 / #ON_BEFORE_INC_SET# (&gt;B:ENGINE_Throttle_#THROTTLE_ID#_Set) #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="THROTTLE_INCR"><!-- event manipulating all throttles (declared for each throttle preset) -->
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="THROTTLE_INCR_SMALL"><!-- event manipulating all throttles (declared for each throttle preset) -->
+									<Param>0.5</Param>
+								</Binding>
+								<Binding EventID="THROTTLE#THROTTLE_ID#_INCR">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="THROTTLE#THROTTLE_ID#_INCR_SMALL">
+									<Param>0.5</Param>
+								</Binding>
+							</Bindings>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# (A:GENERAL ENG THROTTLE LEVER POSITION:#THROTTLE_ID#, position 16k) p0 - 16384 / #ON_BEFORE_DEC_SET# (&gt;B:ENGINE_Throttle_#THROTTLE_ID#_Set) #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Condition Valid="USE_IDLE_POS_SNAP_ASSISTANCE">
+									<True>
+										<Binding EventID="THROTTLE_DECR"><!-- event manipulating all throttles (declared for each throttle preset) -->
+											<Param RPN="True">#ACTIVATE_IDLE_POS_SNAP_ASSIST# 1</Param>
+										</Binding>
+										<Binding EventID="THROTTLE_DECR_SMALL"><!-- event manipulating all throttles (declared for each throttle preset) -->
+											<Param RPN="True">#ACTIVATE_IDLE_POS_SNAP_ASSIST# 0.5</Param>
+										</Binding>
+										<Binding EventID="THROTTLE#THROTTLE_ID#_DECR">
+											<Param RPN="True">#ACTIVATE_IDLE_POS_SNAP_ASSIST# 1</Param>
+										</Binding>
+										<Binding EventID="THROTTLE#THROTTLE_ID#_DECR_SMALL">
+											<Param RPN="True">#ACTIVATE_IDLE_POS_SNAP_ASSIST# 0.5</Param>
+										</Binding>
+									</True>
+									<False>
+										<Binding EventID="THROTTLE_DECR"><!-- event manipulating all throttles (declared for each throttle preset) -->
+											<Param>1</Param>
+										</Binding>
+										<Binding EventID="THROTTLE_DECR_SMALL"><!-- event manipulating all throttles (declared for each throttle preset) -->
+											<Param>0.5</Param>
+										</Binding>
+										<Binding EventID="THROTTLE#THROTTLE_ID#_DECR">
+											<Param>1</Param>
+										</Binding>
+										<Binding EventID="THROTTLE#THROTTLE_ID#_DECR_SMALL">
+											<Param>0.5</Param>
+										</Binding>
+									</False>
+								</Condition>
+							</Bindings>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:THROTTLE#THROTTLE_ID#_SET) l0 (&gt;O:ENGINE_Throttle_#THROTTLE_ID#_Position) #ON_AFTER_SET#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 16384 *</Param>
+							</Parameters>
+							<Bindings>
+								<!-- Aliases -->
+								<Binding Alias="ENGINE_All_Throttle_Full_Forward"><!-- event manipulating all throttles (declared for each throttle preset) -->
+									<Param>1</Param>
+								</Binding>
+								<Binding Alias="ENGINE_All_Throttle_Full_Backward"><!-- event manipulating all throttles (declared for each throttle preset) -->
+									<Param>0</Param>
+								</Binding>
+								<Binding Alias="ENGINE_All_Throttle_Idle"><!-- event manipulating all throttles (declared for each throttle preset) -->
+									<Param>0</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Throttle_#THROTTLE_ID#_Full_Forward">
+									<Param>1</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Throttle_#THROTTLE_ID#_Full_Backward">
+									<Param>#LOWER_POSITION_PCT_OVER_100#</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Throttle_#THROTTLE_ID#_Idle">
+									<Param>0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="REVERSER_ID">
+					<Preset ID="ENGINE_Throttle_Reverser_#REVERSER_ID#">
+						<Parameters Type="Default">
+							<INCREMENT>256</INCREMENT>
+						</Parameters>
+						<Parameters Type="Override">
+							<LOWER_LIMIT>(A:THROTTLE LOWER LIMIT, position 16k)</LOWER_LIMIT>
+							<UPPER_LIMIT>0</UPPER_LIMIT>
+						</Parameters>
+						<Parameters Type="Override">
+							<CAN_SET_THROTTLE>(B:ENGINE_Throttle_#REVERSER_ID#, percent) 0 ==</CAN_SET_THROTTLE>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="True">#REVERSER_ID# (R:1:@TT_Package.ENGINE_THROTTLE_REVERSE) @sprintf</TTDescription>
+							<TTValue RPN="True">(B:ENGINE_Throttle_Reverser_#REVERSER_ID#, percent) '%.2f%%' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(O:ENGINE_Throttle_Reverser_#REVERSER_ID#_Position) #LOWER_LIMIT# / 100 *</Code>
+							<Init>(A:GENERAL ENG THROTTLE LEVER POSITION:#REVERSER_ID#, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;O:ENGINE_Throttle_Reverser_#REVERSER_ID#_Position)</Init>
+							<WatchVars>
+								<Simvar ID="GENERAL ENG THROTTLE LEVER POSITION:#REVERSER_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>(A:GENERAL ENG THROTTLE LEVER POSITION:#REVERSER_ID#, position 16k) p0 - #LOWER_LIMIT# max #UPPER_LIMIT# min #LOWER_LIMIT# / (&gt;B:ENGINE_Throttle_Reverser_#REVERSER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>(A:GENERAL ENG THROTTLE LEVER POSITION:#REVERSER_ID#, position 16k) p0 + #LOWER_LIMIT# max #UPPER_LIMIT# min #LOWER_LIMIT# / (&gt;B:ENGINE_Throttle_Reverser_#REVERSER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #LOWER_LIMIT# max #UPPER_LIMIT# min sp0 #CAN_SET_THROTTLE# if{ l0 (&gt;K:THROTTLE#REVERSER_ID#_SET) } els{ #UPPER_LIMIT# sp0 } l0 (&gt;O:ENGINE_Throttle_Reverser_#REVERSER_ID#_Position)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #LOWER_LIMIT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ENGINE_All_Throttle_Reverser_Full_Reverse"><!-- event manipulating all throttles (declared for each throttle preset) -->
+									<Param>1</Param>
+								</Binding>
+								<Binding Alias="ENGINE_All_Throttle_Reverser_Idle"><!-- event manipulating all throttles (declared for each throttle preset) -->
+									<Param>0</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Throttle_Reverser_#REVERSER_ID#_Full_Reverse">
+									<Param>1</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Throttle_Reverser_#REVERSER_ID#_Idle">
+									<Param>0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="PROPELLER_ID">
+					<Preset ID="ENGINE_Propeller_#PROPELLER_ID#">
+						<Parameters Type="Default">
+							<INCREMENT>256</INCREMENT>
+							<UPPER_LIMIT>16384</UPPER_LIMIT>
+							<LOWER_LIMIT Process="Int">@FeatherPropPos 16384 * 0 (A:THROTTLE LOWER LIMIT, position 16k) 0 &lt; ?</LOWER_LIMIT>
+							<ON_BEFORE_INC/>
+							<ON_BEFORE_DEC/>
+							<ON_BEFORE_SET/>
+							<ON_AFTER_INC/>
+							<ON_AFTER_DEC/>
+							<ON_AFTER_SET/>
+							<Condition NotEmpty="TT_DESCRIPTION_ID">
+								<True>
+									<Condition NotEmpty="TT_DESCRIPTION_INDEX">
+										<True>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+										</True>
+										<False>
+											<TT_DESCRIPTION>#TT_DESCRIPTION_ID#</TT_DESCRIPTION>
+											<TT_DESCRIPTION_IS_DYNAMIC>False</TT_DESCRIPTION_IS_DYNAMIC>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<TT_DESCRIPTION>#PROPELLER_ID# (R:1:@TT_Package.ENGINE_PROPELLER_ACTION_SOLO) @sprintf</TT_DESCRIPTION>
+									<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+								</False>
+							</Condition>
+						</Parameters>
+						<Parameters Type="Override">
+							<LOWER_POSITION_PCT_OVER_100 Process="Float">#LOWER_LIMIT# #UPPER_LIMIT# /</LOWER_POSITION_PCT_OVER_100>
+						</Parameters>
+						<Tooltip>
+							<Icon>MOVE_AXIS_Y</Icon>
+							<Interaction>PRIMARY_DOWN+Y_AXIS</Interaction>
+							<InteractionLockable>Y_AXIS</InteractionLockable>
+							<TTDescription RPN="#TT_DESCRIPTION_IS_DYNAMIC#">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">(A:GENERAL ENG PROPELLER LEVER POSITION:#PROPELLER_ID#, percent) '%.1f%%' @sprintf</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>percent</Units>
+							<Code>(O:ENGINE_Propeller_#PROPELLER_ID#_Position) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</Code>
+							<Init>(A:GENERAL ENG PROPELLER LEVER POSITION:#PROPELLER_ID#, position 16k) #LOWER_LIMIT# max #UPPER_LIMIT# min (&gt;O:ENGINE_Propeller_#PROPELLER_ID#_Position)</Init>
+							<WatchVars>
+								<Simvar ID="GENERAL ENG PROPELLER LEVER POSITION:#PROPELLER_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>#ON_BEFORE_INC# (A:GENERAL ENG PROPELLER LEVER POSITION:#PROPELLER_ID#, position 16k) p0 + 16384 / (&gt;B:ENGINE_Propeller_#PROPELLER_ID#_Set) #ON_AFTER_INC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="PROP_PITCH_INCR"><!-- event manipulating all propellers -->
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="PROP_PITCH_INCR_SMALL"><!-- event manipulating all propellers -->
+									<Param>0.5</Param>
+								</Binding>
+								<Binding EventID="PROP_PITCH#PROPELLER_ID#_INCR">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="PROP_PITCH#PROPELLER_ID#_INCR_SMALL">
+									<Param>0.5</Param>
+								</Binding>
+							</Bindings>
+						</Inc>
+						<Dec>
+							<Code>#ON_BEFORE_DEC# (A:GENERAL ENG PROPELLER LEVER POSITION:#PROPELLER_ID#, position 16k) p0 - 16384 / (&gt;B:ENGINE_Propeller_#PROPELLER_ID#_Set) #ON_AFTER_DEC#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 #INCREMENT# *</Param>
+							</Parameters>
+							<Bindings>
+								<Binding EventID="PROP_PITCH_DECR"><!-- event manipulating all propellers -->
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="PROP_PITCH_DECR_SMALL"><!-- event manipulating all propellers -->
+									<Param>0.5</Param>
+								</Binding>
+								<Binding EventID="PROP_PITCH#PROPELLER_ID#_DECR">
+									<Param>1</Param>
+								</Binding>
+								<Binding EventID="PROP_PITCH#PROPELLER_ID#_DECR_SMALL">
+									<Param>0.5</Param>
+								</Binding>
+							</Bindings>
+						</Dec>
+						<Set>
+							<Code>#ON_BEFORE_SET# p0 #LOWER_LIMIT# max #UPPER_LIMIT# min s0 (&gt;K:PROP_PITCH#PROPELLER_ID#_SET) l0 (&gt;O:ENGINE_Propeller_#PROPELLER_ID#_Position) #ON_AFTER_SET#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0 16384 *</Param>
+							</Parameters>
+							<Bindings>
+								<!-- Aliases -->
+								<Binding Alias="ENGINE_All_Propeller_Full_Forward"><!-- event manipulating all propellers -->
+									<Param>1</Param>
+								</Binding>
+								<Binding Alias="ENGINE_All_Propeller_Full_Backward"><!-- event manipulating all propellers -->
+									<Param>#LOWER_POSITION_PCT_OVER_100#</Param>
+								</Binding>
+								<Binding Alias="ENGINE_All_Propeller_Idle"><!-- event manipulating all propellers -->
+									<Param>0</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Propeller_#PROPELLER_ID#_Full_Forward">
+									<Param>1</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Propeller_#PROPELLER_ID#_Full_Backward">
+									<Param>#LOWER_POSITION_PCT_OVER_100#</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Propeller_#PROPELLER_ID#_Idle">
+									<Param>0</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="MAGNETO_ID">
+					<Preset ID="ENGINE_Magneto_#IE_MAGNETO_ID#">
+						<Parameters Type="Default">
+							<SET_MAGNETO>(&gt;K:MAGNETO#MAGNETO_ID#_SET)</SET_MAGNETO>
+							<GET_MAGNETO>
+								(A:RECIP ENG LEFT MAGNETO:#MAGNETO_ID#, Bool) sp0
+								(A:RECIP ENG RIGHT MAGNETO:#MAGNETO_ID#, Bool) sp1
+							</GET_MAGNETO>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_ON>1</STATE_ON>
+									<MAX_POS>1</MAX_POS>
+									<!-- MAGNETO_SIDE : Left or Right or Both -->
+								</Case>
+								<Case Value="OFF_L_R_BOTH">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_L>1</STATE_L>
+									<STATE_R>2</STATE_R>
+									<STATE_BOTH>3</STATE_BOTH>
+									<MAX_POS>3</MAX_POS>
+								</Case>
+								<Case Value="OFF_L_R_BOTH_START">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_L>1</STATE_L>
+									<STATE_R>2</STATE_R>
+									<STATE_BOTH>3</STATE_BOTH>
+									<STATE_START>4</STATE_START>
+									<MAX_POS>4</MAX_POS>
+									<IS_STARTER_ON>(A:GENERAL ENG STARTER:#MAGNETO_ID#, Bool)</IS_STARTER_ON>
+									<SET_STARTER>(&gt;K:SET_STARTER#MAGNETO_ID#_HELD)</SET_STARTER>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>MAX_POS</Value>
+										<Number>1</Number>
+									</Greater>
+								</Test>
+								<True>
+									<!-- <TT_DESCRIPTION_ID>@TT_Package.ENGINE_MAGNETO_STATE_ACTION_SET</TT_DESCRIPTION_ID> -->
+									<!-- <TT_DESCRIPTION_INDEX>#MAGNETO_ID#</TT_DESCRIPTION_INDEX> -->
+									<TT_INTERACTION>PRIMARY_DOWN+X_AXIS</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>X_AXIS</TT_INTERACTION_LOCKABLE>
+									<TT_ICON>ROTATE</TT_ICON>
+								</True>
+								<False>
+									<!-- <TT_DESCRIPTION_ID>@TT_Package.ENGINE_SINGLE_MAGNETO_STATE_ACTION_SET</TT_DESCRIPTION_ID> -->
+									<!-- <Switch Param="MAGNETO_SIDE"> -->
+										<!-- <Case Value="Left"> -->
+											<!-- <TT_DESCRIPTION_INDEX>@TT_Left</TT_DESCRIPTION_INDEX> -->
+										<!-- </Case> -->
+										<!-- <Case Value="Right"> -->
+											<!-- <TT_DESCRIPTION_INDEX>@TT_Right</TT_DESCRIPTION_INDEX> -->
+										<!-- </Case> -->
+										<!-- <Case Value="Both"> -->
+											<!-- <TT_DESCRIPTION_INDEX>@TT_Both</TT_DESCRIPTION_INDEX> -->
+										<!-- </Case> -->
+									<!-- </Switch> -->
+									<TT_INTERACTION>PRIMARY_DOWN</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>LOCK</TT_INTERACTION_LOCKABLE>
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</False>
+							</Condition>
+							<TT_DESCRIPTION_ID>@TT_Package.ENGINE_MAGNETO_STATE_ACTION_SET</TT_DESCRIPTION_ID>
+							<TT_DESCRIPTION_INDEX>#MAGNETO_ID#</TT_DESCRIPTION_INDEX>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<Switch Param="MAGNETO_SIDE">
+										<Case Value="Left">
+											<SET_STATE_OFF>#GET_MAGNETO# 1 0 l1 ? #SET_MAGNETO#</SET_STATE_OFF>
+											<SET_STATE_ON>#GET_MAGNETO# 3 2 l1 ? #SET_MAGNETO#</SET_STATE_ON>
+											<IS_MAGNETO_ON>l0</IS_MAGNETO_ON>
+										</Case>
+										<Case Value="Right">
+											<SET_STATE_OFF>#GET_MAGNETO# 2 0 l0 ? #SET_MAGNETO#</SET_STATE_OFF>
+											<SET_STATE_ON>#GET_MAGNETO# 3 1 l0 ? #SET_MAGNETO#</SET_STATE_ON>
+											<IS_MAGNETO_ON>l1</IS_MAGNETO_ON>
+										</Case>
+										<Case Value="Both">
+											<SET_STATE_OFF>0 #SET_MAGNETO#</SET_STATE_OFF>
+											<SET_STATE_ON>3 #SET_MAGNETO#</SET_STATE_ON>
+											<IS_MAGNETO_ON>l0 l1 and</IS_MAGNETO_ON>
+										</Case>
+									</Switch>
+								</Case>
+								<Case Value="OFF_L_R_BOTH">
+									<SET_STATE_OFF>0 #SET_MAGNETO#</SET_STATE_OFF>
+									<SET_STATE_L>2 #SET_MAGNETO#</SET_STATE_L>
+									<SET_STATE_R>1 #SET_MAGNETO#</SET_STATE_R>
+									<SET_STATE_BOTH>3 #SET_MAGNETO#</SET_STATE_BOTH>
+								</Case>
+								<Case Value="OFF_L_R_BOTH_START">
+									<SET_STATE_OFF>0 #SET_MAGNETO# </SET_STATE_OFF>
+									<SET_STATE_L>2 #SET_MAGNETO#</SET_STATE_L>
+									<SET_STATE_R>1 #SET_MAGNETO#</SET_STATE_R>
+									<SET_STATE_BOTH>3 #SET_MAGNETO#</SET_STATE_BOTH>
+									<SET_STATE_START>3 #SET_MAGNETO# #IS_STARTER_ON# ! if{ 1 #SET_STARTER# }</SET_STATE_START>
+									<ON_STATE_CHANGED_EXTERNAL_CODE>(O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position) #STATE_START# != #IS_STARTER_ON# and if{ 0 #SET_STARTER# } #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED_EXTERNAL_CODE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="ON_OFF">
+									<ON_STATE_CHANGED>
+										(O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<!-- if IGN is ON (which isn't possible for this switch) init position to auto -->
+									<ON_INIT>
+										#GET_MAGNETO#
+										#IS_MAGNETO_ON# if{ #STATE_ON# sp2 } els{ #STATE_OFF# sp2 }
+										l2 (&gt;O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>#GET_MAGNETO# #IS_MAGNETO_ON# @TT_OnOff_Cond</TT_VALUE>
+								</Case>
+								<Case Value="OFF_L_R_BOTH">
+									<ON_STATE_CHANGED>
+										(O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_L# == if{ #SET_STATE_L# g1 }
+										l0 #STATE_R# == if{ #SET_STATE_R# g1 }
+										l0 #STATE_BOTH# == if{ #SET_STATE_BOTH# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<!-- if IGN is OFF (which isn't possible for this switch) init position to auto -->
+									<ON_INIT>
+										#GET_MAGNETO#
+										l0 ! l1 ! and if{ #STATE_OFF# sp2 g1 }
+										l0 l1 ! and if{ #STATE_L# sp2 g1 }
+										l0 ! l1 and if{ #STATE_R# sp2 g1 }
+										l0 l1 and if{ #STATE_BOTH# sp2 g1 }
+										:1 l2 (&gt;O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ENGINE_Magneto_1) sp0
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+										l0 #STATE_L# == if{ @TT_Left quit }
+										l0 #STATE_R# == if{ @TT_Right quit }
+										l0 #STATE_BOTH# == if{ @TT_Both quit }
+									</TT_VALUE>
+								</Case>
+								<Case Value="OFF_L_R_BOTH_START">
+									<ON_STATE_CHANGED>
+										(O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_L# == if{ #SET_STATE_L# g1 }
+										l0 #STATE_R# == if{ #SET_STATE_R# g1 }
+										l0 #STATE_BOTH# == if{ #SET_STATE_BOTH# g1 }
+										l0 #STATE_START# == if{ #SET_STATE_START# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										#GET_MAGNETO#
+										l0 ! l1 ! and if{ #STATE_OFF# sp2 g1 }
+										l0 l1 ! and if{ #STATE_L# sp2 g1 }
+										l0 ! l1 and if{ #STATE_R# sp2 g1 }
+										l0 l1 and #IS_STARTER_ON# ! and if{ #STATE_BOTH# sp2 g1 }
+										l0 l1 and #IS_STARTER_ON# and if{ #STATE_START# sp2 g1 }
+										:1 l2 (&gt;O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ENGINE_Magneto_#IE_MAGNETO_ID#) sp0
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+										l0 #STATE_L# == if{ @TT_Left quit }
+										l0 #STATE_R# == if{ @TT_Right quit }
+										l0 #STATE_BOTH# == if{ @TT_Both quit }
+										l0 #STATE_START# == if{ (R:1:@TT_Package.GT_STATE_START) quit }
+									</TT_VALUE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#TT_INTERACTION#</Interaction>
+							<InteractionLockable>#TT_INTERACTION_LOCKABLE#</InteractionLockable>
+							<TTDescription RPN="True">#TT_DESCRIPTION_INDEX# (R:1:#TT_DESCRIPTION_ID#) @sprintf</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Number</Units>
+							<Code>(O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position)</Code>
+							<Init>#ON_INIT#</Init>
+							<WatchVars>
+								<Condition NotEmpty="STATE_START">
+									<Simvar ID="GENERAL ENG STARTER:#MAGNETO_ID#"/>							
+								</Condition>
+								<Simvar ID="RECIP ENG LEFT MAGNETO:#MAGNETO_ID#"/>
+								<Simvar ID="RECIP ENG RIGHT MAGNETO:#MAGNETO_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>(O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position) p0 + (&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>(O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position) p0 - (&gt;B:ENGINE_Magneto_#IE_MAGNETO_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #MAX_POS# min 0 max (&gt;O:ENGINE_Magneto_#IE_MAGNETO_ID#_Position) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Condition>
+									<Test>
+										<Or>
+											<Arg Check="TYPE" Match="OFF_L_R_BOTH"/>
+											<Arg Check="TYPE" Match="OFF_L_R_BOTH_START"/>
+										</Or>
+									</Test>
+									<True>
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_Off">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO_OFF">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_OFF">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_Left">
+											<Param>#STATE_L#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO_LEFT">
+											<Param>#STATE_L#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_LEFT">
+											<Param>#STATE_L#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_Right">
+											<Param>#STATE_R#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO_RIGHT">
+											<Param>#STATE_R#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_RIGHT">
+											<Param>#STATE_R#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_Both">
+											<Param>#STATE_BOTH#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO_BOTH">
+											<Param>#STATE_BOTH#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_BOTH">
+											<Param>#STATE_BOTH#</Param>
+										</Binding>
+									</True>
+								</Condition>
+								<Switch Param="TYPE">
+									<Case Value="ON_OFF">
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_Toggle">
+											<Param RPN="True">#STATE_OFF# #STATE_ON# (B:ENGINE_Magneto_#IE_MAGNETO_ID#) #STATE_ON# == ?</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_ON">
+											<Param>#STATE_ON#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_OFF">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO_OFF">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_OFF">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO_LEFT">
+											<Switch Param="MAGNETO_SIDE">
+												<Case Value="Left">
+													<Param>#STATE_ON#</Param>
+												</Case>
+												<Default>
+													<Param>#STATE_OFF#</Param>
+												</Default>
+											</Switch>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_LEFT">
+											<Switch Param="MAGNETO_SIDE">
+												<Case Value="Left">
+													<Param>#STATE_ON#</Param>
+												</Case>
+												<Default>
+													<Param>#STATE_OFF#</Param>
+												</Default>
+											</Switch>
+										</Binding>
+										<Binding EventID="MAGNETO_RIGHT">
+											<Switch Param="MAGNETO_SIDE">
+												<Case Value="Right">
+													<Param>#STATE_ON#</Param>
+												</Case>
+												<Default>
+													<Param>#STATE_OFF#</Param>
+												</Default>
+											</Switch>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_RIGHT">
+											<Switch Param="MAGNETO_SIDE">
+												<Case Value="Right">
+													<Param>#STATE_ON#</Param>
+												</Case>
+												<Default>
+													<Param>#STATE_OFF#</Param>
+												</Default>
+											</Switch>
+										</Binding>
+										<Binding EventID="MAGNETO_BOTH">
+											<Param>#STATE_ON#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_BOTH">
+											<Param>#STATE_ON#</Param>
+										</Binding>
+									</Case>
+									<Case Value="OFF_L_R_BOTH_START">
+										<Binding Alias="ENGINE_Magneto_#IE_MAGNETO_ID#_Start">
+											<Param>#STATE_START#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO_START">
+											<Param>#STATE_START#</Param>
+										</Binding>
+										<Binding EventID="MAGNETO#MAGNETO_ID#_START">
+											<Param>#STATE_START#</Param>
+										</Binding>
+									</Case>
+								</Switch>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="IGNITER_ID">
+					<Preset ID="ENGINE_Ignition_#IGNITER_ID#">
+						<Parameters Type="Default">
+							<SET_IGN>
+								sp0 (A:TURB ENG IGNITION SWITCH EX1:#IGNITER_ID#, enum) l0 != if{
+									l0 (&gt;K:TURBINE_IGNITION_SWITCH_SET#IGNITER_ID#)
+								}
+							</SET_IGN>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Default">
+							<STARTER_AUTHORITY_TEST/>
+							<Switch Param="TYPE">
+								<Case Value="OFF_AUTO">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_AUTO>1</STATE_AUTO>
+									<MAX_POS>1</MAX_POS>
+									<TT_DESCRIPTION>#IGNITER_ID# (R:1:@TT_Package.ENGINE_AUTO_IGNITION_ACTION_SET) @sprintf</TT_DESCRIPTION>
+								</Case>
+								<Case Value="AUTO_ON">
+									<STATE_AUTO>0</STATE_AUTO>
+									<STATE_ON>1</STATE_ON>
+									<MAX_POS>1</MAX_POS>
+								</Case>
+								<Case Value="OFF_ON_AUTO">
+									<STATE_OFF>0</STATE_OFF>
+									<STATE_ON>1</STATE_ON>
+									<STATE_AUTO>2</STATE_AUTO>
+									<MAX_POS>2</MAX_POS>
+								</Case>
+							</Switch>
+							<SET_STATE_OFF>0 #SET_IGN#</SET_STATE_OFF>
+							<SET_STATE_AUTO>1 #SET_IGN#</SET_STATE_AUTO>
+							<SET_STATE_ON>2 #SET_IGN#</SET_STATE_ON>
+						</Parameters>
+						<Parameters Type="Default">
+							<TT_DESCRIPTION>#IGNITER_ID# (R:1:@TT_Package.ENGINE_IGNITION_ACTION_SET) @sprintf</TT_DESCRIPTION>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="TYPE">
+								<Case Value="OFF_AUTO">
+									<ON_STATE_CHANGED>
+										(O:ENGINE_Ignition_#IGNITER_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_AUTO# == if{ #SET_STATE_AUTO# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<!-- if IGN is ON (which isn't possible for this switch) init position to auto -->
+									<ON_INIT>
+										(A:TURB ENG IGNITION SWITCH EX1:#ID#, Enum) sp0
+										l0 0 == if{ #STATE_OFF# sp1 }
+										l0 1 == if{ #STATE_AUTO# sp1 }
+										l0 2 == if{ #STATE_AUTO# sp1 1 #SET_IGN# }
+										l1 (&gt;O:ENGINE_Ignition_#IGNITER_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>(B:ENGINE_Ignition_#IGNITER_ID#, number) #STATE_AUTO# == if{ @TT_Auto } els{ @TT_Off }</TT_VALUE>
+								</Case>
+								<Case Value="AUTO_ON">
+									<ON_STATE_CHANGED>
+										(O:ENGINE_Ignition_#IGNITER_ID#_Position) sp0
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										l0 #STATE_AUTO# == if{ #SET_STATE_AUTO# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<!-- if IGN is OFF (which isn't possible for this switch) init position to auto -->
+									<ON_INIT>
+										(A:TURB ENG IGNITION SWITCH EX1:#ID#, Enum) sp0
+										l0 2 == if{ #STATE_ON# sp1 }
+										l0 1 == if{ #STATE_AUTO# sp1 }
+										l0 0 == if{ #STATE_AUTO# sp1 1 #SET_IGN# }
+										l1 (&gt;O:ENGINE_Ignition_#IGNITER_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>(B:ENGINE_Ignition_#IGNITER_ID#, number) #STATE_AUTO# == if{ @TT_Auto } els{ @TT_On }</TT_VALUE>
+								</Case>
+								<Case Value="OFF_ON_AUTO">
+									<ON_STATE_CHANGED>
+										(O:ENGINE_Ignition_#IGNITER_ID#_Position) sp0
+										l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										l0 #STATE_ON# == if{ #SET_STATE_ON# g1 }
+										l0 #STATE_AUTO# == if{ #SET_STATE_AUTO# g1 }
+										:1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										(A:TURB ENG IGNITION SWITCH EX1:#ID#, Enum) sp0
+										l0 0 == if{ #STATE_OFF# sp1 }
+										l0 2 == if{ #STATE_ON# sp1 }
+										l0 1 == if{ #STATE_AUTO# sp1 }
+										l1 (&gt;O:ENGINE_Ignition_#IGNITER_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ENGINE_Ignition_#IGNITER_ID#, number) sp0
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+										l0 #STATE_ON# == if{ @TT_On quit }
+										l0 #STATE_AUTO# == if{ @TT_Auto quit } 
+									</TT_VALUE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>MAX_POS</Value>
+										<Number>1</Number>
+									</Greater>
+								</Test>
+								<True>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+								</False>
+							</Condition>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="Switch">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Case Value="Push">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>
+							<TTDescription RPN="True">#TT_DESCRIPTION#</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Number</Units>
+							<Code>(O:ENGINE_Ignition_#IGNITER_ID#_Position)</Code>
+							<Init>#ON_INIT#</Init>
+						</Value>
+						<Inc>
+							<Code>(O:ENGINE_Ignition_#IGNITER_ID#_Position) p0 + (&gt;B:ENGINE_Ignition_#IGNITER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>(O:ENGINE_Ignition_#IGNITER_ID#_Position) p0 - (&gt;B:ENGINE_Ignition_#IGNITER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #MAX_POS# min 0 max (&gt;O:ENGINE_Ignition_#IGNITER_ID#_Position) #STARTER_AUTHORITY_TEST# #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Condition Check="STATE_OFF">
+									<Binding Alias="ENGINE_Ignition_#IGNITER_ID#_Off">
+										<Param>#STATE_OFF#</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_ON">
+									<Binding Alias="ENGINE_Ignition_#IGNITER_ID#_On">
+										<Param>#STATE_ON#</Param>
+									</Binding>
+								</Condition>
+								<Condition Check="STATE_AUTO">
+									<Binding Alias="ENGINE_Ignition_#IGNITER_ID#_Auto">
+										<Param>#STATE_AUTO#</Param>
+									</Binding>
+								</Condition>
+								<Switch Param="TYPE">
+									<Case Value="OFF_AUTO">
+										<Binding Alias="ENGINE_Ignition_#IGNITER_ID#_Toggle">
+											<Param RPN="True">#STATE_OFF# #STATE_AUTO# (B:ENGINE_Ignition_#IGNITER_ID#) #STATE_AUTO# == ?</Param>
+										</Binding>
+										<Binding EventID="TURBINE_IGNITION_SWITCH_SET#IGNITER_ID#">
+											<Param RPN="True">#STATE_OFF# #STATE_AUTO# p1 0 == ?</Param>
+										</Binding>
+										<Binding EventID="TURBINE_IGNITION_SWITCH_SET">
+											<Param RPN="True">#STATE_OFF# #STATE_AUTO# p1 0 == ?</Param>
+										</Binding>
+										<Binding EventID="TURBINE_IGNITION_SWITCH_TOGGLE">
+											<Param RPN="True">#STATE_OFF# #STATE_AUTO# (B:ENGINE_Ignition_#IGNITER_ID#) #STATE_AUTO# == ?</Param>
+										</Binding>
+									</Case>
+									<Case Value="AUTO_ON">
+										<Binding Alias="ENGINE_Ignition_#IGNITER_ID#_Toggle">
+											<Param RPN="True">#STATE_ON# #STATE_AUTO# (B:ENGINE_Ignition_#IGNITER_ID#) #STATE_AUTO# == ?</Param>
+										</Binding>
+										<Binding EventID="TURBINE_IGNITION_SWITCH_SET">
+											<Param RPN="True">#STATE_ON# #STATE_AUTO# p1 2 == ?</Param>
+										</Binding>
+										<Binding EventID="TURBINE_IGNITION_SWITCH_SET#IGNITER_ID#">
+											<Param RPN="True">#STATE_ON# #STATE_AUTO# p1 2 == ?</Param>
+										</Binding>
+										<Binding EventID="TURBINE_IGNITION_SWITCH_TOGGLE">
+											<Param RPN="True">#STATE_ON# #STATE_AUTO# (B:ENGINE_Ignition_#IGNITER_ID#) #STATE_AUTO# == ?</Param>
+										</Binding>
+									</Case>
+									<Case Value="OFF_ON_AUTO">
+										<Binding EventID="TURBINE_IGNITION_SWITCH_SET">
+											<Param RPN="True">p1 2 == if{ #STATE_ON# } els{ #STATE_AUTO# #STATE_OFF#  p1 1 == ? }</Param>
+										</Binding>
+										<Binding EventID="TURBINE_IGNITION_SWITCH_SET#IGNITER_ID#">
+											<Param RPN="True">p1 2 == if{ #STATE_ON# } els{ #STATE_AUTO# #STATE_OFF#  p1 1 == ? }</Param>
+										</Binding>
+									</Case>
+								</Switch>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="STARTER_IGNITER_ID">
+					<Preset ID="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#">
+						<Parameters Type="Default">
+							<IGNITION_ACTIVE_TYPE>1</IGNITION_ACTIVE_TYPE>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+							<Condition>
+								<Test>
+									<Or>
+										<Arg Check="IGNITION_TYPE" Match="START_OFF"/>
+										<Arg Check="IGNITION_TYPE" Match="START_OFF_MOTOR"/>
+									</Or>
+								</Test>
+								<True>
+									<STATE_START>0</STATE_START>
+									<STATE_OFF>1</STATE_OFF>
+									<SET_IGN>
+										sp5 (A:TURB ENG IGNITION SWITCH EX1:#STARTER_IGNITER_ID#, enum) l5 != if{
+											l5 (&gt;K:TURBINE_IGNITION_SWITCH_SET#STARTER_IGNITER_ID#)
+										}
+									</SET_IGN>
+								</True>
+							</Condition>
+							<Condition>
+								<Test>
+									<Or>
+										<Arg Check="IGNITION_TYPE" Match="ENG1_OFF_ENG2"/>
+										<Arg Check="IGNITION_TYPE" Match="BOTH_R_L_OFF_STARTOFF"/>
+									</Or>
+								</Test>
+								<True>
+									<IGNITER_COUNT>2</IGNITER_COUNT>
+									<SET_IGN_L>
+										sp5 (A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) l5 != if{
+											l5 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID1#)
+										}
+									</SET_IGN_L>
+									<SET_IGN_R>
+										sp5 (A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) l5 != if{
+											l5 (&gt;K:TURBINE_IGNITION_SWITCH_SET#ID2#)
+										}
+									</SET_IGN_R>
+								</True>
+							</Condition>
+							<Switch Param="IGNITION_TYPE">
+								<Case Value="ENG1_OFF_ENG2">
+									<STATE_ENG1>0</STATE_ENG1>
+									<STATE_OFF>1</STATE_OFF>
+									<STATE_ENG2>2</STATE_ENG2>
+									<MAX_POS>2</MAX_POS>
+								</Case>
+								<Case Value="START_OFF">
+									<MAX_POS>1</MAX_POS>
+									<KEY_EVENT>STARTER#STARTER_IGNITER_ID#_SET</KEY_EVENT>
+								</Case>
+								<Case Value="START_OFF_MOTOR">
+									<STATE_MOTOR>2</STATE_MOTOR>
+									<KEY_EVENT>SET_STARTER#STARTER_IGNITER_ID#_HELD</KEY_EVENT>
+									<!-- keep last -->
+									<MAX_POS>2</MAX_POS>
+								</Case>
+								<Case Value="BOTH_R_L_OFF_STARTOFF">
+									<STATE_BOTH>0</STATE_BOTH>
+									<STATE_R>1</STATE_R>
+									<STATE_L>2</STATE_L>
+									<STATE_IGN_OFF>3</STATE_IGN_OFF>
+									<STATE_ALL_OFF>4</STATE_ALL_OFF>
+									<!-- keep last -->
+									<MAX_POS>4</MAX_POS>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Condition>
+								<Test>
+									<Or>
+										<Arg Check="IGNITION_TYPE" Match="START_OFF"/>
+										<Arg Check="IGNITION_TYPE" Match="START_OFF_MOTOR"/>
+									</Or>
+								</Test>
+								<True>
+									<SET_STATE_START>
+										#IGNITION_ACTIVE_TYPE# #SET_IGN#
+										(A:GENERAL ENG STARTER:#STARTER_IGNITER_ID#, Bool) ! if{ 1 (&gt;K:#KEY_EVENT#) } 
+									</SET_STATE_START>
+									<SET_STATE_OFF>
+										0 #SET_IGN#
+										(A:GENERAL ENG STARTER:#STARTER_IGNITER_ID#, Bool) if{ 
+											0 (&gt;K:#KEY_EVENT#) 
+											(&gt;K:TOGGLE_STARTER#STARTER_IGNITER_ID#)(* Force disable starter *)
+										} 
+									</SET_STATE_OFF>
+								</True>
+							</Condition>
+							<Switch Param="IGNITION_TYPE">
+								<Case Value="ENG1_OFF_ENG2">
+									<SET_STATE_ENG1>
+										#IGNITION_ACTIVE_TYPE# #SET_IGN_L#
+										0 #SET_IGN_R#
+										1 (&gt;K:APU_BLEED_AIR_SOURCE_SET)
+										(A:GENERAL ENG STARTER:#ID1#, Bool) ! if{ (&gt;K:TOGGLE_STARTER#ID1#) } 
+										(A:GENERAL ENG STARTER:#ID2#, Bool) if{ (&gt;K:TOGGLE_STARTER#ID2#) } 
+									</SET_STATE_ENG1>
+									<SET_STATE_OFF>
+										0 #SET_IGN_L#
+										0 #SET_IGN_R#
+										0 (&gt;K:APU_BLEED_AIR_SOURCE_SET)
+										(A:GENERAL ENG STARTER:#ID1#, Bool) if{ (&gt;K:TOGGLE_STARTER#ID1#) } 
+										(A:GENERAL ENG STARTER:#ID2#, Bool) if{ (&gt;K:TOGGLE_STARTER#ID2#) } 
+									</SET_STATE_OFF>
+									<SET_STATE_ENG2>
+										0 #SET_IGN_L#
+										#IGNITION_ACTIVE_TYPE# #SET_IGN_R#
+										1 (&gt;K:APU_BLEED_AIR_SOURCE_SET)
+										(A:GENERAL ENG STARTER:#ID1#, Bool) if{ (&gt;K:TOGGLE_STARTER#ID1#) } 
+										(A:GENERAL ENG STARTER:#ID2#, Bool) ! if{ (&gt;K:TOGGLE_STARTER#ID2#) } 
+									</SET_STATE_ENG2>
+								</Case>
+								<Case Value="START_OFF_MOTOR">
+									<SET_STATE_MOTOR>
+										0 #SET_IGN#
+										(A:GENERAL ENG STARTER:#STARTER_IGNITER_ID#, Bool) ! if{ 1 (&gt;K:#KEY_EVENT#) } 
+									</SET_STATE_MOTOR>
+								</Case>
+								<Case Value="BOTH_R_L_OFF_STARTOFF">
+									<SET_STATE_BOTH>
+										#IGNITION_ACTIVE_TYPE# #SET_IGN_L#
+										#IGNITION_ACTIVE_TYPE# #SET_IGN_R#
+									</SET_STATE_BOTH>
+									<SET_STATE_R>
+										0 #SET_IGN_L#
+										#IGNITION_ACTIVE_TYPE# #SET_IGN_R#
+									</SET_STATE_R>
+									<SET_STATE_L>
+										#IGNITION_ACTIVE_TYPE# #SET_IGN_L#
+										0 #SET_IGN_R#
+									</SET_STATE_L>
+									<SET_STATE_IGN_OFF>
+										0 #SET_IGN_L#
+										0 #SET_IGN_R#
+									</SET_STATE_IGN_OFF>
+									<SET_STATE_ALL_OFF>
+										0 #SET_IGN_L#
+										0 #SET_IGN_R#
+										(A:GENERAL ENG STARTER:#ID1#, Bool) if{ (&gt;K:TOGGLE_STARTER#ID1#) }
+										(A:GENERAL ENG STARTER:#ID2#, Bool) if{ (&gt;K:TOGGLE_STARTER#ID2#) } 
+									</SET_STATE_ALL_OFF>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Override">
+							<Switch Param="IGNITION_TYPE">
+								<Case Value="ENG1_OFF_ENG2">
+									<ON_STATE_CHANGED>
+										 (O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position) sp0
+										 l0 #STATE_ENG1# == if{ #SET_STATE_ENG1# g1 }
+										 l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										 l0 #STATE_ENG2# == if{ #SET_STATE_ENG2# g1 }
+										 :1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) sp0 (A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) sp1 
+										l0 ! l1 ! and if{ #STATE_OFF# sp2 g1 }
+										l0 l1 ! and if{ #STATE_ENG1# sp2 g1 }
+										l0 ! l1 and if{ #STATE_ENG2# sp2 g1 }
+										els{ #SET_STATE_ENG1# }
+										:1 l2 #STATE_OFF# != s3 (A:BLEED AIR APU, Bool) != if{ l3 (&gt;K:APU_BLEED_AIR_SOURCE_SET) } 
+										l2 (&gt;O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#, number) sp0
+										l0 #STATE_ENG1# == if{ #ID1# @TT_Eng @sprintf quit }
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+										l0 #STATE_ENG2# == if{ #ID2# @TT_Eng @sprintf quit }
+									</TT_VALUE>
+								</Case>
+								<Case Value="START_OFF">
+									<ON_STATE_CHANGED>
+										 (O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position) sp0
+										 l0 #STATE_START# == if{ #SET_STATE_START# g1 }
+										 l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										 :1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										(A:GENERAL ENG STARTER:#STARTER_IGNITER_ID#, Boolean) if{
+											#STATE_START# sp0
+										} els{
+											#STATE_OFF# sp0
+										}
+										l0 (&gt;O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>(B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#, number) #STATE_START# == @TT_OnOff_Cond</TT_VALUE>
+								</Case>
+								<Case Value="START_OFF_MOTOR">
+									<ON_STATE_CHANGED>
+										 (O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position) sp0
+										 l0 #STATE_START# == if{ #SET_STATE_START# g1 }
+										 l0 #STATE_OFF# == if{ #SET_STATE_OFF# g1 }
+										 l0 #STATE_MOTOR# == if{ #SET_STATE_MOTOR# g1 }
+										 :1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										(A:TURB ENG IGNITION SWITCH EX1:#STARTER_IGNITER_ID#, enum) sp0 (A:GENERAL ENG STARTER:#STARTER_IGNITER_ID#, Bool) sp1
+										l1 if{ #STATE_START# #STATE_MOTOR# l0 ? sp2 }
+										els{ #STATE_OFF# sp2 }
+										l2 (&gt;O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#, number) sp0
+										l0 #STATE_START# == if{ (R:1:@TT_Package.GT_STATE_START) quit }
+										l0 #STATE_OFF# == if{ @TT_Off quit }
+										l0 #STATE_MOTOR# == if{ (R:1:@TT_Package.GT_STATE_MOTOR) quit }
+									</TT_VALUE>
+								</Case>
+								<Case Value="BOTH_R_L_OFF_STARTOFF">
+									<ON_STATE_CHANGED>
+										 (O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position) sp0
+										 l0 #STATE_BOTH# == if{ #SET_STATE_BOTH# g1 }
+										 l0 #STATE_R# == if{ #SET_STATE_R# g1 }
+										 l0 #STATE_L# ==  if{ #SET_STATE_L# g1 }
+										 l0 #STATE_IGN_OFF# == if{ #SET_STATE_IGN_OFF# g1 }
+										 l0 #STATE_ALL_OFF# == if{ #SET_STATE_ALL_OFF# g1 }
+										 :1 #ON_STATE_CHANGED_EXTERNAL_CODE#
+									</ON_STATE_CHANGED>
+									<ON_INIT>
+										(A:TURB ENG IGNITION SWITCH EX1:#ID1#, enum) sp0
+										(A:TURB ENG IGNITION SWITCH EX1:#ID2#, enum) sp1
+										l0 l1 and if{ #STATE_BOTH# sp2 } 
+										l0 ! l1 and if{ #STATE_R# sp2 }
+										l0 l1 ! and if{ #STATE_L# sp2 }
+										l0 ! l1 ! and if{ #STATE_IGN_OFF# sp2 }
+										l2 (&gt;O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position)
+									</ON_INIT>
+									<TT_VALUE>
+										(B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#, number) sp0
+										l0 #STATE_BOTH# == if{ @TT_Both quit }
+										l0 #STATE_R# == if{ @TT_Right quit }
+										l0 #STATE_L# ==  if{ @TT_Left quit }
+										l0 #STATE_IGN_OFF# == if{ (R:1:@TT_Package.GT_STATE_STARTER) @quit }
+										l0 #STATE_ALL_OFF# == if{ @TT_Off quit }
+									</TT_VALUE>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Parameters Type="Default">
+							<Condition>
+								<Test>
+									<Greater>
+										<Value>MAX_POS</Value>
+										<Number>1</Number>
+									</Greater>
+								</Test>
+								<True>
+									<Condition Check="SWITCH_DIRECTION" Match="Horizontal">
+										<True>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+X_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>X_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</True>
+										<False>
+											<INTERACTION_FLAGS>PRIMARY_DOWN+Y_AXIS</INTERACTION_FLAGS>
+											<INTERACTION_LOCKABLE_FLAGS>Y_AXIS</INTERACTION_LOCKABLE_FLAGS>
+										</False>
+									</Condition>
+								</True>
+								<False>
+									<INTERACTION_FLAGS>PRIMARY_DOWN</INTERACTION_FLAGS>
+									<INTERACTION_LOCKABLE_FLAGS>LOCK</INTERACTION_LOCKABLE_FLAGS>
+								</False>
+							</Condition>
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="Switch">
+									<Switch Param="SWITCH_DIRECTION">
+										<Case Value="Horizontal">
+											<TT_ICON>MOVE_X</TT_ICON>
+										</Case>
+										<Default>
+											<TT_ICON>MOVE_Y</TT_ICON>
+										</Default>
+									</Switch>
+								</Case>
+								<Case Value="Push">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#INTERACTION_FLAGS#</Interaction>
+							<InteractionLockable>#INTERACTION_LOCKABLE_FLAGS#</InteractionLockable>
+							<TTDescription RPN="True">#STARTER_IGNITER_ID# (R:1:@TT_Package.ENGINE_STARTER_ACTION_SET) @sprintf</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Number</Units>
+							<Code>(O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position)</Code>
+							<Init>#ON_INIT#</Init>
+							<WatchVars>
+								<Switch Param="IGNITER_COUNT">
+									<Case Value="2">
+										<Simvar ID="GENERAL ENG STARTER:#ID1#"/>
+										<Simvar ID="GENERAL ENG STARTER:#ID2#"/>
+										<Simvar ID="TURB ENG IGNITION SWITCH EX1:#ID1#"/>
+										<Simvar ID="TURB ENG IGNITION SWITCH EX1:#ID2#"/>
+									</Case>
+									<Default>
+										<Simvar ID="GENERAL ENG STARTER:#STARTER_IGNITER_ID#"/>
+										<Simvar ID="TURB ENG IGNITION SWITCH EX1:#STARTER_IGNITER_ID#"/>										
+									</Default>
+								</Switch>
+								<Switch Param="IGNITION_TYPE">
+									<Case Value="ENG1_OFF_ENG2">
+										<Simvar ID="BLEED AIR APU"/>
+									</Case>
+								</Switch>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>(O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position) p0 + #MAX_POS# min 0 max (&gt;B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>(O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position) p0 - #MAX_POS# min 0 max (&gt;B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 (&gt;O:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Position) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Condition>
+									<Test>
+										<Or>
+											<Arg Check="IGNITION_TYPE" Match="START_OFF"/>
+											<Arg Check="IGNITION_TYPE" Match="START_OFF_MOTOR"/>
+										</Or>
+									</Test>
+									<True>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Start">
+											<Param>#STATE_START#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Off">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding EventID="TOGGLE_ALL_STARTERS">
+											<Param RPN="True">#STATE_OFF# #STATE_START# (B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#) #STATE_START# == ?</Param>
+										</Binding>
+										<Binding EventID="TOGGLE_STARTER#STARTER_IGNITER_ID#">
+											<Param RPN="True">#STATE_OFF# #STATE_START# (B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#) #STATE_START# == ?</Param>
+										</Binding>
+										<Binding EventID="SET_STARTER#STARTER_IGNITER_ID#_HELD">
+											<Param RPN="True">#STATE_START# #STATE_OFF# p1 0 &gt; ?</Param>
+										</Binding>
+										<Binding EventID="SET_STARTER_ALL_HELD">
+											<Param RPN="True">#STATE_START# #STATE_OFF# p1 0 &gt; ?</Param>
+										</Binding>
+									</True>
+								</Condition>
+								<Switch Param="IGNITION_TYPE">
+									<Case Value="ENG1_OFF_ENG2">
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Eng1">
+											<Param>#STATE_ENG1#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Off">
+											<Param>#STATE_OFF#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Eng2">
+											<Param>#STATE_ENG2#</Param>
+										</Binding>
+										<Binding EventID="TOGGLE_STARTER#ID1#">
+											<Param RPN="True">#STATE_OFF# #STATE_ENG1# (B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#) #STATE_ENG1# == ?</Param>
+										</Binding>
+										<Binding EventID="TOGGLE_STARTER#ID2#">
+											<Param RPN="True">#STATE_OFF# #STATE_ENG2# (B:ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#) #STATE_ENG2# == ?</Param>
+										</Binding>
+										<Binding EventID="SET_STARTER#ID1#_HELD">
+											<Param RPN="True">#STATE_ENG1# #STATE_OFF# p1 0 &gt; ?</Param>
+										</Binding>
+										<Binding EventID="SET_STARTER#ID2#_HELD">
+											<Param RPN="True">#STATE_ENG2# #STATE_OFF# p1 0 &gt; ?</Param>
+										</Binding>
+									</Case>
+									<Case Value="START_OFF_MOTOR">
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Motor">
+											<Param>#STATE_MOTOR#</Param>
+										</Binding>
+									</Case>
+									<Case Value="BOTH_R_L_OFF_STARTOFF">
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Both">
+											<Param>#STATE_BOTH#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Right">
+											<Param>#STATE_R#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Left">
+											<Param>#STATE_L#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_IgnOff">
+											<Param>#STATE_IGN_OFF#</Param>
+										</Binding>
+										<Binding Alias="ENGINE_Starter_Ignition_#STARTER_IGNITER_ID#_Off">
+											<Param>#STATE_ALL_OFF#</Param>
+										</Binding>
+									</Case>
+								</Switch>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Case Valid="STARTER_ID">
+					<Preset ID="ENGINE_Starter_#STARTER_ID#">
+						<Parameters Type="Default">
+							<STARTER_ON_SIMVAR>GENERAL ENG STARTER</STARTER_ON_SIMVAR>
+							<STATE_ON>1</STATE_ON>
+							<STATE_OFF>0</STATE_OFF>
+							<ON_STATE_CHANGED_EXTERNAL_CODE/>
+						</Parameters>
+						<Parameters Type="Override">
+							<GET_STARTER>(A:#STARTER_ON_SIMVAR#:#STARTER_ID#, Bool)</GET_STARTER>
+							<SET_STARTER>(A:#STARTER_ON_SIMVAR#:#STARTER_ID#, Bool) != if{ (&gt;K:TOGGLE_STARTER#STARTER_ID#) }</SET_STARTER>
+							<MAX_POS>1</MAX_POS>
+						</Parameters>
+						<Parameters Type="Override">
+							<ON_STATE_CHANGED>(O:ENGINE_Starter_#STARTER_ID#_Position) #STATE_ON# == if{ 1 #SET_STARTER# } els{ 0 #SET_STARTER# } #ON_STATE_CHANGED_EXTERNAL_CODE#</ON_STATE_CHANGED>
+						</Parameters>
+						<Parameters Type="Default">
+							<Switch Param="INTERACTION_TYPE">
+								<Case Value="Switch">
+									<TT_ICON>MOVE_Y</TT_ICON>
+								</Case>
+								<Case Value="Push">
+									<TT_ICON>PUSH</TT_ICON>
+								</Case>
+							</Switch>
+							<TT_VALUE>@TT_On @TT_Off (A:#STARTER_ON_SIMVAR#:#STARTER_ID#, Bool) ?</TT_VALUE>
+							<Switch Param="NUM_STATES">
+								<Case Value="3">
+									<TT_INTERACTION>PRIMARY_DOWN+Y_AXIS</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>Y_AXIS</TT_INTERACTION_LOCKABLE>
+								</Case>
+								<Default>
+									<TT_INTERACTION>PRIMARY_DOWN</TT_INTERACTION>
+									<TT_INTERACTION_LOCKABLE>LOCK</TT_INTERACTION_LOCKABLE>
+								</Default>
+							</Switch>
+						</Parameters>
+						<Tooltip>
+							<Icon>#TT_ICON#</Icon>
+							<Interaction>#TT_INTERACTION#</Interaction>
+							<InteractionLockable>#TT_INTERACTION_LOCKABLE#</InteractionLockable>
+							<TTDescription RPN="True">#STARTER_ID# (R:1:@TT_Package.ENGINE_STARTER_ACTION_SET) @sprintf</TTDescription>
+							<TTValue RPN="True">#TT_VALUE#</TTValue>
+						</Tooltip>
+						<Value>
+							<Units>Bool</Units>
+							<Code>(O:ENGINE_Starter_#STARTER_ID#_Position) #STATE_ON# ==</Code>
+							<Init>#STATE_ON# #STATE_OFF# #GET_STARTER# ? (&gt;O:ENGINE_Starter_#STARTER_ID#_Position)</Init>
+							<WatchVars>
+								<Simvar ID="#STARTER_ON_SIMVAR#:#STARTER_ID#"/>
+							</WatchVars>
+						</Value>
+						<Inc>
+							<Code>(O:ENGINE_Starter_#STARTER_ID#_Position) p0 + (&gt;B:ENGINE_Starter_#STARTER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Inc>
+						<Dec>
+							<Code>(O:ENGINE_Starter_#STARTER_ID#_Position) p0 - (&gt;B:ENGINE_Starter_#STARTER_ID#_Set)</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+						</Dec>
+						<Set>
+							<Code>p0 #MAX_POS# min 0 max (&gt;O:ENGINE_Starter_#STARTER_ID#_Position) #ON_STATE_CHANGED#</Code>
+							<Parameters>
+								<Param Type="Float" RPN="True">p0</Param>
+							</Parameters>
+							<Bindings>
+								<Binding Alias="ENGINE_All_Starter_Toggle">
+									<Param RPN="True">#STATE_ON# #STATE_OFF# (O:ENGINE_Starter_#STARTER_ID#_Position) #STATE_OFF# ==</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_ALL_STARTERS">
+									<Param RPN="True">#STATE_ON# #STATE_OFF# (O:ENGINE_Starter_#STARTER_ID#_Position) #STATE_OFF# ==</Param>
+								</Binding>
+								<Binding EventID="TOGGLE_STARTER#STARTER_ID#">
+									<Param RPN="True">#STATE_ON# #STATE_OFF# (O:ENGINE_Starter_#STARTER_ID#_Position) #STATE_OFF# ==</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Starter_#STARTER_ID#_Toggle">
+									<Param RPN="True">#STATE_ON# #STATE_OFF# (O:ENGINE_Starter_#STARTER_ID#_Position) #STATE_OFF# ==</Param>
+								</Binding>
+								<Binding EventID="SET_STARTER#STARTER_ID#_HELD">
+									<Param RPN="True">p1 0 &gt;</Param>
+								</Binding>
+								<Binding EventID="SET_STARTER_ALL_HELD">
+									<Param RPN="True">p1 0 &gt;</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Starter_#STARTER_ID#_On">
+									<Param>#STATE_ON#</Param>
+								</Binding>
+								<Binding Alias="ENGINE_Starter_#STARTER_ID#_Off">
+									<Param>#STATE_OFF#</Param>
+								</Binding>
+							</Bindings>
+						</Set>
+					</Preset>
+				</Case>
+				<Default>
+					<Extend Target="ASOBO_GIE_Anim_Handling">
+						<Parameters Type="Default">
+							<INPUT_EVENT_ID_SOURCE>ENGINE</INPUT_EVENT_ID_SOURCE>
+						</Parameters>
+					</Extend>
+				</Default>
+			</Switch>
+		</Presets>
+	</InputEvent>
+</ModelBehaviors>

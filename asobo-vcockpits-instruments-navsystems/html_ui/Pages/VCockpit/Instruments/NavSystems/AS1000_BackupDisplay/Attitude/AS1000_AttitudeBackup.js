@@ -12,10 +12,10 @@ class Backup_Attitude extends NavSystemElement {
     }
     init(root) {
         this.attitudeElement = this.gps.getChildById("Horizon");
-        this.attitudeElement.setAttribute("is-backup", "true");
+        diffAndSetAttribute(this.attitudeElement, "is-backup", "true");
         if (this.gps) {
             var aspectRatio = this.gps.getAspectRatio();
-            this.attitudeElement.setAttribute("aspect-ratio", aspectRatio.toString());
+            diffAndSetAttribute(this.attitudeElement, "aspect-ratio", aspectRatio + '');
         }
     }
     onEnter() {
@@ -23,9 +23,9 @@ class Backup_Attitude extends NavSystemElement {
     onUpdate(_deltaTime) {
         var xyz = Simplane.getOrientationAxis();
         if (xyz) {
-            this.attitudeElement.setAttribute("pitch", (xyz.pitch / Math.PI * 180).toString());
-            this.attitudeElement.setAttribute("bank", (xyz.bank / Math.PI * 180).toString());
-            this.attitudeElement.setAttribute("slip_skid", Simplane.getInclinometer().toString());
+            diffAndSetAttribute(this.attitudeElement, "pitch", (xyz.pitch / Math.PI * 180) + '');
+            diffAndSetAttribute(this.attitudeElement, "bank", (xyz.bank / Math.PI * 180) + '');
+            diffAndSetAttribute(this.attitudeElement, "slip_skid", Simplane.getInclinometer() + '');
         }
     }
     onExit() {

@@ -43,7 +43,6 @@ class SvgMapConfig {
         this.airplaneIcon2 = "ICON_MAP_PLANE";
         this.airplaneIcon3 = "ICON_MAP_PLANE";
         this.imagesDir = "./";
-        this.delay = 0;
         this.runwayFillColor = "#ffffff";
         this.runwayStrokeColor = "#ffffff";
         this.runwayStrokeWidth = 0;
@@ -122,6 +121,9 @@ class SvgMapConfig {
         this.netBingWaterColor3 = "#0000ff";
         this.netBingHeightColor3 = [];
         this.netBingSkyColor3 = "#000000";
+        this.netBingTopViewAltitudeMin = 0;
+        this.netBingTopViewAltitudeMax = 100000;
+        this.netBingTopViewZoomLevels = 1;
     }
     load(path, callback) {
         let request = new XMLHttpRequest();
@@ -147,7 +149,6 @@ class SvgMapConfig {
                         curve.interpolationFunction = Avionics.CurveTool.StringColorRGBInterpolation;
                         for (let i = 0; i < this.netBingHeightColor1.length; i++) {
                             let color = this.netBingHeightColor1[i].color;
-                            color = this.convertColor(color);
                             curve.add(this.netBingHeightColor1[i].alt, color);
                         }
                         for (let i = 0; i < 60; i++) {
@@ -161,7 +162,6 @@ class SvgMapConfig {
                         curve.interpolationFunction = Avionics.CurveTool.StringColorRGBInterpolation;
                         for (let i = 0; i < this.netBingHeightColor2.length; i++) {
                             let color = this.netBingHeightColor2[i].color;
-                            color = this.convertColor(color);
                             curve.add(this.netBingHeightColor2[i].alt, color);
                         }
                         for (let i = 0; i < 60; i++) {
@@ -175,7 +175,6 @@ class SvgMapConfig {
                         curve.interpolationFunction = Avionics.CurveTool.StringColorRGBInterpolation;
                         for (let i = 0; i < this.netBingHeightColor3.length; i++) {
                             let color = this.netBingHeightColor3[i].color;
-                            color = this.convertColor(color);
                             curve.add(this.netBingHeightColor3[i].alt, color);
                         }
                         for (let i = 0; i < 60; i++) {
@@ -192,7 +191,15 @@ class SvgMapConfig {
         request.open("GET", path + "mapConfig.json");
         request.send();
     }
-    generateBing(_id) {
+    generateBingMap(_bingMap) {
+        for (let i = 0; i < 3; i++) {
+            let conf = this.loadBingConfig(i);
+            if (conf)
+                _bingMap.addConfig(conf);
+        }
+        _bingMap.setTopView({ altitudeMin: this.netBingTopViewAltitudeMin, altitudeMax: this.netBingTopViewAltitudeMax, zoomLevels: Math.max(this.netBingTopViewZoomLevels, 1) });
+    }
+    loadBingConfig(_id) {
         switch (_id) {
             case 0:
                 if (this.netBingHeightColor1) {
@@ -203,7 +210,6 @@ class SvgMapConfig {
                             config.heightColors[i] = this.hexaToRGB(this.netBingAltitudeColors1[i]);
                         }
                     }
-                    config.aspectRatio = 1;
                     config.resolution = this.netBingTextureResolution;
                     config.clearColor = this.hexaToRGB(this.netBingSkyColor1);
                     return config;
@@ -218,7 +224,6 @@ class SvgMapConfig {
                             config.heightColors[i] = this.hexaToRGB(this.netBingAltitudeColors2[i]);
                         }
                     }
-                    config.aspectRatio = 1;
                     config.resolution = this.netBingTextureResolution;
                     config.clearColor = this.hexaToRGB(this.netBingSkyColor2);
                     return config;
@@ -233,7 +238,6 @@ class SvgMapConfig {
                             config.heightColors[i] = this.hexaToRGB(this.netBingAltitudeColors3[i]);
                         }
                     }
-                    config.aspectRatio = 1;
                     config.resolution = this.netBingTextureResolution;
                     config.clearColor = this.hexaToRGB(this.netBingSkyColor3);
                     return config;
@@ -271,8 +275,8 @@ class SvgMapConfig {
             s = 1 - min / max;
         }
         let v = max;
-        s = Math.min(1, s * 1.2);
-        v = Math.min(1, v * 1.2);
+        s = Math.min(1, s * 2);
+        v = Math.min(1, v * 2.5);
         let ti = Math.floor(t / 60);
         let f = t / 60 - ti;
         let l = v * (1 - s);

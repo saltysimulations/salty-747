@@ -1,7 +1,7 @@
 class CitiesGenerator {
     static BodyLog(message) {
         let e = document.createElement("div");
-        e.textContent = "> " + message;
+        diffAndSetText(e, "> " + message);
         document.getElementById("output").appendChild(e);
     }
     static async ExtractCities() {
@@ -26,11 +26,11 @@ class CitiesGenerator {
                             }
                         }
                         for (let i = 0; i < Math.min(3, cities.cities.length - 3); i++) {
-                            CitiesGenerator.BodyLog(cities.cities[i].toString());
+                            CitiesGenerator.BodyLog(cities.cities[i] + '');
                         }
                         CitiesGenerator.BodyLog("[...] (" + (cities.cities.length - 6) + " more)");
                         for (let i = Math.max(1, cities.cities.length - 3); i < cities.cities.length; i++) {
-                            CitiesGenerator.BodyLog(cities.cities[i].toString());
+                            CitiesGenerator.BodyLog(cities.cities[i] + '');
                         }
                         CitiesGenerator.BodyLog("");
                         resolve(cities);

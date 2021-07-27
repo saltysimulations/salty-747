@@ -40,7 +40,7 @@ class MapTest extends ISvgMapRootElement {
         for (let i = 0; i < l; i++) {
             sortedList.add(all[i]);
         }
-        console.log((performance.now() - t0).toFixed(2) + " ms with SortedList<T> " + sortedList.length + " elements added.");
+        console.log(fastToFixed((performance.now() - t0), 2) + " ms with SortedList<T> " + sortedList.length + " elements added.");
         let t1 = performance.now();
         for (let i = 0; i < l; i++) {
             let newElement = all[i];
@@ -48,7 +48,7 @@ class MapTest extends ISvgMapRootElement {
                 list.push(newElement);
             }
         }
-        console.log((performance.now() - t1).toFixed(2) + " ms with [] " + list.length + " elements added.");
+        console.log(fastToFixed((performance.now() - t1), 2) + " ms with [] " + list.length + " elements added.");
         let map = new SvgMap(this, { svgElementId: "pouet-pouet" });
         let bodAirport = new SvgNearestAirportElement();
         bodAirport.coordinates = new LatLongAlt(44.8305935, -0.7124992);

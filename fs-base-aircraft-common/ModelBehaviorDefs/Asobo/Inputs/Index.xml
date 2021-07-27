@@ -1,0 +1,16 @@
+<ModelBehaviors>
+	<Include RelativeFile="Aircraft.xml"/>
+	<Include RelativeFile="Autopilot.xml"/>
+	<Include RelativeFile="Deice.xml"/>
+	<Include RelativeFile="Electrical.xml"/>
+	<Include RelativeFile="Engine.xml"/>
+	<Include RelativeFile="Fuel.xml"/>
+	<Include RelativeFile="Handling.xml"/>
+	<Include RelativeFile="Instrument.xml"/>
+	<Include RelativeFile="LandingGear.xml"/>
+	<Include RelativeFile="Lighting.xml"/>
+	<Include RelativeFile="Passenger.xml"/>
+	<Include RelativeFile="Pilot.xml"/>
+	<Include RelativeFile="Pressurization.xml"/>
+	<Include RelativeFile="Safety.xml"/>
+</ModelBehaviors>

@@ -49,7 +49,7 @@ class LogicXMLElement {
     getValueAsString(_context) {
         let value = this.getValue(_context);
         if (typeof value == 'number') {
-            return value.toString();
+            return value + '';
         }
         else {
             return value;
@@ -251,7 +251,7 @@ class AddLogicXMLElement extends CompositeLogicXMLElement {
                 let childValue = this.childrens[i].getValue(_context);
                 if (typeof childValue == 'number') {
                     if (isString) {
-                        stringResult += childValue.toString();
+                        stringResult += childValue + '';
                     }
                     else {
                         result += childValue;
@@ -266,7 +266,7 @@ class AddLogicXMLElement extends CompositeLogicXMLElement {
                             stringResult = childValue;
                         }
                         else {
-                            stringResult = result.toString() + childValue;
+                            stringResult = result + '' + childValue;
                         }
                     }
                     isString = true;
@@ -615,7 +615,7 @@ class ToFixedLogicXMLElement extends CompositeLogicXMLElement {
         if (this.childrens.length > 0) {
             let childValue = this.childrens[0].getValue(_context);
             if (typeof childValue == 'number') {
-                return childValue.toFixed(this.precision);
+                return fastToFixed(childValue, this.precision);
             }
             else {
                 return childValue;
@@ -719,8 +719,8 @@ class DistanceFromOriginXMLElement extends LogicXMLElement {
             origin = this.gps.flightPlanManager.getOrigin();
         }
         let position = new LatLong();
-        position.lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
-        position.long = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
+        position.lat = Simplane.getCurrentLat();
+        position.long = Simplane.getCurrentLon();
         let onGround = SimVar.GetSimVarValue("SIM ON GROUND", "boolean");
         if (this.originPosition == null && !origin && onGround) {
             this.originPosition = position;
@@ -753,8 +753,8 @@ class DistanceToDestinationXMLElement extends LogicXMLElement {
             destination = this.gps.flightPlanManager.getDestination();
         }
         let position = new LatLong();
-        this.destinationPosition.lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
-        this.destinationPosition.long = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
+        this.destinationPosition.lat = Simplane.getCurrentLat();
+        this.destinationPosition.long = Simplane.getCurrentLon();
         if (this.destinationPosition == null && !destination) {
             this.destinationPosition = position;
         }
@@ -780,14 +780,22 @@ class HeadingChangeFromDepartureXMLElement extends LogicXMLElement {
     getValue(_context) {
         let onGround = SimVar.GetSimVarValue("SIM ON GROUND", "boolean");
         if (this.wasOnGround && !onGround) {
-            this.headingAtTakeOff = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
+            this.headingAtTakeOff = Simplane.getHeadingTrue();
         }
         else if (onGround) {
             this.headingAtTakeOff = undefined;
             this.maxHeadingChange = 0;
         }
         this.wasOnGround = onGround;
-        this.maxHeadingChange = Math.max(this.maxHeadingChange, this.headingAtTakeOff == undefined ? 0 : Math.abs(this.headingAtTakeOff - SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees")));
+        let headingChange = 0;
+        if (this.headingAtTakeOff != undefined) {
+            headingChange = this.headingAtTakeOff - Simplane.getHeadingTrue();
+            if (headingChange < -180)
+                headingChange += 360;
+            if (headingChange > 180)
+                headingChange -= 360;
+        }
+        this.maxHeadingChange = Math.max(this.maxHeadingChange, Math.abs(headingChange));
         return this.maxHeadingChange;
     }
 }

@@ -64,7 +64,7 @@ var B747_8_EICAS_Common;
                 this.minValue = _definition.minValue;
                 this.maxValue = _definition.maxValue;
                 this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
-                this.rootSVG.setAttribute("viewBox", "0 0 100 200");
+                diffAndSetAttribute(this.rootSVG, "viewBox", "0 0 100 200");
                 this.appendChild(this.rootSVG);
                 if (_definition.valueBoxWidth > 0) {
                     this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision);
@@ -87,10 +87,10 @@ var B747_8_EICAS_Common;
                 var textY = GaugeDefinition.VALUE_TEXT_BOX_HEIGHT * 0.5;
                 this.rootSVG.appendChild(this.createRect(boxX + "%", "0%", _boxWidth + "%", GaugeDefinition.VALUE_TEXT_BOX_HEIGHT + "%", "value"));
                 this.valueText = document.createElementNS(Avionics.SVG.NS, "text");
-                this.valueText.setAttribute("x", textX + "%");
-                this.valueText.setAttribute("y", textY + "%");
-                this.valueText.setAttribute("class", "value");
-                this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
+                diffAndSetAttribute(this.valueText, "x", textX + "%");
+                diffAndSetAttribute(this.valueText, "y", textY + "%");
+                diffAndSetAttribute(this.valueText, "class", "value");
+                diffAndSetText(this.valueText, fastToFixed(this.currentValue, this.valuePrecision));
                 this.rootSVG.appendChild(this.valueText);
             }
         }
@@ -111,11 +111,11 @@ var B747_8_EICAS_Common;
         }
         createRect(_x, _y, _width, _height, _class) {
             var rect = document.createElementNS(Avionics.SVG.NS, "rect");
-            rect.setAttribute("x", _x);
-            rect.setAttribute("y", _y);
-            rect.setAttribute("width", _width);
-            rect.setAttribute("height", _height);
-            rect.setAttribute("class", _class);
+            diffAndSetAttribute(rect, "x", _x);
+            diffAndSetAttribute(rect, "y", _y);
+            diffAndSetAttribute(rect, "width", _width);
+            diffAndSetAttribute(rect, "height", _height);
+            diffAndSetAttribute(rect, "class", _class);
             return rect;
         }
         createLine(_lineDef) {
@@ -124,11 +124,11 @@ var B747_8_EICAS_Common;
             var y = this.valueToGaugePosY(_lineDef.value);
             var yStr = y + "%";
             var line = document.createElementNS(Avionics.SVG.NS, "line");
-            line.setAttribute("x1", x1 + "%");
-            line.setAttribute("x2", x2 + "%");
-            line.setAttribute("y1", yStr);
-            line.setAttribute("y2", yStr);
-            line.setAttribute("class", _lineDef.classStr);
+            diffAndSetAttribute(line, "x1", x1 + "%");
+            diffAndSetAttribute(line, "x2", x2 + "%");
+            diffAndSetAttribute(line, "y1", yStr);
+            diffAndSetAttribute(line, "y2", yStr);
+            diffAndSetAttribute(line, "class", _lineDef.classStr);
             if (_lineDef.getValue != null) {
                 this.dynamicLines.push(new GaugeDynamicLine(line, _lineDef.getValue));
             }
@@ -146,11 +146,11 @@ var B747_8_EICAS_Common;
                 if (value != this.currentValue) {
                     this.currentValue = Utils.Clamp(value, this.minValue, this.maxValue);
                     if (this.valueText != null) {
-                        this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
+                        diffAndSetText(this.valueText, fastToFixed(this.currentValue, this.valuePrecision));
                     }
                     if (this.gauge != null) {
-                        this.gauge.setAttribute("height", Math.max(this.valueToGaugeHeight(this.currentValue), 0.001) + "%");
-                        this.gauge.setAttribute("y", this.valueToGaugePosY(this.currentValue) + "%");
+                        diffAndSetAttribute(this.gauge, "height", Math.max(this.valueToGaugeHeight(this.currentValue), 0.001) + "%");
+                        diffAndSetAttribute(this.gauge, "y", this.valueToGaugePosY(this.currentValue) + "%");
                     }
                 }
             }
@@ -162,8 +162,8 @@ var B747_8_EICAS_Common;
                             this.dynamicLines[line].currentValue = Utils.Clamp(value, this.minValue, this.maxValue);
                             ;
                             var yStr = this.valueToGaugePosY(this.dynamicLines[line].currentValue) + "%";
-                            this.dynamicLines[line].line.setAttribute("y1", yStr);
-                            this.dynamicLines[line].line.setAttribute("y2", yStr);
+                            diffAndSetAttribute(this.dynamicLines[line].line, "y1", yStr);
+                            diffAndSetAttribute(this.dynamicLines[line].line, "y2", yStr);
                         }
                     }
                 }
@@ -209,9 +209,9 @@ var B747_8_EICAS_Common;
             if ((_parent != null) && (_definition != null)) {
                 var textX = _isLeft ? GaugeDualDefinition.VALUE_TEXT_X_OFFSET : (100 - GaugeDualDefinition.VALUE_TEXT_X_OFFSET);
                 this.text = document.createElementNS(Avionics.SVG.NS, "text");
-                this.text.setAttribute("x", textX + "%");
-                this.text.setAttribute("y", "50%");
-                this.text.setAttribute("class", "normal");
+                diffAndSetAttribute(this.text, "x", textX + "%");
+                diffAndSetAttribute(this.text, "y", "50%");
+                diffAndSetAttribute(this.text, "class", "normal");
                 this.text.style.textAnchor = _isLeft ? "end" : "start";
                 _parent.appendChild(this.text);
                 if (_definition.barHeight > 0) {
@@ -244,8 +244,8 @@ var B747_8_EICAS_Common;
                         x2, -halfHeight,
                         x2, halfHeight
                     ].join(" ");
-                    this.indicator.setAttribute("points", points);
-                    this.indicator.setAttribute("class", "indicatorNormal");
+                    diffAndSetAttribute(this.indicator, "points", points);
+                    diffAndSetAttribute(this.indicator, "class", "indicatorNormal");
                     _parent.appendChild(this.indicator);
                     this.barTop = _definition.barTop;
                     this.barHeight = _definition.barHeight;
@@ -267,12 +267,12 @@ var B747_8_EICAS_Common;
             if ((_value != this.currentValue) || _force) {
                 this.currentValue = _value;
                 if (this.text != null) {
-                    this.text.textContent = _value.toFixed(this.valueTextPrecision);
+                    diffAndSetText(this.text, fastToFixed(_value, this.valueTextPrecision));
                 }
                 if (this.indicator != null) {
                     var clampValue = Utils.Clamp(this.currentValue, this.minValue, this.maxValue);
                     var y = (this.barTop + (this.barHeight - ((clampValue - this.minValue) * this.valueToIndicatorHeight)));
-                    this.indicator.setAttribute("transform", "translate(0," + y + ")");
+                    diffAndSetAttribute(this.indicator, "transform", "translate(0," + y + ")");
                 }
             }
         }
@@ -286,7 +286,7 @@ var B747_8_EICAS_Common;
         }
         init(_definition) {
             this.rootSVG = document.createElementNS(Avionics.SVG.NS, "svg");
-            this.rootSVG.setAttribute("viewBox", "0 0 100 100");
+            diffAndSetAttribute(this.rootSVG, "viewBox", "0 0 100 100");
             this.appendChild(this.rootSVG);
             if (_definition != null) {
                 if (_definition.getValueLeft != null) {
@@ -308,11 +308,11 @@ var B747_8_EICAS_Common;
         }
         createBar(_x, _top, _height) {
             var bar = document.createElementNS(Avionics.SVG.NS, "line");
-            bar.setAttribute("x1", _x + "%");
-            bar.setAttribute("x2", _x + "%");
-            bar.setAttribute("y1", _top + "%");
-            bar.setAttribute("y2", (_top + _height) + "%");
-            bar.setAttribute("class", "bar");
+            diffAndSetAttribute(bar, "x1", _x + "%");
+            diffAndSetAttribute(bar, "x2", _x + "%");
+            diffAndSetAttribute(bar, "y1", _top + "%");
+            diffAndSetAttribute(bar, "y2", (_top + _height) + "%");
+            diffAndSetAttribute(bar, "class", "bar");
             return bar;
         }
         refresh() {

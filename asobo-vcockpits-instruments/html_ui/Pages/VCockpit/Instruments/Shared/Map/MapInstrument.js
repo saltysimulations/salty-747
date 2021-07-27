@@ -52,6 +52,7 @@ class MapInstrument extends ISvgMapRootElement {
         this.rangeIndex = 4;
         this._declutterLevel = 0;
         this.rangeFactor = 1852;
+        this.topViewZoomLevel = 0;
         this.wpIdValue = "";
         this.wpDtkValue = "";
         this.wpDisValue = "";
@@ -59,6 +60,7 @@ class MapInstrument extends ISvgMapRootElement {
         this.rangeValue = "";
         this.bingMapConfigId = 0;
         this.showBingMap = true;
+        this.isToolBarVFRMap = false;
         this.constraints = [];
         this.airwayIterator = 0;
         this.airspaceIterator = 0;
@@ -66,11 +68,12 @@ class MapInstrument extends ISvgMapRootElement {
         this.drawCounter = 0;
         this.selfManagedInstrument = false;
         this.bMouseDown = false;
+        this.bMouseOver = false;
         this.scrollDisp = { x: 0, y: 0 };
         this._supportMouseWheel = true;
         this.svgSmooth = 5;
         this.SVG_SMOOTH_DEFAULT = 5;
-        this.SVG_SMOOTH_CURSOR = 2;
+        this.SVG_SMOOTH_CURSOR = 3;
         this.SVG_SMOOTH_VFR = 3;
         this.bingId = "";
         this.eBingMode = EBingMode.PLANE;
@@ -96,11 +99,11 @@ class MapInstrument extends ISvgMapRootElement {
         this.cursorX = 50;
         this.cursorY = 50;
         this.bIsCursorDisplayed = false;
-        this.weatherRanges = [10, 20, 30, 40, 50, 60, 80, 100];
         this.weatherHideGPS = false;
         this.isBushTrip = false;
         this.isVertical = false;
         this.overdrawFactor = 1;
+        MapInstrument.DEBUG_INSTANCE = this;
     }
     get flightPlanManager() {
         return this._flightPlanManager;
@@ -165,8 +168,8 @@ class MapInstrument extends ISvgMapRootElement {
         this.lineCanvas.style.position = "absolute";
         this.lineCanvas.style.top = "-" + (this.overdrawFactor - 1) * 50 + "%";
         this.lineCanvas.style.left = "-" + (this.overdrawFactor - 1) * 50 + "%";
-        this.lineCanvas.style.width = (this.overdrawFactor * 100).toFixed(0) + "%";
-        this.lineCanvas.style.height = (this.overdrawFactor * 100).toFixed(0) + "%";
+        this.lineCanvas.style.width = fastToFixed((this.overdrawFactor * 100), 0) + "%";
+        this.lineCanvas.style.height = fastToFixed((this.overdrawFactor * 100), 0) + "%";
         for (let i = 0; i < MapInstrument.observedAttributes.length; i++) {
             let attr = MapInstrument.observedAttributes[i];
             if (this.hasAttribute(attr)) {
@@ -208,6 +211,9 @@ class MapInstrument extends ISvgMapRootElement {
             else if (attr === "horizon") {
                 this.eBingMode = EBingMode.HORIZON;
             }
+            else if (attr === "topview") {
+                this.eBingMode = EBingMode.TOPVIEW;
+            }
             else {
                 this.eBingMode = EBingMode.PLANE;
             }
@@ -216,7 +222,10 @@ class MapInstrument extends ISvgMapRootElement {
         }
         else if (lowercaseName == "bing-ref") {
             var attr = newValue.toLowerCase();
-            if (attr === "plane") {
+            if (attr === "aerial") {
+                this.eBingRef = EBingReference.AERIAL;
+            }
+            else if (attr === "plane") {
                 this.eBingRef = EBingReference.PLANE;
             }
             else {
@@ -273,8 +282,8 @@ class MapInstrument extends ISvgMapRootElement {
             this.showFlightPlan = false;
             if (newValue === "true") {
                 this.showFlightPlan = true;
-                this.updateFlightPlanVisibility();
             }
+            this.updateFlightPlanVisibility();
         }
         else if (lowercaseName === "hide-flightplan-if-bushtrip") {
             this.bHideFlightPlanIfBushtrip = false;
@@ -347,6 +356,7 @@ class MapInstrument extends ISvgMapRootElement {
         else {
         }
         this.isVertical = (this.instrument.getAttribute("state") == "vertical") ? true : false;
+        this.isToolBarVFRMap = this.instrument.instrumentIdentifier === "VFRMap";
         this._flightPlanManager = this.instrument.flightPlanManager;
         if (this._flightPlanManager) {
             this.instrument.addEventListener("FlightStart", this.onFlightStart.bind(this));
@@ -367,12 +377,13 @@ class MapInstrument extends ISvgMapRootElement {
             this.bVfrMapPlanePositionReady = false;
         }
         SimVar.SetSimVarValue("L:AIRLINER_MCDU_CURRENT_FPLN_WAYPOINT", "number", -1);
-        if (this.eBingMode !== EBingMode.HORIZON) {
+        if (!this.bingMap.is3D()) {
             this.navMap = new SvgMap(this, { svgElement: this.getElementsByTagName("svg")[0], configPath: this.configPath });
             this.navMap.lineCanvas = this.lineCanvas;
             this.navMap.overdrawFactor = this.overdrawFactor;
+            this.navMap.instrument = this;
             var mapSVG = this.querySelector("#MapSVG");
-            mapSVG.setAttribute("display", "visible");
+            diffAndSetAttribute(mapSVG, "display", "visible");
             this.insertBefore(this.lineCanvas, mapSVG);
             this.wpt = this.querySelector("#WPT");
             this.dtkMap = this.querySelector("#DTKMap");
@@ -435,8 +446,16 @@ class MapInstrument extends ISvgMapRootElement {
             this.addEventListener("mousedown", this.OnMouseDown.bind(this));
             this.addEventListener("mousemove", this.OnMouseMove.bind(this));
             this.addEventListener("mouseup", this.OnMouseUp.bind(this));
-            this.addEventListener("mouseleave", this.OnMouseUp.bind(this));
+            this.addEventListener("mouseleave", (e) => {
+                this.bMouseOver = false;
+                this.OnMouseUp(e);
+            });
+            this.addEventListener("mouseenter", () => {
+                this.bMouseOver = true;
+            });
             this.addEventListener("mousewheel", this.OnMouseWheel.bind(this));
+            SimVar.SetSimVarValue("L:" + this.bingId + "_MapShowCursor", "number", 0);
+            SimVar.SetSimVarValue("L:" + this.bingId + "_MapZoomRange", "number", this.getDisplayRange());
         }
         this.loadBingMapConfig();
         if (this.bingMap.isReady())
@@ -455,7 +474,7 @@ class MapInstrument extends ISvgMapRootElement {
         this.checkBushTripCase();
     }
     checkBushTripCase() {
-        if (this.eBingMode !== EBingMode.HORIZON) {
+        if (!this.bingMap.is3D()) {
             Coherent.call("GET_IS_BUSHTRIP").then(v => {
                 this.isBushTrip = v;
                 if (this.isBushTrip)
@@ -487,13 +506,13 @@ class MapInstrument extends ISvgMapRootElement {
         }
     }
     onBeforeMapRedraw() {
-        if (this.eBingMode !== EBingMode.HORIZON) {
+        if (!this.bingMap.is3D()) {
             this.drawCounter++;
             this.drawCounter %= 100;
             this.npcAirplaneManager.update();
             if (this.showRoads) {
                 let t0 = performance.now();
-                while (this.roadsBuffer.length > 0 && (performance.now() - t0 < 1)) {
+                while (this.roadsBuffer.length > 0 && (performance.now() - t0 < 0.2)) {
                     let road = this.roadsBuffer.pop();
                     if (road) {
                         if (road.path.length > 100) {
@@ -545,8 +564,8 @@ class MapInstrument extends ISvgMapRootElement {
                     }
                 }
             }
-            let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-            let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
+            let lat = Simplane.getCurrentLat();
+            let long = Simplane.getCurrentLon();
             let planeLla;
             let needCenterOnPlane = false;
             if (lat && long && isFinite(lat) && isFinite(long)) {
@@ -574,7 +593,7 @@ class MapInstrument extends ISvgMapRootElement {
                 else if (!this.bVfrMapPlanePositionReady) {
                     needCenterOnPlane = true;
                     if (SimVar.GetSimVarValue("GROUND VELOCITY", "knots") > 10) {
-                        setTimeout(() => {
+                        this.instrument.requestCall(() => {
                             this.bVfrMapPlanePositionReady = true;
                         }, 3000);
                     }
@@ -589,19 +608,14 @@ class MapInstrument extends ISvgMapRootElement {
                 this.scrollMap(this.scrollDisp.x, this.scrollDisp.y);
             this.scrollDisp.x = 0;
             this.scrollDisp.y = 0;
-            if (this.bingMap) {
-                if (this.isDisplayingWeather()) {
-                    this.navMap.setRange(this.getWeatherRange() * this.overdrawFactor);
-                }
-                else {
-                    this.navMap.setRange(this.getDisplayRange() * this.overdrawFactor);
-                }
-                var bingRadius = this.navMap.NMWidth * 0.5 * this.rangeFactor;
-                if (!this.isDisplayingWeather())
-                    this.updateBingMapSize();
-                if (this.navMap.lastCenterCoordinates)
-                    this.bingMap.setParams({ lla: this.navMap.lastCenterCoordinates, radius: bingRadius });
+            if (this.isDisplayingWeather()) {
+                this.navMap.setRange(this.getWeatherRange());
             }
+            else {
+                this.navMap.setRange(this.getDisplayRange() * this.overdrawFactor);
+            }
+            if (!this.isDisplayingWeather())
+                this.updateBingMapSize();
             if (this.navMap.centerCoordinates) {
                 let centerCoordinates = this.navMap.centerCoordinates;
                 if (this.showAirports) {
@@ -677,7 +691,7 @@ class MapInstrument extends ISvgMapRootElement {
                     }
                 }
             }
-            this.navMap.mapElements = [];
+            this.navMap.mapElements.length = 0;
             if (!this.isDisplayingWeatherRadar() || !this.weatherHideGPS) {
                 if (this.showRoads || this.showAirways || this.showAirspaces) {
                     this.navMap.mapElements.push(this.roadNetwork);
@@ -847,7 +861,7 @@ class MapInstrument extends ISvgMapRootElement {
                                 compass = SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degrees");
                                 break;
                             case EMapRotationMode.HDGUp:
-                                compass = SimVar.GetSimVarValue("PLANE HEADING DEGREES TRUE", "degrees");
+                                compass = Simplane.getHeadingTrue();
                                 break;
                             case EMapRotationMode.TrackUp:
                                 compass = SimVar.GetSimVarValue("GPS GROUND TRUE TRACK", "degrees");
@@ -876,14 +890,10 @@ class MapInstrument extends ISvgMapRootElement {
         }
     }
     loadBingMapConfig() {
-        if (this.eBingMode !== EBingMode.HORIZON) {
+        if (!this.bingMap.is3D()) {
             let setConfig = () => {
                 if (this.navMap.configLoaded) {
-                    for (let i = 0; i < 3; i++) {
-                        let conf = this.navMap.config.generateBing(i);
-                        if (conf)
-                            this.bingMap.addConfig(conf);
-                    }
+                    this.navMap.config.generateBingMap(this.bingMap);
                     this.bingMap.setConfig(this.bingMapConfigId);
                 }
                 else {
@@ -909,13 +919,8 @@ class MapInstrument extends ISvgMapRootElement {
             loadSVGConfig();
             let setBingConfig = () => {
                 if (svgConfigLoaded && this.instrument.isComputingAspectRatio()) {
-                    for (let i = 0; i < 3; i++) {
-                        let conf = svgConfig.generateBing(i);
-                        if (conf) {
-                            conf.aspectRatio = (this.instrument.isAspectRatioForced()) ? this.instrument.getForcedScreenRatio() : 1.0;
-                            this.bingMap.addConfig(conf);
-                        }
-                    }
+                    svgConfig.generateBingMap(this.bingMap);
+                    this.bingMap.setAspectRatio((this.instrument.isAspectRatioForced()) ? this.instrument.getForcedScreenRatio() : 1.0);
                     this.bingMap.setConfig(this.bingMapConfigId);
                 }
                 else {
@@ -926,37 +931,38 @@ class MapInstrument extends ISvgMapRootElement {
         }
     }
     update(_deltaTime) {
+        engine.beginProfileEvent("MapInstrument::doUpdate");
         this.updateVisibility();
-        this.updateSize(true);
+        this.updateSize();
         if (this.selfManagedInstrument) {
             this.instrument.doUpdate();
             this.flightPlanManager.update(_deltaTime);
         }
         if (this.wpt) {
-            var wpId = SimVar.GetSimVarValue("GPS WP NEXT ID", "string");
+            var wpId = Simplane.getGPSWpNextID();
             if (this.wpIdValue != wpId) {
-                this.wpt.textContent = wpId;
+                diffAndSetText(this.wpt, wpId);
                 this.wpIdValue = wpId;
             }
         }
         if (this.dtkMap) {
             var wpDtk = fastToFixed(SimVar.GetSimVarValue("GPS WP DESIRED TRACK", "degree"), 0);
             if (this.wpDtkValue != wpDtk) {
-                this.dtkMap.textContent = wpDtk;
+                diffAndSetText(this.dtkMap, wpDtk);
                 this.wpDtkValue = wpDtk;
             }
         }
         if (this.disMap) {
             var wpDis = fastToFixed(SimVar.GetSimVarValue("GPS WP DISTANCE", "nautical mile"), 1);
             if (this.wpDisValue != wpDis) {
-                this.disMap.textContent = wpDis;
+                diffAndSetText(this.disMap, wpDis);
                 this.wpDisValue = wpDis;
             }
         }
         if (this.gsMap) {
-            var gs = fastToFixed(SimVar.GetSimVarValue("GPS GROUND SPEED", "knots"), 0);
+            var gs = fastToFixed(Simplane.getGroundSpeed(), 0);
             if (this.gsValue != gs) {
-                this.gsMap.textContent = gs;
+                diffAndSetText(this.gsMap, gs);
                 this.gsValue = gs;
             }
         }
@@ -970,12 +976,24 @@ class MapInstrument extends ISvgMapRootElement {
         if (this.navMap) {
             this.navMap.update();
         }
+        if (this.bingMap) {
+            engine.beginProfileEvent("bingMap.setParams");
+            if (this.bingMap.is3D()) {
+                this.bingMap.setParams({ topViewZoom: this.topViewZoomLevel });
+            }
+            else {
+                let bingRadius = this.navMap.NMWidth * 0.5 * this.rangeFactor;
+                this.bingMap.setParams({ lla: this.navMap.lastCenterCoordinates, radius: bingRadius });
+            }
+            engine.endProfileEvent();
+        }
         if (this.navMap && this.navMap.centerCoordinates) {
             this.updateInputs();
         }
         if (this.bIsCursorDisplayed && this.eBingMode != EBingMode.CURSOR) {
             this.hideCursor();
         }
+        engine.endProfileEvent();
     }
     updateVisibility() {
         if (!this.instrument)
@@ -989,36 +1007,36 @@ class MapInstrument extends ISvgMapRootElement {
     refreshDisplay() {
         if (this.isDisplayingWeatherRadar() && this.weatherHideGPS) {
             if (this.navMap && this.navMap.svgHtmlElement)
-                this.navMap.svgHtmlElement.style.display = "block";
+                diffAndSetStyle(this.navMap.svgHtmlElement, StyleProperty.display, "block");
             if (this.lineCanvas)
-                this.lineCanvas.style.display = "none";
+                diffAndSetStyle(this.lineCanvas, StyleProperty.display, "none");
             if (this.roadNetwork)
                 this.roadNetwork.setVisible(false);
             return;
         }
         if (this.quality == Quality.ultra || this.quality == Quality.high) {
             if (this.navMap && this.navMap.svgHtmlElement)
-                this.navMap.svgHtmlElement.style.display = "block";
+                diffAndSetStyle(this.navMap.svgHtmlElement, StyleProperty.display, "block");
             if (this.lineCanvas)
-                this.lineCanvas.style.display = "block";
+                diffAndSetStyle(this.lineCanvas, StyleProperty.display, "block");
             if (this.roadNetwork)
                 this.roadNetwork.setVisible(true);
             this.bingMap.setVisible(this.showBingMap);
         }
         else if (this.quality == Quality.medium) {
             if (this.navMap && this.navMap.svgHtmlElement)
-                this.navMap.svgHtmlElement.style.display = "block";
+                diffAndSetStyle(this.navMap.svgHtmlElement, StyleProperty.display, "block");
             if (this.lineCanvas)
-                this.lineCanvas.style.display = "none";
+                diffAndSetStyle(this.lineCanvas, StyleProperty.display, "none");
             if (this.roadNetwork)
                 this.roadNetwork.setVisible(false);
             this.bingMap.setVisible(this.showBingMap);
         }
         else {
             if (this.navMap && this.navMap.svgHtmlElement)
-                this.navMap.svgHtmlElement.style.display = "none";
+                diffAndSetStyle(this.navMap.svgHtmlElement, StyleProperty.display, "none");
             if (this.lineCanvas)
-                this.lineCanvas.style.display = "none";
+                diffAndSetStyle(this.lineCanvas, StyleProperty.display, "none");
             if (this.roadNetwork)
                 this.roadNetwork.setVisible(false);
             if (this.quality == Quality.low || this.quality == Quality.hidden)
@@ -1028,6 +1046,7 @@ class MapInstrument extends ISvgMapRootElement {
         }
     }
     updateInputs() {
+        engine.beginProfileEvent("updateInputs");
         if (this.eBingMode === EBingMode.VFR) {
             var scrollUp = GetInputStatus("PLANE", "KEY_VFRMAP_SCROLL_UP");
             var scrollDown = GetInputStatus("PLANE", "KEY_VFRMAP_SCROLL_DOWN");
@@ -1052,18 +1071,40 @@ class MapInstrument extends ISvgMapRootElement {
                 this.scrollDisp.x += scrollX;
                 this.scrollDisp.y += scrollY;
                 this.svgSmooth = this.SVG_SMOOTH_VFR;
+                if (!this.isToolBarVFRMap) {
+                    let quality = this.instrument ? this.instrument.getQuality() : -1;
+                    if (quality === 0) {
+                        this.svgSmooth -= 1;
+                    }
+                    else if (quality === 1) {
+                        this.svgSmooth -= 4;
+                    }
+                    else if (quality === 2) {
+                        this.svgSmooth -= 9;
+                    }
+                    this.svgSmooth = Math.max(1, this.svgSmooth);
+                }
                 this.bVfrMapPlanePositionReady = true;
                 this.bVfrMapFollowPlane = false;
             }
         }
-        var zoomIn = GetInputStatus("PLANE", "KEY_VFRMAP_ZOOM_IN");
-        var zoomOut = GetInputStatus("PLANE", "KEY_VFRMAP_ZOOM_OUT");
-        if (zoomIn == EInputStatus.pressed) {
-            this.zoomIn();
+        if (this.bMouseOver) {
+            var zoomIn = GetInputStatus("PLANE", "KEY_VFRMAP_ZOOM_IN");
+            if (!zoomIn && this.isToolBarVFRMap) {
+                zoomIn = GetInputStatus("INGAME_UI", "KEY_INGAMEPANEL_ZOOM_IN");
+            }
+            var zoomOut = GetInputStatus("PLANE", "KEY_VFRMAP_ZOOM_OUT");
+            if (!zoomOut && this.isToolBarVFRMap) {
+                zoomOut = GetInputStatus("INGAME_UI", "KEY_INGAMEPANEL_ZOOM_OUT");
+            }
+            if (zoomIn == EInputStatus.pressed) {
+                this.zoomIn();
+            }
+            else if (zoomOut == EInputStatus.pressed) {
+                this.zoomOut();
+            }
         }
-        else if (zoomOut == EInputStatus.pressed) {
-            this.zoomOut();
-        }
+        engine.endProfileEvent();
     }
     resize() {
         this.updateSize(true);
@@ -1171,7 +1212,7 @@ class MapInstrument extends ISvgMapRootElement {
         bot.llaRequested = new LatLongAlt(_lat, _long);
         bot.targetWaypoint = this.flightPlanManager.getActiveWaypoint();
         this.setCenter(bot.llaRequested);
-        this.setAttribute("show-airplane", "true");
+        diffAndSetAttribute(this, "show-airplane", "true");
         if (bot.targetWaypoint) {
             if (this.backOnTracks.indexOf(bot) === -1) {
                 this.backOnTracks.push(bot);
@@ -1184,9 +1225,11 @@ class MapInstrument extends ISvgMapRootElement {
         return false;
     }
     centerOnPlane() {
-        this.setNavMapCenter(this.navMap.planeCoordinates);
-        if (this.eBingMode == EBingMode.PLANE) {
-            this.airplaneIconElement.forceCoordinates(this.navMap.centerCoordinates.lat, this.navMap.centerCoordinates.long);
+        if (this.navMap) {
+            this.setNavMapCenter(this.navMap.planeCoordinates);
+            if (this.eBingMode == EBingMode.PLANE) {
+                this.airplaneIconElement.forceCoordinates(this.navMap.centerCoordinates.lat, this.navMap.centerCoordinates.long);
+            }
         }
     }
     centerOnActiveWaypoint(_val) {
@@ -1201,16 +1244,16 @@ class MapInstrument extends ISvgMapRootElement {
         if (this.mapOrientationElement) {
             switch (_val) {
                 case EMapRotationMode.NorthUp:
-                    this.mapOrientationElement.textContent = "NORTH UP";
+                    diffAndSetText(this.mapOrientationElement, "NORTH UP");
                     break;
                 case EMapRotationMode.DTKUp:
-                    this.mapOrientationElement.textContent = "DTK UP";
+                    diffAndSetText(this.mapOrientationElement, "DTK UP");
                     break;
                 case EMapRotationMode.HDGUp:
-                    this.mapOrientationElement.textContent = "HDG UP";
+                    diffAndSetText(this.mapOrientationElement, "HDG UP");
                     break;
                 case EMapRotationMode.TrackUp:
-                    this.mapOrientationElement.textContent = "TRACK UP";
+                    diffAndSetText(this.mapOrientationElement, "TRACK UP");
                     break;
             }
         }
@@ -1237,6 +1280,9 @@ class MapInstrument extends ISvgMapRootElement {
     }
     set zoomRanges(_values) {
         this._ranges = _values;
+        if (!this.bingMap.is3D()) {
+            SimVar.SetSimVarValue("L:" + this.bingId + "_MapZoomRange", "number", this.getDisplayRange());
+        }
     }
     get declutterLevel() {
         return this._declutterLevel;
@@ -1252,9 +1298,6 @@ class MapInstrument extends ISvgMapRootElement {
     }
     getWeatherRange() {
         return this.getDisplayRange();
-        if (this.rangeIndex < this.weatherRanges.length)
-            return this.weatherRanges[this.rangeIndex];
-        return this.weatherRanges[this.weatherRanges.length - 1];
     }
     updateBingMapSize() {
         let w = this.curWidth;
@@ -1304,6 +1347,9 @@ class MapInstrument extends ISvgMapRootElement {
     }
     getIsolines() {
         return this.bingMap.getIsolines();
+    }
+    getTopViewParams() {
+        return this.bingMap.topView;
     }
     showWeather(_mode) {
         let cone = 0;
@@ -1369,6 +1415,9 @@ class MapInstrument extends ISvgMapRootElement {
             this.navMap.rotationMode = EMapRotationMode.KeepCurrent;
         }
         this.mapRotationMode = EMapRotationMode.KeepCurrent;
+        if (!this.bingMap.is3D()) {
+            SimVar.SetSimVarValue("L:" + this.bingId + "_MapShowCursor", "number", 1);
+        }
     }
     deactivateCursor() {
         if (this.bWasCenteredOnPlane) {
@@ -1384,15 +1433,18 @@ class MapInstrument extends ISvgMapRootElement {
         }
         this.mapRotationMode = this.lastRotationMode;
         this.hideCursor();
+        if (!this.bingMap.is3D()) {
+            SimVar.SetSimVarValue("L:" + this.bingId + "_MapShowCursor", "number", 0);
+        }
     }
     setCursorPos(x, y) {
-        this.cursorSvg.setAttribute("style", "left:" + x + "%;top:" + y + "%;");
+        diffAndSetAttribute(this.cursorSvg, "style", "left:" + x + "%;top:" + y + "%;");
         this.cursorX = x;
         this.cursorY = y;
         this.bIsCursorDisplayed = true;
     }
     hideCursor() {
-        this.cursorSvg.setAttribute("style", "display: none");
+        diffAndSetAttribute(this.cursorSvg, "style", "display: none");
         this.bIsCursorDisplayed = false;
     }
     setCenter(_coordinates) {
@@ -1407,14 +1459,14 @@ class MapInstrument extends ISvgMapRootElement {
     }
     setCenteredOnPlane() {
         if (this.eBingMode != EBingMode.CURSOR) {
-            this.eBingMode = EBingMode.PLANE;
+            diffAndSetAttribute(this, "bing-mode", "plane");
         }
         else {
             this.bWasCenteredOnPlane = true;
         }
     }
     setNavMapCenter(_coordinates, _smoothness = 5) {
-        if (_coordinates && isFinite(_coordinates.lat) && isFinite(_coordinates.long)) {
+        if (this.navMap && _coordinates && isFinite(_coordinates.lat) && isFinite(_coordinates.long)) {
             this.navMap.setCenterCoordinates(_coordinates.lat, _coordinates.long, _smoothness);
             if (this.eBingMode == EBingMode.VFR) {
                 var latLong = _coordinates.toStringFloat();
@@ -1449,20 +1501,42 @@ class MapInstrument extends ISvgMapRootElement {
         }
     }
     zoomIn() {
-        this.rangeIndex--;
-        this.rangeIndex = Math.max(0, this.rangeIndex);
+        if (this.eBingMode == EBingMode.TOPVIEW) {
+            this.setZoom(this.topViewZoomLevel + 1);
+        }
+        else {
+            this.setZoom(this.rangeIndex - 1);
+        }
     }
     zoomOut() {
-        this.rangeIndex++;
-        this.rangeIndex = Math.min(this._ranges.length - 1, this.rangeIndex);
+        if (this.eBingMode == EBingMode.TOPVIEW) {
+            this.setZoom(this.topViewZoomLevel - 1);
+        }
+        else {
+            this.setZoom(this.rangeIndex + 1);
+        }
     }
     setZoom(_index) {
-        this.rangeIndex = _index;
-        this.rangeIndex = Math.max(0, this.rangeIndex);
-        this.rangeIndex = Math.min(this._ranges.length - 1, this.rangeIndex);
+        if (this.eBingMode == EBingMode.TOPVIEW) {
+            let zoomLevels = (this.bingMap && this.bingMap.topView) ? (this.bingMap.topView.zoomLevels) : 1;
+            this.topViewZoomLevel = Utils.Clamp(_index, 0, (zoomLevels - 1));
+        }
+        else {
+            this.rangeIndex = _index;
+            this.rangeIndex = Math.max(0, this.rangeIndex);
+            this.rangeIndex = Math.min(this._ranges.length - 1, this.rangeIndex);
+        }
+        if (!this.bingMap.is3D()) {
+            SimVar.SetSimVarValue("L:" + this.bingId + "_MapZoomRange", "number", this.getDisplayRange());
+        }
     }
     getZoom() {
-        return this.rangeIndex;
+        if (this.eBingMode == EBingMode.TOPVIEW) {
+            return this.topViewZoomLevel;
+        }
+        else {
+            return this.rangeIndex;
+        }
     }
     OnMouseDown(_e) {
         if (_e.button == 0) {
@@ -1483,6 +1557,19 @@ class MapInstrument extends ISvgMapRootElement {
             this.refMousePos.x = _e.x;
             this.refMousePos.y = _e.y;
             this.svgSmooth = this.SVG_SMOOTH_VFR;
+            if (!this.isToolBarVFRMap) {
+                let quality = this.instrument ? this.instrument.getQuality() : -1;
+                if (quality === 0) {
+                    this.svgSmooth -= 1;
+                }
+                else if (quality === 1) {
+                    this.svgSmooth -= 4;
+                }
+                else if (quality === 2) {
+                    this.svgSmooth -= 9;
+                }
+                this.svgSmooth = Math.max(1, this.svgSmooth);
+            }
             this.bVfrMapPlanePositionReady = true;
             this.bVfrMapFollowPlane = false;
         }
@@ -1504,7 +1591,9 @@ class MapInstrument extends ISvgMapRootElement {
         this._supportMouseWheel = _val;
     }
     getMapUpDirection() {
-        return this.navMap.mapUpDirection;
+        if (this.navMap)
+            return this.navMap.mapUpDirection;
+        return 0;
     }
     getPlaneCoords() {
         let planePosition = new Vec2(0, 0);

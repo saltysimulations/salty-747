@@ -1,103 +1,559 @@
 <ModelBehaviors>
-<Template Name="ASOBO_SAFETY_Push_Template">
-	<DefaultTemplateParameters>
-		<ID>1</ID>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_SAFETY_Push_SubTemplate">
-	</UseTemplate>
-</Template>
-<Template Name="ASOBO_SAFETY_Push_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIM_NAME>SAFETY_Push_#ID#</ANIM_NAME>
-		<NODE_ID>SAFETY_Push_#ID#</NODE_ID>
-		<PART_ID>SAFETY_Push_#ID#</PART_ID>
-		<WWISE_EVENT_1>safety_push_button_on</WWISE_EVENT_1>
-		<WWISE_EVENT_2>safety_push_button_off</WWISE_EVENT_2>
-		<NODE_ID_SEQ1>SAFETY_Push_#ID#_SEQ1</NODE_ID_SEQ1>
-		<NODE_ID_SEQ2>SAFETY_Push_#ID#_SEQ2</NODE_ID_SEQ2>
-		<SWITCH_POSITION_TYPE>I</SWITCH_POSITION_TYPE>
-		<SWITCH_POSITION_VAR>SAFETY_Push_#ID#_ButtonAnimVar</SWITCH_POSITION_VAR>
-	</DefaultTemplateParameters>
-	<OverrideTemplateParameters>
-		<BUTTON_DOWN_EMISSIVE>
-			<Switch>
-				<Case Check="AIRBUS_TYPE">
-					0
+	<Template Name="ASOBO_SAFETY_Push_SubTemplate">
+		<Parameters Type="Default">
+			<INPUT_EVENT_ID_SOURCE>SAFETY</INPUT_EVENT_ID_SOURCE>
+			<WWISE_EVENT_1>safety_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>safety_push_button_off</WWISE_EVENT_2>
+			<ANIM_NAME>SAFETY_Push_#PUSH_ID##SUFFIX_ID#</ANIM_NAME>
+			<NODE_ID>SAFETY_Push_#PUSH_ID##SUFFIX_ID#</NODE_ID>
+			<PART_ID>SAFETY_Push_#PUSH_ID#</PART_ID>
+			<Switch Param="TYPE">
+				<Case Value="AIRLINER">
+					<NODE_ID_SEQ1>SAFETY_Push_#PUSH_ID##SUFFIX_ID#_SEQ1</NODE_ID_SEQ1>
+					<NODE_ID_SEQ2>SAFETY_Push_#PUSH_ID##SUFFIX_ID#_SEQ2</NODE_ID_SEQ2>				
 				</Case>
-				<Default>
-					(#SWITCH_POSITION_TYPE#:#SWITCH_POSITION_VAR#_IsDown)
-				</Default>
 			</Switch>
-		</BUTTON_DOWN_EMISSIVE>
-	</OverrideTemplateParameters>
-	
-	<Condition Check="AIRBUS_TYPE">
-		<True>
-			<Component ID="#NODE_ID#" Node="#NODE_ID#">
-				<UseTemplate Name="ASOBO_GT_Push_Button_Held">
+			<Condition NotEmpty="IS_STATE_ACTIVE">
+				<EMISSIVE_CODE>#IS_STATE_ACTIVE#</EMISSIVE_CODE>
+			</Condition>
+			<BTN_ID>#PUSH_ID##SUFFIX_ID#</BTN_ID>
+			<RELEASE_EVENT/>
+			<ANIM_VAR>_ButtonAnimVar</ANIM_VAR>
+			<ANIM_VAR_TYPE>O</ANIM_VAR_TYPE>
+		</Parameters>
+		<Parameters Type="Override">
+			<ANIM_CODE>(#ANIM_VAR_TYPE#:#ANIM_VAR#)</ANIM_CODE>
+			<PUSH_EVENT>#PUSH_EVENT# 100 (&gt;#ANIM_VAR_TYPE#:#ANIM_VAR#)</PUSH_EVENT>
+			<RELEASE_EVENT>#RELEASE_EVENT# 0 (&gt;#ANIM_VAR_TYPE#:#ANIM_VAR#)</RELEASE_EVENT>
+			<Condition NotEmpty="EMISSIVE_CODE">
+				<EMISSIVE_CODE>#EMISSIVE_CODE# (#ANIM_VAR_TYPE#:#ANIM_VAR#) 0 &gt; or</EMISSIVE_CODE>
+			</Condition>
+			<Condition NotEmpty="TOOLTIP_TITLE">
+				<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#BTN_ID#</TOOLTIP_ENTRY_0>
+			</Condition>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="SAFETY">
+				<BINDING_DEC_0>Release</BINDING_DEC_0>
+				<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+				<SET_STATE_EXTERNAL>if{ #PUSH_EVENT# } els{ #RELEASE_EVENT# }</SET_STATE_EXTERNAL>
+				<BINDING_INC_0>Push</BINDING_INC_0>
+				<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+				<ANIM>EXTERNAL</ANIM>
+			</UseInputEvent>
+			<UseTemplate Name = "ASOBO_GT_Anim_Code"/>
+			<UseTemplate Name="ASOBO_GT_Push_Button_Held">
+				<Condition NotEmpty="IS_STATE_ACTIVE_SEQ1">
 					<EMISSIVE_CODE/>
-				</UseTemplate>
-			</Component>
-			<Component ID="#NODE_ID_SEQ1#" Node="#NODE_ID_SEQ1#">
-				<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-					<EMISSIVE_CODE> #BUTTON_DOWN_EMISSIVE# #EMISSIVE_CODE# or </EMISSIVE_CODE>
-				</UseTemplate>
-			</Component>
-			<Condition Check="NO_SEQ2">
-				<False>
+				</Condition>
+				<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Push)</LEFT_SINGLE_CODE>
+				<LEFT_LEAVE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Release)</LEFT_LEAVE_CODE>
+				<ANIM_HANDLED_SEPARATELY>True</ANIM_HANDLED_SEPARATELY>
+			</UseTemplate>
+		</Component>
+		<Switch Param="TYPE">
+			<Case Value="AIRLINER">
+				<Condition NotEmpty="IS_STATE_ACTIVE_SEQ1">
+					<Component ID="#NODE_ID_SEQ1#" Node="#NODE_ID_SEQ1#">
+						<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+							<EMISSIVE_CODE>#IS_STATE_ACTIVE_SEQ1#</EMISSIVE_CODE>
+						</UseTemplate>
+					</Component>					
+				</Condition>
+				<Condition NotEmpty="IS_STATE_ACTIVE_SEQ2">
 					<Component ID="#NODE_ID_SEQ2#" Node="#NODE_ID_SEQ2#">
 						<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
-							<EMISSIVE_CODE> #BUTTON_DOWN_EMISSIVE# #EMISSIVE_CODE# or </EMISSIVE_CODE>
+							<EMISSIVE_CODE>#IS_STATE_ACTIVE_SEQ2#</EMISSIVE_CODE>
 						</UseTemplate>
-					</Component>
-				</False>
-			</Condition>
-		</True>
-		<False>
-			<Component ID="#NODE_ID#" Node="#NODE_ID#">
-				<UseTemplate Name="ASOBO_GT_Push_Button_Held">
+					</Component>					
+				</Condition>
+			</Case>
+		</Switch>
+	</Template>
+
+	<Template Name="ASOBO_SAFETY_Push_Acknowledge_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>SAFETY_Push_Acknowledge</NODE_ID>
+			<ANIM_NAME>SAFETY_Push_Acknowledge</ANIM_NAME>
+			<GREEN_LIGHT_NODE_ID>SAFETY_Acknowledge_Light_Green</GREEN_LIGHT_NODE_ID>
+			<ORANGE_LIGHT_NODE_ID>SAFETY_Acknowledge_Light_Orange</ORANGE_LIGHT_NODE_ID>
+			<GREEN_LIGHT_ANIM_NAME>SAFETY_Acknowledge_Light_Green</GREEN_LIGHT_ANIM_NAME>
+			<ORANGE_LIGHT_ANIM_NAME>SAFETY_Acknowledge_Light_Orange</ORANGE_LIGHT_ANIM_NAME>
+			<WWISE_EVENT_1>annunciator_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>annunciator_push_button_off</WWISE_EVENT_2> 
+			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+			<NORMALIZED_TIME_2>0.3</NORMALIZED_TIME_2>
+			<TOOLTIP_TITLE>@TT_Package.SAFETY_PUSH_MASTER_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.SAFETY_PUSH_MASTER_ACTION</TT_DESCRIPTION_ID>
+			<INPUT_EVENT_ID_SOURCE>SAFETY</INPUT_EVENT_ID_SOURCE>
+			<USE_INPUT_EVENT>SAFETY</USE_INPUT_EVENT>
+		</Parameters>
+		<Parameters Type="Override">
+			<ACK_CODE>
+				0 (&gt;L:XMLVAR_SAFETY_Panel_Test_Enabled)
+				(E:SIMULATION TIME, second) (&gt;L:XMLVAR_AcknowledgeTime)
+				0 (&gt;I:XMLVAR_CautionWaitingAck)
+				0 (&gt;I:XMLVAR_WarningWaitingAck)
+				0 (&gt;L:XMLVAR_CautionEnabled)
+				0 (&gt;L:XMLVAR_WarningEnabled)
+			</ACK_CODE>
+			<LONG_PRESS_CODE>1 (&gt;L:XMLVAR_SAFETY_Panel_Test_Enabled)</LONG_PRESS_CODE>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<Parameters Type="Override">
+				<BTN_ID>Acknowledge</BTN_ID>
+				<LONG_CLICK_TIME>2</LONG_CLICK_TIME>
+				<Condition NotEmpty="TOOLTIP_TITLE">
+					<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_Acknowledge</TOOLTIP_ENTRY_0>
+				</Condition>
+			</Parameters>
+			<UseTemplate Name="ASOBO_GT_Update">
+				<FREQUENCY>2</FREQUENCY>
+				<UPDATE_CODE>(I:XMLVAR_SAFETY_Blink_Step) ++ 3 % (&gt;I:XMLVAR_SAFETY_Blink_Step) (I:XMLVAR_SAFETY_Blink_Step) 2 &lt; (&gt;I:XMLVAR_SAFETY_Blink)</UPDATE_CODE>
+			</UseTemplate>
+			<UseInputEvent ID="#USE_INPUT_EVENT#">
+				<ANIM>HOLD</ANIM>
+				<!-- Configure event processing -->
+				<SET_ARG_COUNT>2</SET_ARG_COUNT><!-- p0: Press/Release, p1:PressDuration, 0 = infinite (if pressing) -->
+				<SET_STATE_EXTERNAL>p0 sp0
+					l0 0 == if{ (O:_PressTime) 0 &gt; if{ (E:SIMULATION TIME, second) (O:_PressTime) - #LONG_CLICK_TIME# &lt; if{ #ACK_CODE# } els{ #LONG_PRESS_CODE# } 0 (&gt;O:_PressTime) } }
+					l0 1 == if{ (E:SIMULATION TIME, second) (&gt;O:_PressTime) p1 (&gt;O:_PressForDuration) }
+				</SET_STATE_EXTERNAL>
+				<!-- Configure binding for longpress event -->
+				<BINDING_SET_0>Push_Long</BINDING_SET_0>
+				<BINDING_SET_0_PARAM_0>1</BINDING_SET_0_PARAM_0>
+				<BINDING_SET_0_PARAM_1>#LONG_CLICK_TIME#</BINDING_SET_0_PARAM_1>
+				<BINDING_INC_0>Push</BINDING_INC_0>
+				<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+				<BINDING_DEC_0>Release</BINDING_DEC_0>
+				<BINDING_DEC_0_PARAM_0>0</BINDING_DEC_0_PARAM_0>
+			</UseInputEvent>
+			<UseTemplate Name = "ASOBO_GT_Push_Button_Timed">
+				<PART_ID>SAFETY_Push_Acknowledge</PART_ID>
+				<!-- Simply push/release the button -->
+				<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Push)</LEFT_SINGLE_CODE>
+				<SHORT_CLICK_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Release)</SHORT_CLICK_CODE>
+				<LONG_CLICK_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Release)</LONG_CLICK_CODE>
+			</UseTemplate>
+			<Condition Check="USE_EMISSIVE_BUTTON">
+				<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+					<EMISSIVE_CODE>(L:XMLVAR_CautionEnabled) (L:XMLVAR_WarningEnabled) or (L:XMLVAR_LTS_Test) or</EMISSIVE_CODE>
 				</UseTemplate>
-			</Component>
-		</False>
-	</Condition>
-</Template>
-
-<!-- Generic SAFETY indicators template -->
-<Template Name="ASOBO_SAFETY_Indicator_SubTemplate">
-	<DefaultTemplateParameters>
-		<EMISSIVE_CODE>0</EMISSIVE_CODE>
-		<REQUIRE_ACK_CODE/>
-		<CANCEL_ACK_CODE/>
-		<DAYNIGHT_FACTOR>0.7</DAYNIGHT_FACTOR>
-	</DefaultTemplateParameters>
-	<UseTemplate Name="ASOBO_SAFETY_Indicator_SubSubTemplate">
-		<Condition Check="CHECK_DAYNIGHT_SWITCH">
-			<EMISSIVE_CODE>
-				(L:XMLVAR_WarningsAttenuated) if{
-					#DAYNIGHT_FACTOR# sp1
-				} els{ 
-					1 sp1
-				}
-				#EMISSIVE_CODE# l1 *
-			</EMISSIVE_CODE>
-		</Condition>
-	</UseTemplate>	
-</Template>
-
-<Template Name="ASOBO_SAFETY_Indicator_SubSubTemplate">
-	<DefaultTemplateParameters>
-		<CUSTOM_TEST_CODE>1</CUSTOM_TEST_CODE>
-		<Condition Check="CHECK_ANNUNCIATOR_SWITCH">
-			<True>
-				<CUSTOM_TEST_COND>(A:ANNUNCIATOR SWITCH, bool)</CUSTOM_TEST_COND>
-			</True>
+			</Condition>
+		</Component>
+		<Condition Check="NO_INDICATOR_LIGHTS">
 			<False>
-				<CUSTOM_TEST_COND>(L:XMLVAR_LTS_Test)</CUSTOM_TEST_COND>
+				<Component ID="#GREEN_LIGHT_NODE_ID#" Node="#GREEN_LIGHT_NODE_ID#">
+					<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+						<EMISSIVE_CODE>
+							(L:XMLVAR_SAFETY_Panel_Test_Enabled) ! (L:XMLVAR_CautionEnabled) ! (L:XMLVAR_WarningEnabled) ! and and
+						</EMISSIVE_CODE>
+					</UseTemplate>
+					<UseTemplate Name="ASOBO_GT_Anim_Code">
+						<ANIM_CODE>
+							(A:ELECTRICAL MASTER BATTERY, Bool) if{
+								(L:XMLVAR_SAFETY_Panel_Test_Enabled) (L:XMLVAR_CautionEnabled) (L:XMLVAR_WarningEnabled) or or 100 *
+							} els{
+								0
+							}
+						</ANIM_CODE>
+						<ANIM_NAME>#GREEN_LIGHT_ANIM_NAME#</ANIM_NAME>
+						<ANIM_LAG>0</ANIM_LAG>
+					</UseTemplate>
+				</Component>
+				<Component ID="#ORANGE_LIGHT_NODE_ID#" Node="#ORANGE_LIGHT_NODE_ID#">
+					<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+						<EMISSIVE_CODE>
+							(L:XMLVAR_SAFETY_Panel_Test_Enabled) (L:XMLVAR_CautionEnabled) (L:XMLVAR_WarningEnabled) or or
+						</EMISSIVE_CODE>
+					</UseTemplate>
+					<UseTemplate Name="ASOBO_GT_Anim_Code">
+						<ANIM_CODE>
+							(A:ELECTRICAL MASTER BATTERY, Bool) if{
+								(L:XMLVAR_SAFETY_Panel_Test_Enabled) ! (L:XMLVAR_CautionEnabled) ! (L:XMLVAR_WarningEnabled) ! and and 100 *
+							} els{
+								0
+							}
+						</ANIM_CODE>
+						<ANIM_NAME>#ORANGE_LIGHT_ANIM_NAME#</ANIM_NAME>
+						<ANIM_LAG>0</ANIM_LAG>
+					</UseTemplate>
+				</Component>
 			</False>
 		</Condition>
-	</DefaultTemplateParameters>
+	</Template>
+
+	<Template Name="ASOBO_SAFETY_Gauge_OxygenPressure_SubTemplate">
+		<Parameters Type="Default">
+			<MIN_TEMP>0</MIN_TEMP>
+			<MAX_TEMP>110</MAX_TEMP>
+			<PRESSURE_MIN_TEMP_FAHRENHEIT>1515</PRESSURE_MIN_TEMP_FAHRENHEIT>
+			<PRESSURE_MAX_TEMP_FAHRENHEIT>2040</PRESSURE_MAX_TEMP_FAHRENHEIT>
+			<DISPLAY_PRESSURE_MIN>0</DISPLAY_PRESSURE_MIN>
+			<DISPLAY_PRESSURE_MAX>4000</DISPLAY_PRESSURE_MAX>
+			<NODE_ID>SAFETY_Gauge_OxygenPressure#SUFFIX_ID#</NODE_ID>
+			<ANIM_NAME>SAFETY_Gauge_OxygenPressure#SUFFIX_ID#</ANIM_NAME>
+			<PART_ID>SAFETY_Gauge_OxygenPressure</PART_ID>
+			<ANIM_LENGTH>100</ANIM_LENGTH>
+			<TEMPERATURE_UNIT>fahrenheit</TEMPERATURE_UNIT>
+		</Parameters>
+		<Parameters Type="Override">
+			<FACTOR Process="Float">#PRESSURE_MAX_TEMP_FAHRENHEIT# #PRESSURE_MIN_TEMP_FAHRENHEIT# - #MAX_TEMP# #MIN_TEMP# - /</FACTOR>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_GT_Update">
+				<FREQUENCY>10</FREQUENCY>
+				<UPDATE_CODE>#FACTOR# (A:AMBIENT TEMPERATURE, #TEMPERATURE_UNIT#) * #PRESSURE_MIN_TEMP_FAHRENHEIT# + (&gt;O:XMLVAR_TargetPressure)</UPDATE_CODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GT_Anim_Code">
+				<ANIM_CODE>(O:XMLVAR_TargetPressure) #DISPLAY_PRESSURE_MAX# min #DISPLAY_PRESSURE_MIN# max #DISPLAY_PRESSURE_MAX# / 100 *</ANIM_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_SAFETY_Light_SubTemplate">
+		<Parameters Type="Default">
+			<PART_ID>SAFETY_Switch_Light</PART_ID>
+			<NODE_ID>SAFETY_Switch_Light</NODE_ID>
+			<ANIM_NAME>SAFETY_Switch_Light</ANIM_NAME>
+			<INPUT_EVENT_ID_SOURCE>SAFETY</INPUT_EVENT_ID_SOURCE>
+			<USE_INPUT_EVENT>SAFETY</USE_INPUT_EVENT>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<STATE_MAX_TIMER>0.1</STATE_MAX_TIMER>
+					<SWITCH_TYPE>DIM_OFF_TEST</SWITCH_TYPE>
+					<VAR_NAME>XMLVAR_WarningsAttenuated</VAR_NAME>
+					<VAR_SCOPE>L</VAR_SCOPE>
+					<WWISE_EVENT>light_switch</WWISE_EVENT>
+					<BTN_ID>Light</BTN_ID>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<Switch Param="SWITCH_TYPE">
+						<Case Value="DIM_OFF_TEST">
+							<POS_DIM>0</POS_DIM>
+							<POS_TEST>2</POS_TEST>
+						</Case>
+						<Case Value="TEST_OFF_DIM">
+							<POS_TEST>0</POS_TEST>
+							<POS_DIM>2</POS_DIM>
+						</Case>
+					</Switch>
+					<POS_OFF>1</POS_OFF>
+					<SET_STATE_DIM>(&gt;K:ANNUNCIATOR_SWITCH_OFF) 1 (&gt;#VAR_SCOPE#:#VAR_NAME#)</SET_STATE_DIM>
+					<SET_STATE_OFF>(&gt;K:ANNUNCIATOR_SWITCH_OFF) 0 (&gt;#VAR_SCOPE#:#VAR_NAME#)</SET_STATE_OFF>
+					<SET_STATE_TEST>(&gt;K:ANNUNCIATOR_SWITCH_ON) 0 (&gt;#VAR_SCOPE#:#VAR_NAME#)</SET_STATE_TEST>
+					<GET_STATE_EXTERNAL>(A:ANNUNCIATOR SWITCH, Bool) sp0 (#VAR_SCOPE#:#VAR_NAME#) sp1</GET_STATE_EXTERNAL>
+					<IS_STATE_DIM>l0 ! l1 and</IS_STATE_DIM>
+					<IS_STATE_OFF>l0 ! l1 ! and</IS_STATE_OFF>
+					<IS_STATE_TEST>l0 l1 and</IS_STATE_TEST>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<TOOLTIP_TITLE>@TT_Package.SAFETY_LIGHT_TITLE</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<TT_DESCRIPTION_ID>@TT_Package.SAFETY_LIGHT_ACTION</TT_DESCRIPTION_ID>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<TT_VALUE_DIMMED>@TT_Package.GT_STATE_DIM_MODE</TT_VALUE_DIMMED>
+					<TT_VALUE_OFF>@TT_Package.GT_STATE_OFF</TT_VALUE_OFF>
+					<TT_VALUE_TEST>@TT_Package.GT_STATE_TEST</TT_VALUE_TEST>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<UseInputEvent ID="#USE_INPUT_EVENT#">
+						<NUM_STATES>3</NUM_STATES>
+						<ENUM_VAL_TO_POS_EXTERNAL>#IS_STATE_DIM# if{ #POS_DIM# sp2 } #IS_STATE_OFF# if{ #POS_OFF# sp2 } #IS_STATE_TEST# if{ #POS_TEST# sp2 } l2</ENUM_VAL_TO_POS_EXTERNAL>
+						<!-- DIM -->
+						<TT_VALUE_#POS_DIM#>#TT_VALUE_DIMMED#</TT_VALUE_#POS_DIM#>
+						<SET_STATE_#POS_DIM#>#SET_STATE_DIM#</SET_STATE_#POS_DIM#>
+						<STR_STATE_#POS_DIM#>Dim</STR_STATE_#POS_DIM#>
+						<!-- OFF -->
+						<TT_VALUE_#POS_OFF#>#TT_VALUE_OFF#</TT_VALUE_#POS_OFF#>
+						<SET_STATE_#POS_OFF#>#SET_STATE_OFF#</SET_STATE_#POS_OFF#>
+						<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+						<!-- TEST -->
+						<TT_VALUE_#POS_TEST#>#TT_VALUE_TEST#</TT_VALUE_#POS_TEST#>
+						<SET_STATE_#POS_TEST#>#SET_STATE_TEST#</SET_STATE_#POS_TEST#>
+						<STR_STATE_#POS_TEST#>Test</STR_STATE_#POS_TEST#>
+					</UseInputEvent>
+					<UseTemplate Name="ASOBO_GT_Switch_3States">
+						<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
+						<SWITCH_POSITION_VAR>XMLVAR_DayNightSwitch</SWITCH_POSITION_VAR>
+						<SWITCH_POSITION_TYPE_TIMER>L</SWITCH_POSITION_TYPE_TIMER>
+						<SWITCH_POSITION_VAR_TIMER>XMLVAR_DayNightSwitch_Timer</SWITCH_POSITION_VAR_TIMER>
+						<CODE_POS_#POS_DIM#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Dim)</CODE_POS_#POS_DIM#>
+						<CODE_POS_#POS_OFF#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Off)</CODE_POS_#POS_OFF#>
+						<CODE_POS_#POS_TEST#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Test)</CODE_POS_#POS_TEST#>
+						<STATE#POS_DIM#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_DIM# ==</STATE#POS_DIM#_TEST>
+						<STATE#POS_OFF#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_OFF# ==</STATE#POS_OFF#_TEST>
+						<STATE#POS_TEST#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_TEST# ==</STATE#POS_TEST#_TEST>
+						<MOMENTARY_SWITCH/>
+						<STATE#POS_DIM#_TIMER>0</STATE#POS_DIM#_TIMER>
+						<STATE#POS_TEST#_TIMER>0.1</STATE#POS_TEST#_TIMER>
+					</UseTemplate>
+				</Case>
+			</Switch>
+		</Component>
+	</Template>
 	
-	<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+	<Template Name="ASOBO_SAFETY_AlternateStaticAir_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>SAFETY_Push_AlternateStaticAir#SUFFIX_ID#</NODE_ID>
+			<ANIM_NAME>SAFETY_Push_AlternateStaticAir#SUFFIX_ID#</ANIM_NAME>
+			<PART_ID>SAFETY_Push_AlternateStaticAir</PART_ID>
+			<WWISE_EVENT_1>safety_alternate_static_air_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>safety_alternate_static_air_push_button_off</WWISE_EVENT_2>
+			<INPUT_EVENT_ID_SOURCE>SAFETY</INPUT_EVENT_ID_SOURCE>
+			<USE_INPUT_EVENT>SAFETY</USE_INPUT_EVENT>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Alternate_Static_Air</BTN_ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<TOOLTIP_TITLE>@TT_Package.CABIN_ALTERNATE_AIR_TITLE</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#BTN_ID#</TOOLTIP_ENTRY_0>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="#USE_INPUT_EVENT#">
+				<Switch Param="INTERACTION_TYPE">
+					<Case Value="Push">
+						<SET_STATE_EXTERNAL>p0 if{ (&gt;K:TOGGLE_ALTERNATE_STATIC) }</SET_STATE_EXTERNAL>
+						<BINDING_INC_0>Push</BINDING_INC_0>
+						<BINDING_INC_0_PARAM_0>1</BINDING_INC_0_PARAM_0>
+					</Case>
+					<Case Value="Switch">
+						<ANIM>EXTERNAL</ANIM>
+						<SET_STATE_ON>(A:ALTERNATE STATIC SOURCE OPEN, Bool) ! if{ (&gt;K:TOGGLE_ALTERNATE_STATIC) }</SET_STATE_ON>
+						<SET_STATE_OFF>(A:ALTERNATE STATIC SOURCE OPEN, Bool) if{ (&gt;K:TOGGLE_ALTERNATE_STATIC) }</SET_STATE_OFF>
+					</Case>
+				</Switch>
+				<GET_STATE_EXTERNAL>(A:ALTERNATE STATIC SOURCE OPEN, Bool) sp0</GET_STATE_EXTERNAL>
+				<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+				<TT_DESCRIPTION_ID>@TT_Package.CABIN_ALTERNATE_AIR_ACTION</TT_DESCRIPTION_ID>
+			</UseInputEvent>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<UseTemplate Name="ASOBO_GT_Switch_Code">
+						<ANIM_CODE>(A:ALTERNATE STATIC SOURCE OPEN, Percent)</ANIM_CODE>
+						<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+					</UseTemplate>
+				</Case>
+				<Case Value="Push">
+					<UseTemplate Name="ASOBO_GT_Push_Button">
+						<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Push)</LEFT_SINGLE_CODE>
+					</UseTemplate>
+				</Case>
+			</Switch>
+		</Component>
+	</Template>
+	
+	<Template Name="ASOBO_SAFETY_ELT_SubTemplate">
+		<Parameters Type="Default">
+			<TYPE>ON_ARM_TEST</TYPE>
+			<NODE_ID>SAFETY_Switch_ELT#SUFFIX_ID#</NODE_ID>
+			<ANIM_NAME>SAFETY_Switch_ELT#SUFFIX_ID#</ANIM_NAME>
+			<EMISSIVE_NODE_ID>SAFETY_Switch_ELT_Text#SUFFIX_ID#</EMISSIVE_NODE_ID>
+			<PART_ID>SWITCH_ELT</PART_ID>
+			<WWISE_EVENT>safety_elt_switch</WWISE_EVENT>		
+			<WWISE_EVENT_1>safety_elt_switch_on</WWISE_EVENT_1>	
+			<WWISE_EVENT_2>safety_elt_switch_off</WWISE_EVENT_2>
+			<!-- 0=OFF, 1=ARMED, 2=ON, 3=TEST/RESET -->
+			<ELT_VAR>XMLVAR_ELT_STATE</ELT_VAR>	
+			<ELT_ACTIVATED_VAR>XMLVAR_ELT_ACTIVATION_TIME</ELT_ACTIVATED_VAR>	
+			<ELT_TEST_VAR>XMLVAR_ELT_TEST_TIME</ELT_TEST_VAR>	
+			<ELT_SCOPE>L</ELT_SCOPE>
+			<!-- supposed to be around 3 blinks per second by default -->
+			<ELT_LED_BLINK>(E:SIMULATION TIME, second) 6 * 2 %</ELT_LED_BLINK>
+			<ELT_MIN_TIME_ON_FOR_TEST_RESET>1</ELT_MIN_TIME_ON_FOR_TEST_RESET>
+			<ELT_TEST_DURATION>1</ELT_TEST_DURATION>
+		</Parameters>
+		<Parameters Type="Override">
+			<ELT_OFF>0</ELT_OFF>
+			<ELT_ARM>1</ELT_ARM>
+			<ELT_ON>2</ELT_ON>
+			<ELT_TEST>3</ELT_TEST>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="TYPE">
+				<Case Value="ON_ARM_TEST">
+					<POS_ON>0</POS_ON>
+					<POS_ARM>1</POS_ARM>
+					<POS_TEST>2</POS_TEST>
+				</Case>
+				<Case Value="ARM_ON">
+					<POS_ARM>0</POS_ARM>
+					<POS_ON>1</POS_ON>
+				</Case>
+				<Case Value="ARM_ON_OFF">
+					<POS_ARM>0</POS_ARM>
+					<POS_ON>1</POS_ON>
+					<POS_OFF>2</POS_OFF>
+				</Case>
+			</Switch>
+			<USE_INPUT_EVENT>SAFETY</USE_INPUT_EVENT>
+			<INPUT_EVENT_ID_SOURCE>SAFETY</INPUT_EVENT_ID_SOURCE>
+			<BTN_ID>ELT#SUFFIX_ID#</BTN_ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<TOOLTIP_TITLE>@TT_Package.ELT_SWITCH_TITLE</TOOLTIP_TITLE>
+			<TOOLTIP_ENTRY_0>#INPUT_EVENT_ID_SOURCE#_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<TT_DESCRIPTION_ID>@TT_Package.ELT_SWITCH_ACTION_SET</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Check="#ELT_SCOPE#" Match="L">
+				<LOCAL_VAR_TO_WATCH_0>#ELT_VAR#</LOCAL_VAR_TO_WATCH_0>
+			</Condition>
+			<LED_ON_CHECK>(A:ELT ACTIVATED, Bool) #ELT_LED_BLINK# and (#ELT_SCOPE#:#ELT_VAR#) 3 == or</LED_ON_CHECK>
+			<ARM_TEST_RESET_CONDITION>(E:SIMULATION TIME, second) (#ELT_SCOPE#:#ELT_TEST_VAR#) - #ELT_MIN_TIME_ON_FOR_TEST_RESET# &gt; (A:ELT ACTIVATED, Bool) and</ARM_TEST_RESET_CONDITION>
+			<SET_STATE_ON>#ELT_ON# (&gt;#ELT_SCOPE#:#ELT_VAR#) (E:SIMULATION TIME, second) (&gt;#ELT_SCOPE#:#ELT_ACTIVATED_VAR#)</SET_STATE_ON>
+			<IS_STATE_ON>(#ELT_SCOPE#:#ELT_VAR#) #ELT_ON# ==</IS_STATE_ON>
+			<SET_STATE_ARM>#ELT_ARM# (&gt;#ELT_SCOPE#:#ELT_VAR#)</SET_STATE_ARM>
+			<IS_STATE_ARM>(#ELT_SCOPE#:#ELT_VAR#) #ELT_ARM# ==</IS_STATE_ARM>
+			<SET_STATE_OFF>#ELT_OFF# (&gt;#ELT_SCOPE#:#ELT_VAR#)</SET_STATE_OFF>
+			<IS_STATE_OFF>(#ELT_SCOPE#:#ELT_VAR#) #ELT_OFF# ==</IS_STATE_OFF>
+			<SET_STATE_TEST>#ELT_TEST# (&gt;#ELT_SCOPE#:#ELT_VAR#) (E:SIMULATION TIME, second) (&gt;#ELT_SCOPE#:#ELT_TEST_VAR#)</SET_STATE_TEST>
+			<IS_STATE_TEST>(#ELT_SCOPE#:#ELT_VAR#) #ELT_TEST# ==</IS_STATE_TEST>
+			<Condition Check="ID" Match="1">
+				<UPDATE_ELT_STATE>
+					(A:ELT ACTIVATED, Bool) if{
+						#ELT_ON# (&gt;#ELT_SCOPE#:#ELT_VAR#)
+					} els{
+						#ELT_ON# (#ELT_SCOPE#:#ELT_VAR#) == if{
+							#ELT_ARM# (&gt;#ELT_SCOPE#:#ELT_VAR#)
+						}
+						#ELT_TEST# (#ELT_SCOPE#:#ELT_VAR#) == if{
+							(E:SIMULATION TIME, second) (L:XMLVAR_ELT_TEST_TIME) - #ELT_TEST_DURATION# &gt; if{
+								#ELT_ARM# (&gt;#ELT_SCOPE#:#ELT_VAR#)
+							}
+						}
+					}
+				</UPDATE_ELT_STATE>
+				<ON_STATE_CHANGED_EXTERNAL_CODE>(#ELT_SCOPE#:#ELT_VAR#) #ELT_ON# == (A:ELT ACTIVATED, Bool) s0 != if{ l0 if{ (&gt;K:ELT_OFF) } els{ (&gt;K:ELT_ON) } } </ON_STATE_CHANGED_EXTERNAL_CODE>
+			</Condition>
+		</Parameters>
+		<Condition Valid="NO_EMISSIVE">
+			<False>
+				<Component ID="#EMISSIVE_NODE_ID#" Node="#EMISSIVE_NODE_ID#">
+					<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+						<EMISSIVE_CODE>#LED_ON_CHECK#</EMISSIVE_CODE>
+					</UseTemplate>
+				</Component>
+			</False>
+		</Condition>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<Condition NotEmpty="UPDATE_ELT_STATE">
+				<UseTemplate Name="ASOBO_GT_Update">
+					<UPDATE_CODE>#UPDATE_ELT_STATE#</UPDATE_CODE>
+				</UseTemplate>
+			</Condition>
+			<Switch Param="TYPE">
+				<Case Value="ON_ARM_TEST">
+					<UseInputEvent ID="#USE_INPUT_EVENT#">
+						<NUM_STATES>3</NUM_STATES>
+						<GET_STATE_EXTERNAL>(#ELT_SCOPE#:#ELT_VAR#) s0 #ELT_OFF# == if{ #ELT_ARM# (&gt;#ELT_SCOPE#:#ELT_VAR#) (#ELT_SCOPE#:#ELT_VAR#) sp0 }</GET_STATE_EXTERNAL>
+						<ENUM_VAL_TO_POS_EXTERNAL>l0 #ELT_ON# == if{ #POS_ON# sp1 } l0 #ELT_ARM# == if{ #POS_ARM# sp1 } l0 #ELT_TEST# == if{ #POS_TEST# sp1 } l1</ENUM_VAL_TO_POS_EXTERNAL>
+						<!-- ON -->
+						<TT_VALUE_#POS_ON#>@TT_Package.GT_STATE_ON</TT_VALUE_#POS_ON#>
+						<SET_STATE_#POS_ON#>#SET_STATE_ON#</SET_STATE_#POS_ON#>
+						<STR_STATE_#POS_ON#>On</STR_STATE_#POS_ON#>
+						<!-- ARM -->
+						<TT_VALUE_#POS_ARM#>@TT_Package.GT_STATE_ARM</TT_VALUE_#POS_ARM#>
+						<SET_STATE_#POS_ARM#>#SET_STATE_ARM#</SET_STATE_#POS_ARM#>
+						<STR_STATE_#POS_ARM#>Arm</STR_STATE_#POS_ARM#>
+						<!-- TEST -->
+						<TT_VALUE_#POS_TEST#>@TT_Package.GT_STATE_TEST</TT_VALUE_#POS_TEST#>
+						<SET_STATE_#POS_TEST#>#SET_STATE_TEST#</SET_STATE_#POS_TEST#>
+						<STR_STATE_#POS_TEST#>Test</STR_STATE_#POS_TEST#>
+					</UseInputEvent>
+					<UseTemplate Name="ASOBO_GT_Switch_3States">
+						<CODE_POS_#POS_ARM#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Arm)</CODE_POS_#POS_ARM#>
+						<CODE_POS_#POS_ON#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_On)</CODE_POS_#POS_ON#>
+						<CODE_POS_#POS_TEST#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Test)</CODE_POS_#POS_TEST#>
+						<STATE#POS_ARM#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_ARM# ==</STATE#POS_ARM#_TEST>
+						<STATE#POS_ON#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_ON# ==</STATE#POS_ON#_TEST>
+						<STATE#POS_TEST#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_TEST# ==</STATE#POS_TEST#_TEST>
+					</UseTemplate>
+				</Case>
+				<Case Value="ARM_ON">
+					<UseInputEvent ID="#USE_INPUT_EVENT#">
+						<SET_STATE_OFF>#ARM_TEST_RESET_CONDITION# if{ #SET_STATE_TEST# } els{ #SET_STATE_ARM# }</SET_STATE_OFF>
+						<SET_STATE_ON>#SET_STATE_ON#</SET_STATE_ON>
+						<GET_STATE_EXTERNAL>(A:ELT ACTIVATED, Bool) sp0</GET_STATE_EXTERNAL>
+						<STR_STATE_OFF>Arm</STR_STATE_OFF>
+						<STR_STATE_ON>On</STR_STATE_ON>
+						<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_ARM)</TT_VALUE_OFF>
+						<TT_VALUE_ON>@TT_On</TT_VALUE_ON>
+						<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+						<SIMVAR_TO_WATCH_0>ELT ACTIVATED</SIMVAR_TO_WATCH_0>
+					</UseInputEvent>
+					<UseTemplate Name="ASOBO_GT_Switch_Code">
+						<LEFT_SINGLE_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+						<ANIM_CODE>(A:ELT ACTIVATED, Percent)</ANIM_CODE>
+					</UseTemplate>
+				</Case>
+				<Case Value="ARM_ON_OFF">
+					<UseInputEvent ID="#USE_INPUT_EVENT#">
+						<NUM_STATES>3</NUM_STATES>
+						<GET_STATE_EXTERNAL>(#ELT_SCOPE#:#ELT_VAR#) s0 #ELT_TEST# == if{ #ELT_ARM# (&gt;#ELT_SCOPE#:#ELT_VAR#) (#ELT_SCOPE#:#ELT_VAR#) sp0 }</GET_STATE_EXTERNAL>
+						<ENUM_VAL_TO_POS_EXTERNAL>l0 #ELT_ARM# == l0 #ELT_TEST# == or if{ #POS_ARM# sp2 } l0 #ELT_ON# == if{ #POS_ON# sp2 } l0 #ELT_OFF# == if{ #POS_OFF# sp2 } l2</ENUM_VAL_TO_POS_EXTERNAL>
+						<!-- ARM -->
+						<TT_VALUE_#POS_ARM#>@TT_Package.GT_STATE_ARM</TT_VALUE_#POS_ARM#>
+						<SET_STATE_#POS_ARM#>#ARM_TEST_RESET_CONDITION# if{ #SET_STATE_TEST# } els{ #SET_STATE_ARM# }</SET_STATE_#POS_ARM#>
+						<STR_STATE_#POS_ARM#>Arm</STR_STATE_#POS_ARM#>
+						<!-- ON -->
+						<TT_VALUE_#POS_ON#>@TT_Package.GT_STATE_ON</TT_VALUE_#POS_ON#>
+						<SET_STATE_#POS_ON#>#SET_STATE_ON#</SET_STATE_#POS_ON#>
+						<STR_STATE_#POS_ON#>On</STR_STATE_#POS_ON#>
+						<!-- OFF -->
+						<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+						<SET_STATE_#POS_OFF#>#SET_STATE_OFF#</SET_STATE_#POS_OFF#>
+						<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+					</UseInputEvent>
+					<UseTemplate Name="ASOBO_GT_Switch_3States">
+						<CODE_POS_#POS_ARM#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Arm)</CODE_POS_#POS_ARM#>
+						<CODE_POS_#POS_ON#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_On)</CODE_POS_#POS_ON#>
+						<CODE_POS_#POS_OFF#>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#_Off)</CODE_POS_#POS_OFF#>
+						<STATE#POS_ARM#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_ARM# ==</STATE#POS_ARM#_TEST>
+						<STATE#POS_ON#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_ON# ==</STATE#POS_ON#_TEST>
+						<STATE#POS_OFF#_TEST>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#) #POS_OFF# ==</STATE#POS_OFF#_TEST>
+					</UseTemplate>
+				</Case>
+			</Switch>
+		</Component>
+	</Template>
+	<!-- Generic SAFETY indicators template -->
+	<Template Name="ASOBO_SAFETY_Indicator_SubTemplate">
+		<Parameters Type="Default">
+			<EMISSIVE_CODE>0</EMISSIVE_CODE>
+			<REQUIRE_ACK_CODE/>
+			<CANCEL_ACK_CODE/>
+			<DAYNIGHT_FACTOR>0.7</DAYNIGHT_FACTOR>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Check="CHECK_DAYNIGHT_SWITCH">
+				<EMISSIVE_CODE>#EMISSIVE_CODE# #DAYNIGHT_FACTOR# 1 (L:XMLVAR_WarningsAttenuated) ? *</EMISSIVE_CODE>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Default">
+			<CUSTOM_TEST_CODE>1</CUSTOM_TEST_CODE>
+			<Condition Check="CHECK_ANNUNCIATOR_SWITCH">
+				<True>
+					<CUSTOM_TEST_COND>(A:ANNUNCIATOR SWITCH, bool)</CUSTOM_TEST_COND>
+				</True>
+				<False>
+					<CUSTOM_TEST_COND>(L:XMLVAR_LTS_Test)</CUSTOM_TEST_COND>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 			<Condition Check="CHECK_ACKNOWLEDGE">
 				<True>
 					<EMISSIVE_CODE>
@@ -138,66 +594,5 @@
 				</False>
 			</Condition>
 		</UseTemplate>
-</Template>
-
-<Template Name="ASOBO_SAFETY_Gauge_OxygenPressure_SubTemplate">
-	<DefaultTemplateParameters>
-		<FACTOR Process="1">#PRESSURE_MAX_TEMP_FAHRENHEIT# #PRESSURE_MIN_TEMP_FAHRENHEIT# - #MAX_TEMP# #MIN_TEMP# - /</FACTOR>
-		<NODE_ID>SAFETY_Gauge_OxygenPressure</NODE_ID>
-		<ANIM_NAME>SAFETY_Gauge_OxygenPressure</ANIM_NAME>
-		<PART_ID>SAFETY_Gauge_OxygenPressure</PART_ID>
-		<DISPLAY_PRESSURE_MIN>0</DISPLAY_PRESSURE_MIN>
-		<DISPLAY_PRESSURE_MAX>4000</DISPLAY_PRESSURE_MAX>
-		<ANIM_LENGTH>100</ANIM_LENGTH>
-		<TEMPERATURE_UNIT>fahrenheit</TEMPERATURE_UNIT>
-	</DefaultTemplateParameters>
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<Update Frequency="10">
-			#FACTOR# (A:AMBIENT TEMPERATURE, #TEMPERATURE_UNIT#) * #PRESSURE_MIN_TEMP_FAHRENHEIT# + (&gt;O:XMLVAR_TargetPressure)
-		</Update>
-		<UseTemplate Name="ASOBO_GT_Anim_Code">
-			<ANIM_CODE>
-				(O:XMLVAR_TargetPressure) #DISPLAY_PRESSURE_MAX# min #DISPLAY_PRESSURE_MIN# max #DISPLAY_PRESSURE_MAX# / 100 *
-			</ANIM_CODE>
-		</UseTemplate>
-	</Component>
-</Template>
-
-<Template Name="ASOBO_SAFETY_Switch_Light_SubTemplate">
-	<DefaultTemplateParameters>
-		<ANIMREF_ID>0</ANIMREF_ID>
-		<ANIMTIP_#DIM_ID#>TT:COCKPIT.TOOLTIPS.SAFETY_SWITCH_NIGHT</ANIMTIP_#DIM_ID#>
-		<ANIMTIP_0_ON_PERCENT>0</ANIMTIP_0_ON_PERCENT>
-		<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.SAFETY_SWITCH_DAY</ANIMTIP_1>
-		<ANIMTIP_1_ON_PERCENT>0.5</ANIMTIP_1_ON_PERCENT>
-		<ANIMTIP_#TEST_ID#>TT:COCKPIT.TOOLTIPS.SAFETY_SWITCH_TEST</ANIMTIP_#TEST_ID#>
-		<ANIMTIP_2_ON_PERCENT>1</ANIMTIP_2_ON_PERCENT>		
-	</DefaultTemplateParameters>
-	
-	<Component ID="#NODE_ID#" Node="#NODE_ID#">
-		<UseTemplate Name="ASOBO_GT_Switch_3States">
-			<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
-			<SWITCH_POSITION_VAR>XMLVAR_DayNightSwitch</SWITCH_POSITION_VAR>
-			<SWITCH_POSITION_TYPE_TIMER>L</SWITCH_POSITION_TYPE_TIMER>
-			<SWITCH_POSITION_VAR_TIMER>XMLVAR_DayNightSwitch_Timer</SWITCH_POSITION_VAR_TIMER>
-			<WWISE_EVENT>light_switch</WWISE_EVENT>
-			<CODE_POS_#DIM_ID#>
-				(&gt;K:ANNUNCIATOR_SWITCH_OFF)
-				1 (&gt;L:XMLVAR_WarningsAttenuated)
-			</CODE_POS_#DIM_ID#>
-			<CODE_POS_1>
-				(&gt;K:ANNUNCIATOR_SWITCH_OFF)
-				0 (&gt;L:XMLVAR_WarningsAttenuated)
-			</CODE_POS_1>
-			<CODE_POS_#TEST_ID#>
-				(&gt;K:ANNUNCIATOR_SWITCH_ON)
-				0 (&gt;L:XMLVAR_WarningsAttenuated)
-			</CODE_POS_#TEST_ID#>
-			<MOMENTARY_SWITCH/>
-			<STATE#DIM_ID#_TIMER>0</STATE#DIM_ID#_TIMER>
-			<STATE#TEST_ID#_TIMER>0.01</STATE#TEST_ID#_TIMER>
-
-		</UseTemplate>
-	</Component>
 	</Template>
 </ModelBehaviors>

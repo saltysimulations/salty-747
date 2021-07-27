@@ -7,7 +7,7 @@ class B747_8_ATC extends Airliners.BaseATC {
     refreshValue() {
         super.refreshValue();
         if (this.valueText != null && this.valueText.textContent == "") {
-            this.valueText.textContent = "0000";
+            diffAndSetText(this.valueText, "0000");
         }
     }
 }

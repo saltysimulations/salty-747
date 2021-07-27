@@ -158,13 +158,13 @@ var Airbus_FMA;
         }
         setVisibility(_show) {
             if (this.divRef != null) {
-                this.divRef.style.display = _show ? "block" : "none";
+                diffAndSetStyle(this.divRef, StyleProperty.display, _show ? "block" : "none");
             }
         }
         setText(_text, _style) {
             if (this.divRef != null) {
                 if ((this.divRef.textContent != _text) || (this.textStyle != _style)) {
-                    this.divRef.textContent = _text;
+                    diffAndSetText(this.divRef, _text);
                     this.textStyle = _style;
                     this.divRef.className = Airbus_FMA.TEXT_STYLE_CLASS(this.textStyle);
                     return true;
@@ -411,7 +411,7 @@ var Airbus_FMA;
                             this.setRowHighlightStyle(1, Airbus_FMA.HIGHLIGHT_STYLE.OPEN_TOP);
                             this.setRowText(0, "MAN", Airbus_FMA.MODE_STATE.STATUS);
                             let temperatureText = Airbus_FMA.CurrentPlaneState.flexTemperature >= 0 ? "+" : "-";
-                            temperatureText += Airbus_FMA.CurrentPlaneState.flexTemperature.toFixed(0);
+                            temperatureText += fastToFixed(Airbus_FMA.CurrentPlaneState.flexTemperature, 0);
                             this.setRowMultiText(1, "FLX", Airbus_FMA.MODE_STATE.STATUS, temperatureText, Airbus_FMA.MODE_STATE.ARMED);
                             break;
                         }
@@ -673,6 +673,9 @@ var Airbus_FMA;
             return false;
         }
         IsActive_SPEED() {
+            if (Airbus_FMA.CurrentPlaneState.highestThrottleDetent === ThrottleMode.IDLE) {
+                return false;
+            }
             if (Airbus_FMA.CurrentPlaneState.autoPilotVerticalSpeedHoldActive) {
                 return true;
             }
@@ -819,10 +822,10 @@ var Airbus_FMA;
                             var speed = Airbus_FMA.CurrentPlaneState.autoPilotVerticalSpeedHoldValue;
                             var str;
                             if (speed >= 0) {
-                                str = "+" + speed.toFixed(0);
+                                str = "+" + fastToFixed(speed, 0);
                             }
                             else {
-                                str = speed.toFixed(0);
+                                str = fastToFixed(speed, 0);
                             }
                             this.setRowMultiText(0, "V/S", Airbus_FMA.MODE_STATE.ENGAGED, str, Airbus_FMA.MODE_STATE.ARMED);
                             break;
@@ -832,7 +835,7 @@ var Airbus_FMA;
                             var value = SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD VAR:2", "feet per minute") / 600;
                             var sign = (value < 0) ? "-" : "+";
                             value = Math.min(Math.abs(value), 9.9);
-                            var str = sign + value.toFixed(1) + String.fromCharCode(176);
+                            var str = sign + fastToFixed(value, 1) + String.fromCharCode(176);
                             this.setRowMultiText(0, "FPA", Airbus_FMA.MODE_STATE.ENGAGED, str, Airbus_FMA.MODE_STATE.ARMED);
                             break;
                         }
@@ -1353,6 +1356,9 @@ var Airbus_FMA;
             }
         }
         GetModeState_LOC() {
+            if (Airbus_FMA.CurrentPlaneState.radioAltitude < 1.5) {
+                return Airbus_FMA.MODE_STATE.NONE;
+            }
             if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRIsLocalizer()) {
                 if (Simplane.getAutoPilotAPPRActive()) {
                     return Airbus_FMA.MODE_STATE.ENGAGED;
@@ -1529,7 +1535,7 @@ var Airbus_FMA;
                     case Column4.ROW_3_STATE.DH:
                         {
                             var value = Airbus_FMA.CurrentPlaneState.decisionHeight;
-                            this.setRowMultiText(2, "DH", Airbus_FMA.MODE_STATE.STATUS, value.toFixed(0), Airbus_FMA.MODE_STATE.ARMED);
+                            this.setRowMultiText(2, "DH", Airbus_FMA.MODE_STATE.STATUS, fastToFixed(value, 0), Airbus_FMA.MODE_STATE.ARMED);
                             break;
                         }
                     case Column4.ROW_3_STATE.NO_DH:
@@ -1540,7 +1546,7 @@ var Airbus_FMA;
                     case Column4.ROW_3_STATE.MDA:
                         {
                             var value = Airbus_FMA.CurrentPlaneState.minimumDescentAltitude;
-                            this.setRowMultiText(2, "MDA", Airbus_FMA.MODE_STATE.STATUS, value.toFixed(0), Airbus_FMA.MODE_STATE.ARMED);
+                            this.setRowMultiText(2, "MDA", Airbus_FMA.MODE_STATE.STATUS, fastToFixed(value, 0), Airbus_FMA.MODE_STATE.ARMED);
                             break;
                         }
                     default:
@@ -1844,14 +1850,14 @@ var Airbus_FMA;
                             {
                                 useMsgID = 1;
                                 var value = Airbus_FMA.CurrentPlaneState.managedAirspeed * 0.0015130718954118;
-                                this.msg1.setText("MACH SEL: " + value.toFixed(2), Airbus_FMA.MODE_STATE.ARMED);
+                                this.msg1.setText("MACH SEL: " + fastToFixed(value, 2), Airbus_FMA.MODE_STATE.ARMED);
                                 break;
                             }
                         case Airbus_FMA.SPECIAL_MESSAGE.SPEED_SEL:
                             {
                                 useMsgID = 1;
                                 var value = Airbus_FMA.CurrentPlaneState.managedAirspeed;
-                                this.msg1.setText("SPEED SEL: " + value.toFixed(0), Airbus_FMA.MODE_STATE.ARMED);
+                                this.msg1.setText("SPEED SEL: " + fastToFixed(value, 0), Airbus_FMA.MODE_STATE.ARMED);
                                 break;
                             }
                     }

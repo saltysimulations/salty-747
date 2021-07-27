@@ -23,26 +23,26 @@
 		
 		<Condition Valid="DISABLE_ANIMATION">
 			<False>
-		<Condition Check="INVERT_ANIM">
-			<True>
-				<UseTemplate Name = "ASOBO_GT_Anim_Code">
-					<ANIM_CODE>(A:#ANIM_SIMVAR#, #ANIM_SIMVAR_UNITS#) #ANIM_SIMVAR_SCALE# * #ANIM_SIMVAR_BIAS# +</ANIM_CODE>
-				</UseTemplate>
-			</True>
-			<False>
-				<Condition Check="FAILURE">
+				<Condition Check="INVERT_ANIM">
 					<True>
 						<UseTemplate Name = "ASOBO_GT_Anim_Code">
 							<ANIM_CODE>(A:#ANIM_SIMVAR#, #ANIM_SIMVAR_UNITS#) #ANIM_SIMVAR_SCALE# * #ANIM_SIMVAR_BIAS# +</ANIM_CODE>
 						</UseTemplate>
 					</True>
 					<False>
-						<UseTemplate Name = "ASOBO_GT_Anim_Sim_Base">
-						</UseTemplate>
+						<Condition Check="FAILURE">
+							<True>
+								<UseTemplate Name = "ASOBO_GT_Anim_Code">
+									<ANIM_CODE>(A:#ANIM_SIMVAR#, #ANIM_SIMVAR_UNITS#) #ANIM_SIMVAR_SCALE# * #ANIM_SIMVAR_BIAS# +</ANIM_CODE>
+								</UseTemplate>
+							</True>
+							<False>
+								<UseTemplate Name = "ASOBO_GT_Anim_Sim_Base">
+								</UseTemplate>
+							</False>
+						</Condition>
 					</False>
 				</Condition>
-			</False>
-		</Condition>
 			</False>
 		</Condition>
 	</Template>
@@ -62,8 +62,7 @@
 
 		<Condition Valid="DISABLE_ANIMATION">
 			<False>
-		<UseTemplate Name="ASOBO_GT_Anim_Code_Failure_Test">
-		</UseTemplate>
+				<UseTemplate Name="ASOBO_GT_Anim_Code_Failure_Test"/>
 			</False>
 		</Condition>
 	</Template>

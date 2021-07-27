@@ -90,21 +90,21 @@ var B747_8_UpperEICAS;
             }
             if (this.unitTextSVG) {
                 if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
-                    this.unitTextSVG.textContent = "KGS X";
+                    diffAndSetText(this.unitTextSVG, "KGS X");
                 else
-                    this.unitTextSVG.textContent = "LBS X";
+                    diffAndSetText(this.unitTextSVG, "LBS X");
             }
         }
         getGrossWeightInMegagrams() {
             if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
-                return SimVar.GetSimVarValue("TOTAL WEIGHT", "kg") * 0.001;
-            return SimVar.GetSimVarValue("TOTAL WEIGHT", "lbs") * 0.001;
+                return Simplane.getWeight() * 0.001;
+            return Simplane.getWeight() * 2.20462 * 0.001;
         }
         getTotalFuelInMegagrams() {
             let factor = this.gallonToMegapounds;
             if (BaseAirliners.unitIsMetric(Aircraft.B747_8))
                 factor = this.gallonToMegagrams;
-            return (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * factor);
+            return (Simplane.getFuelcQuantity() * factor);
         }
         getInfoPanelManager() {
             return this.infoPanelsManager;
@@ -141,7 +141,7 @@ var B747_8_UpperEICAS;
             return definition;
         }
         getN1Value() {
-            return SimVar.GetSimVarValue("ENG N1 RPM:" + this.engine, "percent");
+            return Simplane.getEngineRPMJetPC(this.engine);
         }
         getN1CommandedValue() {
             return Math.abs(Simplane.getEngineThrottleCommandedN1(this.engine - 1));
@@ -162,23 +162,23 @@ var B747_8_UpperEICAS;
             return definition;
         }
         getEGTValue() {
-            return SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:" + this.engine, "celsius");
+            return Simplane.getEngineEGT(this.engine);
         }
         getEGTLimitValue() {
             return 750;
         }
         refresh() {
             if (this.n1Gauge != null) {
-                let VNavActive = SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number");
+                let VNavActive = Simplane.getAPVNAVActive() == 1;
                 if (VNavActive != this.isVNavActive) {
                     this.isVNavActive = VNavActive;
                     let n1Limit = this.n1Gauge.getDynamicLine(1);
                     if (n1Limit) {
                         if (VNavActive) {
-                            n1Limit.line.setAttribute("class", "gaugeMarkerManaged");
+                            diffAndSetAttribute(n1Limit.line, "class", "gaugeMarkerManaged");
                         }
                         else {
-                            n1Limit.line.setAttribute("class", "gaugeMarkerNormal");
+                            diffAndSetAttribute(n1Limit.line, "class", "gaugeMarkerNormal");
                         }
                     }
                 }
@@ -188,10 +188,10 @@ var B747_8_UpperEICAS;
                 let egtLimit = this.egtGauge.getDynamicLine(0);
                 if (egtLimit) {
                     if (this.eicas.getFuelValveOpen(this.engine) && Math.round(this.eicas.getN2Value(this.engine)) >= this.eicas.getN2IdleValue()) {
-                        egtLimit.line.setAttribute("display", "none");
+                        diffAndSetAttribute(egtLimit.line, "display", "none");
                     }
                     else {
-                        egtLimit.line.setAttribute("display", "block");
+                        diffAndSetAttribute(egtLimit.line, "display", "block");
                     }
                 }
                 this.egtGauge.refresh();
@@ -215,19 +215,19 @@ var B747_8_UpperEICAS;
         }
         setState(_active) {
             if (this.element != null) {
-                this.element.style.display = _active ? "block" : "none";
+                diffAndSetStyle(this.element, StyleProperty.display, _active ? "block" : "none");
             }
             this.isActive = _active;
         }
     }
     class EngineAntiIceStatus extends AntiIceStatus {
         getCurrentActiveState() {
-            return SimVar.GetSimVarValue("ENG ANTI ICE:" + this.index, "bool");
+            return Simplane.getEngineAntiIce(this.index);
         }
     }
     class WingAntiIceStatus extends AntiIceStatus {
         getCurrentActiveState() {
-            return SimVar.GetSimVarValue("STRUCTURAL DEICE SWITCH", "bool");
+            return Simplane.getStructuralDeiceSwitch();
         }
     }
 })(B747_8_UpperEICAS || (B747_8_UpperEICAS = {}));

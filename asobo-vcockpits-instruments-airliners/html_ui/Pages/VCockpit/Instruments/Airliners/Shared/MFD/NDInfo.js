@@ -81,25 +81,25 @@ class Jet_MFD_NDInfo extends HTMLElement {
             this._navSource = _navSource;
             if (this._navMode == Jet_NDCompass_Navigation.NAV) {
                 if (this.waypoint)
-                    this.waypoint.style.display = "block";
+                    diffAndSetStyle(this.waypoint, StyleProperty.display, "block");
                 if (this.approach) {
-                    this.approachType.textContent = "";
-                    this.approachFreq.textContent = "";
-                    this.approachCourse.textContent = "";
-                    this.approachInfo.textContent = "";
-                    this.approach.style.display = "none";
+                    diffAndSetText(this.approachType, "");
+                    diffAndSetText(this.approachFreq, "");
+                    diffAndSetText(this.approachCourse, "");
+                    diffAndSetText(this.approachInfo, "");
+                    diffAndSetStyle(this.approach, StyleProperty.display, "none");
                 }
             }
             else if (this._navMode == Jet_NDCompass_Navigation.ILS || this._navMode == Jet_NDCompass_Navigation.VOR) {
                 if (this.waypoint) {
-                    this.waypointName.textContent = "";
-                    this.waypointTrack.textContent = "";
-                    this.waypointDistance.textContent = "";
-                    this.waypointTime.textContent = "";
-                    this.waypoint.style.display = "none";
+                    diffAndSetText(this.waypointName, "");
+                    diffAndSetText(this.waypointTrack, "");
+                    diffAndSetText(this.waypointDistance, "");
+                    diffAndSetText(this.waypointTime, "");
+                    diffAndSetStyle(this.waypoint, StyleProperty.display, "none");
                 }
                 if (this.approach)
-                    this.approach.style.display = "block";
+                    diffAndSetStyle(this.approach, StyleProperty.display, "block");
             }
         }
     }
@@ -121,7 +121,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
         if ((_speed != this.currentGroundSpeed) || _force) {
             this.currentGroundSpeed = _speed;
             if (this.groundSpeed != null) {
-                this.groundSpeed.textContent = this.currentGroundSpeed.toString().padStart(3, "0");
+                diffAndSetText(this.groundSpeed, (this.currentGroundSpeed + '').padStart(3, "0"));
             }
         }
     }
@@ -129,7 +129,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
         if ((_speed != this.currentTrueAirSpeed) || _force) {
             this.currentTrueAirSpeed = _speed;
             if (this.trueAirSpeed != null) {
-                this.trueAirSpeed.textContent = this.currentTrueAirSpeed.toString().padStart(3, "0");
+                diffAndSetText(this.trueAirSpeed, (this.currentTrueAirSpeed + '').padStart(3, "0"));
             }
         }
     }
@@ -160,18 +160,18 @@ class Jet_MFD_NDInfo extends HTMLElement {
             this.currentWindAngle = smoothedAngle % 360;
             if (this.windDirection != null) {
                 if (this.windStrongEnough)
-                    this.windDirection.textContent = this.currentWindAngle.toFixed(0).padStart(3, "0");
+                    diffAndSetText(this.windDirection, fastToFixed(this.currentWindAngle, 0).padStart(3, "0"));
                 else
-                    this.windDirection.textContent = "---";
+                    diffAndSetText(this.windDirection, "---");
             }
         }
         if (refreshWindStrength) {
             this.currentWindStrength = _windStrength;
             if (this.windStrength != null) {
                 if (this.windStrongEnough)
-                    this.windStrength.textContent = this.currentWindStrength.toString().padStart(2, "0");
+                    diffAndSetText(this.windStrength, (this.currentWindStrength + '').padStart(2, "0"));
                 else
-                    this.windStrength.textContent = "--";
+                    diffAndSetText(this.windStrength, "--");
             }
         }
         if (refreshWindArrow) {
@@ -184,20 +184,20 @@ class Jet_MFD_NDInfo extends HTMLElement {
                     if (transformStr) {
                         var split = transformStr.split("rotate");
                         if (split) {
-                            transformStr = split[0];
+                            transformStr = split[0].trim();
                         }
                         else {
                             transformStr = "";
                         }
                     }
                     if (transformStr)
-                        this.windArrow.setAttribute("transform", transformStr + " rotate(" + arrowAngle + ")");
+                        diffAndSetAttribute(this.windArrow, "transform", transformStr + " rotate(" + arrowAngle + ")");
                     else
-                        this.windArrow.setAttribute("transform", "rotate(" + arrowAngle + ")");
-                    this.windArrow.style.display = "block";
+                        diffAndSetAttribute(this.windArrow, "transform", "rotate(" + arrowAngle + ")");
+                    diffAndSetStyle(this.windArrow, StyleProperty.display, "block");
                 }
                 else {
-                    this.windArrow.style.display = "none";
+                    diffAndSetStyle(this.windArrow, StyleProperty.display, "none");
                 }
             }
         }
@@ -207,21 +207,21 @@ class Jet_MFD_NDInfo extends HTMLElement {
             if (this._navMode == Jet_NDCompass_Navigation.NAV) {
                 if (_name && _name != "") {
                     if (this.waypointName != null) {
-                        this.waypointName.textContent = _name;
+                        diffAndSetText(this.waypointName, _name);
                     }
                     if ((_track != this.currentWaypointTrack) || _force) {
                         this.currentWaypointTrack = _track;
                         if (this.waypointTrack) {
-                            this.waypointTrack.textContent = this.currentWaypointTrack.toString().padStart(3, "0") + String.fromCharCode(176);
+                            diffAndSetText(this.waypointTrack, (this.currentWaypointTrack + '').padStart(3, "0") + String.fromCharCode(176));
                         }
                     }
                     if ((_distance != this.currentWaypointDistance) || _force) {
                         this.currentWaypointDistance = _distance;
                         if (this.waypointDistance != null) {
                             if (this.currentWaypointDistance < 10000)
-                                this.waypointDistance.textContent = this.currentWaypointDistance.toFixed(1);
+                                diffAndSetText(this.waypointDistance, fastToFixed(this.currentWaypointDistance, 1));
                             else
-                                this.waypointDistance.textContent = this.currentWaypointDistance.toFixed(0);
+                                diffAndSetText(this.waypointDistance, fastToFixed(this.currentWaypointDistance, 0));
                         }
                     }
                     let groundSpeed = Simplane.getGroundSpeed();
@@ -238,22 +238,22 @@ class Jet_MFD_NDInfo extends HTMLElement {
                         if (this.waypointTime != null) {
                             var hours = Math.floor(localETA / 3600);
                             var minutes = Math.floor((localETA - (hours * 3600)) / 60);
-                            this.waypointTime.textContent = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0");
+                            diffAndSetText(this.waypointTime, (hours + '').padStart(2, "0") + ":" + (minutes + '').padStart(2, "0"));
                         }
                     }
                 }
                 else {
                     if (this.waypointName != null) {
-                        this.waypointName.textContent = "";
+                        diffAndSetText(this.waypointName, "");
                     }
                     if (this.waypointTrack != null) {
-                        this.waypointTrack.textContent = "---°";
+                        diffAndSetText(this.waypointTrack, "---°");
                     }
                     if (this.waypointDistance != null) {
-                        this.waypointDistance.textContent = "-.-";
+                        diffAndSetText(this.waypointDistance, "-.-");
                     }
                     if (this.waypointTime != null) {
-                        this.waypointTime.textContent = "--:--";
+                        diffAndSetText(this.waypointTime, "--:--");
                     }
                 }
             }
@@ -272,18 +272,18 @@ class Jet_MFD_NDInfo extends HTMLElement {
                             }
                         }
                         if (ilsText) {
-                            this.topTitle.textContent = ilsText;
-                            this.topTitle.setAttribute("state", "ils");
+                            diffAndSetText(this.topTitle, ilsText);
+                            diffAndSetAttribute(this.topTitle, "state", "ils");
                         }
                         else {
-                            this.topTitle.textContent = "";
+                            diffAndSetText(this.topTitle, "");
                             this.topTitle.removeAttribute("state");
                         }
                         break;
                     }
                 case Jet_NDCompass_Navigation.VOR:
                     {
-                        this.topTitle.textContent = "VOR";
+                        diffAndSetText(this.topTitle, "VOR");
                         if (Simplane.getAutoPilotAPPRHold()) {
                             this.topTitle.textContent += " APP";
                         }
@@ -292,7 +292,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
                     }
                 case Jet_NDCompass_Navigation.ILS:
                     {
-                        this.topTitle.textContent = "ILS";
+                        diffAndSetText(this.topTitle, "ILS");
                         if (Simplane.getAutoPilotAPPRHold()) {
                             this.topTitle.textContent += " APP";
                         }
@@ -301,7 +301,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
                     }
                 default:
                     {
-                        this.topTitle.textContent = "";
+                        diffAndSetText(this.topTitle, "");
                         break;
                     }
             }
@@ -343,7 +343,7 @@ class Jet_MFD_NDInfo extends HTMLElement {
                         let course = "---°";
                         let ident = "";
                         if (vor.id > 0) {
-                            freq = vor.freq.toFixed(2);
+                            freq = fastToFixed(vor.freq, 2);
                             course = Utils.leadingZeros(Math.round(vor.course % 360), 3) + "°";
                             ident = vor.ident;
                             if (this.aircraft == Aircraft.CJ4) {
@@ -352,14 +352,14 @@ class Jet_MFD_NDInfo extends HTMLElement {
                                     type = "LOC";
                             }
                         }
-                        this.approachType.textContent = type + suffix;
-                        this.approachFreq.textContent = freq;
-                        this.approachCourse.textContent = course;
-                        this.approachInfo.textContent = ident;
+                        diffAndSetText(this.approachType, type + suffix);
+                        diffAndSetText(this.approachFreq, freq);
+                        diffAndSetText(this.approachCourse, course);
+                        diffAndSetText(this.approachInfo, ident);
                         if (this.aircraft != Aircraft.CJ4) {
-                            this.approachFreq.setAttribute("class", "ValueVor");
-                            this.approachCourse.setAttribute("class", "ValueVor");
-                            this.approachInfo.setAttribute("class", "ValueVor");
+                            diffAndSetAttribute(this.approachFreq, "class", "ValueVor");
+                            diffAndSetAttribute(this.approachCourse, "class", "ValueVor");
+                            diffAndSetAttribute(this.approachInfo, "class", "ValueVor");
                         }
                         break;
                     }
@@ -388,18 +388,18 @@ class Jet_MFD_NDInfo extends HTMLElement {
                         let course = "---°";
                         let ident = "";
                         if (ils.id > 0) {
-                            freq = ils.freq.toFixed(2);
+                            freq = fastToFixed(ils.freq, 2);
                             course = Utils.leadingZeros(Math.round(ils.course % 360), 3) + "°";
                             ident = ils.name;
                         }
-                        this.approachType.textContent = type + suffix;
-                        this.approachFreq.textContent = freq;
-                        this.approachCourse.textContent = course;
-                        this.approachInfo.textContent = ident;
+                        diffAndSetText(this.approachType, type + suffix);
+                        diffAndSetText(this.approachFreq, freq);
+                        diffAndSetText(this.approachCourse, course);
+                        diffAndSetText(this.approachInfo, ident);
                         if (this.aircraft != Aircraft.CJ4) {
-                            this.approachFreq.setAttribute("class", "ValueIls");
-                            this.approachCourse.setAttribute("class", "ValueIls");
-                            this.approachInfo.setAttribute("class", "ValueIls");
+                            diffAndSetAttribute(this.approachFreq, "class", "ValueIls");
+                            diffAndSetAttribute(this.approachCourse, "class", "ValueIls");
+                            diffAndSetAttribute(this.approachInfo, "class", "ValueIls");
                         }
                         break;
                     }
@@ -434,11 +434,11 @@ class Jet_MFD_NDInfo extends HTMLElement {
                         val += "0";
                     val += seconds;
                 }
-                this.elapsedTimeValue.textContent = val;
-                this.elapsedTime.style.display = "block";
+                diffAndSetText(this.elapsedTimeValue, val);
+                diffAndSetStyle(this.elapsedTime, StyleProperty.display, "block");
             }
             else {
-                this.elapsedTime.style.display = "none";
+                diffAndSetStyle(this.elapsedTime, StyleProperty.display, "none");
             }
         }
     }
@@ -478,7 +478,7 @@ class VORDMENavAid {
                 else {
                     let freq = this.gps.radioNav.getVORActiveFrequency(this.index);
                     if (freq > 0) {
-                        idValue = freq.toFixed(2);
+                        idValue = fastToFixed(freq, 2);
                     }
                 }
                 if (idValue != "") {
@@ -493,7 +493,7 @@ class VORDMENavAid {
             else {
                 let freq = this.gps.radioNav.getADFActiveFrequency(this.index);
                 if (freq > 0) {
-                    idValue = freq.toFixed(2);
+                    idValue = fastToFixed(freq, 2);
                 }
             }
             this.setIDValue(idValue);
@@ -511,13 +511,15 @@ class VORDMENavAid {
                     {
                         type = "ADF";
                         if (this.aircraft == Aircraft.A320_NEO || this.aircraft == Aircraft.CJ4)
-                            type += this.index.toString();
+                            type += this.index + '';
                         else if (this.index == 1)
                             type += " L";
                         else
                             type += " R";
-                        this.arrowVOR.setAttribute("visibility", "hidden");
-                        this.arrowADF.setAttribute("visibility", "visible");
+                        if (this.arrowVOR)
+                            diffAndSetAttribute(this.arrowVOR, "visibility", "hidden");
+                        if (this.arrowADF)
+                            diffAndSetAttribute(this.arrowADF, "visibility", "visible");
                         show = true;
                         break;
                     }
@@ -525,22 +527,24 @@ class VORDMENavAid {
                     {
                         type = "VOR";
                         if (this.aircraft == Aircraft.A320_NEO || this.aircraft == Aircraft.CJ4)
-                            type += this.index.toString();
+                            type += this.index + '';
                         else if (this.index == 1)
                             type += " L";
                         else
                             type += " R";
-                        this.arrowVOR.setAttribute("visibility", "visible");
-                        this.arrowADF.setAttribute("visibility", "hidden");
+                        if (this.arrowVOR)
+                            diffAndSetAttribute(this.arrowVOR, "visibility", "visible");
+                        if (this.arrowADF)
+                            diffAndSetAttribute(this.arrowADF, "visibility", "hidden");
                         show = true;
                         break;
                     }
             }
             if (this.parent != null) {
-                this.parent.style.display = show ? "block" : "none";
+                diffAndSetStyle(this.parent, StyleProperty.display, show ? "block" : "none");
             }
             if (this.stateText != null) {
-                this.stateText.textContent = type;
+                diffAndSetText(this.stateText, type);
             }
         }
     }
@@ -548,7 +552,7 @@ class VORDMENavAid {
         if ((_value != this.idValue) || _force) {
             this.idValue = _value;
             if (this.idText != null) {
-                this.idText.textContent = this.idValue;
+                diffAndSetText(this.idText, this.idValue);
             }
         }
     }
@@ -569,7 +573,7 @@ class VORDMENavAid {
                     }
             }
             if (this.modeText != null) {
-                this.modeText.textContent = mode;
+                diffAndSetText(this.modeText, mode);
             }
         }
     }
@@ -580,12 +584,12 @@ class VORDMENavAid {
             var displayStr = showDistance ? "block" : "none";
             if (this.distanceText != null) {
                 if (showDistance) {
-                    this.distanceText.textContent = fastToFixed(this.distanceValue, 1);
+                    diffAndSetText(this.distanceText, fastToFixed(this.distanceValue, 1));
                 }
-                this.distanceText.style.display = displayStr;
+                diffAndSetStyle(this.distanceText, StyleProperty.display, displayStr);
             }
             if (this.unitText != null) {
-                this.unitText.style.display = displayStr;
+                diffAndSetStyle(this.unitText, StyleProperty.display, displayStr);
             }
         }
     }

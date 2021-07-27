@@ -1,16 +1,517 @@
 <ModelBehaviors>
 	<Template Name="ASOBO_PRESSURIZATION_Needle_Suction_SubTemplate">
-		<DefaultTemplateParameters>
+		<Parameters Type="Default">
 			<ANIM_NAME>PRESSURIZATION_Needle_Suction#SUFFIX_ID#</ANIM_NAME>
 			<PART_ID>PRESSURIZATION_Needle_Suction</PART_ID>
 			<NODE_ID>PRESSURIZATION_Needle_Suction#SUFFIX_ID#</NODE_ID>
 			<MIN_VALUE>3</MIN_VALUE>
 			<MAX_VALUE>7</MAX_VALUE>
 			<UNITS>inHg</UNITS>
-		</DefaultTemplateParameters>
-
+		</Parameters>
 		<UseTemplate Name="ASOBO_GT_Needle_Code">
 			<SIMVAR>SUCTION PRESSURE</SIMVAR>
 		</UseTemplate>
 	</Template>
+	
+	<Template Name="ASOBO_PRESSURIZATION_Passenger_Oxygen_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>PRESSURIZATION_#INTERACTION_TYPE#_Deploy</NODE_ID>
+			<PART_ID>PRESSURIZATION_#INTERACTION_TYPE#_Deploy</PART_ID>
+			<ANIM_NAME>PRESSURIZATION_#INTERACTION_TYPE#_Deploy</ANIM_NAME>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<WWISE_EVENT_1>pressurization_deploy_switch_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>pressurization_deploy_switch_off</WWISE_EVENT_2>					
+				</Case>
+			</Switch>
+			<TT_DESCRIPTION_ID>@TT_Package.CABIN_PASSENGER_SWITCH_OXYGEN_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.CABIN_PASSENGER_SWITCH_OXYGEN_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Passenger_Oxygen</BTN_ID>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="PRESSURIZATION">
+				<SET_STATE_ON>1 (&gt;O:XMLVAR_Passenger_Oxygen_Enabled)</SET_STATE_ON>
+				<SET_STATE_OFF>0 (&gt;O:XMLVAR_Passenger_Oxygen_Enabled)</SET_STATE_OFF>
+				<GET_STATE_EXTERNAL>(O:XMLVAR_Passenger_Oxygen_Enabled) sp0</GET_STATE_EXTERNAL>
+				<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Switch_Code">
+				<TOOLTIP_ENTRY_0>PRESSURIZATION_#BTN_ID#</TOOLTIP_ENTRY_0>
+				<ANIM_CODE>(B:PRESSURIZATION_#BTN_ID#, Bool) 100 *</ANIM_CODE>
+				<LEFT_SINGLE_CODE>(&gt;B:PRESSURIZATION_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	
+	<Template Name="ASOBO_PRESSURIZATION_Oxygen_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>PRESSURIZATION_#INTERACTION_TYPE#_Oxygen</NODE_ID>
+			<PART_ID>PRESSURIZATION_#INTERACTION_TYPE#_Oxygen</PART_ID>
+			<ANIM_NAME>PRESSURIZATION_#INTERACTION_TYPE#_Oxygen</ANIM_NAME>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<WWISE_EVENT_1>pressurization_oxygen_switch_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>pressurization_oxygen_switch_off</WWISE_EVENT_2>					
+				</Case>
+			</Switch>
+			<TOOLTIP_TITLE>@TT_Package.CABIN_PILOT_SWITCH_OXYGEN_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.CABIN_PILOT_SWITCH_OXYGEN_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Oxygen</BTN_ID>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="PRESSURIZATION">
+				<SET_STATE_ON>1 (&gt;O:XMLVAR_Oxygen_Enabled)</SET_STATE_ON>
+				<SET_STATE_OFF>0 (&gt;O:XMLVAR_Oxygen_Enabled)</SET_STATE_OFF>
+				<GET_STATE_EXTERNAL>(O:XMLVAR_Oxygen_Enabled) sp0</GET_STATE_EXTERNAL>
+				<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Switch_Code">
+				<TOOLTIP_ENTRY_0>PRESSURIZATION_#BTN_ID#</TOOLTIP_ENTRY_0>
+				<ANIM_CODE>(B:PRESSURIZATION_#BTN_ID#, Bool) 100 *</ANIM_CODE>
+				<LEFT_SINGLE_CODE>(&gt;B:PRESSURIZATION_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	
+	<Template Name="ASOBO_PRESSURIZATION_MicroMask_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>PRESSURIZATION_#INTERACTION_TYPE#_MicroMask</NODE_ID>
+			<ANIM_NAME>PRESSURIZATION_#INTERACTION_TYPE#_MicroMask</ANIM_NAME> 
+			<PART_ID>PRESSURIZATION_#INTERACTION_TYPE#_MicroMask</PART_ID>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Push">
+					<WWISE_EVENT_1>pressurization_micromask_push_button_on</WWISE_EVENT_1> 
+					<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+					<WWISE_EVENT_2>pressurization_micromask_push_button_off</WWISE_EVENT_2>
+					<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+				</Case>
+			</Switch>
+			<Condition Valid="IS_AIRLINER">
+				<Condition NotEmpty="MASK_EMISSIVE_NODE_ID">
+					<SEQ1_NODE_ID>#MASK_EMISSIVE_NODE_ID#</SEQ1_NODE_ID>					
+				</Condition>
+				<Condition NotEmpty="MICRO_EMISSIVE_NODE_ID">
+					<SEQ2_NODE_ID>#MICRO_EMISSIVE_NODE_ID#</SEQ2_NODE_ID>
+				</Condition>
+				<Condition NotEmpty="COVER_NODE_ID">
+					<COVER_IE_NAME>Micro_Mask_Cover</COVER_IE_NAME>
+					<COVER_IE_ID_SOURCE>PRESSURIZATION</COVER_IE_ID_SOURCE>
+					<WWISE_COVER_EVENT_OPEN>pressurization_micromask_cover_open</WWISE_COVER_EVENT_OPEN>
+					<WWISE_COVER_EVENT_CLOSE>pressurization_micromask_cover_close</WWISE_COVER_EVENT_CLOSE>
+				</Condition>
+				<INPUT_EVENT_ID>PRESSURIZATION</INPUT_EVENT_ID>
+				<SEQ1_EMISSIVE_CODE>(B:PRESSURIZATION_Micro_Mask, Bool) !</SEQ1_EMISSIVE_CODE>
+				<SEQ2_EMISSIVE_CODE>(B:PRESSURIZATION_Micro_Mask, Bool)</SEQ2_EMISSIVE_CODE>
+			</Condition>
+			<TT_DESCRIPTION_ID>@TT_Package.AUDIOPANEL_PUSH_BUTTONMIC_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUDIOPANEL_PUSH_BUTTONMIC_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Micro_Mask</BTN_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_ENTRY_0>PRESSURIZATION_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<Condition Valid="IS_AIRLINER">
+				<Condition NotEmpty="ADDITIONAL_LIGHT_TEST">
+					<SEQ1_EMISSIVE_CODE>#SEQ1_EMISSIVE_CODE# #ADDITIONAL_LIGHT_TEST#</SEQ1_EMISSIVE_CODE>
+					<SEQ2_EMISSIVE_CODE>#SEQ2_EMISSIVE_CODE# #ADDITIONAL_LIGHT_TEST#</SEQ2_EMISSIVE_CODE>
+				</Condition>
+			</Condition>
+			<LEFT_SINGLE_CODE>(&gt;B:PRESSURIZATION_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+			<SET_STATE_ON>1 (&gt;O:XMLVAR_MicroInMask)</SET_STATE_ON>
+			<SET_STATE_OFF>0 (&gt;O:XMLVAR_MicroInMask)</SET_STATE_OFF>
+			<GET_STATE_EXTERNAL>(O:XMLVAR_MicroInMask) sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<STR_STATE_OFF>Micro</STR_STATE_OFF>
+			<STR_STATE_ON>Mask</STR_STATE_ON>
+			<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_MICRO)</TT_VALUE_OFF>
+			<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_MASK)</TT_VALUE_ON>
+		</Parameters>
+		<Condition Valid="IS_AIRLINER">
+			<True>
+				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner"/>
+			</True>
+			<False>
+				<Component ID="#NODE_ID#" Node="#NODE_ID#">
+					<UseInputEvent ID="#INPUT_EVENT_ID#"/>
+					<UseTemplate Name="ASOBO_GT_Push_Button">
+						<LEFT_SINGLE_CODE>(B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#, Bool) if{ #LEFT_SINGLE_CODE# }</LEFT_SINGLE_CODE>
+					</UseTemplate>
+				</Component>
+			</False>
+		</Condition>
+	</Template>
+	
+	<Template Name="ASOBO_PRESSURIZATION_Bleed_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>PRESSURIZATION_#INTERACTION_TYPE#_Bleed</NODE_ID>
+			<ANIM_NAME>PRESSURIZATION_#INTERACTION_TYPE#_Bleed</ANIM_NAME>
+			<PART_ID>PRESSURIZATION_#INTERACTION_TYPE#_Bleed</PART_ID>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Switch">
+					<WWISE_EVENT>pressurization_bleed_switch</WWISE_EVENT>
+					<TYPE>BLEED_AIR_SOURCE_ENGINE</TYPE>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="TYPE">
+				<Case Value="BLEED_AIR_SOURCE_ENGINE">
+					<POS_AUTO>0</POS_AUTO>
+					<POS_ENGINE>1</POS_ENGINE>
+					<POS_OFF>2</POS_OFF>
+				</Case>
+				<Case Value="BLEED_AIR_SOURCE_APU">
+					<POS_AUTO>0</POS_AUTO>
+					<POS_ENGINE_2>1</POS_ENGINE_2>
+					<POS_ENGINE_BOTH>2</POS_ENGINE_BOTH>
+					<POS_OFF>3</POS_OFF>
+					<POS_ENGINE_1>4</POS_ENGINE_1>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Bleed_Air_Source</BTN_ID>
+			<Switch Param="TYPE">
+				<Case Value="BLEED_AIR_SOURCE_ENGINE">
+					<NUM_STATES>3</NUM_STATES>
+					<GET_BLEED_AIR>(A:BLEED AIR SOURCE CONTROL, Enum)</GET_BLEED_AIR>
+					<SET_BLEED_AIR>(&gt;K:BLEED_AIR_SOURCE_CONTROL_SET)</SET_BLEED_AIR>
+					<ENUM_STATE_AUTO>0</ENUM_STATE_AUTO>
+					<ENUM_STATE_ENGINE>3</ENUM_STATE_ENGINE>
+					<ENUM_STATE_OFF>1</ENUM_STATE_OFF>
+				</Case>
+				<Case Value="BLEED_AIR_SOURCE_APU">
+					<GET_BLEED_AIR>(A:BLEED AIR APU, Bool)</GET_BLEED_AIR>
+					<GET_BLEED_AIR_ENG_1>(A:BLEED AIR ENGINE:1, Bool)</GET_BLEED_AIR_ENG_1>
+					<GET_BLEED_AIR_ENG_2>(A:BLEED AIR ENGINE:2, Bool)</GET_BLEED_AIR_ENG_2>
+					<SET_BLEED_AIR>(&gt;K:APU_BLEED_AIR_SOURCE_SET)</SET_BLEED_AIR>
+					<SET_BLEED_AIR_ENG_1>1 (&gt;K:2:ENGINE_BLEED_AIR_SOURCE_SET)</SET_BLEED_AIR_ENG_1>
+					<SET_BLEED_AIR_ENG_2>2 (&gt;K:2:ENGINE_BLEED_AIR_SOURCE_SET)</SET_BLEED_AIR_ENG_2>
+					<NUM_STATES>5</NUM_STATES>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<TOOLTIP_ENTRY_0>PRESSURIZATION_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<Switch Param="TYPE">
+				<Case Value="BLEED_AIR_SOURCE_ENGINE">
+					<TT_VALUE_#POS_AUTO#>@TT_Package.GT_STATE_AUTO</TT_VALUE_#POS_AUTO#>
+					<TT_VALUE_#POS_ENGINE#>1 @TT_Eng @sprintf</TT_VALUE_#POS_ENGINE#>
+					<TT_VALUE_#POS_ENGINE#_IS_DYNAMIC>True</TT_VALUE_#POS_ENGINE#_IS_DYNAMIC>
+					<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+					<TOOLTIP_TITLE>@TT_Package.CABIN_PRESSURIZATION_SWITCH_BLEED_TITLE</TOOLTIP_TITLE>
+					<TT_DESCRIPTION_ID>@TT_Package.CABIN_PRESSURIZATION_SWITCH_BLEED_ACTION</TT_DESCRIPTION_ID>
+				</Case>
+				<Case Value="BLEED_AIR_SOURCE_APU">
+					<TT_VALUE_#POS_AUTO#>@TT_Package.GT_STATE_AUTO</TT_VALUE_#POS_AUTO#>
+					<TT_VALUE_#POS_ENGINE_BOTH#>@TT_Package.GT_STATE_BOTH</TT_VALUE_#POS_ENGINE_BOTH#>
+					<TT_VALUE_#POS_ENGINE_1#>1 @TT_Eng @sprintf</TT_VALUE_#POS_ENGINE_1#>
+					<TT_VALUE_#POS_ENGINE_1#_IS_DYNAMIC>True</TT_VALUE_#POS_ENGINE_1#_IS_DYNAMIC>
+					<TT_VALUE_#POS_ENGINE_2#>2 @TT_Eng @sprintf</TT_VALUE_#POS_ENGINE_2#>
+					<TT_VALUE_#POS_ENGINE_2#_IS_DYNAMIC>True</TT_VALUE_#POS_ENGINE_2#_IS_DYNAMIC>
+					<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+					<TOOLTIP_TITLE>@TT_Package.CABIN_PRESSURIZATION_SWITCH_BLEED_APU_TITLE</TOOLTIP_TITLE>
+					<TT_DESCRIPTION_ID>@TT_Package.CABIN_PRESSURIZATION_SWITCH_BLEED_APU_ACTION</TT_DESCRIPTION_ID>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<Switch Param="TYPE">
+				<Case Value="BLEED_AIR_SOURCE_APU">
+					<UseInputEvent ID="PRESSURIZATION">
+						<GET_STATE_EXTERNAL>#GET_BLEED_AIR# sp0 #GET_BLEED_AIR_ENG_1# sp1 #GET_BLEED_AIR_ENG_2# sp2</GET_STATE_EXTERNAL>
+						<ENUM_VAL_TO_POS_EXTERNAL>#POS_AUTO# sp3
+							l0 ! l1 ! l2 ! and and if{ #POS_AUTO# sp3 g2 }
+							l0 ! l1 l2 and and if{ #POS_ENGINE_BOTH# sp3 g2 }
+							l0 ! l1 l2 ! and and if{ #POS_ENGINE_1# sp3 g2 }
+							l0 ! l1 ! l2 and and if{ #POS_ENGINE_2# sp3 g2 }
+							l0 l1 ! l2 ! and and if{ #POS_OFF# sp3 g2 }
+							:2 l3
+						</ENUM_VAL_TO_POS_EXTERNAL>
+						<SET_STATE_#POS_AUTO#>
+							0 #SET_BLEED_AIR_ENG_1#
+							0 #SET_BLEED_AIR_ENG_2#
+							0 #SET_BLEED_AIR#
+						</SET_STATE_#POS_AUTO#>
+						<SET_STATE_#POS_ENGINE_BOTH#>
+							1 #SET_BLEED_AIR_ENG_1#
+							1 #SET_BLEED_AIR_ENG_2#
+							0 #SET_BLEED_AIR#
+						</SET_STATE_#POS_ENGINE_BOTH#>
+						<SET_STATE_#POS_ENGINE_1#>
+							1 #SET_BLEED_AIR_ENG_1#
+							0 #SET_BLEED_AIR_ENG_2#
+							0 #SET_BLEED_AIR#
+						</SET_STATE_#POS_ENGINE_1#>
+						<SET_STATE_#POS_ENGINE_2#>
+							0 #SET_BLEED_AIR_ENG_1#
+							1 #SET_BLEED_AIR_ENG_2#
+							0 #SET_BLEED_AIR#
+						</SET_STATE_#POS_ENGINE_2#>
+						<SET_STATE_#POS_OFF#>
+							0 #SET_BLEED_AIR_ENG_1#
+							0 #SET_BLEED_AIR_ENG_2#
+							1 #SET_BLEED_AIR#
+						</SET_STATE_#POS_OFF#>
+						<STR_STATE_#POS_AUTO#>Auto</STR_STATE_#POS_AUTO#>
+						<STR_STATE_#POS_ENGINE_BOTH#>Engine_Both</STR_STATE_#POS_ENGINE_BOTH#>
+						<STR_STATE_#POS_ENGINE_1#>Engine_1</STR_STATE_#POS_ENGINE_1#>
+						<STR_STATE_#POS_ENGINE_2#>Engine_2</STR_STATE_#POS_ENGINE_2#>
+						<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+					</UseInputEvent>
+					<UseTemplate Name="ASOBO_GT_Switch_5States">
+						<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+						<ARROW_TYPE>Curved</ARROW_TYPE>
+						<IS_LOOPING>True</IS_LOOPING>
+						<SWITCH_POSITION_TYPE>O</SWITCH_POSITION_TYPE>
+						<SWITCH_POSITION_VAR>XMLVAR_BleedState</SWITCH_POSITION_VAR>
+						<STATE#POS_AUTO#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_AUTO# ==</STATE#POS_AUTO#_TEST>
+						<STATE#POS_ENGINE_BOTH#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_ENGINE_BOTH# ==</STATE#POS_ENGINE_BOTH#_TEST>
+						<STATE#POS_ENGINE_1#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_ENGINE_1# ==</STATE#POS_ENGINE_1#_TEST>
+						<STATE#POS_ENGINE_2#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_ENGINE_2# ==</STATE#POS_ENGINE_2#_TEST>
+						<STATE#POS_OFF#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_OFF# ==</STATE#POS_OFF#_TEST>
+						<CODE_POS_#POS_AUTO#>(&gt;B:PRESSURIZATION_#BTN_ID#_Auto)</CODE_POS_#POS_AUTO#>
+						<CODE_POS_#POS_ENGINE_BOTH#>(&gt;B:PRESSURIZATION_#BTN_ID#_Engine_Both)</CODE_POS_#POS_ENGINE_BOTH#>
+						<CODE_POS_#POS_ENGINE_1#>(&gt;B:PRESSURIZATION_#BTN_ID#_Engine_1)</CODE_POS_#POS_ENGINE_1#>
+						<CODE_POS_#POS_ENGINE_2#>(&gt;B:PRESSURIZATION_#BTN_ID#_Engine_2)</CODE_POS_#POS_ENGINE_2#>
+						<CODE_POS_#POS_OFF#>(&gt;B:PRESSURIZATION_#BTN_ID#_Off)</CODE_POS_#POS_OFF#>
+					</UseTemplate>
+				</Case>
+				<Case Value="BLEED_AIR_SOURCE_ENGINE">
+					<UseInputEvent ID="PRESSURIZATION">
+						<GET_STATE_EXTERNAL>#GET_BLEED_AIR# sp0</GET_STATE_EXTERNAL>
+						<ENUM_VAL_TO_POS_EXTERNAL>#POS_AUTO# sp1
+							l0 #ENUM_STATE_AUTO# == if{ #POS_AUTO# sp1 g2 }
+							l0 #ENUM_STATE_ENGINE# == if{ #POS_ENGINE# sp1 g2 }
+							l0 #ENUM_STATE_OFF# == if{ #POS_OFF# sp1 g2 }
+							:2 l1
+						</ENUM_VAL_TO_POS_EXTERNAL>
+						<SET_STATE_#POS_AUTO#>#GET_BLEED_AIR# #ENUM_STATE_AUTO# != if{ #ENUM_STATE_AUTO# #SET_BLEED_AIR# }</SET_STATE_#POS_AUTO#>
+						<SET_STATE_#POS_ENGINE#>#GET_BLEED_AIR# #ENUM_STATE_ENGINE# != if{ #ENUM_STATE_ENGINE# #SET_BLEED_AIR# }</SET_STATE_#POS_ENGINE#>
+						<SET_STATE_#POS_OFF#>#GET_BLEED_AIR# #ENUM_STATE_OFF# != if{ #ENUM_STATE_OFF# #SET_BLEED_AIR# }</SET_STATE_#POS_OFF#>
+						<STR_STATE_#POS_AUTO#>Auto</STR_STATE_#POS_AUTO#>
+						<STR_STATE_#POS_ENGINE#>Engine</STR_STATE_#POS_ENGINE#>
+						<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+					</UseInputEvent>
+					<UseTemplate Name="ASOBO_GT_Switch_3States">
+						<SWITCH_POSITION_TYPE>O</SWITCH_POSITION_TYPE>
+						<SWITCH_POSITION_VAR>XMLVAR_BleedState</SWITCH_POSITION_VAR>
+						<STATE#POS_AUTO#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_AUTO# ==</STATE#POS_AUTO#_TEST>
+						<STATE#POS_ENGINE#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_ENGINE# ==</STATE#POS_ENGINE#_TEST>
+						<STATE#POS_OFF#_TEST>(B:PRESSURIZATION_#BTN_ID#) #POS_OFF# ==</STATE#POS_OFF#_TEST>
+						<CODE_POS_#POS_AUTO#>(&gt;B:PRESSURIZATION_#BTN_ID#_Auto)</CODE_POS_#POS_AUTO#>
+						<CODE_POS_#POS_ENGINE#>(&gt;B:PRESSURIZATION_#BTN_ID#_Engine)</CODE_POS_#POS_ENGINE#>
+						<CODE_POS_#POS_OFF#>(&gt;B:PRESSURIZATION_#BTN_ID#_Off)</CODE_POS_#POS_OFF#>
+					</UseTemplate>
+				</Case>
+			</Switch>
+		</Component>
+	</Template>
+	
+	<Template Name="ASOBO_PRESSURIZATION_Dump_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>PRESSURIZATION_#INTERACTION_TYPE#_Dump</NODE_ID>
+			<ANIM_NAME>PRESSURIZATION_#INTERACTION_TYPE#_Dump</ANIM_NAME> 
+			<PART_ID>PRESSURIZATION_#INTERACTION_TYPE#_Dump</PART_ID>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Push">
+					<WWISE_EVENT_1>pressurization_dump_push_button_on</WWISE_EVENT_1> 
+					<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+					<WWISE_EVENT_2>pressurization_dump_push_button_off</WWISE_EVENT_2>
+					<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>					
+				</Case>
+				<Case Value="Switch">
+					<WWISE_EVENT_1>pressurization_cabinpressdump_switch_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>pressurization_cabinpressdump_switch_off</WWISE_EVENT_2>
+					<WWISE_EVENT>pressurization_cabinpressdump_switch</WWISE_EVENT>
+				</Case>
+			</Switch>
+			<Condition Valid="IS_AIRLINER">
+				<Condition NotEmpty="NORM_EMISSIVE_NODE_ID">
+					<SEQ1_NODE_ID>#NORM_EMISSIVE_NODE_ID#</SEQ1_NODE_ID>					
+				</Condition>
+				<Condition NotEmpty="DUMP_EMISSIVE_NODE_ID">
+					<SEQ2_NODE_ID>#DUMP_EMISSIVE_NODE_ID#</SEQ2_NODE_ID>
+				</Condition>
+				<Condition NotEmpty="COVER_NODE_ID">
+					<COVER_IE_NAME>Dump_Cover</COVER_IE_NAME>
+					<COVER_IE_ID_SOURCE>PRESSURIZATION</COVER_IE_ID_SOURCE>
+					<WWISE_COVER_EVENT_OPEN>pressurization_dump_cover_open</WWISE_COVER_EVENT_OPEN>
+					<WWISE_COVER_EVENT_CLOSE>pressurization_dump_cover_close</WWISE_COVER_EVENT_CLOSE>
+				</Condition>
+				<INPUT_EVENT_ID>PRESSURIZATION</INPUT_EVENT_ID>
+				<SEQ1_EMISSIVE_CODE>(A:PRESSURIZATION DUMP SWITCH, Bool) !</SEQ1_EMISSIVE_CODE>
+				<SEQ2_EMISSIVE_CODE>(A:PRESSURIZATION DUMP SWITCH, Bool)</SEQ2_EMISSIVE_CODE>
+			</Condition>
+			<TT_DESCRIPTION_ID>@TT_Package.CABIN_DUMB_PRESSURIZATION_PUSH_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.CABIN_DUMB_PRESSURIZATION_PUSH_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Dump</BTN_ID>
+			<SET_PRESS_DUMP>(A:PRESSURIZATION DUMP SWITCH, Bool) != if{ (&gt;K:PRESSURIZATION_PRESSURE_DUMP_SWITCH) }</SET_PRESS_DUMP>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_ENTRY_0>PRESSURIZATION_#BTN_ID#</TOOLTIP_ENTRY_0>
+			<Switch Param="TYPE">
+				<Case Value="AS04F">
+					<STR_STATE_0>Norm</STR_STATE_0>
+					<STR_STATE_1>Dump</STR_STATE_1>
+					<STR_STATE_2>RAM_Dump</STR_STATE_2>
+					<TT_VALUE_0>@TT_Package.GT_STATE_NORMAL</TT_VALUE_0>
+					<TT_VALUE_1>@TT_Package.GT_STATE_DUMP</TT_VALUE_1>
+					<TT_VALUE_2>@TT_Package.GT_STATE_RAM_DUMP</TT_VALUE_2>
+					<SET_STATE_0>0 (&gt;O:RAM_Dump) 0 #SET_PRESS_DUMP#</SET_STATE_0>
+					<SET_STATE_1>0 (&gt;O:RAM_Dump) 1 #SET_PRESS_DUMP#</SET_STATE_1>
+					<SET_STATE_2>1 (&gt;O:RAM_Dump) 1 #SET_PRESS_DUMP#</SET_STATE_2>
+					<CODE_POS_0>(&gt;B:PRESSURIZATION_#BTN_ID#_Norm)</CODE_POS_0>
+					<CODE_POS_1>(&gt;B:PRESSURIZATION_#BTN_ID#_Dump)</CODE_POS_1>
+					<CODE_POS_2>(&gt;B:PRESSURIZATION_#BTN_ID#_RAM_Dump)</CODE_POS_2>
+					<STATE0_TEST>(B:PRESSURIZATION_#BTN_ID#) 0 ==</STATE0_TEST>
+					<STATE1_TEST>(B:PRESSURIZATION_#BTN_ID#) 1 ==</STATE1_TEST>
+					<STATE2_TEST>(B:PRESSURIZATION_#BTN_ID#) 2 ==</STATE2_TEST>
+					<ENUM_VAL_TO_POS_EXTERNAL>l0 ! if{ 0 sp1 g2 } els{ 2 1 (O:RAM_Dump) ? sp1 g2 } :2 l1</ENUM_VAL_TO_POS_EXTERNAL>
+					<GET_STATE_EXTERNAL>(A:PRESSURIZATION DUMP SWITCH, Bool) sp0</GET_STATE_EXTERNAL>
+					<NUM_STATES>3</NUM_STATES>
+				</Case>
+				<Default>
+					<Condition Valid="IS_AIRLINER">
+						<Condition NotEmpty="ADDITIONAL_LIGHT_TEST">
+							<SEQ1_EMISSIVE_CODE>#SEQ1_EMISSIVE_CODE# #ADDITIONAL_LIGHT_TEST#</SEQ1_EMISSIVE_CODE>
+							<SEQ2_EMISSIVE_CODE>#SEQ2_EMISSIVE_CODE# #ADDITIONAL_LIGHT_TEST#</SEQ2_EMISSIVE_CODE>
+						</Condition>
+					</Condition>
+					<LEFT_SINGLE_CODE>(&gt;B:PRESSURIZATION_#BTN_ID#_Toggle)</LEFT_SINGLE_CODE>
+					<SET_STATE_EXTERNAL>p0 #SET_PRESS_DUMP#</SET_STATE_EXTERNAL>
+					<GET_STATE_EXTERNAL>(A:PRESSURIZATION DUMP SWITCH, Bool) sp0</GET_STATE_EXTERNAL>
+					<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+					<Switch>
+						<Case Valid="NORM_TEST">
+							<STR_STATE_OFF>Norm</STR_STATE_OFF>
+							<STR_STATE_ON>Test</STR_STATE_ON>
+							<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_NORMAL)</TT_VALUE_OFF>
+							<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_TEST)</TT_VALUE_ON>
+						</Case>
+						<Default>
+							<STR_STATE_OFF>Norm</STR_STATE_OFF>
+							<STR_STATE_ON>Dump</STR_STATE_ON>
+							<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_NORMAL)</TT_VALUE_OFF>
+							<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_DUMP)</TT_VALUE_ON>
+						</Default>
+					</Switch>
+				</Default>
+			</Switch>
+		</Parameters>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="Push">
+				<Condition Valid="IS_AIRLINER">
+					<True>
+						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner"/>
+					</True>
+					<False>
+						<Component ID="#NODE_ID#" Node="#NODE_ID#">
+							<UseInputEvent ID="#INPUT_EVENT_ID#"/>
+							<UseTemplate Name="ASOBO_GT_Push_Button">
+								<LEFT_SINGLE_CODE>(B:#COVER_IE_ID_SOURCE#_#COVER_IE_NAME#, Bool) if{ #LEFT_SINGLE_CODE# }</LEFT_SINGLE_CODE>
+							</UseTemplate>
+						</Component>
+					</False>
+				</Condition>
+			</Case>
+			<Case Value="Switch">
+				<Component ID="#NODE_ID#" Node="#NODE_ID#">
+					<Switch Param="TYPE">
+						<Case Value="AS04F">
+							<UseTemplate Name="ASOBO_GT_Switch_3States">
+								<SWITCH_POSITION_TYPE>O</SWITCH_POSITION_TYPE>
+								<SWITCH_POSITION_VAR>XMLVAR_CabinPressState</SWITCH_POSITION_VAR>
+							</UseTemplate>
+						</Case>
+						<Default>
+							<UseInputEvent ID="PRESSURIZATION"/>
+							<UseTemplate Name="ASOBO_GT_Switch_Code">
+								<ANIM_CODE>(B:PRESSURIZATION_#BTN_ID#, Bool) 100 *</ANIM_CODE>
+							</UseTemplate>
+						</Default>
+					</Switch>
+				</Component>
+			</Case>
+		</Switch>
+	</Template>
+	
+	<Template Name="ASOBO_PRESSURIZATION_ClimbRate_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>PRESSURIZATION_#INTERACTION_TYPE#_ClimbRate</NODE_ID>
+			<ANIM_NAME>PRESSURIZATION_#INTERACTION_TYPE#_ClimbRate</ANIM_NAME>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Knob">
+					<WWISE_EVENT>pressurization_climbrate_knob</WWISE_EVENT>
+					<COUNT>36</COUNT>					
+				</Case>
+			</Switch>
+			<TOOLTIP_TITLE>@TT_Package.CABIN_PRESSURIZATION_KNOB_CLIMB_RATE_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.CABIN_PRESSURIZATION_KNOB_CLIMB_RATE_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Knob">
+					<KNOB_ID>Climb_Rate</KNOB_ID>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="PRESSURIZATION">
+				<SET_STATE_EXTERNAL>(&gt;O:XMLVAR_Cabin_Rate)</SET_STATE_EXTERNAL>
+				<GET_TT_VALUE_STATE>(A:PRESSURIZATION CABIN ALTITUDE RATE, ft/min)</GET_TT_VALUE_STATE>
+				<GET_STATE_EXTERNAL>(O:XMLVAR_Cabin_Rate)</GET_STATE_EXTERNAL>
+				<FORMAT_VALUE>'%d ft/min' @sprintf</FORMAT_VALUE>
+				<NO_ANIM_VAR_UPDATE>True</NO_ANIM_VAR_UPDATE>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Knob_Finite_Code">
+				<TOOLTIP_ENTRY_0>PRESSURIZATION_#KNOB_ID#</TOOLTIP_ENTRY_0>
+				<ANIM_CODE>(O:XMLVAR_Cabin_Rate)</ANIM_CODE>
+				<CLOCKWISE_CODE>1 (&gt;B:PRESSURIZATION_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+				<ANTICLOCKWISE_CODE>1 (&gt;B:PRESSURIZATION_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	
+	<Template Name="ASOBO_PRESSURIZATION_CabinAlt_SubTemplate">
+		<Parameters Type="Default">
+			<NODE_ID>PRESSURIZATION_#INTERACTION_TYPE#_CabinAlt</NODE_ID>
+			<ANIM_NAME>PRESSURIZATION_#INTERACTION_TYPE#_CabinAlt</ANIM_NAME>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Knob">
+					<WWISE_EVENT>pressurization_cabinalt_knob</WWISE_EVENT>
+					<COUNT>36</COUNT>					
+				</Case>
+			</Switch>
+			<TOOLTIP_TITLE>@TT_Package.CABIN_PRESSURIZATION_KNOB_CABINALT_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.CABIN_PRESSURIZATION_KNOB_CABINALT_ACTION</TT_DESCRIPTION_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="Knob">
+					<KNOB_ID>Climb_Altitude_Goal</KNOB_ID>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseInputEvent ID="PRESSURIZATION">
+				<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;K:PRESSURIZATION_PRESSURE_ALT_INC) } els{ (&gt;K:PRESSURIZATION_PRESSURE_ALT_DEC) }</SET_STATE_EXTERNAL>
+				<GET_TT_VALUE_STATE>(A:PRESSURIZATION CABIN ALTITUDE GOAL, ft)</GET_TT_VALUE_STATE>
+				<FORMAT_VALUE>'%d ft' @sprintf</FORMAT_VALUE>
+			</UseInputEvent>
+			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+				<TOOLTIP_ENTRY_0>PRESSURIZATION_#KNOB_ID#</TOOLTIP_ENTRY_0>
+				<CLOCKWISE_CODE>1 (&gt;B:PRESSURIZATION_#KNOB_ID#_Inc)</CLOCKWISE_CODE>
+				<ANTICLOCKWISE_CODE>1 (&gt;B:PRESSURIZATION_#KNOB_ID#_Dec)</ANTICLOCKWISE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	
 </ModelBehaviors>

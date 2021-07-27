@@ -7,110 +7,110 @@ class HorizontalGauge extends AbstractGauge {
             this.removeChild(this.firstChild);
         }
         let svg = document.createElementNS(Avionics.SVG.NS, "svg");
-        svg.setAttribute("overflow", "visible");
-        svg.setAttribute("width", "100%");
-        svg.setAttribute("height", "100%");
-        svg.setAttribute("viewBox", "0 0 100 100");
+        diffAndSetAttribute(svg, "overflow", "visible");
+        diffAndSetAttribute(svg, "width", "100%");
+        diffAndSetAttribute(svg, "height", "100%");
+        diffAndSetAttribute(svg, "viewBox", "0 0 100 100");
         this.appendChild(svg);
         let dashes = document.createElementNS(Avionics.SVG.NS, "line");
         dashes.classList.add("gauge-base");
         dashes.classList.add("vertical-gauge-base");
-        dashes.setAttribute("x1", "0");
-        dashes.setAttribute("y1", "15");
-        dashes.setAttribute("x2", "100");
-        dashes.setAttribute("y2", "15");
-        dashes.setAttribute("fill", "none");
-        dashes.setAttribute("stroke", "white");
-        dashes.setAttribute("stroke-width", "10px");
-        dashes.setAttribute("stroke-dashoffset", "1");
-        dashes.setAttribute("stroke-dasharray", "1 " + (101 - this._stepsCount) / (this._stepsCount));
+        diffAndSetAttribute(dashes, "x1", "0");
+        diffAndSetAttribute(dashes, "y1", "15");
+        diffAndSetAttribute(dashes, "x2", "100");
+        diffAndSetAttribute(dashes, "y2", "15");
+        diffAndSetAttribute(dashes, "fill", "none");
+        diffAndSetAttribute(dashes, "stroke", "white");
+        diffAndSetAttribute(dashes, "stroke-width", "10px");
+        diffAndSetAttribute(dashes, "stroke-dashoffset", "1");
+        diffAndSetAttribute(dashes, "stroke-dasharray", "1 " + (101 - this._stepsCount) / (this._stepsCount));
         svg.appendChild(dashes);
         if (this._lowRedLengthPercent > 0) {
             let lowRedRect = document.createElementNS(Avionics.SVG.NS, "rect");
-            lowRedRect.setAttribute("x", fastToFixed((this._lowRedStartPercent * 100), 2));
-            lowRedRect.setAttribute("y", "14");
-            lowRedRect.setAttribute("width", fastToFixed(Math.max(this._lowRedLengthPercent * 100, 0), 2));
-            lowRedRect.setAttribute("height", "6");
-            lowRedRect.setAttribute("fill", "red");
+            diffAndSetAttribute(lowRedRect, "x", fastToFixed((this._lowRedStartPercent * 100), 2));
+            diffAndSetAttribute(lowRedRect, "y", "14");
+            diffAndSetAttribute(lowRedRect, "width", fastToFixed(Math.max(this._lowRedLengthPercent * 100, 0), 2));
+            diffAndSetAttribute(lowRedRect, "height", "6");
+            diffAndSetAttribute(lowRedRect, "fill", "red");
             svg.appendChild(lowRedRect);
         }
         if (this._lowYellowLengthPercent > 0) {
             let lowYellowRect = document.createElementNS(Avionics.SVG.NS, "rect");
-            lowYellowRect.setAttribute("x", fastToFixed((this._lowYellowStartPercent * 100), 2));
-            lowYellowRect.setAttribute("y", "14");
-            lowYellowRect.setAttribute("width", fastToFixed(Math.max(this._lowYellowLengthPercent * 100, 0), 2));
-            lowYellowRect.setAttribute("height", "6");
-            lowYellowRect.setAttribute("fill", "yellow");
+            diffAndSetAttribute(lowYellowRect, "x", fastToFixed((this._lowYellowStartPercent * 100), 2));
+            diffAndSetAttribute(lowYellowRect, "y", "14");
+            diffAndSetAttribute(lowYellowRect, "width", fastToFixed(Math.max(this._lowYellowLengthPercent * 100, 0), 2));
+            diffAndSetAttribute(lowYellowRect, "height", "6");
+            diffAndSetAttribute(lowYellowRect, "fill", "yellow");
             svg.appendChild(lowYellowRect);
         }
         if (this._greenLengthPercent > 0) {
             let greenRect = document.createElementNS(Avionics.SVG.NS, "rect");
-            greenRect.setAttribute("x", fastToFixed((this._greenStartPercent * 100), 2));
-            greenRect.setAttribute("y", "14");
-            greenRect.setAttribute("width", fastToFixed(Math.max(this._greenLengthPercent * 100, 0), 2));
-            greenRect.setAttribute("height", "6");
-            greenRect.setAttribute("fill", "green");
+            diffAndSetAttribute(greenRect, "x", fastToFixed((this._greenStartPercent * 100), 2));
+            diffAndSetAttribute(greenRect, "y", "14");
+            diffAndSetAttribute(greenRect, "width", fastToFixed(Math.max(this._greenLengthPercent * 100, 0), 2));
+            diffAndSetAttribute(greenRect, "height", "6");
+            diffAndSetAttribute(greenRect, "fill", "green");
             svg.appendChild(greenRect);
         }
         if (this._yellowLengthPercent > 0) {
             let yellowRect = document.createElementNS(Avionics.SVG.NS, "rect");
-            yellowRect.setAttribute("x", fastToFixed((this._yellowStartPercent * 100), 2));
-            yellowRect.setAttribute("y", "14");
-            yellowRect.setAttribute("width", fastToFixed(Math.max(this._yellowLengthPercent * 100, 0), 2));
-            yellowRect.setAttribute("height", "6");
-            yellowRect.setAttribute("fill", "yellow");
+            diffAndSetAttribute(yellowRect, "x", fastToFixed((this._yellowStartPercent * 100), 2));
+            diffAndSetAttribute(yellowRect, "y", "14");
+            diffAndSetAttribute(yellowRect, "width", fastToFixed(Math.max(this._yellowLengthPercent * 100, 0), 2));
+            diffAndSetAttribute(yellowRect, "height", "6");
+            diffAndSetAttribute(yellowRect, "fill", "yellow");
             svg.appendChild(yellowRect);
         }
         if (this._redLengthPercent > 0) {
             let redRect = document.createElementNS(Avionics.SVG.NS, "rect");
-            redRect.setAttribute("x", fastToFixed((this._redStartPercent * 100), 2));
-            redRect.setAttribute("y", "14");
-            redRect.setAttribute("width", fastToFixed(Math.max(this._redLengthPercent * 100, 0), 2));
-            redRect.setAttribute("height", "6");
-            redRect.setAttribute("fill", "red");
+            diffAndSetAttribute(redRect, "x", fastToFixed((this._redStartPercent * 100), 2));
+            diffAndSetAttribute(redRect, "y", "14");
+            diffAndSetAttribute(redRect, "width", fastToFixed(Math.max(this._redLengthPercent * 100, 0), 2));
+            diffAndSetAttribute(redRect, "height", "6");
+            diffAndSetAttribute(redRect, "fill", "red");
             svg.appendChild(redRect);
         }
         if (isFinite(this._limitLowPercent)) {
             let limitLowRect = document.createElementNS(Avionics.SVG.NS, "path");
             let d = "M " + fastToFixed((this._limitLowPercent * 100), 2) + " 10";
             d += " L " + fastToFixed((this._limitLowPercent * 100), 2) + " 20";
-            limitLowRect.setAttribute("d", d);
-            limitLowRect.setAttribute("fill", "none");
-            limitLowRect.setAttribute("stroke", "red");
-            limitLowRect.setAttribute("stroke-width", "2px");
+            diffAndSetAttribute(limitLowRect, "d", d);
+            diffAndSetAttribute(limitLowRect, "fill", "none");
+            diffAndSetAttribute(limitLowRect, "stroke", "red");
+            diffAndSetAttribute(limitLowRect, "stroke-width", "2px");
             svg.appendChild(limitLowRect);
         }
         if (isFinite(this._limitHighPercent)) {
             let limitHighRect = document.createElementNS(Avionics.SVG.NS, "path");
             let d = "M " + fastToFixed((this._limitHighPercent * 100), 2) + " 10";
             d += " L " + fastToFixed((this._limitHighPercent * 100), 2) + " 20";
-            limitHighRect.setAttribute("d", d);
-            limitHighRect.setAttribute("fill", "none");
-            limitHighRect.setAttribute("stroke", "red");
-            limitHighRect.setAttribute("stroke-width", "2px");
+            diffAndSetAttribute(limitHighRect, "d", d);
+            diffAndSetAttribute(limitHighRect, "fill", "none");
+            diffAndSetAttribute(limitHighRect, "stroke", "red");
+            diffAndSetAttribute(limitHighRect, "stroke-width", "2px");
             svg.appendChild(limitHighRect);
         }
         this._cursor = document.createElementNS(Avionics.SVG.NS, "path");
         this._cursor.classList.add("gauge-cursor");
         this._cursor.classList.add("horizontal-gauge-cursor");
-        this._cursor.setAttribute("fill", "white");
-        this._cursor.setAttribute("stroke", "black");
+        diffAndSetAttribute(this._cursor, "fill", "white");
+        diffAndSetAttribute(this._cursor, "stroke", "black");
         let cursorPath = "M -4 0 L 4 0 L 4 8 L 0 12 L -4 8 Z";
-        this._cursor.setAttribute("d", cursorPath);
+        diffAndSetAttribute(this._cursor, "d", cursorPath);
         svg.appendChild(this._cursor);
         let horizontalGauge = document.createElementNS(Avionics.SVG.NS, "path");
         let d = "M 0 7 L 0 20 L 100 20 L 100 7";
         horizontalGauge.classList.add("gauge-base");
         horizontalGauge.classList.add("horizontal-gauge-base");
-        horizontalGauge.setAttribute("d", d);
-        horizontalGauge.setAttribute("fill", "none");
-        horizontalGauge.setAttribute("stroke", "black");
+        diffAndSetAttribute(horizontalGauge, "d", d);
+        diffAndSetAttribute(horizontalGauge, "fill", "none");
+        diffAndSetAttribute(horizontalGauge, "stroke", "black");
         svg.appendChild(horizontalGauge);
         this._updateValue();
     }
     _updateValueSvg() {
         let cursorPercent = this._cursorPercent * 100;
-        this._cursor.setAttribute("transform", "translate(" + cursorPercent + " 0)");
+        diffAndSetAttribute(this._cursor, "transform", "translate(" + cursorPercent + " 0)");
     }
     _drawBase() {
         let w = this._canvasBase.width - 2;

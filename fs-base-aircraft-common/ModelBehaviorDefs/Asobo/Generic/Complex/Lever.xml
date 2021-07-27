@@ -142,9 +142,9 @@
 
 		<UseTemplate Name = "ASOBO_GT_AnimTriggers_2SoundEvents">
 			<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
-			<DIRECTION_1>Backward</DIRECTION_1>
+			<DIRECTION_1>Forward</DIRECTION_1>
 			<NORMALIZED_TIME_2>0.9</NORMALIZED_TIME_2>
-			<DIRECTION_2>Forward</DIRECTION_2>
+			<DIRECTION_2>Backward</DIRECTION_2>
 		</UseTemplate>
 
 		<UseTemplate Name = "ASOBO_GT_Interaction_DraggingYAxis_Code">
