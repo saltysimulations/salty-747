@@ -1793,16 +1793,16 @@
 					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
 					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="ASOBO_AIRLINER_Aircond_Knob_Template">
+					<ID>1</ID>
 					<NODE_ID>knob_ovhd_air_cond_pass_temp</NODE_ID>
 					<ANIM_NAME>ovhd_knob_air_cond_pass_temp</ANIM_NAME>
-					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					<ANIM_CODE>50</ANIM_CODE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="ASOBO_AIRLINER_Aircond_Knob_Template">
+					<ID>2</ID>
 					<NODE_ID>knob_ovhd_air_cond_flt_deck</NODE_ID>
 					<ANIM_NAME>ovhd_knob_air_cond_flt_deck</ANIM_NAME>
-					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					<ANIM_CODE>50</ANIM_CODE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
@@ -1811,9 +1811,9 @@
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					<ANIM_CODE>50</ANIM_CODE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="ASOBO_AIRLINER_Aircond_Knob_Template">
+					<ID>3</ID>
 					<NODE_ID>push_ovhd_air_cond</NODE_ID>
-					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					<ANIM_NAME>ovhd_push_air_cond</ANIM_NAME>
 					<ANIM_CODE>50</ANIM_CODE>
 				</UseTemplate>
@@ -4232,6 +4232,7 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_ovhd_pressurization_cabin_alt_ctrl</NODE_ID>
 			</UseTemplate>
+			<!--
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_ovhd_air_cond_pass_temp</NODE_ID>
 			</UseTemplate>
@@ -4241,6 +4242,7 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>push_ovhd_air_cond</NODE_ID>
 			</UseTemplate>
+			-->
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>push_ovhd_air_cond_recirc_lwr</NODE_ID>
 			</UseTemplate>
