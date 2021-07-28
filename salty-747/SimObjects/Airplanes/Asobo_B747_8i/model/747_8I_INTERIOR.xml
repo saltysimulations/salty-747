@@ -1970,7 +1970,7 @@
 						<BUTTON_NODE_ID>btn_afds_tfc_l</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_tfc_l</BUTTON_ANIM_NAME>
 					</UseTemplate>
-					<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Baro_Template">
+					<UseTemplate Name="SALTY_AUTOPILOT_Knob_Baro_Template">
 						<NODE_ID>knob_afds_std_l2</NODE_ID>
 						<ANIM_NAME_KNOB>afds_knob_std_l2</ANIM_NAME_KNOB>
 						<ANIM_NAME_PUSH>afds_push_std_l</ANIM_NAME_PUSH>
@@ -2065,7 +2065,7 @@
 						<BUTTON_NODE_ID>btn_afds_tfc_r</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_tfc_r</BUTTON_ANIM_NAME>
 					</UseTemplate>
-					<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Baro_Template">
+					<UseTemplate Name="SALTY_AUTOPILOT_Knob_Baro_Template">
 						<NODE_ID>knob_afds_std_r2</NODE_ID>
 						<ANIM_NAME_KNOB>afds_knob_std_r2</ANIM_NAME_KNOB>
 						<ANIM_NAME_PUSH>afds_push_std_r</ANIM_NAME_PUSH>
