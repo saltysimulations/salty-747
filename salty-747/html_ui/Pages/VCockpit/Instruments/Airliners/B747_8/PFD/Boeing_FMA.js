@@ -163,6 +163,10 @@ var Boeing_FMA;
                 this.flagTOGA = true;
                 return 4;
             }
+            if ((SimVar.GetSimVarValue("A:AUTOPILOT TAKEOFF POWER ACTIVE", "bool") === 1) && (Simplane.getIndicatedSpeed() < 65)) {
+                this.flagTOGA = true;
+                return 4;
+            }
             if (Simplane.getIndicatedSpeed() < 65) {
                 return -1;
             }
