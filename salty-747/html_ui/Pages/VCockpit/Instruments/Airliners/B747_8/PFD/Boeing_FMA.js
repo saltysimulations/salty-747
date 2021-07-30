@@ -237,7 +237,7 @@ var Boeing_FMA;
             if (ApproachStatus.isRolloutActive) {
                 return 7;
             }
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number" ) === 0) {
+            if (SimVar.GetSimVarValue("A:AUTOPILOT TAKEOFF POWER ACTIVE", "bool") === 1) {
                 return 8;
             }
             if (SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 1) {
@@ -380,7 +380,7 @@ var Boeing_FMA;
                     return 4;
                 }
             }
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number" ) === 0) {
+            if (SimVar.GetSimVarValue("A:AUTOPILOT TAKEOFF POWER ACTIVE", "bool") === 1) {
                 return 6;
             }
             if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
