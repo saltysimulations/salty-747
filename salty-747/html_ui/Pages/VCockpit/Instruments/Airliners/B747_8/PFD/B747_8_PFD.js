@@ -189,9 +189,7 @@ class B747_8_PFD_Altimeter extends NavSystemElement {
                 };
                 break;
             case "STD_PUSH":
-                if (Simplane.getPressureSelectedMode(this.altimeter.aircraft) !== "STD") {
-                    this.altimeter.qnhIsPreSelected = false;
-                }
+                this.altimeter.qnhIsPreSelected = false;
                 break;
             case "MTRS":
                 this.isMTRSActive = !this.isMTRSActive;

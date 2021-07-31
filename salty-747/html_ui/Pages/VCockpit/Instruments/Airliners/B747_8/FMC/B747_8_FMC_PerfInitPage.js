@@ -25,7 +25,7 @@ class FMCPerfInitPage {
             };
             let crzAltCell = "□□□□□";
             if (isFinite(fmc.cruiseFlightLevel)) {
-                crzAltCell = fmc.cruiseFlightLevel.toFixed(0);
+                crzAltCell = "FL" + fmc.cruiseFlightLevel.toFixed(0);
             }
             fmc.onRightInput[0] = () => {
                 let value = fmc.inOut;
