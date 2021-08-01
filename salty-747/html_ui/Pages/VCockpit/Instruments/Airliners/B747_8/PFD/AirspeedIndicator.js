@@ -529,7 +529,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         return marker;
     }
     getStallSpeed1G() {
-        let flapSetting = Simplane.getFlapsAngle() * 180 / Math.PI;
+        let flapSetting = SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees");
         let grossWeight = Math.round(Simplane.getWeight() / 1000);
         let a = -0.0008 * grossWeight - 0.5617;
         let b = 0.2237 * grossWeight + 75.764;
