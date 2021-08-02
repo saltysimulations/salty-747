@@ -324,22 +324,32 @@ class Jet_NDCompass extends HTMLElement {
             }
             else if (this.aircraft == Aircraft.B747_8 || this.aircraft == Aircraft.AS01B) {
                 selectedHeading = simSelectedHeading;
-                showSelectedHeading = Simplane.getAutoPilotHeadingLockActive();
+                if (SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 1) {
+                    showSelectedHeading = false;
+                }
+                else if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRActive()) {
+                    showSelectedHeading = false;
+                }
+                else {
+                    showSelectedHeading =  true;
+                }
                 if (!showSelectedHeading) {
                     if (headingChanged) {
                         showSelectedHeading = true;
-                        this.showSelectedHeadingTimer = 5;
+                        this.showSelectedHeadingTimer = 10;
                     }
                     else if (this.showSelectedHeadingTimer > 0) {
                         this.showSelectedHeadingTimer -= _deltaTime / 1000;
-                        if (this.showSelectedHeadingTimer <= 0)
+                        if (this.showSelectedHeadingTimer <= 0) {
                             this.showSelectedHeadingTimer = 0;
+                        }
                         else
                             showSelectedHeading = true;
                     }
                 }
                 else {
                     this.showSelectedHeadingTimer = 0;
+                    showSelectedHeading = true;
                 }
                 var roundedSelectedHeading = fastToFixed(selectedHeading, 3);
                 this.setAttribute("selected_heading_bug_rotation", roundedSelectedHeading);

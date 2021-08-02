@@ -61,11 +61,16 @@ b747-8-mfd-element {
     height: 100%;
     width: 100%;
     z-index: 10; }
-  b747-8-mfd-element #Mainframe {
-    top: 0;
-    left: 0;
+  b747-8-pfd-element #DUborder {
     width: 100%;
     height: 100%;
+    display: block;
+    position: relative; }
+  b747-8-mfd-element #Mainframe {
+    width: 95%;
+    height: 95%;
+    left: 2.5%;
+    top: 2.5%;
     display: block;
     position: relative; }
     b747-8-mfd-element #Mainframe #Compass {
