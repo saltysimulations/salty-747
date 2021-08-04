@@ -3,6 +3,11 @@
 
 <script type="text/html" id="MapInstrumentTemplate">
     <bing-map></bing-map>
+    <div id="WXRMask">
+        <svg viewBox="0 0 600 600" style="position:absolute; top:0%; left: 0%; width: 100%; height:100%;">
+            <path d= "M 0 490 L 0 700 L 1600 700 L 1600 490 Z" fill="black"></path>             
+        </svg>
+    </div>
     <canvas id="road-network-canvas" width="1000" height="1000"></canvas>
     <svg id="MapSVG"></svg>
     <div id="MapRange">80NM</div>
