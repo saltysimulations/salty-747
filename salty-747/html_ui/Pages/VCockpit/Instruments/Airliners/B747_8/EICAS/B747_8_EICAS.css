@@ -54,12 +54,16 @@ b747-8-eicas-element {
     width: 100%;
     z-index: 10; }
   b747-8-eicas-element #Mainframe {
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
+    top: -2.5%;
     display: block;
     position: relative; }
+    b747-8-pfd-element #DUborder {
+      width: 100%;
+      height: 100%;
+      display: block;
+      position: relative; }
     b747-8-eicas-element #Mainframe #TopScreen {
       transform: rotateX(0);
       top: 0%;

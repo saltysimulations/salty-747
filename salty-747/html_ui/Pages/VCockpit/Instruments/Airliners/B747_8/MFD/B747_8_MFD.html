@@ -22,7 +22,7 @@
             </div>
             <div id="efisMasks" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
                 <svg viewBox="0 0 600 600">
-                    <rect x="0" y="390" width="55" height="150" id="efismodemask"/>
+                    <rect x="-5" y="390" width="60" height="150" id="efismodemask"/>
                     <rect x="0" y="515" width="100" height="60" id="vorleftmask"/>
                     <rect x="500" y="515" width="100" height="60" id="vorrightmask"/>
                 </svg>
@@ -33,7 +33,7 @@
                     <div id="Speed">
                         <svg>
                             <text id="GS_Text" class="Small" x="0%" y="20%" alignment-baseline="baseline">GS</text>
-                            <text id="GS_Value" class="Value" x="20%" y="20%" alignment-baseline="baseline" text-anchor="end">---</text>
+                            <text id="GS_Value" class="Value" x="21%" y="20%" alignment-baseline="baseline" text-anchor="end">---</text>
                             <text id="TAS_Text" class="Small" x="25%" y="20%" alignment-baseline="baseline">TAS</text>
                             <text id="TAS_Value" class="Value" x="35.5%" y="20%" alignment-baseline="baseline">---</text>
                             <text id="Wind_Direction" class="Value" x="0%" y="45%" alignment-baseline="baseline">--</text>
@@ -97,6 +97,7 @@
                         <text id="TERR" class="Large" x="0%" y="20%" alignment-baseline="baseline">TERR</text>
                         <text id="WXR" class="Large" x="0%" y="20%" alignment-baseline="baseline">WXR</text>
                         <text id="WXRInfo" class="Large" x="0%" y="27%" alignment-baseline="baseline">0A</text>
+                        <text id="TFC" class="Small" x="0%" y="35%" alignment-baseline="baseline">TFC</text>
                     </svg>
                 </div>
             </jet-mfd-nd-info>
@@ -115,6 +116,12 @@
                 </svg>
             </div>
         </div>
+    </div>
+    <div id="DUborder">
+        <svg viewBox="0 0 600 600" style="position:absolute; top:2%; left: 0.5%; width: 99.5%; height:97%;">
+            <path d= "M 0 570 L 571 570 L 571 0 L 600 0 L 600 570 L 600 600 L 0 600 Z" fill="black"></path>
+            <path d= "M 0 0 L 585 0 L 585 15 L 15 15 L 15 585 L 0 585 Z" fill="black"></path>               
+        </svg>
     </div>
 </script>
 

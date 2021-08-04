@@ -293,6 +293,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.info.showSymbol(B747_8_ND_Symbol.STA, this.map.instrument.showVORs);
         this.info.showSymbol(B747_8_ND_Symbol.WPT, this.map.instrument.showIntersections);
         this.info.showSymbol(B747_8_ND_Symbol.ARPT, this.map.instrument.showAirports);
+        this.info.showSymbol(B747_8_ND_Symbol.TFC, this.map.instrument.showTraffic);
     }
 }
 class B747_8_MFD_Compass extends NavSystemElement {
@@ -421,6 +422,7 @@ var B747_8_ND_Symbol;
     B747_8_ND_Symbol[B747_8_ND_Symbol["TERR"] = 3] = "TERR";
     B747_8_ND_Symbol[B747_8_ND_Symbol["WXR"] = 4] = "WXR";
     B747_8_ND_Symbol[B747_8_ND_Symbol["WXRINFO"] = 5] = "WXRINFO";
+    B747_8_ND_Symbol[B747_8_ND_Symbol["TFC"] = 6] = "TFC";
 })(B747_8_ND_Symbol || (B747_8_ND_Symbol = {}));
 class B747_8_MFD_NDInfo extends NavSystemElement {
     constructor() {
@@ -448,6 +450,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         this.allSymbols.push(this.ndInfo.querySelector("#TERR"));
         this.allSymbols.push(this.ndInfo.querySelector("#WXR"));
         this.allSymbols.push(this.ndInfo.querySelector("#WXRInfo"));
+        this.allSymbols.push(this.ndInfo.querySelector("#TFC"));
         this.greenArc = document.querySelector("#greenArc");
     }
     onEnter() {
