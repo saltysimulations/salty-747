@@ -345,37 +345,37 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
             this.speedNotSetSVG = document.createElementNS(Avionics.SVG.NS, "g");
             this.speedNotSetSVG.setAttribute("id", "speedNotSet");
             {
-                let textPosX = _left + _width * 1.2;
+                let textPosX = _left + _width * 1.25;
                 let textPosY = _top + _height * 0.225;
-                let textSpace = 23;
+                let textSpace = 27;
                 let text = document.createElementNS(Avionics.SVG.NS, "text");
                 text.textContent = "NO";
                 text.setAttribute("x", textPosX.toString());
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
-                text.setAttribute("font-size", (this.fontSize * 1.0).toString());
+                text.setAttribute("font-size", (this.fontSize * 1.3).toString());
                 text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
                 this.speedNotSetSVG.appendChild(text);
-                textPosY += textSpace;
+                textPosY += textSpace + 5;
                 text = document.createElementNS(Avionics.SVG.NS, "text");
                 text.textContent = "V";
                 text.setAttribute("x", textPosX.toString());
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
-                text.setAttribute("font-size", (this.fontSize * 1.0).toString());
+                text.setAttribute("font-size", (this.fontSize * 1.3).toString());
                 text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
                 this.speedNotSetSVG.appendChild(text);
-                textPosY += textSpace;
+                textPosY += textSpace + 5;
                 text = document.createElementNS(Avionics.SVG.NS, "text");
                 text.textContent = "S";
                 text.setAttribute("x", textPosX.toString());
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
-                text.setAttribute("font-size", (this.fontSize * 1.0).toString());
+                text.setAttribute("font-size", (this.fontSize * 1.3).toString());
                 text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
@@ -386,7 +386,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 text.setAttribute("x", textPosX.toString());
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
-                text.setAttribute("font-size", (this.fontSize * 1.0).toString());
+                text.setAttribute("font-size", (this.fontSize * 1.3).toString());
                 text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
@@ -397,7 +397,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
                 text.setAttribute("x", textPosX.toString());
                 text.setAttribute("y", textPosY.toString());
                 text.setAttribute("fill", "orange");
-                text.setAttribute("font-size", (this.fontSize * 1.0).toString());
+                text.setAttribute("font-size", (this.fontSize * 1.3).toString());
                 text.setAttribute("font-family", "BoeingEICAS");
                 text.setAttribute("text-anchor", "middle");
                 text.setAttribute("alignment-baseline", "central");
@@ -529,7 +529,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         return marker;
     }
     getStallSpeed1G() {
-        let flapSetting = Simplane.getFlapsAngle() * 180 / Math.PI;
+        let flapSetting = SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees");
         let grossWeight = Math.round(Simplane.getWeight() / 1000);
         let a = -0.0008 * grossWeight - 0.5617;
         let b = 0.2237 * grossWeight + 75.764;

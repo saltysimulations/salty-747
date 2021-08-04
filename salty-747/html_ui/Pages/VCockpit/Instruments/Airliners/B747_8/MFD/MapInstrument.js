@@ -597,7 +597,7 @@ class MapInstrument extends ISvgMapRootElement {
                     let viewingTempFP = NaN;
                     if (SimVar.GetSimVarValue("L:FMC_FLIGHT_PLAN_IS_TEMPORARY", "bool") === 1) {
                         viewingTempFP = 1;
-                    } 
+                    }
                     needCenterOnPlane = true;
                     if (this.bEnableCenterOnFplnWaypoint) {
                         const airlinerMcduCurrentFplnWaypointIndex = SimVar.GetSimVarValue("L:SALTY_PLAN_VIEW_WAYPOINT", "number");
@@ -1087,12 +1087,12 @@ class MapInstrument extends ISvgMapRootElement {
             if (this.showRangeDisplay) {
                 const currentRange = this.getDisplayRange();
                 if (this.rangeValue != currentRange) {
-                    Avionics.Utils.diffAndSet(this.mapRangeElementRange, MapInstrument.getFormattedRangeDisplayText(currentRange));
+                    this.mapRangeElementRange = MapInstrument.getFormattedRangeDisplayText(currentRange);
                     this.rangeValue = currentRange;
                 }
-                Avionics.Utils.diffAndSetAttribute(this.mapRangeElement, "state", "Active");
+                diffAndSetAttribute(this.mapRangeElement, "state", "Active");
             } else {
-                Avionics.Utils.diffAndSetAttribute(this.mapRangeElement, "state", "Inactive");
+                diffAndSetAttribute(this.mapRangeElement, "state", "Inactive");
             }
         }
         if (this.navMap) {
@@ -1737,7 +1737,7 @@ MapInstrument.VOR_RANGE_DEFAULT = 200;
 MapInstrument.VOR_RANGE_MIN_DEFAULT = 0;
 MapInstrument.NDB_RANGE_DEFAULT = 4;
 MapInstrument.NDB_RANGE_MIN_DEFAULT = 0;
-MapInstrument.AIRPORT_RANGES_DEFAULT = [0, 0, Infinity];
+MapInstrument.AIRPORT_RANGES_DEFAULT = [0, 0, 200];
 MapInstrument.CITY_RANGES_DEFAULT = [1500, 200, 100];
 MapInstrument.PLANE_RANGE_DEFAULT = 60;
 MapInstrument.AIRSPACE_RANGE_DEFAULT = Infinity;

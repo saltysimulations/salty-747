@@ -33,6 +33,7 @@ var B747_8_UpperEICAS;
             this.tmaDisplay = new Boeing.ThrustModeDisplay(this.querySelector("#TMA_Value"));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TAT_Value"), Simplane.getTotalAirTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#SAT_Value"), Simplane.getAmbientTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
+            this.pressureInfo = this.querySelector("#PressureInfo");
             this.cabinAlt = this.querySelector("#CAB_ALT_Value");
             this.cabinRate = this.querySelector("#RATE_Value");
             this.deltaP = this.querySelector("#DELTAP_Value");
@@ -154,6 +155,13 @@ var B747_8_UpperEICAS;
             return;
         }
         updatePressurisationValues() {
+            if (SimVar.GetSimVarValue("L:XMLVAR_EICAS_CURRENT_PAGE", "Enum") !== 3) {
+                this.pressureInfo.style.visibility = "hidden";
+                return;
+            }
+            else {
+                this.pressureInfo.style.visibility = "visible";
+            }
             this.cabinAlt.textContent = (Math.round(Simplane.getPressurisationCabinAltitude() / 100) * 100).toFixed(0);
             this.cabinRate.textContent = (Math.round(Simplane.getPressurisationCabinAltitudeRate() / 100) * 100).toFixed(0);
             let deltaPValue = Math.abs(Simplane.getPressurisationDifferential() * 10);
