@@ -1299,4 +1299,96 @@
 			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
 		</UseTemplate>
 	</Template>
+
+	<Template Name="ASOBO_LIGHTING_Knob_Cabin_Template">
+		<Parameters Type="Default">
+			<POTENTIOMETER>4</POTENTIOMETER>
+			<INTERACTION_TYPE>KNOB</INTERACTION_TYPE>
+			<LIGHT_TYPE>CABIN</LIGHT_TYPE>
+		</Parameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_LIGHTING_Light_Template">
+            </UseTemplate>
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(A:#KNOB_LIGHT_SIMVAR_POWER_SETTING#, Percent over 100) 1 *</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_LIGHTING_Knob_Panel_Template">
+		<Parameters Type="Default">
+			<POTENTIOMETER>4</POTENTIOMETER>
+			<INTERACTION_TYPE>KNOB</INTERACTION_TYPE>
+			<LIGHT_TYPE>PANEL</LIGHT_TYPE>
+		</Parameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_LIGHTING_Light_Template">
+            </UseTemplate>
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(A:#KNOB_LIGHT_SIMVAR_POWER_SETTING#, Percent over 100) 1 *</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_LIGHTING_Knob_Glareshield_Template">
+		<Parameters Type="Default">
+			<POTENTIOMETER>5</POTENTIOMETER>
+			<INTERACTION_TYPE>KNOB</INTERACTION_TYPE>
+			<LIGHT_TYPE>GLARESHIELD</LIGHT_TYPE>
+		</Parameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_LIGHTING_Light_Template">
+            </UseTemplate>
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(A:#KNOB_LIGHT_SIMVAR_POWER_SETTING#, Percent over 100) 1 *</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_LIGHTING_Knob_Pedestal_Template">
+		<Parameters Type="Default">
+			<POTENTIOMETER>6</POTENTIOMETER>
+			<INTERACTION_TYPE>KNOB</INTERACTION_TYPE>
+			<LIGHT_TYPE>PEDESTAL</LIGHT_TYPE>
+		</Parameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_LIGHTING_Light_Template">
+            </UseTemplate>
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(A:#KNOB_LIGHT_SIMVAR_POWER_SETTING#, Percent over 100) 1 *</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_LIGHTING_Knob_Potentiometer_Template">
+		<Parameters Type="Default">
+			<INTERACTION_TYPE>KNOB</INTERACTION_TYPE>
+			<LIGHT_TYPE>POTENTIOMETER</LIGHT_TYPE>
+			<POTENTIOMETER>1</POTENTIOMETER>
+		</Parameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_LIGHTING_Light_Template">
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(A:#KNOB_LIGHT_SIMVAR_POWER_SETTING#, Percent over 100) 1 *</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Knob_Seatbelts_Template">
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_AIRLINER_Seatbelts_Template">
+				<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(A:#KNOB_LIGHT_SIMVAR_POWER_SETTING#, Percent over 100) 1 *</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
 </ModelBehaviors>
