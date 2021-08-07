@@ -4,10 +4,10 @@ class FMC_MAINT_AirlinePol {
         let costIndexPolicy = SaltyDataStore.get("COST_INDEX_POL", 35);
         let eoAccelHt = SaltyDataStore.get("TO_EO_ACCEL_HT", 1000);
         let accelHt = SaltyDataStore.get("TO_ACCEL_HT", 1000);
-        let clbAt = SaltyDataStore.get("TO_CLB_AT", 3000);
+        let clbAt = SaltyDataStore.get("TO_CLB_AT", 1000);
         let qClb = SaltyDataStore.get("TO_Q_CLB_AT", 1000);
-        let thrRed = SaltyDataStore.get("TO_THR_REDUCTION", 3000);
-        let clbBy = SaltyDataStore.get("TO_CLB_BY", 3000);
+        let thrRed = SaltyDataStore.get("TO_THR_REDUCTION", 1000);
+        let clbBy = SaltyDataStore.get("TO_CLB_BY", 1000);
         
         const updateView = () => {
             fmc.setTemplate([
