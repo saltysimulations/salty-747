@@ -1,0 +1,60 @@
+﻿[
+    {
+        "checklistTitle": "PREFLIGHT",
+        "checklistType": "normal",
+        "pageCount": 1,
+        "normalChecklistSequence": 0,
+        "checklistPriority": 0,
+        "items": [
+            {
+            "name": "OXYGEN",
+            "conditionName": "SET",
+            "conditionType": "open"
+            },
+            {
+            "name": "FLIGHT INSTRUMENTS",
+            "conditionName": "HEADING__, ALTIMETER__",
+            "conditionType": "open"
+            },
+            {
+            "name": "PARKING BRAKE",
+            "conditionName": "SET",
+            "conditionType": "closed",
+            "conditions": [
+                {
+                    "simvar": "BRAKE PARKING INDICATOR",
+                    "simvarType": "bool",
+                    "simvarTrueCondition": 1
+                }
+            ]
+            },
+            {
+            "name": "FUEL CONTROL SWITCHES",
+            "conditionName": "CUTOFF",
+            "conditionType": "closed",
+            "conditions": [
+                    {
+                        "simvar": "FUELSYSTEM VALVE OPEN:5",
+                        "simvarType": "bool",
+                        "simvarTrueCondition": 0
+                    },
+                    {
+                        "simvar": "FUELSYSTEM VALVE OPEN:6",
+                        "simvarType": "bool",
+                        "simvarTrueCondition": 0
+                    },
+                    {
+                        "simvar": "FUELSYSTEM VALVE OPEN:7",
+                        "simvarType": "bool",
+                        "simvarTrueCondition": 0
+                    },
+                    {
+                        "simvar": "FUELSYSTEM VALVE OPEN:8",
+                        "simvarType": "bool",
+                        "simvarTrueCondition": 0
+                    }
+                ]
+            }
+        ]
+    }
+]
