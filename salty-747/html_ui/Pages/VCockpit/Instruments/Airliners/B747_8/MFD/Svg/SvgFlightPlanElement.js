@@ -11,6 +11,7 @@ class SvgFlightPlanElement extends SvgMapElement {
         this.hideReachedWaypoints = true;
         this._highlightedLegIndex = -1;
         this._isDashed = false;
+        this.hasSetDepRunway = false;
     }
     id(map) {
         return "flight-plan-" + this.flightPlanIndex + "-map-" + map.index;
@@ -67,6 +68,10 @@ class SvgFlightPlanElement extends SvgMapElement {
                         mainPathEnd++;
                     }
 
+                    //Runway icons
+                    this.hasSetDepRunway = false;
+                    this.drawRunways(waypoints, 0, waypoints.length - 1, map, '#FFFFFF', (index !== 0));
+
                     //Active leg
                     if (waypoints[activeWaypointIndex] && waypoints[activeWaypointIndex - 1]) {
                         this.buildPathFromWaypoints(waypoints, activeWaypointIndex - 1, activeWaypointIndex + 1, map, '#D570FF', (index !== 0));
@@ -79,6 +84,7 @@ class SvgFlightPlanElement extends SvgMapElement {
 
                     //Remainder of plan
                     this.buildPathFromWaypoints(waypoints, activeWaypointIndex, mainPathEnd, map, '#D570FF', (index !== 0));
+                    
                 }
             }
         }
@@ -154,7 +160,6 @@ class SvgFlightPlanElement extends SvgMapElement {
         for (let i = startIndex + 1; i < endIndex; i++) {
             const waypoint = waypoints[i];
             if (waypoint.hasHold) {
-
                 let course = waypoint.holdDetails.holdCourse;
                 if (!waypoint.holdDetails.isHoldCourseTrue) {
                     const magVar = GeoMath.getMagvar(waypoint.infos.coordinates.lat, waypoint.infos.coordinates.long);
@@ -171,8 +176,88 @@ class SvgFlightPlanElement extends SvgMapElement {
                 context.lineTo(corners[0].x, corners[0].y);
             }
         }
-
         context.stroke();
+    }
+    drawRunways(waypoints, startIndex, endIndex, map, style = 'white') {
+        const mapRange = SimVar.GetSimVarValue("L:B747_8_MFD_RANGE", "Enum");
+        if (this.source && mapRange < 8) {
+            const fpm = this.source;
+            const context = this._flightPathCanvas.getContext('2d');
+            context.beginPath();
+            context.lineWidth = 3;
+            context.strokeStyle = style;
+            for (let i = startIndex + 1; i < endIndex; i++) {
+                const waypoint = waypoints[i];
+                if (waypoint.ident.substring(0,2) === "RW") {
+                    let runwayHeading;
+                    let runway;
+                    if (fpm.getDepartureRunwayDirection() != undefined && !this.hasSetDepRunway) {
+                        runwayHeading = fpm.getDepartureRunwayDirection();
+                        this.hasSetDepRunway = true;
+                    }
+                    else if (fpm.getApproachRunway() != undefined) {
+                        runway = fpm.getApproachRunway();
+                        runwayHeading = runway.direction;
+                    }
+                    let reciprocalHeading = runwayHeading - 180;
+                    let leftPerpHeading = runwayHeading - 90;
+                    let rightPerpHeading = runwayHeading + 90;
+                    if (runwayHeading < 0){
+                        reciprocalHeading =+ 360;
+                    }
+                    if (leftPerpHeading < 0){
+                        leftPerpHeading =+ 360;
+                    }
+                    if (rightPerpHeading < 0){
+                        rightPerpHeading =+ 360;
+                    }
+                    const mapRangeEnumToNM = {
+                        0: 0.25,
+                        1: 0.5,
+                        2: 1,
+                        3: 2,
+                        4: 5,
+                        5: 10,
+                        6: 20,
+                        7: 40,
+                        8: 80,
+                        9: 160,
+                        10: 320,
+                        11: 640
+                    };
+                    const pos = map.coordinatesToXY(waypoint.infos.coordinates);
+                    const width = 0.015 * mapRangeEnumToNM[mapRange];
+                    const runwayLength = 3;
+                    const centreLineLength = 14.2;
+                    //Runway waypoint
+                    const coords = waypoint.infos.coordinates;
+                    //Extended centreline plotting coords (Dashed)
+                    const pos2 = map.coordinatesToXY(Avionics.Utils.bearingDistanceToCoordinates(reciprocalHeading, centreLineLength, coords.lat, coords.long));
+                    const pos3 = map.coordinatesToXY(Avionics.Utils.bearingDistanceToCoordinates(runwayHeading, runwayLength, coords.lat, coords.long));
+                    const pos4 = map.coordinatesToXY(Avionics.Utils.bearingDistanceToCoordinates(runwayHeading, runwayLength + centreLineLength, coords.lat, coords.long));
+                    context.setLineDash([10, 10]);
+                    context.moveTo(pos.x, pos.y);
+                    context.lineTo(pos2.x, pos2.y);
+                    context.moveTo(pos3.x, pos3.y);
+                    context.lineTo(pos4.x, pos4.y);
+                    context.stroke();
+                    //Runway shoulder plotting coords (Solid)
+                    context.beginPath();
+                    const pos5LLA = Avionics.Utils.bearingDistanceToCoordinates(leftPerpHeading, width, coords.lat, coords.long);
+                    const pos5 = map.coordinatesToXY(pos5LLA);
+                    const pos6 = map.coordinatesToXY(Avionics.Utils.bearingDistanceToCoordinates(runwayHeading, runwayLength, pos5LLA.lat, pos5LLA.long));
+                    context.setLineDash([]);
+                    context.moveTo(pos5.x, pos5.y);
+                    context.lineTo(pos6.x, pos6.y);
+                    const pos7LLA = Avionics.Utils.bearingDistanceToCoordinates(rightPerpHeading, width, coords.lat, coords.long);
+                    const pos7 = map.coordinatesToXY(pos7LLA);
+                    const pos8 = map.coordinatesToXY(Avionics.Utils.bearingDistanceToCoordinates(runwayHeading, runwayLength, pos7LLA.lat, pos7LLA.long));
+                    context.moveTo(pos7.x, pos7.y);
+                    context.lineTo(pos8.x, pos8.y);
+                    context.stroke();
+                }
+            }
+        }
     }
     isWaypointOnScreen(pos) {
         const coordLimit = 1024;
