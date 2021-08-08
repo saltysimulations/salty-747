@@ -3,6 +3,7 @@
         checklistTitle: "PREFLIGHT",
         checklistType: "normal",
         pageCount: 1,
+        itemCount: 4,
         normalChecklistSequence: 0,
         checklistPriority: 0,
         items: [

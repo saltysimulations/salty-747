@@ -1293,4 +1293,14 @@
 			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
 		</UseTemplate>
 	</Template>
+	<Template Name="SALTY_ECL_SEL_Template">
+		<Parameters Type="Default">
+			<LEFT_SINGLE_CODE>(&gt;B:AILRINER_EICAS_ECL_PUSH)</LEFT_SINGLE_CODE>
+		</Parameters>
+	</Template>
+	<Template Name="SALTY_ECL_Knob_Template">
+		<Parameters Type="Default">
+
+		</Parameters>
+	</Template>
 </ModelBehaviors>

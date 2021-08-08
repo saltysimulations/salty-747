@@ -19,6 +19,7 @@ var B747_8_LowerEICAS_ECL;
         }
         onEvent(_event) {
             super.onEvent(_event);
+            console.log(_event);
         }
         update(_deltaTime) {
             if (!this.eclIsLoaded) {
