@@ -4,20 +4,8 @@ var B747_8_LowerEICAS_ECL;
         constructor() {
             super();
             this.isInitialised = false;
-            this.eclIsLoaded = false;
-            this.checklistData = [];
-            this.eclDatabaseFile = "/ECL/ECLTest.json";
-            let loadNormalChecklists = () => {
-                if (!this.eclIsLoaded) {
-                    this.loadfromJSON(this.eclDatabaseFile, () => {
-                        this.eclIsLoaded = true;
-                    });
-                }
-                else {
-                    setTimeout(loadNormalChecklists, 200);
-                }
-            };
-            loadNormalChecklists();
+            this.normalChecklistSequence = 0;
+            this.cursorPosition = 0;
         }
         get templateID() { return "B747_8LowerEICASECLTemplate" }
         connectedCallback() {
@@ -26,36 +14,54 @@ var B747_8_LowerEICAS_ECL;
         }
         init() {
             this.isInitialised = true;
-            this.buildChecklist();
-            fetch("./ECL/ECLTest.json").then(d => d.json()).then(data => console.log(data['checklistTitle'])).catch(err => console.log(err));
-            console.log("ECL IS LOADED");
+            this.buildChecklist(this.normalChecklistSequence);
+
+        }
+        onEvent(_event) {
+            super.onEvent(_event);
         }
         update(_deltaTime) {
             if (!this.eclIsLoaded) {
                 return;
             }
-            //console.log("ECL IS LOADED");
-            //console.log(this.checklistData['checklistTitle'])
         }
-        buildChecklist() {
-
+        clearChecklist() {
+            for (let i = 0; i < 8; i++) {
+                let text = this.querySelector("#item" + i + "-text");
+                let box = this.querySelector("#box" + i);
+                text.style.visibility = "hidden";
+                box.style.visibility = "hidden";
+            }
         }
-        loadfromJSON(path, callback) {
-            /*let request = new XMLHttpRequest();
-            request.overrideMimeType("application/json");
-            request.onreadystatechange = () => {
-                if (request.readyState === 4) {
-                    if (request.status === 200) {
-                        this.checklistData = request.response;
-                        console.log(data['checklistTitle']);
-                    }
-                    if (callback) {
-                        callback();
-                    }
-                }
-            };
-            request.open("GET", this.eclDatabaseFile);
-            request.send();*/
+        buildChecklist(sequence) {
+            this.clearChecklist();
+            this.buildTitle(sequence);
+            this.buildBody(sequence);
+        }
+        buildTitle(sequence) {
+            let title = this.querySelector("#title-text");
+            title.textContent = "\u00BB" + normalChecklists[sequence].checklistTitle + "\u00AB";
+        }
+        buildBody(sequence) {
+            for (let i = 0; i < normalChecklists[sequence].items.length; i++) {
+                this.buildItem(normalChecklists[sequence].items[i], i);
+            }
+        }
+        buildItem(item, i) {
+            let text = this.querySelector("#item" + i + "-text");
+            let box = this.querySelector("#box" + i);
+            text.setAttribute("x", "11%");
+            text.setAttribute("y", item.y);
+            text.textContent = item.name;
+            text.style.visibility = "visible";
+            if (item.conditionType === "open") {
+                box.setAttribute("x", "2%");
+                box.setAttribute("y", item.y - 27);
+                box.style.visibility = "visible";
+            }
+            else {
+                box.style.visibility = "hidden";
+            }
         }
     }B747_8_LowerEICAS_ECL.Display = Display;
 })(B747_8_LowerEICAS_ECL || (B747_8_LowerEICAS_ECL = {}));

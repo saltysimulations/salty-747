@@ -20,7 +20,7 @@ b747-8-lower-eicas-ecl {
   position: relative;
   left: 3.5%;
   width: 95.5%;
-  top: 4.25%;
+  top: 7.0%;
   height: 88%;
   display: block; }
   b747-8-lower-eicas-ecl svg {
@@ -28,7 +28,7 @@ b747-8-lower-eicas-ecl {
     height: 100%; }
   b747-8-lower-eicas-ecl text {
     fill: var(--eicasWhite);
-    font-size: 17px; }
+    font-size: 20px; }
   b747-8-lower-eicas-ecl rect {
     fill: #53536c; }
   b747-8-lower-eicas-ecl path {
@@ -36,6 +36,6 @@ b747-8-lower-eicas-ecl {
     fill: lime; 
     visibility: hidden; }
   b747-8-lower-eicas-ecl #checklist-complete-rect {
-      fill: lime; }
-  b747-8-lower-eicas-ecl #cursor-positions {
-    visibility: hidden; }
+    fill: lime; }
+
+
