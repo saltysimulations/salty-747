@@ -9,7 +9,7 @@ import copy from 'rollup-plugin-copy'
 
 const pkg = require('../../package.json')
 
-const libraryName = 'wtsdk'
+const libraryName = 'salty_systems'
 
 export default {
     input: `./src/${libraryName}.ts`,

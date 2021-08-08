@@ -4,7 +4,7 @@
     "description": "An open-source modification for the default MSFS 747-8, aiming to improve the lacking features and realism of the default aircraft.",
     "scripts": {
         "build:layout": "node scripts/build.js",
-        "build:fpm": "cd src/fpm && tsc --module commonjs && rollup -c rollup.config.ts",
+        "build:fpm": "cd src/systems && tsc --module commonjs && rollup -c rollup.config.ts",
         "build": "npm run build:fpm && npm run build:layout"
     },
     "author": "Salty Simulations",
