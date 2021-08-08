@@ -14,3 +14,5 @@ export * from "./fpm/cj4/CJ4_MapSymbols";
 export * from "./fpm/cj4/fmc/CJ4_FMC_PilotWaypointParser";
 
 export * from "./fpm/utils/SimVarCache";
+
+export * from "./gpws/TerrainAPI";
