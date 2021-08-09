@@ -31,7 +31,7 @@ export class TerrainAPI {
         const elevationData: TerrainResponse = await data.json();
 
         for (let i = 0; i < coordinates.length; i++) {
-            map.set(coordinates[i], elevationData.results[i].elevation);
+            map.set(coordinates[i], elevationData.results[i].elevation * 3.28084); // Convert from meters to feet
         }
 
         return map;
