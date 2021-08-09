@@ -3,11 +3,15 @@ import { GeoMath } from "../fpm/flightplanning/GeoMath";
 
 enum GPWSAlert {
     Terrain = "SALTY_TERRAIN",
+    TerrainTerrain = "SALTY_TERRAIN_TERRAIN",
     CautionTerrain = "SALTY_CAUTION_TERRAIN",
     TooLowTerrain = "SALTY_TOO_LOW_TERRAIN",
     PullUp = "SALTY_PULL_UP",
 }
 
+/**
+ * A simulation of the Honeywell MK V / MK VII Enhanced Ground Proximity Warning System (EGPWS)
+ */
 export class GPWS {
     private api = new TerrainAPI("https://api.open-elevation.com/api/v1/");
     private timeSinceLastQuery = 0;
@@ -19,21 +23,18 @@ export class GPWS {
             this.timeSinceLastQuery = 0;
         } else return;
 
-        const projectedCoords = this.projectedCoordinatesInSeconds(30);
-
-        console.log(
-            `Current coordinates: ${SimVar.GetSimVarValue("PLANE LATITUDE", "Degrees")} ${SimVar.GetSimVarValue("PLANE LONGITUDE", "Degrees")}`
-        );
-        console.log(`Projected coordintes in 30 seconds: ${projectedCoords.lat} ${projectedCoords.long}`);
+        if (SimVar.GetSimVarValue("SIM ON GROUND", "Boolean")) return;
 
         const queryCoordinates = this.getNeededCoordinateQueries();
 
         this.api
             .elevationAtCoords(queryCoordinates)
             .then((elevations) => {
-                for (const [key, value] of elevations) {
+                /* for (const [key, value] of elevations) {
                     console.log(`${key.lat}, ${key.long} elevation: ${value}`);
-                }
+                } */
+                console.log("Successfully queried API")
+                this.determineLookAheadAlerting(Array.from(elevations.values()));
             })
             .catch((e) => console.log(e));
     }
@@ -69,6 +70,10 @@ export class GPWS {
         return altitude - (verticalSpeed >= 0 ? -(verticalSpeed * seconds) : Math.abs(verticalSpeed * seconds));
     }
 
+    /**
+     * Gets the projected coordintes for the next 60 seconds
+     * @returns Array of projected coordintes
+     */
     private getNeededCoordinateQueries(): LatLongAlt[] {
         const coordinates = [];
 
@@ -77,6 +82,26 @@ export class GPWS {
         }
 
         return coordinates;
+    }
+
+    /**
+     * Simulate look ahead terrain alerting
+     * @param elevations The elevations for the next 60 seconds, array index is second - 1
+     */
+    private determineLookAheadAlerting(elevations: number[]) {
+        for (let i = 0; i < elevations.length; i++) {
+            const projectedAltitude = this.projectedAltitudeInSeconds(i);
+
+            if (i <= 29 && projectedAltitude <= elevations[i]) {
+                console.log(`TERRAIN TERRAIN PULL UP ${projectedAltitude} ${elevations[i]}`);
+                break;
+            } else if (i > 29 && projectedAltitude <= elevations[i]) {
+                console.log(`CAUTION TERRAIN ${projectedAltitude} ${elevations[i]}`);
+                break;
+            } else {
+                console.log("NO WARNING");
+            }
+        }
     }
 
     private enableAlert(alert: GPWSAlert) {
