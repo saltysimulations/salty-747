@@ -46,6 +46,18 @@ export class GPWS {
         return projectedCoordinates;
     }
 
+    /**
+     * Get projected altitude after a set amount of seconds
+     * @param seconds Seconds to get the projected altitude
+     * @returns The projected altitude
+     */
+    private projectedAltitudeInSeconds(seconds: number): number {
+        const verticalSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second");
+        const altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
+
+        return altitude - (verticalSpeed >= 0 ? -(verticalSpeed * seconds) : Math.abs(verticalSpeed * seconds));
+    }
+
     private enableAlert(alert: GPWSAlert) {
         !SimVar.GetSimVarValue(`L:${alert}`, "Boolean") && SimVar.SetSimVarValue(`L:${alert}`, "Boolean", 1);
     }
