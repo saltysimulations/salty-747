@@ -12,6 +12,9 @@ interface TerrainResponse {
 export class TerrainAPI {
     private url: string;
 
+    /**
+     * @param url The URL to use for the API
+     */
     constructor(url: string) {
         this.url = url;
     }
