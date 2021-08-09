@@ -25,6 +25,17 @@ export class GPWS {
             `Current coordinates: ${SimVar.GetSimVarValue("PLANE LATITUDE", "Degrees")} ${SimVar.GetSimVarValue("PLANE LONGITUDE", "Degrees")}`
         );
         console.log(`Projected coordintes in 30 seconds: ${projectedCoords.lat} ${projectedCoords.long}`);
+
+        const queryCoordinates = this.getNeededCoordinateQueries();
+
+        this.api
+            .elevationAtCoords(queryCoordinates)
+            .then((elevations) => {
+                for (const [key, value] of elevations) {
+                    console.log(`${key.lat}, ${key.long} elevation: ${value}`);
+                }
+            })
+            .catch((e) => console.log(e));
     }
 
     /**
@@ -56,6 +67,16 @@ export class GPWS {
         const altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
 
         return altitude - (verticalSpeed >= 0 ? -(verticalSpeed * seconds) : Math.abs(verticalSpeed * seconds));
+    }
+
+    private getNeededCoordinateQueries(): LatLongAlt[] {
+        const coordinates = [];
+
+        for (let i = 1; i <= 60; i++) {
+            coordinates.push(this.projectedCoordinatesInSeconds(i));
+        }
+
+        return coordinates;
     }
 
     private enableAlert(alert: GPWSAlert) {
