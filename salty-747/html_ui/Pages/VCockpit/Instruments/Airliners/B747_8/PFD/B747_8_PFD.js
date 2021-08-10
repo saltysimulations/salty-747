@@ -56,12 +56,14 @@ class B747_8_PFD_MainPage extends NavSystemPage {
         this.attBoxText = document.querySelector("#att-box svg text");
         this.attBoxRect = document.querySelector("#att-rect");
         // this.noVspd = document.querySelector("#no-vspd");
+        this.pullUp = document.getElementById("pull-up-div");
         this.vertBox = document.querySelector("#vert-box");
         this.vSpeedIndicator = document.querySelector("jet-pfd-vspeed-indicator");
         this.compassElement = document.querySelector("jet-pfd-hs-indicator");
     }
     onUpdate(_deltaTime) {
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
+        const pullUp = SimVar.GetSimVarValue("L:SALTY_PULL_UP", "Boolean") || SimVar.GetSimVarValue("L:SALTY_TERRAIN_TERRAIN", "Boolean");
 
         if (IRSState == 0) {
             this.attBox.setAttribute("style", "");
@@ -88,6 +90,8 @@ class B747_8_PFD_MainPage extends NavSystemPage {
             this.vSpeedIndicator.setAttribute("style", "")
             this.compassElement.setAttribute("style", "")
         }
+
+        this.pullUp.style.visibility = pullUp ? "visible" : "hidden";
     }
     onEvent(_event) {
         super.onEvent(_event);

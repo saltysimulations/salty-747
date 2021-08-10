@@ -30,7 +30,10 @@ export class GPWS {
             this.timeSinceLastQuery = 0;
         } else return;
 
-        if (SimVar.GetSimVarValue("SIM ON GROUND", "Boolean")) return;
+        if (SimVar.GetSimVarValue("SIM ON GROUND", "Boolean")) {
+            this.clearTerrainAlerts();
+            return;
+        }
 
         const queryCoordinates = this.getNeededCoordinateQueries();
 
@@ -45,8 +48,7 @@ export class GPWS {
             })
             .catch((e) => {
                 console.log(e);
-                this.disableAlert(GPWSAlert.TerrainTerrain);
-                this.disableAlert(GPWSAlert.CautionTerrain);
+                this.clearTerrainAlerts();
             });
     }
 
@@ -120,8 +122,7 @@ export class GPWS {
                 // if there is no alert, disable them
                 if (i >= 59) {
                     if (!this.shouldPlayTerrain) this.shouldPlayTerrain = true;
-                    this.disableAlert(GPWSAlert.CautionTerrain);
-                    this.disableAlert(GPWSAlert.TerrainTerrain);
+                    this.clearTerrainAlerts();
                 }
             }
         }
@@ -158,5 +159,10 @@ export class GPWS {
 
     private isAlertActive(alert: GPWSAlert): boolean {
         return SimVar.GetSimVarValue(`L:${alert}`, "Boolean");
+    }
+
+    private clearTerrainAlerts() {
+        this.disableAlert(GPWSAlert.TerrainTerrain);
+        this.disableAlert(GPWSAlert.CautionTerrain);
     }
 }

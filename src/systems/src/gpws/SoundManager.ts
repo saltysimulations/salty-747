@@ -45,7 +45,7 @@ export class SoundManager {
     /**
      * Plays a sound if a sound isn't already playing
      * @param sound The sound to play
-     * @returns If the sound was plaid
+     * @returns If the sound was played
      */
     public tryPlaySound(sound: Sound): boolean {
         if (!this.currentlyPlayingSound) {
