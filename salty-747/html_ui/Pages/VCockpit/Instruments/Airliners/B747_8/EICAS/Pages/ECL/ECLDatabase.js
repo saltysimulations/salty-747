@@ -1,4 +1,31 @@
-﻿let normalChecklists = [
+﻿const cursorSizes = {
+    largeBox: {
+        width: 190,
+        height: 35
+    },
+    smallBox: {
+        width: 95,
+        height: 35
+    },
+    items: {
+        width: 550,
+        height: 45
+    }
+}
+
+let cursorBoxCoords = [
+    0, 10,
+    200, 10,
+    400, 10,
+    0, 550,
+    100, 550,
+    200, 550,
+    300, 550,
+    400, 550,
+    500, 550
+]
+
+const normalChecklists = [
     {
         checklistTitle: "PREFLIGHT",
         checklistType: "normal",

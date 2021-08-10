@@ -4,8 +4,6 @@ var B747_8_LowerEICAS_ECL;
         constructor() {
             super();
             this.isInitialised = false;
-            this.normalChecklistSequence = 0;
-            this.cursorPosition = 0;
         }
         get templateID() { return "B747_8LowerEICASECLTemplate" }
         connectedCallback() {
@@ -13,17 +11,46 @@ var B747_8_LowerEICAS_ECL;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
+            this.test = 0;
+            this.normalChecklistSequence = 0;
+            this.cursorPosition = 0;
+            this.cursor = document.querySelector("#maincursor");
+            this.maxCursorIndex = this.getMaxCursorIndex();
+            this.buildChecklist();
             this.isInitialised = true;
-            this.buildChecklist(this.normalChecklistSequence);
-
         }
         onEvent(_event) {
             super.onEvent(_event);
-            console.log(_event);
+            if (_event === "ECL_KNOB_FWD") {
+                this.cursorPosition ++;
+                this.test ++;
+                this.updateCursor();
+            } 
+            else if (_event === "ECL_KNOB_BACK") {
+                this.cursorPosition --;
+                this.test --;
+                this.updateCursor();
+            }
+            console.log(this.test)
         }
         update(_deltaTime) {
-            if (!this.eclIsLoaded) {
-                return;
+
+        }
+        updateCursor() {
+            this.cursor.setAttribute("x", cursorBoxCoords[this.cursorPosition * 2]);
+            this.cursor.setAttribute("y", cursorBoxCoords[(this.cursorPosition * 2) + 1]);
+            console.log("x:" + cursorBoxCoords[this.cursorPosition * 2] + "y:" + cursorBoxCoords[(this.cursorPosition * 2) + 1])
+            if (this.cursorPosition > -1 && this.cursorPosition < 3) {
+                this.cursor.setAttribute("width", cursorSizes.largeBox.width + "px");
+                this.cursor.setAttribute("height", cursorSizes.largeBox.height + "px");
+            }
+            else if (this.cursorPosition <= this.maxCursorIndex && this.cursorPosition >= this.maxCursorIndex - 6) {
+                this.cursor.setAttribute("width", cursorSizes.smallBox.width + "px");
+                this.cursor.setAttribute("height", cursorSizes.smallBox.height + "px");
+            }
+            else {
+                this.cursor.setAttribute("width", cursorSizes.items.width + "px");
+                this.cursor.setAttribute("height", cursorSizes.items.height + "px");
             }
         }
         clearChecklist() {
@@ -34,18 +61,18 @@ var B747_8_LowerEICAS_ECL;
                 box.style.visibility = "hidden";
             }
         }
-        buildChecklist(sequence) {
+        buildChecklist() {
             this.clearChecklist();
-            this.buildTitle(sequence);
-            this.buildBody(sequence);
+            this.buildTitle();
+            this.buildBody();
         }
-        buildTitle(sequence) {
+        buildTitle() {
             let title = this.querySelector("#title-text");
-            title.textContent = "\u00BB" + normalChecklists[sequence].checklistTitle + "\u00AB";
+            title.textContent = "\u00BB" + normalChecklists[this.normalChecklistSequence].checklistTitle + "\u00AB";
         }
-        buildBody(sequence) {
-            for (let i = 0; i < normalChecklists[sequence].items.length; i++) {
-                this.buildItem(normalChecklists[sequence].items[i], i);
+        buildBody() {
+            for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
+                this.buildItem(normalChecklists[this.normalChecklistSequence].items[i], i);
             }
         }
         buildItem(item, i) {
@@ -63,6 +90,9 @@ var B747_8_LowerEICAS_ECL;
             else {
                 box.style.visibility = "hidden";
             }
+        }
+        getMaxCursorIndex() {
+            return 3 + normalChecklists[this.normalChecklistSequence].itemCount + 6;
         }
     }B747_8_LowerEICAS_ECL.Display = Display;
 })(B747_8_LowerEICAS_ECL || (B747_8_LowerEICAS_ECL = {}));

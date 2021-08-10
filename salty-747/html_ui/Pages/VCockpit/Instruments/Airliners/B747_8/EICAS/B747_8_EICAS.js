@@ -21,16 +21,15 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     }
 
     onEvent(_event) {
+        var prefix = this.getLowerScreenChangeEventNamePrefix();
         super.onEvent(_event);
         if (this.currentPage !== _event) {
             this.currentPage = _event;
-        } else {
+        } else if (_event.substring(0,18) == prefix){
             this.changePage("BLANK");
             this.currentPage = "blank";
             return;
         }
-
-        var prefix = this.getLowerScreenChangeEventNamePrefix();
 
         // if the event contains "EICAS_CHANGE_PAGE_{x}", the EICAS will display the page indicated by {x}; e.g. EICAS_CHANGE_PAGE_FUEL shows the fuel page
         if (_event.indexOf(prefix) >= 0) {
