@@ -21,6 +21,7 @@ export class GPWS {
 
     public update(deltaTime: number) {
         this.soundManager.update(deltaTime);
+        this.updateSound();
 
         // Only query every few seconds to avoid spamming the API with requests
         this.timeSinceLastQuery += deltaTime / 1000;
@@ -41,7 +42,11 @@ export class GPWS {
                 console.log("Successfully queried API")
                 this.determineLookAheadAlerting(Array.from(elevations.values()));
             })
-            .catch((e) => console.log(e));
+            .catch((e) => {
+                console.log(e);
+                this.disableAlert(GPWSAlert.TerrainTerrain);
+                this.disableAlert(GPWSAlert.CautionTerrain);
+            });
     }
 
     /**
@@ -98,21 +103,40 @@ export class GPWS {
             const projectedAltitude = this.projectedAltitudeInSeconds(i);
 
             if (i <= 29 && projectedAltitude <= elevations[i]) {
+                this.enableAlert(GPWSAlert.TerrainTerrain);
+                this.disableAlert(GPWSAlert.CautionTerrain);
                 console.log(`TERRAIN TERRAIN PULL UP ${projectedAltitude} ${elevations[i]}`);
-
-                // if this is the first terrain warning, play "terrain terrain", else play pull up continuosly
-                this.soundManager.tryPlaySound(this.terrainWarningCount < 1 ? sounds.terrainTerrain : sounds.pullUp);
                 this.terrainWarningCount++;
                 break;
             } else if (i > 29 && projectedAltitude <= elevations[i]) {
+                this.enableAlert(GPWSAlert.CautionTerrain);
+                this.disableAlert(GPWSAlert.TerrainTerrain);
                 console.log(`CAUTION TERRAIN ${projectedAltitude} ${elevations[i]}`);
-                this.soundManager.tryPlaySound(sounds.cautionTerrain);
                 if (this.terrainWarningCount !== 0) this.terrainWarningCount = 0;
                 break;
             } else {
                 console.log("NO WARNING");
-                if (this.terrainWarningCount !== 0 && i >= 59) this.terrainWarningCount = 0;
+
+                // if there is no alert, disable them
+                if (i >= 59) {
+                    if (this.terrainWarningCount !== 0) this.terrainWarningCount = 0;
+                    this.disableAlert(GPWSAlert.CautionTerrain);
+                    this.disableAlert(GPWSAlert.TerrainTerrain);
+                }
             }
+        }
+    }
+
+    /**
+     * Updates GPWS sounds, the sound priority goes from top to bottom
+     */
+    private updateSound() {
+        if (this.isAlertActive(GPWSAlert.TerrainTerrain)) {
+            // if this is the first terrain warning, play "terrain terrain", else play pull up continuosly
+            console.log("warning count " + this.terrainWarningCount);
+            this.soundManager.tryPlaySound(this.terrainWarningCount < 2 ? sounds.terrainTerrain : sounds.pullUp);
+        } else if (this.isAlertActive(GPWSAlert.CautionTerrain)) {
+            this.soundManager.tryPlaySound(sounds.cautionTerrain);
         }
     }
 
@@ -120,7 +144,11 @@ export class GPWS {
         !SimVar.GetSimVarValue(`L:${alert}`, "Boolean") && SimVar.SetSimVarValue(`L:${alert}`, "Boolean", 1);
     }
 
-    private removeAlert(alert: GPWSAlert) {
+    private disableAlert(alert: GPWSAlert) {
         SimVar.GetSimVarValue(`L:${alert}`, "Boolean") && SimVar.SetSimVarValue(`L:${alert}`, "Boolean", 0);
+    }
+
+    private isAlertActive(alert: GPWSAlert): boolean {
+        return SimVar.GetSimVarValue(`L:${alert}`, "Boolean");
     }
 }
