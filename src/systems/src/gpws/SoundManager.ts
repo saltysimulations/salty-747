@@ -6,16 +6,16 @@ export interface Sound {
 // these sounds are placeholders until we get proper sounds
 export const sounds = {
     terrainTerrain: {
-        name: "aural_dont_sink",
+        name: "terrain_terrain",
         duration: 1,
     },
     cautionTerrain: {
-        name: "aural_landing_gear",
+        name: "caution_terrain",
         duration: 1,
     },
     pullUp: {
-        name: "aural_pull_up",
-        duration: 1,
+        name: "pull_up",
+        duration: 0.5,
     },
 };
 
@@ -45,13 +45,16 @@ export class SoundManager {
     /**
      * Plays a sound if a sound isn't already playing
      * @param sound The sound to play
+     * @returns If the sound was plaid
      */
-    public tryPlaySound(sound: Sound) {
+    public tryPlaySound(sound: Sound): boolean {
         if (!this.currentlyPlayingSound) {
             this.currentlyPlayingSound = true;
             this.currentSoundDuration = sound.duration;
             console.log(`playing sound ${sound.name}`);
             Coherent.call("PLAY_INSTRUMENT_SOUND", sound.name);
+            return true;
         }
+        return false;
     }
 }

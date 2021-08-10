@@ -17,11 +17,12 @@ export class GPWS {
     private api = new TerrainAPI("https://api.open-elevation.com/api/v1/");
     private soundManager = new SoundManager();
     private timeSinceLastQuery = 0;
-    private terrainWarningCount = 0;
+    private timeSinceLastCautionTerrain = 0;
+    private shouldPlayTerrain = true;
 
     public update(deltaTime: number) {
         this.soundManager.update(deltaTime);
-        this.updateSound();
+        this.updateSound(deltaTime);
 
         // Only query every few seconds to avoid spamming the API with requests
         this.timeSinceLastQuery += deltaTime / 1000;
@@ -106,20 +107,19 @@ export class GPWS {
                 this.enableAlert(GPWSAlert.TerrainTerrain);
                 this.disableAlert(GPWSAlert.CautionTerrain);
                 console.log(`TERRAIN TERRAIN PULL UP ${projectedAltitude} ${elevations[i]}`);
-                this.terrainWarningCount++;
                 break;
             } else if (i > 29 && projectedAltitude <= elevations[i]) {
                 this.enableAlert(GPWSAlert.CautionTerrain);
                 this.disableAlert(GPWSAlert.TerrainTerrain);
                 console.log(`CAUTION TERRAIN ${projectedAltitude} ${elevations[i]}`);
-                if (this.terrainWarningCount !== 0) this.terrainWarningCount = 0;
+                if (!this.shouldPlayTerrain) this.shouldPlayTerrain = true;
                 break;
             } else {
                 console.log("NO WARNING");
 
                 // if there is no alert, disable them
                 if (i >= 59) {
-                    if (this.terrainWarningCount !== 0) this.terrainWarningCount = 0;
+                    if (!this.shouldPlayTerrain) this.shouldPlayTerrain = true;
                     this.disableAlert(GPWSAlert.CautionTerrain);
                     this.disableAlert(GPWSAlert.TerrainTerrain);
                 }
@@ -130,14 +130,22 @@ export class GPWS {
     /**
      * Updates GPWS sounds, the sound priority goes from top to bottom
      */
-    private updateSound() {
+    private updateSound(deltaTime: number) {
         if (this.isAlertActive(GPWSAlert.TerrainTerrain)) {
             // if this is the first terrain warning, play "terrain terrain", else play pull up continuosly
-            console.log("warning count " + this.terrainWarningCount);
-            this.soundManager.tryPlaySound(this.terrainWarningCount < 2 ? sounds.terrainTerrain : sounds.pullUp);
-        } else if (this.isAlertActive(GPWSAlert.CautionTerrain)) {
-            this.soundManager.tryPlaySound(sounds.cautionTerrain);
+            if (this.soundManager.tryPlaySound(this.shouldPlayTerrain ? sounds.terrainTerrain : sounds.pullUp)) {
+                this.shouldPlayTerrain = false;
+            }
         }
+
+        // only play caution terrain every 7 seconds
+        if (this.isAlertActive(GPWSAlert.CautionTerrain)) {
+            if (this.timeSinceLastCautionTerrain / 1000 >= 7) {
+                this.soundManager.tryPlaySound(sounds.cautionTerrain);
+                this.timeSinceLastCautionTerrain = 0;
+            }
+            this.timeSinceLastCautionTerrain += deltaTime;
+        } else this.timeSinceLastCautionTerrain = 0;
     }
 
     private enableAlert(alert: GPWSAlert) {
