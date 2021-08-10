@@ -46,7 +46,7 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "FLIGHT INSTRUMENTS..........HEADING__, ALTIMETER__",
+                name: "FLIGHT INSTRUMENTS......HEADING---, ALTIMETER---",
                 conditionName: "HEADING__, ALTIMETER__",
                 conditionType: "open",
                 y: "180"
@@ -92,6 +92,64 @@ const normalChecklists = [
                 ],
                 y: "280"
             }
+        ]
+    },
+
+    {
+        checklistTitle: "BEFORE START",
+        checklistType: "normal",
+        pageCount: 1,
+        itemCount: 8,
+        normalChecklistSequence: 1,
+        checklistPriority: 0,
+        items: [
+            {
+                name: "GEAR PINS AND COVERS.....................REMOVED",
+                conditionType: "open",
+                y: "130"
+            },
+            {
+                name: "SEAT BELTS....................................ON",
+                conditionType: "open",
+                y: "180"
+            },
+            {
+                name: "MCP....................V2---, HDG/TRK---, ALT---",
+                conditionType: "open",
+                y: "230"
+            },
+            {
+                name: "TAKEOFF SPEEDS...............V1---, VR---, V2---",
+                conditionType: "open",
+                y: "280"
+            },
+            {
+                name: "CDU PREFLIGHT..........................COMPLETED",
+                conditionType: "open",
+                y: "330"
+            },
+            {
+                name: "TRIM.............................--- UNITS, 0, 0",
+                conditionType: "open",
+                y: "380"
+            },
+            {
+                name: "TAXI AND TAKEOFF BRIEFING..............COMPLETED",
+                conditionType: "open",
+                y: "430"
+            },
+            {
+                name: "BEACON........................................ON",
+                conditionType: "closed",
+                conditions: [
+                    {
+                        simvar: "LIGHT BEACON ON",
+                        simvarType: "bool",
+                        simvarTrueCondition: 1
+                    },
+                ],
+                y: "480"
+            },
         ]
     }
 ]

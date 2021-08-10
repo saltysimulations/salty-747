@@ -12,21 +12,30 @@ var B747_8_LowerEICAS_ECL;
         }
         init() {
             this.checklistItems = [];
+            this.nextChecklistIsPending = false;
             this.normalChecklistSequence = 0;
-            this.cursorPosition = 0;
+            this.cursorPosition = 3;
             this.cursor = document.querySelector("#maincursor");
-            this.maxCursorIndex = this.getMaxCursorIndex();
+            this.completeGroup = document.querySelector("#checklist-complete");
+            this.maxCursorIndex = 0;
             this.buildChecklist();
             this.eventTimeout = 0;
             this.isInitialised = true;
         }
-        //Event Handler for Cursor Control.
+        //Event Handler for Cursor Control - 100ms timeout to limit cursor scroll rate caused by duplicate events.
         onEvent(_event) {
             super.onEvent(_event);
             setTimeout(() => {
                 this.eventTimeout = 0;
             }, 100);
             if (this.eventTimeout == 0) {
+                console.log(_event)
+                if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
+                    this.normalChecklistSequence ++;
+                    this.cursorPosition = 3;
+                    this.buildChecklist();
+                    this.nextChecklistIsPending === false;
+                } 
                 if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
                     this.cursorPosition ++;
                     this.updateCursor();
@@ -47,6 +56,7 @@ var B747_8_LowerEICAS_ECL;
         //Main update loop controls UI elements based on checklist item completion state.
         update(_deltaTime) {
             this.updateClosedLoopItems();
+            this.updateChecklistStatus();
             for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
                 let text = document.querySelector("#item" + i + "-text");
                 let tick = document.querySelector("#tick" + i);
@@ -82,8 +92,25 @@ var B747_8_LowerEICAS_ECL;
                 }
             }
         }
+        updateChecklistStatus() {
+            let completeItemsCounter = 0;
+            for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
+                if (this.checklistItems[i].status === "checked") {
+                    completeItemsCounter ++;
+                }
+            }
+            if (completeItemsCounter === normalChecklists[this.normalChecklistSequence].itemCount) {
+                this.completeGroup.style.visibility = "visible";
+                this.nextChecklistIsPending = true;
+            }
+            else {
+                this.completeGroup.style.visibility = "hidden";
+                this.nextChecklistIsPending = false;
+            }
+        }
         //Updates position and size of cursor UI elements.
         updateCursor() {
+            console.log(this.maxCursorIndex)
             this.cursor.setAttribute("x", cursorMap[this.cursorPosition * 2]);
             this.cursor.setAttribute("y", cursorMap[(this.cursorPosition * 2) + 1]);
             if (this.cursorPosition > -1 && this.cursorPosition < 3) {
@@ -110,11 +137,13 @@ var B747_8_LowerEICAS_ECL;
                 tick.style.visibility = "hidden";
             }
             this.checklistItems = [];
+            this.completeItemsCounter = 0;
         }
         //Main checklist build function.
         buildChecklist() {
-            this.buildCursorMap();
             this.clearChecklist();
+            this.buildCursorMap();
+            this.updateCursor();
             this.buildTitle();
             this.buildBody();
         }
@@ -167,7 +196,7 @@ var B747_8_LowerEICAS_ECL;
             let tick = this.querySelector("#tick" + i);
             tick.setAttribute("d", "M 20," + (item.y - 5) + " l 8,10 l 16,-20 l -2,-2 l -14.4,18 l -6,-8 Z");
         }
-        //Builds an array from the currently loaded checklist of valid x/y coord positions for the cursor.
+        //Builds an array from the currently loaded checklist of valid x/y coord positions for the cursor and sets upper bound.
         buildCursorMap() {
             let itemsCoords = [];
             for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
@@ -176,7 +205,8 @@ var B747_8_LowerEICAS_ECL;
             for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
                 itemsCoords.splice(i * 2 + 1, 0, normalChecklists[this.normalChecklistSequence].items[i].y - 28);
             }
-            cursorMap = cursorPosTop.concat(itemsCoords.concat(cursorPosBottom));     
+            cursorMap = cursorPosTop.concat(itemsCoords.concat(cursorPosBottom));
+            this.maxCursorIndex = this.getMaxCursorIndex();
         }
         //Gets upper bound for cursor scrolling.
         getMaxCursorIndex() {
