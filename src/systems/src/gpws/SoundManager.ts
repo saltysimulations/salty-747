@@ -1,7 +1,23 @@
 export interface Sound {
-    name: string,
-    duration: number,
+    name: string;
+    duration: number;
 }
+
+// these sounds are placeholders until we get proper sounds
+export const sounds = {
+    terrainTerrain: {
+        name: "aural_dont_sink",
+        duration: 1,
+    },
+    cautionTerrain: {
+        name: "aural_landing_gear",
+        duration: 1,
+    },
+    pullUp: {
+        name: "aural_pull_up",
+        duration: 1,
+    },
+};
 
 /**
  * A class for playing GPWS sounds
@@ -35,7 +51,7 @@ export class SoundManager {
             this.currentlyPlayingSound = true;
             this.currentSoundDuration = sound.duration;
             console.log(`playing sound ${sound.name}`);
-            // sound playing logic goes here
+            Coherent.call("PLAY_INSTRUMENT_SOUND", sound.name);
         }
     }
 }

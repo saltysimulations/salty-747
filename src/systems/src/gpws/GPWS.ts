@@ -1,5 +1,5 @@
 import { TerrainAPI } from "./TerrainAPI";
-import { Sound, SoundManager } from "./SoundManager";
+import { Sound, SoundManager, sounds } from "./SoundManager";
 import { GeoMath } from "../fpm/flightplanning/GeoMath";
 
 enum GPWSAlert {
@@ -10,11 +10,6 @@ enum GPWSAlert {
     PullUp = "SALTY_PULL_UP",
 }
 
-const soundTest: Sound = {
-    name: "aural_sound_test",
-    duration: 7,
-}
-
 /**
  * A simulation of the Honeywell MK V / MK VII Enhanced Ground Proximity Warning System (EGPWS)
  */
@@ -22,6 +17,7 @@ export class GPWS {
     private api = new TerrainAPI("https://api.open-elevation.com/api/v1/");
     private soundManager = new SoundManager();
     private timeSinceLastQuery = 0;
+    private terrainWarningCount = 0;
 
     public update(deltaTime: number) {
         this.soundManager.update(deltaTime);
@@ -103,14 +99,19 @@ export class GPWS {
 
             if (i <= 29 && projectedAltitude <= elevations[i]) {
                 console.log(`TERRAIN TERRAIN PULL UP ${projectedAltitude} ${elevations[i]}`);
-                this.soundManager.tryPlaySound(soundTest);
+
+                // if this is the first terrain warning, play "terrain terrain", else play pull up continuosly
+                this.soundManager.tryPlaySound(this.terrainWarningCount < 1 ? sounds.terrainTerrain : sounds.pullUp);
+                this.terrainWarningCount++;
                 break;
             } else if (i > 29 && projectedAltitude <= elevations[i]) {
                 console.log(`CAUTION TERRAIN ${projectedAltitude} ${elevations[i]}`);
-                this.soundManager.tryPlaySound(soundTest);
+                this.soundManager.tryPlaySound(sounds.cautionTerrain);
+                if (this.terrainWarningCount !== 0) this.terrainWarningCount = 0;
                 break;
             } else {
                 console.log("NO WARNING");
+                if (this.terrainWarningCount !== 0 && i >= 59) this.terrainWarningCount = 0;
             }
         }
     }
