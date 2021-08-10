@@ -13,17 +13,22 @@
     }
 }
 
-let cursorBoxCoords = [
+let cursorMap = [];
+
+let cursorPosTop = [
     0, 10,
     200, 10,
     400, 10,
-    0, 550,
-    100, 550,
-    200, 550,
-    300, 550,
-    400, 550,
-    500, 550
-]
+];
+
+let cursorPosBottom = [
+    0, 545,
+    100, 545,
+    200, 545,
+    300, 545,
+    400, 545,
+    500, 545
+];
 
 const normalChecklists = [
     {

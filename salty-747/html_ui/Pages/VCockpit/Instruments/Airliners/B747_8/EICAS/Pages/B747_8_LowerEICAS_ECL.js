@@ -11,35 +11,43 @@ var B747_8_LowerEICAS_ECL;
             TemplateElement.call(this, this.init.bind(this));
         }
         init() {
-            this.test = 0;
             this.normalChecklistSequence = 0;
             this.cursorPosition = 0;
             this.cursor = document.querySelector("#maincursor");
             this.maxCursorIndex = this.getMaxCursorIndex();
             this.buildChecklist();
             this.isInitialised = true;
+            this.eventTimeout = 0;
         }
         onEvent(_event) {
             super.onEvent(_event);
-            if (_event === "ECL_KNOB_FWD") {
-                this.cursorPosition ++;
-                this.test ++;
-                this.updateCursor();
-            } 
-            else if (_event === "ECL_KNOB_BACK") {
-                this.cursorPosition --;
-                this.test --;
-                this.updateCursor();
+            setTimeout(() => {
+                this.eventTimeout = 0;
+            }, 100);
+            if (this.eventTimeout == 0) {
+                if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
+                    this.cursorPosition ++;
+                    this.updateCursor();
+                    console.log("ECL FWD!" + this.cursorPosition + " " + this.maxCursorIndex);
+                } 
+                else if (_event === "ECL_KNOB_BACK" && this.cursorPosition != 0) {
+                    this.cursorPosition --;
+                    this.updateCursor();
+                    console.log("ECL BACK!");
+                }
+                else if (_event === "ECL_SEL_PUSH") {
+                    console.log("ECL PUSHED!");
+                }
+                this.eventTimeout = 1;
             }
-            console.log(this.test)
         }
         update(_deltaTime) {
 
         }
         updateCursor() {
-            this.cursor.setAttribute("x", cursorBoxCoords[this.cursorPosition * 2]);
-            this.cursor.setAttribute("y", cursorBoxCoords[(this.cursorPosition * 2) + 1]);
-            console.log("x:" + cursorBoxCoords[this.cursorPosition * 2] + "y:" + cursorBoxCoords[(this.cursorPosition * 2) + 1])
+            this.cursor.setAttribute("x", cursorMap[this.cursorPosition * 2]);
+            this.cursor.setAttribute("y", cursorMap[(this.cursorPosition * 2) + 1]);
+            console.log("x:" + cursorMap[this.cursorPosition * 2] + " y:" + cursorMap[(this.cursorPosition * 2) + 1])
             if (this.cursorPosition > -1 && this.cursorPosition < 3) {
                 this.cursor.setAttribute("width", cursorSizes.largeBox.width + "px");
                 this.cursor.setAttribute("height", cursorSizes.largeBox.height + "px");
@@ -62,6 +70,7 @@ var B747_8_LowerEICAS_ECL;
             }
         }
         buildChecklist() {
+            this.buildCursorMap();
             this.clearChecklist();
             this.buildTitle();
             this.buildBody();
@@ -90,6 +99,19 @@ var B747_8_LowerEICAS_ECL;
             else {
                 box.style.visibility = "hidden";
             }
+        }
+        buildCursorMap() {
+            let itemsCoords = [];
+            for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
+                itemsCoords.splice(i, 0, 5);
+            }
+            for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
+                itemsCoords.splice(i * 2 + 1, 0, normalChecklists[this.normalChecklistSequence].items[i].y - 28);
+            }
+            cursorMap = cursorPosTop.concat(itemsCoords.concat(cursorPosBottom));
+            for (let i = 0; i < cursorMap.length; i++) {
+                console.log(cursorMap[i]);
+            }           
         }
         getMaxCursorIndex() {
             return 3 + normalChecklists[this.normalChecklistSequence].itemCount + 6;
