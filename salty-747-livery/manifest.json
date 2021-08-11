@@ -1,0 +1,15 @@
+{
+  "dependencies": [],
+  "content_type": "AIRCRAFT",
+  "title": "Asobo_B747_8i_SaltySimulations",
+  "manufacturer": "<<MANUFACTURER>>",
+  "creator": "SaltySimulations", 
+  "package_version": "0.1.0", 
+  "minimum_game_version": "1.7.12", 
+  "release_notes": { 
+     "neutral": { 
+       "LastUpdate": "",
+       "OlderHistory": "" 
+    }
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "content": [
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/aircraft.cfg",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I.xml",
+      "size": 15395,
+      "date": 132646440601381299
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_FX.xml",
+      "size": 15395,
+      "date": 132646440601381299
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD00.bin",
+      "size": 59471820,
+      "date": 132646430880631221
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD00.gltf",
+      "size": 1141054,
+      "date": 132646430880521210
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD01.bin",
+      "size": 40521704,
+      "date": 132646430895693006
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD01.gltf",
+      "size": 1115545,
+      "date": 132646430895633005
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD02.bin",
+      "size": 20003696,
+      "date": 132646430903360145
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD02.gltf",
+      "size": 1060007,
+      "date": 132646430903310147
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD03.bin",
+      "size": 4796696,
+      "date": 132646430905640143
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD03.gltf",
+      "size": 721277,
+      "date": 132646430905570160
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD04.bin",
+      "size": 4418416,
+      "date": 132646430907726372
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD04.gltf",
+      "size": 605528,
+      "date": 132646430907650157
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD05.bin",
+      "size": 868288,
+      "date": 132646430908419308
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD05.gltf",
+      "size": 169237,
+      "date": 132646430908379320
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD06.bin",
+      "size": 206840,
+      "date": 132628053178137141
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/747_8I_LOD06.gltf",
+      "size": 31418,
+      "date": 132628053178147142
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_ENGINEBODY_ALBD.PNG.DDS",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_ENGINEBODY_ALBD.PNG.DDS.json",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_FUSELAGE_ALBD.PNG.DDS",
+      "size": 1,
+      "date": 132505593761709037
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_FUSELAGE_ALBD.PNG.DDS.json",
+      "size": 102,
+      "date": 132505593761609039
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_LIVERY2_ALBD.PNG.DDS",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_LIVERY2_ALBD.PNG.DDS.json",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_LIVERY_ALBD.PNG.DDS",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_LIVERY_ALBD.PNG.DDS.json",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_LIVERYDECALS_ALBD.PNG.DDS",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_LIVERYDECALS_ALBD.PNG.DDS.json",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_WINGFLAPS_ALBD.PNG.DDS",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_WINGFLAPS_ALBD.PNG.DDS.json",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_WING_ALBD.PNG.DDS",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/747_8I_AIRFRAME_WING_ALBD.PNG.DDS.json",
+      "size": 1,
+      "date": 132400215225729553
+    },
+
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/texture.CFG",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/thumbnail.JPG",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/TEXTURE.SALTY/thumbnail_small.JPG",
+      "size": 1,
+      "date": 132400215225729553
+    },
+    {
+      "path": "SimObjects/Airplanes/Asobo_B747_8i-SALTY/MODEL.SALTY/model.CFG",
+      "size": 1,
+      "date": 132400215225729553
+    }
+  ]
+}
