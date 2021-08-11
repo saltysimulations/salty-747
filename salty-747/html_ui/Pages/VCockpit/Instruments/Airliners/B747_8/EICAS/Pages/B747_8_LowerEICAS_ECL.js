@@ -34,11 +34,14 @@ var B747_8_LowerEICAS_ECL;
             if (this.eventTimeout == 0) {
                 if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
                     this.normalChecklistSequence ++;
-                    this.cursorPosition = 3;
                     this.buildChecklist();
+                    this.update();
+                    console.log(this.nextItemPosition)
+                    this.cursorPosition = this.nextItemPosition;
+                    this.updateCursor();
                     this.nextChecklistIsPending === false;
-                } 
-                if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
+                }
+                else if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
                     this.cursorPosition ++;
                     this.updateCursor();
                 } 
@@ -47,8 +50,11 @@ var B747_8_LowerEICAS_ECL;
                     this.updateCursor();
                 }
                 else if (_event === "ECL_SEL_PUSH") {
-                    let cursorTarget = this.getCursorTarget()
-                    if (cursorTarget != -1) {
+                    let cursorTarget = this.getCursorTarget();
+                    if (this.cursorPosition === this.getMaxCursorIndex() - 5) {
+                        this.itemOverride();
+                    }
+                    else if (cursorTarget != -1) {
                         this.toggleItem(cursorTarget);
                     }
                 }
@@ -65,6 +71,10 @@ var B747_8_LowerEICAS_ECL;
                 let tick = document.querySelector("#tick" + i);
                 if (this.checklistItems[i].status == "checked") {
                     text.style.fill = "lime";
+                    tick.style.visibility = "visible";
+                }
+                else if (this.checklistItems[i].status == "overridden") {
+                    text.style.fill = "cyan";
                     tick.style.visibility = "visible";
                 }
                 else {
@@ -85,7 +95,10 @@ var B747_8_LowerEICAS_ECL;
                         if (SimVar.GetSimVarValue(this.checklistItems[i].conditions[j].simvar, this.checklistItems[i].conditions[j].simvarType) === this.checklistItems[i].conditions[j].simvarTrueCondition) {
                             conditionsSatCounter[i] ++;
                         }
-                        if (conditionsSatCounter[i] === conditionsTargetNum[i]) {
+                        if (this.checklistItems[i].status === "overridden") {
+
+                        }
+                        else if (conditionsSatCounter[i] === conditionsTargetNum[i]) {
                             this.checklistItems[i].status = "checked";
                         }
                         else {
@@ -98,7 +111,7 @@ var B747_8_LowerEICAS_ECL;
         updateChecklistStatus() {
             let completeItemsCounter = 0;
             for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
-                if (this.checklistItems[i].status === "checked") {
+                if (this.checklistItems[i].status === "checked" || this.checklistItems[i].status === "overridden") {
                     completeItemsCounter ++;
                 }
             }
@@ -163,6 +176,7 @@ var B747_8_LowerEICAS_ECL;
             this.checklistItems = [];
             this.completeItemsCounter = 0;
             this.cursorHasJumped = false;
+            SimVar.SetSimVarValue("L:SALTY_ECL_WAS_BLANKED", "bool", 0);
         }
         //Main checklist build function.
         buildChecklist() {
@@ -220,7 +234,6 @@ var B747_8_LowerEICAS_ECL;
             //Create Item tick.
             let tick = this.querySelector("#tick" + i);
             tick.setAttribute("d", "M 18," + (item.y - 8) + "l 6.4 8 l 12.8 -16 l -1.6 -1.6 l -11.2 14.4 l -4.8 -6.4 Z");
-            
         }
         //Builds an array from the currently loaded checklist of valid x/y coord positions for the cursor and sets upper bound.
         buildCursorMap() {
@@ -254,6 +267,7 @@ var B747_8_LowerEICAS_ECL;
                     this.checklistItems[cPos].status = "checked";
                     if (this.nextItemPosition !== -1) {
                         this.updateNextLineItem();
+                        console.log(this.nextItemPosition)
                         if (this.cursorPosition < this.nextItemPosition) {
                             this.cursorPosition = this.nextItemPosition;
                         }
@@ -267,6 +281,17 @@ var B747_8_LowerEICAS_ECL;
                 else {
                     this.checklistItems[cPos].status = "pending";
                 }
+            }
+        }
+        itemOverride() {
+            if (this.nextItemPosition === -1) {
+                return;
+            }
+            if (this.checklistItems[this.nextItemPosition - 3].status == "pending") {
+                this.checklistItems[this.nextItemPosition - 3].status = "overridden";
+            }
+            else if (this.checklistItems[this.nextItemPosition - 3].status == "overridden") {
+                this.checklistItems[this.nextItemPosition - 3].status = "pending";
             }
         }
     }B747_8_LowerEICAS_ECL.Display = Display;
