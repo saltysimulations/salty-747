@@ -839,6 +839,19 @@ export class FlightPlanManager {
   }
 
   /**
+   * Gets the heading of the selected departure runway.
+   */
+  public getDepartureRunwayDirection(): Number {
+    const origin = this.getOrigin();
+    const currentFlightPlan = this._flightPlans[this._currentFlightPlanIndex];
+    if (origin && origin.infos instanceof AirportInfo && currentFlightPlan.procedureDetails.originRunwayIndex !== -1) {
+      const runway = origin.infos.oneWayRunways[currentFlightPlan.procedureDetails.originRunwayIndex];
+      return runway.direction;
+    }
+    return undefined;
+  }
+
+  /**
    * Gets the best runway based on the current plane heading.
    */
   public getDetectedCurrentRunway(): OneWayRunway {

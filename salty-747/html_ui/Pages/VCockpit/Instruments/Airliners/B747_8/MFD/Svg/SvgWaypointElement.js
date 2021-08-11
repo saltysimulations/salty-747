@@ -129,7 +129,9 @@ class SvgWaypointElement extends SvgMapElement {
             const fpIdx = SimVar.GetSimVarValue("L:MAP_SHOW_TEMPORARY_FLIGHT_PLAN", "number");
             this.isInFpln = FlightPlanManager.DEBUG_INSTANCE.getAllWaypoints(fpIdx).findIndex(x => x.ident == this.source.ident) > -1;
             this._image.setAttribute("isInFpln", this.isInFpln.toString());
-            if (this.ident === "TOD" || this.ident === "DES") {
+            if (this.ident.substring(0,2) === "RW" || this.ident === "DES") {
+
+            } else if (this.ident === "TOD") {
                 this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TOD.svg");
             } else if (!this.isInFpln) {
                 // console.log("create " + this.source.ident + " " + this.imageFileName());
