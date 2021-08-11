@@ -131,7 +131,7 @@ var B747_8_LowerEICAS_ECL;
             for (let i = 0; i < 8; i++) {
                 let text = this.querySelector("#item" + i + "-text");
                 let box = this.querySelector("#box" + i);
-                let tick = this.querySelector("#box" + i);
+                let tick = this.querySelector("#tick" + i);
                 text.style.visibility = "hidden";
                 box.style.visibility = "hidden";
                 tick.style.visibility = "hidden";
@@ -177,7 +177,7 @@ var B747_8_LowerEICAS_ECL;
 
             //Create Item text.
             let text = this.querySelector("#item" + i + "-text");
-            text.setAttribute("x", "11%");
+            text.setAttribute("x", "9%");
             text.setAttribute("y", item.y);
             text.textContent = item.name;
             text.style.visibility = "visible";
@@ -186,7 +186,7 @@ var B747_8_LowerEICAS_ECL;
             let box = this.querySelector("#box" + i);
             if (item.conditionType === "open") {
                 box.setAttribute("x", "2%");
-                box.setAttribute("y", item.y - 27);
+                box.setAttribute("y", item.y - 23);
                 box.style.visibility = "visible";
             }
             else {
@@ -194,7 +194,8 @@ var B747_8_LowerEICAS_ECL;
             }
             //Create Item tick.
             let tick = this.querySelector("#tick" + i);
-            tick.setAttribute("d", "M 20," + (item.y - 5) + " l 8,10 l 16,-20 l -2,-2 l -14.4,18 l -6,-8 Z");
+            tick.setAttribute("d", "M 18," + (item.y - 8) + "l 6.4 8 l 12.8 -16 l -1.6 -1.6 l -11.2 14.4 l -4.8 -6.4 Z");
+            
         }
         //Builds an array from the currently loaded checklist of valid x/y coord positions for the cursor and sets upper bound.
         buildCursorMap() {
