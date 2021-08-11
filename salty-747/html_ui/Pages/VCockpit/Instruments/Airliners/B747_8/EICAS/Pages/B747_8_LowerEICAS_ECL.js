@@ -16,8 +16,11 @@ var B747_8_LowerEICAS_ECL;
             this.normalChecklistSequence = 0;
             this.cursorPosition = 3;
             this.cursor = document.querySelector("#maincursor");
+            this.nextItemPosition = 3;
+            this.nextItemBox = document.querySelector("#currentBox");
             this.completeGroup = document.querySelector("#checklist-complete");
             this.maxCursorIndex = 0;
+            this.cursorHasJumped = false;
             this.buildChecklist();
             this.eventTimeout = 0;
             this.isInitialised = true;
@@ -29,7 +32,6 @@ var B747_8_LowerEICAS_ECL;
                 this.eventTimeout = 0;
             }, 100);
             if (this.eventTimeout == 0) {
-                console.log(_event)
                 if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
                     this.normalChecklistSequence ++;
                     this.cursorPosition = 3;
@@ -57,6 +59,7 @@ var B747_8_LowerEICAS_ECL;
         update(_deltaTime) {
             this.updateClosedLoopItems();
             this.updateChecklistStatus();
+            this.updateNextLineItem();
             for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
                 let text = document.querySelector("#item" + i + "-text");
                 let tick = document.querySelector("#tick" + i);
@@ -102,15 +105,20 @@ var B747_8_LowerEICAS_ECL;
             if (completeItemsCounter === normalChecklists[this.normalChecklistSequence].itemCount) {
                 this.completeGroup.style.visibility = "visible";
                 this.nextChecklistIsPending = true;
+                if (this.cursorHasJumped === false) {
+                    this.cursorPosition = this.getMaxCursorIndex() - 6;
+                    this.cursorHasJumped = true;
+                    this.updateCursor();
+                }
             }
             else {
                 this.completeGroup.style.visibility = "hidden";
                 this.nextChecklistIsPending = false;
+                this.cursorHasJumped = false;
             }
         }
         //Updates position and size of cursor UI elements.
         updateCursor() {
-            console.log(this.maxCursorIndex)
             this.cursor.setAttribute("x", cursorMap[this.cursorPosition * 2]);
             this.cursor.setAttribute("y", cursorMap[(this.cursorPosition * 2) + 1]);
             if (this.cursorPosition > -1 && this.cursorPosition < 3) {
@@ -126,6 +134,22 @@ var B747_8_LowerEICAS_ECL;
                 this.cursor.setAttribute("height", cursorSizes.items.height + "px");
             }
         }
+        updateNextLineItem() {
+            for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
+                if (this.checklistItems[i].status === "pending") {
+                    this.nextItemPosition = i + 3;
+                    this.nextItemBox.style.visibility = "visible";
+                    break;
+                }
+                else {
+                    this.nextItemPosition = -1;
+                    this.nextItemBox.style.visibility = "hidden";
+                }
+            }
+            if (this.nextItemPosition !== -1) {
+                this.nextItemBox.setAttribute("y", cursorMap[(this.nextItemPosition * 2) + 1] + 4);
+            }
+        }
         //Clears display elements and main logic array.
         clearChecklist() {
             for (let i = 0; i < 8; i++) {
@@ -138,6 +162,7 @@ var B747_8_LowerEICAS_ECL;
             }
             this.checklistItems = [];
             this.completeItemsCounter = 0;
+            this.cursorHasJumped = false;
         }
         //Main checklist build function.
         buildChecklist() {
@@ -222,11 +247,22 @@ var B747_8_LowerEICAS_ECL;
                 return -1;
             }
         }
-        //Toggles open loop items between pending and checked states.
+        //Toggles open loop items between pending and checked states and pushes cursor to next unchecked item.
         toggleItem(cPos) {
             if (this.checklistItems[cPos].conditionType === "open") {
                 if (this.checklistItems[cPos].status == "pending") {
                     this.checklistItems[cPos].status = "checked";
+                    if (this.nextItemPosition !== -1) {
+                        this.updateNextLineItem();
+                        if (this.cursorPosition < this.nextItemPosition) {
+                            this.cursorPosition = this.nextItemPosition;
+                        }
+                    }
+                    this.updateChecklistStatus();
+                    if (this.nextChecklistIsPending === true) {
+                        this.cursorPosition = this.getMaxCursorIndex() - 6;
+                    }
+                    this.updateCursor();
                 }
                 else {
                     this.checklistItems[cPos].status = "pending";
