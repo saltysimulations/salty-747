@@ -197,7 +197,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.mapConfigId = 1;
                 this.map.instrument.bingMap.setVisible(false);
             }
-            else if (this.wxRadarOn) {
+            else if (this.wxRadarOn && mapMode != 3) {
                 this.showWeather();
                 this.map.instrument.bingMap.setVisible(true);
             }
