@@ -25,7 +25,8 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         super.onEvent(_event);
         if (this.currentPage !== _event) {
             this.currentPage = _event;
-        } else if (_event.substring(0,18) == prefix){
+        } 
+        else if (_event.substring(0,18) == prefix) {
             this.changePage("BLANK");
             SimVar.SetSimVarValue("L:XMLVAR_EICAS_CURRENT_PAGE", "Enum", -1);
             this.currentPage = "blank";

@@ -33,13 +33,15 @@ var B747_8_LowerEICAS_ECL;
             }, 100);
             if (this.eventTimeout == 0) {
                 if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
-                    this.normalChecklistSequence ++;
-                    this.buildChecklist();
-                    this.update();
-                    console.log(this.nextItemPosition)
-                    this.cursorPosition = this.nextItemPosition;
-                    this.updateCursor();
-                    this.nextChecklistIsPending === false;
+                    this.nextChecklistIsPending = false;
+                    SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_chkl", "bool", 1);
+                    setTimeout(() => {
+                        this.normalChecklistSequence ++;
+                        this.buildChecklist();
+                        this.update();
+                        this.cursorPosition = this.nextItemPosition;
+                        this.updateCursor();
+                    }, 100);
                 }
                 else if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
                     this.cursorPosition ++;
