@@ -185,13 +185,13 @@
                     <ANIM_NAME>HANDLING_Wipers_left</ANIM_NAME>
                     <CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
                 </UseTemplate>
-            </Component>
-            <Component ID="WipersRight">
-                <UseTemplate Name="ASOBO_HANDLING_Wipers_Template">
-                    <ANIM_NAME>HANDLING_Wipers_right</ANIM_NAME>
-                    <CIRCUIT_ID_WIPERS>121</CIRCUIT_ID_WIPERS>
-                </UseTemplate>
-            </Component>
+		</Component>
+		<Component ID="WipersRight">
+			<UseTemplate Name="ASOBO_HANDLING_Wipers_Template">
+				<ANIM_NAME>HANDLING_Wipers_right</ANIM_NAME>
+				<CIRCUIT_ID_WIPERS>121</CIRCUIT_ID_WIPERS>
+			</UseTemplate>
+		</Component>
 		<Component ID="ENGINE">
 			<DefaultTemplateParameters>
 				<STILL_NODE_ID_COUNT>2</STILL_NODE_ID_COUNT>

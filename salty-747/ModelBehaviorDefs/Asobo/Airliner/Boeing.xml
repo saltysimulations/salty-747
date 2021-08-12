@@ -1293,4 +1293,11 @@
 			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
 		</UseTemplate>
 	</Template>
+
+	<Template Name="ASOBO_HANDLING_Knob_Wipers_Template">
+		<UseTemplate Name="ASOBO_HANDLING_Wipers_Controller_Template">
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+
 </ModelBehaviors>
