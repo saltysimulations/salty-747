@@ -31,13 +31,14 @@ b747-8-lower-eicas-ecl {
     font-size: 20px; }
   b747-8-lower-eicas-ecl rect {
     fill: #53536c; }
-  b747-8-lower-eicas-ecl path {
+  b747-8-lower-eicas-ecl #items path {
     stroke: lime;
-    fill: lime; 
-    visibility: hidden; }
+    fill: lime; }
   b747-8-lower-eicas-ecl #checklist-complete-rect {
     fill: lime; }
   b747-8-lower-eicas-ecl #overrideGroup-rect {
     fill: cyan; }
+  b747-8-lower-eicas-ecl #menu-items {
+    visibility: visible; }
 
 

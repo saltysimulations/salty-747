@@ -1,34 +1,90 @@
 ﻿const cursorSizes = {
     largeBox: {
-        width: 190,
-        height: 35
+        width: 200,
+        height: 45
     },
     smallBox: {
-        width: 95,
-        height: 35
+        width: 100,
+        height: 45
     },
     items: {
         width: 550,
         height: 40
+    },
+    menuItems: {
+        width: 300,
+        height: 45
     }
 }
 
 let cursorMap = [];
 
-let cursorPosTop = [
+const cursorPosTop = [
     0, 10,
     200, 10,
     400, 10,
 ];
 
 let cursorPosBottom = [
-    0, 545,
-    100, 545,
-    200, 545,
-    300, 545,
-    400, 545,
-    500, 545
+    0, 540,
+    100, 540,
+    //200, 540,
+    300, 540,
+    400, 540,
+    //500, 540
 ];
+
+let cursorPosBottomMenu = [
+    500, 540
+];
+
+const menus = [
+    {
+        menuTitle: "NORMAL MENU",
+        items: [
+            {
+                name: "PREFLIGHT",
+                y: "90"
+            },
+            {
+                name: "BEFORE START",
+                y: "135"
+            },
+            {
+                name: "BEFORE TAXI",
+                y: "180"
+            },
+            {
+                name: "BEFORE TAKEOFF",
+                y: "225"
+            },
+            {
+                name: "AFTER TAKEOFF",
+                y: "270"
+            },
+            {
+                name: "DESCENT",
+                y: "315"
+            },
+            {
+                name: "APPROACH",
+                y: "360"
+            },
+            {
+                name: "LANDING",
+                y: "405"
+            },
+            {
+                name: "AFTER LANDING",
+                y: "450"
+            },
+            {
+                name: "SHUTDOWN",
+                y: "495"
+            },
+        ]
+    }
+]
 
 const normalChecklists = [
     {
@@ -45,7 +101,7 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "FLIGHT INSTRUMENTS......HEADING---, ALTIMETER---",
+                name: "FLIGHT INSTRUMENTS......HEADING___, ALTIMETER___",
                 conditionType: "open",
                 y: "170"
             },
@@ -105,17 +161,17 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "PASSENGER SIGNS...............................--",
+                name: "PASSENGER SIGNS...............................__",
                 conditionType: "open",
                 y: "170"
             },
             {
-                name: "MCP...........................V2--, HDG--, ALT--",
+                name: "MCP...........................V2__, HDG__, ALT__",
                 conditionType: "open",
                 y: "210"
             },
             {
-                name: "TAKEOFF SPEEDS..................V1--, VR--, V2--",
+                name: "TAKEOFF SPEEDS..................V1__, VR__, V2__",
                 conditionType: "open",
                 y: "250"
             },
@@ -151,7 +207,7 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "ANTI-ICE......................................--",
+                name: "ANTI-ICE......................................__",
                 conditionType: "open",
                 y: "130"
             },
@@ -194,7 +250,7 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "FLAPS........................................--",
+                name: "FLAPS........................................__",
                 conditionType: "open",
                 y: "130"
             },
@@ -260,7 +316,7 @@ const normalChecklists = [
                 y: "210"
             },
             {
-                name: "LANDING DATA..................VREF--, MINIMUMS--",
+                name: "LANDING DATA..................VREF__, MINIMUMS__",
                 conditionType: "open",
                 y: "250"
             },
@@ -286,7 +342,7 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "PASSENGER SIGNS...............................--",
+                name: "PASSENGER SIGNS...............................__",
                 conditionType: "open",
                 y: "170"
             },
@@ -326,7 +382,7 @@ const normalChecklists = [
                 y: "170"
             },
             {
-                name: "FLAPS.........................................--",
+                name: "FLAPS.........................................__",
                 conditionType: "open",
                 y: "210"
             },
@@ -354,17 +410,17 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "APU SELECTOR..................................--",
+                name: "APU SELECTOR..................................__",
                 conditionType: "open",
                 y: "170"
             },
             {
-                name: "ENG ANTI-ICE..................................--",
+                name: "ENG ANTI-ICE..................................__",
                 conditionType: "open",
                 y: "210"
             },
             {
-                name: "EXTERIOR LIGHTS...............................--",
+                name: "EXTERIOR LIGHTS...............................__",
                 conditionType: "open",
                 y: "250"
             },
@@ -410,7 +466,7 @@ const normalChecklists = [
                 y: "370"
             },
             {
-                name: "TRANSPONDER MODE SELECTOR.....................--",
+                name: "TRANSPONDER MODE SELECTOR.....................__",
                 conditionType: "open",
                 y: "410"
             },
@@ -530,7 +586,7 @@ const normalChecklists = [
                 y: "210"
             },
             {
-                name: "PARKING BRAKE.................................--",
+                name: "PARKING BRAKE.................................__",
                 conditionType: "open",
                 y: "250"
             },
