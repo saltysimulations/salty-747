@@ -14,18 +14,20 @@ var B747_8_LowerEICAS_ECL;
             this.checklistItems = [];
             this.nextChecklistIsPending = false;
             this.normalChecklistSequence = 0;
+            this.checklistOverriden = false;
             this.cursorPosition = 3;
             this.cursor = document.querySelector("#maincursor");
             this.nextItemPosition = 3;
             this.nextItemBox = document.querySelector("#currentBox");
             this.completeGroup = document.querySelector("#checklist-complete");
+            this.ovrdGroup = document.querySelector("#overrideGroup");
             this.maxCursorIndex = 0;
             this.cursorHasJumped = false;
             this.buildChecklist();
             this.eventTimeout = 0;
             this.isInitialised = true;
         }
-        //Event Handler for Cursor Control - 100ms timeout to limit cursor scroll rate caused by duplicate events.
+        //Event Handler for Cursor Control - 100ms timeout to limit cursor scroll rate caused by duplicate events - 2nd 100ms timer prevents update loop running before triggered H Event has been processed by sim.
         onEvent(_event) {
             super.onEvent(_event);
             setTimeout(() => {
@@ -34,14 +36,17 @@ var B747_8_LowerEICAS_ECL;
             if (this.eventTimeout == 0) {
                 if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
                     this.nextChecklistIsPending = false;
-                    SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_chkl", "bool", 1);
-                    setTimeout(() => {
-                        this.normalChecklistSequence ++;
-                        this.buildChecklist();
-                        this.update();
-                        this.cursorPosition = this.nextItemPosition;
-                        this.updateCursor();
-                    }, 100);
+                    this.checklistOverriden = false;
+                    if (this.normalChecklistSequence < 9) {
+                        SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_chkl", "bool", 1);
+                        setTimeout(() => {
+                            this.normalChecklistSequence ++;
+                            this.buildChecklist();
+                            this.update();
+                            this.cursorPosition = this.nextItemPosition;
+                            this.updateCursor();
+                        }, 100);
+                    }
                 }
                 else if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
                     this.cursorPosition ++;
@@ -55,6 +60,9 @@ var B747_8_LowerEICAS_ECL;
                     let cursorTarget = this.getCursorTarget();
                     if (this.cursorPosition === this.getMaxCursorIndex() - 5) {
                         this.itemOverride();
+                    }
+                    else if (this.cursorPosition === this.getMaxCursorIndex() - 3) {
+                        this.chklOverride();
                     }
                     else if (cursorTarget != -1) {
                         this.toggleItem(cursorTarget);
@@ -118,7 +126,12 @@ var B747_8_LowerEICAS_ECL;
                 }
             }
             if (completeItemsCounter === normalChecklists[this.normalChecklistSequence].itemCount) {
-                this.completeGroup.style.visibility = "visible";
+                if (this.checklistOverriden === true) {
+                    this.ovrdGroup.style.visibility = "visible";
+                }
+                else {
+                    this.completeGroup.style.visibility = "visible";
+                }
                 this.nextChecklistIsPending = true;
                 if (this.cursorHasJumped === false) {
                     this.cursorPosition = this.getMaxCursorIndex() - 6;
@@ -128,6 +141,7 @@ var B747_8_LowerEICAS_ECL;
             }
             else {
                 this.completeGroup.style.visibility = "hidden";
+                this.ovrdGroup.style.visibility = "hidden";
                 this.nextChecklistIsPending = false;
                 this.cursorHasJumped = false;
             }
@@ -294,6 +308,12 @@ var B747_8_LowerEICAS_ECL;
             }
             else if (this.checklistItems[this.nextItemPosition - 3].status == "overridden") {
                 this.checklistItems[this.nextItemPosition - 3].status = "pending";
+            }
+        }
+        chklOverride() {
+            for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
+                this.checklistItems[i].status = "overridden";
+                this.checklistOverriden = true;
             }
         }
     }B747_8_LowerEICAS_ECL.Display = Display;

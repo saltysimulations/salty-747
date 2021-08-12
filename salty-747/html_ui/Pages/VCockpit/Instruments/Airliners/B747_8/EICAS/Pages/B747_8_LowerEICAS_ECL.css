@@ -37,5 +37,7 @@ b747-8-lower-eicas-ecl {
     visibility: hidden; }
   b747-8-lower-eicas-ecl #checklist-complete-rect {
     fill: lime; }
+  b747-8-lower-eicas-ecl #overrideGroup-rect {
+    fill: cyan; }
 
 
