@@ -50965,7 +50965,7 @@
             ]
         },
         {
-            "name":"HANDLING_Wipers",
+            "name":"HANDLING_Wipers_left",
             "channels":[
                 {
                     "sampler":0,
@@ -50980,20 +50980,6 @@
                         "node":425,
                         "path":"rotation"
                     }
-                },
-                {
-                    "sampler":2,
-                    "target":{
-                        "node":428,
-                        "path":"rotation"
-                    }
-                },
-                {
-                    "sampler":3,
-                    "target":{
-                        "node":429,
-                        "path":"rotation"
-                    }
                 }
             ],
             "samplers":[
@@ -51006,7 +50992,28 @@
                     "input":731,
                     "output":732,
                     "interpolation":"LINEAR"
+                }
+            ]
+        },
+        {
+            "name":"HANDLING_Wipers_right",
+            "channels":[
+                {
+                    "sampler":0,
+                    "target":{
+                        "node":428,
+                        "path":"rotation"
+                    }
                 },
+                {
+                    "sampler":1,
+                    "target":{
+                        "node":429,
+                        "path":"rotation"
+                    }
+                }
+            ],
+            "samplers":[
                 {
                     "input":733,
                     "output":734,
