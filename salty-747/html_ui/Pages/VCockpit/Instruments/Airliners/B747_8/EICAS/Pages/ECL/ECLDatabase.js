@@ -185,7 +185,7 @@ const normalChecklists = [
                 y: "290"
             },
             {
-                name: "TRIM..............................-- UNITS, 0, 0",
+                name: "TRIM..............................__ UNITS, 0, 0",
                 conditionType: "open",
                 y: "330"
             },
@@ -255,7 +255,7 @@ const normalChecklists = [
         items: [
             {
                 special: true,
-                name: "FLAPS........................................--",
+                name: "FLAPS.........................................--",
                 conditionType: "closed",
                 conditions: [
                     {

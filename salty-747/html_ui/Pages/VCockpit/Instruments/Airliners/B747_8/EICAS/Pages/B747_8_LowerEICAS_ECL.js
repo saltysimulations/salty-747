@@ -40,7 +40,7 @@ var B747_8_LowerEICAS_ECL;
             super.onEvent(_event);
             setTimeout(() => {
                 this.eventTimeout = 0;
-            }, 75);
+            }, 100);
             if (this.eventTimeout == 0) {
                 if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
                     this.nextChecklistIsPending = false;
@@ -54,7 +54,9 @@ var B747_8_LowerEICAS_ECL;
                 }
                 else if (_event === "UPDATE_ECL") {
                     setTimeout(() => {
-                        this.refreshChecklist();
+                        if (!this.menuMode) {
+                            this.refreshChecklist();
+                        }
                     }, 300);
                 }
                 else if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
@@ -114,13 +116,23 @@ var B747_8_LowerEICAS_ECL;
             for (let i = 0; i < normalChecklists[this.normalChecklistSequence].items.length; i++) {
                 let text = document.querySelector("#item" + i + "-text");
                 let tick = document.querySelector("#tick" + i);
+                let boxTop = this.querySelector("#boxTop" + i);
+                let boxBottom = this.querySelector("#boxBottom" + i);
                 if (this.checklistItems[i].status == "checked") {
                     text.style.fill = "lime";
                     tick.style.visibility = "visible";
+                    if (this.checklistItems[i].conditionType == "open") {
+                        boxTop.style.fill = "#333333";
+                        boxBottom.style.fill = "#808080";
+                    }
                 }
                 else if (this.checklistItems[i].status == "overridden") {
                     text.style.fill = "cyan";
                     tick.style.visibility = "visible";
+                    if (this.checklistItems[i].conditionType == "open") {
+                        boxTop.style.fill = "#333333";
+                        boxBottom.style.fill = "#808080";
+                    }
                 }
                 else {
                     text.style.fill = "white";
@@ -242,8 +254,12 @@ var B747_8_LowerEICAS_ECL;
                 let text = this.querySelector("#item" + i + "-text");
                 let box = this.querySelector("#box" + i);
                 let tick = this.querySelector("#tick" + i);
+                let boxTop = this.querySelector("#boxTop" + i);
+                let boxBottom = this.querySelector("#boxBottom" + i);
                 text.style.visibility = "hidden";
                 box.style.visibility = "hidden";
+                boxTop.style.visibility = "hidden";
+                boxBottom.style.visibility = "hidden";
                 tick.style.visibility = "hidden";
             }
             this.completeGroup.style.visibility = "hidden";
@@ -321,13 +337,23 @@ var B747_8_LowerEICAS_ECL;
 
             //Create Item grey box if closed loop.
             let box = this.querySelector("#box" + i);
+            let boxTop = this.querySelector("#boxTop" + i);
+            let boxBottom = this.querySelector("#boxBottom" + i);
             if (item.conditionType === "open") {
                 box.setAttribute("x", "2%");
                 box.setAttribute("y", item.y - 23);
                 box.style.visibility = "visible";
+                boxTop.setAttribute("d", "M 12," + (item.y - 23) + "l 30 0 l -5 5 l -20 0 l 0 20 l -5 5 Z");
+                boxTop.style.visibility = "visible";
+                boxBottom.setAttribute("d", "M 12," + ((item.y * 1) + 7) + "l 5 -5 l 20 0 l 0 -20 l 5 -5 l 0 30 Z");
+                boxBottom.style.visibility = "visible";
+                boxTop.style.fill = "#808080";
+                boxBottom.style.fill = "#333333";
             }
             else {
                 box.style.visibility = "hidden";
+                boxTop.style.visibility = "hidden";
+                boxBottom.style.visibility = "hidden";
             }
             //Create Item tick.
             let tick = this.querySelector("#tick" + i);
@@ -433,6 +459,8 @@ var B747_8_LowerEICAS_ECL;
                 let item = this.querySelector("#menu-item" + i);
                 item.style.visibility = "hidden";
             }
+            let bg = this.querySelector("#normalBG");
+            bg.style.fill = "#53536c";
         }
         displayMenu() {
             this.nextItemBox.style.visibility = "hidden";
@@ -440,6 +468,8 @@ var B747_8_LowerEICAS_ECL;
                 let item = this.querySelector("#menu-item" + i);
                 item.style.visibility = "visible";
             }
+            let bg = this.querySelector("#normalBG");
+            bg.style.fill = "lime";
         }
         updateBottomMenus() {
             if (this.menuOpen === 0) {
