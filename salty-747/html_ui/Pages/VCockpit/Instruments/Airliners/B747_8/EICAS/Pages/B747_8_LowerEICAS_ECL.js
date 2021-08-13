@@ -79,7 +79,7 @@ var B747_8_LowerEICAS_ECL;
                         }
                     }
                     else {
-                        if (this.cursorPosition === 0 || this.cursorPosition === 1) {
+                        if (this.cursorPosition === 0) {
                             this.buildMenu(this.cursorPosition);
                         }
                         else if (this.cursorPosition === this.getMaxCursorIndex() - 3) {
