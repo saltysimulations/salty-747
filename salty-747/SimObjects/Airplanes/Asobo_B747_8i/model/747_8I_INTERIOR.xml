@@ -93,6 +93,23 @@
 			<DefaultTemplateParameters>
 				<SIMVAR_POWER_SETTING>LIGHT PANEL POWER SETTING:3</SIMVAR_POWER_SETTING>
 			</DefaultTemplateParameters>
+			
+			<UseTemplate Name="SALTY_ECL_SEL_Template">
+				<NODE_ID>btn_cursor_control_sel_pilot</NODE_ID>
+            	<ANIM_NAME_BUTTON>btn_cursor_control_sel_pilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
+			<UseTemplate Name="SALTY_ECL_Knob_Template">
+				<NODE_ID>knob_cursor_control_pilot</NODE_ID>
+				<ANIM_NAME>knob_cursor_control_pilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
+			<UseTemplate Name="SALTY_ECL_SEL_Template">
+				<NODE_ID>btn_cursor_control_sel_copilot</NODE_ID>
+            	<ANIM_NAME_BUTTON>btn_cursor_control_sel_copilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
+			<UseTemplate Name="SALTY_ECL_Knob_Template">
+				<NODE_ID>knob_cursor_control_copilot</NODE_ID>
+				<ANIM_NAME>knob_cursor_control_copilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
 
 			<UseTemplate Name="ASOBO_HANDLING_Lever_Flaps_Template">
 				<NODE_ID>lever_flaps</NODE_ID>
@@ -3724,18 +3741,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>push_aural_reset</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_cursor_control_sel_pilot</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>knob_cursor_control_pilot</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_cursor_control_sel_copilot</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>knob_cursor_control_copilot</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>cover_stab_trim_1</NODE_ID>
