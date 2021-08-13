@@ -1293,6 +1293,13 @@
 			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
 		</UseTemplate>
 	</Template>
+
+	<Template Name="ASOBO_HANDLING_Knob_Wipers_Template">
+		<UseTemplate Name="ASOBO_HANDLING_Wipers_Controller_Template">
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+		</UseTemplate>
+	</Template>
+
 	<Template Name="SALTY_ECL_SEL_Template">
         <DefaultTemplateParameters>
 			<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>
