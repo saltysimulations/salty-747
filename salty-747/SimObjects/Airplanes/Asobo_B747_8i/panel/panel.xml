@@ -646,6 +646,29 @@
 			</Equal>
 		  </Condition>
 		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
+		  <Text>SEATBELTS</Text>
+		  <Condition Suffix=" ON">
+		    <Equal>
+			  <Simvar name="CABIN SEATBELTS ALERT SWITCH" unit="bool"/>
+			  <Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		  <Condition Suffix=" OFF">
+		  	<And>
+		    	<Equal>
+			  		<Simvar name="CABIN SEATBELTS ALERT SWITCH" unit="bool"/>
+			  		<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="SIM ON GROUND" unit="bool"/>
+			  		<Constant>0</Constant>
+				</Equal>
+			</And>
+		  </Condition>
+		</Annunciation>
 		
  
 	<!-- Voices Alerts -->
