@@ -273,8 +273,9 @@ class SvgNPCAirplaneElement extends SvgMapElement {
 
         this._alt = document.createElementNS(Avionics.SVG.NS, "text");
         this._altText = document.createTextNode("");
-        this._alt.setAttribute("fill", "cyan");
+        this._alt.setAttribute("fill", "white");
         this._alt.setAttribute("x", "4");
+        this._alt.setAttribute("font-size", "17px");
         this._alt.appendChild(this._altText);
         container.appendChild(this._alt);
 
@@ -319,19 +320,19 @@ class SvgNPCAirplaneElement extends SvgMapElement {
             // alt text
             if (SimVar.GetSimVarValue("L:WT_CJ4_TFC_ALT_TAG", "number") === 0) {
                 const deltaAltText = Math.abs(deltaAltitudeTraffic / 100).toFixed(0).padStart(2, "0");
-                this._alt.setAttribute("x", "4");
+                this._alt.setAttribute("x", "3");
                 if (deltaAltitudeTraffic > 0) {
                     // above
-                    this._alt.setAttribute("y", "3");
+                    this._alt.setAttribute("y", "7");
                     this._altText.data = "+" + deltaAltText;
 
                 } else if (deltaAltitudeTraffic < 0) {
                     // below
-                    this._alt.setAttribute("y", "51");
+                    this._alt.setAttribute("y", "44");
                     this._altText.data = "-" + deltaAltText;
                 }
             } else {
-                this._alt.setAttribute("x", "14");
+                this._alt.setAttribute("x", "6");
                 this._alt.setAttribute("y", "3");
                 const altText = Math.abs(trafficAltFeet / 100).toFixed(0).padStart(3, "0");
                 this._altText.data = altText;
@@ -377,8 +378,8 @@ class SvgNPCAirplaneElement extends SvgMapElement {
                     // this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TCAS_PROX_A320.svg");
                     this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TCAS_PT.svg");
                     this.svgElement.setAttribute("visibility", "visible");
-                    this._alt.setAttribute("fill", "cyan");
-                    this._arrImage.setAttribute("stroke", "cyan");
+                    this._alt.setAttribute("fill", "white");
+                    this._arrImage.setAttribute("stroke", "white");
                     this._lastCase = 2;
                 }
             }
@@ -387,8 +388,8 @@ class SvgNPCAirplaneElement extends SvgMapElement {
                     // this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TCAS_OTHER_A320.svg");
                     this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TCAS_OT.svg");
                     this.svgElement.setAttribute("visibility", "visible");
-                    this._alt.setAttribute("fill", "cyan");
-                    this._arrImage.setAttribute("stroke", "cyan");
+                    this._alt.setAttribute("fill", "white");
+                    this._arrImage.setAttribute("stroke", "white");
                     this._lastCase = 3;
                 }
             }
