@@ -1358,12 +1358,14 @@ class FMCMainDisplay extends BaseAirliners {
     setTakeOffFlap(s) {
         let value = Number.parseInt(s);
         if (isFinite(value)) {
-            if (value >= 0 && value <= 30) {
+            if (value === 10  || value === 20) {
+                SimVar.SetSimVarValue("L:SALTY_TAKEOFF_FLAP_VALUE", "number", value);
                 this._takeOffFlap = value;
+                SimVar.SetSimVarValue("H:B747_8_EICAS_2_UPDATE_ECL", "bool", 1);
                 return true;
             }
         }
-        this.showErrorMessage(this.defaultInputErrorMessage);
+        this.showErrorMessage("INVALID ENTRY");
         return false;
     }
     getZeroFuelWeight(useLbs = false) {
