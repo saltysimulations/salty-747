@@ -35,23 +35,27 @@ var B747_8_LowerEICAS_ECL;
             this.buildChecklist();
             this.isInitialised = true;
         }
-        //Event Handler for Cursor Control - 100ms timeout to limit cursor scroll rate caused by duplicate events - 2nd 100ms timer prevents update loop running before triggered H Event has been processed by sim.
+        //Event Handler for Cursor Control - 50ms timeout to limit cursor scroll rate caused by duplicate events - 2nd 100ms timer prevents update loop running before triggered H Event has been processed by sim.
         onEvent(_event) {
             super.onEvent(_event);
             setTimeout(() => {
                 this.eventTimeout = 0;
-            }, 100);
+            }, 75);
             if (this.eventTimeout == 0) {
                 if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
                     this.nextChecklistIsPending = false;
-                    this.checklistOverriden = false;
-                    if (this.normalChecklistSequence < 9) {
+                    if (this.normalChecklistSequence < 10) {
                         SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_chkl", "bool", 1);
                         setTimeout(() => {
                             this.normalChecklistSequence ++;
                             this.refreshChecklist();
                         }, 100);
                     }
+                }
+                else if (_event === "UPDATE_ECL") {
+                    setTimeout(() => {
+                        this.refreshChecklist();
+                    }, 300);
                 }
                 else if (_event === "ECL_KNOB_FWD" && this.cursorPosition < this.maxCursorIndex - 1) {
                     this.cursorPosition ++;
@@ -63,26 +67,37 @@ var B747_8_LowerEICAS_ECL;
                 }
                 else if (_event === "ECL_SEL_PUSH") {
                     let cursorTarget = this.getCursorTarget();
-                    if (this.cursorPosition === 0 || this.cursorPosition === 1) {
-                        this.buildMenu(this.cursorPosition);
-                    }
-                    else if (this.cursorPosition === this.getMaxCursorIndex() - 3) {
-                        this.itemOverride();
-                    }
-                    else if (this.cursorPosition === this.getMaxCursorIndex() - 2) {
-                        this.chklOverride();
-                    }
-                    else if (this.cursorPosition === this.getMaxCursorIndex() - 1) {
-                        this.refreshChecklist();
-                    }
-                    else if (this.cursorPosition === this.getMaxCursorIndex() - 4) {
-                        if (this.normalChecklistSequence < 9) {
-                            this.normalChecklistSequence ++;
+                    if (this.menuOpen == 0) {
+                        if (this.cursorPosition === 0 || this.cursorPosition == this.maxCursorIndex - 1) {
+                            this.refreshChecklist();
+                        }
+                        else if (this.cursorPosition > 2 && this.cursorPosition < this.maxCursorIndex - 1) {
+                            this.normalChecklistSequence = this.cursorPosition - 3;
                             this.refreshChecklist();
                         }
                     }
-                    else if (cursorTarget != -1) {
-                        this.toggleItem(cursorTarget);
+                    else {
+                        if (this.cursorPosition === 0 || this.cursorPosition === 1) {
+                            this.buildMenu(this.cursorPosition);
+                        }
+                        else if (this.cursorPosition === this.getMaxCursorIndex() - 3) {
+                            this.itemOverride();
+                        }
+                        else if (this.cursorPosition === this.getMaxCursorIndex() - 2) {
+                            this.chklOverride();
+                        }
+                        else if (this.cursorPosition === this.getMaxCursorIndex() - 1) {
+                            this.refreshChecklist();
+                        }
+                        else if (this.cursorPosition === this.getMaxCursorIndex() - 4) {
+                            if (this.normalChecklistSequence < 10) {
+                                this.normalChecklistSequence ++;
+                                this.refreshChecklist();
+                            }
+                        }
+                        else if (cursorTarget != -1) {
+                            this.toggleItem(cursorTarget);
+                        }
                     }
                 }
                 this.eventTimeout = 1;
@@ -122,7 +137,12 @@ var B747_8_LowerEICAS_ECL;
                 if (this.checklistItems[i].conditionType === "closed") {
                     for (let j = 0; j < this.checklistItems[i].conditions.length; j++) {
                         conditionsTargetNum[i] = this.checklistItems[i].conditions.length;
-                        if (SimVar.GetSimVarValue(this.checklistItems[i].conditions[j].simvar, this.checklistItems[i].conditions[j].simvarType) === this.checklistItems[i].conditions[j].simvarTrueCondition) {
+                        if (normalChecklists[this.normalChecklistSequence].items[i].special != undefined) {
+                            if (Math.round(SimVar.GetSimVarValue(this.checklistItems[i].conditions[j].simvar, this.checklistItems[i].conditions[j].simvarType)) === SimVar.GetSimVarValue(this.checklistItems[i].conditions[j].specialCondition, this.checklistItems[i].conditions[j].specialSimvarType)) {
+                                conditionsSatCounter[i] ++;
+                            }
+                        }
+                        else if (SimVar.GetSimVarValue(this.checklistItems[i].conditions[j].simvar, this.checklistItems[i].conditions[j].simvarType) === this.checklistItems[i].conditions[j].simvarTrueCondition) {
                             conditionsSatCounter[i] ++;
                         }
                         if (this.checklistItems[i].status === "overridden") {
@@ -146,7 +166,7 @@ var B747_8_LowerEICAS_ECL;
                     completeItemsCounter ++;
                 }
             }
-            if (completeItemsCounter === normalChecklists[this.normalChecklistSequence].itemCount) {
+            if (completeItemsCounter === normalChecklists[this.normalChecklistSequence].itemCount && !this.menuMode) {
                 if (this.checklistOverriden === true) {
                     this.ovrdGroup.style.visibility = "visible";
                 }
@@ -226,18 +246,26 @@ var B747_8_LowerEICAS_ECL;
                 box.style.visibility = "hidden";
                 tick.style.visibility = "hidden";
             }
+            this.completeGroup.style.visibility = "hidden";
+            this.ovrdGroup.style.visibility = "hidden";
             this.checklistItems = [];
             this.completeItemsCounter = 0;
             this.cursorHasJumped = false;
         }
         //Main checklist build function.
         buildChecklist() {
+            this.checklistOverriden = false;
+            this.menuOpen = -1;
+            this.menuMode = false;
             this.clearMenu();
             this.clearChecklist();
             this.buildCursorMap();
             this.updateCursor();
             this.buildTitle();
             this.buildBody();
+            this.updateBottomMenus();
+            this.updateNextLineItem();
+            this.cursorPosition = this.nextItemPosition;
         }
         //Builds Checklist Title.
         buildTitle() {
@@ -276,7 +304,19 @@ var B747_8_LowerEICAS_ECL;
             let text = this.querySelector("#item" + i + "-text");
             text.setAttribute("x", "9%");
             text.setAttribute("y", item.y);
-            text.textContent = item.name;
+
+            //Handles special variable conditions for Flaps position
+            if (item.special != undefined) {
+                if (SimVar.GetSimVarValue(item.conditions[0].specialCondition, item.conditions[0].specialSimvarType) === 0) {
+                    text.textContent = item.name;
+                }
+                else {
+                    text.textContent = item.name.slice(0, -2) + SimVar.GetSimVarValue(item.conditions[0].specialCondition, item.conditions[0].specialSimvarType).toFixed(0);
+                }
+            }
+            else {
+                text.textContent = item.name;
+            }
             text.style.visibility = "visible";
 
             //Create Item grey box if closed loop.
@@ -343,7 +383,6 @@ var B747_8_LowerEICAS_ECL;
                     this.checklistItems[cPos].status = "checked";
                     if (this.nextItemPosition !== -1) {
                         this.updateNextLineItem();
-                        console.log(this.nextItemPosition)
                         if (this.cursorPosition < this.nextItemPosition) {
                             this.cursorPosition = this.nextItemPosition;
                         }
@@ -390,7 +429,7 @@ var B747_8_LowerEICAS_ECL;
             this.updateBottomMenus();
         }
         clearMenu() {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 11; i++) {
                 let item = this.querySelector("#menu-item" + i);
                 item.style.visibility = "hidden";
             }

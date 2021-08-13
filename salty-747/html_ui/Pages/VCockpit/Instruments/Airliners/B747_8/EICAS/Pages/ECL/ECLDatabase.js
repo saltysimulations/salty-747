@@ -82,6 +82,10 @@ const menus = [
                 name: "SHUTDOWN",
                 y: "495"
             },
+            {
+                name: "SECURE",
+                y: "540"
+            }
         ]
     }
 ]
@@ -250,8 +254,17 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "FLAPS........................................__",
-                conditionType: "open",
+                special: true,
+                name: "FLAPS........................................--",
+                conditionType: "closed",
+                conditions: [
+                    {
+                        simvar: "TRAILING EDGE FLAPS LEFT ANGLE",
+                        simvarType: "degrees",
+                        specialCondition: "L:SALTY_TAKEOFF_FLAP_VALUE",
+                        specialSimvarType: "number",
+                    }
+                ],
                 y: "130"
             },
         ]
@@ -382,8 +395,17 @@ const normalChecklists = [
                 y: "170"
             },
             {
-                name: "FLAPS.........................................__",
-                conditionType: "open",
+                special: true,
+                name: "FLAPS.........................................--",
+                conditionType: "closed",
+                conditions: [
+                    {
+                        simvar: "TRAILING EDGE FLAPS LEFT ANGLE",
+                        simvarType: "degrees",
+                        specialCondition: "L:SALTY_SELECTED_APPROACH_FLAP",
+                        specialSimvarType: "number",
+                    }
+                ],
                 y: "210"
             },
         ]
@@ -477,7 +499,7 @@ const normalChecklists = [
         checklistTitle: "SHUTDOWN",
         checklistType: "normal",
         pageCount: 1,
-        itemCount: 7,
+        itemCount: 6,
         normalChecklistSequence: 9,
         checklistPriority: 0,
         items: [
@@ -629,6 +651,16 @@ const normalChecklists = [
                 ],
                 y: "330"
             },
+        ]
+    },
+    {
+        checklistTitle: "SECURE",
+        checklistType: "normal",
+        pageCount: 1,
+        itemCount: 3,
+        normalChecklistSequence: 10,
+        checklistPriority: 0,
+        items: [
             {
                 name: "IRS SWITCHES.................................OFF",
                 conditionType: "closed",
@@ -649,7 +681,17 @@ const normalChecklists = [
                         simvarTrueCondition: 0
                     },
                 ],
-                y: "370"
+                y: "130"
+            },
+            {
+                name: "EMERGENCY LIGHTS.............................OFF",
+                conditionType: "open",
+                y: "170"
+            },
+            {
+                name: "PACKS........................................OFF",
+                conditionType: "open",
+                y: "210"
             },
         ]
     },
