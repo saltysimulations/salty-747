@@ -137,6 +137,8 @@ var B747_8_LowerEICAS_ECL;
                 else {
                     text.style.fill = "white";
                     tick.style.visibility = "hidden";
+                    boxTop.style.fill = "#808080";
+                    boxBottom.style.fill = "#333333";
                 }
             }
         }
