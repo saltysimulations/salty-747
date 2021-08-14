@@ -93,6 +93,23 @@
 			<DefaultTemplateParameters>
 				<SIMVAR_POWER_SETTING>LIGHT PANEL POWER SETTING:3</SIMVAR_POWER_SETTING>
 			</DefaultTemplateParameters>
+			
+			<UseTemplate Name="SALTY_ECL_SEL_Template">
+				<NODE_ID>btn_cursor_control_sel_pilot</NODE_ID>
+            	<ANIM_NAME_BUTTON>btn_cursor_control_sel_pilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
+			<UseTemplate Name="SALTY_ECL_Knob_Template">
+				<NODE_ID>knob_cursor_control_pilot</NODE_ID>
+				<ANIM_NAME>knob_cursor_control_pilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
+			<UseTemplate Name="SALTY_ECL_SEL_Template">
+				<NODE_ID>btn_cursor_control_sel_copilot</NODE_ID>
+            	<ANIM_NAME_BUTTON>btn_cursor_control_sel_copilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
+			<UseTemplate Name="SALTY_ECL_Knob_Template">
+				<NODE_ID>knob_cursor_control_copilot</NODE_ID>
+				<ANIM_NAME>knob_cursor_control_copilot</ANIM_NAME_BUTTON>
+			</UseTemplate>
 
 			<UseTemplate Name="ASOBO_HANDLING_Lever_Flaps_Template">
 				<NODE_ID>lever_flaps</NODE_ID>
@@ -932,10 +949,21 @@
 			</DefaultTemplateParameters>
 
 			<UseTemplate Name="ASOBO_HANDLING_Knob_Wipers_Template">
-				<NODE_ID>SAFETY_Knob_Wipers</NODE_ID>
-				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>
+				<ID>1</ID>
+				<NODE_ID>SAFETY_Knob_Wipers_left</NODE_ID>
+				<ANIM_NAME>SAFETY_Knob_Wipers_left</ANIM_NAME>
 				<CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
 				<OFF_INT_LOW_HIGH>True</OFF_INT_LOW_HIGH>
+				<IE_WIPERS_ID>Wipers_left</IE_WIPERS_ID>
+			</UseTemplate>
+
+			<UseTemplate Name="ASOBO_HANDLING_Knob_Wipers_Template">
+				<ID>2</ID>
+				<NODE_ID>SAFETY_Knob_Wipers_right</NODE_ID>
+				<ANIM_NAME>SAFETY_Knob_Wipers_right</ANIM_NAME>
+				<CIRCUIT_ID_WIPERS>121</CIRCUIT_ID_WIPERS>
+				<OFF_INT_LOW_HIGH>True</OFF_INT_LOW_HIGH>
+				<IE_WIPERS_ID>Wipers_right</IE_WIPERS_ID>
 			</UseTemplate>
 
 			<Component ID="Instruments">
@@ -2971,11 +2999,11 @@
 					<NODE_ID>DECALS_CIRCUIT_BREAKERS_BACK</NODE_ID>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-					<NODE_ID>SAFETY_Knob_Wipers</NODE_ID>
+					<NODE_ID>SAFETY_Knob_Wipers_left</NODE_ID>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
-					<NODE_ID>SAFETY_Knob_Wipers_02</NODE_ID>
+					<NODE_ID>SAFETY_Knob_Wipers_right</NODE_ID>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
@@ -3726,18 +3754,6 @@
 				<NODE_ID>push_aural_reset</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_cursor_control_sel_pilot</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>knob_cursor_control_pilot</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_cursor_control_sel_copilot</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>knob_cursor_control_copilot</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>cover_stab_trim_1</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
@@ -4197,9 +4213,9 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_ant_iice_windshield_washer_r</NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
+			<!--<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>SAFETY_Knob_Wipers_02</NODE_ID>
-			</UseTemplate>
+			</UseTemplate>-->
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>push_ovhd_air_data_ram_turbine</NODE_ID>
 			</UseTemplate>
