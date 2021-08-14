@@ -21,16 +21,17 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     }
 
     onEvent(_event) {
+        var prefix = this.getLowerScreenChangeEventNamePrefix();
         super.onEvent(_event);
         if (this.currentPage !== _event) {
             this.currentPage = _event;
-        } else {
+        } 
+        else if (_event.substring(0,18) == prefix) {
             this.changePage("BLANK");
+            SimVar.SetSimVarValue("L:XMLVAR_EICAS_CURRENT_PAGE", "Enum", -1);
             this.currentPage = "blank";
             return;
         }
-
-        var prefix = this.getLowerScreenChangeEventNamePrefix();
 
         // if the event contains "EICAS_CHANGE_PAGE_{x}", the EICAS will display the page indicated by {x}; e.g. EICAS_CHANGE_PAGE_FUEL shows the fuel page
         if (_event.indexOf(prefix) >= 0) {
@@ -66,6 +67,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.createLowerScreenPage("DRS", "BottomScreen", "b747-8-lower-eicas-drs");
         this.createLowerScreenPage("ELEC", "BottomScreen", "b747-8-lower-eicas-elec");
         this.createLowerScreenPage("GEAR", "BottomScreen", "b747-8-lower-eicas-gear");
+        this.createLowerScreenPage("CHKL", "BottomScreen", "b747-8-lower-eicas-ecl");
         this.createLowerScreenPage("BLANK", "BottomScreen", "b747-8-lower-eicas-blank"); // To blank the bottom eicas when selecting same page again
     }
 

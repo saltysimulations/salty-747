@@ -838,6 +838,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (isFinite(flap) || isFinite(speed)) {
             if (isFinite(flap) && flap >= 0 && flap < 60) {
                 this.selectedApproachFlap = flap;
+                SimVar.SetSimVarValue("L:SALTY_SELECTED_APPROACH_FLAP", "number", this.selectedApproachFlap);
+                SimVar.SetSimVarValue("H:B747_8_EICAS_2_UPDATE_ECL", "bool", 1);
             }
             if (isFinite(speed) && speed >= 100 && speed < 300) {
                 this.selectedApproachSpeed = speed;

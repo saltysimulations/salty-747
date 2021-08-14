@@ -205,6 +205,8 @@ SALTY_SPEED_RESTRICTION_ALT=0
 747_Aircond_Knob_1=3
 747_Aircond_Knob_2=3
 747_Aircond_Knob_3=3
+SALTY_TAKEOFF_FLAP_VALUE=0
+SALTY_LANDING_FLAP_VALUE=0
 
 [Electrical.0]
 alternator.5=False
