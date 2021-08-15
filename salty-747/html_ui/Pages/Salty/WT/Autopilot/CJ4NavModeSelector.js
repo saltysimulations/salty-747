@@ -23,13 +23,13 @@
     this.currentDestinationRunwayIndex = undefined;
 
     /** The current active lateral nav mode. */
-    this.currentLateralActiveState = LateralNavModeState.ROLL;
+    this.currentLateralActiveState = LateralNavModeState.TO;
 
     /** The current armed lateral nav mode. */
     this.currentLateralArmedState = LateralNavModeState.NONE;
 
     /** The current active vertical nav mode. */
-    this.currentVerticalActiveState = VerticalNavModeState.PTCH;
+    this.currentVerticalActiveState = VerticalNavModeState.TO;
 
     /** The current armed altitude mode. */
     this.currentArmedAltitudeState = VerticalNavModeState.NONE;
@@ -111,6 +111,7 @@
       [`${NavModeEvent.HDG_HOLD_PRESSED}`]: this.handleHDGHOLDPressed.bind(this),
       [`${NavModeEvent.APPR_PRESSED}`]: this.handleAPPRPressed.bind(this),
       [`${NavModeEvent.FLC_PRESSED}`]: this.handleFLCPressed.bind(this),
+      [`${NavModeEvent.ALT_INT_PRESSED}`]: this.handleAltIntPressed.bind(this),
       [`${NavModeEvent.VNAV_PRESSED}`]: this.handleVNAVPressed.bind(this),
       [`${NavModeEvent.ALT_LOCK_CHANGED}`]: this.handleAltLockChanged.bind(this),
       [`${NavModeEvent.SIM_ALT_LOCK_CHANGED}`]: this.handleSimAltLockChanged.bind(this),
@@ -455,7 +456,7 @@
       case VerticalNavModeState.VS:
         break;
     }
-
+    this.isVNAVOn = false;
     this.setProperAltitudeArmedState();
   }
 
@@ -479,17 +480,43 @@
       case VerticalNavModeState.GS:
       case VerticalNavModeState.PATH:
       case VerticalNavModeState.GP:
+      case VerticalNavModeState.FLC:
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
         this.engageFlightLevelChange();
-        break;
-      case VerticalNavModeState.FLC:
-        this.currentVerticalActiveState = VerticalNavModeState.PTCH;
-        this.engagePitch();
-        break;
+        break; 
     }
-
+    this.isVNAVOn = false;
     this.setProperAltitudeArmedState();
   }
+
+ /**
+  * Handles when the Altitude Intervention Knob is pressed.
+  */
+   handleAltIntPressed() {
+     switch (this.currentVerticalActiveState) {
+       case VerticalNavModeState.TO:
+       case VerticalNavModeState.GA:
+       case VerticalNavModeState.PTCH:
+       case VerticalNavModeState.VS:
+       case VerticalNavModeState.ALTCAP:
+       case VerticalNavModeState.ALTVCAP:
+       case VerticalNavModeState.ALTSCAP:
+       case VerticalNavModeState.ALTV:
+       case VerticalNavModeState.ALTS:
+       case VerticalNavModeState.ALT:
+       case VerticalNavModeState.GS:
+       case VerticalNavModeState.PATH:
+       case VerticalNavModeState.GP:
+       case VerticalNavModeState.FLC:
+         if (this.isVNAVOn) {
+          this.currentVerticalActiveState = VerticalNavModeState.FLC;
+          this.engageFlightLevelChange();
+         }
+         break;
+     }
+
+     this.setProperAltitudeArmedState();
+   }
 
   /**
    * Check that VS is active.
@@ -560,8 +587,11 @@
     SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 1);
     SimVar.SetSimVarValue("L:WT_CJ4_VS_ON", "number", 0);
     this.checkCorrectAltSlot();
+
     if (!SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
       SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "number", 1);
+    }
+    if (SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
     }
     if (!SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
       SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE", "Number", 1);
@@ -583,6 +613,7 @@
     SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
+    SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
   }
 
   /**
@@ -1338,16 +1369,13 @@
 
   /**
    * Handles when FD is turned off to cancel vertical and lateral modes.
+   * On ground, sets TO/GA roll and pitch modes.
+   * In air, sets HDG HOLD and V/S modes.
    */
     handleFdToggle() {
       const apOn = SimVar.GetSimVarValue("AUTOPILOT MASTER", "boolean");
       const fdOn = SimVar.GetSimVarValue("AUTOPILOT FLIGHT DIRECTOR ACTIVE", "Boolean");
       if (!apOn && fdOn) {
-        this.engagePitch();
-        this.currentVerticalActiveState = VerticalNavModeState.TO;
-        this.currentArmedAltitudeState = VerticalNavModeState.NONE;
-        this.currentArmedVnavState = VerticalNavModeState.NONE;
-        this.currentArmedApproachVerticalState = VerticalNavModeState.NONE;
         switch (this.currentLateralActiveState) {
           case LateralNavModeState.ROLL:
             break;
@@ -1379,15 +1407,25 @@
             SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 0);
             break;
           }
-        this.currentLateralActiveState = LateralNavModeState.ROLL;
-        this.currentLateralArmedState = LateralNavModeState.NONE;
         SimVar.SetSimVarValue("K:TOGGLE_FLIGHT_DIRECTOR", "number", 0);
-        this.handleVNAVPressed();
       } else {
         SimVar.SetSimVarValue("K:TOGGLE_FLIGHT_DIRECTOR", "number", 1);
+        if (Simplane.getIsGrounded()) {
+          this.currentVerticalActiveState = VerticalNavModeState.TO;
+          this.currentLateralActiveState = LateralNavModeState.TO;
+          this.currentLateralArmedState = LateralNavModeState.NONE;
+        }
+        else {
+          this.currentVerticalActiveState = VerticalNavModeState.VS;
+          this.engageVerticalSpeed();        
+          this.currentLateralActiveState = LateralNavModeState.HDGHOLD;
+        }
+        this.currentArmedAltitudeState = VerticalNavModeState.NONE;
+        this.currentArmedVnavState = VerticalNavModeState.NONE;
+        this.currentArmedApproachVerticalState = VerticalNavModeState.NONE;
+        this.isVNAVOn = false;
       }
     }
-  
 }
 
 class LateralNavModeState { }
@@ -1435,6 +1473,7 @@ NavModeEvent.HDG_PRESSED = 'HDG_PRESSED';
 NavModeEvent.HDG_HOLD_PRESSED = 'HDG_HOLD_PRESSED';
 NavModeEvent.APPR_PRESSED = 'APPR_PRESSED';
 NavModeEvent.FLC_PRESSED = 'FLC_PRESSED';
+NavModeEvent.ALT_INT_PRESSED = 'ALT_INT_PRESSED';
 NavModeEvent.VS_PRESSED = 'VS_PRESSED';
 NavModeEvent.BC_PRESSED = 'BC_PRESSED';
 NavModeEvent.VNAV_PRESSED = 'VNAV_PRESSED';

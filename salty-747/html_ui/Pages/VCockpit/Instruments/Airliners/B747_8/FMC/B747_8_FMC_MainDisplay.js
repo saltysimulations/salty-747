@@ -1007,7 +1007,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 this._currentVerticalAutopilot.activate();
             } else {
                 try {
-                    //this._currentVerticalAutopilot.update();
+                    this._currentVerticalAutopilot.update();
                 } catch (error) {
                     console.error(error);
                 }
@@ -1015,7 +1015,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
 
             this._navModeSelector.generateInputDataEvents();
             this._navModeSelector.processEvents();
-
+            
             if (this._apHasDeactivated) {
                 this.deactivateVNAV();
                 if (!this.getIsSPDActive()) {

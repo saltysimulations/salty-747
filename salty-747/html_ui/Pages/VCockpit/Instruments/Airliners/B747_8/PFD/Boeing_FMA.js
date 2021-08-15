@@ -29,6 +29,13 @@ var Boeing;
                 this.allAnnunciations.push(new Boeing_FMA.Column3Top(this, this.querySelector("#COL3_TOP"), this.querySelector("#COL3_TOP_HIGHLIGHT")));
                 this.allAnnunciations.push(new Boeing_FMA.Column3Middle(this, this.querySelector("#COL3_MIDDLE"), null));
             }
+            this.approachActive = "";
+            this.lateralMode = "";
+            this.lateralArmed = "";
+            this.verticalMode = "";
+            this.altitudeArmed = "";
+            this.vnavArmed = "";
+            this.approachVerticalArmed = "";
             this.isInitialised = true;
         }
         update(_deltaTime) {
@@ -98,6 +105,18 @@ var Boeing_FMA;
             this.highlightElement = _highlightElement;
         }
         update(_deltaTime) {
+            const fmaValues = localStorage.getItem("CJ4_fmaValues");
+            if (fmaValues) {
+                const parsedFmaValues = JSON.parse(fmaValues);
+                this.approachActive = parsedFmaValues.approachActive;
+                this.lateralMode = parsedFmaValues.lateralMode;
+                this.lateralArmed = parsedFmaValues.lateralArmed;
+                this.verticalMode = parsedFmaValues.verticalMode;
+                this.altitudeArmed = parsedFmaValues.altitudeArmed;
+                this.vnavArmed = parsedFmaValues.vnavArmed;
+                this.approachVerticalArmed = parsedFmaValues.approachVerticalArmed;
+            }
+
             var mode = this.getActiveMode();
             if (mode != this.currentMode) {
                 this.changeMode(mode);
@@ -226,52 +245,20 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRActive()) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 1;
-                }
-                else {
-                    return 6;
-                }
+            else if (this.lateralMode == "HDGHOLD") {
+                return 2;
             }
-            if (ApproachStatus.isRolloutActive) {
-                return 7;
+            else if (this.lateralMode == "HDG") {
+                return 3;
             }
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number" ) === 0) {
-                return 8;
-            }
-            if (SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 1) {
+            else if (this.lateralMode == "LNAV") {
                 return 5;
             }
-            if (Simplane.getAutoPilotHeadingLockActive()) {
-                if (SimVar.GetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number") === 1) {
-                    return 2;
-                }
-                else {
-                    return 3;
-                }
+            else if (this.lateralMode == "ROLL") {
+                return 11;
             }
-            if (Simplane.getAutoPilotActive()) {
-                if (Simplane.getAutoPilotHeadingLockActive()) {
-                    if (this.fma.aircraft == Aircraft.B747_8) {
-                        return 3;
-                    }
-                    else {
-                        return (Simplane.getAutoPilotTRKModeActive() ? 10 : 3);
-                    }
-                }
-                else {
-                    if (this.fma.aircraft == Aircraft.B747_8) {
-                        return 2;
-                    }
-                    else {
-                        return (Simplane.getAutoPilotTRKModeActive() ? 9 : 2);
-                    }
-                }
-            }
-            if (this.fma.aircraft == Aircraft.AS01B) {
-            }
-            if (this.fma.aircraft == Aircraft.B747_8) {
+            else if (this.lateralMode == "TO") {
+                return 8;
             }
             return -1;
         }
@@ -372,47 +359,23 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive()) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 5;
-                }
-                else {
-                    return 4;
-                }
+            else if (this.verticalMode === "VALTS" || this.verticalMode === "VALTS CAP" || this.verticalMode === "VALT") {
+                return 9;
             }
-            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number" ) === 0) {
-                return 6;
-            }
-            if (SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 1) {
-                if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    if (Simplane.getAutoPilotAltitudeLockValue("feet") !== SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number")) {
-                        return 9;
-                    }
-                    return 7;
-                }
+            else if (this.verticalMode === "VFLC") {
                 return 8;
             }
-            if (SimVar.GetSimVarValue("L:AP_FLCH_ACTIVE", "number") === 1) {
-                return 2;
-            }
-            if (SimVar.GetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number") === 1) {
+            else if (this.verticalMode === "ALTS CAP" || this.verticalMode === "ALTS" || this.verticalMode === "ALT") {
                 return 0;
             }
-            if (ApproachStatus.isFlareActive) {
-                return 1;
+            else if (this.verticalMode === "FLC") {
+                return 2;
             }
-            if (Simplane.getAutoPilotActive()) {
-                if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    return 0;
-                }
-                else if (Simplane.getAutoPilotVerticalSpeedHoldActive()) {
-                    if (this.fma.aircraft == Aircraft.B747_8) {
-                        return 10;
-                    }
-                    else {
-                        return (Simplane.getAutoPilotFPAModeActive() ? 3 : 10);
-                    }
-                }
+            else if (this.verticalMode === "VS") {
+                return 10;
+            }
+            else if (this.verticalMode === "TO") {
+                return 6;
             }
             return -1;
         }

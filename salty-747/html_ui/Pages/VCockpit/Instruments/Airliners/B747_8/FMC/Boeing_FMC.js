@@ -107,11 +107,17 @@ class Boeing_FMC extends FMCMainDisplay {
         if (_event.indexOf("AP_LNAV") != -1) {
             this._navModeSelector.onNavChangedEvent('NAV_PRESSED');
         }
+        else if (_event.indexOf("AP_FD_TOGGLE") != -1) {
+            this._navModeSelector.onNavChangedEvent('FD_TOGGLE');
+        }
         else if (_event.indexOf("AP_VNAV") != -1) {
-            this.toggleVNAV();
+            this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+        }
+        else if (_event.indexOf("AP_LOC_ARM") != -1) {
+            this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
-            this.toggleFLCH();
+            this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
         }
         else if (_event.indexOf("AP_HEADING_HOLD") != -1) {
             this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
@@ -135,7 +141,7 @@ class Boeing_FMC extends FMCMainDisplay {
             this.toggleSpeedIntervention();
         }
         else if (_event.indexOf("AP_VSPEED") != -1) {
-            this.toggleVSpeed();
+            this._navModeSelector.onNavChangedEvent('VS_PRESSED');
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
             if (this.getIsVNAVActive()) {
@@ -164,9 +170,7 @@ class Boeing_FMC extends FMCMainDisplay {
                     else {
                         this.activateSPD();
                     }
-                    Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, mcpAlt, this._forceNextAltitudeUpdate);
-                    SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
-                    this._forceNextAltitudeUpdate = false;
+                    this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
                 }
             }      
         }
@@ -232,7 +236,7 @@ class Boeing_FMC extends FMCMainDisplay {
         return this._pendingVNAVActivation;
     }
     getIsVNAVActive() {
-        return this._isVNAVActive;
+        return SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "bool");
     }
     toggleVNAV() {
         if (this.getIsVNAVArmed()) {

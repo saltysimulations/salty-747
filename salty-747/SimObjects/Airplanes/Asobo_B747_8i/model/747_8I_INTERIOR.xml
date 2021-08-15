@@ -2206,7 +2206,7 @@
 					<TYPE>ONLY_IF_DISCONNECTED</TYPE>
 					<ALL_AP_ON_APPR>True</ALL_AP_ON_APPR>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Approach_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Approach_Template">
 					<NODE_ID>btn_autopilot_app</NODE_ID>
 					<ANIM_NAME>autopilot_push_app</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_app_seq1</EMISSIVE_NODE_ID>
@@ -2271,7 +2271,7 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Localizer_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Localizer_Template">
 					<NODE_ID>btn_autopilot_loc</NODE_ID>
 					<ANIM_NAME>autopilot_push_loc</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_loc_seq1</EMISSIVE_NODE_ID>
@@ -2342,7 +2342,7 @@
 					<ANIM_NAME>autopilot_switch_at_arm</ANIM_NAME>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_FlightDirector_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightDirector_Template">
 					<NODE_ID>switch_autopilot_fd_l</NODE_ID>
 					<ANIM_NAME>autopilot_switch_fd_l</ANIM_NAME>
 					<TOGGLEABLE/>
@@ -2350,7 +2350,7 @@
 					<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
 					<ID>1</ID>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_FlightDirector_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightDirector_Template">
 					<NODE_ID>switch_autopilot_fd_r</NODE_ID>
 					<ANIM_NAME>autopilot_switch_fd_r</ANIM_NAME>
 					<TOGGLEABLE/>
