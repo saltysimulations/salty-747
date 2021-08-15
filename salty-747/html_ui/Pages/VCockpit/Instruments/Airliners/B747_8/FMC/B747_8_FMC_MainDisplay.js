@@ -1045,7 +1045,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude > 400) {
                     this._pendingVNAVActivation = false;
-                    this.doActivateVNAV();
+                    this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+                    this.activateThrustMode();
                 }
             }
             if (!Simplane.getAutoPilotAltitudeLockActive() && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") !== 1) {

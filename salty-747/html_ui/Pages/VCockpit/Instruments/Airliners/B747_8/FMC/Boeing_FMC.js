@@ -107,18 +107,6 @@ class Boeing_FMC extends FMCMainDisplay {
         if (_event.indexOf("AP_LNAV") != -1) {
             this._navModeSelector.onNavChangedEvent('NAV_PRESSED');
         }
-        else if (_event.indexOf("AP_FD_TOGGLE") != -1) {
-            this._navModeSelector.onNavChangedEvent('FD_TOGGLE');
-        }
-        else if (_event.indexOf("AP_VNAV") != -1) {
-            this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
-        }
-        else if (_event.indexOf("AP_LOC_ARM") != -1) {
-            this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
-        }
-        else if (_event.indexOf("AP_FLCH") != -1) {
-            this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
-        }
         else if (_event.indexOf("AP_HEADING_HOLD") != -1) {
             this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
         }
@@ -128,6 +116,32 @@ class Boeing_FMC extends FMCMainDisplay {
                 this._isHeadingHoldActive = false;
             }
             this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
+        }
+        else if (_event.indexOf("AP_LOC_ARM") != -1) {
+            this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
+        }
+        else if (_event.indexOf("AP_VNAV") != -1) {
+            SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 1);
+            let altitude = Simplane.getAltitudeAboveGround();
+            if (altitude < 400) {
+                this._pendingVNAVActivation = true;
+            }
+            else {
+                this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+                this.activateThrustMode();
+            }
+        }
+        else if (_event.indexOf("AP_FLCH") != -1) {
+            if (!Simplane.getAutoPilotFLCActive()) {
+                this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
+            }
+        }
+        else if (_event.indexOf("AP_VSPEED") != -1) {
+            this._navModeSelector.onNavChangedEvent('VS_PRESSED');
+            this.activateSPD();
+        }
+        else if (_event.indexOf("AP_FD_TOGGLE") != -1) {
+            this._navModeSelector.onNavChangedEvent('FD_TOGGLE');
         }
         else if (_event.indexOf("AP_SPD") != -1) {
             if (SimVar.GetSimVarValue("AUTOPILOT THROTTLE ARM", "Bool")) {
@@ -139,9 +153,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("AP_SPEED_INTERVENTION") != -1) {
             this.toggleSpeedIntervention();
-        }
-        else if (_event.indexOf("AP_VSPEED") != -1) {
-            this._navModeSelector.onNavChangedEvent('VS_PRESSED');
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
             if (this.getIsVNAVActive()) {
@@ -187,6 +198,21 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("EXEC") != -1) {
             this.onExec();
+        }
+    }
+    activateThrustMode() {
+        let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+        let altitude = Simplane.getAltitude();
+        if (mcpAlt >= altitude + 2000) {
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
+            this.setThrottleMode(ThrottleMode.CLIMB);
+        }
+        else if (mcpAlt + 2000 <= altitude) {
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 25);
+            this.setThrottleMode(ThrottleMode.CLIMB);
+        }
+        else {
+            this.activateSPD();
         }
     }
     getIsLNAVArmed() {

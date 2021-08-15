@@ -251,13 +251,10 @@ var Boeing_FMA;
             else if (this.lateralMode == "HDG") {
                 return 3;
             }
-            else if (this.lateralMode == "LNAV") {
+            else if (this.lateralMode == "LNV1") {
                 return 5;
             }
-            else if (this.lateralMode == "ROLL") {
-                return 11;
-            }
-            else if (this.lateralMode == "TO") {
+            else if (this.lateralMode == "TO" || this.lateralMode == "GA" || this.lateralMode == "ROLL") {
                 return 8;
             }
             return -1;

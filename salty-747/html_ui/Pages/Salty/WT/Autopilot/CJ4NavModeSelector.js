@@ -469,6 +469,7 @@
       case VerticalNavModeState.GA:
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
         SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
+        break;
       case VerticalNavModeState.PTCH:
       case VerticalNavModeState.VS:
       case VerticalNavModeState.ALTCAP:
@@ -621,19 +622,26 @@
    */
   handleVNAVPressed() {
     if (this.currentVerticalActiveState !== VerticalNavModeState.GP || this.currentVerticalActiveState !== VerticalNavModeState.GS) {
-      this.isVNAVOn = !this.isVNAVOn;
+      if (Simplane.getIsGrounded()) {
+        this.isVNAVOn = !this.isVNAVOn;
+      }
+      else {
+        this.isVNAVOn = true;
+      }
       SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", this.isVNAVOn ? 1 : 0);
       SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", this.isVNAVOn ? 1 : 0);
       SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", this.isVNAVOn ? 1 : 0);
 
-      if (!this.isVNAVOn) {
-        if (this.currentVerticalActiveState === VerticalNavModeState.PATH) {
-          SimVar.SetSimVarValue("K:VS_SLOT_INDEX_SET", "number", 1);
-          this.engagePitch();
-          this.currentVerticalActiveState = VerticalNavModeState.PTCH;
-        }
-        this.currentAltitudeTracking = AltitudeState.SELECTED;
+      if (this.currentVerticalActiveState === VerticalNavModeState.PATH) {
+        SimVar.SetSimVarValue("K:VS_SLOT_INDEX_SET", "number", 1);
+        this.engagePitch();
+        this.currentVerticalActiveState = VerticalNavModeState.PTCH;
       }
+      else {
+        this.currentVerticalActiveState = VerticalNavModeState.FLC;
+        this.engageFlightLevelChange();
+      }
+      this.currentAltitudeTracking = AltitudeState.SELECTED;
     }
     this.setProperAltitudeArmedState();
   }
@@ -760,7 +768,12 @@
       }
       //SET VERTICAL
       if (this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA) {
-        this.currentVerticalActiveState = VerticalNavModeState.PTCH;
+        if (this.isVNAVOn) {
+          this.currentVerticalActiveState = VerticalNavModeState.FLC;
+        }
+        else {
+          this.currentVerticalActiveState = VerticalNavModeState.PTCH;
+        }
       }
     }
     this.setProperAltitudeArmedState();
