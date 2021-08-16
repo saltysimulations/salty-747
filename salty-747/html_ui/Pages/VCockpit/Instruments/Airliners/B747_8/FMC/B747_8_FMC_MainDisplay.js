@@ -984,7 +984,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 this._vnav.activate();
             } else {
                 try {
-                    //this._vnav.update();
+                    this._vnav.update();
                 } catch (error) {
                     console.error(error);
                 }

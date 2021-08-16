@@ -129,9 +129,9 @@ class SvgWaypointElement extends SvgMapElement {
             const fpIdx = SimVar.GetSimVarValue("L:MAP_SHOW_TEMPORARY_FLIGHT_PLAN", "number");
             this.isInFpln = FlightPlanManager.DEBUG_INSTANCE.getAllWaypoints(fpIdx).findIndex(x => x.ident == this.source.ident) > -1;
             this._image.setAttribute("isInFpln", this.isInFpln.toString());
-            if (this.ident.substring(0,2) === "RW" || this.ident === "DES") {
+            if (this.ident.substring(0,2) === "RW") {
 
-            } else if (this.ident === "TOD") {
+            } else if (this.ident === "TOD" || this.ident === "DES") {
                 this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TOD.svg");
             } else if (!this.isInFpln) {
                 // console.log("create " + this.source.ident + " " + this.imageFileName());
@@ -368,7 +368,7 @@ class SvgWaypointTextElement extends SvgMapElement {
         }
         if (!isActiveWaypoint) {
             if (this.waypointElement.ident === "TOD" || this.waypointElement.ident === "DES") {
-                context.fillStyle = "#11d011";
+                context.fillStyle = "lime";
             } else if (this.waypointElement.source.isInMissedAppr === true) {
                 context.fillStyle = "cyan";
             } else if (this.waypointElement.isInFpln === true) {

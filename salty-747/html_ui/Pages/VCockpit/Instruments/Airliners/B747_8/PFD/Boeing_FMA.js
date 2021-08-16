@@ -359,6 +359,9 @@ var Boeing_FMA;
             else if (this.verticalMode === "VALTS" || this.verticalMode === "VALTS CAP" || this.verticalMode === "VALT") {
                 return 9;
             }
+            else if (this.verticalMode === "VPATH" || this.verticalMode === "VALTV CAP") {
+                return 7;
+            }
             else if (this.verticalMode === "VFLC") {
                 return 8;
             }

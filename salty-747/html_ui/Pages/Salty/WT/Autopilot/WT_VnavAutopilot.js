@@ -291,7 +291,6 @@ class WT_VerticalAutopilot {
         this._vnavState = this.checkVnavState();
         this._glidepathStatus = this.checkGlidepathStatus();
         this._glideslopeStatus = this.checkGlideslopeStatus();
-
         switch (this._vnavPathStatus) {
             case VnavPathStatus.NONE:
                 break;
@@ -440,7 +439,7 @@ class WT_VerticalAutopilot {
         this.fmsTextValues();
         this.wtAltituteManager();
 
-        if (this._vnavPathStatus !== VnavPathStatus.PATH_ACTIVE && this.distanceToTod > 0.1 && this.vnavState !== VnavState.NONE) {
+        /*if (this._vnavPathStatus !== VnavPathStatus.PATH_ACTIVE && this.distanceToTod > 0.1 && this.vnavState !== VnavState.NONE) {
             const todAlertDistance = AutopilotMath.calculateDescentDistance(this.path.fpa, 250) + (0.017 * this.groundSpeed);
             if (todAlertDistance > this.distanceToTod) {
                 MessageService.getInstance().post(FMS_MESSAGE_ID.TOD, () => {
@@ -450,7 +449,7 @@ class WT_VerticalAutopilot {
                     return todBlinkDistance > this.distanceToTod;
                 });
             }
-        }
+        }*/
     }
 
     setArmedApproachVerticalState() {
@@ -470,6 +469,7 @@ class WT_VerticalAutopilot {
     setArmedVnavVerticalState(nopath = false) {
         if (nopath === VerticalNavModeState.NOPATH) {
             this._navModeSelector.setArmedVnavState(VerticalNavModeState.NOPATH);
+            console.log("485")
         }
         else if (this._vnavPathStatus === VnavPathStatus.PATH_ARMED) {
             this._navModeSelector.setArmedVnavState(VerticalNavModeState.PATH);
@@ -516,6 +516,7 @@ class WT_VerticalAutopilot {
                         } else {
                             if (this._navModeSelector.currentArmedVnavState !== VerticalNavModeState.NOPATH) {
                                 this.setArmedVnavVerticalState(VerticalNavModeState.NOPATH);
+                                console.log("532")
                             }
                         }
                     }
@@ -1121,12 +1122,13 @@ class WT_VerticalAutopilot {
     }
 
     checkPreselector() {
+        /*
         const approachingTodDistance = 0.0125 * this.groundSpeed;
         if (this.distanceToTod < approachingTodDistance && this.distanceToTod > 0 && this.selectedAltitude >= this._vnav.indicatedAltitude - 50) {
             MessageService.getInstance().post(FMS_MESSAGE_ID.CHK_ALT_SEL, () => {
                 return (this.selectedAltitude + 100) < this._vnav.indicatedAltitude || !this.isVNAVOn;
             });
-        }
+        }*/
     }
 
     isClimb() {

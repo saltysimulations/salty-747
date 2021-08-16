@@ -865,7 +865,7 @@ class WT_BaseVnav {
 
     setTodWaypoint(calculate = false, todDistanceInFP) {
 
-        /*if (calculate === true) {
+        if (calculate === true) {
             const todDistanceFromCurrPos = todDistanceInFP < this._currentDistanceInFP ? 0 : todDistanceInFP - this._currentDistanceInFP;
             const todDistanceFromDest = this.destination.cumulativeDistanceInFP - todDistanceInFP;
             // console.log("todDistanceInFP " + todDistanceInFP + " this._currentDistanceInFP " + this._currentDistanceInFP);
@@ -875,7 +875,7 @@ class WT_BaseVnav {
         } else {
             SimVar.SetSimVarValue("L:WT_CJ4_TOD_DISTANCE", "number", 0);
             SimVar.SetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number", 0);
-        }*/
+        }
     }
 
 
