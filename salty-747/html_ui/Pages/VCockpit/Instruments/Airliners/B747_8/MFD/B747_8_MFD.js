@@ -88,11 +88,16 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.leftIRSValue = document.querySelector("#l-irs-value");
         this.centerIRSValue = document.querySelector("#c-irs-value");
         this.rightIRSValue = document.querySelector("#r-irs-value");
+        this.deviationItems = document.querySelector("#PathDeviationScale");
+        this.deviationPointer = document.querySelector("#pathDevPointer");
+        this.deviationTextTop = document.querySelector("#pathTopText");
+        this.deviationTextBottom = document.querySelector("#pathBottomText");
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
         this.updateMap(_deltaTime);
         this.updateNDInfo(_deltaTime);
+        this.updateDeviationScale(_deltaTime);
 
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
         const IRSMinutesLeft = Math.floor(SimVar.GetSimVarValue("L:SALTY_IRS_TIME_LEFT", "Enum") / 60);
@@ -294,6 +299,47 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.info.showSymbol(B747_8_ND_Symbol.WPT, this.map.instrument.showIntersections);
         this.info.showSymbol(B747_8_ND_Symbol.ARPT, this.map.instrument.showAirports);
         this.info.showSymbol(B747_8_ND_Symbol.TFC, this.map.instrument.showTraffic);
+    }
+    updateDeviationScale() {
+        if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") === 5 || SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") === 6) {
+            let pathDeviation = SimVar.GetSimVarValue("L:WT_CJ4_VPATH_ALT_DEV", "feet");
+            let correctedDeviation = pathDeviation / 6.67;
+            let absDeviation = Math.abs(pathDeviation);
+            this.deviationItems.style.visibility = "visible";
+            this.deviationPointer.setAttribute("d", "M 560 " + Utils.Clamp((430 + correctedDeviation), 370, 490) + " l 8 -5 l 8 5 l -8 5 Z");
+            if (pathDeviation > 0) {
+                this.deviationTextTop.style.visibility = "hidden";
+                this.deviationTextBottom.style.visibility = "visible";
+                if (absDeviation >= 100) {
+                    this.deviationTextBottom.textContent = Math.abs(Math.round(pathDeviation / 10) * 10).toFixed(0);
+                }
+                else {
+                    this.deviationTextBottom.textContent = pathDeviation.toFixed(0);
+                }
+            }
+            else {
+                this.deviationTextBottom.style.visibility = "hidden";
+                this.deviationTextTop.style.visibility = "visible";
+                if (absDeviation >= 100) {
+                    this.deviationTextTop.textContent = Math.abs(Math.round(pathDeviation / 10) * 10).toFixed(0);
+                }
+                else {
+                    this.deviationTextTop.textContent = Math.abs(pathDeviation).toFixed(0);
+                }
+            }
+            if (absDeviation <= 20) {
+                this.deviationTextTop.style.visibility = "hidden";
+                this.deviationTextBottom.style.visibility = "hidden";
+            }
+        }
+        else {
+            this.deviationItems.style.visibility = "hidden";
+        }
+
+
+
+
+
     }
 }
 class B747_8_MFD_Compass extends NavSystemElement {
