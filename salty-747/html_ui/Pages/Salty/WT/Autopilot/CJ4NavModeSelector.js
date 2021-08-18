@@ -594,7 +594,7 @@
     }
     if (SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
     }
-    if (!SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
+    else if (!SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
       SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE", "Number", 1);
     }
     if (speed === undefined) {
@@ -632,10 +632,9 @@
       SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", this.isVNAVOn ? 1 : 0);
       SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", this.isVNAVOn ? 1 : 0);
 
-      if (this.currentVerticalActiveState === VerticalNavModeState.PATH) {
-        SimVar.SetSimVarValue("K:VS_SLOT_INDEX_SET", "number", 1);
-        this.engagePitch();
-        this.currentVerticalActiveState = VerticalNavModeState.PTCH;
+      if (this.currentVerticalActiveState === VerticalNavModeState.ALTCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTS
+        || this.currentVerticalActiveState === VerticalNavModeState.ALTSCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTV
+        || this.currentVerticalActiveState === VerticalNavModeState.ALTVCAP) {
       }
       else {
         this.currentVerticalActiveState = VerticalNavModeState.FLC;

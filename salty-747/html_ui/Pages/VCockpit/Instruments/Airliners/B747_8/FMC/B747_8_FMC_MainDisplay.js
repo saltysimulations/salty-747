@@ -1053,7 +1053,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
             }
-            if (this.getIsFLCHActive() && !Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
+            /*if (this.getIsFLCHActive() && !Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
                 if (Simplane.getAutoPilotAltitudeLockActive()) {
                     this.activateAltitudeHold(true);
                 }
@@ -1174,6 +1174,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             else if (!this.getIsFLCHActive() && this.getIsSPDActive()) {
                 this.setAPSpeedHoldMode();
             }
+            */
             if (this.getIsVNAVArmed() && !this.getIsVNAVActive()) {
                 if (Simplane.getAutoPilotThrottleArmed()) {
                     if (!this._hasSwitchedToHoldOnTakeOff) {

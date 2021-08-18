@@ -471,7 +471,6 @@ class WT_VerticalAutopilot {
     setArmedVnavVerticalState(nopath = false) {
         if (nopath === VerticalNavModeState.NOPATH) {
             this._navModeSelector.setArmedVnavState(VerticalNavModeState.NOPATH);
-            console.log("485")
         }
         else if (this._vnavPathStatus === VnavPathStatus.PATH_ARMED) {
             this._navModeSelector.setArmedVnavState(VerticalNavModeState.PATH);

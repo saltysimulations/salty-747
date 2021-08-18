@@ -132,9 +132,7 @@ class Boeing_FMC extends FMCMainDisplay {
             }
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
-            if (!Simplane.getAutoPilotFLCActive()) {
-                this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
-            }
+            this._navModeSelector.onNavChangedEvent('FLC_PRESSED');
         }
         else if (_event.indexOf("AP_VSPEED") != -1) {
             this._navModeSelector.onNavChangedEvent('VS_PRESSED');
