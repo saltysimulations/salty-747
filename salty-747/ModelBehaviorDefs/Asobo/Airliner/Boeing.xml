@@ -1381,7 +1381,7 @@
 			<DEFAULT_NAME>Localizer</DEFAULT_NAME>
 		</Parameters>
 		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
-			<EMISSIVE_CODE_ACTIVE>(L:AP_LOC_ARMED, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and</EMISSIVE_CODE_ACTIVE>
+			<EMISSIVE_CODE_ACTIVE>(L:AP_LOC_ARMED, Bool) (L:AP_APP_ARMED, Bool) ! and</EMISSIVE_CODE_ACTIVE>
 			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
 			<GET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and sp0</GET_STATE_EXTERNAL>
 			<!-- To APPROACH and LOCALIZER are the same as far as toggling, so has to toggle twice if already active from other mode -->

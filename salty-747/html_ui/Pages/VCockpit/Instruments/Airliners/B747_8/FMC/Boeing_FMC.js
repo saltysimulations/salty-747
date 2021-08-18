@@ -111,7 +111,7 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('HDG_HOLD_PRESSED');
         }
         else if (_event.indexOf("AP_HEADING_SEL") != -1) {
-            if (this._isHeadingHoldActive = true) {
+            if (this._isHeadingHoldActive === true) {
                 SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
                 this._isHeadingHoldActive = false;
             }

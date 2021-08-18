@@ -257,6 +257,9 @@ var Boeing_FMA;
             else if (this.lateralMode == "APPR LNV1") {
                 return 1;
             }
+            else if (this.lateralMode == "APPR LOC1") {
+                return 6;
+            }
             else if (this.lateralMode == "TO" || this.lateralMode == "GA" || this.lateralMode == "ROLL") {
                 return 8;
             }
@@ -288,6 +291,9 @@ var Boeing_FMA;
             }
             else if (this.lateralArmed === "APPR LNV1") {
                 return 1;
+            }
+            else if (this.lateralArmed === "APPR LOC1") {
+                return 3;
             }
             else if (this.lateralArmed === "LNV1") {
                 return 2;
@@ -375,6 +381,9 @@ var Boeing_FMA;
             else if (this.verticalMode === "GP") {
                 return 5;
             }
+            else if (this.verticalMode === "GS") {
+                return 4;
+            }
             return -1;
         }
         getCurrentModeText() {
@@ -402,6 +411,9 @@ var Boeing_FMA;
             }
             else if (this.approachVerticalArmed === "GP") {
                 return 1;
+            }
+            else if (this.approachVerticalArmed === "GS") {
+                return 2;
             }
             else if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 0) {
                 return 3;

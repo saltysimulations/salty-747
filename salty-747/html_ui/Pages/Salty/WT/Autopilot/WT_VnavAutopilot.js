@@ -228,8 +228,7 @@ class WT_VerticalAutopilot {
     }
 
     get navMode() {
-        const navMode = this._navModeSelector.lNavModeState;
-        const navSource = navMode == LNavModeState.NAV2 ? 2 : navMode == LNavModeState.NAV1 ? 1 : 0;
+        const navSource = 3;
         return navSource;
     }
 
@@ -386,9 +385,11 @@ class WT_VerticalAutopilot {
             case GlideslopeStatus.GS_CAN_ARM:
                 if (this.lateralMode === LateralNavModeState.APPR && this.approachMode !== WT_ApproachType.RNAV) {
                     this._glideslopeStatus = GlideslopeStatus.GS_ARMED;
+                    console.log("A")
                 }
                 break;
             case GlideslopeStatus.GS_ARMED:
+                console.log("B")
                 if (this.lateralMode !== LateralNavModeState.APPR || this.approachMode !== WT_ApproachType.ILS && this.navMode < 1) {
                     console.log("GS Canceled");
                     this.cancelGlideslope();
@@ -403,6 +404,7 @@ class WT_VerticalAutopilot {
                 }
                 break;
             case GlideslopeStatus.GS_ACTIVE:
+                console.log("C")
                 if (this.lateralMode !== LateralNavModeState.APPR || this.checkGlideslopeStatus(true) === GlideslopeStatus.NONE) {
                     this.cancelGlideslope();
                     break;
@@ -609,10 +611,7 @@ class WT_VerticalAutopilot {
     }
 
     checkGlideslopeStatus(activeNavIndex = false) {
-        let navIndex = this.navMode == 0 ? 1 : this.navMode;
-        if (activeNavIndex) {
-            navIndex = this.navMode;
-        }
+        let navIndex = 3;
         const signal = SimVar.GetSimVarValue("NAV HAS NAV:" + navIndex, "bool") !== 0 ? true : false;
         const isIls = signal ? SimVar.GetSimVarValue("NAV HAS LOCALIZER:" + navIndex, "bool") !== 0 : false;
         const gs = isIls ? SimVar.GetSimVarValue("NAV HAS GLIDE SLOPE:" + navIndex, "bool") !== 0 : false;

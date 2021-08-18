@@ -1062,7 +1062,7 @@
         case WT_ApproachType.NONE:
         case WT_ApproachType.VISUAL:
           if (this.lNavModeState === LNavModeState.NAV1 || this.lNavModeState === LNavModeState.NAV2) {
-            const navSource = this.lNavModeState === LNavModeState.NAV2 ? 2 : 1;
+            const navSource = 3;
             if (SimVar.GetSimVarValue(`NAV HAS LOCALIZER:` + navSource, 'Bool') !== 0) {
               this.currentLateralArmedState = this.currentLateralArmedState !== LateralNavModeState.APPR ? LateralNavModeState.APPR : LateralNavModeState.NONE;
             }
@@ -1092,8 +1092,6 @@
         setProperApprState();
         break;
       case LateralNavModeState.APPR:
-        this.cancelApproachMode(true);
-        this.currentLateralActiveState = LateralNavModeState.ROLL;
         break;
     }
   }
