@@ -131,7 +131,7 @@ class SvgWaypointElement extends SvgMapElement {
             this._image.setAttribute("isInFpln", this.isInFpln.toString());
             if (this.ident.substring(0,2) === "RW") {
 
-            } else if (this.ident === "TOD" || this.ident === "DES") {
+            } else if (this.ident === "T/D" || this.ident === "DES") {
                 this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TOD.svg");
             } else if (!this.isInFpln) {
                 // console.log("create " + this.source.ident + " " + this.imageFileName());
@@ -182,7 +182,7 @@ class SvgWaypointElement extends SvgMapElement {
         if (isActiveWaypoint !== this._lastIsActiveWaypoint || this.isInFpln !== this._lastIsInFpln) {
             if (this._image) {
                 if (!isActiveWaypoint) {
-                    if (this.ident === "TOD" || this.ident === "DES") {
+                    if (this.ident === "T/D" || this.ident === "DES") {
                         this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + "ICON_MAP_TOD.svg");
                     } else if (!this.isInFpln) {
                         this._image.setAttributeNS("http://www.w3.org/1999/xlink", "href", map.config.imagesDir + this.imageFileName().replace(".png", ".svg") + "?cb=44");
@@ -367,7 +367,7 @@ class SvgWaypointTextElement extends SvgMapElement {
             context.fillRect(0, 0, this._textWidth + map.config.waypointLabelBackgroundPaddingLeft + map.config.waypointLabelBackgroundPaddingRight, this._textHeight + map.config.waypointLabelBackgroundPaddingTop + map.config.waypointLabelBackgroundPaddingBottom);
         }
         if (!isActiveWaypoint) {
-            if (this.waypointElement.ident === "TOD" || this.waypointElement.ident === "DES") {
+            if (this.waypointElement.ident === "T/D" || this.waypointElement.ident === "DES") {
                 context.fillStyle = "lime";
             } else if (this.waypointElement.source.isInMissedAppr === true) {
                 context.fillStyle = "cyan";

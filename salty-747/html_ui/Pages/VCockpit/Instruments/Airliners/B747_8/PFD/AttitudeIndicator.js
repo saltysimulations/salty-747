@@ -645,7 +645,7 @@ var Jet_PFD_FlightDirector;
                 let fdPhase = SimVar.GetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum");
                 let _bForcedFdPitchThisFrame = false;
                 //Special FD Takeoff Phase Logic
-                /*if (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+                if (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                     if (fdPhase < 1) {
                         currentFDPitch = -8;
                     }
@@ -661,7 +661,7 @@ var Jet_PFD_FlightDirector;
                         currentFDPitch = Math.min((Simplane.getFlightDirectorPitch() - 7 + blendfactor), Simplane.getFlightDirectorPitch());
                         SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 2);
                     }
-                }*/
+                }
                 if (this._pitchIsNotReadyYet) {
                     this._pitchIsNotReadyYet = Math.abs(currentFDPitch) < 2;
                 }

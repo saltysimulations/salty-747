@@ -1376,4 +1376,46 @@
 		</UseTemplate>
 	</Template>
 
+	<Template Name="SALTY_AUTOPILOT_Push_Localizer_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Localizer</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_CODE_ACTIVE>(L:AP_LOC_ARMED, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and</EMISSIVE_CODE_ACTIVE>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and sp0</GET_STATE_EXTERNAL>
+			<!-- To APPROACH and LOCALIZER are the same as far as toggling, so has to toggle twice if already active from other mode -->
+			<SET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and if{ (&gt;H:B747_8_FMC_1_AP_LOC_ARMED) } (&gt;H:B747_8_FMC_1_AP_LOC_ARMED)</SET_STATE_EXTERNAL>
+			<BTN_ID>Localizer_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_LOC_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_LOC_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_Approach_Template">
+		<Parameters Type="Default">
+			<MAX_BANK_DEGREES>30</MAX_BANK_DEGREES>
+			<DEFAULT_NAME>Approach</DEFAULT_NAME>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="DISABLE_GPS_MODE">
+				<True>
+					<GPS_DISABLE_CODE>(A:GPS DRIVES NAV1, Bool) if{ (A:GPS APPROACH APPROACH TYPE, Enum) 4 == if{ (&gt;K:TOGGLE_GPS_DRIVES_NAV1) } } els{ (A:GPS APPROACH APPROACH TYPE, Enum) 10 == if{ (&gt;K:TOGGLE_GPS_DRIVES_NAV1) } }</GPS_DISABLE_CODE>
+				</True>
+				<False> 
+					<GPS_DISABLE_CODE/>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and</EMISSIVE_CODE_ACTIVE>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#GPS_DISABLE_CODE# (A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and if{ (&gt;K:AP_APR_HOLD) } (&gt;K:AP_APR_HOLD)</SET_STATE_EXTERNAL>
+			<BTN_ID>Approach_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_APPROACH_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_APPROACH_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
 </ModelBehaviors>

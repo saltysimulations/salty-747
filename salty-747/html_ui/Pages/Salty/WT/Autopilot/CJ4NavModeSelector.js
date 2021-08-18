@@ -109,7 +109,7 @@
       [`${NavModeEvent.NAV_MODE_CHANGED}`]: this.handleNAVModeChanged.bind(this),
       [`${NavModeEvent.HDG_PRESSED}`]: this.handleHDGPressed.bind(this),
       [`${NavModeEvent.HDG_HOLD_PRESSED}`]: this.handleHDGHOLDPressed.bind(this),
-      [`${NavModeEvent.APPR_PRESSED}`]: this.handleAPPRPressed.bind(this),
+      [`${NavModeEvent.LOC_PRESSED}`]: this.handleLOCPressed.bind(this),
       [`${NavModeEvent.FLC_PRESSED}`]: this.handleFLCPressed.bind(this),
       [`${NavModeEvent.ALT_INT_PRESSED}`]: this.handleAltIntPressed.bind(this),
       [`${NavModeEvent.VNAV_PRESSED}`]: this.handleVNAVPressed.bind(this),
@@ -1049,9 +1049,9 @@
   }
 
   /**
-   * Handles when the APPR button is pressed.
+   * Handles when the LOC button is pressed.
    */
-  handleAPPRPressed() {
+  handleLOCPressed() {
 
     const setProperApprState = () => {
       switch (this.approachMode) {
@@ -1484,7 +1484,7 @@ NavModeEvent.NAV_MODE_CHANGED = 'nav_mode_changed_to_nav';
 NavModeEvent.NAV_MODE_CHANGED_TO_FMS = 'nav_mode_changed_to_fms';
 NavModeEvent.HDG_PRESSED = 'HDG_PRESSED';
 NavModeEvent.HDG_HOLD_PRESSED = 'HDG_HOLD_PRESSED';
-NavModeEvent.APPR_PRESSED = 'APPR_PRESSED';
+NavModeEvent.LOC_PRESSED = 'LOC_PRESSED';
 NavModeEvent.FLC_PRESSED = 'FLC_PRESSED';
 NavModeEvent.ALT_INT_PRESSED = 'ALT_INT_PRESSED';
 NavModeEvent.VS_PRESSED = 'VS_PRESSED';

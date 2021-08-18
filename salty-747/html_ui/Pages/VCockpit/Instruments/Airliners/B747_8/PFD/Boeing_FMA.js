@@ -254,6 +254,9 @@ var Boeing_FMA;
             else if (this.lateralMode == "LNV1") {
                 return 5;
             }
+            else if (this.lateralMode == "APPR LNV1") {
+                return 1;
+            }
             else if (this.lateralMode == "TO" || this.lateralMode == "GA" || this.lateralMode == "ROLL") {
                 return 8;
             }
@@ -283,19 +286,11 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotAPPRArm()) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 1;
-                }
-                else {
-                    return 3;
-                }
+            else if (this.lateralArmed === "APPR LNV1") {
+                return 1;
             }
-            if (SimVar.GetSimVarValue("L:AP_LNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:AP_LNAV_ACTIVE", "number") === 0) {
+            else if (this.lateralArmed === "LNV1") {
                 return 2;
-            }
-            if (ApproachStatus.isRolloutArmed) {
-                return 4;
             }
             return -1;
         }
@@ -359,7 +354,7 @@ var Boeing_FMA;
             else if (this.verticalMode === "VALTS" || this.verticalMode === "VALTS CAP" || this.verticalMode === "VALT") {
                 return 9;
             }
-            else if (this.verticalMode === "VPATH" || this.verticalMode === "VALTV CAP") {
+            else if (this.verticalMode === "VPATH" || this.verticalMode === "VALTV CAP" || this.verticalMode === "VALTV") {
                 return 7;
             }
             else if (this.verticalMode === "VFLC") {
@@ -376,6 +371,9 @@ var Boeing_FMA;
             }
             else if (this.verticalMode === "TO") {
                 return 6;
+            }
+            else if (this.verticalMode === "GP") {
+                return 5;
             }
             return -1;
         }
@@ -402,19 +400,11 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            if (Simplane.getAutoPilotAPPRHold() && Simplane.getAutoPilotGlideslopeHold() && !(Simplane.getAutoPilotGlideslopeActive() && Simplane.getAutoPilotAPPRActive())) {
-                if (Simplane.getAutoPilotApproachType() == ApproachType.APPROACH_TYPE_RNAV) {
-                    return 1;
-                }
-                else {
-                    return 2;
-                }
+            else if (this.approachVerticalArmed === "GP") {
+                return 1;
             }
-            if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 0) {
+            else if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 0) {
                 return 3;
-            }
-            if (ApproachStatus.isFlareArmed) {
-                return 0;
             }
             return -1;
         }

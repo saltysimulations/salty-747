@@ -118,7 +118,7 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
         }
         else if (_event.indexOf("AP_LOC_ARM") != -1) {
-            this._navModeSelector.onNavChangedEvent('APPR_PRESSED');
+            this._navModeSelector.onNavChangedEvent('LOC_PRESSED');
         }
         else if (_event.indexOf("AP_VNAV") != -1) {
             SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 1);
