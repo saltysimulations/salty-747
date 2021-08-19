@@ -1013,6 +1013,19 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
 
+            if ((SimVar.GetSimVarValue("A:AUTOPILOT MASTER", "bool") === 1) && (SimVar.GetSimVarValue("A:AUTOPILOT APPROACH HOLD", "bool") === 1) && (SimVar.GetSimVarValue("A:RADIO HEIGHT", "feet") < 100)) {
+                SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "Number", 1);
+                SimVar.SetSimVarValue("A:AUTOPILOT THROTTLE MAX THRUST", "Float", 0.01);
+                SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "Number", 1);
+                if (!SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
+                    SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "Number", 1);
+                    Coherent.call("AP_VS_VAR_SET_ENGLISH", 0, -200);
+                }
+                if (SimVar.GetSimVarValue("A:RADIO HEIGHT", "feet") < 20) {
+                    SimVar.SetSimVarValue("K:RUDDER_SET", "Number", ((SimVar.GetSimVarValue("A:NAV CDI", "number")) * 5));
+                }
+            }
+
             this._navModeSelector.generateInputDataEvents();
             this._navModeSelector.processEvents();
 
