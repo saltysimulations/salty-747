@@ -40,6 +40,9 @@
     /** The current armed approach mode. */
     this.currentArmedApproachVerticalState = VerticalNavModeState.NONE;
 
+    /** The current autothrottle mode. */
+    this.currentAutoThrottleStatus = AutoThrottleModeState.NONE;
+
     /** Whether or not VNAV is on. */
     this.isVNAVOn = false;
 
@@ -132,7 +135,8 @@
       [`${NavModeEvent.LOC_ACTIVE}`]: this.handleLocActive.bind(this),
       [`${NavModeEvent.LNAV_ACTIVE}`]: this.handleLNAVActive.bind(this),
       [`${NavModeEvent.FD_TOGGLE}`]: this.handleFdToggle.bind(this),
-      [`${NavModeEvent.ALT_PRESSED}`]: this.handleAltPressed.bind(this)
+      [`${NavModeEvent.ALT_PRESSED}`]: this.handleAltPressed.bind(this),
+      [`${NavModeEvent.THROTTLE_TO_HOLD}`]: this.handleThrottleToHold.bind(this)
     };
 
     this.initialize();
@@ -249,9 +253,9 @@
       verticalMode: `${this.isVNAVOn && this.currentVerticalActiveState != 'TO' ? "V" : ""}${this.currentVerticalActiveState}`,
       altitudeArmed: this.currentArmedAltitudeState !== VerticalNavModeState.NONE ? this.currentArmedAltitudeState : "",
       vnavArmed: this.currentArmedVnavState !== VerticalNavModeState.NONE ? this.currentArmedVnavState : "",
-      approachVerticalArmed: this.currentArmedApproachVerticalState !== VerticalNavModeState.NONE ? this.currentArmedApproachVerticalState : ""
+      approachVerticalArmed: this.currentArmedApproachVerticalState !== VerticalNavModeState.NONE ? this.currentArmedApproachVerticalState : "",
+      autoThrottle: this.currentAutoThrottleStatus !== AutoThrottleModeState.NONE ? this.currentAutoThrottleStatus : ""
     };
-
     //WTDataStore.set('CJ4_fmaValues', JSON.stringify(fmaValues));
     localStorage.setItem("CJ4_fmaValues", JSON.stringify(fmaValues));
   }
@@ -435,7 +439,7 @@
         this.engagePitch();
         break;
     }
-
+    this.activateSpeedMode();
   }
 
   /**
@@ -566,7 +570,8 @@
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
-    this.checkVerticalSpeedActive();    
+    this.checkVerticalSpeedActive();
+    this.activateSpeedMode();   
   }
 
   /**
@@ -624,6 +629,8 @@
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+
+    this.activateThrustMode();
   }
 
   /**
@@ -1271,7 +1278,7 @@
     } else if (this.glideslopeState === GlideslopeStatus.GS_ACTIVE && !SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
       SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "number", 1);
     }
-
+    this.activateSpeedMode();
   }
 
   /**
@@ -1284,6 +1291,7 @@
         if (!SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
           SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "number", 1);
         }
+        this.activateSpeedMode();
         break;
     }
   }
@@ -1449,23 +1457,83 @@
    }
 
    activateThrustMode() {
-    let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-    let altitude = Simplane.getAltitude();
-    if (mcpAlt >= altitude + 2000) {
-        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
-        this.setThrottleMode(ThrottleMode.CLIMB);
+    if (this.currentAutoThrottleStatus === AutoThrottleModeState.THR) {
+      return;
     }
-    else if (mcpAlt + 2000 <= altitude) {
-        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 25);
-        this.setThrottleMode(ThrottleMode.CLIMB);
+     this.currentAutoThrottleStatus = AutoThrottleModeState.THR;
+     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.CLIMB);
+     let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+     let altitude = Simplane.getAltitude();
+     if (mcpAlt > altitude) {
+       SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 70);
+     }
+     else if (mcpAlt < altitude) {
+       SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 35);
+       setTimeout(() => {
+         if (this.currentAutoThrottleStatus === AutoThrottleModeState.THR) {
+          this.handleThrottleToHold();
+         }
+       }, 100000);
+     }
+   }
+
+   activateSpeedMode() {
+     if (this.currentAutoThrottleStatus === AutoThrottleModeState.SPD) {
+       return;
+     }
+     this.currentAutoThrottleStatus = AutoThrottleModeState.SPD;
+     SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 1);
+     if (Simplane.getAutoPilotMachModeActive()) {
+       let currentMach = Simplane.getAutoPilotMachHoldValue();
+       Coherent.call("AP_MACH_VAR_SET", 1, currentMach);
+       SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
+     }
+     else {
+       let currentSpeed = Simplane.getAutoPilotAirspeedHoldValue();
+       Coherent.call("AP_SPD_VAR_SET", 1, currentSpeed);
+       SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+     }
+     if (!Simplane.getAutoPilotMachModeActive()) {
+       if (!SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
+         console.log("OOs")
+         SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
+       }
+     }
+     else {
+       if (!SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
+         SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
+       }
+     }
+     SimVar.SetSimVarValue("K:AP_PANEL_SPEED_ON", "Number", 1);	
+     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+     SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 100);
+   }
+
+   activateThrustRefMode() {
+    if (this.currentAutoThrottleStatus === AutoThrottleModeState.THRREF) {
+      return;
     }
-    else {
-        this.activateSPD();
+     this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
+     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
+     SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 100);
+   }
+
+   handleThrottleToHold() {
+    if (this.currentAutoThrottleStatus === AutoThrottleModeState.HOLD) {
+      return;
     }
-  }
+     this.currentAutoThrottleStatus = AutoThrottleModeState.HOLD;
+     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
+   }
 }
 
-
+class AutoThrottleModeState { }
+AutoThrottleModeState.NONE = 'NONE';
+AutoThrottleModeState.THRREF = 'THRREF';
+AutoThrottleModeState.THR = 'THR';
+AutoThrottleModeState.SPD = 'SPD';
+AutoThrottleModeState.IDLE = 'IDLE';
+AutoThrottleModeState.HOLD = 'HOLD';
 
 class LateralNavModeState { }
 LateralNavModeState.NONE = 'NONE';
@@ -1539,6 +1607,7 @@ NavModeEvent.LOC_ACTIVE = 'loc_active';
 NavModeEvent.LNAV_ACTIVE = 'lnav_active';
 NavModeEvent.FD_TOGGLE = 'FD_TOGGLE';
 NavModeEvent.ALT_PRESSED = 'ALT_PRESSED';
+NavModeEvent.THROTTLE_TO_HOLD = 'throttle_to_hold';
 
 class WT_ApproachType { }
 WT_ApproachType.NONE = 'none';

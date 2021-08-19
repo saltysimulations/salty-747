@@ -1286,6 +1286,7 @@ class WT_VerticalAutopilot {
                 }
             }
         }
+        this._navModeSelector.activateSpeedMode();
     }
 
     storePriorVerticalModeState(mode, altitude) {
@@ -1392,17 +1393,6 @@ class WT_VerticalAutopilot {
                 }
                 if (this._navModeSelector.isAltitudeLocked) {
                     SimVar.SetSimVarValue("L:WT_CJ4_ALT_HOLD", "number", 0);
-                }
-                //ENGAGE A/T SPD MODE ON CAPTURING ALT
-                if (!Simplane.getAutoPilotMachModeActive()) {
-                    if (!SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
-                        SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
-                    }
-                }
-                else {
-                    if (!SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
-                        SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
-                    }
                 }
                 SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
                 SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);

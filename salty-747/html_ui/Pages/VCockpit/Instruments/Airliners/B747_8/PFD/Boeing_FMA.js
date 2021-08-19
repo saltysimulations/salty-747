@@ -113,7 +113,7 @@ var Boeing_FMA;
                 this.lateralArmed = parsedFmaValues.lateralArmed;
                 this.verticalMode = parsedFmaValues.verticalMode;
                 this.altitudeArmed = parsedFmaValues.altitudeArmed;
-                this.vnavArmed = parsedFmaValues.vnavArmed;
+                this.vnavArmed = parsedFmaValues.vnavArmed;  
                 this.approachVerticalArmed = parsedFmaValues.approachVerticalArmed;
             }
 
@@ -156,6 +156,11 @@ var Boeing_FMA;
             this.flagTOGA = false;
         }
         update(_deltaTime) {
+            const fmaValues = localStorage.getItem("CJ4_fmaValues");
+            if (fmaValues) {
+                const parsedFmaValues = JSON.parse(fmaValues);
+                this.autoThrottleStatus = parsedFmaValues.autoThrottle;    
+            }
             var left = Simplane.getAutoPilotThrottleArmed(1);
             var right = Simplane.getAutoPilotThrottleArmed(2);
             var mode = this.getActiveMode();
@@ -170,49 +175,22 @@ var Boeing_FMA;
             if (!Simplane.getAutoPilotThrottleArmed()) {
                 return -1;
             }
-            if (this.fma.aircraft == Aircraft.AS01B) {
-                if (SimVar.GetSimVarValue("L:AP_SPD_ACTIVE", "number") === 0) {
-                    return -1;
-                }
+            if (this.autoThrottleStatus == "SPD") {
+                return 2;
             }
-            if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
-                return -1;
-            }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.TOGA || (this.flagTOGA && (Simplane.getIndicatedSpeed() < 80 && Simplane.getIndicatedSpeed() > 65)) || (Simplane.getEngineThrottleMode(0) === ThrottleMode.CLIMB && Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && !Simplane.getAutoPilotAltitudeLockActive())) {
-                this.flagTOGA = true;
-                return 4;
-            }
-            if (Simplane.getIndicatedSpeed() < 65) {
-                return -1;
-            }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.IDLE) {
-                return 1;
-            }
-            if (Simplane.getAutoPilotFLCActive() && Simplane.getAutopilotThrottle(1) < 30) {
-                return 1;
-            }
-            if (Simplane.getAutoPilotFLCActive() && Simplane.getVerticalSpeed() < -50) {
+            else if (this.autoThrottleStatus == "THR" ) {
                 return 3;
             }
-            if (Simplane.getAutoPilotFLCActive() && Simplane.getVerticalSpeed() > 100) {
+            else if (this.autoThrottleStatus == "THR REF") {
                 return 4;
             }
-            if (Simplane.getEngineThrottleMode(0) === ThrottleMode.HOLD) {
+            else if (this.autoThrottleStatus == "HOLD") {
                 return 0;
             }
-            if (SimVar.GetSimVarValue("L:AP_FLCH_ACTIVE", "number") === 1) {
-                return 4;
+            else if (this.autoThrottleStatus == "IDLE") {
+                return 1;
             }
-            if (SimVar.GetSimVarValue("L:AP_SPD_ACTIVE", "number") === 1) {
-                return 2;
-            }
-            if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number") === 1) {
-                return 2;
-            }
-            if ((this.leftThrottleArmed || this.rightThrottleArmed) && Simplane.getAutoPilotThrottleActive()) {
-                return 3;
-            }
-            return 4;
+            return -1;
         }
 
         getCurrentModeText() {

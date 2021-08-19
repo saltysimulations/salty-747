@@ -1046,7 +1046,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (altitude > 400) {
                     this._pendingVNAVActivation = false;
                     this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
-                    this.activateThrustMode();
                 }
             }
             if (!Simplane.getAutoPilotAltitudeLockActive() && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") !== 1) {
