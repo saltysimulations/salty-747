@@ -357,11 +357,11 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            else if (this.verticalMode === "VALTS" || this.verticalMode === "VALTS CAP" || this.verticalMode === "VALT") {
-                return 9;
-            }
             else if (this.verticalMode === "VPATH" || this.verticalMode === "VALTV CAP" || this.verticalMode === "VALTV") {
                 return 7;
+            }
+            else if (this.verticalMode === "VALTS" || this.verticalMode === "VALTS CAP" || this.verticalMode === "VALT") {
+                return 9;
             }
             else if (this.verticalMode === "VFLC") {
                 return 8;
@@ -375,7 +375,7 @@ var Boeing_FMA;
             else if (this.verticalMode === "VS") {
                 return 10;
             }
-            else if (this.verticalMode === "TO") {
+            else if (this.verticalMode === "TO" || this.verticalMode === "GA") {
                 return 6;
             }
             else if (this.verticalMode === "GP") {

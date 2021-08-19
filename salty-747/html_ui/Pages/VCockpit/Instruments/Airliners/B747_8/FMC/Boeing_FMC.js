@@ -128,7 +128,6 @@ class Boeing_FMC extends FMCMainDisplay {
             }
             else {
                 this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
-                this.activateThrustMode();
             }
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
@@ -196,21 +195,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("EXEC") != -1) {
             this.onExec();
-        }
-    }
-    activateThrustMode() {
-        let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-        let altitude = Simplane.getAltitude();
-        if (mcpAlt >= altitude + 2000) {
-            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
-            this.setThrottleMode(ThrottleMode.CLIMB);
-        }
-        else if (mcpAlt + 2000 <= altitude) {
-            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 25);
-            this.setThrottleMode(ThrottleMode.CLIMB);
-        }
-        else {
-            this.activateSPD();
         }
     }
     getIsLNAVArmed() {

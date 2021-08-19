@@ -1027,7 +1027,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this.activateSPD();
                 }
             }
-            if (this._pendingLNAVActivation) {
+            /*if (this._pendingLNAVActivation) {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude > 50) {
                     this._pendingLNAVActivation = false;
@@ -1040,7 +1040,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this._pendingLNAVActivation = false;
                     this.doActivateLNAV();
                 }
-            }
+            }*/
             if (this._pendingVNAVActivation) {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude > 400) {
