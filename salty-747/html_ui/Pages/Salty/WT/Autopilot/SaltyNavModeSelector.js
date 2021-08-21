@@ -1461,19 +1461,19 @@
       return;
     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.THR;
-     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.CLIMB);
      let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
      let altitude = Simplane.getAltitude();
      if (mcpAlt > altitude) {
-       SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 70);
+      SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 80);
+      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
      }
      else if (mcpAlt < altitude) {
-       SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 35);
        setTimeout(() => {
-         if (this.currentAutoThrottleStatus === AutoThrottleModeState.THR) {
+         if (this.currentAutoThrottleStatus === AutoThrottleModeState.THR || this.currentAutoThrottleStatus === AutoThrottleModeState.IDLE) {
           this.handleThrottleToHold();
          }
-       }, 100000);
+       }, 20000);
+       this.activateIdleMode();
      }
    }
 
@@ -1495,7 +1495,6 @@
      }
      if (!Simplane.getAutoPilotMachModeActive()) {
        if (!SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
-         console.log("OOs")
          SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
        }
      }
@@ -1515,7 +1514,8 @@
     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
-     SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 100);
+     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 100);
+     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
 
    handleThrottleToHold() {
@@ -1523,7 +1523,17 @@
       return;
     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.HOLD;
+     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
+   }
+
+   activateIdleMode() {
+    if (this.currentAutoThrottleStatus === AutoThrottleModeState.IDLE) {
+      return;
+    }
+     this.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
+     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 23.2);
+     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
 }
 
