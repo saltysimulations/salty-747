@@ -464,6 +464,7 @@
       case VerticalNavModeState.GP:
         this.currentVerticalActiveState = VerticalNavModeState.VS;
         this.engageVerticalSpeed();
+        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         break;
       case VerticalNavModeState.VS:
         break;
@@ -495,8 +496,10 @@
       case VerticalNavModeState.GP:
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
         this.engageFlightLevelChange();
+        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         break;
       case VerticalNavModeState.FLC:
+        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         break; 
     }
     this.isVNAVOn = false;
@@ -643,6 +646,7 @@
       }
       else {
         this.isVNAVOn = true;
+        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 2);
       }
       SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", this.isVNAVOn ? 1 : 0);
       SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", this.isVNAVOn ? 1 : 0);
