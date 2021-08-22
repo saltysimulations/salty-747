@@ -627,8 +627,8 @@
     SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
-    SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
-    SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+    //SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
+    //SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
 
     this.activateThrustMode();
   }

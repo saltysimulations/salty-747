@@ -1048,7 +1048,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
                 }
             }
-            if (!Simplane.getAutoPilotAltitudeLockActive() && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") !== 1) {
+            if (this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.FLC) {
                 let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
             }
@@ -1174,14 +1174,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 this.setAPSpeedHoldMode();
             }
             */
-            if (this.getIsVNAVArmed() && !this.getIsVNAVActive()) {
-                if (Simplane.getAutoPilotThrottleArmed()) {
-                    if (!this._hasSwitchedToHoldOnTakeOff) {
-                        let speed = Simplane.getIndicatedSpeed();
-                        if (speed > 65) {
-                            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
-                            this._hasSwitchedToHoldOnTakeOff = true;
-                        }
+            if (Simplane.getAutoPilotThrottleArmed()) {
+                if (!this._hasSwitchedToHoldOnTakeOff) {
+                    let speed = Simplane.getIndicatedSpeed();
+                    if (speed > 65) {
+                        this._navModeSelector.handleThrottleToHold();
+                        this._hasSwitchedToHoldOnTakeOff = true;
                     }
                 }
             }

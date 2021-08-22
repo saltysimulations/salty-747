@@ -164,20 +164,7 @@ class Boeing_FMC extends FMCMainDisplay {
                     }
                     this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
-                if (mcpAlt == Math.round(altitude/100) * 100){
-                }
-                else if (!Simplane.getAutoPilotFLCActive()) {
-                    if (mcpAlt >= altitude + 2000) {
-                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", this.getThrustClimbLimit());
-                        this.setThrottleMode(ThrottleMode.CLIMB);
-                    }
-                    else if (mcpAlt + 2000 <= altitude) {
-                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 25);
-                        this.setThrottleMode(ThrottleMode.CLIMB);
-                    }
-                    else {
-                        this.activateSPD();
-                    }
+                if (mcpAlt !== Math.round(altitude/100) * 100){
                     this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
                 }
             }      
@@ -187,11 +174,7 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
             this.setAPSpeedHoldMode();
-            this.setThrottleMode(ThrottleMode.TOGA);
-            if (Simplane.getIndicatedSpeed() > 80) {
-                this.deactivateLNAV();
-                this.deactivateVNAV();
-            }
+            this._navModeSelector.activateThrustRefMode(); 
         }
         else if (_event.indexOf("EXEC") != -1) {
             this.onExec();
@@ -432,8 +415,6 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         SimVar.SetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number", 1);
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
-        if (this.aircraftType == Aircraft.AS01B)
-            this.activateSPD();
     }
     deactivateSpeedIntervention() {
         this._isSpeedInterventionActive = false;
