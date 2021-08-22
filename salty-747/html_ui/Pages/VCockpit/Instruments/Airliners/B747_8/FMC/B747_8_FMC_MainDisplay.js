@@ -1048,7 +1048,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
                 }
             }
-            if (this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.FLC) {
+            /*if (this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.FLC) {
                 let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
             }

@@ -2262,7 +2262,7 @@
 					<TOOLTIPID>%((A:AUTOPILOT NAV1 LOCK, bool))%{if}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_LNAV_ON%{else}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_LNAV_OFF%{end}</TOOLTIPID>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Vertical_Navigation_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Vertical_Navigation_Template">
 					<NODE_ID>btn_autopilot_vnav</NODE_ID>
 					<ANIM_NAME>autopilot_push_vnav</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_vnav_seq1</EMISSIVE_NODE_ID>

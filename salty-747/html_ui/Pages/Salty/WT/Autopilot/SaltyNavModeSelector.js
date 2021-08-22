@@ -96,7 +96,7 @@
       altLocked: new ValueStateTracker(() => SimVar.GetSimVarValue("L:WT_CJ4_ALT_HOLD", "number") == 1, () => NavModeEvent.ALT_LOCK_CHANGED),
       simAltLocked: new ValueStateTracker(() => SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK", "Boolean"), () => NavModeEvent.SIM_ALT_LOCK_CHANGED),
       altSlot: new ValueStateTracker(() => SimVar.GetSimVarValue("AUTOPILOT ALTITUDE SLOT INDEX", "number"), () => NavModeEvent.ALT_SLOT_CHANGED),
-      selectedAlt1: new ValueStateTracker(() => SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR:1", "feet"), () => NavModeEvent.SELECTED_ALT1_CHANGED),
+      selectedAlt1: new ValueStateTracker(() => SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR:3", "feet"), () => NavModeEvent.SELECTED_ALT1_CHANGED),
       selectedAlt2: new ValueStateTracker(() => SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR:2", "feet"), () => NavModeEvent.SELECTED_ALT2_CHANGED),
       navmode: new ValueStateTracker(() => SimVar.GetSimVarValue("L:WT_CJ4_LNAV_MODE", "number"), () => NavModeEvent.NAV_MODE_CHANGED),
       hdg_lock: new ValueStateTracker(() => SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "Boolean"), () => NavModeEvent.HDG_LOCK_CHANGED),
@@ -463,6 +463,7 @@
       case VerticalNavModeState.PATH:
       case VerticalNavModeState.GP:
         this.currentVerticalActiveState = VerticalNavModeState.VS;
+        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
         this.engageVerticalSpeed();
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         break;
@@ -495,11 +496,13 @@
       case VerticalNavModeState.PATH:
       case VerticalNavModeState.GP:
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
-        this.engageFlightLevelChange();
+        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
+        this.engageFlightLevelChange();
         break;
       case VerticalNavModeState.FLC:
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
+        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
         break; 
     }
     this.isVNAVOn = false;

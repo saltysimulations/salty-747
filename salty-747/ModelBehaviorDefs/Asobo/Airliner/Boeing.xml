@@ -1418,4 +1418,45 @@
 		</UseTemplate>
 	</Template>
 
+	<Template Name="SALTY_AUTOPILOT_Push_Vertical_Navigation_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>VerticalNavigation</DEFAULT_NAME>
+			<ON_VNAV_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Default>
+					<EMISSIVE_DEFAULT_NAME>AUTOPILOT_Push_VerticalNavigation_Text</EMISSIVE_DEFAULT_NAME>
+				</Default>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_VNAV_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:WT_CJ4_VNAV_ON)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:WT_CJ4_VNAV_ON)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_VNAV)</SET_STATE_EXTERNAL>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(L:XMLVAR_VNAVButtonValue) ! (&gt;L:XMLVAR_VNAVButtonValue)</SET_STATE_EXTERNAL>
+					<EMISSIVE_CODE_ACTIVE>(L:XMLVAR_VNAVButtonValue)</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(L:XMLVAR_VNAVButtonValue)</IS_SWITCH_ON>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>VNAV_Mode</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_VERTICALNAVIGATION_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_VERTICALNAVIGATION_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
 </ModelBehaviors>
