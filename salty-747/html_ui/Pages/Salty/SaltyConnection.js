@@ -170,7 +170,7 @@ const getSimBriefPlan = (fmc, store, updateView) => {
         .catch(_err => {
             fmc.showErrorMessage("UNABLE TO LOAD CLEARANCE");
             fmc.simbrief.rteUplinkReady = true;
-            fmc.simbrief.perfUplinkReady = true;
+            fmc.simbrief.perfUplinkReady = false;
             updateView();
         });
 }
@@ -386,6 +386,40 @@ const getFplnFromSimBrief = async (fmc) => {
         addWaypoint();
     };
 
+    const loadPerf = () => {
+        fmc.simbrief["units"] = json.params.units;
+        fmc.simbrief["route"] = json.general.route;
+        fmc.simbrief["cruiseAltitude"] = json.general.initial_altitude;
+        fmc.simbrief["originIcao"] = json.origin.icao_code;
+        fmc.simbrief["destinationIcao"] = json.destination.icao_code;
+        fmc.simbrief["blockFuel"] = json.fuel.plan_ramp;
+        fmc.simbrief["payload"] = json.weights.payload;
+        fmc.simbrief["estZfw"] = json.weights.est_zfw;
+        fmc.simbrief["costIndex"] = json.general.costindex;
+        fmc.simbrief["navlog"] = json.navlog.fix;
+        fmc.simbrief["icao_airline"] = typeof json.general.icao_airline === 'string' ? json.general.icao_airline : "";
+        fmc.simbrief["flight_number"] = json.general.flight_number;
+        fmc.simbrief["alternateIcao"] = json.alternate.icao_code;
+        fmc.simbrief["avgTropopause"] = json.general.avg_tropopause;
+        /* TIMES */
+        fmc.simbrief["ete"] = json.times.est_time_enroute;
+        fmc.simbrief["blockTime"] = json.times.est_block;
+        fmc.simbrief["outTime"] = json.times.est_out;
+        fmc.simbrief["onTime"] = json.times.est_on;
+        fmc.simbrief["inTime"] = json.times.est_in;
+        fmc.simbrief["offTime"] = json.times.est_off;
+        /* FUEL */
+        fmc.simbrief["taxiFuel"] = json.fuel.taxi;
+        fmc.simbrief["tripFuel"] = json.fuel.enroute_burn;
+        fmc.simbrief["altnFuel"] = json.fuel.alternate_burn;
+        fmc.simbrief["finResFuel"] = json.fuel.reserve;
+        fmc.simbrief["contFuel"] = json.fuel.contingency;
+        /* DISTANCE */
+        fmc.simbrief["route_distance"] = json.general.route_distance;
+        fmc.simbrief.rteUplinkReady = true;
+        fmc.simbrief.perfUplinkReady = true;
+    };
+
     WTUtils.loadFile(url, (r) => {
         json = JSON.parse(r);
         if (!json || json === "") {
@@ -406,6 +440,7 @@ const getFplnFromSimBrief = async (fmc) => {
         fmc.flightPlanManager.pauseSync();
         cleanSimBriefRoute();
         updateFrom();
+        loadPerf(); // get the perf data for import
     }, () => {
         // wrong pilot id is the most obvious error here, so lets show that
         fmc.setMsg("WRONG PILOT ID");
@@ -420,13 +455,20 @@ const insertPerfUplink = (fmc, updateView) => {
     let units;
     if (fmc.simbrief.units == "kgs") {
         units = false;
-    } else if (fmc.units == "lbs") {
+    } else if (fmc.simbrief.units == "lbs") {
         units = true;
     }
     const zfw = (fmc.simbrief.estZfw / 1000).toString();
     const crz = fmc.simbrief.cruiseAltitude;
     const costIndex = fmc.simbrief.costIndex.toString();
     const resFuel = (parseFloat(fmc.simbrief.finResFuel) + parseFloat(fmc.simbrief.altnFuel)).toFixed(1) / 1000;
+    const blockFuel = parseFloat(fmc.simbrief.blockFuel) / 1000;
+
+    fmc.trySetBlockFuel(blockFuel, units, (result) => {
+        if (!result) {
+            fmc.showErrorMessage("INVALID PERF INIT UPLINK");
+        }
+    });
     fmc.trySetZeroFuelWeightZFWCG(zfw, units, (result) => {
         if (!result) {
             fmc.showErrorMessage("INVALID PERF INIT UPLINK");

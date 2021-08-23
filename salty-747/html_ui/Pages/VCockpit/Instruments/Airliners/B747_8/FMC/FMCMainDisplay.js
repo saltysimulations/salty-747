@@ -1380,10 +1380,11 @@ class FMCMainDisplay extends BaseAirliners {
     setZeroFuelWeight(s, callback = EmptyCallback.Boolean, useLbs = false) {
         let value = parseFloat(s);
         if (isFinite(value)) {
-            if (!useLbs) {
-                value = value * 2.204623;
+            if (useLbs) {
+                value = value / 2.204623;
             }
             Coherent.call("ZFW_VALUE_SET", value * 1000);
+            this.zeroFuelWeight = value;
             this.updateFuelVars();
             this.updateTakeOffTrim();
             return callback(true);
@@ -1407,14 +1408,15 @@ class FMCMainDisplay extends BaseAirliners {
         if (s) {
             let sSplit = s.split("/");
             zfw = parseFloat(sSplit[0]);
-            if (!useLbs) {
-                zfw = zfw * 2.204623;
+            if (useLbs) {
+                zfw = zfw / 2.204623;
             }
             zfwcg = parseFloat(sSplit[1]);
         }
         if (isFinite(zfw) || isFinite(zfwcg) && zfw > 0 && zfwcg > 0) {
             if (isFinite(zfw)) {
                 Coherent.call("ZFW_VALUE_SET", zfw * 1000);
+                this.zeroFuelWeight = zfw;
                 this.updateFuelVars();
             }
             if (isFinite(zfwcg)) {

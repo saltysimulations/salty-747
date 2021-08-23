@@ -133,7 +133,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             contFuel: "",
             route_distance: "",
             rteUplinkReady: false,            
-            perfUplinkReady: false
+            perfUplinkReady: false,
+            perfSending: false
         }
         this.fixInfo = [];
         this.pdc = {
