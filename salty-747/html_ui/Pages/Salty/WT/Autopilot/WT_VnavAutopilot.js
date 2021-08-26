@@ -336,11 +336,11 @@ class WT_VerticalAutopilot {
                     break;
                 }
                 if (!this.canPathActivate(true) && this._pathInterceptStatus !== PathInterceptStatus.LEVELING && this._pathInterceptStatus !== PathInterceptStatus.LEVELED) {
-                    this.setVerticalNavModeState(VerticalNavModeState.PTCH);
+                    this.setVerticalNavModeState(VerticalNavModeState.FLC);
                     this._vnavPathStatus = VnavPathStatus.NONE;
                     this.vsSlot = 1;
                     this.currentAltitudeTracking = AltitudeState.SELECTED;
-                    this._navModeSelector.engagePitch();
+                    this._navModeSelector.engageFlightLevelChange();
                 }
                 this.checkAndSetTrackedAltitude(this._vnavPathStatus);
                 this.followPath();
@@ -499,16 +499,18 @@ class WT_VerticalAutopilot {
                     break;
                 }
                 if (this.path.fpa !== undefined && this.path.fpa == 0 && this.nextPath.fpa !== undefined && this.nextPath.fpa != 0) {
-                    if (this.nextPath.deviation <= 1000 && this.selectedAltitude < this.indicatedAltitude - 100) {
+                    return true;
+                    /*if (this.nextPath.deviation <= 1000 && this.selectedAltitude < this.indicatedAltitude - 100) {
                         return true;
-                    }
+                    }*/
                 }
                 if (this.firstPossibleDescentIndex && this._vnav.flightplan.activeWaypointIndex >= this.firstPossibleDescentIndex) {
                     const distance = this._vnav.getDistanceToTarget();
                     const altitudeDifference = this.indicatedAltitude - this._vnav.getTargetAltitude();
                     const requiredFpa = AutopilotMath.calculateFPA(altitudeDifference, distance);
                     const reqVs = AutopilotMath.calculateVerticaSpeed(requiredFpa, this.groundSpeed);
-                    if (this.path.deviation <= 1000 && altitudeDifference > 100 && this.distanceToTod < 20
+                    return true;
+                    /*if (this.path.deviation <= 1000 && altitudeDifference > 100 && this.distanceToTod < 20
                         && this.selectedAltitude < this.indicatedAltitude - 100 && (this.selectedAltitude < this.lockedAltitude - 100 || this.lockedAltitude === undefined)) {
                         return true;
                     } else if (this.path.deviation > 1000 && this.selectedAltitude < this.indicatedAltitude - 100) {
@@ -517,10 +519,9 @@ class WT_VerticalAutopilot {
                         } else {
                             if (this._navModeSelector.currentArmedVnavState !== VerticalNavModeState.NOPATH) {
                                 this.setArmedVnavVerticalState(VerticalNavModeState.NOPATH);
-                                console.log("532")
                             }
                         }
-                    }
+                    }*/
                 }
         }
         return false;
@@ -528,13 +529,13 @@ class WT_VerticalAutopilot {
 
     canPathActivate(alreadyActive = false) {
         if (!alreadyActive) {
-            const gsBasedDeviation = -1 * (((this.groundSpeed && this.groundSpeed > 100 ? this.groundSpeed : 200) * (4 / 11)) + (750/11));
-            if (this.path.fpa != 0 && this.path.deviation < 1000 && this.path.deviation > gsBasedDeviation) {
+            //const gsBasedDeviation = -1 * (((this.groundSpeed && this.groundSpeed > 100 ? this.groundSpeed : 200) * (4 / 11)) + (750/11));
+            if (this.path.fpa != 0 && this.path.deviation < 150 && this.path.deviation > -150) {
                 return true;
             }
             return false;
         } else {
-            if (this.path.fpa != 0 && this.path.deviation < 1000 && this.path.deviation > -1000) {
+            if (this.path.fpa != 0 && this.path.deviation < 150 && this.path.deviation > -150) {
                 return true;
             }
             return false;

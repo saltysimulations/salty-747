@@ -428,6 +428,7 @@
         this.currentVerticalActiveState = VerticalNavModeState.ALT;
         Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, this.pressureAltitudeTarget, true);
         SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
+        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         break;
       case VerticalNavModeState.ALTCAP:
       case VerticalNavModeState.ALTVCAP:
@@ -437,6 +438,7 @@
       case VerticalNavModeState.ALT:
         this.currentVerticalActiveState = VerticalNavModeState.PTCH;
         this.engagePitch();
+                SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         break;
     }
     this.activateSpeedMode();
@@ -464,6 +466,8 @@
       case VerticalNavModeState.GP:
         this.currentVerticalActiveState = VerticalNavModeState.VS;
         SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
+        SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
+        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         this.engageVerticalSpeed();
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         break;
@@ -498,6 +502,7 @@
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
         SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
+        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         this.engageFlightLevelChange();
         break;
       case VerticalNavModeState.FLC:
@@ -575,7 +580,6 @@
     SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 1);
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
-    SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
     this.checkVerticalSpeedActive();
     this.activateSpeedMode();   
   }
@@ -1471,6 +1475,10 @@
      let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
      let altitude = Simplane.getAltitude();
      if (mcpAlt > altitude) {
+      if (SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "bool")) {
+        this.activateThrustRefMode();
+        return;
+      }
       SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 80);
       SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
      }
@@ -1488,16 +1496,21 @@
      if (this.currentAutoThrottleStatus === AutoThrottleModeState.SPD) {
        return;
      }
+     let slot = 1;
+     if (this.isVNAVOn) {
+      slot = 2;
+      console.log("SLOT2")
+     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.SPD;
      SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 1);
      if (Simplane.getAutoPilotMachModeActive()) {
        let currentMach = Simplane.getAutoPilotMachHoldValue();
-       Coherent.call("AP_MACH_VAR_SET", 1, currentMach);
+       Coherent.call("AP_MACH_VAR_SET", slot, currentMach);
        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
      }
      else {
        let currentSpeed = Simplane.getAutoPilotAirspeedHoldValue();
-       Coherent.call("AP_SPD_VAR_SET", 1, currentSpeed);
+       Coherent.call("AP_SPD_VAR_SET", slot, currentSpeed);
        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
      }
      if (!Simplane.getAutoPilotMachModeActive()) {
@@ -1512,7 +1525,6 @@
      }
      SimVar.SetSimVarValue("K:AP_PANEL_SPEED_ON", "Number", 1);	
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
-     SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", 100);
    }
 
    activateThrustRefMode() {
@@ -1521,7 +1533,7 @@
     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
-     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 100);
+     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 85);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
 

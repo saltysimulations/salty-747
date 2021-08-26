@@ -1746,20 +1746,15 @@ class FMCMainDisplay extends BaseAirliners {
                 if (isFinite(cruiseFlightLevel)) {
                     if (altitude < 0.90 * cruiseFlightLevel && !this._isStepClimbing) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
-                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                         this.flightPhaseHasChangedToDescent = true;
                     }
                 }
-                //Force DESCENT flight phase if at approx TOD based on CRZ level
+                //descent phase when passing calculated TOD
                 let destination = this.flightPlanManager.getDestination();
                 if (destination) {
-                    let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-                    let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-                    let planeLla = new LatLongAlt(lat, long);
-                    let dist = Avionics.Utils.computeGreatCircleDistance(destination.infos.coordinates, planeLla);
-                    if (dist < (cruiseFlightLevel / 6076 * 20) + 10) {
+                    let todDistance = SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number");
+                    if (todDistance < 1 && todDistance !== 0) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
-                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                     }
                 }
             }

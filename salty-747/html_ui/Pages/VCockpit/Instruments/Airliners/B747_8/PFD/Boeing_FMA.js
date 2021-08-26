@@ -332,13 +332,14 @@ var Boeing_FMA;
     Boeing_FMA.Column2Bottom = Column2Bottom;
     class Column3Top extends Annunciation {
         getActiveMode() {
-            let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+            let targetAlt = SimVar.GetSimVarValue("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
             let crzAlt = SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number");
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
             else if (this.verticalMode === "VPATH" || this.verticalMode === "VALTV CAP" || this.verticalMode === "VALTV" 
-                || (this.verticalMode === "VALTS" && (mcpAlt === crzAlt))) {
+                || this.verticalMode === "VALTS" && (targetAlt === crzAlt)
+                || this.verticalMode === "VALTS CAP" && (targetAlt === crzAlt)) {
                 return 7;
             }
             else if (this.verticalMode === "VALTS" || this.verticalMode === "VALTS CAP" || this.verticalMode === "VALT") {
@@ -396,7 +397,7 @@ var Boeing_FMA;
             else if (this.approachVerticalArmed === "GS") {
                 return 2;
             }
-            else if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number") === 0) {
+            else if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "number") === 0) {
                 return 3;
             }
             return -1;

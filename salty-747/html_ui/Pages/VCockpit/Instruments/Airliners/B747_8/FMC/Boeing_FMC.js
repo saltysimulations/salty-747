@@ -167,6 +167,9 @@ class Boeing_FMC extends FMCMainDisplay {
                 if (mcpAlt !== Math.round(altitude/100) * 100){
                     this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
                 }
+                if (SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number") < 50) {
+                    this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
+                }
             }      
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
