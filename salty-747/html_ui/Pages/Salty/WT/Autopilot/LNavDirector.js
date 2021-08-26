@@ -573,7 +573,7 @@ class LNavDirectorOptions {
     this.maxBankAngle = 25;
 
     /** The rate of bank in degrees per second. */
-    this.bankRate = 8;
+    this.bankRate = 3;
 
     /** The maximum turn angle in degrees to calculate turn anticipation to. */
     this.maxTurnAnticipationAngle = 110;

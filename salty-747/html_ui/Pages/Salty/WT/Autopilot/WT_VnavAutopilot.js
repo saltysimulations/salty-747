@@ -1074,7 +1074,7 @@ class WT_VerticalAutopilot {
         if (isGlidepathActive || isPathActive) {
             if (this._pathInterceptStatus === PathInterceptStatus.LEVELED) {
                 newSnowflakeStatus = false;
-            } else if (this.path.deviation && Math.abs(this.path.deviation) < 1000) {
+            } else if (this.path.deviation) {
                 newSnowflakeStatus = true;
             } else {
                 newSnowflakeStatus = false;

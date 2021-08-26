@@ -311,20 +311,20 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 this.deviationTextTop.style.visibility = "hidden";
                 this.deviationTextBottom.style.visibility = "visible";
                 if (absDeviation >= 100) {
-                    this.deviationTextBottom.textContent = Math.abs(Math.round(pathDeviation / 10) * 10).toFixed(0);
+                    this.deviationTextBottom.textContent = Math.min(Math.abs(Math.round(pathDeviation / 10) * 10), 9999).toFixed(0);
                 }
                 else {
-                    this.deviationTextBottom.textContent = pathDeviation.toFixed(0);
+                    this.deviationTextBottom.textContent = Math.min(pathDeviation.toFixed(0), 9999);
                 }
             }
             else {
                 this.deviationTextBottom.style.visibility = "hidden";
                 this.deviationTextTop.style.visibility = "visible";
                 if (absDeviation >= 100) {
-                    this.deviationTextTop.textContent = Math.abs(Math.round(pathDeviation / 10) * 10).toFixed(0);
+                    this.deviationTextTop.textContent = Math.min(Math.abs(Math.round(pathDeviation / 10) * 10), 9999).toFixed(0);
                 }
                 else {
-                    this.deviationTextTop.textContent = Math.abs(pathDeviation).toFixed(0);
+                    this.deviationTextTop.textContent = Math.min(Math.abs(pathDeviation), 9999).toFixed(0);
                 }
             }
             if (absDeviation <= 20) {

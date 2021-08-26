@@ -85,6 +85,9 @@
     /** The pressure/locked altitude value for WT Vertical AP. */
     this.pressureAltitudeTarget = undefined;
 
+    /** Flag for Early VNAV Descent */
+    this.isEarlyDescent = false;
+
     /**
      * The queue of state change events to process.
      * @type {string[]}
@@ -291,9 +294,9 @@
       if (SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "number") != 1) {
         SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 1);
       }
-
       SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
       SimVar.SetSimVarValue("AUTOPILOT APPROACH ACTIVE", "bool", 1);
+      Coherent.call("HEADING_BUG_SET", 1, SimVar.GetSimVarValue(`NAV LOCALIZER:3`, 'Degrees'));
     }
   }
 
@@ -1475,7 +1478,7 @@
      let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
      let altitude = Simplane.getAltitude();
      if (mcpAlt > altitude) {
-      if (SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "bool")) {
+      if (SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "bool") === 1) {
         this.activateThrustRefMode();
         return;
       }
@@ -1483,14 +1486,21 @@
       SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
      }
      else if (mcpAlt < altitude) {
-       setTimeout(() => {
-         if (this.currentAutoThrottleStatus === AutoThrottleModeState.THR || this.currentAutoThrottleStatus === AutoThrottleModeState.IDLE) {
-          this.handleThrottleToHold();
-         }
-       }, 20000);
-       this.activateIdleMode();
-     }
-   }
+        setTimeout(() => {
+          if (this.currentAutoThrottleStatus === AutoThrottleModeState.THR || this.currentAutoThrottleStatus === AutoThrottleModeState.IDLE) {
+            this.handleThrottleToHold();
+          }
+        }, 20000);
+        if (this.isEarlyDescent) {
+          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 60);
+          SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
+          this.isEarlyDescent = false;
+          }
+        else {
+          this.activateIdleMode();
+        }
+      }
+    }
 
    activateSpeedMode() {
      if (this.currentAutoThrottleStatus === AutoThrottleModeState.SPD) {
