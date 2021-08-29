@@ -351,7 +351,7 @@ class WT_VerticalAutopilot {
             case GlidepathStatus.NONE:
                 break;
             case GlidepathStatus.GP_CAN_ARM:
-                if (this.lateralMode === LateralNavModeState.APPR && this.approachMode === WT_ApproachType.RNAV) {
+                if (this.lateralMode === LateralNavModeState.APPR && this.approachMode === WT_ApproachType.RNAV && SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1) {
                     this._glidepathStatus = GlidepathStatus.GP_ARMED;
                     console.log("GP Armed");
                 }
@@ -383,13 +383,11 @@ class WT_VerticalAutopilot {
             case GlideslopeStatus.NONE:
                 break;
             case GlideslopeStatus.GS_CAN_ARM:
-                if (this.lateralMode === LateralNavModeState.APPR && this.approachMode !== WT_ApproachType.RNAV) {
+                if (this.lateralMode === LateralNavModeState.APPR && this.approachMode !== WT_ApproachType.RNAV && SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1) {
                     this._glideslopeStatus = GlideslopeStatus.GS_ARMED;
-                    console.log("A")
                 }
                 break;
             case GlideslopeStatus.GS_ARMED:
-                console.log("B")
                 if (this.lateralMode !== LateralNavModeState.APPR || this.approachMode !== WT_ApproachType.ILS && this.navMode < 1) {
                     console.log("GS Canceled");
                     this.cancelGlideslope();
@@ -404,7 +402,6 @@ class WT_VerticalAutopilot {
                 }
                 break;
             case GlideslopeStatus.GS_ACTIVE:
-                console.log("C")
                 if (this.lateralMode !== LateralNavModeState.APPR || this.checkGlideslopeStatus(true) === GlideslopeStatus.NONE) {
                     this.cancelGlideslope();
                     break;

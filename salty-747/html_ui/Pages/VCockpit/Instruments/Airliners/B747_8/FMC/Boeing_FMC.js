@@ -118,7 +118,26 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('HDG_PRESSED');
         }
         else if (_event.indexOf("AP_LOC_ARM") != -1) {
+            if (SimVar.GetSimVarValue("L:AP_LOC_ARMED", "bool") === 0) {
+                SimVar.SetSimVarValue("L:AP_LOC_ARMED", "bool", 1);
+            }
+            else if (SimVar.GetSimVarValue("L:AP_LOC_ARMED", "bool") === 1) {
+                SimVar.SetSimVarValue("L:AP_LOC_ARMED", "bool", 0);
+            }
             this._navModeSelector.onNavChangedEvent('LOC_PRESSED');
+        }
+        else if (_event.indexOf("AP_APP_ARM") != -1) {
+            if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 0) {
+                SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 1);
+            }
+            else if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1 
+            && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GP
+            && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GS) {
+                SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 0);
+            }
+            if (SimVar.GetSimVarValue("L:AP_LOC_ARMED", "bool") === 0) {
+                this._navModeSelector.onNavChangedEvent('LOC_PRESSED');
+            }
         }
         else if (_event.indexOf("AP_VNAV") != -1) {
             SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 1);

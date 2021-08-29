@@ -29,13 +29,6 @@ var Boeing;
                 this.allAnnunciations.push(new Boeing_FMA.Column3Top(this, this.querySelector("#COL3_TOP"), this.querySelector("#COL3_TOP_HIGHLIGHT")));
                 this.allAnnunciations.push(new Boeing_FMA.Column3Middle(this, this.querySelector("#COL3_MIDDLE"), null));
             }
-            this.approachActive = "";
-            this.lateralMode = "";
-            this.lateralArmed = "";
-            this.verticalMode = "";
-            this.altitudeArmed = "";
-            this.vnavArmed = "";
-            this.approachVerticalArmed = "";
             this.isInitialised = true;
         }
         update(_deltaTime) {
@@ -103,6 +96,14 @@ var Boeing_FMA;
             this.fma = _fma;
             this.divElement = _divElement;
             this.highlightElement = _highlightElement;
+            this.approachActive = "";
+            this.lateralMode = "";
+            this.lateralArmed = "";
+            this.verticalMode = "";
+            this.altitudeArmed = "";
+            this.vnavArmed = "";
+            this.approachVerticalArmed = "";
+            this.approachType = "";
         }
         update(_deltaTime) {
             const fmaValues = localStorage.getItem("CJ4_fmaValues");
@@ -115,6 +116,7 @@ var Boeing_FMA;
                 this.altitudeArmed = parsedFmaValues.altitudeArmed;
                 this.vnavArmed = parsedFmaValues.vnavArmed;  
                 this.approachVerticalArmed = parsedFmaValues.approachVerticalArmed;
+                this.approachType = parsedFmaValues.approachType;
             }
 
             var mode = this.getActiveMode();
@@ -159,7 +161,9 @@ var Boeing_FMA;
             const fmaValues = localStorage.getItem("CJ4_fmaValues");
             if (fmaValues) {
                 const parsedFmaValues = JSON.parse(fmaValues);
-                this.autoThrottleStatus = parsedFmaValues.autoThrottle;    
+                this.autoThrottleStatus = parsedFmaValues.autoThrottle;
+                this.approachType = parsedFmaValues.approachType;
+                console.log(this.approachType)
             }
             var left = Simplane.getAutoPilotThrottleArmed(1);
             var right = Simplane.getAutoPilotThrottleArmed(2);
@@ -393,11 +397,13 @@ var Boeing_FMA;
             if(!Simplane.getAutoPilotActive(0) && !Simplane.getAutoPilotFlightDirectorActive(1)){
                 return -1;
             }
-            else if (this.approachVerticalArmed === "GP") {
-                return 1;
-            }
-            else if (this.approachVerticalArmed === "GS") {
-                return 2;
+            else if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1) {
+                if (this.approachType === "rnav" && this.verticalMode !== "GP") {
+                    return 1;
+                }
+                else if (this.approachType === "ils" && this.verticalMode !== "GS") {
+                    return 2;
+                }
             }
             else if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 1 && SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "number") === 0) {
                 return 3;

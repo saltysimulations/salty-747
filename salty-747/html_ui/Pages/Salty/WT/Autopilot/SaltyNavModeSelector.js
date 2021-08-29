@@ -257,7 +257,8 @@
       altitudeArmed: this.currentArmedAltitudeState !== VerticalNavModeState.NONE ? this.currentArmedAltitudeState : "",
       vnavArmed: this.currentArmedVnavState !== VerticalNavModeState.NONE ? this.currentArmedVnavState : "",
       approachVerticalArmed: this.currentArmedApproachVerticalState !== VerticalNavModeState.NONE ? this.currentArmedApproachVerticalState : "",
-      autoThrottle: this.currentAutoThrottleStatus !== AutoThrottleModeState.NONE ? this.currentAutoThrottleStatus : ""
+      autoThrottle: this.currentAutoThrottleStatus !== AutoThrottleModeState.NONE ? this.currentAutoThrottleStatus : "",
+      approachType: this.approachMode !== WT_ApproachType.NONE ? this.approachMode : ""
     };
     //WTDataStore.set('CJ4_fmaValues', JSON.stringify(fmaValues));
     localStorage.setItem("CJ4_fmaValues", JSON.stringify(fmaValues));
@@ -761,16 +762,24 @@
         //SET LATERAL
         SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
         SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 1);
-        Coherent.call("HEADING_BUG_SET", 2, SimVar.GetSimVarValue('PLANE HEADING DEGREES MAGNETIC', 'Degrees'));
         this.currentLateralActiveState = LateralNavModeState.TO;
       } else {
         if (this.isVNAVOn) {
           this.isVNAVOn = false;
+          SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+          SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
           SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
           SimVar.SetSimVarValue("K:ALTITUDE_SLOT_INDEX_SET", "number", 2);
           SimVar.SetSimVarValue("K:VS_SLOT_INDEX_SET", "number", 1);
         }
         this.currentVerticalActiveState = VerticalNavModeState.GA;
+        
+        SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 0);
+        SimVar.SetSimVarValue("L:AP_LOC_ARMED", "bool", 0);
+        SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "bool", 0);
+        SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "bool", 0);
+        SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "bool", 0);
+        SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "bool", 0);
 
         //SET LATERAL
         if (SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "number") != 1) {
