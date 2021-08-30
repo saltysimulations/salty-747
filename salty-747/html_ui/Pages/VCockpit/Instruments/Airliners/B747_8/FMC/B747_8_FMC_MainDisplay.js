@@ -74,6 +74,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.modVfrRunway = false;
         this.deletedVfrLandingRunway = undefined;
         this.selectedWaypoint = undefined;
+        this.throttleHasIdled = false;
+        this.landingReverseAvail = false;
 
         //Timer for periodic page refresh
         this._pageRefreshTimer = null;
@@ -1056,6 +1058,23 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (altitude > 400) {
                     this._pendingVNAVActivation = false;
                     this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+                }
+            }
+            //IDLE at 25' RA if AT still engaged.
+            if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") >= 5) {
+                let altitude = Simplane.getAltitudeAboveGround();
+                if (altitude < 25 && !this.throttleHasIdled) {
+                    this._navModeSelector.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
+                    SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 0);
+                    SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
+                    this.throttleHasIdled = true;
+                }
+                if (Simplane.getIsGrounded() && this.landingReverseAvail === false) {
+                    setTimeout(() => {
+                        SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
+                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
+                      }, 1000);
+                    this.landingReverseAvail = true;
                 }
             }
             /*if (this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.FLC) {
