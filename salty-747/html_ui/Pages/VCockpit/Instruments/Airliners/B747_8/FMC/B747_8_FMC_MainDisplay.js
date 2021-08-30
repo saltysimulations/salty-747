@@ -249,7 +249,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     onInteractionEvent(args) {
         super.onInteractionEvent(args);
-
         const apPrefix = "B747_8_AP_";
         if (args[0].startsWith(apPrefix)) {
             this._navModeSelector.onNavChangedEvent(args[0].substring(apPrefix.length));
@@ -637,10 +636,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let altitude = Simplane.getAltitude();
         let desMode = SimVar.GetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum");
         let machMode = Simplane.getAutoPilotMachModeActive();
-        let speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        //let speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
+        let speed = 290;
         let isSpeedIntervention = SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number");
         if (_cduPageEconRequest) {
-            speed = Math.min(flapsUPmanueverSpeed + 100, 350);
             return speed;
         }
         if (altitude <= 10500) {
@@ -1001,6 +1000,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
 
+            this._navModeSelector.generateInputDataEvents();
+            this._navModeSelector.processEvents();
+
             //RUN VERTICAL AP ALWAYS
             if (this._currentVerticalAutopilot === undefined) {
                 this._currentVerticalAutopilot = new WT_VerticalAutopilot(this._vnav, this._navModeSelector);
@@ -1013,8 +1015,16 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
 
-            this._navModeSelector.generateInputDataEvents();
-            this._navModeSelector.processEvents();
+            // RUN SPEED RESTRICTION OBSERVER
+            if (this._speedObs === undefined) {
+                this._speedObs = new CJ4_SpeedObserver(this.flightPlanManager);
+            } else {
+                try {
+                    this._speedObs.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
             
             if (this._apHasDeactivated) {
                 this.deactivateVNAV();

@@ -178,10 +178,10 @@ class Boeing_FMC extends FMCMainDisplay {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
                     this._navModeSelector.isEarlyDescent = true;
                 }
-                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && mcpAlt > this.cruiseFlightLevel * 100) {
+                else if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB && mcpAlt > this.cruiseFlightLevel * 100) {
                     this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
-                if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
+                else if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
                     if (mcpAlt > this.cruiseFlightLevel * 100) {
                         this._isStepClimbing = true;
                     }

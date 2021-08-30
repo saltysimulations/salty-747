@@ -1500,7 +1500,7 @@
             this.handleThrottleToHold();
           }
         }, 20000);
-        if (this.isEarlyDescent) {
+        if (this.isEarlyDescent === true) {
           SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 60);
           SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
           this.isEarlyDescent = false;
@@ -1551,7 +1551,6 @@
       return;
     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
-     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
      SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 85);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
