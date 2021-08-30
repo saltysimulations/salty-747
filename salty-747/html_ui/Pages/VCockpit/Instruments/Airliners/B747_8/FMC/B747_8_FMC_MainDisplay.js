@@ -638,8 +638,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let altitude = Simplane.getAltitude();
         let desMode = SimVar.GetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum");
         let machMode = Simplane.getAutoPilotMachModeActive();
-        //let speed = Math.min(flapsUPmanueverSpeed + 100, 350, machlimit);
-        let speed = 290;
+        let speed = Math.min(flapsUPmanueverSpeed + 100, 290, machlimit);
         let isSpeedIntervention = SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number");
         if (_cduPageEconRequest) {
             return speed;
@@ -1039,20 +1038,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this.activateSPD();
                 }
             }
-            /*if (this._pendingLNAVActivation) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 50) {
-                    this._pendingLNAVActivation = false;
-                    this.doActivateLNAV();
-                }
-            }
-            if (this._isLNAVActive) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 50) {
-                    this._pendingLNAVActivation = false;
-                    this.doActivateLNAV();
-                }
-            }*/
             if (this._pendingVNAVActivation) {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude > 400) {
@@ -1073,136 +1058,11 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     setTimeout(() => {
                         SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
+                        this._navModeSelector.currentAutoThrottleStatus = AutoThrottleModeState.NONE;
                       }, 1000);
                     this.landingReverseAvail = true;
                 }
             }
-            /*if (this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.FLC) {
-                let targetAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-                Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, targetAlt, this._forceNextAltitudeUpdate);
-            }
-            /*if (this.getIsFLCHActive() && !Simplane.getAutoPilotGlideslopeActive() && !Simplane.getAutoPilotGlideslopeHold()) {
-                if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    this.activateAltitudeHold(true);
-                }
-            }
-            if (this.getIsVSpeedActive()) {
-                let targetAltitude = Simplane.getAutoPilotAltitudeLockValue();
-                let altitude = Simplane.getAltitude();
-                let deltaAltitude = Math.abs(targetAltitude - altitude);
-                if (deltaAltitude < 150) {
-                    this.activateAltitudeHold(true);
-                }
-            }
-            if (this._pendingHeadingSelActivation) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 400) {
-                    this._pendingHeadingSelActivation = false;
-                    this.doActivateHeadingSel();
-                }
-            }
-            if (this._pendingSPDActivation) {
-                let altitude = Simplane.getAltitudeAboveGround();
-                if (altitude > 400) {
-                    this._pendingSPDActivation = false;
-                    this.doActivateSPD();
-                }
-            }
-            if (Simplane.getAutoPilotGlideslopeActive()) {
-                if (this.getIsVNAVActive()) {
-                    this.deactivateVNAV();
-                }
-                if (this.getIsVSpeedActive()) {
-                    this.deactivateVSpeed();
-                }
-                if (this.getIsAltitudeHoldActive()) {
-                    this.deactivateAltitudeHold();
-                }
-                if (!this.getIsSPDActive()) {
-                    this.activateSPD();
-                }
-            }
-            SimVar.SetSimVarValue("SIMVAR_AUTOPILOT_AIRSPEED_MIN_CALCULATED", "knots", Simplane.getStallProtectionMinSpeed());
-            SimVar.SetSimVarValue("SIMVAR_AUTOPILOT_AIRSPEED_MAX_CALCULATED", "knots", Simplane.getMaxSpeed(Aircraft.B747_8));
-            let currentAltitude = Simplane.getAltitude();
-            let groundSpeed = Simplane.getGroundSpeed();
-            let apTargetAltitude = Simplane.getAutoPilotAltitudeLockValue("feet");
-            let planeHeading = Simplane.getHeadingMagnetic();
-            let planeCoordinates = new LatLong(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
-            if (this.currentFlightPhase >= FlightPhase.FLIGHT_PHASE_CLIMB) {
-                let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
-                if (activeWaypoint != this._activeWaypoint) {
-                    console.log("Update FMC Active Waypoint");
-                    if (this._activeWaypoint) {
-                        this._activeWaypoint.altitudeWasReached = Simplane.getAltitudeAboveGround();
-                        this._activeWaypoint.timeWasReached = SimVar.GetGlobalVarValue("LOCAL TIME", "seconds");
-                        this._activeWaypoint.fuelWasReached = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms") / 1000;
-                    }
-                    this._activeWaypoint = activeWaypoint;
-                }
-            }
-            if (this.getIsVNAVActive()) {
-                let prevWaypoint = this.flightPlanManager.getPreviousActiveWaypoint();
-                let nextWaypoint = this.flightPlanManager.getActiveWaypoint();
-                if (nextWaypoint && (nextWaypoint.legAltitudeDescription === 3 || nextWaypoint.legAltitudeDescription === 4)) {
-                    let targetAltitude = nextWaypoint.legAltitude1;
-                    if (nextWaypoint.legAltitudeDescription === 4) {
-                        targetAltitude = Math.max(nextWaypoint.legAltitude1, nextWaypoint.legAltitude2);
-                    }
-                    let showTopOfDescent = false;
-                    let topOfDescentLat;
-                    let topOfDescentLong;
-                    this._hasReachedTopOfDescent = true;
-                    if (currentAltitude > targetAltitude + 40) {
-                        let vSpeed = 3000;
-                        let descentDuration = Math.abs(targetAltitude - currentAltitude) / vSpeed / 60;
-                        let descentDistance = descentDuration * groundSpeed;
-                        let distanceToTarget = Avionics.Utils.computeGreatCircleDistance(prevWaypoint.infos.coordinates, nextWaypoint.infos.coordinates);
-                        showTopOfDescent = true;
-                        let f = 1 - descentDistance / distanceToTarget;
-                        topOfDescentLat = Avionics.Utils.lerpAngle(planeCoordinates.lat, nextWaypoint.infos.lat, f);
-                        topOfDescentLong = Avionics.Utils.lerpAngle(planeCoordinates.long, nextWaypoint.infos.long, f);
-                        if (distanceToTarget + 1 > descentDistance) {
-                            this._hasReachedTopOfDescent = false;
-                        }
-                    }
-                    if (showTopOfDescent) {
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 1);
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_LAT_TOP_DSCNT", "number", topOfDescentLat);
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_LONG_TOP_DSCNT", "number", topOfDescentLong);
-                    }
-                    else {
-                        SimVar.SetSimVarValue("L:AIRLINER_FMS_SHOW_TOP_DSCNT", "number", 0);
-                    }
-                }
-                let vertSpeed = Simplane.getVerticalSpeed();
-                let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-                let targetAlt = mcpAlt;
-                if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_CRUISE) {
-                    if (vertSpeed > 50) {
-                        targetAlt = Math.min(this.cruiseFlightLevel * 100, mcpAlt);
-                    }
-                    if (vertSpeed < 50) {
-                        targetAlt = Math.max(this.cruiseFlightLevel * 100, mcpAlt);
-                    }
-                }
-                if (isFinite(targetAlt) && Simplane.getAutoPilotFLCActive()) {
-                    Coherent.call("AP_ALT_VAR_SET_ENGLISH", 2, targetAlt, this._forceNextAltitudeUpdate);
-                    this._forceNextAltitudeUpdate = false;
-                    SimVar.SetSimVarValue("L:AP_CURRENT_TARGET_ALTITUDE_IS_CONSTRAINT", "number", 0);
-                }
-                //Triggers correct Autothrottle mode SPD when capturing in VNAV and cancels Step Climb active flag
-                if (Simplane.getAutoPilotAltitudeLockActive()) {
-                    this._isStepClimbing = false;
-                    if (Simplane.getAutoPilotThrottleArmed() && !this.getIsSPDActive()) {
-                        this.activateSPD();
-                    }
-                }
-            }
-            else if (!this.getIsFLCHActive() && this.getIsSPDActive()) {
-                this.setAPSpeedHoldMode();
-            }
-            */
             if (Simplane.getAutoPilotThrottleArmed()) {
                 if (!this._hasSwitchedToHoldOnTakeOff) {
                     let speed = Simplane.getIndicatedSpeed();
@@ -1215,31 +1075,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (this._isHeadingHoldActive) {
                 Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
             }
-            /*if (!this.flightPlanManager.isActiveApproach() && this.currentFlightPhase != FlightPhase.FLIGHT_PHASE_APPROACH) {
-                if (this.flightPlanManager.getWaypointsCount() > 3) {
-                    let activeWaypoint = this.flightPlanManager.getActiveWaypoint();
-                    let nextActiveWaypoint = this.flightPlanManager.getNextActiveWaypoint();
-                    if (activeWaypoint && nextActiveWaypoint) {
-                        let pathAngle = nextActiveWaypoint.bearingInFP - activeWaypoint.bearingInFP;
-                        while (pathAngle < 180) {
-                            pathAngle += 360;
-                        }
-                        while (pathAngle > 180) {
-                            pathAngle -= 360;
-                        }
-                        let absPathAngle = 180 - Math.abs(pathAngle);
-                        let airspeed = Simplane.getIndicatedSpeed();
-                        if (airspeed < 400) {
-                            let turnRadius = airspeed * 360 / (1091 * 0.36 / airspeed) / 3600 / 2 / Math.PI;
-                            let activateDistance = Math.pow(90 / absPathAngle, 1.6) * turnRadius * 1.2;
-                            let distanceToActive = Avionics.Utils.computeGreatCircleDistance(planeCoordinates, activeWaypoint.infos.coordinates);
-                            if (distanceToActive < activateDistance) {
-                                this.flightPlanManager.setActiveWaypointIndex(this.flightPlanManager.getActiveWaypointIndex() + 1);
-                            }
-                        }
-                    }
-                }
-            }*/
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 if (this.getIsVNAVActive()) {
                     let speed = this.getTakeOffManagedSpeed();

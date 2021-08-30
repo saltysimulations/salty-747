@@ -174,7 +174,7 @@ class Boeing_FMC extends FMCMainDisplay {
             if (this.getIsVNAVActive()) {
                 let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
-                if (SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number") < 50) {
+                if (SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number") < 50 && SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number") !== 0) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
                     this._navModeSelector.isEarlyDescent = true;
                 }

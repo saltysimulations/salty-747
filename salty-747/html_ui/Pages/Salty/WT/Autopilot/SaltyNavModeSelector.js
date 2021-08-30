@@ -1334,7 +1334,8 @@
 
     const approachName = approach ? approach.name : '';
 
-    if (approachName.startsWith('RN')) {
+    if (approachName.startsWith('RN') || (approachName.startsWith('NDB') 
+    || (approachName.startsWith('LOC') || (approachName.startsWith('VOR'))))) {
       this.approachMode = WT_ApproachType.RNAV;
       if (this.currentLateralActiveState === LateralNavModeState.APPR) {
         this.isVNAVOn = false;
@@ -1459,6 +1460,12 @@
            SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 0);
            break;
        }
+       SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 0);
+       SimVar.SetSimVarValue("L:AP_LOC_ARMED", "bool", 0);
+       SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "bool", 0);
+       SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "bool", 0);
+       SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "bool", 0);
+       SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "bool", 0);
        SimVar.SetSimVarValue("K:TOGGLE_FLIGHT_DIRECTOR", "number", 0);
      } else {
        SimVar.SetSimVarValue("K:TOGGLE_FLIGHT_DIRECTOR", "number", 1);
