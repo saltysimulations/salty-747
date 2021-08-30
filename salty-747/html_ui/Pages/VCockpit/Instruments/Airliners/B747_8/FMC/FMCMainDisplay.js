@@ -1718,6 +1718,7 @@ class FMCMainDisplay extends BaseAirliners {
                 let accelAlt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number");
                 if (alt > accelAlt) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
+                    this.togaSpeedSet = false;
                     enterClimbPhase = true;
                 }
                 if (enterClimbPhase) {

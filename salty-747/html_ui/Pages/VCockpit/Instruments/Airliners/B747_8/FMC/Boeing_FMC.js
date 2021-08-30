@@ -197,7 +197,8 @@ class Boeing_FMC extends FMCMainDisplay {
         }
         else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
             this.setAPSpeedHoldMode();
-            this._navModeSelector.activateThrustRefMode(); 
+            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
+            this._navModeSelector.activateThrustRefMode();
         }
         else if (_event.indexOf("EXEC") != -1) {
             this.onExec();
@@ -618,7 +619,7 @@ class Boeing_FMC extends FMCMainDisplay {
     }
     getTakeOffManagedSpeed() {
         if (this.v2Speed) {
-            return this.v2Speed;
+            return this.v2Speed + 10;
         }
         let takeoffSpeed = Simplane.getAutoPilotAirspeedHoldValue();
         return takeoffSpeed;

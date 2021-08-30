@@ -623,7 +623,7 @@
     if (SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
     }
     else if (!SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
-      SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE", "Number", 1);
+      SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
     }
     if (speed === undefined) {
       if (Simplane.getAutoPilotMachModeActive()) {
@@ -666,6 +666,9 @@
       if (this.currentVerticalActiveState === VerticalNavModeState.ALTCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTS
         || this.currentVerticalActiveState === VerticalNavModeState.ALTSCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTV
         || this.currentVerticalActiveState === VerticalNavModeState.ALTVCAP || this.currentVerticalActiveState === VerticalNavModeState.FLC) {
+      }
+      else if (this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA) {
+        this.currentVerticalActiveState = VerticalNavModeState.FLC;
       }
       else {
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
@@ -1508,7 +1511,7 @@
           }
         }, 20000);
         if (this.isEarlyDescent === true) {
-          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 60);
+          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 57.5);
           SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
           this.isEarlyDescent = false;
           }
@@ -1525,7 +1528,6 @@
      let slot = 1;
      if (this.isVNAVOn) {
       slot = 2;
-      console.log("SLOT2")
      }
      this.currentAutoThrottleStatus = AutoThrottleModeState.SPD;
      SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 1);
@@ -1558,7 +1560,7 @@
       return;
     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
-     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 85);
+     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 90);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
 

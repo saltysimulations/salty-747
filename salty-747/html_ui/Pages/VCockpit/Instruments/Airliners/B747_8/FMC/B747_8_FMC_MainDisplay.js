@@ -76,6 +76,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.selectedWaypoint = undefined;
         this.throttleHasIdled = false;
         this.landingReverseAvail = false;
+        this.togaSpeedSet = false;
 
         //Timer for periodic page refresh
         this._pageRefreshTimer = null;
@@ -1042,6 +1043,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude > 400) {
                     this._pendingVNAVActivation = false;
+                    SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "bool", 1);
                     this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
                 }
             }
@@ -1072,8 +1074,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     }
                 }
             }
-            if (this._isHeadingHoldActive) {
-                Coherent.call("HEADING_BUG_SET", 2, this._headingHoldValue);
+            if (this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.TO || this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.GA) {
+                this.handleTogaMode();
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 if (this.getIsVNAVActive()) {
@@ -1086,7 +1088,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     if (alt > thrRedAlt) {
                         n1 = this.getThrustClimbLimit() / 100;
                         SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
-                        this.setThrottleMode(ThrottleMode.CLIMB);
                     }
                 }
             }
@@ -1123,6 +1124,18 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             this.updateAutopilotCooldown = this._apCooldown;
+        }
+    }
+    handleTogaMode() {
+        let vSpeed = Simplane.getVerticalSpeed();
+        if (vSpeed > 900) {
+            if (!this.togaSpeedSet && this._navModeSelector.currentVerticalActiveState === VerticalNavModeState.TO) {
+                Coherent.call("AP_SPD_VAR_SET", 1, this.v2Speed + 10);
+                this.togaSpeedSet = true;
+            }
+            if (!SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
+                SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
+            }
         }
     }
     updateAltitudeAlerting() {
