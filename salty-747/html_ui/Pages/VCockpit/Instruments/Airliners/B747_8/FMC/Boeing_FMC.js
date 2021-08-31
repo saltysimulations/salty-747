@@ -171,8 +171,8 @@ class Boeing_FMC extends FMCMainDisplay {
             this.toggleSpeedIntervention();
         }
         else if (_event.indexOf("AP_ALT_INTERVENTION") != -1) {
+            let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
             if (this.getIsVNAVActive()) {
-                let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
                 let altitude = Simplane.getAltitude();
                 if (SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number") < 50 && SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number") !== 0) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
@@ -187,7 +187,8 @@ class Boeing_FMC extends FMCMainDisplay {
                     }
                     this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
-                if (mcpAlt !== Math.round(altitude/100) * 100){
+
+                if (mcpAlt !== Math.round(altitude/100) * 100) {
                     this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
                 }
             }      

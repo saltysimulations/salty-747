@@ -1027,13 +1027,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     console.error(error);
                 }
             }
-            
-            if (this._apHasDeactivated) {
-                this.deactivateVNAV();
-                if (!this.getIsSPDActive()) {
-                    this.activateSPD();
-                }
-            }
             if (this._aThrHasActivated) {
                 if (this.getIsSPDActive()) {
                     this.activateSPD();
@@ -1052,8 +1045,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude < 25 && !this.throttleHasIdled) {
                     this._navModeSelector.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
-                    SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 0);
                     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
+                    SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 5);
                     this.throttleHasIdled = true;
                 }
                 if (Simplane.getIsGrounded() && this.landingReverseAvail === false) {
