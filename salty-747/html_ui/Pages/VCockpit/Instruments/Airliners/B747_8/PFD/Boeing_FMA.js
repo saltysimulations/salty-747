@@ -163,7 +163,6 @@ var Boeing_FMA;
                 const parsedFmaValues = JSON.parse(fmaValues);
                 this.autoThrottleStatus = parsedFmaValues.autoThrottle;
                 this.approachType = parsedFmaValues.approachType;
-                console.log(this.approachType)
             }
             var left = Simplane.getAutoPilotThrottleArmed(1);
             var right = Simplane.getAutoPilotThrottleArmed(2);

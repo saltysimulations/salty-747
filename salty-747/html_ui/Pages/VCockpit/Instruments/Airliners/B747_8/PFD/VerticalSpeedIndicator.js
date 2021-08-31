@@ -215,7 +215,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 break;
             case "selected_vspeed_active":
                 if (this.selectedCursorSVG) {
-                    if (newValue == "true")
+                    if (newValue == "true" && SimVar.GetSimVarValue("L:WT_CJ4_VS_ON") === true)
                         this.selectedCursorSVG.setAttribute("visibility", "visible");
                     else
                         this.selectedCursorSVG.setAttribute("visibility", "hidden");

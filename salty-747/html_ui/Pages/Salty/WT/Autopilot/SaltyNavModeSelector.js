@@ -1511,7 +1511,7 @@
           }
         }, 20000);
         if (this.isEarlyDescent === true) {
-          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 57.5);
+          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 52.5);
           SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
           this.isEarlyDescent = false;
           }

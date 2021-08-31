@@ -174,6 +174,129 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
                 }
             }
             this.centerGroup.appendChild(this.loc_mainGroup);
+
+            //NPS Vertical Scale
+            posX = 400;
+            posY = 88;
+            width = 40;
+            height = 280;
+            this.nps_verticalGroup  = document.createElementNS(Avionics.SVG.NS, "g");
+            this.nps_verticalGroup.setAttribute("id", "NPSVertGroup");
+            {
+                this.nps_verticalCursorGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                this.nps_verticalCursorGroup.setAttribute("id", "CursorGroup");
+                this.nps_verticalCursorGroup.setAttribute("transform", "translate(" + this.gs_cursorPosX + ", " + this.gs_cursorPosY + ")");
+                this.nps_verticalGroup.appendChild(this.nps_verticalCursorGroup);
+                {
+                    this.nps_verticalCursor = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.nps_verticalCursor.setAttribute("fill", "#D570FF");
+                    this.nps_verticalCursor.setAttribute("stroke", "#D570FF");
+                    this.nps_verticalCursor.setAttribute("stroke-width", "3");
+                    this.nps_verticalCursor.setAttribute("d", "M -6 0 l19 8 l0 -16 Z");
+                    this.nps_verticalCursorGroup.appendChild(this.nps_verticalCursor);
+                }
+                let neutralLine = document.createElementNS(Avionics.SVG.NS, "line");
+                neutralLine.setAttribute("id", "NeutralLine");
+                neutralLine.setAttribute("x1", (posX + 7).toString());
+                neutralLine.setAttribute("y1", (posY + height * 0.5).toString());
+                neutralLine.setAttribute("x2", (posX + width - 10).toString());
+                neutralLine.setAttribute("y2", (posY + height * 0.5).toString());
+                neutralLine.setAttribute("stroke", "white");
+                neutralLine.setAttribute("stroke-width", "4");
+                this.nps_verticalGroup.appendChild(neutralLine);
+
+                let upperLine = document.createElementNS(Avionics.SVG.NS, "line");
+                upperLine.setAttribute("id", "UpperLine");
+                upperLine.setAttribute("x1", (posX + 8).toString());
+                upperLine.setAttribute("y1", (posY - 90 + height * 0.5).toString());
+                upperLine.setAttribute("x2", (posX + width - 19).toString());
+                upperLine.setAttribute("y2", (posY - 90 + height * 0.5).toString());
+                upperLine.setAttribute("stroke", "white");
+                upperLine.setAttribute("stroke-width", "4");
+                this.nps_verticalGroup.appendChild(upperLine);
+
+                let lowerLine = document.createElementNS(Avionics.SVG.NS, "line");
+                lowerLine.setAttribute("id", "LowerLine");
+                lowerLine.setAttribute("x1", (posX + 8).toString());
+                lowerLine.setAttribute("y1", (posY + 90 + height * 0.5).toString());
+                lowerLine.setAttribute("x2", (posX + width - 19).toString());
+                lowerLine.setAttribute("y2", (posY + 90 + height * 0.5).toString());
+                lowerLine.setAttribute("stroke", "white");
+                lowerLine.setAttribute("stroke-width", "4");
+                this.nps_verticalGroup.appendChild(lowerLine);
+
+                this.upperRNPBar = document.createElementNS(Avionics.SVG.NS, "line");
+                this.upperRNPBar.setAttribute("id", "UpperLine");
+                this.upperRNPBar.setAttribute("x1", (posX + 10).toString());
+                this.upperRNPBar.setAttribute("y1", (posY - 100 + height * 0.5).toString());
+                this.upperRNPBar.setAttribute("x2", (posX + 10).toString());
+                this.upperRNPBar.setAttribute("y2", (posY - 60 + height * 0.5).toString());
+                this.upperRNPBar.setAttribute("stroke", "white");
+                this.upperRNPBar.setAttribute("stroke-width", "6");
+                this.nps_verticalGroup.appendChild(this.upperRNPBar);
+
+                this.lowerRNPBar = document.createElementNS(Avionics.SVG.NS, "line");
+                this.lowerRNPBar.setAttribute("id", "LowerLine");
+                this.lowerRNPBar.setAttribute("x1", (posX + 10).toString());
+                this.lowerRNPBar.setAttribute("y1", (posY + 100 + height * 0.5).toString());
+                this.lowerRNPBar.setAttribute("x2", (posX + 10).toString());
+                this.lowerRNPBar.setAttribute("y2", (posY + 60 + height * 0.5).toString());
+                this.lowerRNPBar.setAttribute("stroke", "white");
+                this.lowerRNPBar.setAttribute("stroke-width", "6");
+                this.nps_verticalGroup.appendChild(this.lowerRNPBar);
+            }
+            this.centerGroup.appendChild(this.nps_verticalGroup);
+            
+            //NPS Lateral Scale
+            posX = 110;
+            posY = 384;
+            width = 280;
+            height = 35;
+            this.nps_lateralGroup = document.createElementNS(Avionics.SVG.NS, "g");
+            this.nps_lateralGroup.setAttribute("id", "NPSLatGroup");
+            {
+                this.nps_lateralCursorGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                this.nps_lateralCursorGroup.setAttribute("id", "CursorGroup");
+                this.nps_lateralCursorGroup.setAttribute("transform", "translate(" + this.loc_cursorPosX + ", " + this.loc_cursorPosY + ")");
+                this.nps_lateralGroup.appendChild(this.nps_lateralCursorGroup);
+                {
+                    this.nps_lateralCursor = document.createElementNS(Avionics.SVG.NS, "path");
+                    this.nps_lateralCursor.setAttribute("fill", "#D570FF");
+                    this.nps_lateralCursor.setAttribute("stroke", "#D570FF");
+                    this.nps_lateralCursor.setAttribute("stroke-width", "3");
+                    this.nps_lateralCursor.setAttribute("d", "M 0 -7 L-8 12 L8 12 Z");
+                    this.nps_lateralCursorGroup.appendChild(this.nps_lateralCursor);
+                }
+                let neutralLine = document.createElementNS(Avionics.SVG.NS, "line");
+                neutralLine.setAttribute("id", "NeutralLine");
+                neutralLine.setAttribute("x1", (posX + width * 0.5).toString());
+                neutralLine.setAttribute("y1", (posY + 5).toString());
+                neutralLine.setAttribute("x2", (posX + width * 0.5).toString());
+                neutralLine.setAttribute("y2", (posY + height - 8).toString());
+                neutralLine.setAttribute("stroke", "white");
+                neutralLine.setAttribute("stroke-width", "4");
+                this.nps_lateralGroup.appendChild(neutralLine);
+                let rangeFactor = 0.7;
+                this.loc_cursorMinX = posX + (width * 0.5) - ((rangeFactor + 0.18) * width * 0.5);
+                this.loc_cursorMaxX = posX + (width * 0.5) + ((rangeFactor + 0.18) * width * 0.5);
+                this.loc_cursorPosX = posX + width * 0.5;
+                this.loc_cursorPosY = posY + height * 0.5;
+                    
+                let leftBound = document.createElementNS(Avionics.SVG.NS, "path");
+                leftBound.setAttribute("d", "M 317 390 l 30 0 l 0 2 l -5 0 l 0 8 l 0 -8 l -25 0 Z");
+                leftBound.setAttribute("fill", "white");
+                leftBound.setAttribute("stroke", "white");
+                leftBound.setAttribute("stroke-width", "4");
+                this.nps_lateralGroup.appendChild(leftBound);
+
+                let rightBound = document.createElementNS(Avionics.SVG.NS, "path");
+                rightBound.setAttribute("d", "M 157 390 l 30 0 l 0 2 l -25 0 l 0 8 l 0 -8 l -5 0 Z");
+                rightBound.setAttribute("fill", "white");
+                rightBound.setAttribute("stroke", "white");
+                rightBound.setAttribute("stroke-width", "4");
+                this.nps_lateralGroup.appendChild(rightBound);
+            }
+            this.centerGroup.appendChild(this.nps_lateralGroup);
         }
         this.InfoGroup = document.createElementNS(Avionics.SVG.NS, "g");
         this.InfoGroup.setAttribute("id", "InfoGroup");
@@ -214,6 +337,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
         this.appendChild(this.rootSVG);
     }
     update(_deltaTime) {
+        this.updateNPS();
         if (this.gsVisible || this.locVisible || this.infoVisible) {
             let localizer = this.gps.radioNav.getBestILSBeacon();
             let isApproachLoaded = Simplane.getAutoPilotApproachLoaded();
@@ -299,14 +423,37 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             }
         }
     }
+    updateNPS() {
+        let latDeviation = SimVar.GetSimVarValue("L:WT_CJ4_XTK", "number");
+        let latDeviationCorr = Utils.Clamp(-latDeviation * 300, -92, 92);
+        this.nps_lateralCursor.setAttribute("d", "M " + latDeviationCorr + " -7 l-8 19 l16 0 Z");
+
+        if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") >= 5 && !this.gsVisible && !this.locVisible) {
+            this.nps_verticalCursor.setAttribute("visibility", "visible");
+            this.lowerRNPBar.setAttribute("visibility", "visible");
+            this.upperRNPBar.setAttribute("visibility", "visible");
+            let vertDeviation = SimVar.GetSimVarValue("L:WT_CJ4_VPATH_ALT_DEV", "number");
+            let vertDeviationCorr = Utils.Clamp(vertDeviation * 2, -92, 92);
+            this.nps_verticalCursor.setAttribute("d", "M -6 " + vertDeviationCorr + " l19 8 l0 -16 Z");
+        }
+        else {
+            this.nps_verticalCursor.setAttribute("visibility", "hidden");
+            this.lowerRNPBar.setAttribute("visibility", "hidden");
+            this.upperRNPBar.setAttribute("visibility", "hidden");
+        }
+
+
+    }
     showLocalizer(_val) {
         this.locVisible = _val;
         if (this.loc_mainGroup){
             if (_val) {
             this.loc_mainGroup.setAttribute("visibility", "visible");
+            this.nps_lateralGroup.setAttribute("visibility", "hidden");
             }
             else {
                 this.loc_mainGroup.setAttribute("visibility", "hidden");
+                this.nps_lateralGroup.setAttribute("visibility", "visible");
                 this.loc_cursorShapeRight.removeAttribute("visibility");
             }
         }
@@ -316,9 +463,11 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.gsVisible = _val;
             if (_val) {
                 this.gs_mainGroup.setAttribute("visibility", "visible");
+                this.nps_verticalGroup.setAttribute("visibility", "hidden");
             }
             else {
                 this.gs_mainGroup.setAttribute("visibility", "hidden");
+                this.nps_verticalGroup.setAttribute("visibility", "visible");
                 this.gs_cursorShapeUp.removeAttribute("visibility");
             }
         }
