@@ -297,6 +297,9 @@
       }
       SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
       SimVar.SetSimVarValue("AUTOPILOT APPROACH ACTIVE", "bool", 1);
+      SimVar.SetSimVarValue("L:WT_CJ4_LNAV_ON", "number", 0);
+      SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
+      SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
       Coherent.call("HEADING_BUG_SET", 1, SimVar.GetSimVarValue(`NAV LOCALIZER:3`, 'Degrees'));
     }
   }
@@ -512,6 +515,7 @@
       case VerticalNavModeState.FLC:
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
+        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         break; 
     }
     this.isVNAVOn = false;
@@ -1304,6 +1308,9 @@
     } else if (this.glideslopeState === GlideslopeStatus.GS_ACTIVE && !SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
       SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "number", 1);
     }
+    SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+    SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
+    SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
     this.activateSpeedMode();
   }
 

@@ -1018,7 +1018,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
 
             // RUN SPEED RESTRICTION OBSERVER
-            if (this._speedObs === undefined) {
+            /*if (this._speedObs === undefined) {
                 this._speedObs = new CJ4_SpeedObserver(this.flightPlanManager);
             } else {
                 try {
@@ -1026,7 +1026,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 } catch (error) {
                     console.error(error);
                 }
-            }
+            }*/
             if (this._aThrHasActivated) {
                 if (this.getIsSPDActive()) {
                     this.activateSPD();

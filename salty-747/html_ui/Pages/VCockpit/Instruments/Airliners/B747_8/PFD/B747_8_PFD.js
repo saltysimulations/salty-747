@@ -59,6 +59,7 @@ class B747_8_PFD_MainPage extends NavSystemPage {
         this.vertBox = document.querySelector("#vert-box");
         this.vSpeedIndicator = document.querySelector("jet-pfd-vspeed-indicator");
         this.compassElement = document.querySelector("jet-pfd-hs-indicator");
+        this.ilsBox = document.querySelector("jet-pfd-ils-indicator");  
     }
     onUpdate(_deltaTime) {
         const IRSState = SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum");
@@ -71,6 +72,7 @@ class B747_8_PFD_MainPage extends NavSystemPage {
             // this.noVspd.setAttribute("style", "");
             this.vSpeedIndicator.setAttribute("style", "display:none")
             this.compassElement.setAttribute("style", "display:none")
+            this.ilsBox.setAttribute("style", "display:none")
         }
         if (IRSState == 1) {
             this.attBox.setAttribute("style", "");
@@ -80,6 +82,7 @@ class B747_8_PFD_MainPage extends NavSystemPage {
             // this.noVspd.setAttribute("style", "");
             this.vSpeedIndicator.setAttribute("style", "display:none")
             this.compassElement.setAttribute("style", "display:none")
+            this.ilsBox.setAttribute("style", "display:none")
         }
         if (IRSState == 2) {
             this.attBox.setAttribute("style", "display:none");
@@ -87,6 +90,7 @@ class B747_8_PFD_MainPage extends NavSystemPage {
             // this.noVspd.setAttribute("style", "display:none");
             this.vSpeedIndicator.setAttribute("style", "")
             this.compassElement.setAttribute("style", "")
+            this.ilsBox.setAttribute("style", "")
         }
     }
     onEvent(_event) {
