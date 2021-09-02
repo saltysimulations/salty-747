@@ -259,8 +259,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     onPowerOn() {
         super.onPowerOn();
-        this.deactivateLNAV();
-        this.deactivateVNAV();
         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
     }
     onUpdate(_deltaTime) {
@@ -633,7 +631,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
 
     /* Returns VNAV descent speed target in accordance with active VNAV mode */
     getDesManagedSpeed(_cduPageEconRequest) {
-        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
         let mach = this.getCrzMach();
         let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         let altitude = Simplane.getAltitude();
@@ -644,7 +641,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (_cduPageEconRequest) {
             return speed;
         }
-        /*
         if (altitude <= 10500) {
             if (machMode && !isSpeedIntervention) {
                 this.managedMachOff();
@@ -668,7 +664,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             else if (speed >= machlimit && !machMode && !isSpeedIntervention) {
                 this.managedMachOn();
             }
-        }*/
+        }
         if (machMode && !isSpeedIntervention) {
             this.managedMachOff();
         }
@@ -1002,7 +998,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (altitude < 25 && this.throttleHasIdled === false) {
                     this._navModeSelector.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
                     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
-                    SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 5);
+                    SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 0);
                     this.throttleHasIdled = true;
                 }
                 if (Simplane.getIsGrounded() && this.landingReverseAvail === false) {
@@ -1010,8 +1006,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                         SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
                         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
                         this._navModeSelector.currentAutoThrottleStatus = AutoThrottleModeState.NONE;
-                        this.landingReverseAvail = true;
                       }, 1000);
+                    this.landingReverseAvail = true;
                 }
             }
             if (Simplane.getAutoPilotThrottleArmed()) {
