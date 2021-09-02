@@ -187,6 +187,17 @@ class Boeing_FMC extends FMCMainDisplay {
                     }
                     this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
+                //Delete Constraints when pushed
+                let nextConstraint = this._vnav.getConstraint();
+
+                if (nextConstraint != undefined) {
+                    if (nextConstraint.isClimb === true && nextConstraint.altitude <= mcpAlt) {
+                        this._vnav.setConstraint();
+                    }
+                    else if (nextConstraint.isClimb === false && nextConstraint.altitude >= mcpAlt) {
+                        this._vnav.setConstraint();
+                    }
+                }
 
                 if (mcpAlt !== Math.round(altitude/100) * 100) {
                     this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
@@ -293,13 +304,10 @@ class Boeing_FMC extends FMCMainDisplay {
         this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
     }
     getThrustTakeOffLimit() {
-        return 100;
+        return 85;
     }
     getThrustClimbLimit() {
-        return 100;
-    }
-    getVRef(flapsHandleIndex = NaN, useCurrentWeight = true) {
-        return 200;
+        return 80;
     }
     getTakeOffManagedSpeed() {
         if (this.v2Speed) {

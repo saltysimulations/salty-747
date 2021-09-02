@@ -673,6 +673,7 @@
       }
       else if (this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA) {
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
+        this.activateThrustRefMode();
       }
       else {
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
