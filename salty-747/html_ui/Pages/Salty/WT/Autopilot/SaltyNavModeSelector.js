@@ -629,24 +629,24 @@
     else if (!SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
       SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
     }
-    if (speed === undefined) {
-      if (Simplane.getAutoPilotMachModeActive()) {
-        const mach = Simplane.getMachSpeed();
-        Coherent.call("AP_MACH_VAR_SET", 0, parseFloat(mach.toFixed(2)));
+    if (!this.isVNAVOn) {
+      if (speed === undefined) {
+        if (Simplane.getAutoPilotMachModeActive()) {
+          const mach = Simplane.getMachSpeed();
+          Coherent.call("AP_MACH_VAR_SET", 0, parseFloat(mach.toFixed(2)));
+        } else {
+          const airspeed = Simplane.getIndicatedSpeed();
+          Coherent.call("AP_SPD_VAR_SET", 0, airspeed);
+        }
+      } else if (speed > 0 && speed < 1) {
+        Coherent.call("AP_MACH_VAR_SET", 0, parseFloat(speed.toFixed(2)));
       } else {
-        const airspeed = Simplane.getIndicatedSpeed();
-        Coherent.call("AP_SPD_VAR_SET", 0, airspeed);
+        Coherent.call("AP_SPD_VAR_SET", 0, speed);
       }
-    } else if (speed > 0 && speed < 1) {
-      Coherent.call("AP_MACH_VAR_SET", 0, parseFloat(speed.toFixed(2)));
-    } else {
-      Coherent.call("AP_SPD_VAR_SET", 0, speed);
     }
     SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
-    //SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
-    //SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
 
     this.activateThrustMode();
   }

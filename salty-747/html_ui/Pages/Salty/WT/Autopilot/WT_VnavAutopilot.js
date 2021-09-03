@@ -336,11 +336,14 @@ class WT_VerticalAutopilot {
                     break;
                 }
                 if (!this.canPathActivate(true) && this._pathInterceptStatus !== PathInterceptStatus.LEVELING && this._pathInterceptStatus !== PathInterceptStatus.LEVELED) {
-                    this.setVerticalNavModeState(VerticalNavModeState.FLC);
                     this._vnavPathStatus = VnavPathStatus.NONE;
                     this.vsSlot = 1;
                     this.currentAltitudeTracking = AltitudeState.SELECTED;
-                    this._navModeSelector.engageFlightLevelChange();
+
+                    if (this.verticalMode !== VerticalNavModeState.FLC) {
+                        this._navModeSelector.engageFlightLevelChange();
+                    }
+                    this.setVerticalNavModeState(VerticalNavModeState.FLC);
                 }
                 this.checkAndSetTrackedAltitude(this._vnavPathStatus);
                 this.followPath();
@@ -1011,8 +1014,10 @@ class WT_VerticalAutopilot {
     setConstraintAltitude(resumeClimb = false, unrestricted = false) {
         if (resumeClimb && unrestricted) {
             this.managedAltitude = undefined;
-            this._navModeSelector.currentVerticalActiveState = VerticalNavModeState.FLC;
-            this._navModeSelector.engageFlightLevelChange(WTDataStore.get('CJ4_vnavClimbIas', 240));
+            if (this.verticalMode !== VerticalNavModeState.FLC) {
+                this._navModeSelector.engageFlightLevelChange();
+            }
+            this.setVerticalNavModeState(VerticalNavModeState.FLC);
             this.currentAltitudeTracking = AltitudeState.SELECTED;
             this._navModeSelector.setProperAltitudeArmedState();
             return;
@@ -1026,8 +1031,10 @@ class WT_VerticalAutopilot {
             } else {
                 this.currentAltitudeTracking = AltitudeState.SELECTED;
             }
-            this._navModeSelector.engageFlightLevelChange(WTDataStore.get('CJ4_vnavClimbIas', 240));
-            this._navModeSelector.currentVerticalActiveState = VerticalNavModeState.FLC;
+            if (this.verticalMode !== VerticalNavModeState.FLC) {
+                this._navModeSelector.engageFlightLevelChange();
+            }
+            this.setVerticalNavModeState(VerticalNavModeState.FLC);
         }
         else {
             if (this.constraint.isClimb) {
@@ -1317,8 +1324,10 @@ class WT_VerticalAutopilot {
 
     setPriorVerticalModeState() {
         if (this._priorVerticalModeState === undefined || this._priorVerticalModeState.mode === undefined) {
-            this.verticalMode = VerticalNavModeState.FLC;
-            this._navModeSelector.engageFlightLevelChange();
+            if (this.verticalMode !== VerticalNavModeState.FLC) {
+                this._navModeSelector.engageFlightLevelChange();
+            }
+            this.setVerticalNavModeState(VerticalNavModeState.FLC);
             return;
         } else {
             switch(this._priorVerticalModeState.mode) {
@@ -1327,13 +1336,17 @@ class WT_VerticalAutopilot {
                     this._navModeSelector.engageVerticalSpeed(1, this._priorVerticalModeState.value, true);
                     break;
                 case VerticalNavModeState.FLC:
-                    this.verticalMode = VerticalNavModeState.FLC;
-                    this._navModeSelector.engageFlightLevelChange(this._priorVerticalModeState.value);
+                    if (this.verticalMode !== VerticalNavModeState.FLC) {
+                        this._navModeSelector.engageFlightLevelChange(this._priorVerticalModeState.value);
+                    }
+                    this.setVerticalNavModeState(VerticalNavModeState.FLC);
                     break;
                 case VerticalNavModeState.PTCH:
                 case VerticalNavModeState.PATH:
-                    this.verticalMode = VerticalNavModeState.PTCH;
-                    this._navModeSelector.engageFlightLevelChange();
+                    if (this.verticalMode !== VerticalNavModeState.FLC) {
+                        this._navModeSelector.engageFlightLevelChange();
+                    }
+                    this.setVerticalNavModeState(VerticalNavModeState.FLC);
                     break;
             }
         }

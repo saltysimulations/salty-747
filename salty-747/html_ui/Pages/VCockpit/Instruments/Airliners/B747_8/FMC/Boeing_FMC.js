@@ -188,15 +188,17 @@ class Boeing_FMC extends FMCMainDisplay {
                     this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
                 //Delete Constraints when pushed
-                let nextConstraint = this._vnav.getConstraint();
-
-                if (nextConstraint != undefined) {
-                    if (nextConstraint.isClimb === true && nextConstraint.altitude <= mcpAlt) {
-                        this._vnav.setConstraint();
+                if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") <= 4 && this._currentVerticalAutopilot._constraintStatus != ConstraintStatus.PASSED) {
+                    let waypoints = this.flightPlanManager.getWaypoints();
+                    for (let i = 0; i < waypoints.length; i++) {
+                        if (waypoints[i].legAltitude1 <= mcpAlt) {
+                            waypoints[i].legAltitudeDescription = -1;
+                            waypoints[i].speedConstraint = -1;
+                        }
                     }
-                    else if (nextConstraint.isClimb === false && nextConstraint.altitude >= mcpAlt) {
-                        this._vnav.setConstraint();
-                    }
+                    this._currentVerticalAutopilot._constraintStatus = ConstraintStatus.PASSED;
+                    this.flightPlanManager._updateFlightPlanVersion();
+                    return;
                 }
 
                 if (mcpAlt !== Math.round(altitude/100) * 100) {
