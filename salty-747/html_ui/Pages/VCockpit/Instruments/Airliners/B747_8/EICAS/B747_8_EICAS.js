@@ -68,6 +68,7 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
         this.createLowerScreenPage("ELEC", "BottomScreen", "b747-8-lower-eicas-elec");
         this.createLowerScreenPage("GEAR", "BottomScreen", "b747-8-lower-eicas-gear");
         this.createLowerScreenPage("CHKL", "BottomScreen", "b747-8-lower-eicas-ecl");
+        this.createLowerScreenPage("INFO", "BottomScreen", "b747-8-lower-eicas-info");
         this.createLowerScreenPage("BLANK", "BottomScreen", "b747-8-lower-eicas-blank"); // To blank the bottom eicas when selecting same page again
     }
 

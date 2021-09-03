@@ -2206,7 +2206,7 @@
 					<TYPE>ONLY_IF_DISCONNECTED</TYPE>
 					<ALL_AP_ON_APPR>True</ALL_AP_ON_APPR>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Approach_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Approach_Template">
 					<NODE_ID>btn_autopilot_app</NODE_ID>
 					<ANIM_NAME>autopilot_push_app</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_app_seq1</EMISSIVE_NODE_ID>
@@ -2225,7 +2225,7 @@
 					<AP_COUNT>3</AP_COUNT>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_FlightLevelChange_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightLevelChange_Template">
 					<NODE_ID>btn_autopilot_flch</NODE_ID>
 					<ANIM_NAME>autopilot_push_flch</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_flch_seq1</EMISSIVE_NODE_ID>
@@ -2234,7 +2234,7 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Altitude_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Altitude_Template">
 					<NODE_ID>btn_autopilot_hold</NODE_ID>
 					<ANIM_NAME>autopilot_push_hold</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_hold_seq1</EMISSIVE_NODE_ID>
@@ -2262,7 +2262,7 @@
 					<TOOLTIPID>%((A:AUTOPILOT NAV1 LOCK, bool))%{if}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_LNAV_ON%{else}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_LNAV_OFF%{end}</TOOLTIPID>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Vertical_Navigation_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Vertical_Navigation_Template">
 					<NODE_ID>btn_autopilot_vnav</NODE_ID>
 					<ANIM_NAME>autopilot_push_vnav</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_vnav_seq1</EMISSIVE_NODE_ID>
@@ -2271,7 +2271,7 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Localizer_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Localizer_Template">
 					<NODE_ID>btn_autopilot_loc</NODE_ID>
 					<ANIM_NAME>autopilot_push_loc</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_loc_seq1</EMISSIVE_NODE_ID>
@@ -2279,7 +2279,7 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Speed_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_Speed_Template">
 					<NODE_ID>btn_autopilot_spd</NODE_ID>
 					<ANIM_NAME>autopilot_push_spd</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_spd_seq1</EMISSIVE_NODE_ID>
@@ -2297,7 +2297,7 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_VerticalSpeed_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_VerticalSpeed_Template">
 					<NODE_ID>btn_autopilot_vs</NODE_ID>
 					<ANIM_NAME>autopilot_push_vs</ANIM_NAME>
 					<EMISSIVE_NODE_ID>btn_autopilot_vs_seq1</EMISSIVE_NODE_ID>
@@ -2342,7 +2342,7 @@
 					<ANIM_NAME>autopilot_switch_at_arm</ANIM_NAME>
 					<TYPE>B747</TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_FlightDirector_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightDirector_Template">
 					<NODE_ID>switch_autopilot_fd_l</NODE_ID>
 					<ANIM_NAME>autopilot_switch_fd_l</ANIM_NAME>
 					<TOGGLEABLE/>
@@ -2350,7 +2350,7 @@
 					<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
 					<ID>1</ID>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_AUTOPILOT_Push_FlightDirector_Template">
+				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightDirector_Template">
 					<NODE_ID>switch_autopilot_fd_r</NODE_ID>
 					<ANIM_NAME>autopilot_switch_fd_r</ANIM_NAME>
 					<TOGGLEABLE/>
