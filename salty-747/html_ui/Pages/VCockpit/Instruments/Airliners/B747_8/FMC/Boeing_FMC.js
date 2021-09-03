@@ -188,18 +188,39 @@ class Boeing_FMC extends FMCMainDisplay {
                     this.cruiseFlightLevel = Math.floor(mcpAlt / 100);
                 }
                 //Delete Constraints when pushed
-                if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") <= 4 && this._currentVerticalAutopilot._constraintStatus != ConstraintStatus.PASSED) {
-                    let waypoints = this.flightPlanManager.getWaypoints();
-                    for (let i = 0; i < waypoints.length; i++) {
-                        if (waypoints[i].legAltitude1 <= mcpAlt) {
-                            waypoints[i].legAltitudeDescription = -1;
-                            waypoints[i].speedConstraint = -1;
+                if (this._currentVerticalAutopilot._constraintStatus != ConstraintStatus.PASSED) {
+                    if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") <= 3) {
+                        let waypoints = this.flightPlanManager.getWaypoints();
+                        for (let i = 0; i < waypoints.length; i++) {
+                            if (waypoints[i].legAltitude1 <= mcpAlt) {
+                                waypoints[i].legAltitudeDescription = -1;
+                                waypoints[i].speedConstraint = -1;
+                            }
+                        }
+                        this._currentVerticalAutopilot._constraintStatus = ConstraintStatus.PASSED;
+                        this.flightPlanManager._updateFlightPlanVersion();
+                        return;
+                    }
+                    else if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") >= 4){
+                        let arrivalWaypoints = this.flightPlanManager.getArrivalWaypoints();
+                        for (let i = 0; i < arrivalWaypoints.length; i++) {
+                            if (arrivalWaypoints[i].legAltitude1 >= mcpAlt) {
+                                arrivalWaypoints[i].legAltitudeDescription = -1;
+                                arrivalWaypoints[i].speedConstraint = -1;
+                            }
+                        }
+                        let approachWaypoints = this.flightPlanManager.getApproachWaypoints();
+                        for (let i = 0; i < approachWaypoints.length; i++) {
+                            if (approachWaypoints[i].legAltitude1 >= mcpAlt) {
+                                approachWaypoints[i].legAltitudeDescription = -1;
+                                approachWaypoints[i].speedConstraint = -1;
+                            }
                         }
                     }
                     this._currentVerticalAutopilot._constraintStatus = ConstraintStatus.PASSED;
                     this.flightPlanManager._updateFlightPlanVersion();
-                    return;
                 }
+
 
                 if (mcpAlt !== Math.round(altitude/100) * 100) {
                     this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
