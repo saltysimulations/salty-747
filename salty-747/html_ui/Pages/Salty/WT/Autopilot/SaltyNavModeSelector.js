@@ -118,6 +118,7 @@
       [`${NavModeEvent.LOC_PRESSED}`]: this.handleLOCPressed.bind(this),
       [`${NavModeEvent.FLC_PRESSED}`]: this.handleFLCPressed.bind(this),
       [`${NavModeEvent.ALT_INT_PRESSED}`]: this.handleAltIntPressed.bind(this),
+      [`${NavModeEvent.ALT_HOLD_PRESSED}`]: this.handleAltHoldPressed.bind(this),
       [`${NavModeEvent.VNAV_PRESSED}`]: this.handleVNAVPressed.bind(this),
       [`${NavModeEvent.ALT_LOCK_CHANGED}`]: this.handleAltLockChanged.bind(this),
       [`${NavModeEvent.SIM_ALT_LOCK_CHANGED}`]: this.handleSimAltLockChanged.bind(this),
@@ -550,6 +551,44 @@
      }
      this.setProperAltitudeArmedState();
    }
+
+    /**
+  * Handles when the Altitude Intervention Knob is pressed.
+  */
+     handleAltHoldPressed() {
+      switch (this.currentVerticalActiveState) {
+        case VerticalNavModeState.TO:
+        case VerticalNavModeState.GA:
+        case VerticalNavModeState.PTCH:
+        case VerticalNavModeState.VS:
+        case VerticalNavModeState.ALTCAP:
+        case VerticalNavModeState.ALTVCAP:
+        case VerticalNavModeState.ALTSCAP:
+        case VerticalNavModeState.ALTV:
+        case VerticalNavModeState.ALTS:
+        case VerticalNavModeState.ALT:
+        case VerticalNavModeState.PATH:
+        case VerticalNavModeState.FLC:
+          this.isVNAVOn = false;
+          SimVar.SetSimVarValue("L:WT_CJ4_VS_ON", "number", 0);
+          SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
+          SimVar.SetSimVarValue("L:WT_CJ4_FLC_ON", "number", 0);
+          SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
+          SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
+          SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 1);
+          SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
+          SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+          SimVar.SetSimVarValue("K:ALTITUDE_SLOT_INDEX_SET", "number", 1);
+          let altitude = Simplane.getAltitude();
+          Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, altitude, this._forceNextAltitudeUpdate);
+          this.currentVerticalActiveState = VerticalNavModeState.ALT;
+          this.activateSpeedMode();
+          break;
+        case VerticalNavModeState.GS:
+        case VerticalNavModeState.GP:
+          break;
+      }
+    }
 
   /**
    * Check that VS is active.
@@ -1312,6 +1351,7 @@
     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
     SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
+    SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
     this.activateSpeedMode();
   }
 
@@ -1645,6 +1685,7 @@ NavModeEvent.HDG_HOLD_PRESSED = 'HDG_HOLD_PRESSED';
 NavModeEvent.LOC_PRESSED = 'LOC_PRESSED';
 NavModeEvent.FLC_PRESSED = 'FLC_PRESSED';
 NavModeEvent.ALT_INT_PRESSED = 'ALT_INT_PRESSED';
+NavModeEvent.ALT_HOLD_PRESSED = 'ALT_HOLD_PRESSED';
 NavModeEvent.VS_PRESSED = 'VS_PRESSED';
 NavModeEvent.BC_PRESSED = 'BC_PRESSED';
 NavModeEvent.VNAV_PRESSED = 'VNAV_PRESSED';

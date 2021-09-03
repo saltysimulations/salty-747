@@ -228,7 +228,7 @@ class Boeing_FMC extends FMCMainDisplay {
             }      
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
-            this.toggleAltitudeHold();
+            this._navModeSelector.onNavChangedEvent('ALT_HOLD_PRESSED');
         }
         else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
             this.setAPSpeedHoldMode();
