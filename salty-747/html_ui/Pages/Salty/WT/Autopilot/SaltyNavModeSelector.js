@@ -1617,7 +1617,9 @@
       return;
     }
      this.currentAutoThrottleStatus = AutoThrottleModeState.HOLD;
-     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
+     if(SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") !== 2) {
+        SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
+     }
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
    }
 
