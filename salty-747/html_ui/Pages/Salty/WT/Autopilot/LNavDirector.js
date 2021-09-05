@@ -221,13 +221,14 @@ class LNavDirector {
    */
   getAnticipationDistance(planeState, turnAngle) {
     const headwind = AutopilotMath.windComponents(planeState.trueHeading, planeState.windDirection, planeState.windSpeed).headwind;
-    const turnRadius = 1.5 * AutopilotMath.turnRadius(planeState.trueAirspeed - headwind, planeState.maxBankAngle);
+    const turnRadius = AutopilotMath.turnRadius(planeState.trueAirspeed - headwind, planeState.maxBankAngle);
 
     const bankDiff = (Math.sign(turnAngle) * planeState.maxBankAngle) - planeState.bankAngle;
-    const enterBankDistance = (Math.abs(bankDiff) / this.options.bankRate) * ((planeState.trueAirspeed - headwind) / 3600);
+    const enterBankDistance = 0.5 * (Math.abs(bankDiff) / this.options.bankRate) * ((planeState.trueAirspeed - headwind) / 3600);
 
     const turnAnticipationAngle = Math.min(this.options.maxTurnAnticipationAngle, Math.abs(turnAngle)) * Avionics.Utils.DEG2RAD;
-    return Math.min((turnRadius * Math.abs(Math.tan(turnAnticipationAngle / 2))) + enterBankDistance, this.options.maxTurnAnticipationDistance(planeState));
+    const value = turnRadius * Math.abs(Math.tan(turnAnticipationAngle / 2)) + enterBankDistance;
+    return value;
   }
 
   /**
@@ -574,7 +575,7 @@ class LNavDirectorOptions {
     this.maxBankAngle = 25;
 
     /** The rate of bank in degrees per second. */
-    this.bankRate = 3;
+    this.bankRate = 2.5;
 
     /** The maximum turn angle in degrees to calculate turn anticipation to. */
     this.maxTurnAnticipationAngle = 110;
