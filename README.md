@@ -1,4 +1,4 @@
-# Salty Simulations 747-8 Mod
+# <img src="https://user-images.githubusercontent.com/26278705/120645097-55d3de00-c478-11eb-8b9b-6ec866f6c882.png" width="300" />
 
 [![Discord](https://img.shields.io/discord/698720578055700650?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2&style=flat-square)](https://discord.gg/S4PJDwk)
 
@@ -12,7 +12,7 @@ The Salty Simulations 747 is an open-source modification for the default Asobo 7
 A changelog for the latest stable release can be found [here](https://github.com/saltysimulations/salty-747/releases/latest)
 
 ### Development build
-Make sure you are on the master branch. Click on "Code", then click on "Download ZIP".
+[Click to download the latest development build](https://github.com/saltysimulations/salty-747/releases/download/vdev/salty-747-dev.zip)
 
 Please keep in mind that the development build might be unstable and potentially contain bugs.
 
@@ -25,33 +25,9 @@ To install, simply copy the salty-747 folder to your community folder. Depending
 
 * Boxed - `C:\Users\<USERNAME>\AppData\Local\MSFSPackages\Community`
 
-## A BRIEF overview of features
-* ### IRS
-  * IRS fully modelled (PFD, MFD, Knobs)
-* ### EICAS
-  * DRS EICAS Synoptic Page
-  * FCTL EICAS Synoptic Page
-  * ELEC EICAS Synoptic Page
-  * Semi-Functional GEAR EICAS Synoptic Page
-  * Semi-Functional STAT EICAS Synoptic Page
-* ### ND
-  * Altitude prediction arc
-  * Waypoint information improvements
-* ### PFD
-  * Various PFD improvements
-* ### FMC
-  * Options page under MENU in FMC, for mod-specific options
-  * Improved VNAV page
-  * Miscellanous FMC features
-* ### FMA
-  * Various FMA fixes
-* ### Flight Model and Engines
-  * Improved fuel consumption rate
-  * Improved fuel tank logic
-* ### Miscellaneous
-  * Removed INOP properties from some knobs and switches
-  
-A more detailed description of features can be found in the changelog. This is in no way a full list of features, and is only meant to give you an understanding of the mod's capabilities.
+* If you customized install location when installing MSFS (regardless of version) - `<Install Folder>\Community`
 
 ## License
 The Salty Simulations 747-8 is distributed under the MIT License. See [LICENSE](https://github.com/saltysimulations/salty-747/blob/master/LICENSE).
+
+Microsoft Flight Simulator © Microsoft Corporation. The Salty Simulations 747-8 was created under Microsoft's "Game Content Usage Rules" using assets from Microsoft Flight Simulator, and it is not endorsed by or affiliated with Microsoft.
