@@ -794,37 +794,23 @@ class WT_BaseVnav {
             || this._fmc._currentVerticalAutopilot._glidepathStatus == GlidepathStatus.GP_ACTIVE || this._fmc._currentVerticalAutopilot._glideslopeStatus == GlideslopeStatus.GS_ACTIVE)) {
             todExists = false;
         }
-        else if (currentSegment !== undefined && currentSegment > 0 && this._verticalFlightPlanSegments[currentSegment].fpa == 0) {
-            todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[currentSegment].targetIndex].cumulativeDistanceInFP + this._verticalFlightPlanSegments[currentSegment].distanceToNextTod;
-            todExists = true;
-        }
-        else if (this._firstPathSegment >= 0 && this.flightplan.activeWaypointIndex <= this._lastClimbIndex) {
-            altitude = this._fmc.cruiseFlightLevel * 100;
-            fpta = this._verticalFlightPlan[this._verticalFlightPlanSegments[this._firstPathSegment].targetIndex].waypointFPTA;
-            fpa = this._verticalFlightPlanSegments[this._firstPathSegment].fpa;
-            if (this.indicatedAltitude > fpta + 100) {
-                altitude = this.indicatedAltitude;
-            }
-            const descentDistance = AutopilotMath.calculateDescentDistance(fpa, altitude - fpta);
-            todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[this._firstPathSegment].targetIndex].cumulativeDistanceInFP - descentDistance;
-            todExists = true;
-        }
         else if (this._firstPathSegment < 0 || !this._verticalFlightPlan[this.flightplan.activeWaypointIndex]) {
             todExists = false;
         }
-        else if (this.flightplan.activeWaypointIndex > this._lastClimbIndex) {
-            altitude = this.indicatedAltitude;
-            if (currentSegment >= 0) {
-                const fptaIdx = this._verticalFlightPlan.findIndex(x => (x.waypointFPTA !== undefined && !x.isClimb && x.waypointFPTA < altitude + 100 && x.indexInFlightPlan >= this.flightplan.activeWaypointIndex));
-                if (fptaIdx > -1) {
-                    const fptaSegment = this._verticalFlightPlan[fptaIdx].segment;
-                    if (fptaSegment !== undefined) {
-                        fpta = this._verticalFlightPlan[this._verticalFlightPlanSegments[fptaSegment].targetIndex].waypointFPTA;
-                        fpa = this._verticalFlightPlanSegments[fptaSegment].fpa;
-                        const descentDistance = AutopilotMath.calculateDescentDistance(fpa, altitude - fpta);
-                        todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[fptaSegment].targetIndex].cumulativeDistanceInFP - descentDistance;
-                        todExists = true;
-                    }
+        altitude = SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number");
+        if (currentSegment >= 0) {
+            const fptaIdx = this._verticalFlightPlan.findIndex(x => (x.waypointFPTA !== undefined && !x.isClimb && x.waypointFPTA < altitude + 100 && x.indexInFlightPlan >= this.flightplan.activeWaypointIndex));
+            if (fptaIdx > -1) {
+                const fptaSegment = this._verticalFlightPlan[fptaIdx].segment;
+                if (fptaSegment !== undefined) {
+                    fpta = this._verticalFlightPlan[this._verticalFlightPlanSegments[fptaSegment].targetIndex].waypointFPTA;
+                    fpa = this._verticalFlightPlanSegments[fptaSegment].fpa;
+                    const descentDistance = AutopilotMath.calculateDescentDistance(fpa, altitude - fpta);
+                    todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[fptaSegment].targetIndex].cumulativeDistanceInFP - descentDistance;
+                    console.log("TARGET ALT:" + fpta.toFixed(0));
+                    console.log("DESCENT DIST:" + descentDistance.toFixed(0));
+                    console.log("TOD DISTANCE:" + todDistanceInFP.toFixed(0));
+                    todExists = true;
                 }
             }
         }

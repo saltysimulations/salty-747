@@ -530,12 +530,12 @@ class WT_VerticalAutopilot {
     canPathActivate(alreadyActive = false) {
         if (!alreadyActive) {
             //const gsBasedDeviation = -1 * (((this.groundSpeed && this.groundSpeed > 100 ? this.groundSpeed : 200) * (4 / 11)) + (750/11));
-            if (this.path.fpa != 0 && this.path.deviation < 150 && this.path.deviation > -150) {
+            if (this.path.fpa != 0 && this.path.deviation < 250 && this.path.deviation > -250) {
                 return true;
             }
             return false;
         } else {
-            if (this.path.fpa != 0 && this.path.deviation < 150 && this.path.deviation > -150) {
+            if (this.path.fpa != 0 && this.path.deviation < 250 && this.path.deviation > -250) {
                 return true;
             }
             return false;
