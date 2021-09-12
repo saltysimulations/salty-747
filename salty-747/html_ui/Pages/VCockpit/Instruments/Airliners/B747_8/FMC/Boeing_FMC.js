@@ -231,7 +231,7 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('ALT_HOLD_PRESSED');
         }
         else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
-            this.setAPSpeedHoldMode();
+            this._navModeSelector.setAPSpeedHoldMode();
             Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
             this._navModeSelector.activateThrustRefMode();
         }
