@@ -807,9 +807,6 @@ class WT_BaseVnav {
                     fpa = this._verticalFlightPlanSegments[fptaSegment].fpa;
                     const descentDistance = AutopilotMath.calculateDescentDistance(fpa, altitude - fpta);
                     todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[fptaSegment].targetIndex].cumulativeDistanceInFP - descentDistance;
-                    console.log("TARGET ALT:" + fpta.toFixed(0));
-                    console.log("DESCENT DIST:" + descentDistance.toFixed(0));
-                    console.log("TOD DISTANCE:" + todDistanceInFP.toFixed(0));
                     todExists = true;
                 }
             }

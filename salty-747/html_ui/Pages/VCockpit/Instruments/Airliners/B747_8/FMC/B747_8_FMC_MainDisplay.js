@@ -647,7 +647,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             }
             return speed = 240;
         }
-        if (desMode == 2) {
+        else if (desMode == 2) {
             speed = SimVar.GetSimVarValue("L:SALTY_DES_SPEED", "knots");
             if (machMode && !isSpeedIntervention) {
                 this.managedMachOff();
@@ -657,16 +657,14 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             let mach = SimVar.GetSimVarValue("L:SALTY_ECON_DES_MACH", "mach");
             speed = SimVar.GetGameVarValue("FROM MACH TO KIAS", "knots", mach);
         }
-        if (desMode == 0) {
+        else if (desMode == 0) {
             if (speed < machlimit && machMode && !isSpeedIntervention) {
                 this.managedMachOff();
             }
             else if (speed >= machlimit && !machMode && !isSpeedIntervention) {
                 this.managedMachOn();
+
             }
-        }
-        if (machMode && !isSpeedIntervention) {
-            this.managedMachOff();
         }
         return speed;
     }

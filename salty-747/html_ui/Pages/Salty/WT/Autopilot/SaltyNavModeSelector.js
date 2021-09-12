@@ -1578,6 +1578,7 @@
       slot = 2;
      }
      this.currentAutoThrottleStatus = AutoThrottleModeState.SPD;
+     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
      SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 1);
      if (Simplane.getAutoPilotMachModeActive()) {
        let currentMach = Simplane.getAutoPilotMachHoldValue();
