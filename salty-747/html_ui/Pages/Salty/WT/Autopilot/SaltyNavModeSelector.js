@@ -105,7 +105,8 @@
       hdg_lock: new ValueStateTracker(() => SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "Boolean"), () => NavModeEvent.HDG_LOCK_CHANGED),
       toga: new ValueStateTracker(() => Simplane.getAutoPilotTOGAActive(), () => NavModeEvent.TOGA_CHANGED),
       grounded: new ValueStateTracker(() => Simplane.getIsGrounded(), () => NavModeEvent.GROUNDED),
-      autopilot: new ValueStateTracker(() => Simplane.getAutoPilotActive(), () => NavModeEvent.AP_CHANGED)
+      autopilot: new ValueStateTracker(() => Simplane.getAutoPilotActive(), () => NavModeEvent.AP_CHANGED),
+      autothrottle: new ValueStateTracker(() => SimVar.GetSimVarValue("L:XMLVAR_AUTO_THROTTLE_ARM_0_STATE", "bool"), () => NavModeEvent.AT_CHANGED)
     };
 
     /** The event handlers for each event type. */
@@ -136,6 +137,7 @@
       [`${NavModeEvent.TOGA_CHANGED}`]: this.handleTogaChanged.bind(this),
       [`${NavModeEvent.GROUNDED}`]: this.handleGrounded.bind(this),
       [`${NavModeEvent.AP_CHANGED}`]: this.handleAPChanged.bind(this),
+      [`${NavModeEvent.AT_CHANGED}`]: this.handleATChanged.bind(this),
       [`${NavModeEvent.LOC_ACTIVE}`]: this.handleLocActive.bind(this),
       [`${NavModeEvent.LNAV_ACTIVE}`]: this.handleLNAVActive.bind(this),
       [`${NavModeEvent.FD_TOGGLE}`]: this.handleFdToggle.bind(this),
@@ -281,6 +283,31 @@
       if (this.currentLateralActiveState === LateralNavModeState.TO || this.currentLateralActiveState === LateralNavModeState.GA
         || this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA) {
         SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
+      }
+    }
+  }
+
+  /**
+   * Handles when the autothrottle turns on or off.
+   */
+  handleATChanged() {
+    if (SimVar.GetSimVarValue("L:XMLVAR_AUTO_THROTTLE_ARM_0_STATE", "bool") && !Simplane.getIsGrounded()) {
+      switch (this.currentAutoThrottleStatus)  {
+        case AutoThrottleModeState.IDLE:
+          this.activateIdleMode();
+          break;
+        case AutoThrottleModeState.THRREF:
+          this.activateThrustRefMode();
+          break;
+        case AutoThrottleModeState.THR:
+          this.activateThrustMode();
+          break;
+        case AutoThrottleModeState.HOLD:
+          this.handleThrottleToHold();
+          break;
+        case AutoThrottleModeState.SPD:
+          this.activateSpeedMode();
+          break;
       }
     }
   }
@@ -1538,9 +1565,6 @@
    }
 
    activateThrustMode() {
-    if (this.currentAutoThrottleStatus === AutoThrottleModeState.THR) {
-      return;
-    }
      this.currentAutoThrottleStatus = AutoThrottleModeState.THR;
      let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
      let altitude = Simplane.getAltitude();
@@ -1570,14 +1594,12 @@
     }
 
    activateSpeedMode() {
-     if (this.currentAutoThrottleStatus === AutoThrottleModeState.SPD) {
-       return;
-     }
      let slot = 1;
      if (this.isVNAVOn) {
       slot = 2;
      }
      this.currentAutoThrottleStatus = AutoThrottleModeState.SPD;
+     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
      SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 1);
      if (Simplane.getAutoPilotMachModeActive()) {
        let currentMach = Simplane.getAutoPilotMachHoldValue();
@@ -1589,33 +1611,18 @@
        Coherent.call("AP_SPD_VAR_SET", slot, currentSpeed);
        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
      }
-     if (!Simplane.getAutoPilotMachModeActive()) {
-       if (!SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
-         SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
-       }
-     }
-     else {
-       if (!SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
-         SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
-       }
-     }
-     SimVar.SetSimVarValue("K:AP_PANEL_SPEED_ON", "Number", 1);	
+     this.setAPSpeedHoldMode();
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
+     SimVar.SetSimVarValue("K:AP_PANEL_SPEED_ON", "Number", 1);	
    }
 
    activateThrustRefMode() {
-    if (this.currentAutoThrottleStatus === AutoThrottleModeState.THRREF) {
-      return;
-    }
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
      SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 90);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
 
    handleThrottleToHold() {
-    if (this.currentAutoThrottleStatus === AutoThrottleModeState.HOLD) {
-      return;
-    }
      this.currentAutoThrottleStatus = AutoThrottleModeState.HOLD;
      if(SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") !== 2) {
         SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 0);
@@ -1624,13 +1631,23 @@
    }
 
    activateIdleMode() {
-    if (this.currentAutoThrottleStatus === AutoThrottleModeState.IDLE) {
-      return;
-    }
      this.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
      SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 23.2);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
+
+   setAPSpeedHoldMode() {
+    if (!Simplane.getAutoPilotMachModeActive()) {
+        if (!SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
+            SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
+        }
+    }
+    else {
+        if (!SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
+            SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
+        }
+    }
+}
 }
 
 class AutoThrottleModeState { }
@@ -1710,6 +1727,7 @@ NavModeEvent.GS_NONE = 'gs_none';
 NavModeEvent.GS_ARM = 'gs_arm';
 NavModeEvent.GS_ACTIVE = 'gs_active';
 NavModeEvent.AP_CHANGED = 'ap_changed';
+NavModeEvent.AT_CHANGED = 'at_changed';
 NavModeEvent.LOC_ACTIVE = 'loc_active';
 NavModeEvent.LNAV_ACTIVE = 'lnav_active';
 NavModeEvent.FD_TOGGLE = 'FD_TOGGLE';

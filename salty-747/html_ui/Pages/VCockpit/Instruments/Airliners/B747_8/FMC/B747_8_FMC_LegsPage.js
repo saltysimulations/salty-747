@@ -257,9 +257,9 @@ class B747_8_FMC_LegsPage {
 
     bindInputs() {
         for (let i = 0; i < this._wayPointsToRender.length; i++) {
-
             const offsetRender = Math.floor((this._currentPage - 1) * 5);
             const wptRender = this._wayPointsToRender[i + offsetRender];
+            
             // if its a real fix
             if (wptRender && (wptRender.fix.ident !== "$EMPTY" || wptRender.fix.ident !== "$DISCO")) {
                 this._fmc.onRightInput[i] = () => {
@@ -608,18 +608,6 @@ class B747_8_FMC_LegsPage {
                 this.update(true);
             }
         };
-        if (this._currentPage == 1) {
-            this._fmc.onRightInput[0] = () => {
-                const currentInhibit = this._fmc._lnav.sequencingMode === FlightPlanSequencing.INHIBIT;
-                if (currentInhibit) {
-                    this._fmc._lnav.setAutoSequencing();
-                } else {
-                    this._fmc._lnav.setInhibitSequencing();
-                }
-
-                this.resetAfterOp();
-            };
-        }
 
         // EXEC
         this._fmc.onExecPage = () => {
@@ -629,7 +617,6 @@ class B747_8_FMC_LegsPage {
                     this.resetAfterOp();
                 }; // TODO this seems annoying, but this is how stuff works in cj4_fmc right now
                 this._fmc.onExecDefault();
-                console.log("A")
             } else if (this._fmc.fpHasChanged) {
                 this._fmc.fpHasChanged = false;
                 this._fmc.activateRoute(() => {
@@ -638,7 +625,6 @@ class B747_8_FMC_LegsPage {
                         this.resetAfterOp();
                     }; // TODO this seems annoying, but this is how stuff works in cj4_fmc right now
                     this._fmc.onExecDefault();
-                    console.log("B")
                 });
             }
         };

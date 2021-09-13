@@ -501,7 +501,6 @@ class B747_8_FMC_VNAVPage {
                     value = parseFloat(value);
                     SimVar.SetSimVarValue("L:SALTY_DES_SPEED", "knots", value);
                     SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum", 2);
-                    fmc.managedMachOff();
                 }
                 else {
                     fmc.showErrorMessage("INVALID ENTRY");

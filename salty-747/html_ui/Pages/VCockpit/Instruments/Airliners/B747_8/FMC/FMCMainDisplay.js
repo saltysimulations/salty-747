@@ -2576,20 +2576,6 @@ class FMCMainDisplay extends BaseAirliners {
         let fuel = currentFuelFlow * time;
         return currentFuel - fuel;
     }
-    setAPSpeedHoldMode() {
-        if (!Simplane.getAutoPilotMachModeActive()) {
-            if (!SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
-                SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
-                console.log("Activating SPEED HOLD (Knots)");
-            }
-        }
-        else {
-            if (!SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
-                SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
-                console.log("Activating SPEED HOLD (Mach)");
-            }
-        }
-    }
 }
 FMCMainDisplay.approachTypes = [
     "UNKNOWN",

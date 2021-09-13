@@ -310,6 +310,7 @@ class WT_VerticalAutopilot {
                     console.log("path activate");
                     this._vnavPathStatus = VnavPathStatus.PATH_ACTIVE;
                     this.verticalMode = VerticalNavModeState.PATH;
+                    this._navModeSelector.activateSpeedMode();
                     this._pathInterceptStatus = PathInterceptStatus.NONE;
                     if (this._glidepathStatus === GlidepathStatus.GP_ACTIVE) {
                         this._glidepathStatus = GlidepathStatus.NONE;
@@ -530,12 +531,12 @@ class WT_VerticalAutopilot {
     canPathActivate(alreadyActive = false) {
         if (!alreadyActive) {
             //const gsBasedDeviation = -1 * (((this.groundSpeed && this.groundSpeed > 100 ? this.groundSpeed : 200) * (4 / 11)) + (750/11));
-            if (this.path.fpa != 0 && this.path.deviation < 150 && this.path.deviation > -150) {
+            if (this.path.fpa != 0 && this.path.deviation < 350 && this.path.deviation > -350) {
                 return true;
             }
             return false;
         } else {
-            if (this.path.fpa != 0 && this.path.deviation < 150 && this.path.deviation > -150) {
+            if (this.path.fpa != 0 && this.path.deviation < 350 && this.path.deviation > -350) {
                 return true;
             }
             return false;
