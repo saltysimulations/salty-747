@@ -82,6 +82,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._pageRefreshTimer = null;
 
         /* SALTY 747 VARS */
+        this.desForWindSpd = {
+            unit1: "",
+            unit2: "",
+            unit3: "",
+            unit4: ""
+        }
+        this.desForWindDir = {
+            unit1: "",
+            unit2: "",
+            unit3: "",
+            unit4: ""
+        }
+        this.desForWindAlt = {
+            unit1: "",
+            unit2: "",
+            unit3: "",
+            unit4: ""
+        }
+        this.transAlt = 18000;
+        this.transLvl = 18000;
         this._TORwyWindHdg = "";
         this._TORwyWindSpd = "";
         this.messages = [];

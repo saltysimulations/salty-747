@@ -75,6 +75,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         var width = 105;
         var height = 610;
         var arcWidth = 70;
+        let qnhAmber = true;
         this.refHeight = height;
         this.nbSecondaryGraduations = 1;
         this.totalGraduations = this.nbPrimaryGraduations + ((this.nbPrimaryGraduations - 1) * this.nbSecondaryGraduations);
@@ -452,6 +453,12 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.pressureSVG.setAttribute("text-anchor", "end");
         this.pressureSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.pressureSVG);
+        if (qnhAmber) {
+            this.pressureSVG.setAttribute("fill", "#f9dd02");
+            this.pressureSVG.setAttribute("border-type", "solid");
+            this.pressureSVG.setAttribute("border-color", "#ff0000");
+            this.pressureSVG.setAttribute("border", "2");
+        }
         if (!this.preSelectQNH)
         this.preSelectQNH = document.createElementNS(Avionics.SVG.NS, "text");
         this.preSelectQNH.textContent = "1009 HPA";
