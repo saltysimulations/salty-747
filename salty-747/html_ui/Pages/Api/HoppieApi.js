@@ -1,21 +1,32 @@
 class HoppieApi {
+	constructor() {
+	 	this.messageId = 1;
+	}
 
+	/* increase message id */
+	incMsgId() {
+		this.messageId = this.messageId+1;
+	}
+	
 	/* SEND */
 	static sendLogon(ats, fltNo) {
-		return fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=type=cpdlc&packet=/data2/25//Y/REQUEST%20LOGON.`)
+		console.log(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//Y/REQUEST%20LOGON`);
+		return fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//Y/REQUEST%20LOGON`)				
             .then((response) => {
+				console.log(response);
                 if (!response.ok) {
                     throw (response);
                 }
 
                 return response.json()
                     .then((data) => {
+						incMsgId()
                         return data;
                 });
             });
 	}
 	static sendLogoff() {
-		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=type=cpdlc&packet=/data2/49//N/LOGOFF`)
+		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//N/LOGOFF`)
             .then((response) => {
                 if (!response.ok) {
                     throw (response);
@@ -23,12 +34,13 @@ class HoppieApi {
 
                 return response.json()
                     .then((data) => {
+						incMsgId()
                         return data;
                 });
         });
 	}
-	static sendRequest(request) {
-		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=type=cpdlc&packet=${request}`)
+	static sendRequest(ats, fltNo, request) {
+		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=${request}`)
             .then((response) => {
                 if (!response.ok) {
                     throw (response);
@@ -43,13 +55,13 @@ class HoppieApi {
 
 	/* RECEIVE */
 	static receiveLogon() {
-		return `${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=type=cpdlc&packet=/data2/38/52/NE/LOGON%20ACCEPTED`
+		return `${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/2/2/NE/LOGON%20ACCEPTED`
 	}
 	static receiveRequest() {
 		/*			
 			/data2/39//NE/STANDBY
 		*/
-		return `${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=type=cpdlc&packet=/data2/38/52/NE/LOGON%20ACCEPTED`
+		return `${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/2/2/NE/LOGON%20ACCEPTED`
 	}
 	static receivePoll() {
 	    fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=poll`)
@@ -75,4 +87,4 @@ class HoppieApi {
 	}
 }
 HoppieApi.url = "http://www.hoppie.nl/acars/system/connect.html";
-HoppieApi.logon = "ddJdEtsq3s2v97";
+HoppieApi.logon = "88QGz22eZ6eW4";

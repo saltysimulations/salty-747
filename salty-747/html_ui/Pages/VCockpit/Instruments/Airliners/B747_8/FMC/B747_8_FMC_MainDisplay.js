@@ -286,7 +286,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.timer ++;
     }
     onInputAircraftSpecific(input) {
-        console.log("B747_8_FMC_MainDisplay.onInputAircraftSpecific input = '" + input + "'");
         if (input === "LEGS") {
             if (this.onLegs) {
                 this.onLegs();
