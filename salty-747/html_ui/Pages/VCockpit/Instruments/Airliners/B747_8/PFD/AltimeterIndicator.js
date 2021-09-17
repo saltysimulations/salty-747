@@ -75,7 +75,6 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         var width = 105;
         var height = 610;
         var arcWidth = 70;
-        let qnhAmber = true;
         this.refHeight = height;
         this.nbSecondaryGraduations = 1;
         this.totalGraduations = this.nbPrimaryGraduations + ((this.nbPrimaryGraduations - 1) * this.nbSecondaryGraduations);
@@ -453,12 +452,6 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.pressureSVG.setAttribute("text-anchor", "end");
         this.pressureSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.pressureSVG);
-        if (qnhAmber) {
-            this.pressureSVG.setAttribute("fill", "#f9dd02");
-            this.pressureSVG.setAttribute("border-type", "solid");
-            this.pressureSVG.setAttribute("border-color", "#ff0000");
-            this.pressureSVG.setAttribute("border", "2");
-        }
         if (!this.preSelectQNH)
         this.preSelectQNH = document.createElementNS(Avionics.SVG.NS, "text");
         this.preSelectQNH.textContent = "1009 HPA";
@@ -485,6 +478,26 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             selectedAltitude = Math.max(0, Simplane.getAutoPilotAltitudeLockValue());
             if (selectedAltitude === 0) {
                 selectedAltitude = Math.max(0, Simplane.getAutoPilotDisplayedAltitudeLockValue());
+            }
+        }        
+        /* Transition Logic */
+        const transAlt = SimVar.GetSimVarValue("L:AIRLINER_TRANS_ALT", "Number");
+        const transLvl = SimVar.GetSimVarValue("L:AIRLINER_APPR_TRANS_ALT", "Number");
+        const fltPhase = SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "Number");
+        if (fltPhase > 1 && fltPhase <= 4) {
+            if (transAlt < selectedAltitude && transAlt < (indicatedAltitude - 300) && baroMode !== "STD") {
+                console.log(baroMode + "BARO MODE");
+                this.pressureSVG.setAttribute("fill", "#f9dd02");
+            } else {
+                console.log("BELOW TRANS ALT");
+                this.pressureSVG.setAttribute("fill", "#24F000");
+            }
+        }
+        if (fltPhase > 4 && fltPhase <= 7) {
+            if (transLvl > selectedAltitude && transLvl > (indicatedAltitude + 300) && baroMode === "STD") {
+                this.pressureSVG.setAttribute("fill", "#f9dd02");
+            } else {
+                this.pressureSVG.setAttribute("fill", "#24F000");
             }
         }
         this.updateGraduationScrolling(indicatedAltitude);

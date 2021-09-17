@@ -52,6 +52,12 @@ class B747_8_FMC_VNAVPage {
                 break;          
         }
 
+        /* Transition altitude */       
+        let transAltCell = "□□□□□";
+        if (fmc.transitionAltitude) {
+            transAltCell = fmc.transitionAltitude.toString();
+        }
+
         /* LSK 1L  - Cruise Level */
         let crzAltCell = "□□□□□";
         if (fmc.cruiseFlightLevel) {
@@ -137,14 +143,12 @@ class B747_8_FMC_VNAVPage {
         }
 
         /* RSK 3R  - Transition Altitude */
-        let transAltCell = "□□□□□";
-        transAltCell = fmc.transAlt.toString();
         fmc.onRightInput[2] = () => {
             let value = fmc.inOut;
-            fmc.transAlt = value;
-            SimVar.SetSimVarValue("L:XMLVAR_TransAlt", "feets", value);
-            B747_8_FMC_VNAVPage.ShowPage1(fmc);
-            fmc.clearUserInput();
+            if (fmc.trySetTransAltitude(value)) {
+                fmc.clearUserInput();
+                B747_8_FMC_VNAVPage.ShowPage1(fmc);
+            }
         };
 
         /* LSK 4L  - Speed Restriction */

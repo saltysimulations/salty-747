@@ -2,7 +2,7 @@ class B747_8_FMC_ForecastPage {
     
     static ShowPage(fmc) {
         let transAltCell = "□□□□□";
-        transAltCell = "FL" + (fmc.transLvl / 100).toString();
+        transAltCell = "FL" + (fmc.perfApprTransAlt / 100).toString();
         let altCell1 = "-----";
         let altCell2 = "-----";
         let altCell3 = "-----";
@@ -43,10 +43,10 @@ class B747_8_FMC_ForecastPage {
         /* LSK 1L  - Trans Level */
         fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
-            fmc.transLvl = value;
-            SimVar.SetSimVarValue("L:XMLVAR_TransLvl", "feets", value);
-            B747_8_FMC_ForecastPage.ShowPage(fmc);
-            fmc.clearUserInput();
+            if (fmc.setPerfApprTransAlt(value)) {
+                fmc.clearUserInput();
+                B747_8_FMC_ForecastPage.ShowPage(fmc);
+            }
         };
     }
 }

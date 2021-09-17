@@ -100,8 +100,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             unit3: "",
             unit4: ""
         }
-        this.transAlt = 18000;
-        this.transLvl = 18000;
         this._TORwyWindHdg = "";
         this._TORwyWindSpd = "";
         this.messages = [];
@@ -400,6 +398,20 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 this.showErrorMessage(value);
             }
         }
+    }    
+    trySetTransAltitude(s) {
+        if (!/^\d+$/.test(s)) {
+            this.showErrorMessage("FORMAT ERROR");
+            return false;
+        }
+        let v = parseInt(s);
+        if (isFinite(v) && v > 0) {
+            this.transitionAltitude = v;
+            SimVar.SetSimVarValue("L:AIRLINER_TRANS_ALT", "Number", this.transitionAltitude);
+            return true;
+        }
+        this.showErrorMessage(this.defaultInputErrorMessage);
+        return false;
     }
     _getIndexFromTemp(temp) {
         if (temp < -10)

@@ -4,7 +4,10 @@ class FMC_MAINT_Sensors {
         fmc.clearDisplay();
         const oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius").toFixed(0);
         const tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "celsius").toFixed(0);
-        const pressAlt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "meters").toFixed(0);
+        const pressAlt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet").toFixed(0);
+        const indAlt = SimVar.GetSimVarValue("INDICATED ALTITUDE", "feet").toFixed(0);
+        const spIndAlt = Simplane.getAltitude();
+        
 
 
 
@@ -15,10 +18,10 @@ class FMC_MAINT_Sensors {
                 ["", ""],
                 ["\xa0OAT", "SAT"],
                 [`${oat}°C`, `${tat}°C`],
-                ["\xa0PRESS ALT", ""],
-                [`${pressAlt} M`, ``],
+                ["\xa0PRESS ALT", "IND ALT"],
+                [`${pressAlt} M`, `${indAlt}`],
                 ["", ""],
-                ["", ""],
+                ["", `${spIndAlt}`],
                 ["", ""],
                 ["", ""],
                 ["\xa0MAINT", "", "__FMCSEPARATOR"],
@@ -90,7 +93,7 @@ class FMC_MAINT_Sensors {
                 ["", ""],
                 ["\xa0FLIGHT PHASE", ""],
                 [`${fmc.currentFlightPhase}`, ""],
-                ["", ""],
+                ["\xa0BARO MODE", ""],
                 ["", ""],
                 ["", ""],
                 ["", ""],
