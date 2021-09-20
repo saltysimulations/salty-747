@@ -15,6 +15,7 @@ class B747_8_FMC_LegsPage {
         this._pageCount = 1;
         this._rows = [];
         this.step = 0;
+        this.disconsJumped = 0;
 
         this._activeWptIndex = this._fmc.flightPlanManager.getActiveWaypointIndex();
         this._distanceToActiveWpt = "0";
@@ -632,10 +633,10 @@ class B747_8_FMC_LegsPage {
         this._fmc.onPrevPage = () => {
             if (this._currentPage > 1) {
                 this._currentPage--;
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this.update(true);
             } else {
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this._currentPage = this._pageCount;
                 this.update(true);
             }
@@ -643,10 +644,10 @@ class B747_8_FMC_LegsPage {
         this._fmc.onNextPage = () => {
             if (this._currentPage < this._pageCount) {
                 this._currentPage++;
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this.update(true);
             } else {
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this._currentPage = 1;
                 this.update(true);
             }

@@ -404,7 +404,22 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
             let outerCircleGroup = document.createElementNS(Avionics.SVG.NS, "g");
             this.root.appendChild(outerCircleGroup);
             {
-                let texts = ["N", "E", "S", "W"];
+                this.planMaskGroup = document.createElementNS(Avionics.SVG.NS, "g");
+                this.planMaskTop = document.createElementNS(Avionics.SVG.NS, "path");
+                this.planMaskTop.setAttribute("d", "M 0 0 L 1000 0 L 1000 500 L 833 500 A 333 333 0 0 0 167 500 L 0 500 Z");
+                this.planMaskGroup.appendChild(this.planMaskTop);
+                this.planMaskBottom = document.createElementNS(Avionics.SVG.NS, "path");
+                this.planMaskBottom.setAttribute("d", "M 0 500 L 167 500 A 333 333 0 0 0 833 500 L 1000 500 L 1000 1000 L 0 1000 Z");
+                this.planMaskGroup.appendChild(this.planMaskBottom);
+                
+                
+                
+                
+                
+                outerCircleGroup.appendChild(this.planMaskGroup);
+                
+
+                let texts = ["N\u2191", "E", "S", "W"];
                 for (let i = 0; i < 4; i++) {
                     let textGroup = document.createElementNS(Avionics.SVG.NS, "g");
                     textGroup.setAttribute("transform", "rotate(" + fastToFixed(i * 90, 0) + " 500 500)");
@@ -413,8 +428,13 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                         text.textContent = texts[i];
                         text.setAttribute("x", "500");
                         text.setAttribute("y", "115");
-                        text.setAttribute("fill", "white");
-                        text.setAttribute("font-size", "50");
+                        text.setAttribute("fill", "lime");
+                        if (i !== 0) {
+                            text.setAttribute("font-size", "36");
+                        }
+                        else {
+                            text.setAttribute("font-size", "50");
+                        }
                         text.setAttribute("font-family", "BoeingEICAS");
                         text.setAttribute("text-anchor", "middle");
                         text.setAttribute("alignment-baseline", "central");
