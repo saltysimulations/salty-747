@@ -1524,7 +1524,6 @@
            break;
          case LateralNavModeState.TO:
          case LateralNavModeState.GA:
-           SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
            break;
          case LateralNavModeState.NAV:
            SimVar.SetSimVarValue("L:WT_CJ4_NAV_ON", "number", 0);
