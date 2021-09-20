@@ -1008,7 +1008,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this.landingReverseAvail = true;
                 }
             }
-            if (Simplane.getAutoPilotThrottleArmed()) {
+            if (Simplane.getAutoPilotThrottleArmed() && this.togaPushedForTO === true) {
                 if (!this._hasSwitchedToHoldOnTakeOff) {
                     let speed = Simplane.getIndicatedSpeed();
                     if (speed > 65) {

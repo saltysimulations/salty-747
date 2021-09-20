@@ -520,8 +520,11 @@
     switch (this.currentVerticalActiveState) {
       case VerticalNavModeState.TO:
       case VerticalNavModeState.GA:
-        this.currentVerticalActiveState = VerticalNavModeState.FLC;
         SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
+        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
+        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
+        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+        this.activateThrustMode();
         break;
       case VerticalNavModeState.PTCH:
       case VerticalNavModeState.VS:
@@ -534,18 +537,20 @@
       case VerticalNavModeState.GS:
       case VerticalNavModeState.PATH:
       case VerticalNavModeState.GP:
-        this.currentVerticalActiveState = VerticalNavModeState.FLC;
         SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         this.engageFlightLevelChange();
         break;
       case VerticalNavModeState.FLC:
+        this.activateThrustMode();
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
         SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         break; 
     }
+    this.currentVerticalActiveState = VerticalNavModeState.FLC;
+    SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 1);
     this.isVNAVOn = false;
     this.setProperAltitudeArmedState();
   }
