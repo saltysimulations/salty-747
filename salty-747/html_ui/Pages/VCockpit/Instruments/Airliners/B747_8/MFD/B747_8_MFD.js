@@ -511,7 +511,7 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         const utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
         let showData;
 
-        this.zuluETA.textContent = "------Z";
+        this.zuluETA.textContent = "------";
         if (Simplane.getNextWaypointName() && !SimVar.GetSimVarValue("SIM ON GROUND", "bool")) {
             const wpETE = Simplane.getNextWaypointETA();
             const utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
