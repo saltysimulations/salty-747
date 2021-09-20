@@ -302,6 +302,11 @@ class B747_8_MFD_MainPage extends NavSystemPage {
     }
     updateDeviationScale() {
         if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") === 5 || SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") === 6) {
+            const mapMode = SimVar.GetSimVarValue("L:B747_8_MFD_NAV_MODE", "number");
+            if (mapMode === 3) {
+                this.deviationItems.style.visibility = "hidden";
+                return;
+            }
             let pathDeviation = SimVar.GetSimVarValue("L:WT_CJ4_VPATH_ALT_DEV", "feet");
             let correctedDeviation = pathDeviation / 6.67;
             let absDeviation = Math.abs(pathDeviation);
@@ -335,11 +340,6 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         else {
             this.deviationItems.style.visibility = "hidden";
         }
-
-
-
-
-
     }
 }
 class B747_8_MFD_Compass extends NavSystemElement {
@@ -511,14 +511,14 @@ class B747_8_MFD_NDInfo extends NavSystemElement {
         const utcTime = SimVar.GetGlobalVarValue("ZULU TIME", "seconds");
         let showData;
 
-        this.zuluETA.textContent = "------Z";
+        this.zuluETA.textContent = "------";
         if (Simplane.getNextWaypointName() && !SimVar.GetSimVarValue("SIM ON GROUND", "bool")) {
             const wpETE = Simplane.getNextWaypointETA();
             const utcETA = wpETE > 0 ? (utcTime + wpETE) % 86400 : 0;
             const hours = Math.floor(utcETA / 3600);
             const minutes = Math.floor((utcETA % 3600) / 60);
             const tenths = Math.floor((utcETA % 3600) / 600);
-            this.zuluETA.textContent = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}.${tenths.toString().padStart(1, "0")}Z`;
+            this.zuluETA.textContent = `${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}.${tenths.toString().padStart(1, "0")}`;
         }
         const seconds = Number.parseInt(utcTime);
         const time = Utils.SecondsToDisplayTime(seconds, true, true, false);
