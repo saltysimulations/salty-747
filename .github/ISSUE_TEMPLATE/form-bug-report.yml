@@ -2,6 +2,8 @@ name: Bug Report
 description: File a bug report
 labels: [bug]
 body:
+  - type: markdown
+    value: "**Please make sure that your issue persists with an empty community folder with only Salty in it**"
   - type: input
     id: version
     attributes:
