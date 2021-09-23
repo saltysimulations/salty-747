@@ -500,16 +500,15 @@
       case VerticalNavModeState.PATH:
       case VerticalNavModeState.GP:
         this.currentVerticalActiveState = VerticalNavModeState.VS;
-        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
-        SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
-        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+        this.vnavOff();
         this.engageVerticalSpeed();
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
+        SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+        SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
         break;
       case VerticalNavModeState.VS:
         break;
     }
-    this.isVNAVOn = false;
     this.setProperAltitudeArmedState();
   }
 
@@ -521,9 +520,8 @@
       case VerticalNavModeState.TO:
       case VerticalNavModeState.GA:
         SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
-        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
-        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
-        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+        this.getFLCHSpeed();
+        this.vnavOff();
         this.activateThrustMode();
         break;
       case VerticalNavModeState.PTCH:
@@ -537,23 +535,49 @@
       case VerticalNavModeState.GS:
       case VerticalNavModeState.PATH:
       case VerticalNavModeState.GP:
-        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
-        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
-        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+        this.getFLCHSpeed();
+        this.vnavOff();
         this.engageFlightLevelChange();
         break;
       case VerticalNavModeState.FLC:
+        this.getFLCHSpeed();
+        this.vnavOff();
         this.activateThrustMode();
-        SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
-        SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
-        SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
         break; 
     }
+    SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
+    SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
+    SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
     this.currentVerticalActiveState = VerticalNavModeState.FLC;
     SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 1);
-    this.isVNAVOn = false;
     this.setProperAltitudeArmedState();
   }
+
+ /**
+  * Determines speed that FLCH should engage with when pushed.
+  */
+   getFLCHSpeed() {
+     if (this.isVNAVOn) {
+       const fmcSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:2", "knots");
+       if (isFinite(fmcSpeed)) {
+         Coherent.call("AP_SPD_VAR_SET", 1, fmcSpeed);
+       }
+       else {
+         const speed = Simplane.getIndicatedSpeed();
+         Coherent.call("AP_SPD_VAR_SET", 1, speed);
+       }
+     }
+   }
+
+ /**
+  * Switches off VNAV Vars.
+  */
+   vnavOff() {
+     this.isVNAVOn = false;
+     SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
+     SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
+     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+   }
 
  /**
   * Handles when the Altitude Intervention Knob is pressed.
@@ -601,15 +625,13 @@
         case VerticalNavModeState.ALT:
         case VerticalNavModeState.PATH:
         case VerticalNavModeState.FLC:
-          this.isVNAVOn = false;
+          this.vnavOff();
           SimVar.SetSimVarValue("L:WT_CJ4_VS_ON", "number", 0);
-          SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
           SimVar.SetSimVarValue("L:WT_CJ4_FLC_ON", "number", 0);
           SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
           SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
           SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 1);
           SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
-          SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
           SimVar.SetSimVarValue("K:ALTITUDE_SLOT_INDEX_SET", "number", 1);
           let altitude = Simplane.getAltitude();
           Coherent.call("AP_ALT_VAR_SET_ENGLISH", 1, altitude, this._forceNextAltitudeUpdate);
@@ -700,21 +722,6 @@
     else if (!SimVar.GetSimVarValue("AUTOPILOT FLIGHT LEVEL CHANGE", "Boolean")) {
       SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
     }
-    if (!this.isVNAVOn) {
-      if (speed === undefined) {
-        if (Simplane.getAutoPilotMachModeActive()) {
-          const mach = Simplane.getMachSpeed();
-          Coherent.call("AP_MACH_VAR_SET", 0, parseFloat(mach.toFixed(2)));
-        } else {
-          const airspeed = Simplane.getIndicatedSpeed();
-          Coherent.call("AP_SPD_VAR_SET", 0, airspeed);
-        }
-      } else if (speed > 0 && speed < 1) {
-        Coherent.call("AP_MACH_VAR_SET", 0, parseFloat(speed.toFixed(2)));
-      } else {
-        Coherent.call("AP_SPD_VAR_SET", 0, speed);
-      }
-    }
     SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
@@ -740,11 +747,12 @@
 
       if (this.currentVerticalActiveState === VerticalNavModeState.ALTCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTS
         || this.currentVerticalActiveState === VerticalNavModeState.ALTSCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTV
-        || this.currentVerticalActiveState === VerticalNavModeState.ALTVCAP || this.currentVerticalActiveState === VerticalNavModeState.FLC) {
+        || this.currentVerticalActiveState === VerticalNavModeState.ALTVCAP) {
       }
-      else if (this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA) {
+      else if (this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA 
+        || this.currentVerticalActiveState === VerticalNavModeState.FLC) {
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
-        this.activateThrustRefMode();
+        this.activateThrustMode();
       }
       else {
         this.currentVerticalActiveState = VerticalNavModeState.FLC;
@@ -844,10 +852,7 @@
         this.currentLateralActiveState = LateralNavModeState.TO;
       } else {
         if (this.isVNAVOn) {
-          this.isVNAVOn = false;
-          SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
-          SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
-          SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
+          this.vnavOff();
           SimVar.SetSimVarValue("K:ALTITUDE_SLOT_INDEX_SET", "number", 2);
           SimVar.SetSimVarValue("K:VS_SLOT_INDEX_SET", "number", 1);
         }
@@ -1573,7 +1578,7 @@
      let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
      let altitude = Simplane.getAltitude();
      if (mcpAlt > altitude) {
-      if (SimVar.GetSimVarValue("L:WT_CJ4_VNAV_ON", "bool") === 1) {
+      if (this.isVNAVOn) {
         this.activateThrustRefMode();
         return;
       }
