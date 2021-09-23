@@ -3,30 +3,27 @@
 mod electrical;
 mod power_consumption;
 
-use electrical::{
-    A320Electrical, A320ElectricalOverheadPanel, A320EmergencyElectricalOverheadPanel,
-    APU_START_MOTOR_BUS_TYPE,
-};
+use electrical::A320Electrical;
 use power_consumption::A320PowerConsumption;
 use systems::{
-    electrical::{Electricity, ElectricitySource, ExternalPowerSource},
-    shared::ElectricalBusType,
+    electrical::Electricity,
     simulation::{Aircraft, SimulationElement, SimulationElementVisitor, UpdateContext},
 };
 
-pub struct A320 {
+// Ignore all the a320 electrical stuff for now
+pub struct B748 {
     electrical: A320Electrical,
     power_consumption: A320PowerConsumption,
 }
-impl A320 {
-    pub fn new(electricity: &mut Electricity) -> A320 {
-        A320 {
+impl B748 {
+    pub fn new(electricity: &mut Electricity) -> Self {
+        Self {
             electrical: A320Electrical::new(electricity),
             power_consumption: A320PowerConsumption::new(),
         }
     }
 }
-impl Aircraft for A320 {
+impl Aircraft for B748 {
     fn update_before_power_distribution(
         &mut self,
         context: &UpdateContext,
@@ -38,7 +35,7 @@ impl Aircraft for A320 {
         self.power_consumption.update(context);
     }
 }
-impl SimulationElement for A320 {
+impl SimulationElement for B748 {
     fn accept<T: SimulationElementVisitor>(&mut self, visitor: &mut T) {
         self.electrical.accept(visitor);
         self.power_consumption.accept(visitor);

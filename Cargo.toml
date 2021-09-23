@@ -1,8 +1,8 @@
 [workspace]
 
 members = [
-    "src/systems/a320_systems",
-    "src/systems/a320_systems_wasm",
+    "src/systems/b748_systems",
+    "src/systems/b748_systems_wasm",
     "src/systems/systems",
     "src/systems/systems_wasm",
 ]

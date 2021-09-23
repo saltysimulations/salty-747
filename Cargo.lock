@@ -3,27 +3,6 @@
 version = 3
 
 [[package]]
-name = "a320_systems"
-version = "0.1.0"
-dependencies = [
- "rand",
- "rstest",
- "systems",
- "uom",
-]
-
-[[package]]
-name = "a320_systems_wasm"
-version = "0.1.0"
-dependencies = [
- "a320_systems",
- "msfs",
- "systems",
- "systems_wasm",
- "uom",
-]
-
-[[package]]
 name = "aho-corasick"
 version = "0.7.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -57,6 +36,27 @@ name = "autocfg"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
+
+[[package]]
+name = "b748_systems"
+version = "0.1.0"
+dependencies = [
+ "rand",
+ "rstest",
+ "systems",
+ "uom",
+]
+
+[[package]]
+name = "b748_systems_wasm"
+version = "0.1.0"
+dependencies = [
+ "b748_systems",
+ "msfs",
+ "systems",
+ "systems_wasm",
+ "uom",
+]
 
 [[package]]
 name = "bindgen"
