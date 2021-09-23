@@ -437,6 +437,8 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 break;
             case "bank":
                 this.bankAngle = parseFloat(newValue);
+                const correctionFactor = 0.833;
+                this.bankAngle = this.bankAngle * correctionFactor;
                 break;
             case "slip_skid":
                 this.slipSkidValue = parseFloat(newValue);
