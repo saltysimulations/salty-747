@@ -658,7 +658,7 @@
    * @param {number} vsslot is the slot to engage VS with.
    * @param {number} vs is the starting VS value to set.
    */
-  engageVerticalSpeed(vsslot = 1, vs = Simplane.getVerticalSpeed(), annunciate = true) {
+  engageVerticalSpeed(vsslot = 1, vs = Math.round(Simplane.getVerticalSpeed() / 100) * 100, annunciate = true) {
     if (annunciate) {
       SimVar.SetSimVarValue("L:WT_CJ4_VS_ON", "number", 1);
     } else {
