@@ -1,5 +1,7 @@
 use crate::simulation::{Read, Reader, SimulationElement, SimulatorReader, Write, Writer};
 
+#[derive(Default)]
+pub struct AntiIce {}
 #[derive(Copy, Clone, PartialEq, Debug)]
 enum AntiIceMode {
     Off = 0,

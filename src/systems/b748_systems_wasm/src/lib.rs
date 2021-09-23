@@ -20,7 +20,7 @@ use systems_wasm::{
 async fn systems(mut gauge: msfs::Gauge) -> Result<(), Box<dyn std::error::Error>> {
     let mut sim_connect = gauge.open_simconnect("systems")?;
 
-    let mut simulation = Simulation::new(|electricity| B748::new(electricity));
+    let mut simulation = Simulation::new(|_| B748::new());
     let mut msfs_simulation_handler = MsfsSimulationHandler::new(
         vec![
             Box::new(create_aircraft_variable_reader()?),
