@@ -4,7 +4,7 @@ labels: [bug]
 body:
   - type: markdown
     attributes:
-      value: "**Please make sure that your issue persists with an empty community folder with only Salty in it**"
+      value: "**Please make sure that your issue persists with an empty community folder with only Salty in it!**"
   - type: input
     id: version
     attributes:
