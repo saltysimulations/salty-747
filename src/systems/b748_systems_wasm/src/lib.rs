@@ -1,5 +1,5 @@
 #![cfg(any(target_arch = "wasm32", doc))]
-use a320_systems::A320;
+use b748_systems::B748;
 use msfs::sim_connect::{SimConnectRecv, SIMCONNECT_OBJECT_ID_USER};
 use msfs::{legacy::NamedVariable, sim_connect::SimConnect, sys};
 use std::{
@@ -20,11 +20,11 @@ use systems_wasm::{
 async fn systems(mut gauge: msfs::Gauge) -> Result<(), Box<dyn std::error::Error>> {
     let mut sim_connect = gauge.open_simconnect("systems")?;
 
-    let mut simulation = Simulation::new(|electricity| A320::new(electricity));
+    let mut simulation = Simulation::new(|electricity| B748::new(electricity));
     let mut msfs_simulation_handler = MsfsSimulationHandler::new(
         vec![
             Box::new(create_aircraft_variable_reader()?),
-            Box::new(MsfsNamedVariableReaderWriter::new("A32NX_")),
+            Box::new(MsfsNamedVariableReaderWriter::new("SALTY_")),
         ],
         create_failures(),
     );
