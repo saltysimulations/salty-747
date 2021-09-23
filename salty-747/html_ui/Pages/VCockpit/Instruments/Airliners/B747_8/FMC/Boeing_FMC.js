@@ -21,6 +21,7 @@ class Boeing_FMC extends FMCMainDisplay {
         this._onAltitudeHoldDeactivate = EmptyCallback.Void;
         this._isRouteActivated = false;
         this._isStepClimbing = false;
+        this.togaPushedForTO = false;
     }
     Init() {
         super.Init();
@@ -234,6 +235,9 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.setAPSpeedHoldMode();
             Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
             this._navModeSelector.activateThrustRefMode();
+            if (Simplane.getIsGrounded()) {
+                this.togaPushedForTO = true;
+            }
         }
         else if (_event.indexOf("EXEC") != -1) {
             this.onExec();
