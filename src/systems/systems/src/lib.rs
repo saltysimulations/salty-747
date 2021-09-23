@@ -8,6 +8,7 @@
 #[macro_use]
 pub mod macros;
 
+pub mod anti_ice;
 pub mod electrical;
 pub mod failures;
 pub mod overhead;
