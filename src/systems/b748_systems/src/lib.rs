@@ -1,25 +1,20 @@
 #![allow(clippy::suspicious_operation_groupings)]
 
 mod electrical;
-mod power_consumption;
 
-use electrical::A320Electrical;
-use power_consumption::A320PowerConsumption;
 use systems::{
+    anti_ice::AntiIce,
     electrical::Electricity,
     simulation::{Aircraft, SimulationElement, SimulationElementVisitor, UpdateContext},
 };
 
-// Ignore all the a320 electrical stuff for now
 pub struct B748 {
-    electrical: A320Electrical,
-    power_consumption: A320PowerConsumption,
+    anti_ice: AntiIce,
 }
 impl B748 {
-    pub fn new(electricity: &mut Electricity) -> Self {
+    pub fn new() -> Self {
         Self {
-            electrical: A320Electrical::new(electricity),
-            power_consumption: A320PowerConsumption::new(),
+            anti_ice: AntiIce::default(),
         }
     }
 }
@@ -31,15 +26,10 @@ impl Aircraft for B748 {
     ) {
     }
 
-    fn update_after_power_distribution(&mut self, context: &UpdateContext) {
-        self.power_consumption.update(context);
-    }
+    fn update_after_power_distribution(&mut self, context: &UpdateContext) {}
 }
 impl SimulationElement for B748 {
     fn accept<T: SimulationElementVisitor>(&mut self, visitor: &mut T) {
-        self.electrical.accept(visitor);
-        self.power_consumption.accept(visitor);
-
         visitor.visit(self);
     }
 }
