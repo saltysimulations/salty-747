@@ -94,13 +94,14 @@ var Boeing;
             this.bar = _bar;
             this.gauge = _gauge;
             this.cockpitSettings = SimVar.GetGameVarValue("", "GlassCockpitSettings");
-            this.refreshValue(0, 0, 0, true);
+            this.refreshValue(0, 0, 0, 0, true);
         }
         update(_deltaTime) {
             var leverPos = Simplane.getFlapsHandleIndex();
             var flapsPercent = ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT PERCENT", "percent") + SimVar.GetSimVarValue("TRAILING EDGE FLAPS RIGHT PERCENT", "percent")) * 0.5) * 0.01;
+            var leadingEdgePercent = ((SimVar.GetSimVarValue("LEADING EDGE FLAPS LEFT PERCENT", "percent") + SimVar.GetSimVarValue("LEADING EDGE FLAPS RIGHT PERCENT", "percent")) * 0.5) * 0.01;
             var flapsAngle = (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees") + SimVar.GetSimVarValue("TRAILING EDGE FLAPS RIGHT ANGLE", "degrees")) * 0.5;
-            this.refreshValue(leverPos, flapsPercent, flapsAngle);
+            this.refreshValue(leverPos, flapsPercent, flapsAngle, leadingEdgePercent);
             if ((this.currentAngle <= 0) && (this.timeout > 0)) {
                 this.timeout -= _deltaTime;
                 if (this.timeout <= 0) {
@@ -110,10 +111,11 @@ var Boeing;
                 }
             }
         }
-        refreshValue(_leverPos, _realFlapsPercent, _realFlapsAngle, _force = false) {
-            if ((_leverPos != this.currentLeverPosition) || (_realFlapsPercent != this.currentPercent) || (_realFlapsAngle != this.currentAngle) || _force) {
+        refreshValue(_leverPos, _realFlapsPercent, _realFlapsAngle, _leadingEdgeFlapsPercent, _force = false) {
+            if ((_leverPos != this.currentLeverPosition) || (_realFlapsPercent != this.currentPercent) || (_realFlapsAngle != this.currentAngle) || (_leadingEdgeFlapsPercent != this.currentLeadingEdgePercent) || _force) {
                 this.currentLeverPosition = _leverPos;
                 this.currentPercent = _realFlapsPercent;
+                this.currentLeadingEdgePercent = _leadingEdgeFlapsPercent;
                 this.currentAngle = _realFlapsAngle;
                 var targetAngle = this.flapsLeverPositionToAngle(this.currentLeverPosition);
                 var barTop = 0;
@@ -135,7 +137,11 @@ var Boeing;
                     this.valueText.setAttribute("y", markerYStr - 2);
                 }
                 if (this.gauge != null) {
-                    var height = barHeight * this.currentPercent;
+                    const seg1 = barHeight * this.currentLeadingEdgePercent / 6;
+                    const seg2 = s1 + (barHeight * Math.min(this.currentPercent, 0.333));
+                    const seg3 = s2 + (barHeight * Math.max(this.currentPercent - 0.5, 0));
+                    console.log(`PCT:` + (s3/barHeight).toFixed(3));
+                    var height = seg3;
                     this.gauge.setAttribute("height", height.toString());
                 }
                 if (this.rootElement != null) {
@@ -157,9 +163,9 @@ var Boeing;
         flapsAngleToPercentage(_angle) {
             const angToPercent = {
                 0: 0,
-                1: 0.033,
-                5: 0.167,
-                10: 0.333,
+                1: 0.167,
+                5: 0.333,
+                10: 0.5,
                 20: 0.667,
                 25: 0.833,
                 30: 1
