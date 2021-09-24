@@ -137,15 +137,25 @@ var Boeing;
                     this.valueText.setAttribute("y", markerYStr - 2);
                 }
                 if (this.gauge != null) {
+                    //Normalises non-linear flap settings for gauge.
                     const seg1 = barHeight * this.currentLeadingEdgePercent / 6;
-                    const seg2 = s1 + (barHeight * Math.min(this.currentPercent, 0.333));
-                    const seg3 = s2 + (barHeight * Math.max(this.currentPercent - 0.5, 0));
-                    console.log(`PCT:` + (s3/barHeight).toFixed(3));
-                    var height = seg3;
+                    const seg2 = barHeight * Math.min(this.currentPercent, 0.333);
+                    const seg3 = Math.min(barHeight * 0.5 * Math.max(this.currentPercent - 0.333, 0), 22);
+                    const seg4 = barHeight * Math.max(this.currentPercent - 0.667, 0);
+                    var height = seg1 + seg2 + seg3 + seg4;
+
                     this.gauge.setAttribute("height", height.toString());
                 }
                 if (this.rootElement != null) {
-                    this.rootElement.setAttribute("class", (Math.round(this.currentAngle) == Math.round(targetAngle)) ? "static" : "transit");
+                    if (this.currentLeverPosition == 0) {
+                        this.rootElement.setAttribute("class", (Math.round(_leadingEdgeFlapsPercent * 100) == Math.round(0)) ? "static" : "transit");
+                    }
+                    else if (this.currentLeverPosition == 1) {
+                        this.rootElement.setAttribute("class", (Math.round(_leadingEdgeFlapsPercent * 100) == Math.round(100) && Math.round(this.currentAngle) == Math.round(0)) ? "static" : "transit");
+                    }
+                    else {
+                        this.rootElement.setAttribute("class", (Math.round(this.currentAngle) == Math.round(targetAngle)) ? "static" : "transit");
+                    }
                 }
                 if (this.currentAngle <= 0) {
                     this.timeout = Boeing.FlapsDisplay.TIMEOUT_LENGTH;
