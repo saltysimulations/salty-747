@@ -70,20 +70,20 @@ class SvgFlightPlanElement extends SvgMapElement {
 
                     //Runway icons
                     this.hasSetDepRunway = false;
-                    this.drawRunways(waypoints, 0, waypoints.length - 1, map, '#FFFFFF', (index !== 0));
+                    this.drawRunways(waypoints, 0, waypoints.length - 1, map, '#FFFFFF', (index !== 0), false);
 
                     //Active leg
                     if (waypoints[activeWaypointIndex] && waypoints[activeWaypointIndex - 1]) {
-                        this.buildPathFromWaypoints(waypoints, activeWaypointIndex - 1, activeWaypointIndex + 1, map, '#D570FF', (index !== 0));
+                        this.buildPathFromWaypoints(waypoints, activeWaypointIndex - 1, activeWaypointIndex + 1, map, '#D570FF', (index !== 0), false);
                     }
 
                     //Missed approach preview
                     if (missedSegment.offset > -1) {
-                        this.buildPathFromWaypoints(waypoints, missedSegment.offset - 1, waypoints.length - 1, map, '#D570FF', (index !== 0));
+                        this.buildPathFromWaypoints(waypoints, missedSegment.offset - 1, waypoints.length - 1, map, '#00FFFF', true, true);
                     }
 
                     //Remainder of plan
-                    this.buildPathFromWaypoints(waypoints, activeWaypointIndex, mainPathEnd, map, '#D570FF', (index !== 0));
+                    this.buildPathFromWaypoints(waypoints, activeWaypointIndex, mainPathEnd, map, '#D570FF', (index !== 0), false);
                     
                 }
             }
@@ -96,14 +96,16 @@ class SvgFlightPlanElement extends SvgMapElement {
      * @param {MapInstrument} map The map instrument to convert coordinates with.
      * @returns {string} A path string.
      */
-    buildPathFromWaypoints(waypoints, startIndex, endIndex, map, style = 'white', isDashed = false) {
+    buildPathFromWaypoints(waypoints, startIndex, endIndex, map, style = 'white', isDashed = false, isMissed = false) {
         const context = this._flightPathCanvas.getContext('2d');
         context.beginPath();
 
         context.lineWidth = 3;
         context.strokeStyle = style;
-        if (isDashed === true) {
+        if (isDashed === true & !isMissed) {
             context.strokeStyle = "white";
+            context.setLineDash([20, 20]);
+        } else if (isMissed) {
             context.setLineDash([20, 20]);
         } else {
             context.setLineDash([]);
@@ -156,7 +158,11 @@ class SvgFlightPlanElement extends SvgMapElement {
             }
             prevWaypoint = waypoint;
         }
+        context.stroke();
 
+        //DRAW HOLDS - ALWAYS NON-DASHED
+        context.setLineDash([]);
+        context.beginPath();
         for (let i = startIndex + 1; i < endIndex; i++) {
             const waypoint = waypoints[i];
             if (waypoint.hasHold) {
@@ -184,7 +190,7 @@ class SvgFlightPlanElement extends SvgMapElement {
             const fpm = this.source;
             const context = this._flightPathCanvas.getContext('2d');
             context.beginPath();
-            context.lineWidth = 3;
+            context.lineWidth = 2;
             context.strokeStyle = style;
             for (let i = startIndex + 1; i < endIndex; i++) {
                 const waypoint = waypoints[i];
