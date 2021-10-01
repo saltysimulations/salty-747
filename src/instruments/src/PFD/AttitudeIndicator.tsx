@@ -26,12 +26,18 @@ type GraduationLineType = "large" | "half-size" | "small";
 type GraduationLineProps = { type: GraduationLineType; y: number; text?: number };
 
 const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
+    const getLine = (length: number) => (
+        <>
+            <path className="black-outline" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
+            <path className="white-line" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
+        </>
+    );
+
     switch (type) {
         case "large":
             return (
                 <>
-                    <path className="black-outline" transform={`translate(-82 ${y})`} d="M0 0,h164" />
-                    <path className="white-line" transform={`translate(-82 ${y})`} d="M0 0,h164" />
+                    {getLine(164)}
                     <text className="graduation-text" x={-98} y={y + 7.33}>
                         {text}
                     </text>
@@ -41,19 +47,9 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
                 </>
             );
         case "half-size":
-            return (
-                <>
-                    <path className="black-outline" transform={`translate(-41 ${y})`} d="M0 0,h82" />
-                    <path className="white-line" transform={`translate(-41 ${y})`} d="M0 0,h82" />
-                </>
-            );
+            return getLine(82);
         case "small":
-            return (
-                <>
-                    <path className="black-outline" transform={`translate(-20.5 ${y})`} d="M0 0,h41" />
-                    <path className="white-line" transform={`translate(-20.5 ${y})`} d="M0 0,h41" />
-                </>
-            );
+            return getLine(41);
         default:
             return <></>;
     }
@@ -87,17 +83,19 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll }) => {
                 {/* AH seperator*/}
                 <rect x={0} y={397.5} width={800} height={4} fill="#fff" stroke="black" stroke-width="1" />
 
-                <SvgGroup x={AH_CENTER_X} y={400}>
-                    {Array.from({ length: 30 }, (_, i) => {
-                        const number = ((i + 1) / 4) * 10 - 2.5;
-                        return (
-                            <>
-                                <GraduationLine type={indexToGraduationLineType(i)} y={i * 20} text={number} />
-                                <GraduationLine type={indexToGraduationLineType(i)} y={i * -20} text={number} />
-                            </>
-                        );
-                    })}
-                </SvgGroup>
+                <g clipPath="url(#ah-clip)">
+                    <SvgGroup x={AH_CENTER_X} y={400}>
+                        {Array.from({ length: 30 }, (_, i) => {
+                            const number = ((i + 1) / 4) * 10 - 2.5;
+                            return (
+                                <>
+                                    <GraduationLine type={indexToGraduationLineType(i)} y={i * 20} text={number} />
+                                    <GraduationLine type={indexToGraduationLineType(i)} y={i * -20} text={number} />
+                                </>
+                            );
+                        })}
+                    </SvgGroup>
+                </g>
             </g>
 
             {/* AH square masks */}
