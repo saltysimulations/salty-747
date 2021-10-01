@@ -10,8 +10,41 @@
 }
 
 text {
+    font-family: "BoeingEICAS";
+}
+
+.gray-bg {
+    fill: gray;
+}
+
+.black-outline {
+    stroke: black;
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.white-line {
+    stroke: white;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.cursor {
+    fill: black;
+    stroke: white;
+    stroke-width: 3px;
+}
+
+.indication {
+    stroke: white;
+    stroke-width: 3px;
+}
+
+.graduation-text {
+    font-size: 22px;
     fill: white;
     text-anchor: middle;
-    font-family: "BoeingEICAS";
-    font-size: 48px;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
 }
