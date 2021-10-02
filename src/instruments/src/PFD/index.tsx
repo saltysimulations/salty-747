@@ -20,31 +20,33 @@ import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
 import { render } from "../Common";
 import { Horizon } from "./AttitudeIndicator";
+import { VSI } from "./VerticalSpeedIndicator";
 
 import "./index.scss";
 import "../Common/pixels.scss";
 
-type BlackOutlineWhiteLineProps = { d: string };
+type BlackOutlineWhiteLineProps = { d: string; blackStroke?: number; whiteStroke?: number };
 
-export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d }) => (
+export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, blackStroke = 4, whiteStroke = 3 }) => (
     <>
-        <path className="black-outline" d={d}></path>
-        <path className="white-line" d={d}></path>
+        <path stroke="black" strokeWidth={blackStroke} strokeLinecap="round" d={d}></path>
+        <path stroke="white" strokeWidth={whiteStroke} strokeLinecap="round" d={d}></path>
     </>
 );
 
 const PFD: React.FC = () => {
     const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
+    const [verticalSpeed] = useSimVar("VERTICAL SPEED", "feet per minute");
 
     return (
         <>
             <div className="LcdOverlay" style={{ opacity: "0.2" }} />
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
                 <Horizon pitch={pitch} />
+                <VSI verticalSpeed={verticalSpeed} />
 
                 <path className="gray-bg" d="M13 100, h100 v560 h -100 Z" />
                 <path className="gray-bg" d="M600 100, h100 v560 h-100 Z" />
-                <path className="gray-bg" d="M724 188, h35 l34 97 v 200 l-35 97 h-35 v-130 l20 -10 v-120 l-20 -10 Z" />
                 <path className="gray-bg" d="M130 0, h450, v60, h-450 Z" />
                 <path className="gray-bg" d="M140 785, h412, c -103 -140, -309 -140, -412 0 Z" />
 
