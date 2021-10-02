@@ -17,8 +17,10 @@
  */
 
 import React, { FC } from "react";
+import { useSimVar } from "react-msfs";
 import { SvgGroup } from "../../Common";
 import { BlackOutlineWhiteLine } from "../index";
+import { FD } from "./FlightDirector";
 
 const AH_CENTER_X = 349;
 const AH_CENTER_Y = 382;
@@ -56,9 +58,11 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
     }
 };
 
-type HorizonProps = { pitch: number; roll: number; sideslip: number };
+export const Horizon: FC = () => {
+    const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
+    const [roll] = useSimVar("PLANE BANK DEGREES", "degrees");
+    const [sideslip] = useSimVar("INCIDENCE BETA", "degrees");
 
-export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip }) => {
     const pitchToGraduationPixels = (pitch: number): number => pitch * 8;
 
     const indexToGraduationLineType = (i: number): GraduationLineType => {
@@ -105,12 +109,25 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip }) => {
                 {/* Slip/Skid Indicator */}
                 <g transform={`translate(${sideslipAngleToDisplacment(sideslip) || 0} 0)`}>
                     <path fill="none" stroke="black" strokeWidth="4" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
-                    <path fill={Math.abs(roll) > 35 ? '#ffc400' : 'white'} fill-opacity={Math.abs(sideslipAngleToDisplacment(sideslip)) == 33 ? '1' : '0'} stroke={Math.abs(roll) > 35 ? '#ffc400' : 'white'} strokeWidth="3" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
+                    <path
+                        fill={Math.abs(roll) > 35 ? "#ffc400" : "white"}
+                        fill-opacity={Math.abs(sideslipAngleToDisplacment(sideslip)) == 33 ? "1" : "0"}
+                        stroke={Math.abs(roll) > 35 ? "#ffc400" : "white"}
+                        strokeWidth="3"
+                        d="M333 214, h32, v 6, h-32, Z"
+                        stroke-linejoin="round"
+                    />
                 </g>
 
                 {/* Bank Pointer */}
                 <path fill="none" stroke="black" strokeWidth="4" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
-                <path fill={Math.abs(roll) > 35 ? '#ffc400' : 'none'} stroke={Math.abs(roll) > 35 ? '#ffc400' : 'white'} strokeWidth="3" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
+                <path
+                    fill={Math.abs(roll) > 35 ? "#ffc400" : "none"}
+                    stroke={Math.abs(roll) > 35 ? "#ffc400" : "white"}
+                    strokeWidth="3"
+                    d="M349 194, l-16 20, h32, Z"
+                    stroke-linejoin="round"
+                />
             </g>
 
             {/* AH square masks */}
@@ -131,6 +148,8 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip }) => {
             <BlackOutlineWhiteLine d="M420 189, l-4 11" />
             <BlackOutlineWhiteLine d="M313 179, l3 13" />
             <BlackOutlineWhiteLine d="M385 179, l-3 13" />
+
+            <FD />
         </g>
     );
 };

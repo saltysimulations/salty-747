@@ -17,6 +17,7 @@
  */
 
 import React, { FC } from "react";
+import { useSimVar } from "react-msfs";
 import { SvgGroup } from "../Common";
 import { BlackOutlineWhiteLine } from "./index";
 
@@ -28,9 +29,8 @@ const fpmToPixels = (fpm: number): number => {
     return fpm > 0 ? -pixels : pixels;
 };
 
-type VSIProps = { verticalSpeed: number };
-
-export const VSI: FC<VSIProps> = ({ verticalSpeed }) => {
+export const VSI: FC = () => {
+    const [verticalSpeed] = useSimVar("VERTICAL SPEED", "feet per minute");
     return (
         <g>
             <path className="gray-bg" d="M 723 184 h 35 l 34 97 v 200 l -34 97 h -35 v -130 l 20 -10 v -114 l -20 -10 Z" />

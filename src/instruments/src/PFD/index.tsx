@@ -17,10 +17,8 @@
  */
 
 import React, { FC } from "react";
-import { useSimVar } from "react-msfs";
 import { render } from "../Common";
-import { Horizon } from "./AttitudeIndicator";
-import { FD } from "./AttitudeIndicator/FlightDirector";
+import { Horizon } from "./AttitudeIndicator/Horizon";
 import { VSI } from "./VerticalSpeedIndicator";
 
 import "./index.scss";
@@ -35,25 +33,13 @@ export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, black
     </>
 );
 
-const PFD: React.FC = () => {
-    {/* Aircraft state */}
-    const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
-    const [verticalSpeed] = useSimVar("VERTICAL SPEED", "feet per minute");
-    const [roll] = useSimVar("PLANE BANK DEGREES", "degrees");
-    const [sideslip] = useSimVar("INCIDENCE BETA", "degrees");
-    
-    {/* Flight Director */}
-    const [isFdOn] = useSimVar("AUTOPILOT FLIGHT DIRECTOR ACTIVE", "bool");
-    const [fdPitch] = useSimVar("AUTOPILOT FLIGHT DIRECTOR PITCH", "degrees");
-    const [fdRoll] = useSimVar("AUTOPILOT FLIGHT DIRECTOR BANK", "degrees");
-
+const PFD: FC = () => {
     return (
         <>
             <div className="LcdOverlay" style={{ opacity: "0.2" }} />
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-                <Horizon roll={roll} pitch={pitch} sideslip={sideslip} />
-                <FD isFdOn={isFdOn} fdPitch={fdPitch} fdRoll={fdRoll} />
-                <VSI verticalSpeed={verticalSpeed} />
+                <Horizon />
+                <VSI />
                 <path className="gray-bg" d="M13 100, h100 v560 h -100 Z" />
                 <path className="gray-bg" d="M600 100, h100 v560 h-100 Z" />
                 <path className="gray-bg" d="M130 0, h450, v60, h-450 Z" />

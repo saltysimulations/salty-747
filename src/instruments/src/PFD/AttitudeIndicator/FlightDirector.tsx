@@ -17,21 +17,14 @@
  */
 
 import React, { FC } from "react";
-import { SvgGroup } from "../../Common";
+import { useSimVar } from "react-msfs";
 
-type FDProps = { isFdOn: boolean; fdPitch: number; fdRoll: number };
+export const FD: FC = () => {
+    const [isFdOn] = useSimVar("AUTOPILOT FLIGHT DIRECTOR ACTIVE", "bool");
+    const [fdPitch] = useSimVar("AUTOPILOT FLIGHT DIRECTOR PITCH", "degrees");
+    const [fdRoll] = useSimVar("AUTOPILOT FLIGHT DIRECTOR BANK", "degrees");
 
-export const FD: FC<FDProps> = ({ isFdOn, fdPitch, fdRoll }) => {
-    const degreesToPixels = (angle: number): number => {
-        if (angle > 12) {
-            angle = 12;
-        }
-        else if (angle < -12) {
-            angle = -12;
-        }
-        const pixels = angle * 8;
-        return pixels;
-    };
+    const degreesToPixels = (angle: number): number => (angle < 0 ? Math.max(angle * 8, -12 * 8) : Math.min(angle * 8, 12 * 8));
 
     return (
         <g>
@@ -43,15 +36,15 @@ export const FD: FC<FDProps> = ({ isFdOn, fdPitch, fdRoll }) => {
             <path d="M343 377, h11, v11, h-11, Z" strokeWidth="4" stroke="black" fill="black" />
 
             {/* FD Bar Pitch */}
-            <g transform={`translate(0 ${degreesToPixels(-fdPitch) || 0})`} visibility={isFdOn ? 'visible' : 'hidden'}>
-                <path className="fd-bar-outline"d="M239 382, h220" />
-                <path className="fd-bar"d="M239 382, h220" />
+            <g transform={`translate(0 ${degreesToPixels(-fdPitch) || 0})`} visibility={isFdOn ? "visible" : "hidden"}>
+                <path className="fd-bar-outline" d="M239 382, h220" />
+                <path className="fd-bar" d="M239 382, h220" />
             </g>
 
             {/* FD Bar Roll */}
-            <g transform={`translate(${degreesToPixels(-fdRoll) || 0} 0)`} visibility={isFdOn ? 'visible' : 'hidden'}>
-                <path className="fd-bar-outline"d="M349 272, v220" />
-                <path className="fd-bar"d="M349 272, v220" />
+            <g transform={`translate(${degreesToPixels(-fdRoll) || 0} 0)`} visibility={isFdOn ? "visible" : "hidden"}>
+                <path className="fd-bar-outline" d="M349 272, v220" />
+                <path className="fd-bar" d="M349 272, v220" />
             </g>
 
             {/* Center Square Foreground */}
