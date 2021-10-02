@@ -41,11 +41,11 @@ export const VSI: FC = () => {
             <text
                 x={785}
                 y={verticalSpeed > 0 ? 170 - 7.33 : 630 - 7.33}
-                visibility={Math.round(Math.abs(verticalSpeed) / 50) * 50 === 0 ? "hidden" : "visible"}
+                visibility={Math.abs(verticalSpeed) < 400 ? "hidden" : "visible"}
                 className="graduation-text"
                 style={{ fontSize: "30px", textAnchor: "end" }}
             >
-                {Math.round(Math.abs(verticalSpeed) / 50) * 50}
+                {Math.abs(verticalSpeed) > 9975 ? 9999 : Math.round(Math.abs(verticalSpeed) / 50) * 50}
             </text>
 
             <rect x={792} y={290} width={8} height={190} fill="black" />
