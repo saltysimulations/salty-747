@@ -22,7 +22,7 @@ import { BlackOutlineWhiteLine } from "./index";
 
 const AH_CENTER_X = 349;
 
-type GraduationLineType = "large" | "half-size" | "small";
+type GraduationLineType = "large" | "half-size" | "small" | "invisible";
 type GraduationLineProps = { type: GraduationLineType; y: number; text?: number };
 
 const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
@@ -60,8 +60,8 @@ type HorizonProps = { pitch: number; roll?: number };
 export const Horizon: FC<HorizonProps> = ({ pitch, roll }) => {
     const pitchToGraduationPixels = (pitch: number): number => pitch * 8;
 
-    const indexToGraduationLineType = (i: number): string | null => {
-        if (i == 0) return null;
+    const indexToGraduationLineType = (i: number): GraduationLineType => {
+        if (i == 0) return "invisible";
         else if (i % 4 == 0) return "large";
         else if (!(i % 2 == 0)) return "small";
         else return "half-size";
@@ -69,7 +69,7 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll }) => {
 
     return (
         <g>
-            <clipPath id="ah-clip" transform={`translate(0 -18) translate(0 ${pitchToGraduationPixels(-pitch) || 0})`}>
+            <clipPath id="ah-clip" transform={`translate(0 18) translate(0 ${pitchToGraduationPixels(-pitch) || 0})`}>
                 <path d="M156 350, h30, v-40 c 83 -115 243 -115 323 0, v40, h30, v227, h-383 Z" />
             </clipPath>
 
