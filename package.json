@@ -24,6 +24,8 @@
         "@rollup/plugin-image": "^2.1.1",
         "@rollup/plugin-node-resolve": "^13.0.5",
         "@rollup/plugin-replace": "^3.0.0",
+        "@types/react": "^17.0.26",
+        "@types/react-dom": "^17.0.9",
         "@typescript-eslint/eslint-plugin": "^4.14.0",
         "@typescript-eslint/parser": "^4.14.0",
         "eslint": "^7.18.0",

@@ -23,7 +23,7 @@ import { BlackOutlineWhiteLine } from "./index";
 const AH_CENTER_X = 349;
 const AH_CENTER_Y = 382;
 
-type GraduationLineType = "large" | "half-size" | "small";
+type GraduationLineType = "large" | "half-size" | "small" | "invisible";
 type GraduationLineProps = { type: GraduationLineType; y: number; text?: number };
 
 const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
@@ -61,8 +61,8 @@ type HorizonProps = { pitch: number; roll: number; sideslip: number };
 export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip }) => {
     const pitchToGraduationPixels = (pitch: number): number => pitch * 8;
 
-    const indexToGraduationLineType = (i: number): string | null => {
-        if (i == 0) return null;
+    const indexToGraduationLineType = (i: number): GraduationLineType => {
+        if (i == 0) return "invisible";
         else if (i % 4 == 0) return "large";
         else if (!(i % 2 == 0)) return "small";
         else return "half-size";
