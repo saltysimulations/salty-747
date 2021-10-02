@@ -17,8 +17,8 @@
  */
 
 import React, { FC } from "react";
-import { SvgGroup } from "../Common";
-import { BlackOutlineWhiteLine } from "./index";
+import { SvgGroup } from "../../Common";
+import { BlackOutlineWhiteLine } from "../index";
 
 const AH_CENTER_X = 349;
 const AH_CENTER_Y = 382;
@@ -56,9 +56,9 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
     }
 };
 
-type HorizonProps = { pitch: number; roll: number; sideslip: number; isFdOn: boolean; fdPitch: number; fdRoll: number };
+type HorizonProps = { pitch: number; roll: number; sideslip: number };
 
-export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip, isFdOn, fdPitch, fdRoll }) => {
+export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip }) => {
     const pitchToGraduationPixels = (pitch: number): number => pitch * 8;
 
     const indexToGraduationLineType = (i: number): GraduationLineType => {
@@ -112,29 +112,6 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip, isFdOn, fdPit
                 <path fill="none" stroke="black" strokeWidth="4" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
                 <path fill={Math.abs(roll) > 35 ? '#ffc400' : 'none'} stroke={Math.abs(roll) > 35 ? '#ffc400' : 'white'} strokeWidth="3" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
             </g>
-
-            {/* Aircraft wing symbols */}
-            <path className="cursor" d="M190 377, h84, v30 h-11 v-20 h-73 Z" />
-            <path className="cursor" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
-
-            {/* Center Square Background */}
-            <path d="M343 377, h11, v11, h-11, Z" strokeWidth="4" stroke="black" fill="black" />
-
-            {/* FD Bar Pitch */}
-            <g transform={`translate(0 ${pitchToGraduationPixels(-fdPitch) || 0})`} visibility={isFdOn ? 'visible' : 'hidden'}>
-                <path className="fd-bar-outline"d="M239 382, h220" />
-                <path className="fd-bar"d="M239 382, h220" />
-            </g>
-
-            {/* FD Bar Roll */}
-            <g transform={`translate(${pitchToGraduationPixels(-fdRoll) || 0} 0)`} visibility={isFdOn ? 'visible' : 'hidden'}>
-                <path className="fd-bar-outline"d="M349 272, v220" />
-                <path className="fd-bar"d="M349 272, v220" />
-            </g>
-
-
-            {/* Center Square Foreground */}
-            <path d="M343 377, h11, v11, h-11, Z" strokeWidth="3" stroke="white" fill="none" />
 
             {/* AH square masks */}
             <path d="M0 0, h799, v410 h-260 v-190 a-44,44 -44 0, 0 -44,-44 l-295,0 a-44,44 -44 0, 0 -44,44 v190, H0 Z" />

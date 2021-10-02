@@ -20,6 +20,7 @@ import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
 import { render } from "../Common";
 import { Horizon } from "./AttitudeIndicator";
+import { FD } from "./AttitudeIndicator/FlightDirector";
 import { VSI } from "./VerticalSpeedIndicator";
 
 import "./index.scss";
@@ -50,7 +51,8 @@ const PFD: React.FC = () => {
         <>
             <div className="LcdOverlay" style={{ opacity: "0.2" }} />
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-                <Horizon roll={roll} pitch={pitch} sideslip={sideslip} isFdOn={isFdOn} fdPitch={fdPitch} fdRoll={fdRoll}/>
+                <Horizon roll={roll} pitch={pitch} sideslip={sideslip} />
+                <FD isFdOn={isFdOn} fdPitch={fdPitch} fdRoll={fdRoll} />
                 <VSI verticalSpeed={verticalSpeed} />
                 <path className="gray-bg" d="M13 100, h100 v560 h -100 Z" />
                 <path className="gray-bg" d="M600 100, h100 v560 h-100 Z" />
