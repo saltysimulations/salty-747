@@ -35,12 +35,14 @@ export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d }) => 
 
 const PFD: React.FC = () => {
     const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
+    const [roll] = useSimVar("PLANE BANK DEGREES", "degrees");
+    const [sideslip] = useSimVar("INCIDENCE BETA", "degrees");
 
     return (
         <>
             <div className="LcdOverlay" style={{ opacity: "0.2" }} />
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-                <Horizon pitch={pitch} />
+                <Horizon roll={roll} pitch={pitch} sideslip={sideslip}/>
 
                 <path className="gray-bg" d="M13 100, h100 v560 h -100 Z" />
                 <path className="gray-bg" d="M600 100, h100 v560 h-100 Z" />
