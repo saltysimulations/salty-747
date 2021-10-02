@@ -105,12 +105,12 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip }) => {
                 {/* Slip/Skid Indicator */}
                 <g transform={`translate(${sideslipAngleToDisplacment(sideslip) || 0} 0)`}>
                     <path fill="none" stroke="black" strokeWidth="4" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
-                    <path fill="none" stroke="white" strokeWidth="3" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
+                    <path fill={Math.abs(roll) > 35 ? '#ffc400' : 'white'} fill-opacity={Math.abs(sideslipAngleToDisplacment(sideslip)) == 33 ? '1' : '0'} stroke={Math.abs(roll) > 35 ? '#ffc400' : 'white'} strokeWidth="3" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
                 </g>
 
                 {/* Bank Pointer */}
                 <path fill="none" stroke="black" strokeWidth="4" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
-                <path fill="none" stroke="white" strokeWidth="3" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
+                <path fill={Math.abs(roll) > 35 ? '#ffc400' : 'none'} stroke={Math.abs(roll) > 35 ? '#ffc400' : 'white'} strokeWidth="3" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
             </g>
 
             {/* AH square masks */}
