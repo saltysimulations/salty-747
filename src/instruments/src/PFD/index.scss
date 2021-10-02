@@ -48,3 +48,15 @@ text {
     stroke-width: 1px;
     paint-order: stroke;
 }
+
+.fd-bar {
+    stroke: #d570ff;
+    stroke-width: 5px;
+    stroke-linecap: round;
+}
+
+.fd-bar-outline {
+    stroke: black;
+    stroke-width: 7px;
+    stroke-linecap: round;
+}
