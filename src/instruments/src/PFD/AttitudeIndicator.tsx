@@ -21,6 +21,7 @@ import { SvgGroup } from "../Common";
 import { BlackOutlineWhiteLine } from "./index";
 
 const AH_CENTER_X = 349;
+const AH_CENTER_Y = 382;
 
 type GraduationLineType = "large" | "half-size" | "small" | "invisible";
 type GraduationLineProps = { type: GraduationLineType; y: number; text?: number };
@@ -55,9 +56,9 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
     }
 };
 
-type HorizonProps = { pitch: number; roll?: number };
+type HorizonProps = { pitch: number; roll: number; sideslip: number };
 
-export const Horizon: FC<HorizonProps> = ({ pitch, roll }) => {
+export const Horizon: FC<HorizonProps> = ({ pitch, roll, sideslip }) => {
     const pitchToGraduationPixels = (pitch: number): number => pitch * 8;
 
     const indexToGraduationLineType = (i: number): GraduationLineType => {
@@ -67,25 +68,27 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll }) => {
         else return "half-size";
     };
 
+    const sideslipAngleToDisplacment = (sideslip: number): number => Math.min(sideslip, 33);
+
     return (
         <g>
             <clipPath id="ah-clip" transform={`translate(0 18) translate(0 ${pitchToGraduationPixels(-pitch) || 0})`}>
                 <path d="M156 350, h30, v-40 c 83 -115 243 -115 323 0, v40, h30, v227, h-383 Z" />
             </clipPath>
 
-            <g transform={`translate(0 -18) translate(0 ${pitchToGraduationPixels(pitch) || 0})`}>
+            <g transform={`rotate(${roll || 0} ${AH_CENTER_X} ${AH_CENTER_Y}) translate(0 -18) translate(0 ${pitchToGraduationPixels(pitch) || 0})`}>
                 {/* AH top */}
-                <rect x={0} y={0} width={800} height={400} fill="#1469BC" />
+                <rect x={0} y={-800} width={800} height={1200} fill="#1469BC" />
 
                 {/* AH bottom*/}
-                <rect x={0} y={400} width={800} height={400} fill="#764D17" />
+                <rect x={0} y={400} width={800} height={1200} fill="#764D17" />
 
                 {/* AH seperator*/}
                 <rect x={0} y={397.5} width={800} height={4} fill="#fff" stroke="black" stroke-width="1" />
 
                 <g clipPath="url(#ah-clip)">
                     <SvgGroup x={AH_CENTER_X} y={400}>
-                        {Array.from({ length: 30 }, (_, i) => {
+                        {Array.from({ length: 37 }, (_, i) => {
                             const number = ((i + 1) / 4) * 10 - 2.5;
                             return (
                                 <>
@@ -96,6 +99,18 @@ export const Horizon: FC<HorizonProps> = ({ pitch, roll }) => {
                         })}
                     </SvgGroup>
                 </g>
+            </g>
+
+            <g transform={`rotate(${roll || 0} ${AH_CENTER_X} ${AH_CENTER_Y})`}>
+                {/* Slip/Skid Indicator */}
+                <g transform={`translate(${sideslipAngleToDisplacment(sideslip) || 0} 0)`}>
+                    <path fill="none" stroke="black" strokeWidth="4" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
+                    <path fill="none" stroke="white" strokeWidth="3" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
+                </g>
+
+                {/* Bank Pointer */}
+                <path fill="none" stroke="black" strokeWidth="4" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
+                <path fill="none" stroke="white" strokeWidth="3" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
             </g>
 
             {/* AH square masks */}
