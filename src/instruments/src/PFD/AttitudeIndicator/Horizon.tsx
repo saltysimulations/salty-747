@@ -21,6 +21,7 @@ import { useSimVar } from "react-msfs";
 import { SvgGroup } from "../../Common";
 import { BlackOutlineWhiteLine } from "../index";
 import { FD } from "./FlightDirector";
+import { FPV } from "./FlightDirector";
 
 const AH_CENTER_X = 349;
 const AH_CENTER_Y = 382;
@@ -105,6 +106,12 @@ export const Horizon: FC = () => {
                 </g>
             </g>
 
+            {/* Aircraft wing symbols */}
+            <path className="black-outline" d="M190 377, h84, v30 h-11 v-20 h-73 Z" />
+            <path className="cursor" d="M190 377, h84, v30 h-11 v-20 h-73 Z" />
+            <path className="black-outline" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
+            <path className="cursor" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
+
             <g transform={`rotate(${roll || 0} ${AH_CENTER_X} ${AH_CENTER_Y})`}>
                 {/* Slip/Skid Indicator */}
                 <g transform={`translate(${sideslipAngleToDisplacment(sideslip) || 0} 0)`}>
@@ -128,6 +135,7 @@ export const Horizon: FC = () => {
                     d="M349 194, l-16 20, h32, Z"
                     stroke-linejoin="round"
                 />
+                <FPV />
             </g>
 
             {/* AH square masks */}
@@ -148,6 +156,7 @@ export const Horizon: FC = () => {
             <BlackOutlineWhiteLine d="M420 189, l-4 11" />
             <BlackOutlineWhiteLine d="M313 179, l3 13" />
             <BlackOutlineWhiteLine d="M385 179, l-3 13" />
+
 
             <FD />
         </g>
