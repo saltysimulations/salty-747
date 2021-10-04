@@ -29,6 +29,12 @@ text {
     stroke-linecap: round;
 }
 
+.magenta-line {
+    stroke: #d570ff;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
 .cursor {
     fill: black;
     stroke: white;
@@ -38,6 +44,79 @@ text {
 .indication {
     stroke: white;
     stroke-width: 3px;
+}
+
+.graduation-text {
+    font-size: 22px;
+    fill: white;
+    text-anchor: middle;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+}
+
+.text-4{
+    font-size: 42px;
+    fill: white;
+    text-anchor: end;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+    letter-spacing: -1px
+}
+
+.text-3{
+    font-size: 30px;
+    fill: white;
+    text-anchor: end;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+}
+
+.text-3-magenta{
+    font-size: 30px;
+    fill: #d570ff;
+    text-anchor: end;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+}
+
+.text-2{
+    font-size: 23.625px;
+    fill: white;
+    text-anchor: end;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+}
+
+.text-2-green{
+    font-size: 23.625px;
+    fill: lime;
+    text-anchor: end;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+}
+
+.text-2-magenta{
+    font-size: 23.625px;
+    fill: #d570ff;
+    text-anchor: end;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+}
+
+.text-1{
+    font-size: 17.718px;
+    fill: white;
+    text-anchor: end;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
 }
 
 .graduation-text {

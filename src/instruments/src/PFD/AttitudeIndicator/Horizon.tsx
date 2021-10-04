@@ -42,10 +42,10 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
             return (
                 <>
                     {getLine(164)}
-                    <text className="graduation-text" x={-98} y={y + 7.33}>
+                    <text className="text-2" x={-88} y={y + 7.33}>
                         {text}
                     </text>
-                    <text className="graduation-text" x={98} y={y + 7.33}>
+                    <text className="text-2" x={109} y={y + 7.33}>
                         {text}
                     </text>
                 </>
@@ -156,7 +156,6 @@ export const Horizon: FC = () => {
             <BlackOutlineWhiteLine d="M420 189, l-4 11" />
             <BlackOutlineWhiteLine d="M313 179, l3 13" />
             <BlackOutlineWhiteLine d="M385 179, l-3 13" />
-
 
             <FD />
         </g>

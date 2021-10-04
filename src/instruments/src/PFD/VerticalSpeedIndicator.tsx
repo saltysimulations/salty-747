@@ -42,8 +42,7 @@ export const VSI: FC = () => {
                 x={785}
                 y={verticalSpeed > 0 ? 170 - 7.33 : 630 - 7.33}
                 visibility={Math.abs(verticalSpeed) < 400 ? "hidden" : "visible"}
-                className="graduation-text"
-                style={{ fontSize: "30px", textAnchor: "end" }}
+                className="text-3"
             >
                 {Math.abs(verticalSpeed) > 9975 ? 9999 : Math.round(Math.abs(verticalSpeed) / 50) * 50}
             </text>
@@ -55,23 +54,23 @@ export const VSI: FC = () => {
 
 const VSIScale: FC = () => (
     <>
-        <SvgGroup x={735} y={201 + 7.33}>
-            <text x={0} y={0} className="graduation-text">
+        <SvgGroup x={741} y={201 + 7.33}>
+            <text x={0} y={0} className="text-2">
                 6
             </text>
-            <text x={0} y={40} className="graduation-text">
+            <text x={0} y={40} className="text-2">
                 2
             </text>
-            <text x={0} y={100} className="graduation-text">
+            <text x={0} y={100} className="text-2">
                 1
             </text>
-            <text x={0} y={260} className="graduation-text">
+            <text x={0} y={260} className="text-2">
                 1
             </text>
-            <text x={0} y={320} className="graduation-text">
+            <text x={0} y={320} className="text-2">
                 2
             </text>
-            <text x={0} y={360} className="graduation-text">
+            <text x={0} y={360} className="text-2">
                 6
             </text>
         </SvgGroup>
