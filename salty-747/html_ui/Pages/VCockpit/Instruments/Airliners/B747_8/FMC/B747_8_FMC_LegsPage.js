@@ -15,6 +15,7 @@ class B747_8_FMC_LegsPage {
         this._pageCount = 1;
         this._rows = [];
         this.step = 0;
+        this.disconsJumped = 0;
 
         this._activeWptIndex = this._fmc.flightPlanManager.getActiveWaypointIndex();
         this._distanceToActiveWpt = "0";
@@ -257,11 +258,11 @@ class B747_8_FMC_LegsPage {
 
     bindInputs() {
         for (let i = 0; i < this._wayPointsToRender.length; i++) {
-
             const offsetRender = Math.floor((this._currentPage - 1) * 5);
             const wptRender = this._wayPointsToRender[i + offsetRender];
+            
             // if its a real fix
-            if (!(this._currentPage === 1 && i === 0) && wptRender && (wptRender.fix.ident !== "$EMPTY" || wptRender.fix.ident !== "$DISCO")) {
+            if (wptRender && (wptRender.fix.ident !== "$EMPTY" || wptRender.fix.ident !== "$DISCO")) {
                 this._fmc.onRightInput[i] = () => {
                     const offset = Math.floor((this._currentPage - 1) * 5);
                     const wptIndex = this._wayPointsToRender[i + offset].index;
@@ -608,18 +609,6 @@ class B747_8_FMC_LegsPage {
                 this.update(true);
             }
         };
-        if (this._currentPage == 1) {
-            this._fmc.onRightInput[0] = () => {
-                const currentInhibit = this._fmc._lnav.sequencingMode === FlightPlanSequencing.INHIBIT;
-                if (currentInhibit) {
-                    this._fmc._lnav.setAutoSequencing();
-                } else {
-                    this._fmc._lnav.setInhibitSequencing();
-                }
-
-                this.resetAfterOp();
-            };
-        }
 
         // EXEC
         this._fmc.onExecPage = () => {
@@ -629,7 +618,6 @@ class B747_8_FMC_LegsPage {
                     this.resetAfterOp();
                 }; // TODO this seems annoying, but this is how stuff works in cj4_fmc right now
                 this._fmc.onExecDefault();
-                console.log("A")
             } else if (this._fmc.fpHasChanged) {
                 this._fmc.fpHasChanged = false;
                 this._fmc.activateRoute(() => {
@@ -638,7 +626,6 @@ class B747_8_FMC_LegsPage {
                         this.resetAfterOp();
                     }; // TODO this seems annoying, but this is how stuff works in cj4_fmc right now
                     this._fmc.onExecDefault();
-                    console.log("B")
                 });
             }
         };
@@ -646,10 +633,10 @@ class B747_8_FMC_LegsPage {
         this._fmc.onPrevPage = () => {
             if (this._currentPage > 1) {
                 this._currentPage--;
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this.update(true);
             } else {
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this._currentPage = this._pageCount;
                 this.update(true);
             }
@@ -657,10 +644,10 @@ class B747_8_FMC_LegsPage {
         this._fmc.onNextPage = () => {
             if (this._currentPage < this._pageCount) {
                 this._currentPage++;
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this.update(true);
             } else {
-                this.updateStep(true);
+                this.updateStep(true, false);
                 this._currentPage = 1;
                 this.update(true);
             }

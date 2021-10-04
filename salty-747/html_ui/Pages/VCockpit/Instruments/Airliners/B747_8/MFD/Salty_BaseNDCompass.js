@@ -358,6 +358,9 @@ class Jet_NDCompass extends HTMLElement {
                         this.selectedHeadingGroup.classList.toggle('hide', false);
                     if (this.selectedHeadingLine)
                         this.selectedHeadingLine.classList.toggle('hide', !showSelectedHeading);
+                        if (SimVar.GetSimVarValue("L:SALTY_IRS_STATE", "Enum") !== 2 && this.selectedHeadingGroup) {
+                            this.selectedHeadingGroup.classList.toggle('hide', true);
+                        }
                 }
                 else {
                     if (this.selectedHeadingGroup)

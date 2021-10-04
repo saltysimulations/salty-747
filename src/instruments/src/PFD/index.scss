@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "BoeingEICAS";
+    src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.pfd-svg {
+    background-color: black;
+}
+
+text {
+    fill: white;
+    text-anchor: middle;
+    font-family: "BoeingEICAS";
+    font-size: 48px;
+}

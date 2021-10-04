@@ -230,7 +230,6 @@ class WT_BaseVnav {
 
             this.manageConstraints();
             this.calculateTod();
-            this.calculateAdvisoryDescent();
         }
     }
 
@@ -795,37 +794,20 @@ class WT_BaseVnav {
             || this._fmc._currentVerticalAutopilot._glidepathStatus == GlidepathStatus.GP_ACTIVE || this._fmc._currentVerticalAutopilot._glideslopeStatus == GlideslopeStatus.GS_ACTIVE)) {
             todExists = false;
         }
-        else if (currentSegment !== undefined && currentSegment > 0 && this._verticalFlightPlanSegments[currentSegment].fpa == 0) {
-            todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[currentSegment].targetIndex].cumulativeDistanceInFP + this._verticalFlightPlanSegments[currentSegment].distanceToNextTod;
-            todExists = true;
-        }
-        else if (this._firstPathSegment >= 0 && this.flightplan.activeWaypointIndex <= this._lastClimbIndex) {
-            altitude = this._fmc.cruiseFlightLevel * 100;
-            fpta = this._verticalFlightPlan[this._verticalFlightPlanSegments[this._firstPathSegment].targetIndex].waypointFPTA;
-            fpa = this._verticalFlightPlanSegments[this._firstPathSegment].fpa;
-            if (this.indicatedAltitude > fpta + 100) {
-                altitude = this.indicatedAltitude;
-            }
-            const descentDistance = AutopilotMath.calculateDescentDistance(fpa, altitude - fpta);
-            todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[this._firstPathSegment].targetIndex].cumulativeDistanceInFP - descentDistance;
-            todExists = true;
-        }
         else if (this._firstPathSegment < 0 || !this._verticalFlightPlan[this.flightplan.activeWaypointIndex]) {
             todExists = false;
         }
-        else if (this.flightplan.activeWaypointIndex > this._lastClimbIndex) {
-            altitude = this.indicatedAltitude;
-            if (currentSegment >= 0) {
-                const fptaIdx = this._verticalFlightPlan.findIndex(x => (x.waypointFPTA !== undefined && !x.isClimb && x.waypointFPTA < altitude + 100 && x.indexInFlightPlan >= this.flightplan.activeWaypointIndex));
-                if (fptaIdx > -1) {
-                    const fptaSegment = this._verticalFlightPlan[fptaIdx].segment;
-                    if (fptaSegment !== undefined) {
-                        fpta = this._verticalFlightPlan[this._verticalFlightPlanSegments[fptaSegment].targetIndex].waypointFPTA;
-                        fpa = this._verticalFlightPlanSegments[fptaSegment].fpa;
-                        const descentDistance = AutopilotMath.calculateDescentDistance(fpa, altitude - fpta);
-                        todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[fptaSegment].targetIndex].cumulativeDistanceInFP - descentDistance;
-                        todExists = true;
-                    }
+        altitude = SimVar.GetSimVarValue("L:AIRLINER_CRUISE_ALTITUDE", "number");
+        if (currentSegment >= 0) {
+            const fptaIdx = this._verticalFlightPlan.findIndex(x => (x.waypointFPTA !== undefined && !x.isClimb && x.waypointFPTA < altitude + 100 && x.indexInFlightPlan >= this.flightplan.activeWaypointIndex));
+            if (fptaIdx > -1) {
+                const fptaSegment = this._verticalFlightPlan[fptaIdx].segment;
+                if (fptaSegment !== undefined) {
+                    fpta = this._verticalFlightPlan[this._verticalFlightPlanSegments[fptaSegment].targetIndex].waypointFPTA;
+                    fpa = this._verticalFlightPlanSegments[fptaSegment].fpa;
+                    const descentDistance = AutopilotMath.calculateDescentDistance(fpa, altitude - fpta);
+                    todDistanceInFP = this.allWaypoints[this._verticalFlightPlanSegments[fptaSegment].targetIndex].cumulativeDistanceInFP - descentDistance;
+                    todExists = true;
                 }
             }
         }
@@ -836,36 +818,9 @@ class WT_BaseVnav {
         }
     }
 
-    calculateAdvisoryDescent() { //Creates a point when VNAV is not available to start descent to reach 1500' AGL 10nm from airport
-        if (this.vnavState == VnavState.NONE) {
-            if (this.destination && this._fmc.cruiseFlightLevel && !Simplane.getIsGrounded()) {
-                const elevation = parseFloat(this.destination.infos.oneWayRunways[0].elevation) * 3.28;
-                const altitude = this._fmc.cruiseFlightLevel * 100;
-                const verticalDistance = (altitude - elevation) - 1500;
-                const horizontalDescentDistance = ((verticalDistance / Math.tan(3 * Math.PI / 180)) / 6076.12) + 10;
-                const distanceToTod = (this.destination.cumulativeDistanceInFP - horizontalDescentDistance) - this._currentDistanceInFP;
-                const WT_CJ4_TOD_DISTANCE = SimVar.GetSimVarValue("L:WT_CJ4_TOD_DISTANCE", "number");
-                const WT_CJ4_TOD_REMAINING = SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number");
-                const WT_CJ4_ADV_DES_ACTIVE = SimVar.GetSimVarValue("L:WT_CJ4_ADV_DES_ACTIVE", "number");
-                if (WT_CJ4_TOD_DISTANCE < horizontalDescentDistance - .1 || WT_CJ4_TOD_DISTANCE > horizontalDescentDistance + .1) {
-                    SimVar.SetSimVarValue("L:WT_CJ4_TOD_DISTANCE", "number", horizontalDescentDistance);
-                }
-                if (WT_CJ4_TOD_REMAINING < distanceToTod - .1 || WT_CJ4_TOD_REMAINING > distanceToTod + .1) {
-                    SimVar.SetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number", distanceToTod);
-                }
-                const desActive = distanceToTod > .1 ? 1 : 0;
-                if (WT_CJ4_ADV_DES_ACTIVE != desActive) {
-                    SimVar.SetSimVarValue("L:WT_CJ4_ADV_DES_ACTIVE", "number", distanceToTod > .1 ? 1 : 0);
-                }
-            }
-        } else {
-            SimVar.SetSimVarValue("L:WT_CJ4_ADV_DES_ACTIVE", "number", 0);
-        }
-    }
-
     setTodWaypoint(calculate = false, todDistanceInFP) {
 
-        /*if (calculate === true) {
+        if (calculate === true) {
             const todDistanceFromCurrPos = todDistanceInFP < this._currentDistanceInFP ? 0 : todDistanceInFP - this._currentDistanceInFP;
             const todDistanceFromDest = this.destination.cumulativeDistanceInFP - todDistanceInFP;
             // console.log("todDistanceInFP " + todDistanceInFP + " this._currentDistanceInFP " + this._currentDistanceInFP);
@@ -875,7 +830,7 @@ class WT_BaseVnav {
         } else {
             SimVar.SetSimVarValue("L:WT_CJ4_TOD_DISTANCE", "number", 0);
             SimVar.SetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number", 0);
-        }*/
+        }
     }
 
 

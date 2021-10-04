@@ -1,0 +1,53 @@
+name: Bug Report
+description: File a bug report
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "**Please make sure that your issue persists with an empty community folder with only Salty in it!**"
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: v0.4.0, latest dev
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: Provide a clear explanation of what happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Tell us how we can reproduce this bug in concise steps
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Additional information
+      description: If applicable, show us any screenshots or videos.
+    validations:
+      required: false
+  - type: input
+    id: discord
+    attributes:
+      label: Your Discord
+      placeholder: example#0000
+    validations:
+      required: false

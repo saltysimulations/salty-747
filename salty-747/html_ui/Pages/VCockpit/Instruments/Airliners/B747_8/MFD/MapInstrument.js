@@ -1006,8 +1006,8 @@ class MapInstrument extends ISvgMapRootElement {
                     waypoint.infos = new WayPointInfo(this._instrument);
                     waypoint.getSvgElement(this.navMap.index);
                     this._todWaypoint = waypoint;
-                    this._todWaypoint.ident = "TOD";
-                    this._todWaypoint.infos.ident = "TOD";
+                    this._todWaypoint.ident = "T/D";
+                    this._todWaypoint.infos.ident = "T/D";
                 }
 
                 const todDist = SimVar.GetSimVarValue("L:WT_CJ4_TOD_DISTANCE", "number");
