@@ -143,7 +143,7 @@ export const Horizon: FC = () => {
             <path d="M156 410 v123 a-44,44 -44 0, 0 44,44 h295, a-44,44 -44 0, 0 44,-44 v-123 H800 L800, 800, H0, V410 Z" />
 
             {/* Top triangle */}
-            <path fill="white" stroke="black" strokeWidth="1" d="M349 191 l-11 -15 l22 0 Z" />
+            <path fill="white" stroke="black" strokeWidth="0.5" d="M349 191 l-11 -15 l22 0 Z" />
 
             {/* Roll indicator lines */}
             <BlackOutlineWhiteLine d="M163 275, l17 10" />
