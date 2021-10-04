@@ -19,6 +19,7 @@
 import React, { FC } from "react";
 import { render } from "../Common";
 import { Horizon } from "./AttitudeIndicator/Horizon";
+import { SpeedScroller } from "./AirspeedIndicator";
 import { VSI } from "./VerticalSpeedIndicator";
 import { HeadingDisplay } from "./HeadingDisplay";
 
@@ -54,9 +55,7 @@ const PFD: FC = () => {
 
                 <path className="indication" d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
                 <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
-                <text x="77" y="396" className="text-4">
-                    284
-                </text>
+                <SpeedScroller />
             </svg>
         </>
     );
