@@ -1,0 +1,8 @@
+{
+	"name": "salty-74s",
+	"paths": {
+		"instrumentSrc": "src\\instruments\\src",
+		"bundlesSrc": "bundles",
+		"htmlUiSrc": "salty-747\\html_ui"
+	}
+}

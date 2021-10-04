@@ -28,6 +28,6 @@ To install, simply copy the salty-747 folder to your community folder. Depending
 * If you customized install location when installing MSFS (regardless of version) - `<Install Folder>\Community`
 
 ## License
-The Salty Simulations 747-8 is distributed under the MIT License. See [LICENSE](https://github.com/saltysimulations/salty-747/blob/master/LICENSE).
+The Salty Simulations 747-8 is distributed under the GNU General Public License version 3. See [LICENSE](https://github.com/saltysimulations/salty-747/blob/master/LICENSE).
 
 Microsoft Flight Simulator © Microsoft Corporation. The Salty Simulations 747-8 was created under Microsoft's "Game Content Usage Rules" using assets from Microsoft Flight Simulator, and it is not endorsed by or affiliated with Microsoft.
