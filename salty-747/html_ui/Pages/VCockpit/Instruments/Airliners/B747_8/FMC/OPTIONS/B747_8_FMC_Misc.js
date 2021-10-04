@@ -17,12 +17,15 @@ class FMCSaltyOptions_Misc {
                 displayCurrentPilotsOption = `{green}NONE{end}/{small}PILOT{end}/{small}COPILOT{end}/{small}BOTH{end}`;
         }
 
+        const fpSync = WTDataStore.get("WT_CJ4_FPSYNC", 0);
+        const fpSyncDisplayOption = fpSync >= 1 ? "{green}ON{end}/{small}OFF{end}" : "{small}ON{end}/{green}OFF{end}";
+
         fmc.setTemplate([
             ["MISC OPTIONS"],
             ["", "", "PILOTS VISIBILITY"],
             ["<", ">", `${displayCurrentPilotsOption}`],
-            ["", ""],
-            ["", ""],
+            ["", "", "FP SYNC (WORLD MAP FP)"],
+            [`< ${fpSyncDisplayOption}`, "", ""],
             ["", ""],
             ["", ""],
             ["", ""],
@@ -32,7 +35,7 @@ class FMCSaltyOptions_Misc {
             ["\xa0RETURN TO", ""],
             ["<OPTIONS", ""]
         ]);
-        
+
         /* LSK1 */
         fmc.onLeftInput[0] = () => {
             let newPVOption = +storedPilotsVis;
@@ -45,7 +48,7 @@ class FMCSaltyOptions_Misc {
             SetPilotVar(newPVOption);
             FMCSaltyOptions_Misc.ShowPage(fmc);
         }
-        
+
         /* RSK1 */
         fmc.onRightInput[0] = () => {
             let newPVOption = +storedPilotsVis;
@@ -58,7 +61,13 @@ class FMCSaltyOptions_Misc {
             SetPilotVar(newPVOption);
             FMCSaltyOptions_Misc.ShowPage(fmc);
         }
-        
+
+        fmc.onLeftInput[1] = () => {
+            WTDataStore.set("WT_CJ4_FPSYNC", fpSync >= 1 ? 0 : 1);
+            fmc.showErrorMessage("RESTART FLIGHT TO APPLY");
+            FMCSaltyOptions_Misc.ShowPage(fmc);
+        }
+
         /* LSK6 */
         fmc.onLeftInput[5] = () => {
             FMCSaltyOptions.ShowPage1(fmc);

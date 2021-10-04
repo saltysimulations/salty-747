@@ -57,9 +57,10 @@
                             <g id="WP_Data">
                             <text id="WP_Track_Value" class="Units" x="0%" y="0%" alignment-baseline="baseline" style="fill:#000000"></text>
                             <text id="WP_Name" class="Large" x="67.5%" y="20%" alignment-baseline="baseline" style="fill:#D570FF;text-anchor:start"></text>
-                            <text id="WP_ZuluTime" class="Value" x="98.75%" y="43%" alignment-baseline="baseline" style="text-align:left">------</text>
-                            <text id="WP_Distance_Value" class="Value" x="85.5%" y="66%" alignment-baseline="baseline" style="text-align:left">-.-</text>
-                            <text id="WP_Distance_Units" class="Units" x="92.5%" y="66%" alignment-baseline="baseline" style="fill:#ffffff">NM</text>
+                            <text id="WP_ZuluTime" class="Value" x="67.5%" y="43%" alignment-baseline="baseline" style="text-anchor:start">------</text>
+                            <text id="WP_ZuluTimeLabel" class="Units" x="96%" y="43%" alignment-baseline="baseline" style="fill:#ffffff;text-anchor:start">Z</text>
+                            <text id="WP_Distance_Value" class="Value" x="86.25%" y="66%" alignment-baseline="baseline" style="text-anchor:end">-.-</text>
+                            <text id="WP_Distance_Units" class="Units" x="86.5%" y="66%" alignment-baseline="baseline" style="fill:#ffffff;text-anchor:start">NM</text>
                             <text id="ZuluClock_Time" class="Units" x="85%" y="87%" alignment-baseline="baseline" style="fill:#ffffff"></text>
                             <text id="ZuluClock_Label" class="Units" x="100%" y="87%" alignment-baseline="baseline" style="fill:#00ffff">UTC</text>
                             </g> 
@@ -101,26 +102,37 @@
                     </svg>
                 </div>
             </jet-mfd-nd-info>
+
+            <div id="PathDeviationScale" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <path id="pathDevMask" d= "M 545 350 l 40 -8 l 0 170 l -40 0 Z" fill="black"></path>
+                    <path id="pathDevScale" d="M 553 370 l 5 0 l 0 60 l -8 0 l 8 0 l 0 60 l -5 0 l 5 0 l 0 -120 Z" alignment-baseline="middle" stroke="white" stroke-width="2"></path>
+                    <path id="pathDevPointer" d= "M 560 430 l 8 -5 l 8 5 l -8 5 Z" stroke="#D570FF" fill="black" stroke-width="2"></path>
+                    <text id="pathTopText" x="574" y="355" text-anchor="end" alignment-baseline="baseline" font-size= "15px" stroke="white" fill="white">9999</text>
+                    <text id="pathBottomText" x="574" y="497" text-anchor="end" alignment-baseline="baseline" font-size= "15px" stroke="white" fill="white">9999</text>
+                </svg>
+            </div>
+
             <div id="irs-times" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
                 <svg viewBox="0 0 600 600">
-                    <text x="87" y="62" style="text-anchor:middle;fill:#ffffff;font-size:16.5px;">TIME TO ALIGN</text>
-                    <text x="23" y="79" style="fill:#ffffff;font-size:17px;">L</text>   
-                    <text x="23" y="96" style="fill:#ffffff;font-size:17px;">C</text>   
-                    <text x="23" y="113" style="fill:#ffffff;font-size:17px;">R</text>
-                    <text x="47" y="79" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="l-irs-value">0</text>   
-                    <text x="47" y="96" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="c-irs-value">0</text>   
-                    <text x="47" y="113" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="r-irs-value">0</text>
-                    <text x="60" y="79" style="fill:#ffffff;font-size:17px;">MIN</text>   
-                    <text x="60" y="96" style="fill:#ffffff;font-size:17px;">MIN</text>   
-                    <text x="60" y="113" style="fill:#ffffff;font-size:17px;">MIN</text>
+                    <text x="77" y="73" style="text-anchor:middle;fill:#ffffff;font-size:17px;">TIME TO ALIGN</text>
+                    <text x="23" y="89" style="fill:#ffffff;font-size:17px;">L</text>   
+                    <text x="23" y="106" style="fill:#ffffff;font-size:17px;">C</text>   
+                    <text x="23" y="123" style="fill:#ffffff;font-size:17px;">R</text>
+                    <text x="47" y="89" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="l-irs-value">0</text>   
+                    <text x="47" y="106" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="c-irs-value">0</text>   
+                    <text x="47" y="123" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="r-irs-value">0</text>
+                    <text x="60" y="89" style="fill:#ffffff;font-size:17px;">MIN</text>   
+                    <text x="60" y="106" style="fill:#ffffff;font-size:17px;">MIN</text>   
+                    <text x="60" y="123" style="fill:#ffffff;font-size:17px;">MIN</text>
                 </svg>
             </div>
         </div>
     </div>
     <div id="DUborder">
-        <svg viewBox="0 0 600 600" style="position:absolute; top:2%; left: 0.5%; width: 99.5%; height:97%;">
-            <path d= "M 0 570 L 571 570 L 571 0 L 600 0 L 600 570 L 600 600 L 0 600 Z" fill="black"></path>
-            <path d= "M 0 0 L 585 0 L 585 15 L 15 15 L 15 585 L 0 585 Z" fill="black"></path>               
+        <svg viewBox="0 0 600 600" style="position:absolute; top:0%; left: 0%; width: 100%; height:100%;">
+            <path d= "M 0 570 L 565 570 L 565 40 L 600 40 L 600 570 L 600 600 L 0 600 Z" fill="black"></path>
+            <path d= "M 0 0 L 600 0 L 600 40 L 30 40 L 30 600 L 0 600 Z" fill="black"></path>               
         </svg>
     </div>
 </script>

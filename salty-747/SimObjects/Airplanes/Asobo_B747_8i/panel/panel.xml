@@ -410,6 +410,28 @@
 			</Greater>
 		  </Condition>
 		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\HEAT WINDOW R</Text>
+		  <Condition>
+			<Equal>
+				<Simvar name="WINDSHIELD DEICE SWITCH" unit="Boolean"/>
+				<Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\HEAT WINDOW L</Text>
+		  <Condition>
+			<Equal>
+				<Simvar name="WINDSHIELD DEICE SWITCH" unit="Boolean"/>
+				<Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
 		
 		<Annunciation>
 		  <Type>Advisory</Type>
@@ -644,6 +666,29 @@
 			  <Simvar name="AUTO BRAKE SWITCH CB" unit="Enum"/>
 			  <Constant>6</Constant>
 			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Memo</Type>
+		  <Text>SEATBELTS</Text>
+		  <Condition Suffix=" ON">
+		    <Equal>
+			  <Simvar name="CABIN SEATBELTS ALERT SWITCH" unit="bool"/>
+			  <Constant>1</Constant>
+			</Equal>
+		  </Condition>
+		  <Condition Suffix=" OFF">
+		  	<And>
+		    	<Equal>
+			  		<Simvar name="CABIN SEATBELTS ALERT SWITCH" unit="bool"/>
+			  		<Constant>0</Constant>
+				</Equal>
+				<Equal>
+			  		<Simvar name="SIM ON GROUND" unit="bool"/>
+			  		<Constant>0</Constant>
+				</Equal>
+			</And>
 		  </Condition>
 		</Annunciation>
 		

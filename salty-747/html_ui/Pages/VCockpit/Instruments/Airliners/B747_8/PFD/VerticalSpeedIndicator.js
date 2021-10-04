@@ -213,14 +213,6 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 let vSpeed = parseFloat(newValue);
                 this.updateVSpeed(vSpeed);
                 break;
-            case "selected_vspeed_active":
-                if (this.selectedCursorSVG) {
-                    if (newValue == "true")
-                        this.selectedCursorSVG.setAttribute("visibility", "visible");
-                    else
-                        this.selectedCursorSVG.setAttribute("visibility", "hidden");
-                }
-                break;
             case "selected_vspeed":
                 let selVSpeed = parseFloat(newValue);
                 this.updateSelectedVSpeed(selVSpeed);
@@ -299,6 +291,12 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                     else
                         this.bottomSpeedText.textContent = "";
                 }
+            }
+            if (this.selectedCursorSVG) {
+                if (SimVar.GetSimVarValue("L:WT_CJ4_VS_ON", "number") === 1)
+                    this.selectedCursorSVG.setAttribute("visibility", "visible");
+                else
+                    this.selectedCursorSVG.setAttribute("visibility", "hidden");
             }
         }
     }

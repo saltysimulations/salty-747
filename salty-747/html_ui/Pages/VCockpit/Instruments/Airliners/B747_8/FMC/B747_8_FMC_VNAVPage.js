@@ -286,7 +286,7 @@ class B747_8_FMC_VNAVPage {
 
         /* LSK 2L  - Cruise Speed */
         let crzSpeedCell = ""
-        let crzSpeed = fmc.getCrzManagedSpeed();
+        let crzSpeed = fmc.getCrzManagedSpeed(true);
         let crzMach = fmc.getCrzMach();
         if (crzMach !== 1) {
             crzSpeedCell = crzMach.toFixed(3).substring(1);
@@ -501,7 +501,6 @@ class B747_8_FMC_VNAVPage {
                     value = parseFloat(value);
                     SimVar.SetSimVarValue("L:SALTY_DES_SPEED", "knots", value);
                     SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE" , "Enum", 2);
-                    fmc.managedMachOff();
                 }
                 else {
                     fmc.showErrorMessage("INVALID ENTRY");

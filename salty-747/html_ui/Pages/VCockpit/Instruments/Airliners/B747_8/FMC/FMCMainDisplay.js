@@ -1686,17 +1686,14 @@ class FMCMainDisplay extends BaseAirliners {
     async tryGoInApproachPhase() {
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_APPROACH;
-            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
             return true;
         }
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_APPROACH;
-            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
             return true;
         }
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_DESCENT) {
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_APPROACH;
-            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
             return true;
         }
         if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
@@ -1718,6 +1715,7 @@ class FMCMainDisplay extends BaseAirliners {
                 let accelAlt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number");
                 if (alt > accelAlt) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
+                    this.togaSpeedSet = false;
                     enterClimbPhase = true;
                 }
                 if (enterClimbPhase) {
@@ -1735,7 +1733,6 @@ class FMCMainDisplay extends BaseAirliners {
                 if (isFinite(cruiseFlightLevel)) {
                     if (altitude >= 0.98 * cruiseFlightLevel) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CRUISE;
-                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                         this.flightPhaseHasChangedToCruise = true;
                     }
                 }
@@ -1746,20 +1743,15 @@ class FMCMainDisplay extends BaseAirliners {
                 if (isFinite(cruiseFlightLevel)) {
                     if (altitude < 0.90 * cruiseFlightLevel && !this._isStepClimbing) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
-                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                         this.flightPhaseHasChangedToDescent = true;
                     }
                 }
-                //Force DESCENT flight phase if at approx TOD based on CRZ level
+                //descent phase when passing calculated TOD
                 let destination = this.flightPlanManager.getDestination();
                 if (destination) {
-                    let lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude");
-                    let long = SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude");
-                    let planeLla = new LatLongAlt(lat, long);
-                    let dist = Avionics.Utils.computeGreatCircleDistance(destination.infos.coordinates, planeLla);
-                    if (dist < (cruiseFlightLevel / 6076 * 20) + 10) {
+                    let todDistance = SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number");
+                    if (todDistance < 1 && todDistance !== 0) {
                         this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_DESCENT;
-                        Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.AUTO);
                     }
                 }
             }
@@ -2548,16 +2540,7 @@ class FMCMainDisplay extends BaseAirliners {
     }
     setAPManagedSpeed(_speed, _aircraft) {
         if (isFinite(_speed)) {
-            if (Simplane.getAutoPilotMachModeActive()) {
-                let mach = SimVar.GetGameVarValue("FROM KIAS TO MACH", "number", _speed);
-                let cruiseMach = SimVar.GetGameVarValue("AIRCRAFT CRUISE MACH", "mach");
-                mach = Math.min(mach, cruiseMach);
-                Coherent.call("AP_MACH_VAR_SET", 2, mach);
-                SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_ON", "number", 1);
-                return;
-            }
             Coherent.call("AP_SPD_VAR_SET", 2, _speed);
-            SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
         }
     }
     computeETA(distance, speed = NaN, currentTime = NaN) {
@@ -2592,20 +2575,6 @@ class FMCMainDisplay extends BaseAirliners {
         let time = distance / speed;
         let fuel = currentFuelFlow * time;
         return currentFuel - fuel;
-    }
-    setAPSpeedHoldMode() {
-        if (!Simplane.getAutoPilotMachModeActive()) {
-            if (!SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD", "Boolean")) {
-                SimVar.SetSimVarValue("K:AP_PANEL_SPEED_HOLD", "Number", 1);
-                console.log("Activating SPEED HOLD (Knots)");
-            }
-        }
-        else {
-            if (!SimVar.GetSimVarValue("AUTOPILOT MACH HOLD", "Boolean")) {
-                SimVar.SetSimVarValue("K:AP_PANEL_MACH_HOLD", "Number", 1);
-                console.log("Activating SPEED HOLD (Mach)");
-            }
-        }
     }
 }
 FMCMainDisplay.approachTypes = [

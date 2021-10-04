@@ -87,7 +87,7 @@ class LocDirector {
         : -1 * Math.min(this.previousDeviation - radioState.lateralDevation, 0);
 
       const interceptRateScalar = radioState.lateralDevation < 40
-        ? 1 - Math.min(interceptRate / 5, 1.15)
+        ? 1 - Math.min(interceptRate / 10, 1.15)
         : 1;
 
       const magVar = SimVar.GetSimVarValue('MAGVAR', 'Degrees');

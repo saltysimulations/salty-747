@@ -437,6 +437,8 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 break;
             case "bank":
                 this.bankAngle = parseFloat(newValue);
+                const correctionFactor = 0.833;
+                this.bankAngle = this.bankAngle * correctionFactor;
                 break;
             case "slip_skid":
                 this.slipSkidValue = parseFloat(newValue);
@@ -640,27 +642,9 @@ var Jet_PFD_FlightDirector;
             if (this.pitchLine != null) {
                 let currentPlanePitch = Simplane.getPitch();
                 let currentFDPitch = Simplane.getFlightDirectorPitch();
-                let altAboveGround = Simplane.getAltitudeAboveGround();
-                let vertSpeed = SimVar.GetSimVarValue("VERTICAL SPEED", "feet per second") * 60;
-                let fdPhase = SimVar.GetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum");
-                let _bForcedFdPitchThisFrame = false;
                 //Special FD Takeoff Phase Logic
-                if (Simplane.getCurrentFlightPhase() == FlightPhase.FLIGHT_PHASE_TAKEOFF) {
-                    if (fdPhase < 1) {
-                        currentFDPitch = -8;
-                    }
-                    if (((fdPhase == 1) || altAboveGround > 5) && Simplane.getIndicatedSpeed() > 80) {
-                        currentFDPitch = -10 ;
-                        SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 1);
-                    }
-                    if ((vertSpeed >= 600 || fdPhase == 2) && altAboveGround > 10) {  
-                        if (!Simplane.getAutoPilotFLCActive()) {
-                            SimVar.SetSimVarValue("K:FLIGHT_LEVEL_CHANGE_ON", "Number", 1);
-                        }
-                        let blendfactor = (vertSpeed) / 350;
-                        currentFDPitch = Math.min((Simplane.getFlightDirectorPitch() - 7 + blendfactor), Simplane.getFlightDirectorPitch());
-                        SimVar.SetSimVarValue("L:SALTY_FD_TAKEOFF_PHASE", "Enum", 2);
-                    }
+                if (Simplane.getIsGrounded()) {
+                    currentFDPitch = -8;
                 }
                 if (this._pitchIsNotReadyYet) {
                     this._pitchIsNotReadyYet = Math.abs(currentFDPitch) < 2;
