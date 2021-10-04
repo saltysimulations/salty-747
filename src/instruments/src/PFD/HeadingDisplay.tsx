@@ -43,6 +43,22 @@ const HeadingLineElement: FC<{ rotation: number; text?: boolean }> = ({ rotation
     );
 };
 
+const HeadingLines: FC = () => (
+    <>
+        {Array.from({ length: 36 }, (_, i) => {
+            const rotation = (i + 1) * 10;
+            return (
+                <>
+                    <HeadingLineElement rotation={rotation} text />
+                    <HeadingLineElement rotation={rotation - 5} />
+                </>
+            );
+        })}
+    </>
+);
+
+const MemoizedHeadingLines = React.memo(HeadingLines);
+
 export const HeadingDisplay: FC = () => {
     const [heading] = useSimVar("PLANE HEADING DEGREES MAGNETIC", "degrees");
     const [mcpHeading] = useSimVar("AUTOPILOT HEADING LOCK DIR:1", "degrees");
@@ -65,15 +81,7 @@ export const HeadingDisplay: FC = () => {
     return (
         <g>
             <g>
-                {Array.from({ length: 36 }, (_, i) => {
-                    const rotation = (i + 1) * 10;
-                    return (
-                        <>
-                            <HeadingLineElement rotation={rotation} text />
-                            <HeadingLineElement rotation={rotation - 5} />
-                        </>
-                    );
-                })}
+                <MemoizedHeadingLines />
             </g>
 
             {/* Text Values */}
