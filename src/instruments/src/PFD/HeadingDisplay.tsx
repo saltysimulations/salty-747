@@ -114,8 +114,8 @@ export const HeadingDisplay: FC = () => {
                 <BlackOutlineWhiteLine d="M349 678, v150" />
                 <BlackOutlineWhiteLine d="M343 751, h12" />
             </g>
-
-            <rect x="130" y="789" width="440" height="15" fill="black" />
+            <rect x="250" y="785" width="200" height="5" fill="black" />
+            <rect x="110" y="789" width="480" height="15" fill="black" />
         </g>
     );
 };
