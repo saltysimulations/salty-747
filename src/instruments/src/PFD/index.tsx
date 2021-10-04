@@ -41,7 +41,7 @@ const PFD: FC = () => {
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
                 <Horizon />
                 <VSI />
-                
+
                 <path className="gray-bg" d="M13 100, h100 v560 h -100 Z" />
                 <path className="gray-bg" d="M600 100, h100 v560 h-100 Z" />
                 <path className="gray-bg" d="M130 0, h450, v60, h-450 Z" />
@@ -54,8 +54,9 @@ const PFD: FC = () => {
 
                 <path className="indication" d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
                 <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
-                <text x="77" y="396" className="text-4">284</text>
-
+                <text x="77" y="396" className="text-4">
+                    284
+                </text>
             </svg>
         </>
     );

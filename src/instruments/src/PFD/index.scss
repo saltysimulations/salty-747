@@ -46,77 +46,42 @@ text {
     stroke-width: 3px;
 }
 
-.graduation-text {
-    font-size: 22px;
+.text {
     fill: white;
-    text-anchor: middle;
     stroke: black;
+    text-anchor: end;
     stroke-width: 1px;
     paint-order: stroke;
+    letter-spacing: 1px;
 }
 
-.text-4{
+.text-4 {
+    @extend .text;
     font-size: 42px;
-    fill: white;
-    text-anchor: end;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
-    letter-spacing: -1px
+    letter-spacing: -1px;
 }
 
-.text-3{
+.text-3 {
+    @extend .text;
     font-size: 30px;
-    fill: white;
-    text-anchor: end;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
 }
 
-.text-3-magenta{
-    font-size: 30px;
-    fill: #d570ff;
-    text-anchor: end;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
-}
-
-.text-2{
+.text-2 {
+    @extend .text;
     font-size: 23.625px;
-    fill: white;
-    text-anchor: end;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
 }
 
-.text-2-green{
-    font-size: 23.625px;
-    fill: lime;
-    text-anchor: end;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
-}
-
-.text-2-magenta{
-    font-size: 23.625px;
-    fill: #d570ff;
-    text-anchor: end;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
-}
-
-.text-1{
+.text-1 {
+    @extend .text;
     font-size: 17.718px;
-    fill: white;
-    text-anchor: end;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
+}
+
+.magenta {
+    fill: #d570ff;
+}
+
+.green {
+    fill: lime;
 }
 
 .graduation-text {
