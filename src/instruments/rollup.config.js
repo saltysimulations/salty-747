@@ -40,7 +40,7 @@ function getInstrumentsToCompile() {
 function getTemplatePlugin({ name, config, imports = [], isInstrument }) {
     return template({
         name,
-        elementName: `74s-${name.toLowerCase()}`,
+        elementName: `salty-74s-${name.toLowerCase()}`,
         config,
         imports,
         getCssBundle() {
