@@ -118,7 +118,7 @@ export const Horizon: FC = () => {
                     <path fill="none" stroke="black" strokeWidth="4" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
                     <path
                         fill={Math.abs(roll) > 35 ? "#ffc400" : "white"}
-                        fill-opacity={Math.abs(sideslipAngleToDisplacment(sideslip)) == 33 ? "1" : "0"}
+                        fill-opacity={Math.abs(sideslipAngleToDisplacment(sideslip)) >= 33 ? "1" : "0"}
                         stroke={Math.abs(roll) > 35 ? "#ffc400" : "white"}
                         strokeWidth="3"
                         d="M333 214, h32, v 6, h-32, Z"
