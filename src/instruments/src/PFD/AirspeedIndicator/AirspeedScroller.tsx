@@ -18,6 +18,7 @@
 
 import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
+import { SvgGroup } from "../../Common";
 
 const getHundredsScrollerY = (): number => {
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
