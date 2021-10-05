@@ -23,11 +23,9 @@ import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
 const getAirspeedY = (): number => {
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
-    let y = Math.max((airspeed - 30), 0) * 4.6;
+    let y = Math.max(airspeed - 30, 0) * 4.6;
     return y;
 };
-
-
 
 export const SpeedTape: FC = () => {
     return (
@@ -35,11 +33,11 @@ export const SpeedTape: FC = () => {
             <clipPath id="speedtape-clip">
                 <path d="M13 100, h105 v560 h -105 Z" />
             </clipPath>
-            
-            <g clipPath="url(#speedtape-clip)" >
+
+            <g clipPath="url(#speedtape-clip)">
                 <g transform={`translate(50 ${getAirspeedY()})`}>
                     {Array.from({ length: 40 }, (_, i) => {
-                        const y = (i * -46) + 382;
+                        const y = i * -46 + 382;
                         return (
                             <>
                                 <BlackOutlineWhiteLine d={`M47 ${y || 0}, h15`} />
@@ -47,7 +45,7 @@ export const SpeedTape: FC = () => {
                         );
                     })}
                     {Array.from({ length: 21 }, (_, i) => {
-                        const y = (i * -92) + 428;
+                        const y = i * -92 + 428;
                         const offset = 11;
                         let text = ((i + 1) * 20).toFixed(0);
                         if (i == 0) {
@@ -55,31 +53,30 @@ export const SpeedTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="32" y={`${y + offset}`} className="text-3">{text}</text>
+                                <text x="32" y={`${y + offset}`} className="text-3">
+                                    {text}
+                                </text>
                             </>
                         );
                     })}
                 </g>
             </g>
-            
+
             <path className="gray-bg" d="M 14 332, h 71, v 100, h -71, Z" />
         </g>
     );
 };
 
 export const CommandSpeed: FC = () => {
-
-    const getCommandSpeed = (): string => {
-        const [airspeed] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR", "knots");
-        const [machSpeed] = useSimVar("AUTOPILOT MACH HOLD VAR", "number");
-        const [isInMach] = useSimVar("L:XMLVAR_AirSpeedIsInMach", "bool");
-        const output = isInMach ? removeLeadingZeros(machSpeed.toFixed(3)) : airspeed.toFixed(0);
-        return output;
-    };
+    const [airspeed] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR", "knots");
+    const [machSpeed] = useSimVar("AUTOPILOT MACH HOLD VAR", "number");
+    const [isInMach] = useSimVar("L:XMLVAR_AirSpeedIsInMach", "bool");
 
     return (
-        <g>             
-            <text x="105" y="80" className="text-4 magenta">{getCommandSpeed()}</text>
+        <g>
+            <text x="105" y="80" className="text-4 magenta">
+                {isInMach ? removeLeadingZeros(machSpeed.toFixed(3) ?? 0) : airspeed.toFixed(0) ?? 0}
+            </text>
         </g>
     );
 };
