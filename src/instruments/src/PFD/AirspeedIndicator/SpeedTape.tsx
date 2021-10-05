@@ -18,14 +18,16 @@
 
 import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
-import { SvgGroup } from "../../Common";
 import { BlackOutlineWhiteLine } from "../index";
+import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
 const getAirspeedY = (): number => {
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
     let y = Math.max((airspeed - 30), 0) * 4.6;
     return y;
 };
+
+
 
 export const SpeedTape: FC = () => {
     return (
@@ -61,6 +63,23 @@ export const SpeedTape: FC = () => {
             </g>
             
             <path className="gray-bg" d="M 14 332, h 71, v 100, h -71, Z" />
+        </g>
+    );
+};
+
+export const CommandSpeed: FC = () => {
+
+    const getCommandSpeed = (): string => {
+        const [airspeed] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR", "knots");
+        const [machSpeed] = useSimVar("AUTOPILOT MACH HOLD VAR", "number");
+        const [isInMach] = useSimVar("L:XMLVAR_AirSpeedIsInMach", "bool");
+        const output = isInMach ? removeLeadingZeros(machSpeed.toFixed(3)) : airspeed.toFixed(0);
+        return output;
+    };
+
+    return (
+        <g>             
+            <text x="105" y="80" className="text-4 magenta">{getCommandSpeed()}</text>
         </g>
     );
 };

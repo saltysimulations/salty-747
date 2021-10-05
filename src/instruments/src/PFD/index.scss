@@ -52,13 +52,11 @@ text {
     text-anchor: end;
     stroke-width: 1.5px;
     paint-order: stroke;
-    letter-spacing: 1px;
 }
 
 .text-4 {
     @extend .text;
     font-size: 42px;
-    letter-spacing: -1px;
 }
 
 .text-3 {

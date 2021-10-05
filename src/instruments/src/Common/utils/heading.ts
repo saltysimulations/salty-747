@@ -26,4 +26,9 @@ export const getHeadingDelta = (heading1: number, heading2: number): number => {
     return headingDelta;
 };
 
+export const removeLeadingZeros = (oldString: string): string => {
+    let newString = oldString.replace('0', '');
+    return newString;
+};
+
 export const getDriftAngle = (heading: number, track: number): number => getHeadingDelta(heading, track) * -1;

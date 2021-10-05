@@ -19,6 +19,7 @@
 import React, { FC } from "react";
 import { render } from "../Common";
 import { Horizon } from "./AttitudeIndicator/Horizon";
+import { CommandSpeed } from "./AirspeedIndicator/SpeedTape";
 import { SpeedTape } from "./AirspeedIndicator/SpeedTape";
 import { SpeedScroller } from "./AirspeedIndicator/AirspeedScroller";
 import { VSI } from "./VerticalSpeedIndicator";
@@ -62,6 +63,7 @@ const PFD: FC = () => {
                 <path className="indication" style={{ strokeWidth: "5px", stroke: "black" }} d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
                 <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
                 
+                <CommandSpeed />
                 <SpeedScroller />
             </svg>
         </>
