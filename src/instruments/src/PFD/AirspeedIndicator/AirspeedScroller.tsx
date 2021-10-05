@@ -18,105 +18,35 @@
 
 import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
-import { SvgGroup } from "../../Common";
 
 const getHundredsScrollerY = (): number => {
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
-    let scroll = 0;
-    if (airspeed >= 99 && airspeed <= 100) {
-        scroll = (airspeed - 99) * 49;
-    }
-    else if (airspeed > 100 && airspeed < 199) {
-        scroll = 49;
-    }
-    else if (airspeed >= 199 && airspeed <= 200) {
-        scroll = (((airspeed - 199)  * 49) + 49);
-    }
-    else if (airspeed > 200 && airspeed < 299) {
-        scroll = 98;
-    }
-    else if (airspeed >= 299 && airspeed <= 300) {
-        scroll = (((airspeed - 299)  * 49) + 98);
-    }
-    else if (airspeed > 300 && airspeed < 399) {
-        scroll = 147;
-    }
-    else if (airspeed >= 399 && airspeed <= 400) {
-        scroll = (((airspeed - 399)  * 49) + 147);
-    }
-    else if (airspeed > 400 && airspeed <= 420) {
-        scroll = 196;
+    let roundedSpeed = Math.floor(airspeed);
+    let stringSpeed = String(roundedSpeed);
+    let scroll = Math.floor(airspeed / 100) * 49;
+    if (stringSpeed.slice(-1) == "9" && stringSpeed.slice(-2, -1) == "9" ) {
+        let speedOver99Int = ((Math.round(airspeed / 100) * 100) - 1) - airspeed;
+        scroll = scroll + (-speedOver99Int * 49);
     }
     return scroll;
 };
 
 const getTensScrollerY = (): number => {
-    const [ias] = useSimVar("AIRSPEED INDICATED", "knots");
-    let value = removeHundreds(Math.max(ias, 30));
-    let scroll = 0;
-    if (value >= 9 && value <= 10) {
-        scroll = (value - 9) * 49;
-    }
-    else if (value > 10 && value < 19) {
-        scroll = 49;
-    }
-    else if (value >= 19 && value <= 20) {
-        scroll = (((value - 19)  * 49) + 49);
-    }
-    else if (value > 20 && value < 29) {
-        scroll = 98;
-    }
-    else if (value >= 29 && value <= 30) {
-        scroll = (((value - 29)  * 49) + 98);
-    }
-    else if (value > 30 && value < 39) {
-        scroll = 147;
-    }
-    else if (value >= 39 && value <= 40) {
-        scroll = (((value - 39)  * 49) + 147);
-    }
-    else if (value > 40 && value < 49) {
-        scroll = 196;
-    }
-    else if (value >= 49 && value <= 50) {
-        scroll = (((value - 49)  * 49) + 196);
-    }
-    else if (value > 50 && value < 59) {
-        scroll = 245;
-    }
-    else if (value >= 59 && value <= 60) {
-        scroll = (((value - 59)  * 49) + 245);
-    }
-    else if (value > 60 && value < 69) {
-        scroll = 294;
-    }
-    else if (value >= 69 && value <= 70) {
-        scroll = (((value - 69)  * 49) + 294);
-    }
-    else if (value > 70 && value <= 79) {
-        scroll = 343;
-    }
-    else if (value >= 79 && value <= 80) {
-        scroll = (((value - 79)  * 49) + 343);
-    }
-    else if (value > 80 && value <= 89) {
-        scroll = 392;
-    }
-    else if (value >= 89 && value <= 90) {
-        scroll = (((value - 89)  * 49) + 392);
-    }
-    else if (value > 90 && value <= 99) {
-        scroll = 441;
-    }
-    else if (value > 99 && value <= 100) {
-        scroll = (((value - 99)  * 49) + 441);
+    const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
+    let value = removeHundreds(Math.max(airspeed, 30));
+    let roundedSpeed = Math.floor(value);
+    let stringSpeed = String(roundedSpeed);
+    let scroll = Math.floor(value / 10) * 49;
+    if (stringSpeed.slice(-1) == "9" ) {
+        let speedOver9Int = ((Math.round(value / 10) * 10) -1) - value;
+        scroll = scroll + (-speedOver9Int * 49);
     }
     return scroll;
 };
 
 const getDigitScrollerY = (): number => {
-    const [ias] = useSimVar("AIRSPEED INDICATED", "knots");
-    let value = removeHundreds(Math.max(ias, 30));
+    const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
+    let value = removeHundreds(Math.max(airspeed, 30));
     value = removeTens(value);
     let scroll = 0;
     scroll = value * 33;
