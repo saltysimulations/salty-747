@@ -18,20 +18,26 @@
 
 import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
+import { useInteractionEvent } from "react-msfs";
 
 export const FPV: FC = () => {
     const [isFPVon] = useSimVar("L:SALTY_FPV_ON", "bool");
-    const [vertVelocity] = useSimVar("VELOCITY BODY Y", "feet per second");
-    const [horizVelocity] = useSimVar("VELOCITY BODY Z", "feet per second");
+    const [vertVelocity] = useSimVar("VELOCITY WORLD Y", "feet per second");
+    const [horizVelocity] = useSimVar("VELOCITY WORLD Z", "feet per second");
     const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
     const [roll] = useSimVar("PLANE BANK DEGREES", "degrees");
     const [heading] = useSimVar("PLANE HEADING DEGREES TRUE", "degrees");
     const [track] = useSimVar("GPS GROUND TRUE TRACK", "degrees");
+    const [fpv, setFpv] = useSimVar("L:SALTY_FPV_ON", "bool");
+
+    useInteractionEvent("B747_8_PFD_FPV", () => {
+        setFpv(!fpv);
+    });
 
     const degreesToPixels = (angle: number): number => (angle < 0 ? Math.max(angle * 8, -16 * 8) : Math.min(angle * 8, 22.5 * 8));
 
     const vertVecToPixels = (): number => {
-        const fpa = Math.atan(-vertVelocity / horizVelocity) * 180/Math.PI;
+        const fpa = Math.atan(vertVelocity / horizVelocity) * 180/Math.PI;
         return degreesToPixels(fpa + pitch);
     };
 

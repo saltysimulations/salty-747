@@ -77,11 +77,11 @@ export const Horizon: FC = () => {
 
     return (
         <g>
-            <clipPath id="ah-clip" transform={`translate(0 18) translate(0 ${pitchToGraduationPixels(-pitch) || 0})`}>
+            <clipPath id="ah-clip" transform={`translate(0 18) translate(0 ${pitchToGraduationPixels(pitch) || 0})`}>
                 <path d="M156 350, h30, v-40 c 83 -115 243 -115 323 0, v40, h30, v280, h-383 Z" />
             </clipPath>
 
-            <g transform={`rotate(${roll || 0} ${AH_CENTER_X} ${AH_CENTER_Y}) translate(0 -18) translate(0 ${pitchToGraduationPixels(pitch) || 0})`}>
+            <g transform={`rotate(${roll || 0} ${AH_CENTER_X} ${AH_CENTER_Y}) translate(0 -18) translate(0 ${pitchToGraduationPixels(-pitch) || 0})`}>
                 {/* AH top */}
                 <rect x={0} y={-800} width={800} height={1200} fill="#1469BC" />
 
