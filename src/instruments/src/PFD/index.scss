@@ -35,6 +35,19 @@ text {
     stroke-linecap: round;
 }
 
+.amber-line {
+    stroke: #ffc400;
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.red-band {
+    stroke: red;
+    stroke-width: 9px;
+    stroke-linecap: butt;
+    stroke-dasharray: 9,13;
+}
+
 .cursor {
     fill: black;
     stroke: white;
@@ -80,6 +93,10 @@ text {
 
 .green {
     fill: lime;
+}
+
+.amber {
+    fill: #ffc400;
 }
 
 .graduation-text {

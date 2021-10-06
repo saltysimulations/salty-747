@@ -21,21 +21,33 @@ import { useSimVar } from "react-msfs";
 import { BlackOutlineWhiteLine } from "../index";
 import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
-const getAirspeedY = (): number => {
-    const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
+const getAirspeedY = (airspeed: number): number => {
     let y = Math.max(airspeed - 30, 0) * 4.6;
     return y;
 };
 
+const getManeuveringBandY = (airspeed: number, manSpeed: number): number => {
+    let y = (airspeed - manSpeed) * 4.6;
+    return y;
+};
+
+const getMaxSpeedBandY = (airspeed: number, maxSpeed: number): number => {
+    let y = (airspeed - maxSpeed) * 4.6;
+    return y;
+};
+
 export const SpeedTape: FC = () => {
+    const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
+    const [manSpeed] = useSimVar("L:SALTY_MANEUVERING_SPEED", "knots");
+    const [maxSpeed] = useSimVar("L:SALTY_MAXIMUM_SPEED", "knots");
     return (
         <g>
             <clipPath id="speedtape-clip">
-                <path d="M13 100, h105 v560 h -105 Z" />
+                <path d="M13 100, h200 v560 h -200 Z" />
             </clipPath>
 
             <g clipPath="url(#speedtape-clip)">
-                <g transform={`translate(50 ${getAirspeedY()})`}>
+                <g transform={`translate(50 ${getAirspeedY(airspeed)})`}>
                     {Array.from({ length: 40 }, (_, i) => {
                         const y = i * -46 + 382;
                         return (
@@ -60,10 +72,25 @@ export const SpeedTape: FC = () => {
                         );
                     })}
                 </g>
-            </g>
 
+                {/*Maneuvering Speed Band*/}
+                <g transform={`translate(50 ${getManeuveringBandY(airspeed, manSpeed)})`}>
+                    <path className="black-outline" d="M 62 382, h7, v 1800" fill="none" />
+                    <path className="amber-line" d="M 62 382, h7, v 1800" fill="none" />
+                </g>
+
+                {/*Maximum Speed Band*/}
+                <g transform={`translate(50 ${getMaxSpeedBandY(airspeed, maxSpeed)})`}>
+                    <path className="red-band" d="M 60 -1820, h7, v 2202" fill="none" />
+                </g>
+            </g>
             <path className="gray-bg" d="M 14 332, h 71, v 100, h -71, Z" />
+
+            {/* Scroller Box */}
+            <path className="indication" style={{ strokeWidth: "5px",  stroke: "black "}} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
+            <path className="indication" style={{ stroke: airspeed < manSpeed ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
         </g>
+        
     );
 };
 
@@ -77,6 +104,32 @@ export const CommandSpeed: FC = () => {
             <text x="105" y="80" className="text-4 magenta">
                 {isInMach ? removeLeadingZeros(machSpeed.toFixed(3) ?? 0) : airspeed.toFixed(0) ?? 0}
             </text>
+        </g>
+    );
+};
+
+export const MachGS: FC = () => {
+    const [machSpeed] = useSimVar("L:SALTY_ADC_CURRENT_MACH", "number");
+    const [groundSpeed] = useSimVar("GPS GROUND SPEED", "knots");
+
+    return (
+        <g>
+            <text 
+                x="100" y="730" 
+                className="text-4"
+                style = {{visibility: machSpeed >= 0.4 ? "visible" : "hidden"}}>
+                {removeLeadingZeros(machSpeed.toFixed(3) ?? 0)}
+            </text>
+            <g style = {{visibility: machSpeed < 0.4 ? "visible" : "hidden"}}>
+                <text x="46" y="730" className="text-3">
+                    GS
+                </text>
+                <text 
+                    x="110" y="730" 
+                    className="text-4">
+                    {groundSpeed.toFixed(0) ?? 0}
+                </text>
+            </g>
         </g>
     );
 };
