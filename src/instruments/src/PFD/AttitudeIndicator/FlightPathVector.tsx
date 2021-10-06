@@ -63,15 +63,14 @@ export const FPV: FC = () => {
                 <g transform={`rotate(${-roll || 0} 349 382)`}>
                     {/* FPV symbol */}
                     <path className="fpv-outline" d="M311 382, h28" />
-                    <path className="fpv-line" d="M311 382, h28" />
                     <path className="fpv-outline" d="M359 382, h28" />
-                    <path className="fpv-line" d="M359 382, h28" />
                     <path className="fpv-outline" d="M349 372, v-14" />
-                    <path className="fpv-line" d="M349 372, v-14" />
                     <circle className="fpv-outline" cx="349" cy="382" r="10" stroke="white" fill="none" />
+                    <path className="fpv-line" d="M311 382, h28" />
+                    <path className="fpv-line" d="M359 382, h28" />
+                    <path className="fpv-line" d="M349 372, v-14" />
                     <circle className="fpv-line" cx="349" cy="382" r="10" fill="none" />
                 </g>
-
             </g>
         </g>
     );
