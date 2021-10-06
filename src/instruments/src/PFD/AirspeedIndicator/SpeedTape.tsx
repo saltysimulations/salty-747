@@ -88,7 +88,7 @@ export const SpeedTape: FC = () => {
 
             {/* Scroller Box */}
             <path className="indication" style={{ strokeWidth: "5px",  stroke: "black "}} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
-            <path className="indication" style={{ stroke: airspeed < manSpeed ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
+            <path className="indication" style={{ strokeWidth: airspeed < manSpeed ? "9px" : "3px", stroke: airspeed < manSpeed ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
         </g>
         
     );
