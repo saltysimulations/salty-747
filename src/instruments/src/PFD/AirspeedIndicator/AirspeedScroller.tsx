@@ -58,100 +58,57 @@ export const SpeedScroller: FC = () => {
                     <path d="M 14 348, h64, v65, h-64 Z" />
                 </clipPath>
 
-                <g clipPath="url(#asi-clip)">
+                <g className="text-4" clipPath="url(#asi-clip)">
                     {/* Hundreds Digits*/}
                     <g transform={`translate( 0 ${getHundredsScrollerY(airspeed)} )`}>
-                        <text x="37" y="200" className="text-4">
-                            4
-                        </text>
-                        <text x="37" y="249" className="text-4">
-                            3
-                        </text>
-                        <text x="37" y="298" className="text-4">
-                            2
-                        </text>
-                        <text x="37" y="347" className="text-4">
-                            1
-                        </text>
-                        <text x="37" y="396" className="text-4" />
+                        {Array.from({ length: 5 }, (_, i) => {
+                            const y = 200 + (49 * i);
+                            let text = i == 4 ? "" : 4 - i;
+                            return (
+                                <>
+                                    <text x="37" y={y} >{text}</text>
+                                </>
+                            );
+                        })}
                     </g>
 
                     {/* Tens Digits*/}
                     <g transform={`translate( 0 ${getTensScrollerY(airspeed)} )`}>
-                        <text x="57" y="-94" className="text-4">
-                            0
-                        </text>
-                        <text x="57" y="-45" className="text-4">
-                            9
-                        </text>
-                        <text x="57" y="4" className="text-4">
-                            8
-                        </text>
-                        <text x="57" y="53" className="text-4">
-                            7
-                        </text>
-                        <text x="57" y="102" className="text-4">
-                            6
-                        </text>
-                        <text x="57" y="151" className="text-4">
-                            5
-                        </text>
-                        <text x="57" y="200" className="text-4">
-                            4
-                        </text>
-                        <text x="57" y="249" className="text-4">
-                            3
-                        </text>
-                        <text x="57" y="298" className="text-4">
-                            2
-                        </text>
-                        <text x="57" y="347" className="text-4">
-                            1
-                        </text>
-                        <text x="57" y="396" className="text-4">
+                        {Array.from({ length: 10 }, (_, i) => {
+                            const y = -45 + (49 * i);
+                            let text = 9 - i;
+                            return (
+                                <>
+                                    <text x="57" y={y} >{text}</text>
+                                </>
+                            );
+                        })}
+                        <text x="57" y="-94" >
                             0
                         </text>
                     </g>
 
                     {/* Single Digits*/}
                     <g transform={`translate( 0 ${getDigitScrollerY(airspeed)} )`}>
-                        <text x="77" y="33" className="text-4">
+                        {Array.from({ length: 10 }, (_, i) => {
+                            const y = 99 + (33 * i);
+                            let text = 9 - i;
+                            return (
+                                <>
+                                    <text x="77" y={y} >{text}</text>
+                                </>
+                            );
+                        })}
+                        <text x="77" y="33" >
                             1
                         </text>
-                        <text x="77" y="66" className="text-4">
+                        <text x="77" y="66" >
                             0
                         </text>
-                        <text x="77" y="99" className="text-4">
+                        <text x="77" y="99" >
                             9
                         </text>
-                        <text x="77" y="132" className="text-4">
-                            8
-                        </text>
-                        <text x="77" y="165" className="text-4">
-                            7
-                        </text>
-                        <text x="77" y="198" className="text-4">
-                            6
-                        </text>
-                        <text x="77" y="231" className="text-4">
-                            5
-                        </text>
-                        <text x="77" y="264" className="text-4">
-                            4
-                        </text>
-                        <text x="77" y="297" className="text-4">
-                            3
-                        </text>
-                        <text x="77" y="330" className="text-4">
-                            2
-                        </text>
-                        <text x="77" y="363" className="text-4">
-                            1
-                        </text>
-                        <text x="77" y="396" className="text-4">
-                            0
-                        </text>
-                        <text x="77" y="429" className="text-4">
+                        <text x="77" y="429" >
                             9
                         </text>
                     </g>
