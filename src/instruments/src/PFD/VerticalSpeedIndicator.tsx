@@ -31,6 +31,8 @@ const fpmToPixels = (fpm: number): number => {
 
 export const VSI: FC = () => {
     const [verticalSpeed] = useSimVar("VERTICAL SPEED", "feet per minute");
+    const [selectedVsi] = useSimVar("AUTOPILOT VERTICAL HOLD VAR", "feet per minute");
+
     return (
         <g>
             <path className="gray-bg" d="M 723 184 h 35 l 34 97 v 200 l -34 97 h -35 v -130 l 20 -10 v -114 l -20 -10 Z" />
@@ -46,6 +48,8 @@ export const VSI: FC = () => {
             >
                 {Math.abs(verticalSpeed) > 9975 ? 9999 : Math.round(Math.abs(verticalSpeed) / 50) * 50}
             </text>
+
+            <SelectedVSIBug selectedVsi={selectedVsi} />
 
             <rect x={792} y={290} width={8} height={190} fill="black" />
         </g>
@@ -90,4 +94,11 @@ const VSIScale: FC = () => (
             <BlackOutlineWhiteLine d="M 743 561, h 8" whiteStroke={4} blackStroke={5} />
         </g>
     </>
+);
+
+const SelectedVSIBug: FC<{ selectedVsi: number }> = ({ selectedVsi }) => (
+    <g transform={`translate(0 ${fpmToPixels(selectedVsi)})`} visibility={Math.abs(selectedVsi) < 100 ? "hidden" : "visible"}>
+        <path d="M 749 383, h 14" className="magenta-line black-outline" />
+        <path d="M 749 379, h 14" className="magenta-line black-outline" />
+    </g>
 );
