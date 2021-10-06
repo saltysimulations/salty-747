@@ -28,12 +28,12 @@ import { HeadingDisplay } from "./HeadingDisplay";
 import "./index.scss";
 import "../Common/pixels.scss";
 
-type BlackOutlineWhiteLineProps = { d: string; blackStroke?: number; whiteStroke?: number };
+type BlackOutlineWhiteLineProps = { d: string; blackStroke?: number; whiteStroke?: number; color?: string };
 
-export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, blackStroke = 4, whiteStroke = 3 }) => (
+export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, blackStroke = 4, whiteStroke = 3, color = "white" }) => (
     <>
         <path stroke="black" strokeWidth={blackStroke} strokeLinecap="round" d={d}></path>
-        <path stroke="white" strokeWidth={whiteStroke} strokeLinecap="round" d={d}></path>
+        <path stroke={color} strokeWidth={whiteStroke} strokeLinecap="round" d={d}></path>
     </>
 );
 
@@ -55,15 +55,18 @@ const PFD: FC = () => {
                 <BlackOutlineWhiteLine d="M286 0, v60" />
                 <BlackOutlineWhiteLine d="M428 0, v60" />
 
-                <SpeedTape />              
+                <SpeedTape />
                 <CommandSpeed />
                 <SpeedScroller />
                 <MachGS />
 
                 {/* Altimeter Scroller Box */}
-                <path className="indication" style={{ strokeWidth: "5px", stroke: "black" }} d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
+                <path
+                    className="indication"
+                    style={{ strokeWidth: "5px", stroke: "black" }}
+                    d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z"
+                />
                 <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
-
             </svg>
         </>
     );

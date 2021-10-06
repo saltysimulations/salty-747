@@ -99,7 +99,7 @@ const VSIScale: FC = () => (
 
 const SelectedVSIBug: FC<{ selectedVsi: number; vsActive: boolean }> = ({ selectedVsi, vsActive }) => (
     <g transform={`translate(0 ${fpmToPixels(selectedVsi)})`} visibility={vsActive ? "visible" : "hidden"}>
-        <path d="M 749 383, h 14" className="magenta-line black-outline" />
-        <path d="M 749 379, h 14" className="magenta-line black-outline" />
+        <BlackOutlineWhiteLine d="M 749 383 h 14" color="#d570ff" />
+        <BlackOutlineWhiteLine d="M 749 379 h 14" color="#d570ff" />
     </g>
 );
