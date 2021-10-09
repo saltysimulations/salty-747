@@ -25,8 +25,6 @@ const removeThousands = (value: number): number => value % 1000;
 
 const removeHundreds = (value: number): number => value % 100;
 
-const removeTens = (value: number): number => value % 10;
-
 const getTenThousandsScrollerY = (altitude: number): number => {
     let scroll = Math.floor(altitude / 10000) * 49;
 
@@ -68,10 +66,8 @@ const getTwentiesScrollerY = (altitude: number): number => {
     return scroll;
 };
 
-const getDigitScrollerY = (airspeed: number): number => removeTens(removeHundreds(Math.max(airspeed, 30))) * 33;
-
 export const AltitudeScroller: FC = () => {
-    const [altitude] = useSimVar("INDICATED ALTITUDE", "knots");
+    const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
 
     return (
         <g>
@@ -141,8 +137,8 @@ export const AltitudeScroller: FC = () => {
                     <g className="text-3" transform={`translate( 0 ${getTwentiesScrollerY(altitude)} )`}>
                         {Array.from({ length: 5 }, (_, i) => {
                             const y = (26 * i) + 288;
-                            let text = ((9 - i) * 20) % 100;
-                            if (text === 0) {
+                            let text = (((9 - i) * 20) % 100).toFixed(0);
+                            if (text === "0") {
                                 text = "00"
                             }
                             return (

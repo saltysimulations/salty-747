@@ -25,12 +25,12 @@ import { SpeedScroller } from "./AirspeedIndicator/AirspeedScroller";
 import { VSI } from "./VerticalSpeedIndicator";
 import { HeadingDisplay } from "./HeadingDisplay";
 import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
+import { AltitudeTape } from "./Altimeter/AltitudeTape";
 
 import "./index.scss";
 import "../Common/pixels.scss";
 
 type BlackOutlineWhiteLineProps = { d: string; blackStroke?: number; whiteStroke?: number; color?: string };
-
 export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, blackStroke = 4, whiteStroke = 3, color = "white" }) => (
     <>
         <path stroke="black" strokeWidth={blackStroke} strokeLinecap="round" d={d}></path>
@@ -61,16 +61,8 @@ const PFD: FC = () => {
                 <SpeedScroller />
                 <MachGS />
 
-                            {/* Altimeter Scroller Box */}
-            <path
-                className="indication"
-                style={{ strokeWidth: "5px", stroke: "black" }}
-                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z"
-            />
-            <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
+                <AltitudeTape />
                 <AltitudeScroller />
-
-
             </svg>
         </>
     );
