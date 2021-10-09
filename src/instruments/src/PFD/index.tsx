@@ -24,6 +24,7 @@ import { SpeedTape } from "./AirspeedIndicator/SpeedTape";
 import { SpeedScroller } from "./AirspeedIndicator/AirspeedScroller";
 import { VSI } from "./VerticalSpeedIndicator";
 import { HeadingDisplay } from "./HeadingDisplay";
+import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 
 import "./index.scss";
 import "../Common/pixels.scss";
@@ -60,13 +61,16 @@ const PFD: FC = () => {
                 <SpeedScroller />
                 <MachGS />
 
-                {/* Altimeter Scroller Box */}
-                <path
-                    className="indication"
-                    style={{ strokeWidth: "5px", stroke: "black" }}
-                    d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z"
-                />
-                <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
+                            {/* Altimeter Scroller Box */}
+            <path
+                className="indication"
+                style={{ strokeWidth: "5px", stroke: "black" }}
+                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z"
+            />
+            <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
+                <AltitudeScroller />
+
+
             </svg>
         </>
     );

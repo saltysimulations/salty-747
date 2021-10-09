@@ -132,3 +132,12 @@ text {
     stroke-width: 4px;
     stroke-linecap: round;
 }
+
+.tenkMarker {
+    font-size: 38px;
+    fill: lime;
+    stroke: black;
+    text-anchor: end;
+    stroke-width: 1.5px;
+    paint-order: stroke;
+}
