@@ -36,7 +36,7 @@ const HeadingLineElement: FC<{ rotation: number; text?: boolean }> = ({ rotation
                     className={`${rotation % 3 === 0 ? "text-3" : "text-2"}`}
                     style={{ textAnchor: "middle" }}
                 >
-                    {rotation / 10}
+                    {rotation == 360 ? "0" : rotation / 10}
                 </text>
             )}
         </g>
@@ -66,9 +66,6 @@ export const HeadingDisplay: FC = () => {
 
     const getSelHeadingString = (): string => {
         let hdgString = mcpHeading.toFixed(0);
-        if (hdgString == "0") {
-            hdgString = "360";
-        }
         if (hdgString.length == 2) {
             hdgString = "0" + hdgString;
         } else if (hdgString.length == 1) {
@@ -96,7 +93,7 @@ export const HeadingDisplay: FC = () => {
             </text>
 
             {/* Heading Bug */}
-            <g transform={`rotate(${-getHeadingDelta(heading, mcpHeading) * 1.6 || 0} 349 ${900 + arcCorrection(heading, mcpHeading) || 0})`}>
+            <g transform={`rotate(${Math.min(-Math.min(getHeadingDelta(heading, mcpHeading) * 1.6,  55), 55) || 0} 349 ${900 + arcCorrection(heading, mcpHeading) || 0})`}>
                 <path className="black-outline" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
                 <path className="magenta-line" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
             </g>
@@ -111,8 +108,10 @@ export const HeadingDisplay: FC = () => {
                     900 + arcCorrection(heading, heading - getDriftAngle(heading, track)) || 0
                 })`}
             >
-                <BlackOutlineWhiteLine d="M349 678, v150" />
-                <BlackOutlineWhiteLine d="M343 751, h12" />
+                <path className ="black-outline" d="M349 678, v150" />
+                <path className ="black-outline" d="M343 751, h12" />
+                <path className ="white-line" d="M349 678, v150" />
+                <path className ="white-line" d="M343 751, h12" />
             </g>
             <rect x="250" y="785" width="200" height="5" fill="black" />
             <rect x="110" y="789" width="480" height="15" fill="black" />

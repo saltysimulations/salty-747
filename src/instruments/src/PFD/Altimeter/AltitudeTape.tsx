@@ -26,8 +26,23 @@ const getAltitudeY = (altitude: number): number => {
     return y;
 };
 
+const getLargeSelAltText = (altitude: number): string => {
+    let text = altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
+    if (altitude < 1000) {
+        text = "";
+    }
+    return text;
+};
+
+const getSmallSelAltText = (altitude: number): string => {
+    const string = altitude.toString();
+    const text = string.substring(string.length - 3)
+    return text;
+};
+
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
+    const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
     return (
         <g>
             <clipPath id="altitudetape-clip">
@@ -122,8 +137,30 @@ export const AltitudeTape: FC = () => {
                 style={{ strokeWidth: "5px", stroke: "black" }}
                 d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z"
             />
-            <path className="indication" d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
-
+            <path 
+                style={{ strokeWidth: (altAlertStatus != 0 ? "9px" : "3px"), stroke: (altAlertStatus != 2 ? "white" : "#ffc400") }}
+                className="indication" 
+                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
         </g>     
+    );
+};
+
+export const CommandAlt: FC = () => {
+    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:1", "feet");
+    const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
+
+    return (
+        <g>
+            <text x="648" y="80" className="text-4 magenta">
+                {getLargeSelAltText(selAlt)}
+            </text>
+            <text x="695" y="80" className="text-3 magenta">
+                {getSmallSelAltText(selAlt)}
+            </text>
+            <path className= "indication" 
+                d="M 600 45, h 100, v40, h-100, Z" 
+                fill= "none"
+                visibility = {( altAlertStatus == 1 ? "visible" : "hidden")}/>
+        </g>
     );
 };
