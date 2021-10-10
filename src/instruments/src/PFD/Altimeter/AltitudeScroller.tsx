@@ -52,7 +52,7 @@ const getHundredsScrollerY = (altitude: number): number => {
     const value = removeThousands(altitude);
     let scroll = altitude >= 0 ? Math.floor(value / 100) * 49 : Math.ceil(value / 100) * -49;
 
-    if (Math.floor(value).toString().slice(-3, -1) == "98" || Math.floor(value).toString().slice(-3, -1) == "99") {
+    if (Math.floor(value).toString().slice(-2, -1) == "8" || Math.floor(value).toString().slice(-2, -1) == "9") {
         const altOver80 = Math.round(value / 100) * 100 - 20 - value;
         scroll = scroll -altOver80 * (altitude >= 0 ? 2.45 : -2.45);
     }
