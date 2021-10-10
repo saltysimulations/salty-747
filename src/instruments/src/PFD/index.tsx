@@ -27,6 +27,7 @@ import { HeadingDisplay } from "./HeadingDisplay";
 import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 import { AltitudeTape } from "./Altimeter/AltitudeTape";
 import { CommandAlt } from "./Altimeter/AltitudeTape";
+import { BaroSetting } from "./Altimeter/AltitudeTape";
 
 import "./index.scss";
 import "../Common/pixels.scss";
@@ -65,6 +66,7 @@ const PFD: FC = () => {
                 <AltitudeTape />
                 <CommandAlt />
                 <AltitudeScroller />
+                <BaroSetting />
             </svg>
         </>
     );

@@ -21,28 +21,15 @@ import { useSimVar } from "react-msfs";
 import { BlackOutlineWhiteLine } from "../index";
 import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
-const getAltitudeY = (altitude: number): number => {
-    const y = altitude * 0.68;
-    return y;
-};
-
-const getLargeSelAltText = (altitude: number): string => {
-    let text = altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
-    if (altitude < 1000) {
-        text = "";
-    }
-    return text;
-};
-
-const getSmallSelAltText = (altitude: number): string => {
-    const string = altitude.toString();
-    const text = string.substring(string.length - 3)
-    return text;
-};
-
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
+
+    const getAltitudeY = (altitude: number): number => {
+        const y = altitude * 0.68;
+        return y;
+    };
+    
     return (
         <g>
             <clipPath id="altitudetape-clip">
@@ -149,6 +136,20 @@ export const CommandAlt: FC = () => {
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:1", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
 
+    const getLargeSelAltText = (altitude: number): string => {
+        let text = altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
+        if (altitude < 1000) {
+            text = "";
+        }
+        return text;
+    };
+    
+    const getSmallSelAltText = (altitude: number): string => {
+        const string = altitude.toString();
+        const text = string.substring(string.length - 3)
+        return text;
+    };
+
     return (
         <g>
             <text x="648" y="80" className="text-4 magenta">
@@ -161,6 +162,46 @@ export const CommandAlt: FC = () => {
                 d="M 600 45, h 100, v40, h-100, Z" 
                 fill= "none"
                 visibility = {( altAlertStatus == 1 ? "visible" : "hidden")}/>
+        </g>
+    );
+}
+
+export const BaroSetting: FC = () => {
+    const [preselBaroHg] = useSimVar("L:XMLVAR_Baro1_SavedPressure", "inHg");
+    const [baroHg] = useSimVar("KOHLSMAN SETTING HG", "inHg");
+    const [units] = useSimVar("L:XMLVAR_Baro_Selector_HPA_1", "bool");
+
+    const getIsStd = (): boolean => {
+        const [isStd] = useSimVar("KOHLSMAN SETTING STD", "bool");
+        return isStd;
+    };
+
+    return (
+        <g>
+            <text x="682" y="710" className="text-4 green" visibility= {getIsStd() == true ? "visible" : "hidden"}>
+                STD
+            </text>
+            <text 
+                x={units === 0 ? "685": "680"} 
+                y="710" 
+                className="text-3 green" 
+                visibility= {getIsStd() == false ? "visible" : "hidden"}>
+                {units === 0 ? baroHg.toFixed(2): (baroHg * 33.86).toFixed(0)}
+            </text>
+            <text 
+                x={units === 0 ? "715": "725"} 
+                y="710" 
+                className="text-2 green" 
+                visibility= {getIsStd() == false ? "visible" : "hidden"}>
+                {units === 0 ? " IN": " HPA"}
+            </text>
+            <text 
+                x="720" 
+                y="745" 
+                visibility={preselBaroHg == -1 ? "hidden" : "visible"}
+                className="text-2">
+                {units === 0 ? preselBaroHg.toFixed(2) + " IN": (preselBaroHg * 33.86).toFixed(0) + " HPA"}
+            </text>
         </g>
     );
 };
