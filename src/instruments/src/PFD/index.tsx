@@ -28,6 +28,8 @@ import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 import { AltitudeTape } from "./Altimeter/AltitudeTape";
 import { CommandAlt } from "./Altimeter/AltitudeTape";
 import { BaroSetting } from "./Altimeter/AltitudeTape";
+import { Minimums } from "./Altimeter/AltitudeTape";
+import { RadioAltimeter } from "./Altimeter/AltitudeTape";
 
 import "./index.scss";
 import "../Common/pixels.scss";
@@ -67,6 +69,8 @@ const PFD: FC = () => {
                 <CommandAlt />
                 <AltitudeScroller />
                 <BaroSetting />
+                <Minimums />
+                <RadioAltimeter />
             </svg>
         </>
     );

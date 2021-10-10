@@ -21,9 +21,18 @@ import { useSimVar } from "react-msfs";
 import { BlackOutlineWhiteLine } from "../index";
 import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
+const getRadAltClass = (radAlt: number, radioMins: number, oldClass: string): string => {
+    let radAltClass = oldClass;
+    if (radAlt <= radioMins && radAlt !== 0){
+        radAltClass += " amber"
+    }
+    return radAltClass;
+};
+
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
+    const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
 
     const getAltitudeY = (altitude: number): number => {
         const y = altitude * 0.68;
@@ -33,7 +42,7 @@ export const AltitudeTape: FC = () => {
     return (
         <g>
             <clipPath id="altitudetape-clip">
-                <path d="M590 100, h110, v560, h-110 Z" />
+                <path d="M575 100, h125, v560, h-125 Z" />
             </clipPath>
 
             <g clipPath="url(#altitudetape-clip)">
@@ -114,6 +123,8 @@ export const AltitudeTape: FC = () => {
                             </>
                         );
                     })}
+                    <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
+                    <path className="green-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
                 </g>
             </g>
             <path className="gray-bg" d="M 615 332, h 73, v 100, h -73, Z" />
@@ -203,5 +214,66 @@ export const BaroSetting: FC = () => {
                 {units === 0 ? preselBaroHg.toFixed(2) + " IN": (preselBaroHg * 33.86).toFixed(0) + " HPA"}
             </text>
         </g>
+    );
+};
+
+export const Minimums: FC = () => {
+    const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
+    const [radioMins] = useSimVar("L:SALTY_MINS_RADIO", "feet");
+    const [radAlt] = useSimVar("RADIO HEIGHT", "feet");
+
+    return (
+        < g>
+            < g visibility={baroMins >= -100 ? "visible" : "hidden"}>
+                <text x="530" y="640" className="text-2 green" >
+                    BARO
+                </text>
+                <text x="530" y="670" className="text-3 green">
+                    {baroMins}
+                </text>
+            </g>
+
+            < g visibility={radioMins > 0 ? "visible" : "hidden"}>
+                <text x="550" y="90" className={getRadAltClass(radAlt, radioMins, "text-2 green")}>
+                    RADIO
+                </text>
+                <text x="550" y="116" className={getRadAltClass(radAlt, radioMins, "text-3 green")}>
+                    {radioMins}
+                </text>
+            </g>
+
+        </g>
+
+    );
+};
+
+export const RadioAltimeter: FC = () => {
+    const [radAlt] = useSimVar("RADIO HEIGHT", "feet");
+    const [radioMins] = useSimVar("L:SALTY_MINS_RADIO", "feet");
+
+    const getRadAltRounded = (): number => {
+        let alt = 0;
+        if (radAlt > 500) {
+            alt = Math.round(radAlt / 20) * 20;
+        } 
+        else if (radAlt > 100) {
+            alt = Math.round(radAlt / 10) * 10;
+        }
+        else {
+            alt = Math.round(radAlt / 2) * 2;  
+        }
+        return alt;
+    };
+
+    return (
+        < g>
+            < g visibility={radAlt <= 2500 ? "visible" : "hidden"}>
+                <text x="550" y="153" className={getRadAltClass(radAlt, radioMins, "text-4")}>
+                    {getRadAltRounded()}
+                </text>
+            </g>
+
+        </g>
+
     );
 };
