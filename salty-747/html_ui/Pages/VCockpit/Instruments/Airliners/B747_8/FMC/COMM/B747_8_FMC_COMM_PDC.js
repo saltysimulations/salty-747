@@ -156,21 +156,10 @@ class FMC_COMM_PDC {
             FMC_COMM_PDC.ShowPage(fmc);
         };
 
-        /*fmc.onRightInput[5] = () => {
-            store.sendStatus = "SENDING";
-            updateView();
-            setTimeout(
-                function() {
-                    store.sendStatus = "SENT";
-                    updateView();
-                }, 1000
-            );
-            setTimeout(
-                function() {
-                    store.sendStatus = "SEND>";
-                    updateView();
-                }, 5000
-            );
-        };*/
+        fmc.onRightInput[5] = () => {
+            let msg = "REQUEST PREDEP CLEARANCE\n" + fmc.atcComm.fltNo + " " + fmc.pdc.acType + " TO " + fmc.pdc.dest + "\nAT " + fmc.pdc.origin + " STAND " + fmc.pdc.stand +"\nATIS " + fmc.pdc.atis;
+            console.log(msg);
+            HoppieApi.sendTelex(fmc.pdc.ats, fmc.atcComm.fltNo, msg)
+        };
     }
 }

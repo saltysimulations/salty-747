@@ -7,10 +7,18 @@ class HoppieApi {
 	incMsgId() {
 		this.messageId = this.messageId+1;
 	}
-	
+
+	/* Response Expected 
+		"R" Expects "ROGER"
+		"WU" Expects "WILCO"/"UNABLE"
+		"AN" Expects "AFFIRM"/"NEGATIVE"
+		"NE" Self-closing (Not-Enabled)
+		"Y" Expects Controller Response
+		"N" Self-closing (No response expected)
+	*/
+
 	/* SEND */
 	static sendLogon(ats, fltNo) {
-		console.log(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//Y/REQUEST%20LOGON`);
 		return fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//Y/REQUEST%20LOGON`)				
             .then((response) => {
 				console.log(response);
@@ -52,6 +60,19 @@ class HoppieApi {
                 });
         });
 	}
+	static sendTelex(ats, fltNo, msg) {
+		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=telex&packet=${msg}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw (response);
+                }
+
+                return response.json()
+                    .then((data) => {
+                        return data;
+                });
+        });
+	}
 
 	/* RECEIVE */
 	static receiveLogon() {
@@ -69,6 +90,8 @@ class HoppieApi {
 				return response.text();
 			})
 			.then(function (html) {
+				let msgParams = html.split("/");
+				console.log(msgParams);
 				return html;
 			}).catch(function (err) {
 				console.warn('Something went wrong.', err);
