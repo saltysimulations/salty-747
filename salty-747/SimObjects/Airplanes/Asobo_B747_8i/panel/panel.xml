@@ -410,6 +410,28 @@
 			</Greater>
 		  </Condition>
 		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\HEAT WINDOW R</Text>
+		  <Condition>
+			<Equal>
+				<Simvar name="WINDSHIELD DEICE SWITCH" unit="Boolean"/>
+				<Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\HEAT WINDOW L</Text>
+		  <Condition>
+			<Equal>
+				<Simvar name="WINDSHIELD DEICE SWITCH" unit="Boolean"/>
+				<Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
 		
 		<Annunciation>
 		  <Type>Advisory</Type>

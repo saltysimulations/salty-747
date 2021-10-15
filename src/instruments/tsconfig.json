@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "module": "esnext",
+        "esModuleInterop": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "strictNullChecks": true
+    }
+}
