@@ -9,7 +9,7 @@ class FMC_COMM_Index {
                 ["", ""],
                 ["<PREFLIGHT", "REQUESTS>"],
                 ["", ""],
-                ["<INFLIGHT", ""],
+                ["<INFLIGHT", "BOARDING>"],
                 ["", ""],
                 ["<POSTFLIGHT", ""],
                 ["\xa0RECEIVED", ""],
@@ -35,6 +35,11 @@ class FMC_COMM_Index {
         /* LSK2 */
         fmc.onLeftInput[1] = () => {
             FMC_COMM_Inflight.ShowPage(fmc);
+        }
+
+        /* RSK2 */
+        fmc.onRightInput[1] = () => {
+            FMC_COMM_Boarding.ShowPage1(fmc);
         }
         
         /* LSK3 */

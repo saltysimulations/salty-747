@@ -108,6 +108,14 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.companyComm = {
             estab: false,
             company: "",
+            tripFuel: "",
+            taxiFuel: "",
+            altnFuel: "",
+            finResFuel: "",
+            contFuel: "",
+            blockFuel: "",
+            loading: "",            
+            sendStatus: ""
         };
         this.simbrief = {
             route: "",
