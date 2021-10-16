@@ -12,8 +12,8 @@ class FMC_COMM_Boarding {
         let blockFuel = "_____[color]amber";
         let taxiFuel = "____[color]amber";
         let tripFuel = "_____[color]amber";
-        let requestButton = "SEND*[color]magenta";
-        let loadButton = "*LOAD[color]magenta";
+        let requestButton = "SEND>[color]magenta";
+        let loadButton = "<LOAD[color]magenta";
 
         if (fmc.simbrief.sendStatus !== "READY" && fmc.simbrief.sendStatus !== "DONE") {
             requestButton = "SEND [color]magenta";
@@ -47,11 +47,11 @@ class FMC_COMM_Boarding {
             ["TRIP FUEL"],
             [tripFuel],
             [""],
-            ["", "PRINT*[color]inop"],
+            ["", "PRINT>[color]inop"],
             ["REFUEL", "OFP REQUEST[color]magenta"],
             [loadButton, requestButton],
-            [""],
-            ["<AOC MENU"]
+            ["\xa0ACARS", ""],
+            ["<INDEX", ""]
         ];
         fmc.setTemplate(display);
 
@@ -62,13 +62,17 @@ class FMC_COMM_Boarding {
                 updateView();
                 return true;
             }
+            if (value < 193) {
+                value = value * 1000;
+            }
             const enteredFuel = SaltyUnits.userToKg(Math.round(+value));
             if (enteredFuel >= 0 && enteredFuel <= maxAllowableFuel) {
                 fmc.companyComm.blockFuel = enteredFuel;
+                fmc.clearUserInput();
                 updateView();
                 return true;
             }
-            fmc.addNewMessage("NXSystemMessages.notAllowed");
+            fmc.showErrorMessage("NOT ALLOWED");
             return false;
         };
         
@@ -84,7 +88,7 @@ class FMC_COMM_Boarding {
                 updateView();
                 return true;
             }
-            fmc.addNewMessage(NXSystemMessages.notAllowed);
+            fmc.showErrorMessage("NOT ALLOWED");
             return false;
         };
         
@@ -100,20 +104,21 @@ class FMC_COMM_Boarding {
                 updateView();
                 return true;
             }
-            fmc.addNewMessage(NXSystemMessages.notAllowed);
+            fmc.showErrorMessage("NOT ALLOWED");
             return false;
         };
         
-        fmc.onLeftInput[4] = async () => {
+        fmc.onLeftInput[4] = () => {
             const onGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
             const gs = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
             const oneEngineRunning = SimVar.GetSimVarValue('GENERAL ENG COMBUSTION:1', 'bool') ||
-                SimVar.GetSimVarValue('GENERAL ENG COMBUSTION:2', 'bool');
-
+                SimVar.GetSimVarValue('GENERAL ENG COMBUSTION:2', 'bool') || SimVar.GetSimVarValue('GENERAL ENG COMBUSTION:3', 'bool') ||
+                SimVar.GetSimVarValue('GENERAL ENG COMBUSTION:4', 'bool');
             if (gs < 1 && onGround && currentBlockFuel && !oneEngineRunning) {
                 loadFuel(fmc, updateView);
-
                 updateView();
+            } else {
+                fmc.showErrorMessage("NOT ALLOWED");
             }
         };
         
@@ -147,15 +152,15 @@ class FMC_COMM_Boarding {
         const boardingStartedByUser = SimVar.GetSimVarValue("L:A32NX_BOARDING_STARTED_BY_USR", "Bool");
 
         let zfwcg = "__._[color]amber";
-        let requestButton = "SEND*[color]magenta";
-        let loadButton = "START*[color]magenta";
+        let requestButton = "SEND>[color]magenta";
+        let loadButton = "START>[color]magenta";
 
         if (fmc.simbrief.sendStatus !== "READY" && fmc.simbrief.sendStatus !== "DONE") {
             requestButton = "SEND [color]magenta";
         }
 
         if (boardingStartedByUser) {
-            loadButton = "STOP*[color]yellow";
+            loadButton = "STOP>[color]yellow";
         }
 
         function buildStationValue(station) {
@@ -288,32 +293,44 @@ async function loadFuel(fmc, updateView) {
     fmc.companyComm.loading = true;
     updateView();
 
-    const tipTankCapacity = 2644; // Left and Right // Value from flight_model.cfg (plus the unusable fuel capacity (GALLONS))
-    const auxTankCapacity = 8964; // Left and Right // Value from flight_model.cfg (plus the unusable fuel capacity (GALLONS))
-    const mainTankCapacity = 25092;
-    const centerTankCapacity = 20464; // Center // Value from flight_model.cfg (plus the unusable fuel capacity (GALLONS))
+    const mainTankCapacity = 14430; // Main 2 and 3 = flight_model.cfg Left and Right Main
+    const mainTipTankCapacity = 5320; // Main 1 and 4 = flight_model.cfg Left and Right Aux
+    const resTankCapacity = 1534; // Res 1 and 2 = flight_model.cfg Left and Right Tip
+    const centerTankCapacity = 17000; // Center tank = flight_model.cfg Center 1
+    const stabTankCapacity = 3300; // Stab tank = flight_model.cfg Center 2
 
     const fuelWeightPerGallon = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms");
     let currentBlockFuelInGallons = +currentBlockFuel / +fuelWeightPerGallon;
-
-    const tipTankFill = Math.min(tipTankCapacity, currentBlockFuelInGallons / 2);
-    await SimVar.SetSimVarValue(`FUEL TANK LEFT TIP QUANTITY`, "Gallons", tipTankFill);
-    await SimVar.SetSimVarValue(`FUEL TANK RIGHT TIP QUANTITY`, "Gallons", tipTankFill);
-    currentBlockFuelInGallons -= outerTankFill * 2;
-
-    const auxTankFill = Math.min(auxTankCapacity, currentBlockFuelInGallons / 2);
-    await SimVar.SetSimVarValue(`FUEL TANK LEFT AUX QUANTITY`, "Gallons", auxTankFill);
-    await SimVar.SetSimVarValue(`FUEL TANK RIGHT AUX QUANTITY`, "Gallons", auxTankFill);
-    currentBlockFuelInGallons -= innerTankFill * 2;
+    console.log("INITIAL BLOCK IN GALLONS IS: " + currentBlockFuelInGallons);
 
     const mainTankFill = Math.min(mainTankCapacity, currentBlockFuelInGallons / 2);
     await SimVar.SetSimVarValue(`FUEL TANK LEFT MAIN QUANTITY`, "Gallons", mainTankFill);
     await SimVar.SetSimVarValue(`FUEL TANK RIGHT MAIN QUANTITY`, "Gallons", mainTankFill);
-    currentBlockFuelInGallons -= innerTankFill * 2;
+    currentBlockFuelInGallons -= mainTankFill * 2;
+    console.log("TANK IS: MAIN 2 and 3, CAPACITY: " + mainTankCapacity + ", FILLED: " + mainTankFill +", REMAINING: " + currentBlockFuelInGallons);
+
+    const mainTipTankFill = Math.min(mainTipTankCapacity, currentBlockFuelInGallons / 2);
+    await SimVar.SetSimVarValue(`FUEL TANK LEFT AUX QUANTITY`, "Gallons", mainTipTankFill);
+    await SimVar.SetSimVarValue(`FUEL TANK RIGHT AUX QUANTITY`, "Gallons", mainTipTankFill);
+    currentBlockFuelInGallons -= mainTipTankFill * 2;
+    console.log("TANK IS: MAIN 1 and 4, CAPACITY" + mainTipTankCapacity + ", REMAINING IS: " + currentBlockFuelInGallons);
+
+
+    const tipTankFill = Math.min(resTankCapacity, currentBlockFuelInGallons / 2);
+    await SimVar.SetSimVarValue(`FUEL TANK LEFT TIP QUANTITY`, "Gallons", tipTankFill);
+    await SimVar.SetSimVarValue(`FUEL TANK RIGHT TIP QUANTITY`, "Gallons", tipTankFill);
+    currentBlockFuelInGallons -= tipTankFill * 2;
+    console.log("TANK IS: RES 1 and 2, CAPACITY" + resTankCapacity + ", REMAINING IS: " + currentBlockFuelInGallons);
 
     const centerTankFill = Math.min(centerTankCapacity, currentBlockFuelInGallons);
     await SimVar.SetSimVarValue(`FUEL TANK CENTER QUANTITY`, "Gallons", centerTankFill);
     currentBlockFuelInGallons -= centerTankFill;
+    console.log("TANK IS: CENTER, CAPACITY" + centerTankCapacity + ", REMAINING IS: " + currentBlockFuelInGallons);
+
+    const stabTankFill = Math.min(stabTankCapacity, currentBlockFuelInGallons);
+    await SimVar.SetSimVarValue(`FUEL TANK CENTER2 QUANTITY`, "Gallons", stabTankFill);
+    currentBlockFuelInGallons -= stabTankFill;
+    console.log("TANK IS: STAB, CAPACITY" + stabTankCapacity + ", REMAINING IS: " + currentBlockFuelInGallons);
 
     fmc.updateFuelVars();
 
@@ -323,7 +340,7 @@ async function loadFuel(fmc, updateView) {
 
 const payloadConstruct = new SaltyPayloadConstructor();
 const paxStations = payloadConstruct.paxStations;
-const cargoStations = payloadConstruct.payloadStations;
+const cargoStations = payloadConstruct.cargoStations;
 
 const MAX_SEAT_AVAILABLE = 364;
 const PAX_WEIGHT = 84;

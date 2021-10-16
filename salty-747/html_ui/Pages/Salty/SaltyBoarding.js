@@ -13,7 +13,7 @@ class SaltyBoarding {
         this.time = 0;
         const payloadConstruct = new SaltyPayloadConstructor();
         this.paxStations = payloadConstruct.paxStations;
-        this.payloadStations = payloadConstruct.payloadStations;
+        this.cargoStations = payloadConstruct.cargoStations;
     }
 
     async init() {
@@ -53,7 +53,7 @@ class SaltyBoarding {
     }
     
     async loadPayload() {
-        const MAX_SEAT_AVAILABLE = 174;
+        const MAX_SEAT_AVAILABLE = 364;
         const PAX_WEIGHT = 84;
         const BAG_WEIGHT = 20;
 
@@ -65,7 +65,7 @@ class SaltyBoarding {
     }
 
     async loadCargoZero() {
-        for (const station of Object.values(this.payloadStations)) {
+        for (const station of Object.values(this.cargoStations)) {
             await SimVar.SetSimVarValue(`PAYLOAD STATION WEIGHT:${station.stationIndex}`, "kilograms", 0);
         }
 

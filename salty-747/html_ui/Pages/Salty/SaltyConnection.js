@@ -139,7 +139,6 @@ const getSimBriefPlan = (fmc, store, updateView) => {
             fmc.simbrief["cruiseAltitude"] = data.general.initial_altitude;
             fmc.simbrief["originIcao"] = data.origin.icao_code;
             fmc.simbrief["destinationIcao"] = data.destination.icao_code;
-            fmc.simbrief["blockFuel"] = data.fuel.plan_ramp;
             fmc.simbrief["payload"] = data.weights.payload;
             fmc.simbrief["estZfw"] = data.weights.est_zfw;
             fmc.simbrief["costIndex"] = data.general.costindex;
@@ -161,13 +160,13 @@ const getSimBriefPlan = (fmc, store, updateView) => {
             fmc.simbrief["altnFuel"] = data.fuel.alternate_burn;
             fmc.simbrief["finResFuel"] = data.fuel.reserve;
             fmc.simbrief["contFuel"] = data.fuel.contingency;
-            fmc.simbrief["blockFuel"] = data.fuel.contingency + data.fuel.reserve + data.fuel.alternate_burn + data.fuel.enroute_burn + data.fuel.taxi;
+            fmc.simbrief["blockFuel"] = data.fuel.plan_ramp;
             fmc.companyComm["taxiFuel"] = data.fuel.taxi;
             fmc.companyComm["tripFuel"] = data.fuel.enroute_burn;
             fmc.companyComm["altnFuel"] = data.fuel.alternate_burn;
             fmc.companyComm["finResFuel"] = data.fuel.reserve;
             fmc.companyComm["contFuel"] = data.fuel.contingency;
-            fmc.companyComm["blockFuel"] = data.fuel.contingency + data.fuel.reserve + data.fuel.alternate_burn + data.fuel.enroute_burn + data.fuel.taxi;
+            fmc.companyComm["blockFuel"] = data.fuel.plan_ramp;
             /* DISTANCE */
             fmc.simbrief["route_distance"] = data.general.route_distance;
             fmc.simbrief.rteUplinkReady = true;
