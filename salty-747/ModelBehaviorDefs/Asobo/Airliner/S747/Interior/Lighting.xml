@@ -1,0 +1,463 @@
+<Behaviors>
+	<Template Name="SALTY_LIGHTING_Light_Template">
+		<Parameters Type="Default">
+			<Condition Check="LIGHT_TYPE" Match="POTENTIOMETER">
+				<True>
+					<SIMVAR_INDEX>#POTENTIOMETER#</SIMVAR_INDEX>
+					<ANIM_MULTIPLIER></ANIM_MULTIPLIER>
+				</True>
+				<False>
+					<Condition NotEmpty="ID">
+						<True>
+							<SIMVAR_INDEX>#ID#</SIMVAR_INDEX>
+						</True>
+						<False>
+							<SIMVAR_INDEX>1</SIMVAR_INDEX>
+							<Condition Check="INTERACTION_TYPE" Match="KNOB"><!-- Required for retrocompat -->
+								<False>
+									<ID>1</ID>
+								</False>
+							</Condition>
+						</False>
+					</Condition>
+					<ANIM_MULTIPLIER>100 *</ANIM_MULTIPLIER>
+				</False>
+			</Condition>
+			<TYPE>OnOff</TYPE>
+			<TT_DESCRIPTION>@TT_Placeholder_Description</TT_DESCRIPTION>
+			<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+		</Parameters>
+		<Parameters Type="Default">
+			<Condition Check="NO_AUTHORITY_OVER_SWITCH_STATE">
+				<True>
+					<LIGHT_INPUT_EVENT_ID>LIGHTING_#LIGHT_TYPE#_#SIMVAR_INDEX#_Power_Setting</LIGHT_INPUT_EVENT_ID>
+				</True>
+				<False>
+					<LIGHT_INPUT_EVENT_ID>LIGHTING_#LIGHT_TYPE#_#SIMVAR_INDEX#</LIGHT_INPUT_EVENT_ID>				
+				</False>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="KNOB">
+					<TT_INTERACTION_TYPE>KNOB</TT_INTERACTION_TYPE>
+				</Case>
+				<Default>
+					<TT_INTERACTION_TYPE>SWITCH</TT_INTERACTION_TYPE>
+				</Default>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Condition NotEmpty="LIGHT_TYPE">
+				<True>
+					<SIMVAR_NAME>LIGHT #LIGHT_TYPE#</SIMVAR_NAME>
+					<KEY_ID_SET>#LIGHT_TYPE#_LIGHTS_SET</KEY_ID_SET>
+					<KEY_ID_ON>#LIGHT_TYPE#_LIGHTS_ON</KEY_ID_ON>
+					<KEY_ID_OFF>#LIGHT_TYPE#_LIGHTS_OFF</KEY_ID_OFF>
+					<KEY_ID_TOGGLE>TOGGLE_#LIGHT_TYPE#_LIGHTS</KEY_ID_TOGGLE>
+					<KEY_POWER_SETTING_SET>#LIGHT_TYPE#_LIGHTS_POWER_SETTING_SET</KEY_POWER_SETTING_SET>
+					<INTEGRATED_POWER_SETTING_SIMVAR>LIGHT #LIGHT_TYPE# POWER SETTING:#SIMVAR_INDEX#</INTEGRATED_POWER_SETTING_SIMVAR>
+					<TOOLTIP_TITLE>@TT_Package.LIGHTING_SWITCH_LIGHT_#LIGHT_TYPE#_TITLE</TOOLTIP_TITLE>
+					<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_#TT_INTERACTION_TYPE#_LIGHT_#LIGHT_TYPE#_ACTION</TT_DESCRIPTION_ID>
+					<Switch Param="LIGHT_TYPE">
+						<Case Value="STROBE">
+							<KEY_ID_SET>STROBES_SET</KEY_ID_SET>
+							<KEY_ID_ON>STROBES_ON</KEY_ID_ON>
+							<KEY_ID_OFF>STROBES_OFF</KEY_ID_OFF>
+							<KEY_ID_TOGGLE>STROBES_TOGGLE</KEY_ID_TOGGLE>
+							<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_SWITCH_LIGHT_STROBE_ACTION</TT_DESCRIPTION_ID>
+							<TOOLTIP_TITLE>@TT_Package.LIGHTING_SWITCH_LIGHT_STROBE_TITLE</TOOLTIP_TITLE>
+						</Case>
+						<Case Value="LANDING">
+							<KEY_ID_TOGGLE>LANDING_LIGHTS_TOGGLE</KEY_ID_TOGGLE>
+							<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_#TT_INTERACTION_TYPE#_LIGHT_LANDING_ACTION_SET</TT_DESCRIPTION_ID>
+						</Case>
+						<Case Value="GLARESHIELD">
+							<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_KNOB_GLARESHIELD_ACTION</TT_DESCRIPTION_ID>
+						</Case>
+						<Case Value="POTENTIOMETER">
+							<SIMVAR_NAME>LIGHT POTENTIOMETER</SIMVAR_NAME>
+							<KEY_ID_SET>LIGHT_POTENTIOMETER_SET</KEY_ID_SET>
+							<KEY_ID_ON/>
+							<KEY_ID_OFF/>
+							<KEY_ID_TOGGLE/>
+							<KEY_POWER_SETTING_SET/>
+							<INTEGRATED_POWER_SETTING_SIMVAR/>
+							<TOOLTIP_TITLE>@TT_Package.LIGHTING_KNOB_GLARESHIELD_TITLE</TOOLTIP_TITLE>
+						</Case>
+						<Case Value="BEACON">
+							<KEY_ID_TOGGLE>TOGGLE_BEACON_LIGHTS</KEY_ID_TOGGLE>
+						</Case>
+						<Case Value="NAV">
+							<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_#TT_INTERACTION_TYPE#_LIGHT_NAV_ACTION_SET</TT_DESCRIPTION_ID>
+						</Case>
+						<Case Value="RECOGNITION">
+							<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_#TT_INTERACTION_TYPE#_LIGHT_RECOGNITION_ACTION_SET</TT_DESCRIPTION_ID>
+						</Case>
+						<Case Value="PANEL">
+							<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_#TT_INTERACTION_TYPE#_LIGHT_PANEL_ACTION_SET</TT_DESCRIPTION_ID>
+						</Case>
+					</Switch>
+				</True>
+			</Condition>
+			<Switch Param="TYPE">
+				<Case Value="Retractable">
+					<STATE_ON_ID>0</STATE_ON_ID>
+					<STATE_OFF_ID>1</STATE_OFF_ID>
+					<STATE_X_ID>2</STATE_X_ID>
+					<STATE_X_VAR>L:#LIGHT_TYPE#_#SIMVAR_INDEX#_Retracted</STATE_X_VAR>
+					<STATE_X_TT>(R:1:@TT_Package.GT_STATE_RETRACTED)</STATE_X_TT>
+					<STATE_X_VALUE>0</STATE_X_VALUE>
+				</Case>
+				<Case Value="Auto">
+					<STATE_ON_ID>0</STATE_ON_ID>
+					<STATE_X_ID>1</STATE_X_ID>
+					<STATE_X_VAR>L:#LIGHT_TYPE#_#SIMVAR_INDEX#_Auto</STATE_X_VAR>
+					<STATE_X_TT>@TT_Auto</STATE_X_TT>
+					<STATE_X_VALUE>1</STATE_X_VALUE>
+					<STATE_OFF_ID>2</STATE_OFF_ID>
+				</Case>
+				<Case Value="Dimmer">
+					<DIMMER_POS_0_VALUE>100</DIMMER_POS_0_VALUE>
+					<DIMMER_POS_1_VALUE>50</DIMMER_POS_1_VALUE>
+					<DIMMER_POS_2_VALUE>0</DIMMER_POS_2_VALUE>
+				</Case>
+				<Case Value="Dimmer_BrtOffDim">
+					<DIMMER_POS_0_VALUE>100</DIMMER_POS_0_VALUE>
+					<DIMMER_POS_1_VALUE>0</DIMMER_POS_1_VALUE>
+					<DIMMER_POS_2_VALUE>50</DIMMER_POS_2_VALUE>
+				</Case>
+				<Case Value="TwoSimvars">
+					<STATE_1ST_ID>0</STATE_1ST_ID>
+					<STATE_2ND_ID>1</STATE_2ND_ID>
+					<STATE_OFF_ID>2</STATE_OFF_ID>
+					<STATE_1ST_TT>(R:1:@TT_Package.GT_STATE_TAKEOFF)</STATE_1ST_TT>
+					<STATE_2ND_TT>(R:1:@TT_Package.GT_STATE_TAXI)</STATE_2ND_TT>
+				</Case>
+				<Case Value="TwoIndices">
+					<STATE_1ST_ID>0</STATE_1ST_ID>
+					<STATE_OFF_ID>1</STATE_OFF_ID>
+					<STATE_ON_ID>2</STATE_ON_ID>
+					<STATE_1ST_TT>(R:1:@TT_Package.GT_STATE_LOWERBEACON)</STATE_1ST_TT>
+				</Case>
+			</Switch>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="KNOB">
+					<CLOCKWISE_CODE></CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE></ANTICLOCKWISE_CODE>
+				</Case>
+				<Case Value="SWITCH">
+				</Case>
+				<Case Value="PUSH">
+					<Switch Param="PUSH_TYPE">
+						<Case Value="AIRLINER">
+							<SEQ1_EMISSIVE_CODE>(A:LIGHT #LIGHT_TYPE#:#SIMVAR_INDEX#, Bool)</SEQ1_EMISSIVE_CODE>
+							<SEQ2_EMISSIVE_CODE>(A:LIGHT #LIGHT_TYPE#:#SIMVAR_INDEX#, Bool)</SEQ2_EMISSIVE_CODE>
+						</Case>
+						<Default>
+							<ONLY_SEQ1/>
+							<SEQ1_EMISSIVE_CODE>(A:LIGHT #LIGHT_TYPE#:#SIMVAR_INDEX#, Bool)</SEQ1_EMISSIVE_CODE>
+						</Default>
+					</Switch>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="KNOB">
+					<Condition Check="ID">
+						<True>
+							<NODE_ID>LIGHTING_Knob_#LIGHT_TYPE#_#ID#</NODE_ID>
+							<ANIM_NAME>LIGHTING_Knob_#LIGHT_TYPE#_#ID#</ANIM_NAME>
+						</True>
+						<False>
+							<NODE_ID>LIGHTING_Knob_#LIGHT_TYPE#</NODE_ID>
+							<ANIM_NAME>LIGHTING_Knob_#LIGHT_TYPE#</ANIM_NAME>
+						</False>
+					</Condition>
+				</Case>
+				<Default>
+					<ANIM_NAME>LIGHTING_#INTERACTION_TYPE#_Light_#LIGHT_TYPE#_#ID#</ANIM_NAME>
+					<NODE_ID>LIGHTING_#INTERACTION_TYPE#_Light_#LIGHT_TYPE#_#ID#</NODE_ID>
+				</Default>
+			</Switch>
+			<PART_ID>LIGHTING_#INTERACTION_TYPE#_Light_#LIGHT_TYPE#</PART_ID>
+			<Condition NotEmpty="KEY_ID_SET">
+				<True>
+					<Condition NotEmpty="LIGHT_TYPE_2">
+						<True>
+							<Switch Param="LIGHT_TYPE_2">
+								<Case Value="STROBE">
+									<KEY_ID_SET_2>STROBES_SET</KEY_ID_SET_2>
+									<KEY_ID_ON_2>STROBES_ON</KEY_ID_ON_2>
+									<KEY_ID_OFF_2>STROBES_OFF</KEY_ID_OFF_2>
+								</Case>
+								<Default>
+									<KEY_ID_SET_2>#LIGHT_TYPE_2#_LIGHTS_SET</KEY_ID_SET_2>
+									<KEY_ID_ON_2>#LIGHT_TYPE_2#_LIGHTS_ON</KEY_ID_ON_2>
+									<KEY_ID_OFF_2>#LIGHT_TYPE_2#_LIGHTS_OFF</KEY_ID_OFF_2>
+								</Default>
+							</Switch>
+							<KEY_ID_TOGGLE_2>#LIGHT_TYPE_2#_LIGHTS_TOGGLE</KEY_ID_TOGGLE_2>
+							<SIMVAR_NAME_2>LIGHT #LIGHT_TYPE_2#</SIMVAR_NAME_2>
+						</True>
+						<False>
+							<LIGHT_TYPE_2>#LIGHT_TYPE#</LIGHT_TYPE_2>
+							<KEY_ID_SET_2>#KEY_ID_SET#</KEY_ID_SET_2>
+							<KEY_ID_ON_2>#KEY_ID_ON#</KEY_ID_ON_2>
+							<KEY_ID_OFF_2>#KEY_ID_OFF#</KEY_ID_OFF_2>
+							<KEY_ID_TOGGLE_2>#KEY_ID_TOGGLE#</KEY_ID_TOGGLE_2>
+							<SIMVAR_NAME_2>#SIMVAR_NAME#</SIMVAR_NAME_2>
+						</False>
+					</Condition>
+					<Condition Check="POTENTIOMETER_2">
+						<True>
+							<SIMVAR_INDEX_2>#POTENTIOMETER_2#</SIMVAR_INDEX_2>
+						</True>
+						<False>
+							<SIMVAR_INDEX_2>#SIMVAR_INDEX#</SIMVAR_INDEX_2>
+							<Condition Check="POTENTIOMETER">
+								<POTENTIOMETER_2>#POTENTIOMETER#</POTENTIOMETER_2>
+							</Condition>
+						</False>
+					</Condition>
+				</True>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Default">
+			<Condition>
+				<Test>
+					<Or>
+						<Arg NotEmpty="TOOLTIP_TITLE"/>
+						<Arg NotEmpty="TOOLTIP_TITLE_ID"/>
+					</Or>
+				</Test>
+				<False>
+					<TOOLTIP_TITLE>@TT_OverrideMe_Title</TOOLTIP_TITLE>
+					<TOOLTIP_TITLE_IS_DYNAMIC>True</TOOLTIP_TITLE_IS_DYNAMIC>				
+				</False>
+			</Condition>
+			<Condition Check="LIGHT_TYPE" Match="POTENTIOMETER">
+				<True>
+					<SET_SIMVAR>100 * #SIMVAR_INDEX# (&gt;K:2:#KEY_ID_SET#)</SET_SIMVAR>
+					<SET_SIMVAR_2>100 * #SIMVAR_INDEX_2# (&gt;K:2:#KEY_ID_SET_2#)</SET_SIMVAR_2>
+				</True>
+				<False>
+					<SET_SIMVAR>#SIMVAR_INDEX# r (&gt;K:2:#KEY_ID_SET#)</SET_SIMVAR>
+					<SET_SIMVAR_2>#SIMVAR_INDEX_2# r (&gt;K:2:#KEY_ID_SET_2#)</SET_SIMVAR_2>
+				</False>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="Retractable">
+					<TYPE>OnOffX</TYPE>
+				</Case>
+				<Case Value="Auto">
+					<TYPE>OnOffX</TYPE>
+					<LIGHT_UPDATE_CODE>
+						(L:#LIGHT_TYPE#_#SIMVAR_INDEX#_Auto) if{
+							(A:SIM ON GROUND, Bool) ! 100 * (&gt;K:LIGHT_POTENTIOMETER_#POTENTIOMETER#_SET)
+						} els{
+							100 (&gt;K:LIGHT_POTENTIOMETER_#POTENTIOMETER#_SET)
+						}
+					</LIGHT_UPDATE_CODE>
+				</Case>
+				<Case Value="TwoIndices">
+					<TYPE>TwoSimvars</TYPE>
+				</Case>
+				<Case Value="Dimmer_BrtOffDim">
+					<TYPE>Dimmer</TYPE>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="Dimmer">
+					<STATE_0_VALUE Process="Int">#DIMMER_POS_0_VALUE# 0 &gt;</STATE_0_VALUE>
+					<STATE_1_VALUE Process="Int">#DIMMER_POS_1_VALUE# 0 &gt;</STATE_1_VALUE>
+					<STATE_2_VALUE Process="Int">#DIMMER_POS_2_VALUE# 0 &gt;</STATE_2_VALUE>
+					<STATE_ON_ID Process="Int">#DIMMER_POS_0_VALUE# 100 == if{ 0 quit } #DIMMER_POS_1_VALUE# 100 == if{ 1 quit } 2</STATE_ON_ID>
+					<STATE_DIM_ID Process="Int">#DIMMER_POS_0_VALUE# s0 100 &lt; l0 0 &gt; and if{ 0 quit } #DIMMER_POS_1_VALUE# s0 100 &lt; l0 0 &gt; and if{ 1 quit } 2</STATE_DIM_ID>
+					<STATE_OFF_ID Process="Int">#DIMMER_POS_0_VALUE# 0 == if{ 0 quit } #DIMMER_POS_1_VALUE# 0 == if{ 1 quit } 2</STATE_OFF_ID>
+				</Case>
+			</Switch>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="KNOB">
+					<CLOCKWISE_CODE>
+						1 (&gt;B:#LIGHT_INPUT_EVENT_ID#_Inc)
+					</CLOCKWISE_CODE>
+					<ANTICLOCKWISE_CODE>
+						1 (&gt;B:#LIGHT_INPUT_EVENT_ID#_Dec)
+					</ANTICLOCKWISE_CODE>
+					<Condition>
+						<Test>
+							<And>
+								<Arg NotEmpty="LOWER_LIMIT"/>
+								<Arg NotEmpty="UPPER_LIMIT"/>
+							</And>
+						</Test>
+						<True>
+							<ANIM_CODE>(B:#LIGHT_INPUT_EVENT_ID#) #LOWER_LIMIT# - #UPPER_LIMIT# #LOWER_LIMIT# - / 100 *</ANIM_CODE>
+						</True>
+						<False>
+							<ANIM_CODE>(B:#LIGHT_INPUT_EVENT_ID#)</ANIM_CODE>
+						</False>
+					</Condition>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<TOOLTIP_ENTRY_0>#LIGHT_INPUT_EVENT_ID#</TOOLTIP_ENTRY_0>
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="SWITCH">
+					<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
+					<SWITCH_POSITION_VAR>#LIGHT_INPUT_EVENT_ID#</SWITCH_POSITION_VAR>
+					<SIMVAR_TO_WATCH_0>LIGHT #LIGHT_TYPE#:#SIMVAR_INDEX#</SIMVAR_TO_WATCH_0>
+					<Switch Param="TYPE">
+						<Case Value="OnOff">
+							<NUM_STATES>2</NUM_STATES>
+							<LEFT_SINGLE_CODE>(&gt;B:#LIGHT_INPUT_EVENT_ID#_Toggle)</LEFT_SINGLE_CODE>
+							<ANIM_CODE>(B:#LIGHT_INPUT_EVENT_ID#) #ANIM_MULTIPLIER#</ANIM_CODE>
+						</Case>
+						<Case Value="OnOff_TwoSimvars">
+							<NUM_STATES>2</NUM_STATES>
+							<LEFT_SINGLE_CODE>(&gt;B:#LIGHT_INPUT_EVENT_ID#_Toggle)</LEFT_SINGLE_CODE>
+							<ANIM_CODE>(B:#LIGHT_INPUT_EVENT_ID#) #ANIM_MULTIPLIER#</ANIM_CODE>
+						</Case>
+						<Case Value="ToggleSimvars">
+							<NUM_STATES>2</NUM_STATES>
+							<LEFT_SINGLE_CODE>(&gt;B:#LIGHT_INPUT_EVENT_ID#_Toggle)</LEFT_SINGLE_CODE>
+							<ANIM_CODE>(B:#LIGHT_INPUT_EVENT_ID#) #ANIM_MULTIPLIER#</ANIM_CODE>
+						</Case>
+						<Case Value="Dimmer">
+							<NUM_STATES>3</NUM_STATES>
+							<CODE_POS_0>#STATE_0_VALUE# #SET_SIMVAR# #DIMMER_POS_0_VALUE# (&gt;K:LIGHT_POTENTIOMETER_#POTENTIOMETER#_SET)</CODE_POS_0>
+							<CODE_POS_1>#STATE_1_VALUE# #SET_SIMVAR# #DIMMER_POS_1_VALUE# (&gt;K:LIGHT_POTENTIOMETER_#POTENTIOMETER#_SET)</CODE_POS_1>
+							<CODE_POS_2>#STATE_2_VALUE# #SET_SIMVAR# #DIMMER_POS_2_VALUE# (&gt;K:LIGHT_POTENTIOMETER_#POTENTIOMETER#_SET)</CODE_POS_2>
+							<STATE0_TEST>(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) #STATE_0_VALUE# == (A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent) #DIMMER_POS_0_VALUE# == and</STATE0_TEST>
+							<STATE1_TEST>(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) #STATE_1_VALUE# == (A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent) #DIMMER_POS_1_VALUE# == and</STATE1_TEST>
+							<STATE2_TEST>(A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) #STATE_2_VALUE# == (A:LIGHT POTENTIOMETER:#POTENTIOMETER#, Percent) #DIMMER_POS_2_VALUE# == and </STATE2_TEST>
+						</Case>
+						<Case Value="OnOffX">
+							<NUM_STATES>3</NUM_STATES>
+							<CODE_POS_#STATE_ON_ID#>0 (&gt;#STATE_X_VAR#) 1 #SET_SIMVAR#</CODE_POS_#STATE_ON_ID#>
+							<CODE_POS_#STATE_OFF_ID#>0 (&gt;#STATE_X_VAR#) 0 #SET_SIMVAR#</CODE_POS_#STATE_OFF_ID#>
+							<CODE_POS_#STATE_X_ID#>1 (&gt;#STATE_X_VAR#) #STATE_X_VALUE# #SET_SIMVAR#</CODE_POS_#STATE_X_ID#>
+							<STATE#STATE_ON_ID#_TEST>(#STATE_X_VAR#) ! (A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) and</STATE#STATE_ON_ID#_TEST>
+							<STATE#STATE_OFF_ID#_TEST>(#STATE_X_VAR#) ! (A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) ! and</STATE#STATE_OFF_ID#_TEST>
+							<STATE#STATE_X_ID#_TEST>(#STATE_X_VAR#) (A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) #STATE_X_VALUE# == and</STATE#STATE_X_ID#_TEST>
+						</Case>
+						<Case Value="TwoSimvars">
+							<NUM_STATES>3</NUM_STATES>
+							<Condition NotEmpty="STATE_1ST_ID">
+								<CODE_POS_#STATE_1ST_ID#>1 #SET_SIMVAR# 0 #SET_SIMVAR_2#</CODE_POS_#STATE_1ST_ID#>
+								<STATE#STATE_1ST_ID#_TEST> (A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) (A:#SIMVAR_NAME_2#:#SIMVAR_INDEX_2#, Bool) ! and </STATE#STATE_1ST_ID#_TEST>
+							</Condition>
+							<Condition NotEmpty="STATE_2ND_ID">
+								<CODE_POS_#STATE_2ND_ID#>0 #SET_SIMVAR# 1 #SET_SIMVAR_2#</CODE_POS_#STATE_2ND_ID#>
+								<STATE#STATE_2ND_ID#_TEST> (A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) ! (A:#SIMVAR_NAME_2#:#SIMVAR_INDEX_2#, Bool) and </STATE#STATE_2ND_ID#_TEST>
+							</Condition>
+							<Condition NotEmpty="STATE_ON_ID">
+								<CODE_POS_#STATE_ON_ID#>1 #SET_SIMVAR# 1 #SET_SIMVAR_2#</CODE_POS_#STATE_ON_ID#>
+								<STATE#STATE_ON_ID#_TEST> (A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) (A:#SIMVAR_NAME_2#:#SIMVAR_INDEX_2#, Bool) and </STATE#STATE_ON_ID#_TEST>
+							</Condition>
+							<Condition NotEmpty="STATE_OFF_ID">
+								<CODE_POS_#STATE_OFF_ID#>0 #SET_SIMVAR# 0 #SET_SIMVAR_2#</CODE_POS_#STATE_OFF_ID#>
+								<STATE#STATE_OFF_ID#_TEST> (A:#SIMVAR_NAME#:#SIMVAR_INDEX#, Bool) ! (A:#SIMVAR_NAME_2#:#SIMVAR_INDEX_2#, Bool) ! and </STATE#STATE_OFF_ID#_TEST>
+							</Condition>
+							<SIMVAR_TO_WATCH_1>LIGHT #LIGHT_TYPE_2#:#SIMVAR_INDEX_2#</SIMVAR_TO_WATCH_1>
+						</Case>
+						<Default>
+							<NUM_STATES>3</NUM_STATES>
+						</Default>
+					</Switch>
+				</Case>
+				<Case Value="PUSH">
+					<LEFT_SINGLE_CODE>(&gt;B:#LIGHT_INPUT_EVENT_ID#_Toggle)</LEFT_SINGLE_CODE>
+					<Condition Check="REVERSE_SEQ">
+						<SEQ1_EMISSIVE_CODE>#SEQ2_EMISSIVE_CODE#</SEQ1_EMISSIVE_CODE>
+						<SEQ2_EMISSIVE_CODE>#SEQ1_EMISSIVE_CODE#</SEQ2_EMISSIVE_CODE>
+					</Condition>
+					<NUM_STATES>2</NUM_STATES>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="INTERACTION_TYPE">
+				<Case Value="SWITCH">
+					<Switch Param="NUM_STATES">
+						<Case Value="2">
+							<WWISE_EVENT_1>#LIGHT_TYPE#_light_#INTERACTION_TYPE#_on</WWISE_EVENT_1>
+							<WWISE_EVENT_2>#LIGHT_TYPE#_light_#INTERACTION_TYPE#_off</WWISE_EVENT_2>
+							<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+							<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+						</Case>
+						<Case Value="3">
+							<WWISE_EVENT>#LIGHT_TYPE#_light_#INTERACTION_TYPE#</WWISE_EVENT>
+						</Case>
+					</Switch>
+				</Case>
+				<Case Value="KNOB">
+					<WWISE_EVENT>lighting_knob_generic</WWISE_EVENT>
+					<COUNT>100</COUNT>
+				</Case>
+				<Case Value="PUSH">
+					<WWISE_EVENT_1>#LIGHT_TYPE#_light_#INTERACTION_TYPE#_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>#LIGHT_TYPE#_light_#INTERACTION_TYPE#_off</WWISE_EVENT_2>
+					<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+					<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Switch Param="INTERACTION_TYPE">
+			<Case Value="KNOB">
+				<Component ID="#NODE_ID#" Node="#NODE_ID#">
+					<UseInputEvent ID="LIGHTING">
+					</UseInputEvent>
+					<UseTemplate Name="ASOBO_GT_Knob_Finite_Code">
+					</UseTemplate>
+				</Component>
+			</Case>
+			<Case Value="SWITCH">
+				<Component ID="#NODE_ID#" Node="#NODE_ID#">
+					<UseInputEvent ID="LIGHTING">
+					</UseInputEvent>
+					<Switch Param="NUM_STATES">
+						<Case Value="2">
+							<UseTemplate Name="ASOBO_GT_Switch_Code">
+							</UseTemplate>
+						</Case>
+						<Case Value="3">
+							<UseTemplate Name="ASOBO_GT_Switch_XStates">
+							</UseTemplate>
+						</Case>
+					</Switch>
+					<Condition NotEmpty="LIGHT_UPDATE_CODE">
+						<UseTemplate Name="ASOBO_GT_Update">
+							<FREQUENCY>1</FREQUENCY>
+							<UPDATE_CODE>#LIGHT_UPDATE_CODE#</UPDATE_CODE>
+						</UseTemplate>
+					</Condition>
+				</Component>
+			</Case>
+			<Case Value="PUSH">
+				<Switch Param="PUSH_TYPE">
+					<Case Value="AIRLINER">
+						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
+							<INPUT_EVENT_ID>LIGHTING</INPUT_EVENT_ID>
+						</UseTemplate>
+					</Case>
+					<Default>
+						<Component ID="#NODE_ID#" Node="#NODE_ID#">
+							<UseInputEvent ID="LIGHTING">
+							</UseInputEvent>
+							<UseTemplate Name="ASOBO_GT_Push_Button">
+							</UseTemplate>
+						</Component>
+					</Default>
+				</Switch>
+			</Case>
+		</Switch>
+	</Template>
+</Behaviors>

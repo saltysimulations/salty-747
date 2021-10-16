@@ -1,0 +1,4 @@
+<ModelBehaviors>
+    <Include RelativeFile="Exterior\Handling.xml"/>
+    <Include RelativeFile="Interior\Lighting.xml"/>
+</ModelBehaviors>
