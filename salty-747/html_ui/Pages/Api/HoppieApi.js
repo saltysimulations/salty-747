@@ -3,15 +3,18 @@ class HoppieApi {
 	 	this.messageId = 1;
 		/*/ CHANGE TO 0 ONCE TESTED */
 		this.isTestServer = true;
-		this.url;
+		this.server = "http://localhost:5000/acars/system/connect.html?";
 	}
 
-	Init() {		
-		if (!this.isTestServer) {
-			this.url = HoppieApi.url+"?logon="+HoppieApi.logon;
-		} else {			
-			this.url = "http://localhost:5000/acars/system/connect.html?";
-		}
+	Init() {
+		this.isTestServer = true;
+		console.log(this.isTestServer);
+		/*if (!this.isTestServer) {
+			let logon = SaltyDataStore.get("OPTIONS_HOPPIE_ID", "");
+			this.url = HoppieApi.url+"?logon="+logon;
+		} else {*/
+			this.server = "http://localhost:5000/acars/system/connect.html?";
+		/*}*/
 	}
 
 	/* increase message id */
@@ -30,7 +33,7 @@ class HoppieApi {
 
 	/* SEND */
 	static sendLogon(ats, fltNo) {
-		return fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//Y/REQUEST%20LOGON`)				
+		return fetch(`${this.server}logon=${logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//Y/REQUEST%20LOGON`)				
             .then((response) => {
 				console.log(response);
                 if (!response.ok) {
@@ -45,7 +48,7 @@ class HoppieApi {
             });
 	}
 	static sendLogoff() {
-		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//N/LOGOFF`)
+		fetch(`${this.server}logon=${logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=/data2/${this.messageId}//N/LOGOFF`)
             .then((response) => {
                 if (!response.ok) {
                     throw (response);
@@ -59,7 +62,7 @@ class HoppieApi {
         });
 	}
 	static sendRequest(ats, fltNo, request) {
-		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=${request}`)
+		fetch(`${this.server}logon=${logon}&from=${fltNo}&to=${ats}&type=cpdlc&packet=${request}`)
             .then((response) => {
                 if (!response.ok) {
                     throw (response);
@@ -71,8 +74,8 @@ class HoppieApi {
                 });
         });
 	}
-	static sendTelex(ats, fltNo, msg) {
-		fetch(`${HoppieApi.url}?logon=${HoppieApi.logon}&from=${fltNo}&to=${ats}&type=telex&packet=${msg}`)
+	static sendTelex(ats, fltNo, msg, logon) {console.log( 'Sending data' );
+		fetch(`${this.server}logon=${logon}&from=${fltNo}&to=${ats}&type=telex&packet=${msg}`)
             .then((response) => {
                 if (!response.ok) {
                     throw (response);
@@ -121,4 +124,4 @@ class HoppieApi {
 	}
 }
 HoppieApi.url = "http://www.hoppie.nl/acars/system/connect.html";
-HoppieApi.logon = SaltyDataStore.get("OPTIONS_HOPPIE_ID", "");
+HoppieApi.server = "http://localhost:5000/acars/system/connect.html?";

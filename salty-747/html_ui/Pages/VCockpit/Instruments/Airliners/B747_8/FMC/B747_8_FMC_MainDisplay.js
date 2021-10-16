@@ -88,7 +88,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.sentMessages = [];
         this.units;
         this.useLbs;
-        this.atcComm = {            
+        this.atcComm = {       
+            logon: "",     
             estab: false,
             loggedTo: "",
             nextCtr: "",

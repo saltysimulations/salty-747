@@ -8,18 +8,35 @@ class FMCSaltyOptions {
         if (IRSState == 2) { IRSState = "ALIGNED[color]green"; }
         /* Simbrief Options */
         let simbriefId = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
-        let simbriefUser = SaltyDataStore.get("OPTIONS_SIMBRIEF_USER", "");
+        /* Hoppie*/
+        let hoppieId = SaltyDataStore.get("OPTIONS_HOPPIE_ID", "");
+
+        /* Units */
+        const storedUnits = SaltyDataStore.get("OPTIONS_UNITS", "KG");
+        switch (storedUnits) {
+            case "KG":
+                fmc.units = 1;
+                SimVar.SetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool", 1);
+                break;
+            case "LBS":
+                fmc.units = 0;
+                SimVar.SetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool", 0);
+                break;
+            default:
+                fmc.units = 1;
+                SimVar.SetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool", 1);
+        }
 
         fmc.setTemplate([
             ["SALTY OPTIONS"],
-            ["", ""],
-            ["<IRS", "UNITS>"],
+            ["", "UNITS"],
+            ["<IRS", storedUnits],
             ["", ""],
             ["<METAR SRC", "ATIS SRC>"],
             ["", ""],
             ["<TAF SRC", ""],
-            ["", ""],
-            [`<SIMBRIEF`, ""],
+            ["\xa0SIMBRIEF ID", "HOPPIE LOGON"],
+            [simbriefId, hoppieId],
             ["", ""],
             ["<CPDLC[color]inop", "MISC>"],
             ["\xa0RETURN TO", ""],
@@ -30,10 +47,18 @@ class FMCSaltyOptions {
         fmc.onLeftInput[0] = () => {
             FMCSaltyOptions_IrsStatus.ShowPage(fmc);
         }
+
         /* RSK1 */
         fmc.onRightInput[0] = () => {
-            FMCSaltyOptions_Units.ShowPage(fmc);
-        }
+            if (storedUnits == "KG") {
+                SaltyDataStore.set("OPTIONS_UNITS", "LBS");
+                FMCSaltyOptions.ShowPage1(fmc);
+            } else if (storedUnits == "LBS") {                
+                SaltyDataStore.set("OPTIONS_UNITS", "KG");
+                FMCSaltyOptions.ShowPage1(fmc);
+            }
+        };
+
         /* LSK2 */
         fmc.onLeftInput[1] = () => {
              FMCSaltyOptions_Metar.ShowPage(fmc);
@@ -51,7 +76,19 @@ class FMCSaltyOptions {
         
         /* LSK4 */
         fmc.onLeftInput[3] = () => {
-              FMCSaltyOptions_Simbrief.ShowPage(fmc);
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            SaltyDataStore.set("OPTIONS_SIMBRIEF_ID", value);
+            SaltyDataStore.set("OPTIONS_SIMBRIEF_USER", "");
+            FMCSaltyOptions.ShowPage1(fmc);
+        }
+        
+        /* RSK4 */
+        fmc.onRightInput[3] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            SaltyDataStore.set("OPTIONS_HOPPIE_ID", value);
+            FMCSaltyOptions.ShowPage1(fmc);
         }
         
         /* RSK5 */
