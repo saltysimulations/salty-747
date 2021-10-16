@@ -1,6 +1,17 @@
 class HoppieApi {
 	constructor() {
 	 	this.messageId = 1;
+		/*/ CHANGE TO 0 ONCE TESTED */
+		this.isTestServer = true;
+		this.url;
+	}
+
+	Init() {		
+		if (!this.isTestServer) {
+			this.url = HoppieApi.url+"?logon="+HoppieApi.logon;
+		} else {			
+			this.url = "http://localhost:5000/acars/system/connect.html?";
+		}
 	}
 
 	/* increase message id */
@@ -110,4 +121,4 @@ class HoppieApi {
 	}
 }
 HoppieApi.url = "http://www.hoppie.nl/acars/system/connect.html";
-HoppieApi.logon = "88QGz22eZ6eW4";
+HoppieApi.logon = SaltyDataStore.get("OPTIONS_HOPPIE_ID", "");

@@ -6,7 +6,7 @@ class FMC_COMM_PDC {
         let deptCell = "----";
         let atisCell = "□";
         let standCell = "----";
-        let acTypeCell = "B748";
+        let acTypeCell = "----";
         let destCell = "----";
         let freeTextCell = "<";
         let atsCell = "□□□□";
@@ -34,6 +34,9 @@ class FMC_COMM_PDC {
             standCell = fmc.pdc.stand;
         }
         if (fmc.pdc.acType != "") {
+            acTypeCell = fmc.pdc.acType;
+        } else {
+            fmc.pdc.acType = "B748";
             acTypeCell = fmc.pdc.acType;
         }
         if (fmc.atcComm.dest != "") {
@@ -157,7 +160,7 @@ class FMC_COMM_PDC {
         };
 
         fmc.onRightInput[5] = () => {
-            let msg = "REQUEST PREDEP CLEARANCE\n" + fmc.atcComm.fltNo + " " + fmc.pdc.acType + " TO " + fmc.pdc.dest + "\nAT " + fmc.pdc.origin + " STAND " + fmc.pdc.stand +"\nATIS " + fmc.pdc.atis;
+            let msg = "REQUEST PREDEP CLEARANCE\n" + fmc.atcComm.fltNo + " " + fmc.pdc.acType + " TO " + fmc.pdc.dest + "\nAT " + fmc.pdc.origin + " STAND " + fmc.pdc.stand +"\nATIS " + fmc.pdc.atis + "\n" + fmc.pdc.freeText;
             console.log(msg);
             HoppieApi.sendTelex(fmc.pdc.ats, fmc.atcComm.fltNo, msg)
         };
