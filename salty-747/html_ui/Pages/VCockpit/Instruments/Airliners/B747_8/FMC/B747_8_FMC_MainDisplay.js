@@ -987,6 +987,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 if (altitude > 400) {
                     this._pendingVNAVActivation = false;
                     SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "bool", 1);
+                    SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
                     this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
                 }
             }
