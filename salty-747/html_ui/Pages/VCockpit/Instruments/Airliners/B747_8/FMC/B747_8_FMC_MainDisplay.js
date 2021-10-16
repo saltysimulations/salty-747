@@ -202,7 +202,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
+        this.boardingConstruct = new SaltyBoarding();
         this.saltyBase.init();
+        this.boardingConstruct.init();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -284,6 +286,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.timer = 0;
         }
         this.saltyBase.update(this.isElectricityAvailable());
+        this.boardingConstruct.update(_deltaTime);
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -1330,6 +1333,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return this._lines[row][col];
     }
     setLine(content, row, col = -1) {
+        if (content instanceof FMC_Field) {
+            const field = content;
+            ((col === 0 || col === -1) ? this.onLeftInput : this.onRightInput)[row] = (value) => {
+                field.onSelect(value);
+            };
+            content = content.getValue();
+        }
         if (col >= this._lineElements[row].length) {
             return;
         }

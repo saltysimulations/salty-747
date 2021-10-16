@@ -3,8 +3,10 @@ function airplaneCanBoard() {
     const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
     const eng1Running = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
     const eng2Running = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
+    const eng3Running = SimVar.GetSimVarValue("ENG COMBUSTION:3", "Bool");
+    const eng4Running = SimVar.GetSimVarValue("ENG COMBUSTION:4", "Bool");
 
-    return !(gs > 0.1 || eng1Running || eng2Running || !isOnGround);
+    return !(gs > 0.1 || eng1Running || eng2Running || eng3Running || eng4Running || !isOnGround);
 }
 
 class SaltyBoarding {
@@ -57,7 +59,9 @@ class SaltyBoarding {
         const PAX_WEIGHT = 84;
         const BAG_WEIGHT = 20;
 
-        const currentPaxWeight = PAX_WEIGHT + BAG_WEIGHT;for (const station of Object.values(this.paxStations)) {
+        const currentPaxWeight = PAX_WEIGHT + BAG_WEIGHT;
+        for (const station of Object.values(this.paxStations)) {
+            console.log("CURRENT PAX WEIGHT " + station.pax);
             await SimVar.SetSimVarValue(`PAYLOAD STATION WEIGHT:${station.stationIndex}`, "kilograms", station.pax * currentPaxWeight);
         }
 
@@ -76,7 +80,6 @@ class SaltyBoarding {
         this.time += _deltaTime;
 
         const boardingStartedByUser = SimVar.GetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool");
-
         if (!boardingStartedByUser) {
             return;
         }
@@ -88,7 +91,7 @@ class SaltyBoarding {
         const currentPax = Object.values(this.paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}`, "Number")).reduce((acc, cur) => acc + cur);
         const paxTarget = Object.values(this.paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
 
-        const boardingRate = SimVar.GetSimVarValue("L:747_BOARDING_RATE_SETTING", "Number");
+        const boardingRate = 1;
 
         let isAllStationFilled = true;
         for (const _station of Object.values(this.paxStations)) {

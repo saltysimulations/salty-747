@@ -39,7 +39,7 @@ class FMC_COMM_Boarding {
         }
 
         const display = [
-            ["BOARDING", "1", "2"],
+            ["FUEL", "1", "3"],
             ["BLOCK FUEL"],
             [blockFuel],
             ["TAXI FUEL"],
@@ -123,12 +123,20 @@ class FMC_COMM_Boarding {
         };
         
         fmc.onRightInput[4] = () => {
-            getFplnFromSimBrief(fmc);
-            console.log(fmc.companyComm.tripFuel);
+            getFplnFromSimBrief(fmc, "", updateView, () => {
+                setTargetPax(fmc.simbrief.paxCount).then(() => {
+                    fmc.simbrief.perfUplinkReady = true;
+                    insertPerfUplink(fmc, updateView);
+                });
+            });
         };
         
         fmc.onLeftInput[5] = () => {
             FMC_COMM_Index.ShowPage(fmc);
+        };
+
+        fmc.onPrevPage = () => {
+            FMC_COMM_Boarding.ShowPage3(fmc);
         };
 
         fmc.onNextPage = () => {
@@ -149,7 +157,7 @@ class FMC_COMM_Boarding {
         };
         SimVar.SetSimVarValue("L:FMC_UPDATE_CURRENT_PAGE", "number", 1);
 
-        const boardingStartedByUser = SimVar.GetSimVarValue("L:A32NX_BOARDING_STARTED_BY_USR", "Bool");
+        const boardingStartedByUser = SimVar.GetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool");
 
         let zfwcg = "__._[color]amber";
         let requestButton = "SEND>[color]magenta";
@@ -200,17 +208,19 @@ class FMC_COMM_Boarding {
                 paxRemaining -= pax;
             }
 
-            await fillStation(paxStations['rows22_29'], .275 , numberOfPax);
-            await fillStation(paxStations['rows14_21'], .275, numberOfPax);
-            await fillStation(paxStations['rows7_13'], .240 , numberOfPax);
-            await fillStation(paxStations['rows1_6'], 1 , paxRemaining);
+            await fillStation(paxStations['rearEconomy'], .571 , numberOfPax);
+            await fillStation(paxStations['fowardEconomy'], .0989 , numberOfPax);
+            await fillStation(paxStations['premiumEconomy'], .0879 , numberOfPax);
+            await fillStation(paxStations['businessMain'], .1318, numberOfPax);
+            await fillStation(paxStations['firstClass'], .02197 , numberOfPax);
+            await fillStation(paxStations['businessUpper'], 1 , paxRemaining);
             return;
         }
 
         const currentZfwcg = getZfwcg();
         if (currentZfwcg !== undefined) {
             const cgColor = currentZfwcg >= 16 && currentZfwcg <= 40 ? 'green' : 'red';
-            zfwcg = `${currentZfwcg.toFixed(1)}{end}[color]${cgColor}`;
+            zfwcg = `${currentZfwcg.toFixed(1)}[color]${cgColor}`;
         }
 
         function buildTotalPaxValue() {
@@ -238,51 +248,210 @@ class FMC_COMM_Boarding {
         }
 
         const display = [
-            ["W/B", "2", "2", "AOC"],
-            ["TOTAL PAX", "PAYLOAD"],
-            [buildTotalPaxValue(), `${Math.round(SaltyUnits.kgToUser(getTotalPayload()))}[color]green`],
-            [paxStations.rows1_6.name, "ZFW"],
-            [buildStationValue(paxStations.rows1_6), `${Math.round(SaltyUnits.kgToUser(getZfw()))}[color]green`],
-            [paxStations.rows7_13.name, "ZFW CG"],
-            [buildStationValue(paxStations.rows7_13), zfwcg],
-            [paxStations.rows14_21.name, "CARGO"],
-            [buildStationValue(paxStations.rows14_21), `${Math.round(SaltyUnits.kgToUser(getTotalCargo()))} >[color]inop`],
-            [paxStations.rows22_29.name, "OFP REQUEST"],
-            [buildStationValue(paxStations.rows22_29), requestButton],
-            ["", "BOARDING"],
-            ["<AOC MENU", loadButton]
+            ["PAX", "2", "3"],
+            ["TOTAL PAX", "REQUEST OFP"],
+            [buildTotalPaxValue(), requestButton],
+            [paxStations.businessUpper.name, "ZFW"],
+            [buildStationValue(paxStations.businessUpper), `${Math.round(SaltyUnits.kgToUser(getZfw()))}[color]green`],
+            [paxStations.firstClass.name, "ZFW CG"],
+            [buildStationValue(paxStations.firstClass), zfwcg],
+            [paxStations.businessMain.name, paxStations.fowardEconomy.name],
+            [buildStationValue(paxStations.businessMain), buildStationValue(paxStations.fowardEconomy)],
+            [paxStations.premiumEconomy.name, paxStations.rearEconomy.name],
+            [buildStationValue(paxStations.premiumEconomy), buildStationValue(paxStations.rearEconomy)],
+            ["\xa0ACARS", "BOARDING"],
+            ["<INDEX", loadButton]
         ];
         fmc.setTemplate(display);
 
-        fmc.rightInputDelay[4] = () => {
-            return fmc.getDelayBasic();
+        fmc.onLeftInput[0] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            setTargetPax(value).then(() => {
+                console.log(buildStationValue(paxStations.businessUpper))
+            });
         };
+
         fmc.onRightInput[4] = () => {
-            getSimBriefOfp(fmc, updateView, () => {
+            getFplnFromSimBrief(fmc, "", updateView, () => {
                 setTargetPax(fmc.simbrief.paxCount).then(() => {
-                    updateView();
+                    fmc.simbrief.perfUplinkReady = true;
+                    insertPerfUplink(fmc, updateView);
                 });
             });
         };
 
-        fmc.rightInputDelay[5] = () => {
-            return fmc.getDelayBasic();
-        };
         fmc.onRightInput[5] = async () => {
-            await SimVar.SetSimVarValue("L:A32NX_BOARDING_STARTED_BY_USR", "Bool", !boardingStartedByUser);
+            await SimVar.SetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool", !boardingStartedByUser);
+            updateView();
+        };
+
+        fmc.onLeftInput[5] = () => {
+            FMC_COMM_Index.ShowPage(fmc);
+        };
+
+        fmc.onPrevPage = () => {
+            FMC_COMM_Boarding.ShowPage1(fmc);
+        };
+
+        fmc.onNextPage = () => {
+            FMC_COMM_Boarding.ShowPage3(fmc);
+        };
+    }
+
+    static ShowPage3(fmc) {
+        fmc.clearDisplay();
+        fmc.activeSystem = 'ATSU';
+
+        function updateView() {
+            FMC_COMM_Boarding.ShowPage3(fmc);
+        }
+
+        fmc.refreshPageCallback = () => {
+            updateView();
+        };
+        SimVar.SetSimVarValue("L:FMC_UPDATE_CURRENT_PAGE", "number", 1);
+
+        const boardingStartedByUser = SimVar.GetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool");
+
+        let zfwcg = "__._[color]amber";
+        let requestButton = "SEND>[color]magenta";
+        let loadButton = "START>[color]magenta";
+
+        if (fmc.simbrief.sendStatus !== "READY" && fmc.simbrief.sendStatus !== "DONE") {
+            requestButton = "SEND [color]magenta";
+        }
+
+        if (boardingStartedByUser) {
+            loadButton = "STOP>[color]yellow";
+        }
+
+        function buildStationValue(station) {
+            const targetPax = SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number");
+            const pax = SimVar.GetSimVarValue(`L:${station.simVar}`, "Number");
+
+            const suffix = targetPax === pax ? "[color]green" : "[color]magenta";
+
+            return new FMC_SingleValueField(fmc,
+                "int",
+                `${pax} (${targetPax})`,
+                {
+                    emptyValue: "__[color]amber",
+                    suffix: suffix,
+                    maxLength: 2,
+                    minValue: 0,
+                    maxValue: station.seats,
+                },
+                async (value) => {
+                    await SimVar.SetSimVarValue(`L:${station.simVar}_DESIRED`, "Number", value);
+                    updateView();
+                }
+            );
+        }
+
+        async function setTargetPax(numberOfPax) {
+
+            let paxRemaining = parseInt(numberOfPax);
+
+            async function fillStation(station, percent, paxToFill) {
+
+                const pax = Math.min(Math.round(percent * paxToFill), station.seats);
+                station.pax = pax;
+
+                await SimVar.SetSimVarValue(`L:${station.simVar}_DESIRED`, "Number", parseInt(pax));
+
+                paxRemaining -= pax;
+            }
+
+            await fillStation(paxStations['rearEconomy'], .571 , numberOfPax);
+            await fillStation(paxStations['fowardEconomy'], .0989 , numberOfPax);
+            await fillStation(paxStations['premiumEconomy'], .0879 , numberOfPax);
+            await fillStation(paxStations['businessMain'], .1318, numberOfPax);
+            await fillStation(paxStations['firstClass'], .02197 , numberOfPax);
+            await fillStation(paxStations['businessUpper'], 1 , paxRemaining);
+            return;
+        }
+
+        const currentZfwcg = getZfwcg();
+        if (currentZfwcg !== undefined) {
+            const cgColor = currentZfwcg >= 16 && currentZfwcg <= 40 ? 'green' : 'red';
+            zfwcg = `${currentZfwcg.toFixed(1)}[color]${cgColor}`;
+        }
+
+        function buildTotalPaxValue() {
+            const currentPax = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}`, "Number")).reduce((acc, cur) => acc + cur);
+            const paxTarget = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
+
+            const suffix = paxTarget === currentPax ? "[color]green" : "[color]magenta";
+
+            return new FMC_SingleValueField(fmc,
+                "int",
+                `${currentPax} (${paxTarget})`,
+                {
+                    emptyValue: "__[color]amber",
+                    suffix: suffix,
+                    maxLength: 3,
+                    minValue: 0,
+                    maxValue: MAX_SEAT_AVAILABLE,
+                },
+                async (value) => {
+                    await setTargetPax(value);
+                    updateView();
+                }
+            );
+
+        }
+
+        const display = [
+            ["CARGO", "3", "3"],
+            [cargoStations.fwdBag.name, "PAYLOAD"],
+            [buildStationValue(cargoStations.fwdBag), `${Math.round(SaltyUnits.kgToUser(getTotalPayload()))}[color]green`],
+            [cargoStations.aftBag.name, "ZFW"],
+            [buildStationValue(cargoStations.aftBag), `${Math.round(SaltyUnits.kgToUser(getZfw()))}[color]green`],
+            [, "ZFW CG"],
+            [, zfwcg],
+            [, "CARGO"],
+            [, `${Math.round(SaltyUnits.kgToUser(getTotalCargo()))}[color]green`],
+            [, "OFP REQUEST"],
+            [, requestButton],
+            ["\xa0ACARS", ""],
+            ["<INDEX", loadButton]
+        ];
+        fmc.setTemplate(display);
+
+        fmc.onLeftInput[0] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            setTargetPax(value).then(() => {
+                console.log(buildStationValue(paxStations.businessUpper))
+            });
+        };
+
+        fmc.onRightInput[4] = () => {
+            getFplnFromSimBrief(fmc, "", updateView, () => {
+                setTargetPax(fmc.simbrief.paxCount).then(() => {
+                    fmc.simbrief.perfUplinkReady = true;
+                    insertPerfUplink(fmc, updateView);
+                });
+            });
+        };
+
+        fmc.onRightInput[5] = async () => {
+            await SimVar.SetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool", !boardingStartedByUser);
 
             updateView();
         };
 
-        fmc.leftInputDelay[5] = () => {
-            return fmc.getDelaySwitchPage();
-        };
         fmc.onLeftInput[5] = () => {
-            CDUAocMenu.ShowPage(fmc);
+            FMC_COMM_Index.ShowPage(fmc);
         };
 
         fmc.onPrevPage = () => {
-            CDUAocOfpData.ShowPage(fmc);
+            FMC_COMM_Boarding.ShowPage2(fmc);
+        };
+
+        fmc.onNextPage = () => {
+            FMC_COMM_Boarding.ShowPage1(fmc);
         };
     }
 }
@@ -352,8 +521,8 @@ const BAG_WEIGHT = 20;
 function getZfwcg() {
     const currentPaxWeight = PAX_WEIGHT + BAG_WEIGHT;
 
-    const leMacZ = -5.39; // Value from Debug Weight
-    const macSize = 13.45; // Value from Debug Aircraft Sim Tunning
+    const leMacZ = -1.47; // Value from Debug Weight
+    const macSize = 36.68; // Value from Debug Aircraft Sim Tunning
 
     const emptyWeight = 485300 * 0.453592; // Value from flight_model.cfg to kgs
     const emptyPosition = -98; // Value from flight_model.cfg
@@ -370,7 +539,7 @@ function getZfwcg() {
 
     const cgPosition = totalMoment / totalMass;
     const cgPositionToLemac = cgPosition - leMacZ;
-    const cgPercentMac = -100 * (cgPositionToLemac / macSize);
+    const cgPercentMac = -10 * (cgPositionToLemac / macSize);
 
     return cgPercentMac;
 }
