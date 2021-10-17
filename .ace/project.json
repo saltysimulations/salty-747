@@ -1,8 +1,8 @@
 {
-	"name": "salty-747",
+	"name": "salty-74s",
 	"paths": {
-		"instrumentSrc": "salty-747\\html_ui\\Pages\\VCockpit\\Instruments\\Airliners\\B747_8",
-		"bundlesSrc": "src",
+		"instrumentSrc": "src\\instruments\\src",
+		"bundlesSrc": "bundles",
 		"htmlUiSrc": "salty-747\\html_ui"
 	}
 }

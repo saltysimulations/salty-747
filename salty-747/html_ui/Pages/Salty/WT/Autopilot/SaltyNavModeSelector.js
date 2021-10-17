@@ -738,6 +738,9 @@
         this.isVNAVOn = !this.isVNAVOn;
       }
       else {
+        if (this.isVNAVOn){
+          return;
+        }
         this.isVNAVOn = true;
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 2);
       }
@@ -1627,6 +1630,7 @@
 
    activateThrustRefMode() {
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
+     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.CLIMB);
      SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 90);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
