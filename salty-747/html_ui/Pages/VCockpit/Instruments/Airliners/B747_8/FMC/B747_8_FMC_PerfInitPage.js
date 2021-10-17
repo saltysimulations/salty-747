@@ -137,7 +137,7 @@ class FMCPerfInitPage {
                     store.requestData = "\xa0SENDING";
                     updateView();
                     const getInfo = async () => {
-                        getSimBriefPlan(fmc, store, updateView);
+                        getSimBriefPlan(fmc, updateView);
                     };
 
                     getInfo()

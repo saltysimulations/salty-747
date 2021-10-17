@@ -61,7 +61,6 @@ class SaltyBoarding {
 
         const currentPaxWeight = PAX_WEIGHT + BAG_WEIGHT;
         for (const station of Object.values(this.paxStations)) {
-            console.log("CURRENT PAX WEIGHT " + station.pax);
             await SimVar.SetSimVarValue(`PAYLOAD STATION WEIGHT:${station.stationIndex}`, "kilograms", station.pax * currentPaxWeight);
         }
 

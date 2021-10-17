@@ -124,7 +124,7 @@ const getATIS = async (icao, lines, type, store, updateView) => {
 /*
     GETS SIMBIREF OFP AND SAVES DATA TO FMC MEMORY
 */
-const getSimBriefPlan = (fmc, store, updateView) => {
+const getSimBriefPlan = (fmc, updateView) => {
     const userid = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
 
     if (!userid) {
@@ -175,10 +175,38 @@ const getSimBriefPlan = (fmc, store, updateView) => {
         })
         .catch(_err => {
             fmc.showErrorMessage("UNABLE TO LOAD CLEARANCE");
-            fmc.simbrief.rteUplinkReady = true;
-            fmc.simbrief.perfUplinkReady = true;
+            fmc.simbrief.rteUplinkReady = false;
+            fmc.simbrief.perfUplinkReady = false;
             updateView();
         });
+}
+
+const getPayloadAndFuel = (fmc) => {
+    const userid = SaltyDataStore.get("OPTIONS_SIMBRIEF_ID", "");
+
+    if (!userid) {
+        fmc.showErrorMessage("UNABLE TO SEND MESSAGE");
+        throw ("No simbrief username provided");
+    }
+    return SimBriefApi.getFltPlan(userid)
+    .then(data => {
+        console.log(data);
+        /* Payload */
+        fmc.companyComm["pax_count"] = data.weights.pax_count;
+        fmc.companyComm["cargo"] = data.weights.cargo;
+        fmc.companyComm["payload"] = data.weights.payload;
+        /* Fuel */
+        fmc.companyComm["taxiFuel"] = data.fuel.taxi;
+        fmc.companyComm["tripFuel"] = data.fuel.enroute_burn;
+        fmc.companyComm["altnFuel"] = data.fuel.alternate_burn;
+        fmc.companyComm["finResFuel"] = data.fuel.reserve;
+        fmc.companyComm["contFuel"] = data.fuel.contingency;
+        fmc.companyComm["blockFuel"] = data.fuel.plan_ramp;
+        return fmc.companyComm;
+    })
+    .catch(_err => {
+        fmc.showErrorMessage("UNABLE TO LOAD CLEARANCE");
+    });
 }
 
 /**
