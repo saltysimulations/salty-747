@@ -48,6 +48,24 @@ const valueToN1Bar = (val: number): number => {
     return barHeight;
 };
 
+const valueToEGTBar = (val: number): number => {
+    const egtBase = 595;
+    const barHeight = egtBase - (val * 0.10377);
+    return barHeight;
+};
+
+const getTempPrefix = (temp: number): string => {
+    let prefix = "+";
+    if (temp < 0) {
+        prefix = "";
+    }
+    return prefix;
+};
+
+const getUnits = (units: boolean): boolean => {
+    return units;
+};
+
 type BlackOutlineWhiteLineProps = { d: string; blackStroke?: number; whiteStroke?: number; color?: string };
 export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, blackStroke = 4, whiteStroke = 3, color = "white" }) => (
     <>
@@ -57,10 +75,28 @@ export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, black
 );
 
 const UpperEICAS: FC = () => {
+    const [unitsAreMetric] = useSimVar("L:SALTY_UNIT_IS_METRIC", "bool");
+    const [sat] = useSimVar("STATIC AIR TEMPERATURE", "degrees");
+    const [tat] = useSimVar("TOTAL AIR TEMPERATURE", "degrees");
+    const [fuelTemp] = useSimVar("L:SALTY_FUEL_TEMP", "degrees");
+    const [egt] = useSimVar("ENG EXHAUST GAS TEMPERATURE:1", "degrees");
+    const egtRedLine = 1060;
+    const egtContinuous = 1030;
+    const egtStart = 750;
     const n1RedLine = 106;
     const [n1] = useSimVar("TURB ENG N1:1", "percent");
     const [n1AmberLimit] = useSimVar("L:SALTY_N1_MAX", "percent");
     const [n1Ref] = useSimVar("L:SALTY_REF_THRUST", "percent");
+    const [n1Commanded] = useSimVar("TURB ENG THROTTLE COMMANDED N1", "percent");
+    const [grossWeight] = useSimVar("TOTAL WEIGHT", "pounds");
+    const [fuelWeight] = useSimVar("FUEL TOTAL QUANTITY WEIGHT", "pounds");
+
+    const [cabinAlt] = useSimVar("PRESSURIZATION CABIN ALTITUDE", "feet");
+    const [ductPress] = useSimVar("L:SALTY_DUCT_PRESSURE", "psi");
+    const [cabinRate] = useSimVar("PRESSURIZATION CABIN ALTITUDE RATE", "feet per minute");
+    const [landingAlt] = useSimVar("L:SALTY_LANDING_ALT", "feet");
+    const [deltaP] = useSimVar("PRESSURIZATION PRESSURE DIFFERENTIAL", "number");
+    const [stabTrim] = useSimVar("ELEVATOR TRIM PCT", "percent");
     return (
         <>
             <div className="LcdOverlay" style={{ opacity: "0.2" }} />
@@ -70,7 +106,9 @@ const UpperEICAS: FC = () => {
                 <image href={img} x="0" y="0" width={800} height={800} opacity={0.4}/>
 
                 {/*TAT Info*/}   
-                <text x={95} y={42} className="text-3 cyan">SAT</text>
+                <text x={95} y={42} className="text-2 cyan">TAT</text>
+                <text x={155} y={42} className="text-3">{getTempPrefix(sat) + sat.toFixed(0)}</text>
+                <text x={168} y={42} className="text-2">C</text>
 
                 {/*N1 Gauges*/}
                 {Array.from({ length: 4 }, (_, i) => {
@@ -91,10 +129,11 @@ const UpperEICAS: FC = () => {
                     );
                 })}
                 {Array.from({ length: 4 }, (_, i) => {
-                        const x = i * 124 + 57;
+                        const x = i * 124 + 58;
                         return (
                             <>
-                                <path className="white-line" fill="none" d={`M${x || 0} 143, h20 v205 h -20 Z`} />
+                                <path className="white-line" fill="none" d={`M${x || 0} 143, h16 v205 h -16 Z`} />
+                                <path className="white-line" fill="white" d={`M${x || 0} 348, h16 v-${348 - valueToN1Bar(n1) || 0} h -16 Z`} />
                             </>
                         );
                     })}
@@ -110,14 +149,16 @@ const UpperEICAS: FC = () => {
                         <>
                             <text x={x} y={79} className="text-3 green">{getDecimalString(n1Ref)}</text>
                             <text x={x - 15} y={79} className="decimal text-3 green">{getDecimalPointString(n1Ref)}</text>
-                            <path className="green-line" d={`M${x- 52|| 0} ${valueToN1Bar(n1Ref) || 0}, h48`} />
-                            <path className="amber-line" d={`M${x- 42|| 0} ${valueToN1Bar(n1AmberLimit) || 0}, h28`} />
-                            <path className="red-line" d={`M${x- 47|| 0} ${valueToN1Bar(n1RedLine) || 0}, h38`} />
+                            <path className="white-line" d={`M${x- 43|| 0} ${valueToN1Bar(n1Commanded) || 0}, h28`} />
+                            <path className="green-line" d={`M${x- 53|| 0} ${valueToN1Bar(n1Ref) || 0}, h48`} />
+                            <path className="amber-line" d={`M${x- 43|| 0} ${valueToN1Bar(n1AmberLimit) || 0}, h28`} />
+                            <path className="red-line" d={`M${x- 48|| 0} ${valueToN1Bar(n1RedLine) || 0}, h38`} />
                         </>
                     );
                 })}
 
                 {/*EGT Gauges*/}
+                
                 {Array.from({ length: 4 }, (_, i) => {
                         const x = i * 124 + 22;
                         return (
@@ -127,10 +168,23 @@ const UpperEICAS: FC = () => {
                         );
                     })}
                 {Array.from({ length: 4 }, (_, i) => {
-                    const x = i * 124 + 57;
+                    const x = i * 124 + 108;
                     return (
                         <>
-                            <path className="white-line" fill="none" d={`M${x || 0} 485, h20 v110 h -20 Z`} />
+                            <text x={x} y={463} className="text-4">{egt.toFixed(0)}</text>
+                        </>
+                    );
+                })}
+                {Array.from({ length: 4 }, (_, i) => {
+                    const x = i * 124 + 58;
+                    return (
+                        <>
+                            <path className="white-line" fill="none" d={`M${x || 0} 485, h16 v110 h -16 Z`} />
+                            <path className="white-line" fill="white" d={`M${x || 0} 595, h16 v-${595 - valueToEGTBar(egt)} h -16 Z`} />
+                            <path className="amber-line" d={`M${x - 6 || 0} ${valueToEGTBar(egtContinuous) || 0}, h28`} />
+                            <path className="red-line" d={`M${x - 6 || 0} ${valueToEGTBar(egtStart) || 0}, h28`} />
+                            <path className="red-line" d={`M${x - 11 || 0} ${valueToEGTBar(egtRedLine) || 0}, h38`} />
+
                         </>
                     );
                 })}
@@ -138,21 +192,55 @@ const UpperEICAS: FC = () => {
 
                 {/*Pressurisation Info*/}
                 <text x={310} y={710} className="text-2 cyan">DUCT PRESS</text>
+                <text x={165} y={710} className="text-3">{ductPress.toFixed(0)}</text>
+                <text x={370} y={710} className="text-3">{ductPress.toFixed(0)}</text>
                 <text x={120} y={750} className="text-2 cyan">CAB ALT</text>
+                <text x={198} y={750} className="text-3">{cabinAlt.toFixed(0)}</text>
                 <text x={293} y={750} className="text-2 cyan">RATE</text>
+                <text x={373} y={750} className="text-3">{cabinRate.toFixed(0)}</text>
                 <text x={120} y={776} className="text-2 cyan">LDG ALT</text>
+                <text x={198} y={776} className="text-3">{landingAlt.toFixed(0)}</text>
+                <text x={258} y={776} className="text-2"> AUTO</text>
                 <text x={325} y={776} className="text-2 cyan">ΔP</text>
+                <text x={373} y={776} className="text-3">{getDecimalString(deltaP)}</text>
+                <text x={358} y={776} className="text-3 decimal">{getDecimalPointString(deltaP)}</text>
 
                 {/*Weight Info*/}
                 <text x={450} y={714} className="text-2 cyan">GROSS</text>
                 <text x={415} y={735} className="text-2 cyan">WT</text>
+                <text x={549} y={735} className="text-4">{getUnits(unitsAreMetric) ? getDecimalString(grossWeight / 1000 * 0.4535) : getDecimalString(grossWeight / 1000)}</text>
+                <text x={528} y={735} className="text-4 decimal">{getUnits(unitsAreMetric) ? getDecimalPointString(grossWeight / 1000 * 0.4535) : getDecimalPointString(grossWeight / 1000 * 0.4535) }</text>
+                <text x={620} y={735} className="text-2">{getUnits(unitsAreMetric) ? "KGS" : "LBS" + " X"}</text>
+                <text x={608} y={756} className="text-2">1000</text>
                 <text x={450} y={756} className="text-2 cyan">TOTAL</text>
                 <text x={438} y={776} className="text-2 cyan">FUEL</text>
+                <text x={549} y={776} className="text-4">{getUnits(unitsAreMetric) ? getDecimalString(fuelWeight / 1000 * 0.4535) : getDecimalString(fuelWeight / 1000)}</text>
+                <text x={528} y={776} className="text-4 decimal">{getUnits(unitsAreMetric) ? getDecimalPointString(fuelWeight / 1000 * 0.4535) : getDecimalPointString(fuelWeight / 1000 * 0.4535) }</text>
 
-                {/*Fuel Info*/}
+                {/*Fuel & SAT Info*/}
                 <text x={702} y={735} className="text-2 cyan">SAT</text>
+                <text x={760} y={735} className="text-3">{getTempPrefix(tat) + tat.toFixed(0)}</text>               
+                <text x={773} y={735} className="text-2">C</text>
                 <text x={702} y={756} className="text-2 cyan">FUEL</text>
                 <text x={702} y={776} className="text-2 cyan">TEMP</text>
+                <text x={760} y={776} className="text-3">{getTempPrefix(fuelTemp) + fuelTemp.toFixed(0)}</text>               
+                <text x={773} y={776} className="text-2">C</text>
+
+                {/*Fuel & TAT Info*/}
+                <text x={769} y={437} className="text-2 cyan">ND</text>
+                <text x={769} y={659} className="text-2 cyan">NU</text>
+                <path className="white-line" fill="none" d={`M746 450, h7, v180, h-7`} />
+                <text x={743} y={457} className="text-2">0</text>
+                <text x={743} y={639} className="text-2">15</text>
+                <path className="green-line" fill="lime" d={`M737 500, h10, v80, h-10, Z`} />
+                <path className="green-line" fill="lime" d={`M760 500, l10 -5, v10, Z`} />
+                <text x={730} y={515} className="text-2 cyan">S</text>
+                <text x={730} y={536} className="text-2 cyan">T</text>
+                <text x={730} y={557} className="text-2 cyan">A</text>
+                <text x={730} y={578} className="text-2 cyan">B</text>
+                <path className="minimums-line" fill="none" d={`M723 667, h58, v36, h-58, Z`} />
+                <text x={776} y={696} className="text-3 green">{getDecimalString(stabTrim)}</text>
+                <text x={760} y={696} className="text-3 green decimal">{getDecimalPointString(stabTrim)}</text>
             </svg>
         </>
     );
