@@ -33,6 +33,7 @@ export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
     const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
+    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:1", "feet");
 
     const getAltitudeY = (altitude: number): number => {
         const y = altitude * 0.68;
@@ -123,11 +124,21 @@ export const AltitudeTape: FC = () => {
                             </>
                         );
                     })}
+
+                    {/* Minimums Bug */}
                     <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
-                    <path className="green-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
+                    <path className="minimums-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
+
+                    <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(altitude)}, h 73, v 100, h -73, Z`} />
+
+                    {/* Altitude Bug */}
+                    <path className="black-outline" fill="none" d={`M 550 ${382}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
+=
+                    <path className="magenta-line" fill="none" d={`M 550 ${382}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
                 </g>
             </g>
-            <path className="gray-bg" d="M 615 332, h 73, v 100, h -73, Z" />
+            
+
 
             {/* Altimeter Scroller Box */}
             <path
@@ -228,16 +239,16 @@ export const Minimums: FC = () => {
                 <text x="530" y="640" className="text-2 green" >
                     BARO
                 </text>
-                <text x="530" y="670" className="text-3 green">
+                <text x="530" y="668" className="text-3 green">
                     {baroMins}
                 </text>
             </g>
 
             < g visibility={radioMins > 0 ? "visible" : "hidden"}>
-                <text x="550" y="90" className={getRadAltClass(radAlt, radioMins, "text-2 green")}>
+                <text x="550" y="85" className={getRadAltClass(radAlt, radioMins, "text-2 green")}>
                     RADIO
                 </text>
-                <text x="550" y="116" className={getRadAltClass(radAlt, radioMins, "text-3 green")}>
+                <text x="550" y="113" className={getRadAltClass(radAlt, radioMins, "text-3 green")}>
                     {radioMins}
                 </text>
             </g>
@@ -268,7 +279,7 @@ export const RadioAltimeter: FC = () => {
     return (
         < g>
             < g visibility={radAlt <= 2500 ? "visible" : "hidden"}>
-                <text x="550" y="153" className={getRadAltClass(radAlt, radioMins, "text-4")}>
+                <text x="550" y="150" className={getRadAltClass(radAlt, radioMins, "text-4")}>
                     {getRadAltRounded()}
                 </text>
             </g>

@@ -1,0 +1,194 @@
+@font-face {
+    font-family: "BoeingEICAS";
+    src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "BoeingEICASdecimal";
+    src: url("/Fonts/BoeingEICASdecimal.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.pfd-svg {
+    background-color: black;
+}
+
+text {
+    
+}
+
+.gray-bg {
+    fill: gray;
+}
+
+.black-outline {
+    stroke: black;
+    stroke-width: 5px;
+    stroke-linecap: round;
+}
+
+.white-line {
+    stroke: white;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.magenta-line {
+    stroke: #d570ff;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.green-line {
+    stroke: lime;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.amber-line {
+    stroke: #ffc400;
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.red-line {
+    stroke: red;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.red-band {
+    stroke: red;
+    stroke-width: 9px;
+    stroke-linecap: butt;
+    stroke-dasharray: 9,13;
+}
+
+.cursor {
+    fill: black;
+    stroke: white;
+    stroke-width: 3px;
+}
+
+.indication {
+    stroke: white;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+}
+
+.text {
+    font-family: "BoeingEICAS";
+    fill: white;
+    stroke: black;
+    text-anchor: end;
+    stroke-width: 1.5px;
+    paint-order: stroke;
+}
+
+.decimal {
+    font-family: "BoeingEICASdecimal";
+    fill: white;
+    stroke: black;
+    text-anchor: end;
+    stroke-width: 1.5px;
+    paint-order: stroke;
+}
+
+.text-4 {
+    @extend .text;
+    font-size: 42px;
+}
+
+.text-3 {
+    @extend .text;
+    font-size: 30px;
+}
+
+.text-2 {
+    @extend .text;
+    font-size: 23.625px;
+}
+
+.text-1 {
+    @extend .text;
+    font-size: 17.718px;
+}
+
+.magenta {
+    fill: #d570ff;
+}
+
+.green {
+    fill: lime;
+}
+
+.amber {
+    fill: #ffc400;
+}
+
+.cyan {
+    fill: cyan;
+}
+
+.graduation-text {
+    font-size: 22px;
+    fill: white;
+    text-anchor: middle;
+    stroke: black;
+    stroke-width: 1px;
+    paint-order: stroke;
+}
+
+.fd-bar {
+    stroke: #d570ff;
+    stroke-width: 5px;
+    stroke-linecap: round;
+}
+
+.fd-bar-outline {
+    stroke: black;
+    stroke-width: 7px;
+    stroke-linecap: round;
+}
+
+.fpv-outline {
+    stroke: black;
+    stroke-width: 6px;
+    stroke-linecap: round;
+}
+
+.fpv-line {
+    stroke: white;
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.minimums-line {
+    stroke: lime;
+    stroke-width: 5px;
+    stroke-linecap: round;
+}
+
+.tenkMarker {
+    font-size: 38px;
+    fill: lime;
+    stroke: black;
+    text-anchor: end;
+    stroke-width: 1.5px;
+    paint-order: stroke;
+}
+
+.halfThousandLine {
+    stroke: white;
+    stroke-width: 8px;
+    paint-order: stroke;
+}
+
+.halfThousandOutline {
+    stroke: black;
+    stroke-width: 10px;
+    paint-order: stroke;
+}
