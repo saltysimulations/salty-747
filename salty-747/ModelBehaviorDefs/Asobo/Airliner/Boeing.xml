@@ -1081,4 +1081,40 @@
 		</UseTemplate>
 	</Component>
 	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Aircond_Knob_Template">
+	<DefaultTemplateParameters>
+		<ID>1</ID>
+	</DefaultTemplateParameters>
+
+	<UseTemplate Name="ASOBO_AIRLINER_Aircond_Knob_SubTemplate">
+	</UseTemplate>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Aircond_Knob_SubTemplate">
+	<DefaultTemplateParameters>
+		<NODE_ID>knob_ovhd_air_cond_#ID#</NODE_ID>
+		<ANIM_NAME>knob_ovhd_air_cond_#ID#</ANIM_NAME>
+		<WWISE_EVENT>standbypower_selector_knob</WWISE_EVENT>
+		<WWISE_EVENT_1>standbypower_selector_knob</WWISE_EVENT_1>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+		<WWISE_EVENT_2>standbypower_selector_knob</WWISE_EVENT_2>
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+
+		<KNOB_NUM_STATE>7</KNOB_NUM_STATE>
+		<KNOB_POSITION_TYPE>L</KNOB_POSITION_TYPE>
+		<KNOB_POSITION_VAR>747_Aircond_Knob_#ID#</KNOB_POSITION_VAR>
+		<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
+	</DefaultTemplateParameters>
+
+	<Component ID="#NODE_ID#" Node="#NODE_ID#"> 
+		<UseTemplate Name="ASOBO_GT_Switch_#KNOB_NUM_STATE#States">
+			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+			<ARROW_TYPE>Curved</ARROW_TYPE>
+			<SWITCH_POSITION_TYPE>#KNOB_POSITION_TYPE#</SWITCH_POSITION_TYPE>
+			<SWITCH_POSITION_VAR>#KNOB_POSITION_VAR#</SWITCH_POSITION_VAR>		
+		</UseTemplate>
+	</Component>
+	</Template>
+	
 </ModelBehaviors>
