@@ -4,12 +4,11 @@
 		<!-- Highest LOD -->
 		<!-- minimum display size in % (should be bounding sphere vertical screen size, sphere will often be slightly larger than you expect) -->
 		<!-- default minSize is 0 -->
-		<LOD minSize="70" ModelFile="747_8I_LOD00.gltf"/>
-		<LOD minSize="40" ModelFile="747_8I_LOD01.gltf"/>
-		<LOD minSize="30" ModelFile="747_8I_LOD02.gltf"/>
-		<LOD minSize="18" ModelFile="747_8I_LOD03.gltf"/>
+		<LOD minSize="150" ModelFile="747_8I_LOD00.gltf"/>
+		<LOD minSize="110" ModelFile="747_8I_LOD01.gltf"/>
+		<LOD minSize="35" ModelFile="747_8I_LOD02.gltf"/>
+		<LOD minSize="20" ModelFile="747_8I_LOD03.gltf"/>
 		<LOD minSize="10" ModelFile="747_8I_LOD04.gltf"/>
-		<LOD minSize="4" ModelFile="747_8I_LOD05.gltf"/>
 		<LOD minSize="1" ModelFile="747_8I_LOD06.gltf"/>
 	</LODS>
 	<!-- Custom animation definition. -->
@@ -60,7 +59,7 @@
 	<Behaviors>
 		<Include ModelBehaviorFile="Asobo\Common.xml"/>
 		<Include ModelBehaviorFile="Asobo\Exterior.xml"/>
-		<Include ModelBehaviorFile="Asobo\Generic\FX.xml"/>
+		<Include RelativeFile="747_8I_FX.xml"/>
 		<Component ID="GEARS">
 			<UseTemplate Name="ASOBO_GEAR_Center_Template">
 				<ANIM_NAME>c_gear</ANIM_NAME>
@@ -181,10 +180,10 @@
 			</UseTemplate>
 		</Component>
 		<Component ID="WipersLeft">
-                <UseTemplate Name="ASOBO_HANDLING_Wipers_Template">
-                    <ANIM_NAME>HANDLING_Wipers_left</ANIM_NAME>
-                    <CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
-                </UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Wipers_Template">
+				<ANIM_NAME>HANDLING_Wipers_left</ANIM_NAME>
+				<CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
+			</UseTemplate>
 		</Component>
 		<Component ID="WipersRight">
 			<UseTemplate Name="ASOBO_HANDLING_Wipers_Template">
@@ -271,89 +270,9 @@
 				<NODE_ID>GROUND_GPUPIPE</NODE_ID>
 			</UseTemplate>
 		</Component>
-		<Component ID="FX_CONTRAIL_QUAD">
-			<OverrideTemplateParameters>
-				<FX_CODE>(A:CONTRAILS CONDITIONS MET:1, Keyframe) 0 &gt;</FX_CODE>
-				<FX_OFFSET_X>0</FX_OFFSET_X>
-				<FX_OFFSET_Y>0</FX_OFFSET_Y>
-				<FX_OFFSET_Z>0</FX_OFFSET_Z>
-				<FX_GUID>{F42CE638-11EB-4FC8-B9B0-111A220D681F}</FX_GUID>
-				<FX_NAME>FX_CONTRAILS</FX_NAME>
-			</OverrideTemplateParameters>
-			<Component ID="FX_CONTRAIL_QUAD_LEFT_IN" Node="L1_EngineFX">
-				<UseTemplate Name="ASOBO_GT_FX"/>
-			</Component>
-			<Component ID="FX_CONTRAIL_QUAD_LEFT_OUT" Node="L2_EngineFX">
-				<UseTemplate Name="ASOBO_GT_FX"/>
-			</Component>
-			<Component ID="FX_CONTRAIL_QUAD_RIGHT_IN" Node="R1_EngineFX">
-				<UseTemplate Name="ASOBO_GT_FX"/>
-			</Component>
-			<Component ID="FX_CONTRAIL_QUAD_RIGHT_OUT" Node="R2_EngineFX">
-				<UseTemplate Name="ASOBO_GT_FX"/>
-			</Component>
-		</Component>
-		<Component ID="FX_CONTRAIL_RIBBON">
-			<OverrideTemplateParameters>
-				<FX_CODE>(A:CONTRAILS CONDITIONS MET:1, Keyframe) 0 &gt;</FX_CODE>
-				<FX_OFFSET_X>0</FX_OFFSET_X>
-				<FX_OFFSET_Y>0</FX_OFFSET_Y>
-				<FX_OFFSET_Z>0</FX_OFFSET_Z>
-				<FX_GUID>{904EC2CE-F8DD-4480-99E7-B33F7CF6E114}</FX_GUID>
-				<FX_NAME>FX_CONTRAILS_RIBBON</FX_NAME>
-			</OverrideTemplateParameters>
-			<Component ID="FX_CONTRAIL_RIBBON_LEFT_OUT" Node="L2_EngineFX">
-				<UseTemplate Name="ASOBO_GT_FX"/>
-			</Component>
-			<Component ID="FX_CONTRAIL_RIBBON_RIGHT_OUT" Node="R2_EngineFX">
-				<UseTemplate Name="ASOBO_GT_FX"/>
-			</Component>
-		</Component>
-		<Component ID="FX_TIRE_CONTACT">
-			<DefaultTemplateParameters>
-				<FX_DURATION>5</FX_DURATION>
-				<FX_OFFSET_X>0</FX_OFFSET_X>
-				<FX_OFFSET_Y>0</FX_OFFSET_Y>
-				<FX_OFFSET_Z>0</FX_OFFSET_Z>
-				<FX_GUID>{7E68323C-E75D-4F5B-988E-65DD4956F6BA}</FX_GUID>
-				<FX_NAME>SMOKE_ON_TIRE_CONTACT</FX_NAME>
-				<ENABLE_SURFACE_TYPE_0>CONCRETE</ENABLE_SURFACE_TYPE_0>
-				<ENABLE_SURFACE_TYPE_1>ASPHALT</ENABLE_SURFACE_TYPE_1>
-				<ENABLE_SURFACE_TYPE_2>BITUMINUS</ENABLE_SURFACE_TYPE_2>
-				<ENABLE_SURFACE_TYPE_3>MACADAM</ENABLE_SURFACE_TYPE_3>
-				<ENABLE_SURFACE_TYPE_4>TARMAC</ENABLE_SURFACE_TYPE_4>
-			</DefaultTemplateParameters>
-			<Component ID="FX_TIRE_CONTACT_front_left" Node="LeftFrontBaseWheel">
-				<UseTemplate Name="ASOBO_GT_FX">
-					<FX_CODE>(A:GEAR SKIDDING FACTOR:1, Keyframe) 0 &gt;</FX_CODE>
-				</UseTemplate>
-			</Component>
-			<Component ID="FX_TIRE_CONTACT_front_right" Node="RightFrontBaseWheel">
-				<UseTemplate Name="ASOBO_GT_FX">
-					<FX_CODE>(A:GEAR SKIDDING FACTOR:2, Keyframe) 0 &gt;</FX_CODE>
-				</UseTemplate>
-			</Component>
-			<Component ID="FX_TIRE_CONTACT_back_left" Node="LeftBackBaseWheel">
-				<UseTemplate Name="ASOBO_GT_FX">
-					<FX_CODE>(A:GEAR SKIDDING FACTOR:3, Keyframe) 0 &gt;</FX_CODE>
-				</UseTemplate>
-			</Component>
-			<Component ID="FX_TIRE_CONTACT_back_right" Node="RightBackBaseWheel">
-				<UseTemplate Name="ASOBO_GT_FX">
-					<FX_CODE>(A:GEAR SKIDDING FACTOR:3, Keyframe) 0 &gt;</FX_CODE>
-				</UseTemplate>
-			</Component>
-			<Component ID="FX_TIRE_CONTACT_center" Node="CenterWheel">
-				<UseTemplate Name="ASOBO_GT_FX">
-					<FX_CODE>(A:GEAR SKIDDING FACTOR:0, Keyframe) 0 &gt;</FX_CODE>
-				</UseTemplate>
-			</Component>
-		</Component>
-		<Component ID="LANDING_DUST_FX">
-			<UseTemplate Name="ASOBO_DUST_LANDING_FX"/>
-		</Component>
-		<Component ID="LANDING_GRASS_FX">
-			<UseTemplate Name="ASOBO_GRASS_LANDING_FX"/>
+		<Component ID="FX">
+			<UseTemplate Name="ASOBO_747_8I_FX" />
 		</Component>
 	</Behaviors>
 </ModelInfo>
+
