@@ -1116,5 +1116,58 @@
 		</UseTemplate>
 	</Component>
 	</Template>
-	
+
+	<Template Name="ASOBO_AIRLINER_Jettison_Knob_Template">
+	<DefaultTemplateParameters>
+		<ID>1</ID>
+		<NODE_ID>knob_ovhd_start_fuel_jettison_sel</NODE_ID>
+		<ANIM_NAME>ovhd_knob_start_fuel_jettison_sel</ANIM_NAME>
+		<WWISE_EVENT>standbypower_selector_knob</WWISE_EVENT>
+		<WWISE_EVENT_1>standbypower_selector_knob</WWISE_EVENT_1>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+		<WWISE_EVENT_2>standbypower_selector_knob</WWISE_EVENT_2>
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+
+		<KNOB_NUM_STATE>5</KNOB_NUM_STATE>
+		<KNOB_POSITION_TYPE>L</KNOB_POSITION_TYPE>
+		<KNOB_POSITION_VAR>747_JETTISON_KNOB_POS</KNOB_POSITION_VAR>
+		<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
+	</DefaultTemplateParameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#"> 
+			<UseTemplate Name="ASOBO_GT_Switch_#KNOB_NUM_STATE#States">
+				<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+				<ARROW_TYPE>Curved</ARROW_TYPE>
+				<SWITCH_POSITION_TYPE>#KNOB_POSITION_TYPE#</SWITCH_POSITION_TYPE>
+				<SWITCH_POSITION_VAR>#KNOB_POSITION_VAR#</SWITCH_POSITION_VAR>		
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Fuel_To_Remain_Knob_Template">
+	<DefaultTemplateParameters>
+	<ID>1</ID>
+	<ANIM_NAME>ovhd_knob_start_fuel_to_remain</ANIM_NAME>
+	<ANIMREF_ID>-1</ANIMREF_ID>
+	<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
+	<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
+	<INCREMENTATION_INDEX>0</INCREMENTATION_INDEX>
+	<WWISE_EVENT>autopilot_altitude_knob</WWISE_EVENT>
+	<COUNT>36</COUNT>
+	<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+	<THRESHOLD_X_MOUSE>0.01</THRESHOLD_X_MOUSE>
+	</DefaultTemplateParameters>
+
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+			<CLOCKWISE_CODE>
+				(L:747_FUEL_TO_REMAIN) 0.5 + (&gt;L:747_FUEL_TO_REMAIN)
+			</CLOCKWISE_CODE>
+			<ANTICLOCKWISE_CODE>
+				(L:747_FUEL_TO_REMAIN) 0.5 - (&gt;L:747_FUEL_TO_REMAIN)
+			</ANTICLOCKWISE_CODE>
+		</UseTemplate>
+	</Component>
+	</Template>
+
 </ModelBehaviors>
