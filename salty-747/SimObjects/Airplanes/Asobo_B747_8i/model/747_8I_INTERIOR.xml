@@ -1678,22 +1678,25 @@
 					<DOWN_STATE_CODE>1</DOWN_STATE_CODE>
 				</UseTemplate>
 
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="ASOBO_AIRLINER_IRS_Knob_Template">
 					<NODE_ID>knob_ovhd_irs_c</NODE_ID>
 					<ANIM_NAME>ovhd_knob_irs_c</ANIM_NAME>
 					<ANIM_CODE>66</ANIM_CODE>
+					<ID>3</ID>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="ASOBO_AIRLINER_IRS_Knob_Template">
 					<NODE_ID>knob_ovhd_irs_l</NODE_ID>
 					<ANIM_NAME>ovhd_knob_irs_l</ANIM_NAME>
 					<ANIM_CODE>66</ANIM_CODE>
+					<ID>2</ID>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
+				<UseTemplate Name="ASOBO_AIRLINER_IRS_Knob_Template">
 					<NODE_ID>knob_ovhd_irs_r</NODE_ID>
 					<ANIM_NAME>ovhd_knob_irs_r</ANIM_NAME>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
+					<ID>1</ID>
 					<ANIM_CODE>66</ANIM_CODE>
 				</UseTemplate>
 			<!-- 
@@ -4052,6 +4055,7 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>push_ovhd_elec_eng_ctrl_eec_04_cover</NODE_ID>
 			</UseTemplate>
+			<!--
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_ovhd_irs_l</NODE_ID>
 			</UseTemplate>
@@ -4061,6 +4065,7 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_ovhd_irs_r</NODE_ID>
 			</UseTemplate>
+			-->
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>push_ovhd_electrics_utility_pwr_l</NODE_ID>
 			</UseTemplate>
