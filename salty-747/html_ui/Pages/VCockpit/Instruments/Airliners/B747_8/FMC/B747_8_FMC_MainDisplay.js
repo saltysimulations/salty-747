@@ -114,8 +114,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             finResFuel: "",
             contFuel: "",
             blockFuel: "",
-            loading: "",            
-            sendStatus: ""
+            loading: "",
+            sendStatus: "",
+            paxCount: "",
+            cargo: undefined
         };
         this.simbrief = {
             route: "",
