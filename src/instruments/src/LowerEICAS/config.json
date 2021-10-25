@@ -1,0 +1,9 @@
+{
+    "index": "./index.tsx",
+    "isInteractive": false,
+    "name": "LowerEICAS",
+    "dimensions": {
+        "width": 1280,
+        "height": 1280
+    }
+}
