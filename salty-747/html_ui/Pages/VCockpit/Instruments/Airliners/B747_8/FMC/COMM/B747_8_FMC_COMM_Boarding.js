@@ -208,18 +208,18 @@ class FMC_COMM_Boarding {
                 paxRemaining -= pax;
             }
 
-            await fillStation(paxStations['rearEconomy'], .571 , numberOfPax);
-            await fillStation(paxStations['fowardEconomy'], .0989 , numberOfPax);
-            await fillStation(paxStations['premiumEconomy'], .0879 , numberOfPax);
-            await fillStation(paxStations['businessMain'], .1318, numberOfPax);
-            await fillStation(paxStations['firstClass'], .02197 , numberOfPax);
+            await fillStation(paxStations['rearEconomy'], .572 , numberOfPax);
+            await fillStation(paxStations['fowardEconomy'], .099 , numberOfPax);
+            await fillStation(paxStations['premiumEconomy'], .088 , numberOfPax);
+            await fillStation(paxStations['businessMain'], .132, numberOfPax);
+            await fillStation(paxStations['firstClass'], .022 , numberOfPax);
             await fillStation(paxStations['businessUpper'], 1 , paxRemaining);
             return;
         }
 
         async function setTargetCargo(numberOfPax, simbriefCargo) {
             const bagWeight = numberOfPax * 20;
-            const maxLoadInCargoHold = 7185; // from flight_model.cfg
+            const maxLoadInCargoHold = 43900; // from flight_model.cfg
             let loadableCargoWeight = undefined;
 
             if (simbriefCargo == 0) {
@@ -240,8 +240,8 @@ class FMC_COMM_Boarding {
 
             }
 
-            await fillCargo(cargoStations['fwdBag'], .5062 , loadableCargoWeight);
-            await fillCargo(cargoStations['aftBag'], .3616, loadableCargoWeight);
+            await fillCargo(cargoStations['fwdBag'], .51 , loadableCargoWeight);
+            await fillCargo(cargoStations['aftBag'], .37, loadableCargoWeight);
             await fillCargo(cargoStations['bulkBag'], 1, remainingWeight);
             return;
         }
@@ -282,7 +282,7 @@ class FMC_COMM_Boarding {
             const paxTarget = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
             const suffix = loadTarget === currentLoad ? "[color]green" : "[color]cyan";
 
-            return new FMC_SingleValueField(mcdu,
+            return new FMC_SingleValueField(fmc,
                 "number",
                 `${(currentLoad / 1000).toFixed(1)} (${(loadTarget / 1000).toFixed(1)})`,
                 {
@@ -341,7 +341,15 @@ class FMC_COMM_Boarding {
             let value = fmc.inOut;
             fmc.clearUserInput();
             setTargetPax(value).then(() => {
-                console.log(buildStationValue(paxStations.businessUpper))
+                console.log(value);
+            });
+        };
+
+        fmc.onRightInput[0] = () => {
+            let value = fmc.inOut;
+            fmc.clearUserInput();
+            setTargetCargo(fmc.companyComm.paxCount, value).then(() => {
+                console.log(value);
             });
         };
 

@@ -13,7 +13,7 @@ class FmcMessage {
 
     /**
      * `set text(_t) {}` is not allowed to ensure thread safety, editing the original definition should never be allowed
-     * Both NXSystemMessages and NXFictionalMessages messages shall always be readable ONLY
+     * Both SaltySystemMessages and SaltyFictionalMessages messages shall always be readable ONLY
      */
 
     get text() {
