@@ -260,7 +260,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.onHold = () => {
             B747_8_FMC_HoldsPage.handleHoldPressed(this);
         };
-        FMC_COMM_Boarding.ShowPage1(this);
+        FMC_Menu.ShowPage(this);
         this._pilotWaypoints = new CJ4_FMC_PilotWaypoint_Manager(this);
         this._pilotWaypoints.activate();
     }

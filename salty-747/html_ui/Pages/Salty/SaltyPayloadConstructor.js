@@ -73,6 +73,7 @@ class SaltyPayloadConstructor {
             fwdBag: {
                 name: 'FORWARD_BAGGAGE',
                 weight: 22225,
+                load: 0,
                 stationIndex: 6 + 1,
                 position: -28.56284,
                 visible: true,
@@ -81,6 +82,7 @@ class SaltyPayloadConstructor {
             aftBag: {
                 name: 'REAR_BAGGAGE',
                 weight: 15875,
+                load: 0,
                 stationIndex: 7 + 1,
                 position: -138.077047,
                 visible: true,
@@ -89,6 +91,7 @@ class SaltyPayloadConstructor {
             bulkBag: {
                 name: 'BULK_BAGGAGE',
                 weight: 5800,
+                load: 0,
                 stationIndex: 8 + 1,
                 position: -138.077047,
                 visible: true,

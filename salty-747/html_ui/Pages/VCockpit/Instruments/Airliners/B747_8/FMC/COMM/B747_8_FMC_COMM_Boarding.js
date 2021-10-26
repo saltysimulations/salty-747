@@ -17,15 +17,15 @@ class FMC_COMM_Boarding {
         switch (refuelingRate) {
             case 0:
                 // Loads fuel in a realistic time
-                refuelingRateText = "REAL";
+                refuelingRateText = "REAL>";
                 break;
             case 1:
                 // Loads fuel 5 times faster
-                refuelingRateText = "FAST";
+                refuelingRateText = "FAST>";
                 break;
             case 2:
                 // Loads fuel instant
-                refuelingRateText = "INSTANT";
+                refuelingRateText = "INSTANT>";
                 break;
             default:
         }
@@ -44,19 +44,19 @@ class FMC_COMM_Boarding {
             loadButton = "STOP>[color]yellow";
         }
 
-        const currentBlockFuel = fmc.companyComm.blockFuel|| fmc.simbrief.blockFuel;
+        const currentBlockFuel = fmc.companyComm.blockFuel || fmc.simbrief.blockFuel;
         if (currentBlockFuel) {
-            blockFuel = `${(Math.round(SaltyUnits.kgToUser(currentBlockFuel)) / 1000).toFixed(1)}[color]magenta`;
+            blockFuel = `${(Math.round(SaltyUnits.kgToUser(currentBlockFuel)) / 1000).toFixed(1)}[color]green`;
         }
 
         const currentTaxiFuel = fmc.companyComm.taxiFuel || fmc.simbrief.taxiFuel;
         if (currentTaxiFuel) {
-            taxiFuel = `${Math.round(SaltyUnits.kgToUser(currentTaxiFuel))}[color]magenta`;
+            taxiFuel = `${Math.round(SaltyUnits.kgToUser(currentTaxiFuel))}[color]green`;
         }
 
         const currentTripFuel = fmc.companyComm.tripFuel || fmc.simbrief.tripFuel;
         if (currentTripFuel) {
-            tripFuel = `${Math.round(SaltyUnits.kgToUser(currentTripFuel))}[color]magenta`;
+            tripFuel = `${Math.round(SaltyUnits.kgToUser(currentTripFuel))}[color]green`;
         }
 
         const display = [
@@ -88,9 +88,10 @@ class FMC_COMM_Boarding {
                 value = value * 1000;
             }
             const enteredFuel = SaltyUnits.userToKg(Math.round(+value));
-            if (enteredFuel >= 0 && enteredFuel <= maxAllowableFuel) {
-                SimVar.SetSimVarValue("L:747_FUEL_TOTAL_DESIRED", "Number", enteredFuel);
+            if (enteredFuel >= 0 && enteredFuel <= MAX_ALLOWABLE_FUEL) {
+                SimVar.SetSimVarValue("L:747_FUEL_DESIRED", "Number", enteredFuel);
                 fmc.companyComm.blockFuel = enteredFuel;
+                fmc.simbrief.blockFuel = enteredFuel;
                 loadFuel(fmc, updateView);
                 fmc.clearUserInput();
                 return true;
@@ -221,19 +222,6 @@ class FMC_COMM_Boarding {
             });
         };
 
-        fmc.onRightInput[4] = () => {
-            getFplnFromSimBrief(fmc, "", updateView, () => {
-                setTargetPax(fmc.companyComm.paxCount).then(() => {
-                    fmc.simbrief.perfUplinkReady = true;
-                    insertPerfUplink(fmc, updateView);
-                });
-                setTargetCargo(fmc.companyComm.cargo).then(() => {
-                    fmc.simbrief.perfUplinkReady = true;
-                    insertPerfUplink(fmc, updateView);
-                });
-            });
-        };
-
         fmc.onRightInput[5] = async () => {
             await SimVar.SetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool", !boardingStartedByUser);
             updateView();
@@ -356,22 +344,21 @@ async function loadFuel(fmc, updateView) {
 
     const mainTankCapacity = 14430; // Main 2 and 3 = flight_model.cfg Left and Right Main
     const mainTipTankCapacity = 5320; // Main 1 and 4 = flight_model.cfg Left and Right Aux
+    const totalMainTanksCapacity = 39500; // All main tanks capacity
     const resTankCapacity = 1534; // Res 1 and 2 = flight_model.cfg Left and Right Tip
     const centerTankCapacity = 17000; // Center tank = flight_model.cfg Center 1
     const stabTankCapacity = 3300; // Stab tank = flight_model.cfg Center 2
     const fuelWeightPerGallon = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms");
     let currentBlockFuelInGallons = +currentBlockFuel / +fuelWeightPerGallon;
 
-    const mainTankFill = Math.min(mainTankCapacity, currentBlockFuelInGallons / 2);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_MAIN_QUANTITY_DESIRED`, "Gallons", mainTankFill);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_RIGHT_MAIN_QUANTITY_DESIRED`, "Gallons", mainTankFill);
-    currentBlockFuelInGallons -= mainTankFill * 2;
-
-    const mainTipTankFill = Math.min(mainTipTankCapacity, currentBlockFuelInGallons / 2);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_AUX_QUANTITY_DESIRED`, "Gallons", mainTipTankFill);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_RIGHT_AUX_QUANTITY_DESIRED`, "Gallons", mainTipTankFill);
-    currentBlockFuelInGallons -= mainTipTankFill * 2;
-
+    const mainTankFill = Math.min(totalMainTanksCapacity, currentBlockFuelInGallons);
+    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_AUX_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.1346835443037975);
+    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_RIGHT_AUX_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.1346835443037975);
+    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_MAIN_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.3653164556962025);
+    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_RIGHT_MAIN_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.3653164556962025);
+    console.log("mainCenter" + mainTankFill * 0.3653164556962025)
+    console.log("mainOut" + mainTankFill * 0.1346835443037975)
+    currentBlockFuelInGallons -= mainTankFill;
 
     const tipTankFill = Math.min(resTankCapacity, currentBlockFuelInGallons / 2);
     await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_TIP_QUANTITY_DESIRED`, "Gallons", tipTankFill);
@@ -533,7 +520,7 @@ function buildTotalPaxValue(fmc) {
 }function buildTotalFuelValue(fmc) {
     const gallonToMegagrams = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") * 0.001;
     const currentFuel = (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons")  * gallonToMegagrams).toFixed(1);
-    const targetFuel = (SimVar.GetSimVarValue("L:747_FUEL_TOTAL_DESIRED", "number") * 0.001).toFixed(1);
+    const targetFuel = (SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "number") * 0.001).toFixed(1);
 
     const suffix = targetFuel === currentFuel ? "[color]green" : "[color]yellow";
 

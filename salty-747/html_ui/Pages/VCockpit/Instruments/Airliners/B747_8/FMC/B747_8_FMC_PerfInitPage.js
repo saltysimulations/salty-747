@@ -42,13 +42,13 @@ class FMCPerfInitPage {
             if (isFinite(fmc.getZeroFuelWeight(units))) {
                 zeroFuelWeightCell = fmc.getZeroFuelWeight(units).toFixed(1);
             }
-            fmc.onLeftInput[2] = () => {
+            /*fmc.onLeftInput[2] = () => {
                 let value = fmc.inOut;
                 fmc.clearUserInput();
                 if (fmc.trySetZeroFuelWeightZFWCG(value, units)) {
                     FMCPerfInitPage.ShowPage1(fmc);
                 }
-            };
+            };*/
             let costIndex = "□□□□";
             if (isFinite(fmc.costIndex)) {
                 costIndex = fmc.costIndex.toFixed(0);
@@ -107,8 +107,8 @@ class FMCPerfInitPage {
                     [zeroFuelWeightCell, `${minFuelTempCell}°C`],
                     ["\xa0RESERVES", "CRZ CG"],
                     [reservesCell, `${crzCg}`],
-                    [`\xa0${store.dataLink}`, `${store.stepSizeLabel}`, `${store.perfUplinkHeader}`],
-                    [`${store.requestData}`, `${stepSizeCell}`],
+                    [`\xa0${store.dataLink}[color]inop`, `${store.stepSizeLabel}`, `${store.perfUplinkHeader}`],
+                    [`${store.requestData}[color]inop`, `${stepSizeCell}`],
                     ["__FMCSEPARATOR"],
                     ["\<INDEX", "THRUST LIM>"]
                 ]);
@@ -132,7 +132,7 @@ class FMCPerfInitPage {
                 REQUEST DATA
                 REJECT DATA
             */    
-            fmc.onLeftInput[4] = () => {
+            /*fmc.onLeftInput[4] = () => {
                 if (!fmc.simbrief.perfUplinkReady) {
                     store.requestData = "\xa0SENDING";
                     updateView();
@@ -153,7 +153,7 @@ class FMCPerfInitPage {
                     fmc.simbrief.perfUplinkReady = false;
                     updateView();
                 }
-            };
+            };*/
 
             /*
                 RSK5
