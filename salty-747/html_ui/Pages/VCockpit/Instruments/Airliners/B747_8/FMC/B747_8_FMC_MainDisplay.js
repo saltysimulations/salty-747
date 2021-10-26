@@ -205,8 +205,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
         this.boardingConstruct = new SaltyBoarding();
+        this.fuelingConstruct = new SaltyFueling();
         this.saltyBase.init();
         this.boardingConstruct.init();
+        this.fuelingConstruct.init();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -258,7 +260,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.onHold = () => {
             B747_8_FMC_HoldsPage.handleHoldPressed(this);
         };
-        FMC_COMM_Boarding.ShowPage2(this);
+        FMC_COMM_Boarding.ShowPage1(this);
         this._pilotWaypoints = new CJ4_FMC_PilotWaypoint_Manager(this);
         this._pilotWaypoints.activate();
     }
@@ -289,6 +291,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         this.saltyBase.update(this.isElectricityAvailable());
         this.boardingConstruct.update(_deltaTime);
+        this.fuelingConstruct.update(_deltaTime);
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;

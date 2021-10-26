@@ -5,6 +5,7 @@ class SaltyBase {
         this.jettison = new SaltyJettison();
     }
     init() {
+        this._deltaTime = createDeltaTimeCalculator();
         this.irs.init();
         this.pilots.init();
         this.jettison.init();
@@ -15,3 +16,12 @@ class SaltyBase {
         this.jettison.update();
     }
 }
+const createDeltaTimeCalculator = (startTime = Date.now()) => {
+  let lastTime = startTime;
+  return () => {
+    const nowTime = Date.now();
+    const deltaTime = nowTime - lastTime;
+    lastTime = nowTime;
+    return deltaTime;
+  };
+};
