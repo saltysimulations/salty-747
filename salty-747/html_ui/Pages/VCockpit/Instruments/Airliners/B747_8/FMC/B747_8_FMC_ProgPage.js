@@ -94,7 +94,17 @@ class B747_8_FMC_ProgPage {
         let destinationFuelCell = "";
         let destinationDistance = NaN;
         if (destination) {
-            destinationCell = destination.ident;
+            let destinationIdent = destination.ident;
+            let approachWaypoints = fmc.flightPlanManager.getApproachWaypoints();
+            if (approachWaypoints.length > 0) {
+                for (let i = 0; i < approachWaypoints.length; i++) {
+                    if (approachWaypoints[i].ident.substring(0, 2) == 'RW') {
+                        destination = approachWaypoints[i];
+                        break;
+                    }
+                }
+            }
+            destinationCell = destinationIdent;
             destinationDistance = destination.cumulativeDistanceInFP;
             if (waypointActive) {
                 destinationDistance -= waypointActive.cumulativeDistanceInFP;
