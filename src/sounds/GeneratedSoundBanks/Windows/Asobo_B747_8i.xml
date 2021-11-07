@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="12" SoundbankVersion="135">
+	<RootPaths>
+		<ProjectRoot>X:\Documents\GitHub\salty-747\src\sounds\</ProjectRoot>
+		<SourceFilesRoot>X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<SoundBanks>
+		<SoundBank Id="3904043312" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="2686628356">
+			<ObjectPath>\SoundBanks\Asobo_B747_8i\Asobo_B747_8i</ObjectPath>
+			<ShortName>Asobo_B747_8i</ShortName>
+			<Path>Asobo_B747_8i.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>
