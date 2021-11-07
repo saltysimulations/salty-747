@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{DA694105-C14A-4CF6-8437-E5886AB75723}" SchemaVersion="97">
+	<SoundBanks>
+		<WorkUnit Name="Salty_747" ID="{DA694105-C14A-4CF6-8437-E5886AB75723}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="Salty_747" ID="{732766E7-FA86-452E-A427-C85CB4EF4A39}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Salty_747" ID="{BDA0DE4C-DC97-4A60-B4F4-A06A000F8280}" WorkUnitID="{BDA0DE4C-DC97-4A60-B4F4-A06A000F8280}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundBanks>
+</WwiseDocument>

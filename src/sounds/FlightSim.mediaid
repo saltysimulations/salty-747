@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="MediaIDs" SchemaVersion="97">
+  <MediaIDInfo>
+    <MediaIDs>
+      <Language ID="8323075">
+        <File Name="AE_DistantBuilding_MicsFar.wav">
+          <WObject ID="{8CF8C3E0-9350-4608-BE4B-B85308DE04DB}">
+            <MediaID ID="129930439" />
+            <Hash Platform="Windows" Value="686228992" />
+          </WObject>
+          <WObject ID="{372CD829-DD97-4657-92AC-0F0A45F44D4E}">
+            <MediaID ID="977305224" />
+            <Hash Platform="Windows" Value="1429155548" />
+          </WObject>
+          <WObject ID="{23F37D72-CCD4-47A8-9230-91DF080B63EC}">
+            <MediaID ID="74039723" />
+            <Hash Platform="Windows" Value="2070792577" />
+          </WObject>
+          <WObject ID="{C522245B-F956-4C3D-BEE6-13A60C46CFFD}">
+            <MediaID ID="74039723" />
+            <Hash Platform="Windows" Value="2070792577" />
+          </WObject>
+          <WObject ID="{EB0EBCAD-3C47-4CBD-A911-79926C2BAFAE}">
+            <MediaID ID="977305224" />
+            <Hash Platform="Windows" Value="1429155548" />
+          </WObject>
+          <WObject ID="{9977BE6A-C5C4-4ED3-A72E-7B7842A086B7}">
+            <MediaID ID="74039723" />
+            <Hash Platform="Windows" Value="2070792577" />
+          </WObject>
+        </File>
+        <File Name="IR_ATR42-600_AT4022.wav">
+          <WObject ID="{D7263029-B703-42C8-9151-19233C4FF68A}">
+            <MediaID ID="231298281" />
+            <Hash Platform="Windows" Value="3137464988" />
+          </WObject>
+          <WObject ID="{8BECCF3E-0724-4D26-8D50-694A78CAF6AB}">
+            <MediaID ID="231298281" />
+            <Hash Platform="Windows" Value="3137464988" />
+          </WObject>
+        </File>
+        <File Name="IR_C152_ASOBO.wav">
+          <WObject ID="{6CDFE03D-0EC7-43D1-A72D-D8CA7180A980}">
+            <MediaID ID="207365925" />
+            <Hash Platform="Windows" Value="1909989364" />
+          </WObject>
+        </File>
+        <File Name="IR_C172_SKYHAWK_ASOBO.wav">
+          <WObject ID="{8C34B3BC-D412-4BC4-91D1-ADB5011B8C12}">
+            <MediaID ID="345029181" />
+            <Hash Platform="Windows" Value="2301019418" />
+          </WObject>
+        </File>
+        <File Name="IR_C172R_ASOBO.wav">
+          <WObject ID="{9D9A6E47-A3E4-4DFF-9D4E-2A16D737F7F5}">
+            <MediaID ID="655849201" />
+            <Hash Platform="Windows" Value="3707767432" />
+          </WObject>
+        </File>
+        <File Name="IR_CAP10C_FRONT_ASOBO.wav">
+          <WObject ID="{851C453A-1E47-4B3D-8406-5AD959503D1D}">
+            <MediaID ID="310175414" />
+            <Hash Platform="Windows" Value="3926135674" />
+          </WObject>
+        </File>
+        <File Name="IR_DA40_ASOBO.wav">
+          <WObject ID="{A84EDF1E-6AF4-428A-B05A-D6BFA9C86BB4}">
+            <MediaID ID="1003119990" />
+            <Hash Platform="Windows" Value="3314302596" />
+          </WObject>
+        </File>
+        <File Name="IR_DA62_ASOBO.wav">
+          <WObject ID="{57395750-DBF2-4F05-AE51-7EF9B1A1C042}">
+            <MediaID ID="841200363" />
+            <Hash Platform="Windows" Value="896020789" />
+          </WObject>
+        </File>
+        <File Name="IR_DR400_120_ASOBO.wav">
+          <WObject ID="{FF150D51-CC18-423A-8CCF-1FBA1A2A303F}">
+            <MediaID ID="295048985" />
+            <Hash Platform="Windows" Value="1869880152" />
+          </WObject>
+        </File>
+        <File Name="IR_DV20_ASOBO.wav">
+          <WObject ID="{0FEF8526-7C63-48AC-A972-4D351055F4FE}">
+            <MediaID ID="299035505" />
+            <Hash Platform="Windows" Value="1098709877" />
+          </WObject>
+        </File>
+        <File Name="IR_FLIGHTDESIGN_CT_ASOBO.wav">
+          <WObject ID="{AFDC1E52-BB5F-42BB-8524-E49347721211}">
+            <MediaID ID="854613416" />
+            <Hash Platform="Windows" Value="1862594286" />
+          </WObject>
+        </File>
+        <File Name="IR_PIPER_J3_BERGERAC_ASOBO.wav">
+          <WObject ID="{227E2A7B-BCCA-472F-8C6A-20AD0A91A905}">
+            <MediaID ID="12659519" />
+            <Hash Platform="Windows" Value="2123066795" />
+          </WObject>
+        </File>
+        <File Name="IR_Pipistrel_Virus_ASOBO.wav">
+          <WObject ID="{81B9B3AF-2EE4-47CC-99DC-AE984598D6D6}">
+            <MediaID ID="836456900" />
+            <Hash Platform="Windows" Value="3647493743" />
+          </WObject>
+        </File>
+        <File Name="IR_PITTS_ASOBO.wav">
+          <WObject ID="{08AA07D1-92A9-48D1-99EF-FA7D04DB98F3}">
+            <MediaID ID="538460369" />
+            <Hash Platform="Windows" Value="1336532171" />
+          </WObject>
+        </File>
+        <File Name="IR_TBM930_MSTC64_BACK_ASOBO.wav">
+          <WObject ID="{712CA4FA-BD54-4044-9BD8-0926B3BEC5A6}">
+            <MediaID ID="456840995" />
+            <Hash Platform="Windows" Value="1695879701" />
+          </WObject>
+          <WObject ID="{3CA7E9A0-049C-4C36-A92A-C34DC30CCFA7}">
+            <MediaID ID="456840995" />
+            <Hash Platform="Windows" Value="1695879701" />
+          </WObject>
+        </File>
+        <File Name="IR_VL3_ASOBO.wav">
+          <WObject ID="{39F2C3D7-950B-4CF4-AECA-DF9AC652354B}">
+            <MediaID ID="475364986" />
+            <Hash Platform="Windows" Value="1388774360" />
+          </WObject>
+        </File>
+        <File Name="IR_Xcub_ASOBO.wav">
+          <WObject ID="{A63A5D88-BA55-4A82-8BDF-4D82CEAF9CB4}">
+            <MediaID ID="767317874" />
+            <Hash Platform="Windows" Value="627356336" />
+          </WObject>
+        </File>
+        <File Name="Kittyhawk_IR_SR22.wav">
+          <WObject ID="{C807D00A-A82C-4873-96C4-C3A10336A078}">
+            <MediaID ID="266641650" />
+            <Hash Platform="Windows" Value="1204266287" />
+          </WObject>
+          <WObject ID="{6A412FA2-01D8-48C8-8A45-0489F58DD9E6}">
+            <MediaID ID="266641650" />
+            <Hash Platform="Windows" Value="1204266287" />
+          </WObject>
+        </File>
+        <File Name="Savage IR.wav">
+          <WObject ID="{387B4E9C-8F4B-4F33-9199-54AE6C4A76AB}">
+            <MediaID ID="543770063" />
+            <Hash Platform="Windows" Value="2200012284" />
+          </WObject>
+        </File>
+      </Language>
+      <Language ID="393239870" Name="SFX">
+        <File Name="bank_angle.wav">
+          <WObject ID="{4EE6D210-4D1C-4088-A9E5-4DD7106FFBED}">
+            <MediaID ID="438977682" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="caution_obstacle.wav">
+          <WObject ID="{340B1E0F-169D-4C46-8F24-C817A0B928B4}">
+            <MediaID ID="841989067" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="caution_terrain.wav">
+          <WObject ID="{CF319477-80E1-4002-8EC4-2471E1173565}">
+            <MediaID ID="93224664" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="dont_sink.wav">
+          <WObject ID="{AD3EB7E4-5C65-47F2-B6D4-3857B29519EF}">
+            <MediaID ID="336234418" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="minimums.wav">
+          <WObject ID="{4F406A6D-91D1-4453-8824-686FE9D49F97}">
+            <MediaID ID="176262890" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="obstacle_obstacle.wav">
+          <WObject ID="{575DE292-91A4-47CB-9477-B5BE5572D46D}">
+            <MediaID ID="622651067" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="plus_hundred.wav">
+          <WObject ID="{E6B81C25-0FFC-4F1B-A11B-54B7E0630E45}">
+            <MediaID ID="190940915" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="pull_up.wav">
+          <WObject ID="{D0C7C2FA-D283-4377-B7C2-665D913E2322}">
+            <MediaID ID="1037597979" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="sink_rate.wav">
+          <WObject ID="{01BABB2B-C45F-40B1-9A10-31BEAB7A4997}">
+            <MediaID ID="1037536185" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="terrain.wav">
+          <WObject ID="{A27F260C-C5B4-44E0-A988-DE7CC5FFEB76}">
+            <MediaID ID="534888463" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="terrain_terrain.wav">
+          <WObject ID="{90653A2C-A9F5-4F8E-8D0F-A609400DBB4B}">
+            <MediaID ID="409881053" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="too_low_flaps.wav">
+          <WObject ID="{433A67A5-DF61-44B0-B691-2BE057E541AB}">
+            <MediaID ID="74981196" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="too_low_gear.wav">
+          <WObject ID="{CA75071F-0516-4160-A467-26C8196695F3}">
+            <MediaID ID="617603150" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="too_low_terrain.wav">
+          <WObject ID="{77334450-A8B0-4224-9E83-EA90BB8D9C0F}">
+            <MediaID ID="748162498" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="wailer.wav">
+          <WObject ID="{068B7655-4A49-46C7-99A1-7440F5607947}">
+            <MediaID ID="51574697" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="windshear.wav">
+          <WObject ID="{8B380224-33F7-4AC4-95D8-C805D6B36D42}">
+            <MediaID ID="378105868" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+      </Language>
+    </MediaIDs>
+  </MediaIDInfo>
+</WwiseDocument>
