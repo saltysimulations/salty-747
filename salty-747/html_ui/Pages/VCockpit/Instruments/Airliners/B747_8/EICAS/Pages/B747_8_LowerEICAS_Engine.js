@@ -102,6 +102,7 @@ var B747_8_LowerEICAS_Engine;
     B747_8_LowerEICAS_Engine.Display = Display;
     class EngineInfo {
         constructor(_eicas, _engineId, _engineStateParent, _n2Parent, _ffParent) {
+            this.ffGPHToLBSPHX1000 = 0;
             this.eicas = _eicas;
             this.engineId = _engineId;
             if (_engineStateParent != null) {
@@ -117,16 +118,16 @@ var B747_8_LowerEICAS_Engine;
             if (_ffParent != null) {
                 _ffParent.appendChild(this.ffGauge);
             }
+            this.ffGPHToLBSPHX1000 = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
         }
         createN2GaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.eicas.getN2Value.bind(this, this.engineId);
-            definition.maxValue = 1100;
-            definition.valueBoxWidth = 70;
-            definition.valueTextPrecision = 0;
-            definition.barHeight = 40;
-            definition.type = 2;
-            definition.addLineDefinition(1100, 32, "gaugeMarkerDanger");
+            definition.maxValue = 110;
+            definition.valueBoxWidth = 80;
+            definition.valueTextPrecision = 1;
+            definition.barHeight = 60;
+            definition.addLineDefinition(110, 40, "gaugeMarkerDanger");
             definition.addLineDefinition(0, 40, "gaugeMarkerNormal", this.eicas.getN2IdleValue.bind(this));
             return definition;
         }
@@ -134,16 +135,12 @@ var B747_8_LowerEICAS_Engine;
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getFFValue.bind(this);
             definition.maxValue = 1000;
-            definition.valueBoxWidth = 55;
-            definition.valueTextPrecision = 0;
-            definition.type = 3;
+            definition.valueBoxWidth = 60;
+            definition.valueTextPrecision = 1;
             return definition;
         }
         getFFValue() {
-            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
-                return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 100);
-            }
-            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 100);
+            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * this.ffGPHToLBSPHX1000);
         }
         getOilPValue() {
             return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engineId, "psi");
@@ -155,7 +152,7 @@ var B747_8_LowerEICAS_Engine;
             return (SimVar.GetSimVarValue("ENG OIL QUANTITY:" + this.engineId, "percent scaler 16k") * 0.001);
         }
         getVIBValue() {
-            return Math.abs(SimVar.GetSimVarValue("ENG VIBRATION:" + this.engineId, "Number"));
+            return SimVar.GetSimVarValue("ENG VIBRATION:" + this.engineId, "Number");
         }
         refresh(_deltaTime) {
             let state = this.eicas.getEngineState(this.engineId);
@@ -168,6 +165,10 @@ var B747_8_LowerEICAS_Engine;
                     this.stateText.textContent = "RUNNING";
                     this.stateText.setAttribute("class", "");
                     break;
+                case B747_8_EngineState.AUTORELIGHT:
+                    this.stateText.textContent = "AUTORELIGHT";
+                    this.stateText.setAttribute("class", "white");
+                    break;
                 default:
                     this.stateText.textContent = "";
                     break;
@@ -177,15 +178,17 @@ var B747_8_LowerEICAS_Engine;
                 if (n2IdleLine) {
                     let currentN2 = this.eicas.getN2Value(this.engineId);
                     let idleN2 = n2IdleLine.currentValue;
-                    if (Math.round(currentN2) >= idleN2)
+                    if (Math.round(currentN2) >= idleN2) {
                         n2IdleLine.line.setAttribute("display", "none");
-                    else
+                    }
+                    else {
                         n2IdleLine.line.setAttribute("display", "block");
+                    }
                 }
                 this.n2Gauge.refresh();
             }
             if (this.ffGauge != null) {
-                this.ffGauge.refresh(false);
+                this.ffGauge.refresh();
             }
         }
     }

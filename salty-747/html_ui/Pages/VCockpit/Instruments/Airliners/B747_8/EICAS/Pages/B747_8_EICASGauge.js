@@ -20,9 +20,9 @@ var B747_8_EICAS_Common;
         }
     }
     GaugeDefinition.VALUE_TEXT_BOX_HEIGHT = 15;
-    GaugeDefinition.VALUE_TEXT_X_OFFSET_FROM_BOX = 5;
+    GaugeDefinition.VALUE_TEXT_X_OFFSET_FROM_BOX = 3;
     GaugeDefinition.GAUGE_TOP = 20;
-    GaugeDefinition.GAUGE_WIDTH = 12;
+    GaugeDefinition.GAUGE_WIDTH = 16;
     B747_8_EICAS_Common.GaugeDefinition = GaugeDefinition;
     class GaugeLineDefinition {
         constructor() {
@@ -67,7 +67,7 @@ var B747_8_EICAS_Common;
                 this.rootSVG.setAttribute("viewBox", "0 0 100 200");
                 this.appendChild(this.rootSVG);
                 if (_definition.valueBoxWidth > 0) {
-                this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision, _definition.type);
+                    this.createValueDisplay(_definition.valueBoxWidth, _definition.valueTextPrecision);
                 }
                 if (_definition.barHeight > 0) {
                     this.createGaugeDisplay(_definition.barHeight);
@@ -79,37 +79,21 @@ var B747_8_EICAS_Common;
                 }
             }
         }
-
-        createValueDisplay(_boxWidth, _valuePrecision, _type) {
+        createValueDisplay(_boxWidth, _valuePrecision) {
             this.valuePrecision = _valuePrecision;
             if (this.rootSVG != null) {
                 var boxX = ((100 - _boxWidth) * 0.5);
                 var textX = 100 - boxX - GaugeDefinition.VALUE_TEXT_X_OFFSET_FROM_BOX;
-                var textY = (GaugeDefinition.VALUE_TEXT_BOX_HEIGHT * 0.5) + 0.75;
+                var textY = GaugeDefinition.VALUE_TEXT_BOX_HEIGHT * 0.5;
                 this.rootSVG.appendChild(this.createRect(boxX + "%", "0%", _boxWidth + "%", GaugeDefinition.VALUE_TEXT_BOX_HEIGHT + "%", "value"));
                 this.valueText = document.createElementNS(Avionics.SVG.NS, "text");
-                this.valueText.setAttribute("x", (textX + 1.5) + "%");
+                this.valueText.setAttribute("x", textX + "%");
                 this.valueText.setAttribute("y", textY + "%");
                 this.valueText.setAttribute("class", "value");
-                this.valueText.style.fontSize = "29";
-                this.valueText.style.letterSpacing = "2px";
-                this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
+                this.valueText.textContent = this.currentValue.toFixed();
                 this.rootSVG.appendChild(this.valueText);
-
-                if (_type !== 0 && _type !== 2 && _type !== 3) return;
-                
-                let tXOffset = 14;
-                if (_type === 0) tXOffset = 20;
-
-                this.decimalPoint = document.createElementNS(Avionics.SVG.NS, "text");
-                this.decimalPoint.setAttribute("x", (textX - tXOffset) + "%");
-                this.decimalPoint.setAttribute("y", (textY + 1) + "%");
-                this.decimalPoint.style.fontSize = "24";
-                this.decimalPoint.textContent = "."
-                this.rootSVG.appendChild(this.decimalPoint);
             }
         }
-
         createGaugeDisplay(_barHeight) {
             if (this.rootSVG != null) {
                 var width = GaugeDefinition.GAUGE_WIDTH;
@@ -127,17 +111,11 @@ var B747_8_EICAS_Common;
         }
         createRect(_x, _y, _width, _height, _class) {
             var rect = document.createElementNS(Avionics.SVG.NS, "rect");
-
-            SaltyUtils.setAttributes(rect,
-                {
-                    'x': _x,
-                    'y': _y,
-                    'width': _width,
-                    'height': _height,
-                    'class': _class
-                });
-
-            rect.style.strokeWidth = "2px";
+            rect.setAttribute("x", _x);
+            rect.setAttribute("y", _y);
+            rect.setAttribute("width", _width);
+            rect.setAttribute("height", _height);
+            rect.setAttribute("class", _class);
             return rect;
         }
         createLine(_lineDef) {
@@ -146,16 +124,11 @@ var B747_8_EICAS_Common;
             var y = this.valueToGaugePosY(_lineDef.value);
             var yStr = y + "%";
             var line = document.createElementNS(Avionics.SVG.NS, "line");
-
-            SaltyUtils.setAttributes(line,
-                {
-                    'x1': x1 + '%',
-                    'x2': x2 + '%',
-                    'y1': yStr,
-                    'y2': yStr,
-                    'class': _lineDef.classStr
-                });
-
+            line.setAttribute("x1", x1 + "%");
+            line.setAttribute("x2", x2 + "%");
+            line.setAttribute("y1", yStr);
+            line.setAttribute("y2", yStr);
+            line.setAttribute("class", _lineDef.classStr);
             if (_lineDef.getValue != null) {
                 this.dynamicLines.push(new GaugeDynamicLine(line, _lineDef.getValue));
             }
@@ -167,22 +140,17 @@ var B747_8_EICAS_Common;
         valueToGaugePosY(_value) {
             return (GaugeDefinition.GAUGE_TOP + (this.barHeight - this.valueToGaugeHeight(_value)));
         }
-        refresh(_isEGT) {
+        refresh() {
             if (this.getValue != null) {
                 var value = this.getValue();
                 if (value != this.currentValue) {
-                    this.currentValue = Utils.Clamp(value, this.minValue, this.maxValue);
+                    this.currentValue = value;
                     if (this.valueText != null) {
-                        if ((Math.round(this.currentValue) < 10 && !_isEGT)) {
-                            this.valueText.textContent = "0" + this.currentValue.toFixed(this.valuePrecision);
-                        }
-                        else {
-                            this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
-                        }
+                        this.valueText.textContent = this.currentValue.toFixed(this.valuePrecision);
                     }
                     if (this.gauge != null) {
-                        this.gauge.setAttribute("height", Math.max(this.valueToGaugeHeight(this.currentValue), 0.001) + "%");
-                        this.gauge.setAttribute("y", this.valueToGaugePosY(this.currentValue) + "%");
+                        this.gauge.setAttribute("height", Math.max(this.valueToGaugeHeight(Math.min(this.currentValue, this.maxValue)), 0.001) + "%");
+                        this.gauge.setAttribute("y", this.valueToGaugePosY(Math.min(this.currentValue, this.maxValue)) + "%");
                     }
                 }
             }
@@ -192,7 +160,6 @@ var B747_8_EICAS_Common;
                         value = this.dynamicLines[line].getValue();
                         if (value != this.dynamicLines[line].currentValue) {
                             this.dynamicLines[line].currentValue = Utils.Clamp(value, this.minValue, this.maxValue);
-                            ;
                             var yStr = this.valueToGaugePosY(this.dynamicLines[line].currentValue) + "%";
                             this.dynamicLines[line].line.setAttribute("y1", yStr);
                             this.dynamicLines[line].line.setAttribute("y2", yStr);
@@ -247,24 +214,28 @@ var B747_8_EICAS_Common;
                 this.text.style.textAnchor = _isLeft ? "end" : "start";
                 _parent.appendChild(this.text);
                 if (_definition.barHeight > 0) {
-                    var x1 = 50;
+                    var x1 = 0;
                     var x2 = 0;
-                    var sign = -1;
-
                     if (_definition.useDoubleDisplay) {
-                        sign = 1;
-                        x1 = 25;
+                        if (_isLeft) {
+                            x1 = 25 + GaugeDualDefinition.VALUE_INDICATOR_X_OFFSET;
+                            x2 = x1 + GaugeDualDefinition.VALUE_INDICATOR_LENGTH;
+                        }
+                        else {
+                            x1 = 75 - GaugeDualDefinition.VALUE_INDICATOR_X_OFFSET;
+                            x2 = x1 - GaugeDualDefinition.VALUE_INDICATOR_LENGTH;
+                        }
                     }
-
-                    if (!_isLeft) {
-                        sign *= -1;
-                        x1 = 100 - x1;
+                    else {
+                        if (_isLeft) {
+                            x1 = 50 - GaugeDualDefinition.VALUE_INDICATOR_X_OFFSET;
+                            x2 = x1 - GaugeDualDefinition.VALUE_INDICATOR_LENGTH;
+                        }
+                        else {
+                            x1 = 50 + GaugeDualDefinition.VALUE_INDICATOR_X_OFFSET;
+                            x2 = x1 + GaugeDualDefinition.VALUE_INDICATOR_LENGTH;
+                        }
                     }
-
-                    x1 = x1 + sign*GaugeDualDefinition.VALUE_INDICATOR_X_OFFSET;
-                    x2 = x1 + sign*GaugeDualDefinition.VALUE_INDICATOR_LENGTH;
-
-
                     var halfHeight = GaugeDualDefinition.VALUE_INDICATOR_HEIGHT * 0.5;
                     this.indicator = document.createElementNS(Avionics.SVG.NS, "polygon");
                     var points = [

@@ -237,12 +237,20 @@ var B747_8_UpperEICAS;
         createEGTGaugeDefinition(_engine) {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getEGTValue.bind(this);
+<<<<<<< HEAD:html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_UpperEICAS.js
+            definition.maxValue = 1060;
+            definition.valueBoxWidth = 60;
+            definition.barHeight = 60;
+            definition.addLineDefinition(1060, 40, "gaugeMarkerDanger");
+            definition.addLineDefinition(1030, 32, "gaugeMarkerWarning");
+=======
             definition.maxValue = 1000;
             definition.valueBoxWidth = 70;
             definition.barHeight = 40;
             definition.type = 1;
             definition.addLineDefinition(1000, 32, "gaugeMarkerDanger");
             definition.addLineDefinition(950, 22, "gaugeMarkerWarning");
+>>>>>>> upstream/master:salty-747/html_ui/Pages/VCockpit/Instruments/Airliners/B747_8/EICAS/Pages/B747_8_UpperEICAS.js
             definition.addLineDefinition(0, 32, "gaugeMarkerDanger", this.getEGTLimitValue.bind(this));
             definition.addLineDefinition(0, 22, "gaugeMarkerCurrent", this.getEGTValue.bind(this));
             return definition;
@@ -251,7 +259,13 @@ var B747_8_UpperEICAS;
             return SimVar.GetSimVarValue("ENG EXHAUST GAS TEMPERATURE:" + this.engine, "celsius");
         }
         getEGTLimitValue() {
-            return 750;
+            let ground = Simplane.getIsGrounded();
+            if (ground) {
+                return 750;
+            }
+            else {
+                return 875;
+            }
         }
         refresh() {
             if (this.n1Gauge != null) {
