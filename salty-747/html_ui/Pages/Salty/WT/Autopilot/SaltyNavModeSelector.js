@@ -282,7 +282,7 @@
     if (this._inputDataStates.autopilot.state) {
       if (this.currentLateralActiveState === LateralNavModeState.TO || this.currentLateralActiveState === LateralNavModeState.GA
         || this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA) {
-        SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
+        //SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
       }
     }
   }
@@ -519,7 +519,7 @@
     switch (this.currentVerticalActiveState) {
       case VerticalNavModeState.TO:
       case VerticalNavModeState.GA:
-        SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
+        //SimVar.SetSimVarValue("K:AUTO_THROTTLE_TO_GA", "number", 0);
         this.getFLCHSpeed();
         this.vnavOff();
         this.activateThrustMode();
@@ -1577,14 +1577,16 @@
    }
 
    activateThrustMode() {
-     this.currentAutoThrottleStatus = AutoThrottleModeState.THR;
      let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
      let altitude = Simplane.getAltitude();
      if (mcpAlt > altitude) {
       if (this.isVNAVOn) {
-        this.activateThrustRefMode();
+        if (this.currentAutoThrottleStatus !== AutoThrottleModeState.THRREF)  {
+          this.activateThrustRefMode();
+        }
         return;
       }
+      this.currentAutoThrottleStatus = AutoThrottleModeState.THR;
       SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 80);
       SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
      }
