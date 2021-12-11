@@ -22,6 +22,7 @@ import { useSimVar } from "react-msfs";
 
 import { ECS } from "./ECS/ECS";
 import { DRS } from "./DRS/DRS";
+import { ELEC } from "./ELEC/ELEC";
 
 import "./index.scss";
 import "../Common/pixels.scss";
@@ -39,7 +40,7 @@ const LowerEICAS: FC = () => {
         <>
             <div className="LcdOverlay" style={{ opacity: "0.2" }} />
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
-            <DRS/>
+            <ELEC/>
             </svg>
         </>
     );
