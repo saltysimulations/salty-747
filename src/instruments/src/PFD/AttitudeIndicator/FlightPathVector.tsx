@@ -23,7 +23,7 @@ import { useInteractionEvent } from "react-msfs";
 export const FPV: FC = () => {
     const [isFPVon] = useSimVar("L:SALTY_FPV_ON", "bool");
     const [vertVelocity] = useSimVar("VELOCITY WORLD Y", "feet per second");
-    const [horizVelocity] = useSimVar("VELOCITY WORLD Z", "feet per second");
+    const [horizVelocity] = useSimVar("VELOCITY BODY Z", "feet per second");
     const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
     const [roll] = useSimVar("PLANE BANK DEGREES", "degrees");
     const [heading] = useSimVar("PLANE HEADING DEGREES TRUE", "degrees");
@@ -37,7 +37,7 @@ export const FPV: FC = () => {
     const degreesToPixels = (angle: number): number => (angle < 0 ? Math.max(angle * 8, -16 * 8) : Math.min(angle * 8, 22.5 * 8));
 
     const vertVecToPixels = (): number => {
-        const fpa = Math.atan(vertVelocity / horizVelocity) * 180/Math.PI;
+        const fpa = 180/Math.PI * Math.asin(vertVelocity / horizVelocity);
         return degreesToPixels(fpa + pitch);
     };
 
@@ -58,7 +58,7 @@ export const FPV: FC = () => {
     };
 
     return (
-        <g  transform={`translate(${trackToPixels() || 0} ${vertVecToPixels() || 0})`} visibility={isFPVon ? "visible" : "hidden"}>
+        <g  transform={`translate(${trackToPixels() || 0} ${-vertVecToPixels() || 0})`} visibility={isFPVon ? "visible" : "hidden"}>
             <g>
                 <g transform={`rotate(${-roll || 0} 349 382)`}>
                     {/* FPV symbol */}

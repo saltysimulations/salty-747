@@ -33,7 +33,7 @@ export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
     const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
-    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:1", "feet");
+    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
 
     const getAltitudeY = (altitude: number): number => {
         const y = altitude * 0.68;
@@ -155,7 +155,7 @@ export const AltitudeTape: FC = () => {
 };
 
 export const CommandAlt: FC = () => {
-    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:1", "feet");
+    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
 
     const getLargeSelAltText = (altitude: number): string => {
