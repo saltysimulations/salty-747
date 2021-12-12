@@ -41,7 +41,7 @@ export const FD: FC = () => {
             </g>
 
             {/* FD Bar Roll */}
-            <g transform={`translate(${degreesToPixels((-fdRoll + bank) / 2) || 0} 0)`} visibility={isFdOn ? "visible" : "hidden"}>
+            <g transform={`translate(${degreesToPixels((-fdRoll + bank) / 4) || 0} 0)`} visibility={isFdOn ? "visible" : "hidden"}>
                 <path className="fd-bar-outline" d="M349 272, v220" />
                 <path className="fd-bar" d="M349 272, v220" />
             </g>
