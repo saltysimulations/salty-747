@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{FFC8FAD6-3743-4A52-9514-56AC5ED75ADE}" SchemaVersion="97">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{FFC8FAD6-3743-4A52-9514-56AC5ED75ADE}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{FFC8FAD6-3743-4A52-9514-56AC5ED75ADE}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Asobo_B747_8i_autothrottle_switch" ID="{F910E26F-3E9D-44CE-9DD5-6BF560A98DE1}">
+					<ChildrenList>
+						<Action Name="" ID="{20050BDB-9F06-42BF-AA0E-E3C2BE9C3530}" ShortID="174613282">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="autothrottle" ID="{BC593C3E-62C9-41D4-BF1C-B065E7D9BF50}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>

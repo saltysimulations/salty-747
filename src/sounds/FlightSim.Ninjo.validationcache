@@ -31,8 +31,9 @@
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\control_signal.wwu" DateLow="1628633810" DateHigh="0"/>
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\_NOT_IN_GAME\Factory SoundSeed Air Game Syncs.wwu" DateLow="1628633810" DateHigh="0"/>
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\FlightSim.wproj" DateLow="1636293367" DateHigh="0"/>
-	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Events\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
-	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747.wwu" DateLow="1636293367" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\FlightSim.Ninjo.wsettings" DateLow="1639243634" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Events\Default Work Unit.wwu" DateLow="1638735392" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747.wwu" DateLow="1639243634" DateHigh="0"/>
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\reverb_roomverb.wwu" DateLow="1628633810" DateHigh="0"/>
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\reverb_convolution.wwu" DateLow="1628633810" DateHigh="0"/>
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\meter.wwu" DateLow="1628633810" DateHigh="0"/>
@@ -49,5 +50,5 @@
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Attenuations\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Attenuations\aircraft.wwu" DateLow="1628633810" DateHigh="0"/>
 	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
-	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747.wwu" DateLow="1636295604" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747.wwu" DateLow="1638735392" DateHigh="0"/>
 </ValidationCache>

@@ -227,6 +227,68 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_cdu_button" ID="{20081182-D890-4B37-BB69-87647D0FF758}">
+					<ChildrenList>
+						<Action Name="" ID="{D13650FF-FF51-41FA-BB14-16B3718C03EA}" ShortID="922980124">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="cdu buttons" ID="{8829DA43-4792-4034-B3FF-EC9859D1E5B6}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_autothrottle_switch" ID="{08794DEC-6D9F-4FE8-B376-B6F500691364}">
+					<ChildrenList>
+						<Action Name="" ID="{29644C86-DE1F-4E0D-8EDD-9B9255D1BEC6}" ShortID="457011794">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="autothrottle" ID="{BC593C3E-62C9-41D4-BF1C-B065E7D9BF50}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_flap_lever" ID="{B6D640B3-48B9-418D-B321-FF24A4E56060}">
+					<ChildrenList>
+						<Action Name="" ID="{3341AFB3-EF6E-4E74-8F7A-11C8238F7C8C}" ShortID="12687395">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="flap lever" ID="{8F724044-8B52-4C89-AC1E-C2D5A73C2F61}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_mcp_button" ID="{276A1DF1-7A77-495E-A92B-91AC7502E629}">
+					<ChildrenList>
+						<Action Name="" ID="{BD454E64-9705-46CA-A1D2-4E0365CD1E84}" ShortID="1029813485">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList/>
+						</Action>
+						<Action Name="" ID="{26EC0103-35C0-40F5-B6F9-6540FD602FEA}" ShortID="1016967462">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="mcp buttons" ID="{220F97D0-3E4C-4891-9034-82AC9DEDFAA0}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
