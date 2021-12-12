@@ -1,0 +1,1856 @@
+<ModelBehaviors>
+	<Include RelativeFile="Subtemplates\\Salty_Autopilot_Subtemplates.xml"/>
+	<Include RelativeFile="Inputs\\Autopilot_Inputs.xml"/>
+	<!-- ################################## AUTOPILOT ################################# -->
+	<!-- ############################################################################## -->
+	<!-- ###### AP PRESET ###### -->
+	<!-- Components list:
+	- Push: AP, Heading, Bank, Approach, Backcourse, FD x2, Altitude, YD, FLC, VS, NAV, VNV, Speed, LVL, Transfer, Disc
+	- Knob: BARO x3, Heading, Altitude, VS, Course x2
+	- Emissives: Transfer x2
+	-->
+	<Template Name="ASOBO_AUTOPILOT_Composite_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_AUTOPILOT_Composite_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Composite_SubTemplate">
+		<Parameters Type="Default">
+			<BARO_COUNT>3</BARO_COUNT>
+			<CRS_COUNT>2</CRS_COUNT>
+			<FD_COUNT>2</FD_COUNT>
+			<USE_SINGLE_ALTITUDE_KNOB>True</USE_SINGLE_ALTITUDE_KNOB>
+			<NO_ALTITUDE_FIXED_INCREMENT>True</NO_ALTITUDE_FIXED_INCREMENT>
+		</Parameters>
+		<!-- BARO -->
+		<Condition Check="NO_BARO">
+			<False>
+				<UseTemplate Name="ASOBO_GT_Helper_Recursive_ID">
+					<Condition Check="BARO_COUNT" Match="1">
+						<BARO_KNOB_1_NODE_ID>AUTOPILOT_Knob_Baro#SUFFIX_ID#</BARO_KNOB_1_NODE_ID>
+					</Condition>
+					<Condition Valid="BARO_PUSH">
+						<TYPE>PUSH</TYPE>
+					</Condition>
+					<!-- VV Recursive parameters VV -->
+					<EXIT_TEMPLATE>ASOBO_AUTOPILOT_Knob_Baro_Template</EXIT_TEMPLATE>
+					<MAX_ID>#BARO_COUNT#</MAX_ID>
+					<!-- Dyn param -->
+					<!-- NODE_ID -->
+					<PROCESS_PARAM2>True</PROCESS_PARAM2>
+					<PARAM2>NODE_ID</PARAM2>
+					<PARAM2_PREFIX>BARO_KNOB_</PARAM2_PREFIX>
+					<PARAM2_SUFFIX>_NODE_ID</PARAM2_SUFFIX>
+					<!-- ANIM_NAME -->
+					<PROCESS_PARAM3>True</PROCESS_PARAM3>
+					<PARAM3>ANIM_NAME</PARAM3>
+					<PARAM3_PREFIX>BARO_KNOB_</PARAM3_PREFIX>
+					<PARAM3_SUFFIX>_ANIM_NAME</PARAM3_SUFFIX>
+					<!-- BARO_ID -->
+					<PROCESS_PARAM4>True</PROCESS_PARAM4>
+					<PARAM4>BARO_ID</PARAM4>
+					<PARAM4_PREFIX>BARO_KNOB_</PARAM4_PREFIX>
+					<PARAM4_SUFFIX>_BARO_ID</PARAM4_SUFFIX>
+					<!-- ANIM_NAME_PUSH -->
+					<PROCESS_PARAM5>True</PROCESS_PARAM5>
+					<PARAM5>ANIM_NAME_PUSH</PARAM5>
+					<PARAM5_PREFIX>BARO_KNOB_</PARAM5_PREFIX>
+					<PARAM5_SUFFIX>_ANIM_NAME_PUSH</PARAM5_SUFFIX>
+					<!-- ANIM_NAME_PUSH -->
+					<PROCESS_PARAM6>True</PROCESS_PARAM6>
+					<PARAM6>USE_PUSH_STD</PARAM6>
+					<PARAM6_PREFIX>BARO_KNOB_</PARAM6_PREFIX>
+					<PARAM6_SUFFIX>_USE_PUSH_STD</PARAM6_SUFFIX>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- ENGAGE/DISENGAGE -->
+		<Condition Check="NO_AP">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Autopilot_Template">
+					<Condition Valid="AP_TOOLTIPID">
+						<TOOLTIPID>#AP_TOOLTIPID#</TOOLTIPID>
+					</Condition>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- HEADING -->
+		<Condition Check="NO_HEADING">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Heading_Template">
+					<Condition Valid="HEADING_TOOLTIPID">
+						<TOOLTIPID>#HEADING_TOOLTIPID#</TOOLTIPID>
+					</Condition>
+				</UseTemplate>
+				<Condition Check="NO_HEADING_KNOB">
+					<False>
+						<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Heading_Template">
+							<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT</ANIMTIP_0>
+							<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
+							<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT</ANIMTIP_1>
+							<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
+							<ANIMTIP_3>TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_PUSH</ANIMTIP_3>
+							<ANIMTIP_3_ON_CURSOR>Hand</ANIMTIP_3_ON_CURSOR>
+							<PUSH/>
+						</UseTemplate>
+					</False>
+				</Condition>
+			</False>
+		</Condition>
+		<!-- BANK -->
+		<Condition Check="NO_BANK">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Bank_Template">
+					<Condition Valid="BANK_TOOLTIPID">
+						<TOOLTIPID>#BANK_TOOLTIPID#</TOOLTIPID>
+					</Condition>
+					<Condition Valid="USE_HALF_BANK">
+						<REVERSE_ACTIVE_CONDITION>True</REVERSE_ACTIVE_CONDITION>
+					</Condition>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- APPROACH -->
+		<Condition Check="NO_APPROACH">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Approach_Template">
+					<Condition Valid="APPROACH_TOOLTIPID">
+						<TOOLTIPID>#APPROACH_TOOLTIPID#</TOOLTIPID>
+					</Condition>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- BACKCOURSE -->
+		<Condition Check="NO_BACKCOURSE">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_BackCourse_Template">
+					<Condition Valid="BACKCOURSE_TOOLTIPID">
+						<TOOLTIPID>#BACKCOURSE_TOOLTIPID#</TOOLTIPID>
+					</Condition>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- FLIGHT DIRECTOR -->
+		<Condition Check="NO_FLIGHT_DIRECTOR">
+			<False>
+				<UseTemplate Name="ASOBO_GT_Helper_Recursive_ID">
+					<Condition Check="FD_COUNT" Match="1">
+						<False>
+							<USE_CONCATENATED_ID/>
+						</False>
+					</Condition>
+					<!-- VV Recursive parameters VV -->
+					<EXIT_TEMPLATE>ASOBO_AUTOPILOT_Push_FlightDirector_Template</EXIT_TEMPLATE>
+					<MAX_ID>#FD_COUNT#</MAX_ID>
+					<!-- Dyn param -->
+					<!-- NODE_ID -->
+					<PROCESS_PARAM2>True</PROCESS_PARAM2>
+					<PARAM2>NODE_ID</PARAM2>
+					<PARAM2_PREFIX>FLIGHT_DIRECTOR_</PARAM2_PREFIX>
+					<PARAM2_SUFFIX>_NODE_ID</PARAM2_SUFFIX>
+					<!-- ANIM_NAME -->
+					<PROCESS_PARAM3>True</PROCESS_PARAM3>
+					<PARAM3>ANIM_NAME</PARAM3>
+					<PARAM3_PREFIX>FLIGHT_DIRECTOR_</PARAM3_PREFIX>
+					<PARAM3_SUFFIX>_ANIM_NAME</PARAM3_SUFFIX>
+					<!-- EMISSIVE_NODE_ID -->
+					<PROCESS_PARAM4>True</PROCESS_PARAM4>
+					<PARAM4>EMISSIVE_NODE_ID</PARAM4>
+					<PARAM4_PREFIX>FLIGHT_DIRECTOR_</PARAM4_PREFIX>
+					<PARAM4_SUFFIX>_EMISSIVE_NODE_ID</PARAM4_SUFFIX>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- YAW DAMPER -->
+		<Condition Check="NO_YAW_DAMPER">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_YawDamper_Template">
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- ALTITUDE -->
+		<Condition Check="NO_ALTITUDE">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Altitude_Template">
+				</UseTemplate>
+				<Condition Check="NO_ALTITUDE_KNOB">
+					<False>
+						<Condition Valid="USE_SINGLE_ALTITUDE_KNOB">
+							<True>
+								<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Altitude_Template">
+									<Condition Valid="NO_ALTITUDE_FIXED_INCREMENT">
+										<False>
+											<INCREMENT>100</INCREMENT>
+										</False>
+									</Condition>
+									<PUSH/>
+									<NODE_ID>AUTOPILOT_Knob_Altitude#SUFFIX_ID#</NODE_ID>
+								</UseTemplate>
+							</True>
+							<False>
+								<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Altitude_Template">
+									<INCREMENT>100</INCREMENT>
+									<PUSH/>
+									<NODE_ID>AUTOPILOT_Knob_Altitude_Hundred#SUFFIX_ID#</NODE_ID>
+									<ANIM_NAME_KNOB>AUTOPILOT_Knob_Altitude_Hundred#SUFFIX_ID#</ANIM_NAME_KNOB>
+									<ANIM_NAME_PUSH>AUTOPILOT_Knob_Altitude_Hundred_Push#SUFFIX_ID#</ANIM_NAME_PUSH>
+								</UseTemplate>
+								<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Altitude_Template">
+									<INCREMENT>1000</INCREMENT>
+									<NODE_ID>AUTOPILOT_Knob_Altitude_Thousand#SUFFIX_ID#</NODE_ID>
+									<ANIM_NAME>AUTOPILOT_Knob_Altitude_Thousand#SUFFIX_ID#</ANIM_NAME>
+								</UseTemplate>
+							</False>
+						</Condition>
+					</False>
+				</Condition>
+			</False>
+		</Condition>
+		<!-- FLIGHT LEVEL CHANGE -->
+		<Condition Check="NO_FLC">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_FlightLevelChange_Template">
+					<Condition Valid="FLC_NODE_ID">
+						<NODE_ID>#FLC_NODE_ID#</NODE_ID>
+					</Condition>
+					<Condition Valid="FLC_ANIM_NAME">
+						<ANIM_NAME>#FLC_ANIM_NAME#</ANIM_NAME>
+					</Condition>
+					<Condition Valid="FLC_BASE_NODE_ID">
+						<BASE_NODE_ID>#FLC_BASE_NODE_ID#</BASE_NODE_ID>
+					</Condition>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- VERTICAL SPEED -->
+		<Condition Check="NO_VERTICAL_SPEED">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_VerticalSpeed_Template">
+				</UseTemplate>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_VerticalSpeed_Template">
+					<Condition Valid="SINGLE_HITBOX_VERTICALSPEED_KNOB">
+						<False>
+							<HITBOX_UP_NODE_ID>AUTOPILOT_Knob_VerticalSpeed_DN#SUFFIX_ID#</HITBOX_UP_NODE_ID>
+							<HITBOX_DOWN_NODE_ID>AUTOPILOT_Knob_VerticalSpeed_UP#SUFFIX_ID#</HITBOX_DOWN_NODE_ID>
+							<NODE_ID>AUTOPILOT_Knob_VerticalSpeed_Visual#SUFFIX_ID#</NODE_ID>
+						</False>
+					</Condition>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- NAV -->
+		<Condition Check="NO_NAV">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Navigation_Template">
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- VNAV -->
+		<Condition Check="NO_VNAV">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Vertical_Navigation_Template">
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- SPEED -->
+		<Condition Check="NO_SPEED">
+			<False>
+				<Switch>
+					<Case Check="MODE_IAS_MACH_SPEED_KNOB">
+						<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Speed_Template">
+						</UseTemplate>
+					</Case>
+					<Default>
+						<Switch>
+							<Case Check="NO_SPEED_TOGGLE_BTN">
+								<UseTemplate Name="ASOBO_AUTOPILOT_Push_Speed_Template">
+								</UseTemplate>
+							</Case>
+							<Default>
+								<Condition Check="NO_SPEED_BTN">
+									<False>
+										<UseTemplate Name="ASOBO_AUTOPILOT_Push_SpeedToggle_Template">
+										</UseTemplate>
+									</False>
+								</Condition>
+							</Default>
+						</Switch>
+						<Condition Check="NO_SPEED_KNOB">
+							<False>
+								<UseTemplate Name="ASOBO_AUTOPILOT_Knob_SpeedMach_Template">
+									<Condition Valid="SPEED_KNOB_TYPE">
+										<TYPE>#SPEED_KNOB_TYPE#</TYPE>
+									</Condition>
+									<Condition Valid="SPEED_KNOB_ANIM_NAME">
+										<ANIM_NAME>#SPEED_KNOB_ANIM_NAME#</ANIM_NAME>
+									</Condition>
+									<Condition Valid="SPEED_KNOB_ANIM_NAME_PUSH">
+										<ANIM_NAME_PUSH>#SPEED_KNOB_ANIM_NAME_PUSH#</ANIM_NAME_PUSH>
+									</Condition>
+									<Condition Valid="SPEED_KNOB_NODE_ID">
+										<NODE_ID>#SPEED_KNOB_NODE_ID#</NODE_ID>
+									</Condition>
+								</UseTemplate>
+							</False>
+						</Condition>
+					</Default>
+				</Switch>
+			</False>
+		</Condition>
+		<!-- AP Transfer -->
+		<Condition Check="NO_TRANSFER">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Transfer_Template">
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- COURSE -->
+		<Condition Check="NO_COURSE">
+			<False>
+				<UseTemplate Name="ASOBO_GT_Helper_Recursive_ID">
+					<PUSH/>
+					<!-- VV Recursive parameters VV -->
+					<EXIT_TEMPLATE>ASOBO_AUTOPILOT_Knob_Course_Template</EXIT_TEMPLATE>
+					<MAX_ID>#CRS_COUNT#</MAX_ID>
+					<!-- Dyn param -->
+					<!-- NODE_ID -->
+					<PROCESS_PARAM2>True</PROCESS_PARAM2>
+					<PARAM2>NODE_ID</PARAM2>
+					<PARAM2_PREFIX>COURSE_KNOB_</PARAM2_PREFIX>
+					<PARAM2_SUFFIX>_NODE_ID</PARAM2_SUFFIX>
+					<!-- ANIM_NAME -->
+					<PROCESS_PARAM3>True</PROCESS_PARAM3>
+					<PARAM3>ANIM_NAME</PARAM3>
+					<PARAM3_PREFIX>COURSE_KNOB_</PARAM3_PREFIX>
+					<PARAM3_SUFFIX>_ANIM_NAME</PARAM3_SUFFIX>
+					<!-- ANIM_NAME_PUSH -->
+					<PROCESS_PARAM3>True</PROCESS_PARAM3>
+					<PARAM3>ANIM_NAME_PUSH</PARAM3>
+					<PARAM3_PREFIX>COURSE_KNOB_</PARAM3_PREFIX>
+					<PARAM3_SUFFIX>_ANIM_NAME_PUSH</PARAM3_SUFFIX>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- DISC -->
+		<Condition Check="NO_AUTOPILOT_DISC">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Disconnect_Template">
+					<Condition Valid="AUTOPILOT_DISC_TOGGLEABLE">
+						<True>
+							<TOGGLEABLE>True</TOGGLEABLE>
+						</True>
+					</Condition>
+					<Condition Valid="AUTOPILOT_DISC_INVERT_SWITCH_ON_CONDITION">
+						<True>
+							<INVERT_SWITCH_ON_CONDITION>#AUTOPILOT_DISC_INVERT_SWITCH_ON_CONDITION#</INVERT_SWITCH_ON_CONDITION>
+						</True>
+					</Condition>
+				</UseTemplate>
+			</False>
+		</Condition>
+		<!-- LVL -->
+		<Condition Check="NO_LEVEL">
+			<False>
+				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Level_Template">
+				</UseTemplate>
+			</False>
+		</Condition>
+	</Template>
+	<!-- ####################### -->
+	<!-- ##### AP PUSH BTN ##### -->
+	<!-- ####################### -->
+	<Template Name="ASOBO_AUTOPILOT_Push_Autopilot_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Autopilot</DEFAULT_NAME>
+			<AP_COUNT>1</AP_COUNT>
+			<ID>1</ID>
+			<RESET_CODE/>
+			<TEST_CODE>1</TEST_CODE>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="EXCLUSIVE_AP">
+					<Condition>
+						<Test>
+							<GreaterOrEqual>
+								<Value>AP_COUNT</Value>
+								<Number>2</Number>
+							</GreaterOrEqual>
+						</Test>
+						<True>
+							<Loop>
+								<Setup>
+									<Param>AP_ID</Param>
+									<From>1</From>
+									<Inc>1</Inc>
+									<To>#AP_COUNT#</To>
+								</Setup>
+								<Do>
+									<Parameters Type="Default" Lifetime="Loop">
+										<RESET_CODE_T/>
+									</Parameters>
+									<Parameters Type="Override" Lifetime="Loop">
+										<RESET_CODE_T>#RESET_CODE_T# #AP_ID# #ID# != if{ 0 (&gt;L:XMLVAR_Autopilot_#AP_ID#_Status) }</RESET_CODE_T>
+									</Parameters>
+								</Do>
+								<Then>
+									<RESET_CODE>#RESET_CODE_T#</RESET_CODE>
+								</Then>
+							</Loop>
+						</True>
+					</Condition>
+					<Condition Check="ID" Match="1">
+						<True>
+							<INIT>(A:AUTOPILOT MASTER, Bool) (&gt;L:XMLVAR_Autopilot_#ID#_Status)</INIT>
+						</True>
+					</Condition>
+				</Case>
+				<Case Value="ONLY_IF_DISCONNECTED">
+					<TEST_CODE> (A:AUTOPILOT MASTER, Bool) ! </TEST_CODE>
+					<Condition Check="ID" Match="1">
+						<True>
+							<INIT>(A:AUTOPILOT MASTER, Bool) (&gt;L:XMLVAR_Autopilot_#ID#_Status)</INIT>
+						</True>
+					</Condition>
+				</Case>
+				<Default>
+					<INIT>(A:AUTOPILOT MASTER, Bool) (&gt;L:XMLVAR_Autopilot_#ID#_Status)</INIT>
+				</Default>
+			</Switch>
+			<Condition Valid="ALL_AP_ON_APPR">
+				<True>
+					<APPR_CONDITION>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and (A:AUTOPILOT MASTER, Bool) and</APPR_CONDITION>
+				</True>
+				<False>
+					<APPR_CONDITION>0</APPR_CONDITION>
+				</False>
+			</Condition>
+			<Condition>
+				<Test>
+					<GreaterOrEqual>
+						<Value>AP_COUNT</Value>
+						<Number>2</Number>
+					</GreaterOrEqual>
+				</Test>
+				<True>
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<Loop>
+						<Setup>
+							<Param>AP_ID</Param>
+							<From>1</From>
+							<Inc>1</Inc>
+							<To>#AP_COUNT#</To>
+						</Setup>
+						<Do>
+							<Parameters Type="Default" Lifetime="Loop">
+								<AP_IS_ON_TEST_T/>
+							</Parameters>
+							<Parameters Type="Override">
+								<Condition NotEmpty="AP_IS_ON_TEST_T">
+									<True>
+										<TEST> or</TEST>
+									</True>
+									<False>
+										<TEST/>
+									</False>
+								</Condition>
+							</Parameters>
+							<Parameters Type="Override" Lifetime="Loop">
+								<AP_IS_ON_TEST_T>#AP_IS_ON_TEST_T# (L:XMLVAR_Autopilot_#AP_ID#_Status) #TEST#</AP_IS_ON_TEST_T>
+							</Parameters>
+						</Do>
+						<Then>
+							<Condition NotEmpty="AP_IS_ON_TEST_T">
+								<True>
+									<AP_STATE_CHANGED_TEST>#AP_IS_ON_TEST_T# (A:AUTOPILOT MASTER, Bool) !=</AP_STATE_CHANGED_TEST>
+								</True>
+								<False>
+									<AP_STATE_CHANGED_TEST>1</AP_STATE_CHANGED_TEST>
+								</False>
+							</Condition>
+						</Then>
+					</Loop>
+					<MANUAL_OFF_CODE>0 (&gt;L:XMLVAR_Autopilot_#ID#_Status) (&gt;H:Generic_Autopilot_#ID#_Manual_Off)</MANUAL_OFF_CODE>
+					<TOGGLE_STATE_CODE>(L:XMLVAR_Autopilot_#ID#_Status) ! (&gt;L:XMLVAR_Autopilot_#ID#_Status)</TOGGLE_STATE_CODE>
+					<IS_AP_SWITCH_ON>(L:XMLVAR_Autopilot_#ID#_Status)</IS_AP_SWITCH_ON>
+				</True>
+				<False>
+					<AP_STATE_CHANGED_TEST>1</AP_STATE_CHANGED_TEST>
+					<MANUAL_OFF_CODE>(&gt;H:Generic_Autopilot_Manual_Off)</MANUAL_OFF_CODE>
+					<IS_AP_SWITCH_ON>(A:AUTOPILOT MASTER, Bool)</IS_AP_SWITCH_ON>
+					<TOGGLE_STATE_CODE/>
+				</False>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Default">
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_AUTOPILOT_TITLE</TOOLTIP_TITLE>
+			<Condition Check="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<TT_DESCRIPTION>#ID# (R:1:@TT_Package.AUTOPILOT_PUSH_AUTOPILOT_ACTION_SET) '%s %d' @sprintf</TT_DESCRIPTION>
+					<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+				</True>
+				<False>
+					<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_AUTOPILOT_ACTION_SET</TT_DESCRIPTION_ID>
+				</False>
+			</Condition>
+			<INPUT_EVENT_ID_SOURCE>AUTOPILOT</INPUT_EVENT_ID_SOURCE>
+			<Condition NotEmpty="ON_AP_MASTER_SWITCH">
+				<AP_MASTER_ON_CHECK>#IS_AP_SWITCH_ON#</AP_MASTER_ON_CHECK>
+			</Condition>
+			<ON_AP_MASTER_SWITCH_ON/>
+			<ON_AP_MASTER_SWITCH_OFF/>
+			<Switch Param="ON_AP_MASTER_SWITCH">
+				<Case Value="FD_ON">
+					<FD_ON>True</FD_ON>
+				</Case>
+				<Case Value="FD_ON_OFF">
+					<FD_ON>True</FD_ON>
+					<FD_OFF>True</FD_OFF>
+				</Case>
+				<Case Value="YD_ON">
+					<YD_ON>True</YD_ON>
+				</Case>
+				<Case Value="YD_ON_OFF">
+					<YD_ON>True</YD_ON>
+					<YD_OFF>True</YD_OFF>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition>
+				<Test>
+					<Or>
+						<Arg Valid="YD_ON"/>
+						<Arg Valid="YD_OFF"/>
+					</Or>
+				</Test>
+				<True>
+					<Condition Valid="YD_ON">
+						<ON_AP_MASTER_SWITCH_ON>#ON_AP_MASTER_SWITCH_ON# (A:AUTOPILOT YAW DAMPER, Bool) ! if{ (&gt;K:YAW_DAMPER_TOGGLE) }</ON_AP_MASTER_SWITCH_ON>
+					</Condition>
+					<Condition Valid="YD_OFF">
+						<ON_AP_MASTER_SWITCH_OFF>#ON_AP_MASTER_SWITCH_OFF# (A:AUTOPILOT YAW DAMPER, Bool) if{ (&gt;K:YAW_DAMPER_TOGGLE) }</ON_AP_MASTER_SWITCH_OFF>
+					</Condition>
+				</True>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition>
+				<Test>
+					<Or>
+						<Arg Valid="FD_ON"/>
+						<Arg Valid="FD_OFF"/>
+					</Or>
+				</Test>
+				<True>
+					<Condition Valid="FD_ON">
+						<ON_AP_MASTER_SWITCH_ON>#ON_AP_MASTER_SWITCH_ON# (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool) ! if{ 1 (&gt;K:TOGGLE_FLIGHT_DIRECTOR) }</ON_AP_MASTER_SWITCH_ON>
+					</Condition>
+					<Condition Valid="FD_OFF">
+						<ON_AP_MASTER_SWITCH_OFF>#ON_AP_MASTER_SWITCH_OFF# (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE, Bool) if{ 1 (&gt;K:TOGGLE_FLIGHT_DIRECTOR) }</ON_AP_MASTER_SWITCH_OFF>
+					</Condition>
+				</True>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition>
+				<Test>
+					<Or>
+						<Arg NotEmpty="ON_AP_MASTER_SWITCH_ON"/>
+						<Arg NotEmpty="ON_AP_MASTER_SWITCH_OFF"/>
+					</Or>
+				</Test>
+				<True>
+					<GET_INIT_STATE_EXTERNAL>
+						(O:#INPUT_EVENT_ID_SOURCE#_AP_#ID#_Position) #AP_MASTER_ON_CHECK# != if{
+						(O:#INPUT_EVENT_ID_SOURCE#_AP_#ID#_Position) ! if{ #ON_AP_MASTER_SWITCH_ON# } els{ #ON_AP_MASTER_SWITCH_OFF# }
+						} #AP_MASTER_ON_CHECK#
+					</GET_INIT_STATE_EXTERNAL>
+				</True>
+			</Condition>
+		</Parameters>
+		<Condition>
+			<Test>
+				<GreaterOrEqual>
+					<Value>AP_COUNT</Value>
+					<Number>2</Number>
+				</GreaterOrEqual>
+			</Test>
+			<True>
+				<Condition Check="ID" Match="1">
+					<True>
+						<UseTemplate Name="ASOBO_GT_Update">
+							<FREQUENCY>3</FREQUENCY>
+							<UPDATE_CODE>
+								#AP_STATE_CHANGED_TEST# if{
+								#RESET_CODE#
+								(A:AUTOPILOT MASTER, Bool) (&gt;L:XMLVAR_Autopilot_#ID#_Status)
+								}
+							</UPDATE_CODE>
+						</UseTemplate>
+					</True>
+				</Condition>
+			</True>
+		</Condition>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<Condition Check="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<EMISSIVE_CODE_ACTIVE>#IS_AP_SWITCH_ON#</EMISSIVE_CODE_ACTIVE>
+				</True>
+				<False>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT MASTER</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT MASTER</SIMVAR_TO_WATCH_0>
+			<GET_STATE_EXTERNAL>#IS_AP_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<SET_STATE_EXTERNAL>
+				(A:AUTOPILOT DISENGAGED, Bool) ! #TEST_CODE# and  if{
+				#RESET_CODE#
+				#TOGGLE_STATE_CODE#
+				#AP_STATE_CHANGED_TEST# if{
+				(&gt;K:AP_MASTER)
+				(A:AUTOPILOT MASTER, Bool) ! if{
+				#MANUAL_OFF_CODE# #ON_AP_MASTER_SWITCH_OFF#
+				} els{ #ON_AP_MASTER_SWITCH_ON# }
+				}
+				}
+			</SET_STATE_EXTERNAL>
+			<BTN_ID>AP_#ID#</BTN_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Disconnect_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Disconnect</DEFAULT_NAME>
+			<ID>1</ID>
+			<Condition Check="TOGGLEABLE">
+				<True>
+					<ANIM_CODE>(A:AUTOPILOT DISENGAGED, Bool) 100 *</ANIM_CODE>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_ON>autopilot_disconnect_button_on</WWISE_EVENT_AUTOPILOT_SWITCH_ON>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_OFF>autopilot_disconnect_button_off</WWISE_EVENT_AUTOPILOT_SWITCH_OFF>
+				</True>
+				<False>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>autopilot_disconnect_button_on</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>autopilot_disconnect_button_off</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
+				</False>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="RESET_XMLVARS">
+				<True>
+					<Loop>
+						<Setup>
+							<Param>AP_ID</Param>
+							<From>1</From>
+							<Inc>1</Inc>
+							<To>#AP_COUNT#</To>
+						</Setup>
+						<Do>
+							<Parameters Type="Default" Lifetime="Loop">
+								<XMLVAR_RESET_CODE_T/>
+							</Parameters>
+							<Parameters Type="Override" Lifetime="Loop">
+								<XMLVAR_RESET_CODE_T>#XMLVAR_RESET_CODE_T# 0 (&gt;L:XMLVAR_Autopilot_#AP_ID#_Status)</XMLVAR_RESET_CODE_T>
+							</Parameters>
+						</Do>
+						<Then>
+							<XMLVAR_RESET_CODE>#XMLVAR_RESET_CODE_T#</XMLVAR_RESET_CODE>
+						</Then>
+					</Loop>
+				</True>
+				<False>
+					<XMLVAR_RESET_CODE/>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT DISENGAGED</EMISSIVE_SIMVAR_ACTIVE>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT DISENGAGED</SIMVAR_TO_WATCH_0>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT DISENGAGED, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<SET_STATE_0>(A:AUTOPILOT DISENGAGED, Bool) if{ 0 (&gt;K:AUTOPILOT_DISENGAGE_SET) }</SET_STATE_0>
+			<SET_STATE_1>(A:AUTOPILOT DISENGAGED, Bool) ! if{ 1 (&gt;K:AUTOPILOT_DISENGAGE_SET) #XMLVAR_RESET_CODE# }</SET_STATE_1>
+			<BTN_ID>AP_Disconnect_#ID#</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_DISCONNECT_ACTION_SET_DISCONNECTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_DISCONNECT_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Heading_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Heading</DEFAULT_NAME>
+			<ON_HEADING_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_HEADING_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_HEADING_HOLD_ACTIVE)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_HEADING_HOLD_ACTIVE)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;K:AP_HDG_HOLD_ON) (&gt;H:#KEY_PREFIX#_FMC_1_AP_HEADING_HOLD)</SET_STATE_EXTERNAL>
+					<LOCAL_VAR_TO_WATCH_0>AP_HEADING_HOLD_ACTIVE</LOCAL_VAR_TO_WATCH_0>
+					<BINDING_SET_0_EVENT_ID>AP_HDG_HOLD</BINDING_SET_0_EVENT_ID>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:AP_PANEL_HEADING_HOLD)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT HEADING LOCK, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT HEADING LOCK</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT HEADING LOCK</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<BTN_ID>Heading_Mode</BTN_ID>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_HEADING_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_HEADING_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Bank_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Bank</DEFAULT_NAME>
+			<INPUT_EVENT_ID_SOURCE>AUTOPILOT</INPUT_EVENT_ID_SOURCE>
+			<TYPE>HALF_BANK</TYPE>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Bank_Button</BTN_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="HALF_BANK">
+					<Condition NotEmpty="ACTIVE_ABOVE_ALT_FT">
+						<AUTO_TOGGLE_HALF_BANK_CODE>
+							(A:AUTOPILOT MASTER, Bool) if{
+							(A:INDICATED ALTITUDE, feet) #ACTIVE_ABOVE_ALT_FT# &gt; (&gt;O:_Is_Over_#ACTIVE_ABOVE_ALT_FT#_FT)
+							(O:_Is_Over_#ACTIVE_ABOVE_ALT_FT#_FT) (O:_Was_Over_#ACTIVE_ABOVE_ALT_FT#_FT) != sp0
+							(O:_Is_Over_#ACTIVE_ABOVE_ALT_FT#_FT) (&gt;O:_Was_Over_#ACTIVE_ABOVE_ALT_FT#_FT)
+							l0 if{ (O:_Is_Over_#ACTIVE_ABOVE_ALT_FT#_FT) (&gt;K:AP_MAX_BANK_SET) }
+							}
+						</AUTO_TOGGLE_HALF_BANK_CODE>
+					</Condition>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Condition NotEmpty="AUTO_TOGGLE_HALF_BANK_CODE">
+			<UseTemplate Name="ASOBO_GT_Update">
+				<UPDATE_FREQUENCY>1</UPDATE_FREQUENCY>
+				<UPDATE_CODE>#AUTO_TOGGLE_HALF_BANK_CODE#</UPDATE_CODE>
+			</UseTemplate>
+		</Condition>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<Switch Param="TYPE">
+				<Case Value="HALF_BANK">
+					<EMISSIVE_CODE_ACTIVE>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#, Bool)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_ON>1 (&gt;K:AP_MAX_BANK_SET)</SET_STATE_ON>
+					<SET_STATE_OFF>0 (&gt;K:AP_MAX_BANK_SET)</SET_STATE_OFF>
+					<GET_STATE_EXTERNAL>(A:AUTOPILOT MAX BANK ID, number) sp0</GET_STATE_EXTERNAL>
+					<SIM_STATE_IS_ON_EXTERNAL>l0 1 ==</SIM_STATE_IS_ON_EXTERNAL>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT MAX BANK ID</SIMVAR_TO_WATCH_0>
+				</Case>
+			</Switch>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_BANK_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_BANK_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Localizer_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Localizer</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and</EMISSIVE_CODE_ACTIVE>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and sp0</GET_STATE_EXTERNAL>
+			<!-- To APPROACH and LOCALIZER are the same as far as toggling, so has to toggle twice if already active from other mode -->
+			<SET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and if{ (&gt;K:AP_LOC_HOLD) } (&gt;K:AP_LOC_HOLD)</SET_STATE_EXTERNAL>
+			<BTN_ID>Localizer_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_LOC_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_LOC_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Approach_Template">
+		<Parameters Type="Default">
+			<MAX_BANK_DEGREES>30</MAX_BANK_DEGREES>
+			<DEFAULT_NAME>Approach</DEFAULT_NAME>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="DISABLE_GPS_MODE">
+				<True>
+					<GPS_DISABLE_CODE>(A:GPS DRIVES NAV1, Bool) if{ (A:GPS APPROACH APPROACH TYPE, Enum) 4 == if{ (&gt;K:TOGGLE_GPS_DRIVES_NAV1) } } els{ (A:GPS APPROACH APPROACH TYPE, Enum) 10 == if{ (&gt;K:TOGGLE_GPS_DRIVES_NAV1) } }</GPS_DISABLE_CODE>
+				</True>
+				<False>
+					<GPS_DISABLE_CODE/>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and</EMISSIVE_CODE_ACTIVE>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#GPS_DISABLE_CODE# (A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and if{ (&gt;K:AP_APR_HOLD) } (&gt;K:AP_APR_HOLD)</SET_STATE_EXTERNAL>
+			<BTN_ID>Approach_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_APPROACH_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_APPROACH_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_BackCourse_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>BackCourse</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT BACKCOURSE HOLD</EMISSIVE_SIMVAR_ACTIVE>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT BACKCOURSE HOLD</SIMVAR_TO_WATCH_0>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT BACKCOURSE HOLD, Bool) sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>(&gt;K:AP_BC_HOLD)</SET_STATE_EXTERNAL>
+			<BTN_ID>Backcourse_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_BACKCOURSE_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_BACKCOURSE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_FlightDirector_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<FD_TOGGLE_CONDITION>1</FD_TOGGLE_CONDITION>
+		</Parameters>
+		<Parameters Type="Default">
+			<DEFAULT_NAME>FlightDirector</DEFAULT_NAME>
+			<Condition Check="TOGGLEABLE">
+				<True>
+					<ANIM_CODE>(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) 100 *</ANIM_CODE>
+				</True>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#</EMISSIVE_SIMVAR_ACTIVE>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#</SIMVAR_TO_WATCH_0>
+			<Condition Valid="ON_WHEN_AP_MODE_TURNED_ON">
+				<SIMVAR_TO_WATCH_1>AUTOPILOT MASTER</SIMVAR_TO_WATCH_1>
+				<GET_INIT_STATE_EXTERNAL>
+					(A:AUTOPILOT MASTER, Bool) (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) or sp0
+					l0 (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) ! and if{ #ID# (&gt;K:TOGGLE_FLIGHT_DIRECTOR) } l0
+				</GET_INIT_STATE_EXTERNAL>
+				<ON_STATE_CHANGED_NEW_STATE_TO_POS_EXTERNAL>(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool)</ON_STATE_CHANGED_NEW_STATE_TO_POS_EXTERNAL>
+			</Condition>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<SET_STATE_EXTERNAL>#FD_TOGGLE_CONDITION# if{ #ID# (&gt;K:TOGGLE_FLIGHT_DIRECTOR) }</SET_STATE_EXTERNAL>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_FLIGHTDIRECTOR_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_FLIGHTDIRECTOR_TITLE</TOOLTIP_TITLE>
+			<BTN_ID>FD_#ID#_Mode</BTN_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_YawDamper_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>YawDamper</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT YAW DAMPER</EMISSIVE_SIMVAR_ACTIVE>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT YAW DAMPER</SIMVAR_TO_WATCH_0>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT YAW DAMPER, Bool) sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>(&gt;K:YAW_DAMPER_TOGGLE)</SET_STATE_EXTERNAL>
+			<BTN_ID>YD_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_YAWDAMPER_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_YAWDAMPER_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Altitude_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Altitude</DEFAULT_NAME>
+			<ON_ALTITUDE_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_ALTITUDE_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_ALT_HOLD_ACTIVE)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_ALT_HOLD_ACTIVE)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_ALT_HOLD)</SET_STATE_EXTERNAL>
+					<LOCAL_VAR_TO_WATCH_0>AP_ALT_HOLD_ACTIVE</LOCAL_VAR_TO_WATCH_0>
+					<BINDING_SET_0_EVENT_ID>AP_ALT_HOLD</BINDING_SET_0_EVENT_ID>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:AP_ALT_HOLD)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT ALTITUDE LOCK, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT ALTITUDE LOCK</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT ALTITUDE LOCK</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>Altitude_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_ALTITUDE_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_ALTITUDE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_FlightLevelChange_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>FlightLevelChange</DEFAULT_NAME>
+			<ON_FLC_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_FLC_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_FLCH_ACTIVE)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_FLCH_ACTIVE)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_FLCH)</SET_STATE_EXTERNAL>
+					<LOCAL_VAR_TO_WATCH_0>AP_FLCH_ACTIVE</LOCAL_VAR_TO_WATCH_0>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:FLIGHT_LEVEL_CHANGE) (A:AIRSPEED INDICATED, knots) (&gt;K:AP_SPD_VAR_SET)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT FLIGHT LEVEL CHANGE</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT FLIGHT LEVEL CHANGE</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>FLC_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_FLIGHTLEVELCHANGE_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_FLIGHTLEVELCHANGE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_VerticalSpeed_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>VerticalSpeed</DEFAULT_NAME>
+			<ON_VS_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_VS_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_VS_ACTIVE)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_VS_ACTIVE)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_VSPEED)</SET_STATE_EXTERNAL>
+					<LOCAL_VAR_TO_WATCH_0>AP_VS_ACTIVE</LOCAL_VAR_TO_WATCH_0>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:AP_PANEL_VS_HOLD)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT VERTICAL HOLD, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT VERTICAL HOLD</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT VERTICAL HOLD</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>VS_Mode</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_VERTICALSPEED_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_VERTICALSPEED_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Navigation_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Navigation</DEFAULT_NAME>
+			<ON_NAV_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_NAV_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_LNAV_ARMED)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_LNAV_ARMED)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_LNAV)</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_L_NAVIGATION_ACTION_SET</TT_DESCRIPTION_ID>
+					<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_L_NAVIGATION_TITLE</TOOLTIP_TITLE>
+					<BTN_ID>LNAV_Mode</BTN_ID>
+					<LOCAL_VAR_TO_WATCH_0>AP_LNAV_ARMED</LOCAL_VAR_TO_WATCH_0>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:AP_NAV1_HOLD)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT NAV1 LOCK, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT NAV1 LOCK</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT NAV1 LOCK</EMISSIVE_SIMVAR_ACTIVE>
+					<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_NAVIGATION_ACTION_SET</TT_DESCRIPTION_ID>
+					<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_NAVIGATION_TITLE</TOOLTIP_TITLE>
+					<BTN_ID>NAV_Mode</BTN_ID>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Vertical_Navigation_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>VerticalNavigation</DEFAULT_NAME>
+			<ON_VNAV_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+				<Default>
+					<EMISSIVE_DEFAULT_NAME>AUTOPILOT_Push_VerticalNavigation_Text</EMISSIVE_DEFAULT_NAME>
+				</Default>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_VNAV_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_VNAV_ARMED)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_VNAV_ARMED)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_VNAV)</SET_STATE_EXTERNAL>
+					<LOCAL_VAR_TO_WATCH_0>AP_VNAV_ARMED</LOCAL_VAR_TO_WATCH_0>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(L:XMLVAR_VNAVButtonValue) ! (&gt;L:XMLVAR_VNAVButtonValue)</SET_STATE_EXTERNAL>
+					<EMISSIVE_CODE_ACTIVE>(L:XMLVAR_VNAVButtonValue)</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(L:XMLVAR_VNAVButtonValue)</IS_SWITCH_ON>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>VNAV_Mode</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_VERTICALNAVIGATION_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_VERTICALNAVIGATION_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Level_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Level</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Update">
+			<FREQUENCY>1</FREQUENCY>
+			<UPDATE_CODE>
+				(A:AUTOPILOT MASTER, Bool) ! if{
+				(A:AUTOPILOT WING LEVELER, Bool) if{
+				(&gt;K:AP_WING_LEVELER_OFF)
+				(&gt;K:AP_PITCH_LEVELER_OFF)
+				}
+				}
+			</UPDATE_CODE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT WING LEVELER</EMISSIVE_SIMVAR_ACTIVE>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT WING LEVELER</SIMVAR_TO_WATCH_0>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT WING LEVELER, Bool) sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>
+				(&gt;K:AP_WING_LEVELER)
+				(A:AUTOPILOT WING LEVELER, Bool) if{
+				(A:AUTOPILOT MASTER, Bool) (&gt;O:APStateWhenLevelerEnabled)
+				(A:AUTOPILOT MASTER, Bool) ! if{
+				(&gt;K:AUTOPILOT_ON)
+				}
+				(&gt;K:AP_PITCH_LEVELER_ON)
+				} els{
+				(&gt;K:AP_PITCH_LEVELER_OFF)
+				(O:APStateWhenLevelerEnabled) if{
+				(&gt;K:AUTOPILOT_ON)
+				} els{
+				(&gt;K:AUTOPILOT_OFF)
+				}
+				}
+			</SET_STATE_EXTERNAL>
+			<BTN_ID>Level_Mode</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_LEVELMODE_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_LEVELMODE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_AutoThrottle_Template">
+		<Parameters Type="Default">
+			<Condition Valid="ID">
+				<True>
+					<SIMVAR_ID_SUFFIX>:#ID#</SIMVAR_ID_SUFFIX>
+					<IE_ID>#ID#</IE_ID>
+				</True>
+				<False>
+					<SIMVAR_ID_SUFFIX/>
+					<ID>0</ID>
+					<IE_ID>1</IE_ID>
+				</False>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Default">
+			<DEFAULT_NAME>AutoThrottle</DEFAULT_NAME>
+			<ON_AT_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<LVAR>XMLVAR_AUTO_THROTTLE_ARM_#ID#_STATE</LVAR>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<LVAR>AS01B_AUTO_THROTTLE_ARM_STATE</LVAR>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_AT_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<SET_STATE_EXTERNAL>(L:#LVAR#) ! (&gt;L:#LVAR#) (L:#LVAR#) (A:AUTOPILOT THROTTLE ARM#SIMVAR_ID_SUFFIX#, Bool) != if{ #ID# (&gt;K:AUTO_THROTTLE_ARM) }</SET_STATE_EXTERNAL>
+					<TOGGLEABLE/>
+					<ANIM_CODE>(L:#LVAR#) 100 *</ANIM_CODE>
+					<NO_INDICATOR>True</NO_INDICATOR>
+					<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
+					<LOCAL_VAR_TO_WATCH_0>#LVAR#</LOCAL_VAR_TO_WATCH_0>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>
+						#ID# (&gt;K:AUTO_THROTTLE_ARM)
+						(A:FLAPS HANDLE INDEX, Number) 0 &gt; if{
+						(A:DESIGN SPEED VS0, knots) sp1
+						} els{
+						(A:DESIGN SPEED VS1, knots) sp1
+						}
+						l1 1.3 * (A:AUTOPILOT AIRSPEED HOLD VAR:0, knots) max (&gt;K:AP_SPD_VAR_SET)
+					</SET_STATE_EXTERNAL>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT THROTTLE ARM#SIMVAR_ID_SUFFIX#</EMISSIVE_SIMVAR_ACTIVE>
+					<Condition Check="TOGGLEABLE">
+						<True>
+							<ANIM_CODE>(A:AUTOPILOT THROTTLE ARM#SIMVAR_ID_SUFFIX#, Bool) 100 *</ANIM_CODE>
+						</True>
+					</Condition>
+				</False>
+			</Condition>
+			<IS_SWITCH_ON>(A:AUTOPILOT THROTTLE ARM#SIMVAR_ID_SUFFIX#, Bool)</IS_SWITCH_ON>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT THROTTLE ARM#SIMVAR_ID_SUFFIX#</SIMVAR_TO_WATCH_0>
+		</Parameters>
+		<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+			<UseTemplate Name="ASOBO_GT_Update">
+				<UPDATE_CODE>(A:AUTOPILOT THROTTLE ARM#SIMVAR_ID_SUFFIX#, Bool) (&gt;L:#LVAR#)</UPDATE_CODE>
+				<UPDATE_ONCE>True</UPDATE_ONCE>
+			</UseTemplate>
+		</Condition>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>AutoThrottle_#IE_ID#</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_AUTOTHROTTLE_ACTION</TT_DESCRIPTION_ID>
+			<TT_DESCRIPTION_INDEX>#IE_ID#</TT_DESCRIPTION_INDEX>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_AUTOTHROTTLE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_AutoThrottle_Disengage_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>AutoThrottle_Disengage</DEFAULT_NAME>
+			<PLANE_PREFIX/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="CLEARS_EICAS_WARNING">
+				<True>
+					<SECOND_CLICK_EFFECT/>
+					<SET_STATE_EXTERNAL>
+						(A:AUTOPILOT THROTTLE ARM, Bool) if{
+						(&gt;K:AUTO_THROTTLE_ARM)
+						} els{
+						(&gt;H:#PLANE_PREFIX#_EICAS_ATHR_LEVER)
+						}
+					</SET_STATE_EXTERNAL>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(A:AUTOPILOT THROTTLE ARM, Bool) if{ (&gt;K:AUTO_THROTTLE_ARM) }</SET_STATE_EXTERNAL>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIMVAR_TO_WATCH_0>AUTOPILOT THROTTLE ARM</SIMVAR_TO_WATCH_0>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT THROTTLE ARM, Bool) ! sp0</GET_STATE_EXTERNAL>
+			<BTN_ID>AutoThrottle_Disengage</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.ENGINE_SWITCH_ATDISC_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.ENGINE_SWITCH_ATDISC_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Speed_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Speed</DEFAULT_NAME>
+			<IS_MACH_CODE>0</IS_MACH_CODE>
+			<ON_SPEED_MODE_SWITCH/>
+			<TT_DESCRIPTION_ID_SPEED>@TT_Package.AUTOPILOT_PUSH_SPEEDMODE_ACTION_SET</TT_DESCRIPTION_ID_SPEED>
+			<TOOLTIP_TITLE_SPEED>@TT_Package.AUTOPILOT_PUSH_SPEEDMODE_TITLE</TOOLTIP_TITLE_SPEED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_SPD_ACTIVE)</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(L:AP_SPD_ACTIVE)</IS_SWITCH_ON>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+					<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT THROTTLE ARM, Bool) (A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or and</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(A:AUTOPILOT THROTTLE ARM, Bool) (A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or and</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT AIRSPEED HOLD</SIMVAR_TO_WATCH_0>
+					<SIMVAR_TO_WATCH_1>AUTOPILOT MACH HOLD</SIMVAR_TO_WATCH_1>
+					<SIMVAR_TO_WATCH_2>AUTOPILOT THROTTLE ARM</SIMVAR_TO_WATCH_2>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_SPEED_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_SPD)</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_SPEED_ACTION</TT_DESCRIPTION_ID>
+					<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_SPEED_TITLE</TOOLTIP_TITLE>
+					<BTN_ID>IAS_Mode</BTN_ID>
+					<LOCAL_VAR_TO_WATCH_0>AP_SPD_ACTIVE</LOCAL_VAR_TO_WATCH_0>
+					<BINDING_SET_0_EVENT_ID>AP_AIRSPEED_HOLD</BINDING_SET_0_EVENT_ID>
+				</True>
+				<False>
+					<Switch Param="TYPE">
+						<Case Value="AS04F">
+							<SET_STATE_EXTERNAL>
+								(A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or if{
+									(&gt;K:AP_AIRSPEED_OFF)
+								} els{
+									(A:FLAPS HANDLE INDEX, Number) 0 == if{
+										(&gt;K:AP_PANEL_SPEED_HOLD_TOGGLE)
+									} els{
+										(A:DESIGN SPEED VS1, knots) sqr (A:TOTAL WEIGHT, pounds) (A:MAX GROSS WEIGHT, pounds) / * sqrt (&gt;K:AP_SPD_VAR_SET)
+										(&gt;K:AP_AIRSPEED_ON)
+									}
+								}
+							</SET_STATE_EXTERNAL>
+							<BINDING_SET_0_EVENT_ID>AP_AIRSPEED_HOLD</BINDING_SET_0_EVENT_ID>
+						</Case>
+						<Default>
+							<SET_STATE_EXTERNAL>#IS_MACH_CODE# if{ (&gt;K:AP_PANEL_MACH_HOLD) } els{ (&gt;K:AP_PANEL_SPEED_HOLD) }</SET_STATE_EXTERNAL>
+						</Default>
+					</Switch>
+					<IS_SWITCH_ON>(A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT AIRSPEED HOLD</SIMVAR_TO_WATCH_0>
+					<SIMVAR_TO_WATCH_1>AUTOPILOT MACH HOLD</SIMVAR_TO_WATCH_1>
+					<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or</EMISSIVE_CODE_ACTIVE>
+					<TT_DESCRIPTION_ID>#TT_DESCRIPTION_ID_SPEED#</TT_DESCRIPTION_ID>
+					<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+					<TOOLTIP_TITLE>#TOOLTIP_TITLE_SPEED#</TOOLTIP_TITLE>
+					<BTN_ID>Speed_Mode</BTN_ID>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Thrust_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Thrust</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SET_STATE_EXTERNAL>(&gt;H:AP_THRUST_MODE)</SET_STATE_EXTERNAL>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_THRUSTMODE_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_THRUSTMODE_TITLE</TOOLTIP_TITLE>
+			<EMISSIVE_CODE_ACTIVE>0</EMISSIVE_CODE_ACTIVE>
+			<BTN_ID>Thrust_Mode</BTN_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_SpeedHold_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>SpeedHold</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SET_STATE_EXTERNAL>(&gt;K:AP_FLIGHT_LEVEL_CHANGE)</SET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT FLIGHT LEVEL CHANGE</SIMVAR_TO_WATCH_0>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_SPEEDHOLD_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_SPEEDHOLD_TITLE</TOOLTIP_TITLE>
+			<BTN_ID>SpeedHold_Mode</BTN_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_SpeedToggle_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>SpeedToggle</DEFAULT_NAME>
+			<ON_SPEEDUNITS_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<SET_STATE_EXTERNAL>(L:AP_SPEED_INTERVENTION_ACTIVE) (L:AP_VNAV_ACTIVE) ! or if{ (L:XMLVAR_AirSpeedIsInMach) ! (&gt;L:XMLVAR_AirSpeedIsInMach) }</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(L:XMLVAR_AirSpeedIsInMach)</IS_SWITCH_ON>
+				</Case>
+				<Case Value="AIRBUS">
+					<SET_STATE_EXTERNAL>(&gt;K:AP_MANAGED_SPEED_IN_MACH_TOGGLE)</SET_STATE_EXTERNAL>
+					<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT MANAGED SPEED IN MACH, Bool)</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(A:AUTOPILOT MANAGED SPEED IN MACH, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT MANAGED SPEED IN MACH</SIMVAR_TO_WATCH_0>
+				</Case>
+				<Default>
+					<SET_STATE_EXTERNAL>(L:XMLVAR_AirSpeedIsInMach) ! (&gt;L:XMLVAR_AirSpeedIsInMach)</SET_STATE_EXTERNAL>
+					<EMISSIVE_CODE_ACTIVE>(L:XMLVAR_AirSpeedIsInMach)</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(L:XMLVAR_AirSpeedIsInMach)</IS_SWITCH_ON>
+				</Default>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_SPEEDUNITS_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_SPEEDTOGGLE_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_SPEEDTOGGLE_ACTION</TT_DESCRIPTION_ID>
+			<BTN_ID>SpeedToggle_Mode</BTN_ID>
+			<STR_STATE_OFF>Knots</STR_STATE_OFF>
+			<STR_STATE_ON>Mach</STR_STATE_ON>
+			<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_KNTOS)</TT_VALUE_OFF>
+			<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_MACH)</TT_VALUE_ON>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Transfer_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Transfer</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:XMLVAR_PushXFR) sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>(L:XMLVAR_PushXFR) ! (&gt;L:XMLVAR_PushXFR)</SET_STATE_EXTERNAL>
+			<NO_INDICATOR>True</NO_INDICATOR>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_TRANSFER_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_TRANSFER_TITLE</TOOLTIP_TITLE>
+			<BTN_ID>Transfer_Mode</BTN_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Standby_Template">
+		<Parameters Type="Default">
+			<NODE_ID>AUTOPILOT_Push_Standby</NODE_ID>
+			<ANIM_NAME>AUTOPILOT_Push_Standby</ANIM_NAME>
+			<PART_ID>AUTOPILOT_Push_Standby</PART_ID>
+			<DEFAULT_NAME>Standby</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<!-- (* Turns off AP then turns it back on to go back to default modes. *) -->
+			<SET_STATE_EXTERNAL>(A:AUTOPILOT MASTER, Bool) if{ (&gt;K:AUTOPILOT_OFF) (&gt;K:AUTOPILOT_ON) }</SET_STATE_EXTERNAL>
+			<EMISSIVE_SIMVAR_ACTIVE>0</EMISSIVE_SIMVAR_ACTIVE>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_STANDBY_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_STANDBY_TITLE</TOOLTIP_TITLE>
+			<BTN_ID>Standby_Mode</BTN_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_VerticalSpeed_Direction_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>VerticalSpeed_#DIRECTION#</DEFAULT_NAME>
+			<Switch Param="DIRECTION#">
+				<Case Value="UP">
+					<SET_STATE_EXTERNAL>(&gt;K:AP_VS_VAR_INC) (&gt;H:AP_DN)</SET_STATE_EXTERNAL>
+				</Case>
+				<Case Value="DN">
+					<SET_STATE_EXTERNAL>(&gt;K:AP_VS_VAR_DEC) (&gt;H:AP_UP)</SET_STATE_EXTERNAL>
+				</Case>
+			</Switch>
+			<VS_ID>1</VS_ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_VERTICALSPEED_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_VERTICALSPEED_TITLE</TOOLTIP_TITLE>
+			<BTN_ID>VS_#DIRECTION#</BTN_ID>
+			<TT_VALUE>(A:AUTOPILOT VERTICAL HOLD VAR:#VS_ID#, ft/min) '%d ft/min' @sprintf</TT_VALUE>
+			<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+		</UseTemplate>
+	</Template>
+	<!-- ##### AP MISC ######### -->
+	<Template Name="ASOBO_AIRBUS_Push_Expedite_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Expedite</DEFAULT_NAME>
+			<KEY_PREFIX>A320_Neo</KEY_PREFIX>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT SPEED SLOT INDEX, Number) 3 ==</EMISSIVE_CODE_ACTIVE>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT SPEED SLOT INDEX, Number) 3 == sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_EXPEDITE_MODE)</SET_STATE_EXTERNAL>
+			<BTN_ID>Expedite_Mode</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_EXPEDITE_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_EXPEDITE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Transfer_Light_Template">
+		<Parameters Type="Default">
+			<LIGHT_ID>1</LIGHT_ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>AUTOPILOT_Push_Transfer_Light_#LIGHT_ID#</NODE_ID>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge"/>
+		</Component>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Switch_Altitude_Increment_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Altitude_Increment</DEFAULT_NAME>
+			<NODE_ID>AUTOPILOT_Switch_Altitude_Increment</NODE_ID>
+			<ANIM_NAME>AUTOPILOT_Switch_Altitude_Increment</ANIM_NAME>
+			<PART_ID>AUTOPILOT_Switch_Altitude_Increment</PART_ID>
+			<CURSOR>Animtip</CURSOR>
+			<WWISE_EVENT_1>autopilot_altitude_increment_knob_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_altitude_increment_knob_off</WWISE_EVENT_2>
+			<INIT_ALTITUDE>1000</INIT_ALTITUDE>
+			<INPUT_EVENT_ID_SOURCE>AUTOPILOT</INPUT_EVENT_ID_SOURCE>
+		</Parameters>
+		<Parameters Type="Override">
+			<BTN_ID>Altitude_Increment</BTN_ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Update">
+			<UPDATE_ONCE>True</UPDATE_ONCE>
+			<UPDATE_CODE>#INIT_ALTITUDE# (&gt;L:XMLVAR_Autopilot_Altitude_Increment)</UPDATE_CODE>
+		</UseTemplate>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+				<ANIM_CODE>(B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID#, Bool) 100 *</ANIM_CODE>
+				<NO_INDICATOR>True</NO_INDICATOR>
+				<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
+				<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_KNOB_ALTITUDE_INCREMENT_ACTION</TT_DESCRIPTION_ID>
+				<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_KNOB_ALTITUDE_INCREMENT_TITLE</TOOLTIP_TITLE>
+				<GET_STATE_EXTERNAL>(L:XMLVAR_Autopilot_Altitude_Increment) sp0</GET_STATE_EXTERNAL>
+				<SIM_STATE_IS_ON_EXTERNAL>l0 1000 ==</SIM_STATE_IS_ON_EXTERNAL>
+				<SET_STATE_OFF>100 (&gt;L:XMLVAR_Autopilot_Altitude_Increment)</SET_STATE_OFF>
+				<SET_STATE_ON>1000 (&gt;L:XMLVAR_Autopilot_Altitude_Increment)</SET_STATE_ON>
+				<STR_STATE_OFF>Hundred</STR_STATE_OFF>
+				<STR_STATE_ON>Thousand</STR_STATE_ON>
+				<TT_VALUE_OFF>'100'</TT_VALUE_OFF>
+				<TT_VALUE_ON>'1000'</TT_VALUE_ON>
+				<CHECK_STATE_HAS_CHANGED>False</CHECK_STATE_HAS_CHANGED>
+				<LOCAL_VAR_TO_WATCH_0>XMLVAR_Autopilot_Altitude_Increment</LOCAL_VAR_TO_WATCH_0>
+			</UseTemplate>
+		</Component>
+	</Template>
+	<!-- ####################### -->
+	<!-- ##### AP KNOBS ######## -->
+	<!-- ####################### -->
+	<Template Name="ASOBO_AUTOPILOT_Knob_Heading_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_AUTOPILOT_Knob_Heading_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Knob_Altitude_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_AUTOPILOT_Knob_Altitude_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Knob_VerticalSpeed_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_AUTOPILOT_Knob_VerticalSpeed_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Knob_Course_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_AUTOPILOT_Knob_Course_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Knob_Baro_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_AUTOPILOT_Knob_Baro_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Knob_SpeedMach_Template">
+		<Parameters Type="Default">
+			<INPUT_EVENT_ID_SOURCE>AUTOPILOT</INPUT_EVENT_ID_SOURCE>
+			<ANIM_NAME>AUTOPILOT_Knob_SpeedMach</ANIM_NAME>
+			<PART_ID>AUTOPILOT_Knob_SpeedMach</PART_ID>
+			<NODE_ID>AUTOPILOT_Knob_SpeedMach</NODE_ID>
+			<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_knob_push_button_off</WWISE_EVENT_2>
+			<WWISE_EVENT>autopilot_speed_knob</WWISE_EVENT>
+			<COUNT>36</COUNT>
+			<MACH_INCREMENT>0.01</MACH_INCREMENT>
+			<KNOTS_INCREMENT>1</KNOTS_INCREMENT>
+			<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+			<THRESHOLD_X_MOUSE>0.005</THRESHOLD_X_MOUSE>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="AIRBUS">
+					<TYPE>AIRLINER_PUSH</TYPE>
+					<ON_SPEED_INC>(&gt;H:A320_Neo_CDU_AP_INC_SPEED)</ON_SPEED_INC>
+					<ON_SPEED_DEC>(&gt;H:A320_Neo_CDU_AP_DEC_SPEED)</ON_SPEED_DEC>
+					<ADDITIONAL_EVENT_TYPE>PUSH_PULL</ADDITIONAL_EVENT_TYPE>
+					<DEFAULT_BINDING_STR>Mode</DEFAULT_BINDING_STR>
+					<BTN_ID_PULL>Speed_Selected</BTN_ID_PULL>
+					<BTN_ID_PUSH>Speed_Managed</BTN_ID_PUSH>
+					<PULL_SET_STATE_EXTERNAL>(&gt;H:A320_Neo_CDU_MODE_SELECTED_SPEED)</PULL_SET_STATE_EXTERNAL>
+					<PUSH_SET_STATE_EXTERNAL>(&gt;H:A320_Neo_CDU_MODE_MANAGED_SPEED)</PUSH_SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID_PULL>@TT_Package.AUTOPILOT_KNOB_SPEEDMACH_ACTION_SLT</TT_DESCRIPTION_ID_PULL>
+					<TT_DESCRIPTION_ID_PUSH>@TT_Package.AUTOPILOT_KNOB_SPEEDMACH_ACTION_MAN</TT_DESCRIPTION_ID_PUSH>
+				</Case>
+				<Case Value="B747">
+					<TYPE>AIRLINER_PUSH</TYPE>
+					<AIRLINER_ID>B747_8</AIRLINER_ID>
+				</Case>
+				<Case Value="AS01B">
+					<TYPE>AIRLINER_PUSH</TYPE>
+					<AIRLINER_ID>AS01B</AIRLINER_ID>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="TYPE">
+				<Case Value="PUSH">
+					<AIRSPEED_IS_IN_MACH>(A:AUTOPILOT MANAGED SPEED IN MACH, Bool)</AIRSPEED_IS_IN_MACH>
+					<INCREMENT_INDEX>1</INCREMENT_INDEX>
+					<ADDITIONAL_EVENT_TYPE>PUSH</ADDITIONAL_EVENT_TYPE>
+					<ANIM_NAME_KNOB>#ANIM_NAME#</ANIM_NAME_KNOB>
+					<BTN_SET_STATE_EXTERNAL>(&gt;K:AP_MANAGED_SPEED_IN_MACH_TOGGLE)</BTN_SET_STATE_EXTERNAL>
+					<BTN_ID_EXTERNAL>SpeedMach_Mode</BTN_ID_EXTERNAL>
+					<TT_DESCRIPTION_ID_BTN>@TT_Package.AUTOPILOT_KNOB_SPEEDMACH_ACTION_SET_UNITS</TT_DESCRIPTION_ID_BTN>
+					<TT_VALUE_BTN>(A:AUTOPILOT MANAGED SPEED IN MACH, Bool) if{ (R:1:@TT_Package.GT_STATE_MACH) } els{ (R:1:@TT_Package.GT_STATE_KNTOS) }</TT_VALUE_BTN>
+					<TT_VALUE_BTN_IS_DYNAMIC>True</TT_VALUE_BTN_IS_DYNAMIC>
+				</Case>
+				<Case Value="AIRLINER_PUSH">
+					<AIRSPEED_IS_IN_MACH>(L:XMLVAR_AirSpeedIsInMach)</AIRSPEED_IS_IN_MACH>
+					<INCREMENT_INDEX>1</INCREMENT_INDEX>
+					<ADDITIONAL_EVENT_TYPE>PUSH</ADDITIONAL_EVENT_TYPE>
+					<ANIM_NAME_KNOB>#ANIM_NAME#</ANIM_NAME_KNOB>
+					<Condition Check="AIRLINER_ID">
+						<BTN_SET_STATE_EXTERNAL>(&gt;H:#AIRLINER_ID#_FMC_1_AP_SPEED_INTERVENTION)</BTN_SET_STATE_EXTERNAL>
+						<BTN_ID_EXTERNAL>SpeedMach_Mode</BTN_ID_EXTERNAL>
+						<TT_DESCRIPTION_ID_BTN>@TT_Package.AUTOPILOT_KNOB_SPEEDMACH_ACTION_SET_INTERVENTION</TT_DESCRIPTION_ID_BTN>
+					</Condition>
+				</Case>
+				<Default>
+					<AIRSPEED_IS_IN_MACH>(L:XMLVAR_AirSpeedIsInMach)</AIRSPEED_IS_IN_MACH>
+					<INCREMENT_INDEX>0</INCREMENT_INDEX>
+				</Default>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="ADDITIONAL_EVENT_TYPE">
+				<Case Value="PUSH">
+					<ANIM_NAME_PUSH>AUTOPILOT_Knob_SpeedMach_Push</ANIM_NAME_PUSH>
+				</Case>
+				<Case Value="PUSH_PULL">
+					<ANIM_NAME_PUSHPULL>AUTOPILOT_Knob_SpeedMach_Push</ANIM_NAME_PUSHPULL>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<SET_STATE_EXTERNAL>
+				1 -1 p0 0 &gt; ? sp0
+				#AIRSPEED_IS_IN_MACH# if{
+				#INCREMENT_INDEX# (A:AUTOPILOT MACH HOLD VAR:#INCREMENT_INDEX#, mach) #MACH_INCREMENT# l0 * + 100 * (&gt;K:2:AP_MACH_VAR_SET)
+				} els{
+				#INCREMENT_INDEX# (A:AUTOPILOT AIRSPEED HOLD VAR:#INCREMENT_INDEX#, knots) #KNOTS_INCREMENT# l0 * + 0 max (&gt;K:2:AP_SPD_VAR_SET)
+				}
+			</SET_STATE_EXTERNAL>
+			<Condition Valid="BTN_SET_STATE_EXTERNAL">
+				<True>
+					<Condition NotEmpty="ON_SPEED_PUSH">
+						<BTN_SET_STATE_EXTERNAL>#BTN_SET_STATE_EXTERNAL# #ON_SPEED_PUSH#</BTN_SET_STATE_EXTERNAL>
+					</Condition>
+				</True>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition>
+				<Test>
+					<And>
+						<Arg NotEmpty="ON_SPEED_DEC"/>
+						<Arg NotEmpty="ON_SPEED_INC"/>
+					</And>
+				</Test>
+				<True>
+					<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# p0 0 &gt; if{ #ON_SPEED_INC# } els{ #ON_SPEED_DEC# }</SET_STATE_EXTERNAL>
+				</True>
+			</Condition>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="SPEED_SET_CONDITION">
+				<SET_STATE_EXTERNAL>#SPEED_SET_CONDITION# if{ #SET_STATE_EXTERNAL# }</SET_STATE_EXTERNAL>
+			</Condition>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<Switch Param="ADDITIONAL_EVENT_TYPE">
+				<Case Value="PUSH_PULL">
+					<UseTemplate Name="ASOBO_AUTOPILOT_Push_Event_Only_Template">
+						<BTN_ID>#BTN_ID_PULL#</BTN_ID>
+						<EVENT_TYPE>PULL</EVENT_TYPE>
+						<SET_STATE_EXTERNAL>#PULL_SET_STATE_EXTERNAL#</SET_STATE_EXTERNAL>
+						<TT_DESCRIPTION_ID>#TT_DESCRIPTION_ID_PULL#</TT_DESCRIPTION_ID>
+						<Condition Valid="TT_DESCRIPTION_ID_PULL_IS_DYNAMIC">
+							<TT_DESCRIPTION_IS_DYNAMIC>#TT_DESCRIPTION_ID_PULL_IS_DYNAMIC#</TT_DESCRIPTION_IS_DYNAMIC>
+						</Condition>
+					</UseTemplate>
+					<UseTemplate Name="ASOBO_AUTOPILOT_Push_Event_Only_Template">
+						<BTN_ID>#BTN_ID_PUSH#</BTN_ID>
+						<EVENT_TYPE>PUSH</EVENT_TYPE>
+						<SET_STATE_EXTERNAL>#PUSH_SET_STATE_EXTERNAL#</SET_STATE_EXTERNAL>
+						<TT_DESCRIPTION_ID>#TT_DESCRIPTION_ID_PUSH#</TT_DESCRIPTION_ID>
+						<Condition Valid="TT_DESCRIPTION_ID_PUSH_IS_DYNAMIC">
+							<TT_DESCRIPTION_IS_DYNAMIC>#TT_DESCRIPTION_ID_PUSH_IS_DYNAMIC#</TT_DESCRIPTION_IS_DYNAMIC>
+						</Condition>
+					</UseTemplate>
+				</Case>
+				<Case Value="PUSH">
+					<UseTemplate Name="ASOBO_AUTOPILOT_Push_Event_Only_Template">
+						<BTN_ID>#BTN_ID_EXTERNAL#</BTN_ID>
+						<EVENT_TYPE>PUSH</EVENT_TYPE>
+						<SET_STATE_EXTERNAL>#BTN_SET_STATE_EXTERNAL#</SET_STATE_EXTERNAL>
+						<TT_DESCRIPTION_ID>#TT_DESCRIPTION_ID_BTN#</TT_DESCRIPTION_ID>
+						<Condition Valid="TT_DESCRIPTION_ID_BTN_IS_DYNAMIC">
+							<TT_DESCRIPTION_IS_DYNAMIC>#TT_DESCRIPTION_ID_BTN_IS_DYNAMIC#</TT_DESCRIPTION_IS_DYNAMIC>
+						</Condition>
+						<Condition NotEmpty="TT_VALUE_BTN">
+							<TT_VALUE>#TT_VALUE_BTN#</TT_VALUE>
+							<Condition NotEmpty="TT_VALUE_BTN_IS_DYNAMIC">
+								<TT_VALUE_IS_DYNAMIC>#TT_VALUE_BTN_IS_DYNAMIC#</TT_VALUE_IS_DYNAMIC>
+							</Condition>
+						</Condition>
+					</UseTemplate>
+				</Case>
+			</Switch>
+			<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Template">
+				<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_KNOB_SPEEDMACH_ACTION</TT_DESCRIPTION_ID>
+				<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_KNOB_SPEEDMACH_TITLE</TOOLTIP_TITLE>
+				<GET_TT_VALUE_STATE>(A:AUTOPILOT AIRSPEED HOLD VAR:#INCREMENT_INDEX#, knots) sp0 (A:AUTOPILOT MACH HOLD VAR:#INCREMENT_INDEX#, mach) sp1</GET_TT_VALUE_STATE>
+				<FORMAT_VALUE>#AIRSPEED_IS_IN_MACH# if{ l1 'Mach %.2f' @sprintf } els{ l0 '%d kt.' @sprintf }</FORMAT_VALUE>
+				<Switch Param="ADDITIONAL_EVENT_TYPE">
+					<Case Value="PUSH_PULL">
+						<TEMPLATE_VARIANT>_PushPull</TEMPLATE_VARIANT>
+						<PULL_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID_PULL#_#DEFAULT_BINDING_STR#)</PULL_CODE>
+						<PUSH_CODE>(&gt;B:#INPUT_EVENT_ID_SOURCE#_#BTN_ID_PUSH#_#DEFAULT_BINDING_STR#)</PUSH_CODE>
+						<TOOLTIP_ENTRY_1>#INPUT_EVENT_ID_SOURCE#_#BTN_ID_PULL#</TOOLTIP_ENTRY_1>
+						<TOOLTIP_ENTRY_2>#INPUT_EVENT_ID_SOURCE#_#BTN_ID_PUSH#</TOOLTIP_ENTRY_2>
+					</Case>
+				</Switch>
+				<KNOB_ID>Speed</KNOB_ID>
+			</UseTemplate>
+		</Component>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Knob_Speed_Template">
+		<!-- Uses SpeedMachFunctionnality with an added switch for controlling managed/selected -->
+		<Parameters Type="Default">
+			<ANIM_NAME_KNOB>AUTOPILOT_Knob_Speed</ANIM_NAME_KNOB>
+			<ANIM_NAME_MODE>AUTOPILOT_Knob_Speed_Mode</ANIM_NAME_MODE>
+			<ANIM_NAME_PUSH>AUTOPILOT_Knob_Speed_Push</ANIM_NAME_PUSH>
+			<NODE_ID_KNOB>AUTOPILOT_Knob_Speed</NODE_ID_KNOB>
+			<NODE_ID_MODE>AUTOPILOT_Knob_Speed_Mode</NODE_ID_MODE>
+			<PART_ID>AUTOPILOT_Knob_Speed</PART_ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+			<THRESHOLD_X_MOUSE>0.005</THRESHOLD_X_MOUSE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Knob_SpeedMach_Template">
+			<NODE_ID>#NODE_ID_KNOB#</NODE_ID>
+			<WWISE_EVENT>autopilot_speed_knob</WWISE_EVENT>
+			<COUNT>36</COUNT>
+			<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_knob_push_button_off</WWISE_EVENT_2>
+			<TYPE>PUSH</TYPE>
+			<SPEED_SET_CONDITION>(L:XMLVAR_SpeedIsManuallySet)</SPEED_SET_CONDITION>
+			<ON_SPEED_PUSH>(A:AUTOPILOT MANAGED SPEED IN MACH, Bool) (&gt;L:XMLVAR_AirSpeedIsInMach)</ON_SPEED_PUSH>
+		</UseTemplate>
+		<Condition Valid="SPEED_MODE_ALWAYS_ON">
+			<True>
+				<UseTemplate Name="ASOBO_GT_Update">
+					<FREQUENCY>1</FREQUENCY>
+					<UPDATE_CODE>
+						(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) ! if{
+						(L:XMLVAR_AirSpeedIsInMach) if{
+						(&gt;K:AP_MACH_ON)
+						} els{
+						(&gt;K:AP_AIRSPEED_ON)
+						}
+						}
+					</UPDATE_CODE>
+				</UseTemplate>
+			</True>
+		</Condition>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Base_Template">
+			<IE_NAME>Speed_Mode</IE_NAME>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<KNOB_TYPE>X_STATES</KNOB_TYPE>
+			<NUM_STATES>2</NUM_STATES>
+			<ANIM_NAME>#ANIM_NAME_MODE#</ANIM_NAME>
+			<NODE_ID>#NODE_ID_MODE#</NODE_ID>
+			<ANIM_LAG>300</ANIM_LAG>
+			<LOCAL_VAR_TO_WATCH_0>XMLVAR_SpeedIsManuallySet</LOCAL_VAR_TO_WATCH_0>
+			<STR_STATE_ON>Manual</STR_STATE_ON>
+			<STR_STATE_OFF>FMS</STR_STATE_OFF>
+			<SET_STATE_ON>
+				1 (&gt;L:XMLVAR_SpeedIsManuallySet)
+				(A:FLAPS HANDLE INDEX, Number) 0 &gt; if{
+				(A:DESIGN SPEED VS0, knots) sp1
+				} els{
+				(A:DESIGN SPEED VS1, knots) sp1
+				}
+				l1 1.3 * (A:AIRSPEED INDICATED, knots) max (&gt;K:AP_SPD_VAR_SET)
+			</SET_STATE_ON>
+			<SET_STATE_OFF>0 (&gt;L:XMLVAR_SpeedIsManuallySet)</SET_STATE_OFF>
+			<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_MANUAL)</TT_VALUE_ON>
+			<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_FMS)</TT_VALUE_OFF>
+			<GET_STATE_EXTERNAL>(L:XMLVAR_SpeedIsManuallySet) sp0</GET_STATE_EXTERNAL>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_SPEEDMODE_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_SPEEDMODE_ACTION_SET</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Knob_Bank_Limit_Template">
+		<Parameters Type="Default">
+			<SETTINGS_COUNT>2</SETTINGS_COUNT>
+			<NODE_ID>AUTOPILOT_Knob_Bank_Limit</NODE_ID>
+			<ANIM_NAME>AUTOPILOT_Knob_Bank_Limit</ANIM_NAME>
+			<WWISE_EVENT>autopilot_hdg_bank_knob</WWISE_EVENT>
+			<WRAP>False</WRAP>
+			<USE_INPUT_EVENT_ID>AUTOPILOT</USE_INPUT_EVENT_ID>
+			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+		</Parameters>
+		<Parameters Type="Override">
+			<KNOB_ID>Bank_Limit</KNOB_ID>
+			<NUM_STATES Process="Int">#SETTINGS_COUNT# 1 +</NUM_STATES>
+		</Parameters>
+		<Parameters Type="Override">
+			<Loop>
+				<Setup>
+					<Param>ID</Param>
+					<From>0</From>
+					<Inc>1</Inc>
+					<To>#SETTINGS_COUNT#</To>
+				</Setup>
+				<Do>
+					<Parameters Type="Default" Lifetime="Loop">
+						<ID_POS>#NUM_STATES#</ID_POS>
+					</Parameters>
+					<Parameters Type="Override" Lifetime="Loop">
+						<ID_POS Process="Int">#ID_POS# 1 -</ID_POS>
+					</Parameters>
+					<SET_STATE_#ID#>#ID_POS# (&gt;K:AP_MAX_BANK_SET)</SET_STATE_#ID#>
+					<STATE#ID#_TEST>(B:#USE_INPUT_EVENT_ID#_#KNOB_ID#, Number) #ID# ==</STATE#ID#_TEST>
+					<CODE_POS_#ID#>(&gt;B:#USE_INPUT_EVENT_ID#_#KNOB_ID#_#ID#)</CODE_POS_#ID#>
+					<STR_STATE_#ID#>#ID#</STR_STATE_#ID#>
+				</Do>
+			</Loop>
+		</Parameters>
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Template">
+				<IS_INFINITE>False</IS_INFINITE>
+				<USE_BTN_IE>True</USE_BTN_IE>
+				<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_KNOB_HDG_BANK_LIMIT_TITLE</TOOLTIP_TITLE>
+				<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_KNOB_HDG_BANK_LIMIT_ACTION</TT_DESCRIPTION_ID>
+				<TT_VALUE>(A:AUTOPILOT MAX BANK ID, Number) #SETTINGS_COUNT# &lt; if{ (A:AUTOPILOT MAX BANK, degrees) '%d°' @sprintf } els{ @TT_Auto }</TT_VALUE>
+				<GET_STATE_EXTERNAL>(A:AUTOPILOT MAX BANK ID, Number)</GET_STATE_EXTERNAL>
+				<ENUM_VAL_TO_POS_EXTERNAL>-1 * #SETTINGS_COUNT# +</ENUM_VAL_TO_POS_EXTERNAL>
+				<ANIM>EXTERNAL</ANIM>
+			</UseTemplate>
+		</Component>
+	</Template>
+	<!-- ########################################### -->
+	<!-- AUTOPILOT Interaction inputs setup template -->
+	<Template Name="ASOBO_AUTOPILOT_Base_Template">
+		<Parameters Type="Default">
+			<INPUT_EVENT_ID_SOURCE>AUTOPILOT</INPUT_EVENT_ID_SOURCE>
+			<WWISE_PREFIX>AUTOPILOT</WWISE_PREFIX>
+		</Parameters>
+		<UseTemplate Name="ASOBO_Interaction_Base_Template">
+			<USE_INPUT_EVENT_ID>AUTOPILOT</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Push_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Push_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>AUTOPILOT</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_AUTOPILOT_Pull_Event_Base_Template">
+		<UseTemplate Name="ASOBO_Interaction_Pull_Event_Base_Template">
+			<USE_INPUT_EVENT_ID>AUTOPILOT</USE_INPUT_EVENT_ID>
+		</UseTemplate>
+	</Template>
+</ModelBehaviors>

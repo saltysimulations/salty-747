@@ -13,10 +13,14 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_ASOBO_B747_8I_AUTOTHROTTLE_SWITCH = 533605380U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_BANK_ANGLE = 2809333158U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_OBSTACLE = 3939631457U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_TERRAIN = 1604764289U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_CDU_BUTTON = 4034555697U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_DONT_SINK = 1781746709U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_FLAP_LEVER = 1880339872U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_MCP_BUTTON = 4057670823U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_MINIMUMS = 1077883375U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_OBSTACLE_OBSTACLE = 1505420985U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_PLUS_HUNDRED = 3613032553U;

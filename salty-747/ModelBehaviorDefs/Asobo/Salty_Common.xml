@@ -1,0 +1,4 @@
+<ModelBehaviors>
+	<Include RelativeFile="Generic.xml"/>
+	<Include RelativeFile="Common\Salty_Index.xml"/>
+</ModelBehaviors>

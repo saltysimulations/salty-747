@@ -151,6 +151,18 @@
         </File>
       </Language>
       <Language ID="393239870" Name="SFX">
+        <File Name="at off.wav">
+          <WObject ID="{5E0EAFB4-A534-4B65-A317-76B45785DB59}">
+            <MediaID ID="669281740" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="at on.wav">
+          <WObject ID="{A2F47DA2-93B0-4816-9E00-BF160C1BD9E4}">
+            <MediaID ID="920778841" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="bank_angle.wav">
           <WObject ID="{4EE6D210-4D1C-4088-A9E5-4DD7106FFBED}">
             <MediaID ID="438977682" />
@@ -172,6 +184,84 @@
         <File Name="dont_sink.wav">
           <WObject ID="{AD3EB7E4-5C65-47F2-B6D4-3857B29519EF}">
             <MediaID ID="336234418" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fd off.wav">
+          <WObject ID="{64D53490-A70E-44D3-B9E1-8439901A79F5}">
+            <MediaID ID="215062942" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fd on.wav">
+          <WObject ID="{862CD835-11B7-4BFD-B213-B8183AF10FD5}">
+            <MediaID ID="942894981" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever extend 1.wav">
+          <WObject ID="{B23BBE76-E9DA-4ABC-A487-F0BCD1D9F60B}">
+            <MediaID ID="362410930" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever extend 2.wav">
+          <WObject ID="{2D94944C-ABB9-4271-BDCB-23D8C99346E0}">
+            <MediaID ID="741939783" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever retract 1.wav">
+          <WObject ID="{07EA3E99-B4E4-4836-A596-3F3F6C69AFF7}">
+            <MediaID ID="651261553" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever retract 2.wav">
+          <WObject ID="{6136124F-BD69-4378-B628-876BF8F39BE3}">
+            <MediaID ID="526918637" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fmc 1.wav">
+          <WObject ID="{9FF762E5-2BA9-4586-AE13-68BB0E9E922F}">
+            <MediaID ID="148033535" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fmc 2.wav">
+          <WObject ID="{11A0E2CE-7454-4D41-A829-66E5BEA633A6}">
+            <MediaID ID="791640526" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fmc 3.wav">
+          <WObject ID="{C7A5B90A-7B1F-454E-9F70-5367F927816B}">
+            <MediaID ID="497962771" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fmc 4.wav">
+          <WObject ID="{5ABF37DA-CD11-4A7A-B37D-CBF030671E42}">
+            <MediaID ID="479262574" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fmc 5.wav">
+          <WObject ID="{AAC42878-EE30-4891-A632-5E185988BA40}">
+            <MediaID ID="621637674" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="mcp button 1.wav">
+          <WObject ID="{127F908C-17BE-4EE8-8BC8-520CC7C88AA6}">
+            <MediaID ID="823042522" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="mcp button 2.wav">
+          <WObject ID="{29C54714-F258-4341-8457-70F903D8DE23}">
+            <MediaID ID="1050089981" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
