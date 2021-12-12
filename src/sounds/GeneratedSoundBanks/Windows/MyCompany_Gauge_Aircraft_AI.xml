@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="12" SoundbankVersion="135">
+	<RootPaths>
+		<ProjectRoot>X:\Documents\GitHub\salty-747\src\sounds\</ProjectRoot>
+		<SourceFilesRoot>X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<SoundBanks>
+		<SoundBank Id="509158762" GUID="{D1535A22-7FF7-46E0-9E62-B865F1040D85}" Language="SFX" Hash="793539589">
+			<ObjectPath>\SoundBanks\aircraft_ai\MyCompany_Gauge_Aircraft_AI</ObjectPath>
+			<ShortName>MyCompany_Gauge_Aircraft_AI</ShortName>
+			<Path>MyCompany_Gauge_Aircraft_AI.bnk</Path>
+			<IncludedEvents>
+				<Event Id="4121393137" Name="Play_MyCompany_Gauge_Aircraft_AI_center_touchdown" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\ground\Play_MyCompany_Gauge_Aircraft_AI_center_touchdown" GUID="{4A23E0B4-7B0E-4B05-AF7E-7BD426A87926}" MaxAttenuation="1500.000000" DurationType="OneShot" DurationMin="0.116893" DurationMax="0.190343">
+					<IncludedMemoryFiles>
+						<File Id="376557657" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_02.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_02_39EE5A46.wem</Path>
+						</File>
+						<File Id="554875850" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_04.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_04_30F197AA.wem</Path>
+						</File>
+						<File Id="570096822" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_03.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_03_5B73D981.wem</Path>
+						</File>
+						<File Id="583103062" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_05.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_05_4F5AB510.wem</Path>
+						</File>
+						<File Id="858638435" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_01.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_01_80D38708.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="2283249103" Name="Play_MyCompany_Gauge_Aircraft_AI_eng1_combustion" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\engine\Play_MyCompany_Gauge_Aircraft_AI_eng1_combustion" GUID="{045908FB-6C21-45F8-88F6-75918119A862}" MaxAttenuation="1500.000000" DurationType="Infinite">
+					<IncludedMemoryFiles>
+						<File Id="37921624" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_900.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_900_85A44683.wem</Path>
+						</File>
+						<File Id="73278721" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_2040.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_2040_85A44683.wem</Path>
+						</File>
+						<File Id="201876534" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_1680.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_1680_85A44683.wem</Path>
+						</File>
+						<File Id="243701563" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_1095.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_1095_85A44683.wem</Path>
+						</File>
+						<File Id="400188689" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_1860.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_1860_85A44683.wem</Path>
+						</File>
+						<File Id="434942094" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_1455.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_1455_85A44683.wem</Path>
+						</File>
+						<File Id="905726520" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_795.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_795_85A44683.wem</Path>
+						</File>
+						<File Id="1040803638" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_2235.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_2235_85A44683.wem</Path>
+						</File>
+						<File Id="1059572089" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_2370.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_2370_85A44683.wem</Path>
+						</File>
+						<File Id="1061588936" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_1260.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_1260_85A44683.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+						<AuxBus Id="3484564662" Name="disto_overspeed" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\disto_overspeed" GUID="{5815E54F-778D-4C14-BF59-097980689171}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="229218434" Name="Play_MyCompany_Gauge_Aircraft_AI_eng1_combustion_start" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\engine\Play_MyCompany_Gauge_Aircraft_AI_eng1_combustion_start" GUID="{A3DA2830-E0C0-44C4-BDB9-CBE2898D8E3B}" MaxAttenuation="1500.000000" DurationType="OneShot" DurationMin="0.557001" DurationMax="0.557001">
+					<IncludedMemoryFiles>
+						<File Id="805106226" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_combustion_start.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_combustion_start_067D4DDF.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+						<AuxBus Id="3484564662" Name="disto_overspeed" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\disto_overspeed" GUID="{5815E54F-778D-4C14-BF59-097980689171}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="3875370486" Name="Play_MyCompany_Gauge_Aircraft_AI_eng1_combustion_start_propeller" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\engine\Play_MyCompany_Gauge_Aircraft_AI_eng1_combustion_start_propeller" GUID="{2EC1AE54-2619-4444-81F4-95A899A3B20F}" MaxAttenuation="1500.000000" DurationType="OneShot" DurationMin="0.556985" DurationMax="0.556985">
+					<IncludedMemoryFiles>
+						<File Id="465522517" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_combustion_start.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_combustion_start_9681D1FA.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+						<AuxBus Id="3484564662" Name="disto_overspeed" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\disto_overspeed" GUID="{5815E54F-778D-4C14-BF59-097980689171}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="393771857" Name="Play_MyCompany_Gauge_Aircraft_AI_eng1_prop" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\engine\Play_MyCompany_Gauge_Aircraft_AI_eng1_prop" GUID="{93C6B7D9-5E9B-4D66-8102-CC2E67A632F4}" MaxAttenuation="1500.000000" DurationType="Infinite">
+					<IncludedMemoryFiles>
+						<File Id="15827631" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_1680.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_1680_85A44683.wem</Path>
+						</File>
+						<File Id="57482118" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_795.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_795_85A44683.wem</Path>
+						</File>
+						<File Id="71985463" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_1455.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_1455_85A44683.wem</Path>
+						</File>
+						<File Id="103289142" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_1260.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_1260_85A44683.wem</Path>
+						</File>
+						<File Id="142478392" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_2040.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_2040_85A44683.wem</Path>
+						</File>
+						<File Id="411672754" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_900.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_900_85A44683.wem</Path>
+						</File>
+						<File Id="433782070" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_2370.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_2370_85A44683.wem</Path>
+						</File>
+						<File Id="584943889" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_1860.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_1860_85A44683.wem</Path>
+						</File>
+						<File Id="611919213" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_1095.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_1095_85A44683.wem</Path>
+						</File>
+						<File Id="642293600" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_2235.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_2235_85A44683.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+						<AuxBus Id="3484564662" Name="disto_overspeed" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\disto_overspeed" GUID="{5815E54F-778D-4C14-BF59-097980689171}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="2566880036" Name="Play_MyCompany_Gauge_Aircraft_AI_eng1_shutdown" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\engine\Play_MyCompany_Gauge_Aircraft_AI_eng1_shutdown" GUID="{25B8B4CB-C42C-40CB-8C7E-86F6D32351F8}" MaxAttenuation="1500.000000" DurationType="OneShot" DurationMin="3.869460" DurationMax="3.869460">
+					<IncludedMemoryFiles>
+						<File Id="252268105" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_shutdown.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_shutdown_325D222B.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+						<AuxBus Id="3484564662" Name="disto_overspeed" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\disto_overspeed" GUID="{5815E54F-778D-4C14-BF59-097980689171}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="486205920" Name="Play_MyCompany_Gauge_Aircraft_AI_eng1_shutdown_propeller" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\engine\Play_MyCompany_Gauge_Aircraft_AI_eng1_shutdown_propeller" GUID="{0BA8FA5A-BAFA-4B44-AAF9-2ED7EBD326FA}" MaxAttenuation="1500.000000" DurationType="OneShot" DurationMin="3.869462" DurationMax="3.869462">
+					<IncludedMemoryFiles>
+						<File Id="262247305" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_shutdown.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_shutdown_D937549A.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+						<AuxBus Id="3484564662" Name="disto_overspeed" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\disto_overspeed" GUID="{5815E54F-778D-4C14-BF59-097980689171}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="2645411495" Name="Play_MyCompany_Gauge_Aircraft_AI_eng1_starter" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\engine\Play_MyCompany_Gauge_Aircraft_AI_eng1_starter" GUID="{B70BC999-4A04-43D8-BF1D-12FB67DDA1DB}" MaxAttenuation="1500.000000" DurationType="Infinite">
+					<IncludedMemoryFiles>
+						<File Id="208943507" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_front_Starter.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_front_Starter_A2FE30B5.wem</Path>
+						</File>
+						<File Id="652519599" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_engine_outside_behind_Starter.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_engine_outside_behind_Starter_9FA8766F.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+						<AuxBus Id="3484564662" Name="disto_overspeed" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\disto_overspeed" GUID="{5815E54F-778D-4C14-BF59-097980689171}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="3515934617" Name="Play_MyCompany_Gauge_Aircraft_AI_left_touchdown" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\ground\Play_MyCompany_Gauge_Aircraft_AI_left_touchdown" GUID="{89E1C102-B47A-4CEB-8702-96AAEA779EBD}" MaxAttenuation="1500.000000" DurationType="OneShot" DurationMin="0.116893" DurationMax="0.190343">
+					<IncludedMemoryFiles>
+						<File Id="376557657" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_02.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_02_39EE5A46.wem</Path>
+						</File>
+						<File Id="554875850" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_04.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_04_30F197AA.wem</Path>
+						</File>
+						<File Id="570096822" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_03.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_03_5B73D981.wem</Path>
+						</File>
+						<File Id="583103062" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_05.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_05_4F5AB510.wem</Path>
+						</File>
+						<File Id="858638435" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_01.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_01_80D38708.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+					</AuxBusSends>
+				</Event>
+				<Event Id="2796522428" Name="Play_MyCompany_Gauge_Aircraft_AI_right_touchdown" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_AI\MyCompany_Gauge_Aircraft_AI\ground\Play_MyCompany_Gauge_Aircraft_AI_right_touchdown" GUID="{E8BC2B16-05A9-4D1F-B356-54ABDCC8185E}" MaxAttenuation="1500.000000" DurationType="OneShot" DurationMin="0.116893" DurationMax="0.190343">
+					<IncludedMemoryFiles>
+						<File Id="376557657" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_02.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_02_39EE5A46.wem</Path>
+						</File>
+						<File Id="554875850" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_04.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_04_30F197AA.wem</Path>
+						</File>
+						<File Id="570096822" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_03.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_03_5B73D981.wem</Path>
+						</File>
+						<File Id="583103062" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_05.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_05_4F5AB510.wem</Path>
+						</File>
+						<File Id="858638435" Language="SFX">
+							<ShortName>Sample_Aircraft_Piston_touchdown_squeak_01.wav</ShortName>
+							<Path>SFX\Sample_Aircraft_Piston_touchdown_squeak_01_80D38708.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<AuxBusSends>
+						<AuxBus Id="2069837898" Name="rev_outdoor_aircraft" ObjectPath="\Master-Mixer Hierarchy\Default Work Unit\Master Audio Bus\game\game_aux\aux_outside\rev_outdoor_aircraft" GUID="{3070D14E-37F3-4DB4-8C7E-262318A02693}"/>
+					</AuxBusSends>
+				</Event>
+			</IncludedEvents>
+			<GameParameters>
+				<GameParameter Id="508195889" Name="SIMVAR_PROP_RPM" ObjectPath="\Game Parameters\simvar\engine\propeller\SIMVAR_PROP_RPM" GUID="{FF3BC515-5239-40D1-A27C-8E80E0D734CC}"/>
+				<GameParameter Id="1416776395" Name="SIMVAR_GENERAL_ENG_COMBUSTION_SOUND_PERCENT" ObjectPath="\Game Parameters\simvar\engine\shared\SIMVAR_GENERAL_ENG_COMBUSTION_SOUND_PERCENT" GUID="{6248DE76-391F-4AD0-84AA-AC5683CBB4A3}"/>
+				<GameParameter Id="1649214721" Name="SIMVAR_GROUND_VELOCITY" ObjectPath="\Game Parameters\simvar\physic\SIMVAR_GROUND_VELOCITY" GUID="{8E7BB6E5-0182-456B-BE83-12F6B4244555}"/>
+				<GameParameter Id="2809322939" Name="SIMVAR_GENERAL_ENG_RPM" ObjectPath="\Game Parameters\simvar\engine\shared\SIMVAR_GENERAL_ENG_RPM" GUID="{2A2495B6-0158-4F47-8261-D625910D546D}"/>
+				<GameParameter Id="3779073172" Name="ENV_DOPPLERCENTS" ObjectPath="\Game Parameters\environment\common\ENV_DOPPLERCENTS" GUID="{05BB02CD-EBB3-47D1-9A4B-320AA5FE6C21}"/>
+				<GameParameter Id="4231049133" Name="NPC_ALPHA_PERCENT" ObjectPath="\Game Parameters\npc\NPC_ALPHA_PERCENT" GUID="{14F1853C-1D12-4F07-B583-A7274D2A0E83}"/>
+			</GameParameters>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

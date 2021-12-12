@@ -11,3 +11,4 @@ bundles/
 .ace/canvas.json
 .ace/simvars.json
 .ace/live-reload.json
+src/sounds/.cache/
