@@ -1,5 +1,5 @@
 <PlaneHTMLConfig>
-  
+
   <Instrument>
     <Name>B747_8_PFD</Name>
     <Electric>
@@ -13,21 +13,21 @@
 		<Simvar name="CIRCUIT ON:23" unit="Boolean"/>
     </Electric>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_EICAS_1</Name>
     <Electric>
 		<Simvar name="CIRCUIT ON:25" unit="Boolean"/>
     </Electric>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_EICAS_2</Name>
     <Electric>
 		<Simvar name="CIRCUIT ON:26" unit="Boolean"/>
     </Electric>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_FMC</Name>
     <Electric>
@@ -56,7 +56,7 @@
       <Simvar name="CIRCUIT ON:20" unit="Boolean"/>
     </Electric>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_IAS</Name>
     <Electric>
@@ -64,21 +64,21 @@
     </Electric>
 	<AlwaysUpdate>True</AlwaysUpdate>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_HDG</Name>
     <Electric>
 		<Simvar name="CIRCUIT ON:21" unit="Boolean"/>
     </Electric>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_VSpeed</Name>
     <Electric>
 		<Simvar name="CIRCUIT ON:21" unit="Boolean"/>
     </Electric>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_ALT</Name>
     <Electric>
@@ -99,7 +99,7 @@
       <Simvar name="CIRCUIT ON:7" unit="Boolean"/>
     </Electric>
   </Instrument>
-  
+
   <Instrument>
     <Name>B747_8_RUDDER</Name>
     <Electric>
@@ -186,7 +186,7 @@
 			</Or>
 		  </Condition>
 		</Annunciation>
-		
+
 		<Annunciation>
 			<Type>Caution</Type>
 			<Text>AUTOTHROT DISC</Text>
@@ -432,7 +432,7 @@
 			</Equal>
 		  </Condition>
 		</Annunciation>
-		
+
 		<Annunciation>
 		  <Type>Advisory</Type>
 		  <Text>\BLEED 1 OFF</Text>
@@ -691,11 +691,43 @@
 			</And>
 		  </Condition>
 		</Annunciation>
-		
- 
+
+
 	<!-- Voices Alerts -->
-  
+
 	<VoicesAlerts>
+
+		<Alert>
+			<Type>SoundOnly</Type>
+			<SoundEvent>wailer</SoundEvent>
+			<Condition>
+				<StateMachine>
+					<State id="Off" value="0">
+						<Transition to="On">
+							<Equal>
+								<Simvar name="AUTOPILOT MASTER" unit="Boolean"/>
+								<Constant>1</Constant>
+							</Equal>
+						</Transition>
+					</State>
+					<State id="On" value="0">
+						<Transition to="Alerting">
+							<Equal>
+								<Simvar name="AUTOPILOT MASTER" unit="Boolean"/>
+								<Constant>0</Constant>
+							</Equal>
+						</Transition>
+					</State>
+					<State id="Alerting" value="1">
+						<Transition to="Off">
+							<Equal>
+								<Constant>0</Constant>
+							</Equal>
+						</Transition>
+					</State>
+				</StateMachine>
+			</Condition>
+		</Alert>
 
 		<Alert>
 			<Type>Warning</Type>
@@ -805,7 +837,7 @@
 				</And>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>tone_altitude_alert_default</SoundEvent>
@@ -953,7 +985,7 @@
 			</StateMachine>
 		  </Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_5ft</SoundEvent>
@@ -983,7 +1015,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_10ft</SoundEvent>
@@ -1013,7 +1045,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_20ft</SoundEvent>
@@ -1043,7 +1075,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_30ft</SoundEvent>
@@ -1073,7 +1105,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_40ft</SoundEvent>
@@ -1103,7 +1135,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_50ft</SoundEvent>
@@ -1133,7 +1165,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_60ft</SoundEvent>
@@ -1163,7 +1195,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_70ft</SoundEvent>
@@ -1193,7 +1225,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_100ft</SoundEvent>
@@ -1223,7 +1255,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_200ft</SoundEvent>
@@ -1253,7 +1285,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_300ft</SoundEvent>
@@ -1283,7 +1315,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_400ft</SoundEvent>
@@ -1313,7 +1345,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_500ft</SoundEvent>
@@ -1343,7 +1375,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_1000ft</SoundEvent>
@@ -1373,7 +1405,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_2500ft</SoundEvent>
@@ -1403,7 +1435,7 @@
 				</StateMachine>
 			</Condition>
 		</Alert>
-				
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_stall</SoundEvent>
@@ -1411,7 +1443,7 @@
 				<Simvar name="STALL WARNING" unit="Bool"/>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>OVERSPEED_WARNING_SOUND</SoundEvent>
@@ -1419,7 +1451,7 @@
 				<Simvar name="OVERSPEED WARNING" unit="bool"/>
 			</Condition>
 		</Alert>
-		
+
 		<Alert>
 			<Type>SoundOnly</Type>
 			<SoundEvent>aural_v1</SoundEvent>
@@ -1433,7 +1465,7 @@
 									<Simvar name="L:AIRLINER_V1_SPEED" unit="knots"/>
 									<Constant>30</Constant>
 								</Greater>
-								
+
 								<GreaterEqual>
 									<Simvar name="AIRSPEED INDICATED" unit="knots"/>
 									<Simvar name="L:AIRLINER_V1_SPEED" unit="knots"/>
