@@ -32,7 +32,7 @@ const getRadAltClass = (radAlt: number, radioMins: number, oldClass: string): st
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
-    const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
+    const [baroMins] = useSimVar("L:SALTY_MINIMUMS_ALT", "feet");
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
 
     const getAltitudeY = (altitude: number): number => {
@@ -127,14 +127,13 @@ export const AltitudeTape: FC = () => {
 
                     {/* Minimums Bug */}
                     <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
-                    <path className="minimums-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
+                    <path className="green-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
 
                     <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(altitude)}, h 73, v 100, h -73, Z`} />
 
                     {/* Altitude Bug */}
-                    <path className="black-outline" fill="none" d={`M 550 ${382}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
-=
-                    <path className="magenta-line" fill="none" d={`M 550 ${382}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
+                    <path className="black-outline" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
+                    <path className="magenta-line" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
                 </g>
             </g>
             

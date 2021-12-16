@@ -38,6 +38,7 @@ const getMaxSpeedBandY = (airspeed: number, maxSpeed: number): number => {
 
 export const SpeedTape: FC = () => {
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
+    const [selSpd] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR:1", "knots");
     const [manSpeed] = useSimVar("L:SALTY_MANEUVERING_SPEED", "knots");
     const [maxSpeed] = useSimVar("L:SALTY_MAXIMUM_SPEED", "knots");
     return (
@@ -65,12 +66,17 @@ export const SpeedTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="32" y={`${y + offset}`} className="text-3">
+                                <text x="32" y={`${y + offset}`} className="text-3 white">
                                     {text}
                                 </text>
                             </>
                         );
                     })}
+                    {/* Selected Airspeed Bug */}
+                    <g fill="none" >
+                        <path className="black-outline" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`}/>
+                        <path className="magenta-line" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`}/>
+                    </g>
                 </g>
 
                 {/*Maneuvering Speed Band*/}
