@@ -31,6 +31,7 @@ import { BaroSetting } from "./Altimeter/AltitudeTape";
 import { Minimums } from "./Altimeter/AltitudeTape";
 import { RadioAltimeter } from "./Altimeter/AltitudeTape";
 import { LateralDeviationScale } from "./DeviationScales/Lateral";
+import { VerticalDeviationScale } from "./DeviationScales/Vertical";
 
 import "./index.scss";
 import "../Common/pixels.scss";
@@ -73,6 +74,7 @@ const PFD: FC = () => {
                 <Minimums />
                 <RadioAltimeter />
                 <LateralDeviationScale />
+                <VerticalDeviationScale />
             </svg>
         </>
     );
