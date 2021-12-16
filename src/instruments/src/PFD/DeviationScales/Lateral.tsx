@@ -21,17 +21,12 @@ import { useSimVar } from "react-msfs";
 import { BlackOutlineWhiteLine } from "../index";
 import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
-const getRadAltClass = (radAlt: number, radioMins: number, oldClass: string): string => {
-    let radAltClass = oldClass;
-    if (radAlt <= radioMins && radAlt !== 0){
-        radAltClass += " amber"
-    }
-    return radAltClass;
-};
-
 export const LateralDeviationScale: FC = () => {
     const [locIndbCourse] = useSimVar("NAV LOCALIZER:3", "degrees");
     const [locRadial] = useSimVar("NAV RADIAL:3", "degrees");
+    const [locFrequency] = useSimVar("NAV ACTIVE FREQUENCY:3", "Hz");
+    const [locSignal] = useSimVar("NAV HAS NAV:3", "boolean");
+    
 
     const getLocDisplacement = (locIndbCourse: number, locRadial: number): number => {
         const x = (locIndbCourse - (locRadial + 180 > 360 ? locRadial -360 : locRadial + 180));
@@ -52,20 +47,41 @@ export const LateralDeviationScale: FC = () => {
         }
         return false;
     };
+
+    const isLocTuned = (locFrequency: number): boolean => {
+        if (locFrequency !== 0) {
+            return true;
+        }
+        return false;
+    };
+
+    const isLocSignalReceived = (locSignal: number): boolean => {
+        if (locSignal !== 0) {
+            return true;
+        }
+        return false;
+    };
     
     return (
         <g>
-            <path d={`M ${getLocDisplacement(locIndbCourse, locRadial)} 585, l-20 10, l20 10, l20, -10, Z`} fill={`${isLocAtMaxDeflection(locIndbCourse, locRadial) === true ? "none" : "#d570ff"}`} className="magenta-line"/>
-            <path d="M349 580, v30" className="fpv-outline"/> 
-            <path d="M349 580, v30" className="fpv-line"/>"
-            <circle cx="292" cy="595" r="6" fill="none" className="fpv-outline" />
-            <circle cx="292" cy="595" r="6" fill="none" className="fpv-line" />
-            <circle cx="235" cy="595" r="6" fill="none" className="fpv-outline" />
-            <circle cx="235" cy="595" r="6" fill="none" className="fpv-line" />
-            <circle cx="406" cy="595" r="6" fill="none" className="fpv-outline" />
-            <circle cx="406" cy="595" r="6" fill="none" className="fpv-line" />
-            <circle cx="463" cy="595" r="6" fill="none" className="fpv-outline" />
-            <circle cx="463" cy="595" r="6" fill="none" className="fpv-line" />
+            <path 
+                visibility={`${isLocSignalReceived(locSignal) === true ? "visible" : "hidden"}`}
+                d={`M ${getLocDisplacement(locIndbCourse, locRadial)} 585, l-20 10, l20 10, l20, -10, Z`} 
+                fill={`${isLocAtMaxDeflection(locIndbCourse, locRadial) === true ? "none" : "#d570ff"}`} 
+                className="magenta-line"
+            />
+            <g visibility={`${isLocTuned(locFrequency) === true ? "visible" : "hidden"}`}>
+                <path d="M349 580, v30" className="fpv-outline"/> 
+                <path d="M349 580, v30" className="fpv-line"/>"
+                <circle cx="292" cy="595" r="6" fill="none" className="fpv-outline" />
+                <circle cx="292" cy="595" r="6" fill="none" className="fpv-line" />
+                <circle cx="235" cy="595" r="6" fill="none" className="fpv-outline" />
+                <circle cx="235" cy="595" r="6" fill="none" className="fpv-line" />
+                <circle cx="406" cy="595" r="6" fill="none" className="fpv-outline" />
+                <circle cx="406" cy="595" r="6" fill="none" className="fpv-line" />
+                <circle cx="463" cy="595" r="6" fill="none" className="fpv-outline" />
+                <circle cx="463" cy="595" r="6" fill="none" className="fpv-line" />
+            </g>
         </g>     
     );
 };
