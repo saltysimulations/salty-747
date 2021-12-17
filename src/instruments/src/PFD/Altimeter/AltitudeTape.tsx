@@ -137,8 +137,6 @@ export const AltitudeTape: FC = () => {
                 </g>
             </g>
             
-
-
             {/* Altimeter Scroller Box */}
             <path
                 className="indication"
@@ -148,7 +146,8 @@ export const AltitudeTape: FC = () => {
             <path 
                 style={{ strokeWidth: (altAlertStatus != 0 ? "9px" : "3px"), stroke: (altAlertStatus != 2 ? "white" : "#ffc400") }}
                 className="indication" 
-                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
+                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" 
+            />
         </g>     
     );
 };

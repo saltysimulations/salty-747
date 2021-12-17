@@ -26,7 +26,6 @@ export const VerticalDeviationScale: FC = () => {
     const [locFrequency] = useSimVar("NAV ACTIVE FREQUENCY:3", "Hz");
     const [gsSignal] = useSimVar("NAV GS FLAG:3", "boolean");
     
-
     const getGsDisplacement = (gsError: number): number => {
         let boundedY = gsError * -2.44;
         if (boundedY > 2.33) {

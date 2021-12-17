@@ -36,11 +36,23 @@ const getMaxSpeedBandY = (airspeed: number, maxSpeed: number): number => {
     return y;
 };
 
+const getVRbugText = (v1: number, vR: number): string => {
+    if ((vR - v1) < 4) {
+        return "R"
+    }
+    return "VR";
+};
+
 export const SpeedTape: FC = () => {
+    const [flightPhase] = useSimVar("L:AIRLINER_FLIGHT_PHASE", "number");
+    const [radioHeight] = useSimVar("RADIO HEIGHT", "feet");
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
     const [selSpd] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR:1", "knots");
     const [manSpeed] = useSimVar("L:SALTY_MANEUVERING_SPEED", "knots");
     const [maxSpeed] = useSimVar("L:SALTY_MAXIMUM_SPEED", "knots");
+    const [v1] = useSimVar("L:AIRLINER_V1_SPEED", "knots");
+    const [vR] = useSimVar("L:AIRLINER_VR_SPEED", "knots");
+    const [v2] = useSimVar("L:AIRLINER_V2_SPEED", "knots");
     return (
         <g>
             <clipPath id="speedtape-clip">
@@ -72,11 +84,39 @@ export const SpeedTape: FC = () => {
                             </>
                         );
                     })}
+                    <g visibility= {`${radioHeight < 25 ? "visible" : "hidden"}`}>
+                        {/* V1 Bug */}
+                        <g>
+                            <path className="fpv-outline" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
+                            <path className="green-line" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
+                            <text x="93" y={`${Math.max(529 + (v1 * -4.6), (520 + (airspeed + 54) * -4.6))}`} className="text-2 green">V1</text>
+                        </g>
+
+                        {/* VR Bug */}
+                        <g>
+                            <path className="fpv-outline" d={`M 55 ${520 + (vR * -4.6)}, h10`} />
+                            <path className="green-line" d={`M 55 ${520 + (vR * -4.6)}, h10`} />
+                            <text x="105" y={`${529 + vR * -4.6}`} className="text-2 green">{getVRbugText(v1, vR)}</text>
+                        </g>
+                    </g>
+
+                    {/* V2 Bug */}
+                    <g visibility= {`${flightPhase > 2 ? "hidden" : "visible"}`}>
+                        <path className="fpv-outline" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
+                        <path className="green-line" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
+                        <text x="93" y={`${529 + v2 * -4.6}`} className="text-2 green">V2</text>
+                    </g>
+
                     {/* Selected Airspeed Bug */}
                     <g fill="none" >
-                        <path className="black-outline" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`}/>
-                        <path className="magenta-line" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`}/>
+                        <path className="black-outline" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
+                        <path className="magenta-line" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
                     </g>
+                </g>
+
+                {/* V1 Value Preview */}
+                <g>
+                    <text visibility={`${v1 - airspeed > 55 ? "visible" : "hidden"}`}x="155" y={`${155}`} className="text-2 green">{v1.toString()}</text>
                 </g>
 
                 {/*Maneuvering Speed Band*/}
