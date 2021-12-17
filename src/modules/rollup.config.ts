@@ -34,7 +34,7 @@ export default {
         // Resolve source maps to the original source
         sourceMaps(),
         copy({
-            targets: [{ src: "src/utils/LzUtf8.js", dest: "../../salty-747/html_ui/Pages/Salty/fpm" }],
+            targets: [{ src: "src/fpm/utils/LzUtf8.js", dest: "../../salty-747/html_ui/Pages/Salty/fpm" }],
         }),
     ],
 };
