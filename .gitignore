@@ -6,7 +6,7 @@ salty-747/manifest.json
 salty-747/layout.json
 salty-747/html_ui/Pages/Salty/fpm
 salty-747/html_ui/Pages/VCockpit/Instruments/74s
-src/fpm/dist
+src/modules/dist
 bundles/
 .ace/canvas.json
 .ace/simvars.json

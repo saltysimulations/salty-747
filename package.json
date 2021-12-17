@@ -5,7 +5,7 @@
     "scripts": {
         "build:layout": "node scripts/build.js",
         "build:instruments": "rollup -c src/instruments/rollup.config.js",
-        "build:fpm": "cd src/fpm && tsc --module commonjs && rollup -c rollup.config.ts",
+        "build:fpm": "cd src/modules && tsc --module commonjs && rollup -c rollup.config.ts",
         "build": "npm run build:instruments && npm run build:fpm && npm run build:layout",
         "dev": "rollup -wc src/instruments/rollup.config.js"
     },
