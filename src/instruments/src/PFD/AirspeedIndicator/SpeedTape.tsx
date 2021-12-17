@@ -43,16 +43,101 @@ const getVRbugText = (v1: number, vR: number): string => {
     return "VR";
 };
 
+const getCurrentFlapMarkerText = (flapsHandle: number): string => {
+    switch (flapsHandle) {
+        case 0:
+            return "UP";
+        case 1:
+            return "1\xa0";
+        case 2:
+            return "5\xa0";
+        case 3:
+            return "10";
+        case 4:
+            return "20";
+        case 5:
+            return "25";
+    }
+    return "";
+};
+
+const getCurrentFlapMarkerSpeed = (flapsHandle: number, vRef30: number, vRef25: number, landingFlaps: number): number => {
+    switch (flapsHandle) {
+        case 0:
+            return vRef30 + 80;
+        case 1:
+            return vRef30 + 60;
+        case 2:
+            return vRef30 + 40;
+        case 3:
+            return vRef30 + 20;
+        case 4:
+            return vRef30 + 10;
+        case 5:
+            if (landingFlaps === 25) {
+                return -1;
+            }
+        return vRef25;
+    }
+    return -1;
+};
+
+const getNextFlapMarkerText = (flapsHandle: number, landingFlaps: number): string => {
+    switch (flapsHandle) {
+        case 0:
+            return "";
+        case 1:
+            return "UP";
+        case 2:
+            return "1\xa0";
+        case 3:
+            return "5\xa0";
+        case 4:
+            return "10";
+        case 5:
+            if (landingFlaps === 25) {
+                return "";
+            }
+            return "20";
+    }
+    return "";
+};
+
+const getNextFlapMarkerSpeed = (flapsHandle: number, vRef30: number, vRef25: number, landingFlaps: number): number => {
+    switch (flapsHandle) {
+        case 0:
+            return -1;
+        case 1:
+            return vRef30 + 80;
+        case 2:
+            return vRef30 + 60;
+        case 3:
+            return vRef30 + 40;
+        case 4:
+            return vRef30 + 20;
+        case 5:
+            if (landingFlaps === 25) {
+                return -1;
+            }
+            return vRef30 + 10;
+    }
+    return -1;
+};
+
 export const SpeedTape: FC = () => {
     const [flightPhase] = useSimVar("L:AIRLINER_FLIGHT_PHASE", "number");
+    const [selectedFlaps] = useSimVar("FLAPS HANDLE INDEX", "number");
+    const [landingFlaps] = useSimVar("L:SALTY_SELECTED_APPROACH_FLAP", "number");
     const [radioHeight] = useSimVar("RADIO HEIGHT", "feet");
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
-    const [selSpd] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR:1", "knots");
+    const [selSpd] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR", "knots");
     const [manSpeed] = useSimVar("L:SALTY_MANEUVERING_SPEED", "knots");
     const [maxSpeed] = useSimVar("L:SALTY_MAXIMUM_SPEED", "knots");
     const [v1] = useSimVar("L:AIRLINER_V1_SPEED", "knots");
     const [vR] = useSimVar("L:AIRLINER_VR_SPEED", "knots");
     const [v2] = useSimVar("L:AIRLINER_V2_SPEED", "knots");
+    const [vRef25] = useSimVar("L:SALTY_VREF25", "knots");
+    const [vRef30] = useSimVar("L:SALTY_VREF30", "knots");
     return (
         <g>
             <clipPath id="speedtape-clip">
@@ -105,6 +190,20 @@ export const SpeedTape: FC = () => {
                         <path className="fpv-outline" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
                         <path className="green-line" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
                         <text x="93" y={`${529 + v2 * -4.6}`} className="text-2 green">V2</text>
+                    </g>
+
+                    {/* Current Flap Manuevering Speed Bug */}
+                    <g visibility= {`${flightPhase > 2 ? "visible" : "visible"}`}>
+                        <path className="fpv-outline" d={`M 55 ${520 + (getCurrentFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps) * -4.6)}, h10`} />
+                        <path className="green-line" d={`M 55 ${520 + (getCurrentFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps) * -4.6)}, h10`} />
+                        <text x="93" y={`${529 + (getCurrentFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)) * -4.6}`} className="text-2 green">{getCurrentFlapMarkerText(selectedFlaps)}</text>
+                    </g>
+
+                    {/* Next Flap Manuevering Speed Bug */}
+                    <g visibility= {`${flightPhase > 2 ? "visible" : "visible"}`}>
+                        <path className="fpv-outline" d={`M 55 ${520 + (getNextFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)* -4.6)}, h10`} />
+                        <path className="green-line" d={`M 55 ${520 + (getNextFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)* -4.6)}, h10`} />
+                        <text x="93" y={`${529 + (getNextFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)) * -4.6}`} className="text-2 green">{getNextFlapMarkerText(selectedFlaps, landingFlaps)}</text>
                     </g>
 
                     {/* Selected Airspeed Bug */}
