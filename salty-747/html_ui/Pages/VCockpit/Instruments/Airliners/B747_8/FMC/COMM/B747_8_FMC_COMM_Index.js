@@ -9,7 +9,7 @@ class FMC_COMM_Index {
                 ["", ""],
                 ["<PREFLIGHT", "REQUESTS>"],
                 ["", ""],
-                ["<INFLIGHT", "WEIGHT>"],
+                ["<INFLIGHT", "BOARDING>"],
                 ["", ""],
                 ["<POSTFLIGHT", ""],
                 ["\xa0RECEIVED", ""],
