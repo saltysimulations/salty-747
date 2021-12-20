@@ -1329,6 +1329,14 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return this._lines[row][col];
     }
     setLine(content, row, col = -1) {
+
+        if (content instanceof FMC_Field) {
+            const field = content;
+            ((col === 0 || col === -1) ? this.onLeftInput : this.onRightInput)[row] = (value) => {
+                field.onSelect(value);
+            };
+            content = content.getValue();
+        }
         if (col >= this._lineElements[row].length) {
             return;
         }

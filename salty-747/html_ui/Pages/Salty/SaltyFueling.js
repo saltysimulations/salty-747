@@ -154,8 +154,6 @@ class SaltyFueling {
         }
         /* Main 2 and 3 */
         if (main2Current > main2Target || main3Current > main3Target) {
-            console.log("main2Current" + main2Current)
-            console.log("main2Target" + main2Target)
             main2Current += this.defuelTank(multiplier) / 2;
             main3Current += this.defuelTank(multiplier) / 2;
             if (main2Current < main2Target) {
@@ -172,8 +170,6 @@ class SaltyFueling {
         }
         /* Main 1 and 4 */
         if (main1Current > main1Target || main4Current > main4Target) {
-            console.log("main1Current" + main1Current)
-            console.log("main1Target" + main1Target)
             main1Current += this.defuelTank(multiplier) / 2;
             main4Current += this.defuelTank(multiplier) / 2;
             if (main1Current < main1Target) {
@@ -260,5 +256,8 @@ class SaltyFueling {
                 return;
             }
         }
+
+        // Done fueling
+        SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", false);
     }
 }

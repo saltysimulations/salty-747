@@ -27,7 +27,7 @@ class FMC_Field {
  */
 class FMC_InopField extends FMC_Field {
     /**
-     * @param {A320_Neo_FMC_MainDisplay} fmc
+     * @param {747_FMC_MainDisplay} fmc
      * @param {string} value
      * @param {boolean} [inopColor=true] whether to append "[color]inop" to the value
      */
@@ -48,7 +48,7 @@ class FMC_InopField extends FMC_Field {
 
 class FMC_SingleValueField extends FMC_Field {
     /**
-     * @param {A320_Neo_FMC_MainDisplay} fmc
+     * @param {747_FMC_MainDisplay} fmc
      * @param {"string"|"int"|"number"} type
      * @param {string|number|null} value
      * @param {object} options
