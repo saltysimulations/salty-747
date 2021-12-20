@@ -88,7 +88,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.sentMessages = [];
         this.units;
         this.useLbs;
-        this.atcComm = {            
+        this.atcComm = {
             estab: false,
             loggedTo: "",
             nextCtr: "",
@@ -108,16 +108,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.companyComm = {
             estab: false,
             company: "",
-            tripFuel: "",
-            taxiFuel: "",
-            altnFuel: "",
-            finResFuel: "",
-            contFuel: "",
-            blockFuel: "",
-            loading: "",
-            sendStatus: "",
-            paxCount: "",
-            cargo: undefined
         };
         this.simbrief = {
             route: "",
@@ -145,7 +135,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             finResFuel: "",
             contFuel: "",
             route_distance: "",
-            rteUplinkReady: false,            
+            rteUplinkReady: false,
             perfUplinkReady: false
         }
         this.fixInfo = [];
@@ -162,7 +152,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
     }
     get templateID() { return "B747_8_FMC"; }
-    
+
     // Property for EXEC handling
     get fpHasChanged() {
         return this._fpHasChanged;
@@ -204,11 +194,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
-        this.boardingConstruct = new SaltyBoarding();
-        this.fuelingConstruct = new SaltyFueling();
+        this.saltyModules = new SaltyModules();
         this.saltyBase.init();
-        this.boardingConstruct.init();
-        this.fuelingConstruct.init();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -248,13 +235,13 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.onProg = () => {
             B747_8_FMC_ProgPage.ShowPage1(this);
         };
-        this.onAtc = () => { 
+        this.onAtc = () => {
             FMC_ATC_Index.ShowPage(this);
         };
-        this.onFmcComm = () => { 
+        this.onFmcComm = () => {
             FMC_COMM_Index.ShowPage(this);
         };
-        this.onMenu = () => { 
+        this.onMenu = () => {
             FMC_Menu.ShowPage(this);
         };
         this.onHold = () => {
@@ -290,8 +277,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.timer = 0;
         }
         this.saltyBase.update(this.isElectricityAvailable());
-        this.boardingConstruct.update(_deltaTime);
-        this.fuelingConstruct.update(_deltaTime);
+        this.saltyModules.update(_deltaTime);
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
@@ -577,7 +563,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let machCross = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         let machMode = Simplane.getAutoPilotMachModeActive();
         let isSpeedIntervention = SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number");
-        //When flaps 1 - commands UP + 20 or speed transition, whichever higher 
+        //When flaps 1 - commands UP + 20 or speed transition, whichever higher
         if (flapsHandleIndex <= 1 && alt <= speedTrans) {
             speed = Math.max(flapsUPmanueverSpeed + 20, 250);
         }
@@ -611,7 +597,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
 
     /* Returns VNAV cruise speed target in accordance with active VNAV mode */
     getCrzManagedSpeed(cduSpeedRequest) {
-        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80; 
+        let flapsUPmanueverSpeed = SimVar.GetSimVarValue("L:SALTY_VREF30", "knots") + 80;
         let mach = this.getCrzMach();
         let machlimit = SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", mach);
         let machMode = Simplane.getAutoPilotMachModeActive();
@@ -949,7 +935,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (!this._navModeSelector) {
                 this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
             }
-            
+
             //RUN VNAV ALWAYS
             if (this._vnav === undefined) {
                 this._vnav = new WT_BaseVnav(this.flightPlanManager, this);
@@ -1098,7 +1084,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (vSpeed > 400) {
             if (mcpAlt - alt <= 900 && mcpAlt - alt >= 200) {
                 SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
-            } 
+            }
         }
         else if (vSpeed < -400) {
             if (alt - mcpAlt <= 900 && alt - mcpAlt >= 200) {
@@ -1117,7 +1103,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         const m = parseInt(value.slice(2, 4));
         return h.toFixed(0).padStart(2, "0") + ":" + m.toFixed(0).padStart(2, "0");
     }
-    
+
     refreshGrossWeight(_force = false) {
         let gw = 0;
         let isInMetric = BaseAirliners.unitIsMetric(Aircraft.A320_NEO);
@@ -1339,13 +1325,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return this._lines[row][col];
     }
     setLine(content, row, col = -1) {
-        if (content instanceof FMC_Field) {
-            const field = content;
-            ((col === 0 || col === -1) ? this.onLeftInput : this.onRightInput)[row] = (value) => {
-                field.onSelect(value);
-            };
-            content = content.getValue();
-        }
         if (col >= this._lineElements[row].length) {
             return;
         }
