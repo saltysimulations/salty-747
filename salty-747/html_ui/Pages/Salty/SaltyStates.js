@@ -2,14 +2,16 @@ class SaltyStates {
     constructor() {
         console.log("SaltyStates loaded");
         this.flightHasLoaded = false;
-        this.main1stored;
-        this.main2stored;
-        this.main3stored;
-        this.main4stored;
-        this.res1stored;
-        this.res2stored;
-        this.centerstored;
-        this.stabstored;
+
+        this.main1stored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '')) : "";
+        console.log(this.main1stored + " main1 on construct")
+        this.main2stored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_MAIN2_LAST_QUANTITY_" + this.livery, '')) : "";
+        this.main3stored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_MAIN3_LAST_QUANTITY_" + this.livery, '')) : "";
+        this.main4stored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_MAIN4_LAST_QUANTITY_" + this.livery, '')) : "";
+        this.res1stored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_RES1_LAST_QUANTITY_" + this.livery, '')) : "";
+        this.res2stored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_RES2_LAST_QUANTITY_" + this.livery, '')) : "";
+        this.centerstored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_CENTER_LAST_QUANTITY_" + this.livery, '')) : "";
+        this.stabstored = SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery, '') ? parseFloat(SaltyDataStore.get("747_STAB_LAST_QUANTITY_" + this.livery, '')) : "";
         this.livery;
     }// ends constructor
 
@@ -18,14 +20,10 @@ class SaltyStates {
     }
 
     onFlightStart() {
-        this.main1stored = parseFloat(SaltyDataStore.get("747_MAIN1_LAST_QUANTITY", ''));
-        this.main2stored = parseFloat(SaltyDataStore.get("747_MAIN2_LAST_QUANTITY", ''));
-        this.main3stored = parseFloat(SaltyDataStore.get("747_MAIN3_LAST_QUANTITY", ''));
-        this.main4stored = parseFloat(SaltyDataStore.get("747_MAIN4_LAST_QUANTITY", ''));
-        this.res1stored = parseFloat(SaltyDataStore.get("747_RES1_LAST_QUANTITY", ''));
-        this.res2stored = parseFloat(SaltyDataStore.get("747_RES2_LAST_QUANTITY", ''));
-        this.centerstored = parseFloat(SaltyDataStore.get("747_CENTER_LAST_QUANTITY", ''));
-        this.stabstored = parseFloat(SaltyDataStore.get("747_STAB_LAST_QUANTITY", ''));
+        var liverySimVar = SimVar.GetSimVarValue("TITLE", "string");
+        this.livery = liverySimVar.replace(/\s+/g, '_');
+        console.log("The livery is " + this.livery);
+        console.log("main1 stored on flight start " + this.main1stored);
         
         // Load last fuel quantity
         SimVar.SetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "Gallons", this.main1stored);
@@ -37,17 +35,6 @@ class SaltyStates {
         SimVar.SetSimVarValue("FUEL TANK CENTER QUANTITY", "Gallons", this.centerstored);
         SimVar.SetSimVarValue("FUEL TANK CENTER2 QUANTITY", "Gallons", this.stabstored);
         this.flightHasLoaded = true;
-    }// ends onflightstart
-
-    update(_deltaTime) {
-        const main1CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "Gallons");
-        const main2CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "Gallons");
-        const main3CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "Gallons");
-        const main4CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT AUX QUANTITY", "Gallons");
-        const res1CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT TIP QUANTITY", "Gallons");
-        const res2CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT TIP QUANTITY", "Gallons");
-        const centerCurrentSimVar = SimVar.GetSimVarValue("FUEL TANK CENTER QUANTITY", "Gallons");
-        const stabCurrentSimVar = SimVar.GetSimVarValue("FUEL TANK CENTER2 QUANTITY", "Gallons");
         
         var timerMilSecs = 10000;
         if (this.flightHasLoaded) {
@@ -55,16 +42,26 @@ class SaltyStates {
 
             function saveAcftState() {
                 // Stores last fuel quantity
-                SaltyDataStore.set("747_MAIN1_LAST_QUANTITY", main1CurrentSimVar.toString());
-                SaltyDataStore.set("747_MAIN2_LAST_QUANTITY", main2CurrentSimVar.toString());
-                SaltyDataStore.set("747_MAIN3_LAST_QUANTITY", main3CurrentSimVar.toString());
-                SaltyDataStore.set("747_MAIN4_LAST_QUANTITY",  main4CurrentSimVar.toString());
-                SaltyDataStore.set("747_RES1_LAST_QUANTITY", res1CurrentSimVar.toString());
-                SaltyDataStore.set("747_RES2_LAST_QUANTITY", res2CurrentSimVar.toString());
-                SaltyDataStore.set("747_CENTER_LAST_QUANTITY", centerCurrentSimVar.toString());
-                SaltyDataStore.set("747_STAB_LAST_QUANTITY", stabCurrentSimVar.toString());
-                /*console.log(main1CurrentSimVar + " main1");
-                console.log(main2CurrentSimVar + " main2");
+        
+                const main1CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "Gallons");
+                const main2CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "Gallons");
+                const main3CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "Gallons");
+                const main4CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT AUX QUANTITY", "Gallons");
+                const res1CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT TIP QUANTITY", "Gallons");
+                const res2CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT TIP QUANTITY", "Gallons");
+                const centerCurrentSimVar = SimVar.GetSimVarValue("FUEL TANK CENTER QUANTITY", "Gallons");
+                const stabCurrentSimVar = SimVar.GetSimVarValue("FUEL TANK CENTER2 QUANTITY", "Gallons");
+                
+                SaltyDataStore.set("747_MAIN1_LAST_QUANTITY_" + this.livery, main1CurrentSimVar.toString());
+                SaltyDataStore.set("747_MAIN2_LAST_QUANTITY_" + this.livery, main2CurrentSimVar.toString());
+                SaltyDataStore.set("747_MAIN3_LAST_QUANTITY_" + this.livery, main3CurrentSimVar.toString());
+                SaltyDataStore.set("747_MAIN4_LAST_QUANTITY_" + this.livery,  main4CurrentSimVar.toString());
+                SaltyDataStore.set("747_RES1_LAST_QUANTITY_" + this.livery, res1CurrentSimVar.toString());
+                SaltyDataStore.set("747_RES2_LAST_QUANTITY_" + this.livery, res2CurrentSimVar.toString());
+                SaltyDataStore.set("747_CENTER_LAST_QUANTITY_" + this.livery, centerCurrentSimVar.toString());
+                SaltyDataStore.set("747_STAB_LAST_QUANTITY_" + this.livery, stabCurrentSimVar.toString());
+                console.log(SaltyDataStore.get("747_MAIN1_LAST_QUANTITY_" + this.livery) + " main1");
+                /*console.log(main2CurrentSimVar + " main2");
                 console.log(main3CurrentSimVar + " main3");
                 console.log(main4CurrentSimVar + " main4");
                 console.log(res1CurrentSimVar + " res1");
@@ -75,6 +72,9 @@ class SaltyStates {
                 clearInterval();    
             }
         }// ends if flighthasstarted
+    }// ends onflightstart
+
+    update(_deltaTime) {
 
     }// ends update
 }
