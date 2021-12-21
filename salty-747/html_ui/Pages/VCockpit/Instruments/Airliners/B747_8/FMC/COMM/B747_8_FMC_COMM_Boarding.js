@@ -84,7 +84,7 @@ class FMC_COMM_Boarding {
                 updateView();
                 return true;
             }
-            if (value < 999) {
+            if (value < 191.2) {
                 value = value * 1000;
             }
             const enteredFuel = SaltyUnits.userToKg(Math.round(+value));
@@ -205,7 +205,7 @@ class FMC_COMM_Boarding {
             zfwcg = `${currentZfwcg.toFixed(1)}[color]${cgColor}`;
         }
         
-        const boardingRate = SaltyDataStore.get("CONFIG_BOARDING_RATE", 'REAL');
+        const boardingRate = SaltyDataStore.get("747_CONFIG_BOARDING_RATE", 'REAL');
         let boardingRateText = "";
         switch (boardingRate) {
             case "REAL":
@@ -224,6 +224,8 @@ class FMC_COMM_Boarding {
             default:
         }
 
+        const desiredCargo = SimVar.GetSimVarValue("L:747_DESIRED_CARGO", "number");
+        let desiredCargoText = (desiredCargo / 1000).toFixed(1);
         const paxTarget = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
 
         /* 
@@ -231,15 +233,15 @@ class FMC_COMM_Boarding {
         */
         const display = [
             ["CARGO", "2", "3"],
-            [cargoStations.fwdBag.name, "TOTAL CARGO"],
-            [buildStationValue(fmc, cargoStations.fwdBag), buildTotalCargoValue(fmc)],
+            [cargoStations.fwdBag.name, "CARGO"],
+            [buildStationValue(fmc, cargoStations.fwdBag), desiredCargoText + ">[color]magenta"],
             [cargoStations.aftBag.name, ""],
             [buildStationValue(fmc, cargoStations.aftBag), ""],
             [cargoStations.bulkBag.name, ""],
             [buildStationValue(fmc, cargoStations.bulkBag), ""],
-            ["", "BOARDING RATE"],
-            ["", boardingRateText],
-            ["", "REQUEST OFP"],
+            ["CARGO + BAGS", "BOARDING RATE"],
+            [buildTotalCargoValue(), boardingRateText + "[color]magenta"],
+            ["", "REQUEST OFP[color]inop"],
             ["", requestButton],
             ["\xa0ACARS", "BOARDING"],
             ["<INDEX", loadButton]
@@ -250,12 +252,18 @@ class FMC_COMM_Boarding {
         fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
-            if (value < 100) {
+            if (value < 44) {
                 value = value * 1000;
-                setTargetCargo(paxTarget, value);
-            } else {
-                setTargetCargo(paxTarget, value);
             }
+            const enteredCargo = Math.round(+value);
+            if (value >= 0 && value <= 43900) {
+                SimVar.SetSimVarValue("L:747_DESIRED_CARGO", "number", enteredCargo);
+                setTargetCargo(paxTarget, enteredCargo);
+                fmc.clearUserInput();
+                return true;
+            }
+            fmc.showErrorMessage("NOT ALLOWED");
+            return false;
         };
 
         /* Rate of boarding */
@@ -263,17 +271,17 @@ class FMC_COMM_Boarding {
             switch (boardingRate) {
                 case "INSTANT":
                     // Boards in a realistic time
-                    SaltyDataStore.set("CONFIG_BOARDING_RATE", 'REAL');
+                    SaltyDataStore.set("747_CONFIG_BOARDING_RATE", 'REAL');
                     updateView();
                     break;
                 case "REAL":
                     // Boards 5 times faster
-                    SaltyDataStore.set("CONFIG_BOARDING_RATE", 'FAST');
+                    SaltyDataStore.set("747_CONFIG_BOARDING_RATE", 'FAST');
                     updateView();
                     break;
                 case "FAST":
                     // Boards instant
-                    SaltyDataStore.set("CONFIG_BOARDING_RATE", 'INSTANT');
+                    SaltyDataStore.set("747_CONFIG_BOARDING_RATE", 'INSTANT');
                     updateView();
                     break;
                 default:
@@ -334,32 +342,38 @@ class FMC_COMM_Boarding {
             zfwcg = `${currentZfwcg.toFixed(1)}[color]${cgColor}`;
         }
 
+        const paxTarget = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
+
         /* 
             All pax stations display
         */
         const display = [
             ["PAX", "3", "3"],
-            [paxStations.businessUpper.name, "ZFW"],
-            [buildStationValue(fmc, paxStations.businessUpper), `${Math.round(SaltyUnits.kgToUser(getZfw()))}[color]green`],
+            [paxStations.businessUpper.name, "TOTAL PAX"],
+            [buildStationValue(fmc, paxStations.businessUpper), paxTarget + ">[color]magenta"],
             [paxStations.firstClass.name, "ZFW CG"],
             [buildStationValue(fmc, paxStations.firstClass), zfwcg],
-            [paxStations.businessMain.name, paxStations.fowardEconomy.name],
-            [buildStationValue(fmc, paxStations.businessMain), buildStationValue(fmc, paxStations.fowardEconomy)],
-            [paxStations.premiumEconomy.name, paxStations.rearEconomy.name],
-            [buildStationValue(fmc, paxStations.premiumEconomy), buildStationValue(fmc, paxStations.rearEconomy)],
-            ["TOTAL PAX", "REQUEST OFP"],
-            [buildTotalPaxValue(), ""],
+            [paxStations.businessMain.name, "ZFW"],
+            [buildStationValue(fmc, paxStations.businessMain), `${Math.round(SaltyUnits.kgToUser(getZfw()))}[color]green`],
+            [paxStations.premiumEconomy.name, , paxStations.fowardEconomy.name],
+            [buildStationValue(fmc, paxStations.premiumEconomy), buildStationValue(fmc, paxStations.fowardEconomy)],
+            ["PAX BOARDED", paxStations.rearEconomy.name],
+            [buildTotalPaxValue(), buildStationValue(fmc, paxStations.rearEconomy)],
             ["\xa0ACARS", "BOARDING"],
             ["<INDEX", loadButton]
         ];
         fmc.setTemplate(display);
 
-        /* RSK5 */
-        fmc.onLeftInput[4] = () => {
+        /* RSK1 */
+        fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
+            let cargo = SimVar.GetSimVarValue("L:747_DESIRED_CARGO", "number");
             setTargetPax(value).then(() => {
-                console.log(value);
+                console.log(cargo);
+            });
+            setTargetCargo(value, cargo).then(() => {
+                console.log(cargo);
             });
         };
 
@@ -514,17 +528,19 @@ async function setTargetPax(numberOfPax) {
 
 /* Sets the number of cargo to load */
 async function setTargetCargo(numberOfPax, cargo) {
-    console.log(cargo)
     const bagWeight = numberOfPax * 20;
     const maxLoadInCargoHold = 43900; // from flight_model.cfg
     let loadableCargoWeight = undefined;
 
     if (cargo == 0) {
         loadableCargoWeight = bagWeight;
+        console.log(loadableCargoWeight + " cargo == 0");
     } else if ((cargo + bagWeight) > maxLoadInCargoHold) {
         loadableCargoWeight = maxLoadInCargoHold;
+        console.log(loadableCargoWeight + " (cargo + bagWeight) > maxLoadInCargoHold)");
     } else {
         loadableCargoWeight = cargo + bagWeight;
+        console.log(loadableCargoWeight   +  " else");
     }
     let remainingWeight = loadableCargoWeight;
     console.log(remainingWeight)
@@ -571,7 +587,6 @@ function buildTotalPaxValue(fmc) {
 
 /* Calculates the number of cargo in units */      
 function buildTotalCargoValue(fmc) {
-    console.log("buildTotalCargoValue");
     const currentLoad = Object.values(cargoStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}`, "Number")).reduce((acc, cur) => acc + cur);
     const loadTarget = Object.values(cargoStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
     const paxTarget = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);

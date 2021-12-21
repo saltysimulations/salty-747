@@ -90,7 +90,7 @@ class SaltyBoarding {
         this.time += _deltaTime;
 
         const boardingStartedByUser = SimVar.GetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool");
-        const boardingRate = SaltyDataStore.get("CONFIG_BOARDING_RATE", 'REAL');
+        const boardingRate = SaltyDataStore.get("747_CONFIG_BOARDING_RATE", 'REAL');
         const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
         if (!boardingStartedByUser) {
             return;

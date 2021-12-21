@@ -197,6 +197,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.saltyBoarding = new SaltyBoarding();
         this.saltyFueling = new SaltyFueling();
         this.saltyModules = new SaltyModules();
+        this.saltyStates = new SaltyStates();
         this.saltyBase.init();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
@@ -264,6 +265,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         super.onPowerOn();
         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
     }
+    onFlightStart() {
+        super.onFlightStart();
+        this.saltyStates.onFlightStart();
+    }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
         if (this.refreshPageCallback && this._lastActiveWP != this.currFlightPlanManager.getActiveWaypointIndex() || this._wasApproachActive != this.currFlightPlanManager.isActiveApproach()) {
@@ -282,6 +287,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.saltyBoarding.update(_deltaTime);
         this.saltyFueling.update(_deltaTime);
         this.saltyModules.update(_deltaTime);
+        this.saltyStates.update(_deltaTime);
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;
