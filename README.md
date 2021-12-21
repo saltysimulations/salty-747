@@ -6,10 +6,6 @@
 The Salty Simulations 747 is an open-source modification for the default Asobo 747-8 included in Microsoft Flight Simulator. We are dedicated to improving the default 747-8 to a level where it is enjoyable and realistic to fly. 
 
 ## Installation - Step 1
-### Stable release
-[Click to download the latest stable release](https://github.com/saltysimulations/salty-747/releases/latest/download/salty-747.zip)
-
-A changelog for the latest stable release can be found [here](https://github.com/saltysimulations/salty-747/releases/latest)
 
 ### Development build
 [Click to download the latest development build](https://github.com/saltysimulations/salty-747/releases/download/vdev/salty-747-dev.zip)

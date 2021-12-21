@@ -1,21 +1,19 @@
-'use strict';
+"use strict";
 
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import typescript from 'rollup-plugin-typescript2'
-import json from 'rollup-plugin-json'
-import copy from 'rollup-plugin-copy'
+import resolve from "rollup-plugin-node-resolve";
+import commonjs from "rollup-plugin-commonjs";
+import sourceMaps from "rollup-plugin-sourcemaps";
+import typescript from "rollup-plugin-typescript2";
+import json from "rollup-plugin-json";
+import copy from "rollup-plugin-copy";
 
-const pkg = require('../../package.json')
+const pkg = require("../../package.json");
 
-const libraryName = 'wtsdk'
+const libraryName = "wtsdk";
 
 export default {
     input: `./src/${libraryName}.ts`,
-    output: [
-        { file: `../../salty-747/html_ui/Pages/Salty/fpm/${libraryName}.js`, format: 'umd', sourcemap: false, extend: true, name: 'window' }
-    ],
+    output: [{ file: `../../salty-747/html_ui/Pages/Salty/fpm/${libraryName}.js`, format: "umd", sourcemap: false, extend: true, name: "window" }],
     // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
     external: [],
     // watch: {
@@ -36,9 +34,7 @@ export default {
         // Resolve source maps to the original source
         sourceMaps(),
         copy({
-            targets: [
-                { src: 'src/utils/LzUtf8.js', dest: '../../salty-747/html_ui/Pages/Salty/fpm' }
-            ]
-        })
+            targets: [{ src: "src/fpm/utils/LzUtf8.js", dest: "../../salty-747/html_ui/Pages/Salty/fpm" }],
+        }),
     ],
-}
+};
