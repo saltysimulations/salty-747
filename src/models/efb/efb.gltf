@@ -1,0 +1,183 @@
+{
+    "accessors": [
+        {
+            "bufferView": 1,
+            "byteOffset": 28,
+            "componentType": 5123,
+            "count": 6,
+            "type": "VEC4",
+            "name": "x0__Touchpad_1.002_vertices#0_COLOR_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 16,
+            "componentType": 5120,
+            "count": 6,
+            "type": "VEC4",
+            "name": "x0__Touchpad_1.002_vertices#0_NORMAL"
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 6,
+            "min": [
+                -0.07871541380882263,
+                -0.0799272209405899,
+                -0.10886751860380173
+            ],
+            "max": [
+                0.06317460536956787,
+                0.07628421485424042,
+                0.10560762882232666
+            ],
+            "type": "VEC3",
+            "name": "x0__Touchpad_1.002_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 12,
+            "componentType": 5120,
+            "count": 6,
+            "type": "VEC4",
+            "name": "x0__Touchpad_1.002_vertices#0_TANGENT"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 20,
+            "componentType": 5122,
+            "count": 6,
+            "type": "VEC2",
+            "name": "x0__Touchpad_1.002_vertices#0_TEXCOORD_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 24,
+            "componentType": 5122,
+            "count": 6,
+            "type": "VEC2",
+            "name": "x0__Touchpad_1.002_vertices#0_TEXCOORD_1"
+        },
+        {
+            "bufferView": 0,
+            "componentType": 5123,
+            "count": 6,
+            "type": "SCALAR",
+            "name": "x0__Touchpad_1.002_indices#0"
+        }
+    ],
+    "asset": {
+        "generator": "Khronos glTF Blender I/O v1.7.5",
+        "version": "2.0",
+        "extensions": {
+            "ASOBO_asset_optimized": {
+                "BoundingBoxMax": [
+                    0.06317460536956787,
+                    0.07628421485424042,
+                    0.10560762882232666
+                ],
+                "BoundingBoxMin": [
+                    -0.07871541380882263,
+                    -0.0799272209405899,
+                    -0.10886751860380173
+                ],
+                "MajorVersion": 4,
+                "MinorVersion": 2
+            },
+            "ASOBO_normal_map_convention": {
+                "tangent_space_convention": "DirectX"
+            }
+        }
+    },
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteLength": 12,
+            "byteOffset": 0,
+            "target": 34963,
+            "name": "BufferViewIndex"
+        },
+        {
+            "buffer": 0,
+            "byteLength": 216,
+            "byteStride": 36,
+            "byteOffset": 12,
+            "target": 34962,
+            "name": "BufferViewVertexND"
+        }
+    ],
+    "extensionsUsed": [
+        "ASOBO_asset_optimized",
+        "ASOBO_normal_map_convention"
+    ],
+    "materials": [
+        {
+            "name": "$EFB1",
+            "doubleSided": true,
+            "emissiveFactor": [
+                1,
+                1,
+                1
+            ],
+            "pbrMetallicRoughness": {}
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "COLOR_0": 0,
+                        "NORMAL": 1,
+                        "POSITION": 2,
+                        "TANGENT": 3,
+                        "TEXCOORD_0": 4,
+                        "TEXCOORD_1": 5
+                    },
+                    "indices": 6,
+                    "material": 0,
+                    "mode": 4,
+                    "extras": {
+                        "ASOBO_primitive": {
+                            "PrimitiveCount": 2,
+                            "VertexType": "VTX",
+                            "VertexVersion": 2
+                        }
+                    }
+                }
+            ],
+            "name": "x0__Touchpad_1.002"
+        }
+    ],
+    "nodes": [
+        {
+            "translation": [
+                0.9079679250717163,
+                4.085189342498779,
+                24.702306747436523
+            ],
+            "rotation": [
+                0,
+                0.10798699408769608,
+                0,
+                0.9941523671150208
+            ],
+            "mesh": 0,
+            "name": "_Touchpad_1.001"
+        }
+    ],
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Scene",
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 228,
+            "uri": "efb.bin"
+        }
+    ]
+}
