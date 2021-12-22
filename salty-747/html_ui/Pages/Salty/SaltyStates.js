@@ -71,8 +71,6 @@ class SaltyStates {
     }// ends onflightstart
 
     update(_deltaTime) {
-
-        console.log("747_MAIN2_LAST_QUANTITY");
         console.log(SaltyDataStore.get("747_MAIN1_LAST_QUANTITY") + " main1");
     }// ends update
 }
