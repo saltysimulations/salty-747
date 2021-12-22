@@ -57,20 +57,11 @@ class SaltyStates {
                 SaltyDataStore.set("747_CENTER_LAST_QUANTITY", centerCurrentSimVar.toString());
                 SaltyDataStore.set("747_STAB_LAST_QUANTITY", stabCurrentSimVar.toString());
                 console.log(SaltyDataStore.get("747_MAIN1_LAST_QUANTITY") + " main1");
-                /*console.log(main2CurrentSimVar + " main2");
-                console.log(main3CurrentSimVar + " main3");
-                console.log(main4CurrentSimVar + " main4");
-                console.log(res1CurrentSimVar + " res1");
-                console.log(res2CurrentSimVar + " res2");
-                console.log(centerCurrentSimVar + " center");
-                console.log(stabCurrentSimVar + " stab");*/
-    
-                clearInterval();    
             }
         }// ends if flighthasstarted
     }// ends onflightstart
 
     update(_deltaTime) {
-        console.log(SaltyDataStore.get("747_MAIN1_LAST_QUANTITY") + " main1");
+
     }// ends update
 }
