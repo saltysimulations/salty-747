@@ -42,6 +42,7 @@ function getTemplatePlugin({ name, config, imports = [], isInstrument }) {
         name,
         config,
         imports,
+        elementName: `salty-${name}`.toLowerCase(),
         getCssBundle() {
             return fs.readFileSync(`${TMPDIR}/${name}/bundle.css`).toString();
         },
@@ -83,6 +84,7 @@ module.exports = getInstrumentsToCompile().map(({ path, name, isInstrument }) =>
             }),
             getTemplatePlugin({
                 name,
+                elementName: `salty-${name}`,
                 path,
                 imports: [],
                 config,
