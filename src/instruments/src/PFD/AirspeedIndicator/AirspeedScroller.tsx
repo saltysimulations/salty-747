@@ -66,7 +66,7 @@ export const SpeedScroller: FC = () => {
                             let text = i == 4 ? "" : 4 - i;
                             return (
                                 <>
-                                    <text x="37" y={y} >{text}</text>
+                                    <text x="35" y={y} >{text}</text>
                                 </>
                             );
                         })}
@@ -79,7 +79,7 @@ export const SpeedScroller: FC = () => {
                             let text = 9 - i;
                             return (
                                 <>
-                                    <text x="57" y={y} >{text}</text>
+                                    <text x="56" y={y} >{text}</text>
                                 </>
                             );
                         })}

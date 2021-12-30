@@ -41,9 +41,15 @@ text {
     stroke-linecap: round;
 }
 
+.fma-line {
+    stroke: lime;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
 .amber-line {
     stroke: #ffc400;
-    stroke-width: 4px;
+    stroke-width: 3px;
     stroke-linecap: round;
 }
 
@@ -76,7 +82,7 @@ text {
 
 .text-4 {
     @extend .text;
-    font-size: 42px;
+    font-size: 40px;
 }
 
 .text-3 {
@@ -105,7 +111,17 @@ text {
 .amber {
     fill: #ffc400;
 }
+.end {
+    text-anchor: end;
+}
 
+.middle {
+    text-anchor: middle;
+}
+
+.start {
+    text-anchor: start;
+}
 .graduation-text {
     font-size: 22px;
     fill: white;
