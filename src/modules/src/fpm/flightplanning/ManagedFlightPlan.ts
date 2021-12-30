@@ -517,7 +517,7 @@ export class ManagedFlightPlan {
     const headingToFix = Avionics.Utils.computeGreatCircleHeading(planeCoords, waypoint.infos.coordinates);
     const angleDiff = Math.abs(Avionics.Utils.diffAngle(planeHeading, headingToFix));
 
-    const turnDurationSeconds = (angleDiff / 3) + 6;
+    const turnDurationSeconds = (angleDiff / 3) + 7.5;
     const interceptDistance = (groundSpeed / 60 / 60) * turnDurationSeconds * 1.25;
 
     const createInterceptPoint = (coords: LatLongAlt) => {
@@ -530,7 +530,7 @@ export class ManagedFlightPlan {
       return interceptWaypoint;
     };
 
-    const coords = Avionics.Utils.bearingDistanceToCoordinates(planeHeading, Math.min(interceptDistance, 1.0), lat, long);
+    const coords = Avionics.Utils.bearingDistanceToCoordinates(planeHeading, Math.max(interceptDistance, 1.0), lat, long);
     return [createInterceptPoint(coords)];
 
     //TODO: Work out better direct to intercept waypoint(s)
