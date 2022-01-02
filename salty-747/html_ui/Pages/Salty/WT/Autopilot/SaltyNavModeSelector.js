@@ -557,20 +557,23 @@
   * Determines speed that FLCH should engage with when pushed.
   */
    getFLCHSpeed() {
+    const fmcSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:2", "knots");
+    const mcpSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:1", "knots");
+    const speed = Simplane.getIndicatedSpeed();
      if (this.isVNAVOn) {
-      const fmcSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:2", "knots");
        if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number")) {
-        const mcpSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:1", "knots");
         Coherent.call("AP_SPD_VAR_SET", 1, mcpSpeed);
        }
        else if (isFinite(fmcSpeed)) {
         Coherent.call("AP_SPD_VAR_SET", 1, fmcSpeed);
        }
        else {
-         const speed = Simplane.getIndicatedSpeed();
-         Coherent.call("AP_SPD_VAR_SET", 1, speed);
-       }
+        Coherent.call("AP_SPD_VAR_SET", 1, speed);
+      }
      }
+     else {
+      Coherent.call("AP_SPD_VAR_SET", 1, speed);
+    }
    }
 
  /**
@@ -749,9 +752,20 @@
         this.isVNAVOn = true;
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 2);
       }
+      SimVar.SetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number", 0);
       SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", this.isVNAVOn ? 1 : 0);
       SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", this.isVNAVOn ? 1 : 0);
       SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", this.isVNAVOn ? 1 : 0);
+      
+      if (SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_MODE", "number") == 1) {
+        SimVar.SetSimVarValue("L:SALTY_VNAV_CLB_MODE", "number", 0);
+      }
+      if (SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE", "number") == 1) {
+        SimVar.SetSimVarValue("L:SALTY_VNAV_CRZ_MODE", "number", 0);
+      }
+      if (SimVar.GetSimVarValue("L:SALTY_VNAV_DES_MODE", "number") == 1) {
+        SimVar.SetSimVarValue("L:SALTY_VNAV_DES_MODE", "number", 0);
+      }
 
       if (this.currentVerticalActiveState === VerticalNavModeState.ALTCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTS
         || this.currentVerticalActiveState === VerticalNavModeState.ALTSCAP || this.currentVerticalActiveState === VerticalNavModeState.ALTV
