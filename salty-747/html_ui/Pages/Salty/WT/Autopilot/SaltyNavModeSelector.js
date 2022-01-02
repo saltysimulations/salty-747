@@ -558,9 +558,13 @@
   */
    getFLCHSpeed() {
      if (this.isVNAVOn) {
-       const fmcSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:2", "knots");
-       if (isFinite(fmcSpeed)) {
-         Coherent.call("AP_SPD_VAR_SET", 1, fmcSpeed);
+      const fmcSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:2", "knots");
+       if (SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number")) {
+        const mcpSpeed = SimVar.GetSimVarValue("AUTOPILOT AIRSPEED HOLD VAR:1", "knots");
+        Coherent.call("AP_SPD_VAR_SET", 1, mcpSpeed);
+       }
+       else if (isFinite(fmcSpeed)) {
+        Coherent.call("AP_SPD_VAR_SET", 1, fmcSpeed);
        }
        else {
          const speed = Simplane.getIndicatedSpeed();
@@ -577,6 +581,7 @@
      SimVar.SetSimVarValue("L:WT_CJ4_VNAV_ON", "number", 0);
      SimVar.SetSimVarValue("L:AP_VNAV_ACTIVE", "number", 0);
      SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+     SimVar.SetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "number", 0);
    }
 
  /**
