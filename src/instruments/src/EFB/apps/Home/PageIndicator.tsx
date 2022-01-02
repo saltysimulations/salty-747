@@ -16,28 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC } from "react";
-import { render } from "../Common";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import styled from "styled-components";
 
-import { TopBar } from "./components/TopBar";
-import { HomeScreen } from "./apps/Home";
-import { Maps } from "./apps/Maps";
+export const PageIndicators = styled.div`
+    display: flex;
+    gap: 13px;
+    position: relative;
+    bottom: 25px;
+`;
 
-import "./index.scss";
-
-const EFB: FC = () => {
-    return (
-        <>
-            <MemoryRouter>
-                <TopBar />
-                <Routes>
-                    <Route path="/" element={<HomeScreen />} />
-                    <Route path="/maps" element={<Maps />} />
-                </Routes>
-            </MemoryRouter>
-        </>
-    );
-};
-
-render(<EFB />);
+export const PageIndicator = styled.div`
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: ${(props: { highlighted?: boolean }) => (props.highlighted ? "white" : "#adadad")};
+`;

@@ -17,27 +17,5 @@
  */
 
 import React, { FC } from "react";
-import { render } from "../Common";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
 
-import { TopBar } from "./components/TopBar";
-import { HomeScreen } from "./apps/Home";
-import { Maps } from "./apps/Maps";
-
-import "./index.scss";
-
-const EFB: FC = () => {
-    return (
-        <>
-            <MemoryRouter>
-                <TopBar />
-                <Routes>
-                    <Route path="/" element={<HomeScreen />} />
-                    <Route path="/maps" element={<Maps />} />
-                </Routes>
-            </MemoryRouter>
-        </>
-    );
-};
-
-render(<EFB />);
+export const Maps: FC = () => <div>æ</div>;
