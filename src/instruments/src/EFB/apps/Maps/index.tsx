@@ -17,5 +17,44 @@
  */
 
 import React, { FC } from "react";
+import styled, { css } from "styled-components";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L, { Map } from "leaflet";
+import { useSimVar } from "react-msfs";
 
-export const Maps: FC = () => <div>æ</div>;
+import "./Map.scss";
+import { Controls } from "./Controls";
+
+import plane from "../../img/plane.svg";
+
+// TODO: Make map controls functional, revise plane icon
+export const Maps: FC = () => {
+    const [latitude] = useSimVar("PLANE LATITUDE", "degrees");
+    const [longitude] = useSimVar("PLANE LONGITUDE", "degrees");
+    const [heading] = useSimVar("PLANE HEADING DEGREES TRUE", "degrees");
+
+    return (
+        <MapRoot>
+            <MapContainer center={[0, 0]} zoom={8} scrollWheelZoom={true} whenCreated={(map: Map) => map.setView([latitude, longitude])}>
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker
+                    position={[latitude, longitude]}
+                    icon={L.divIcon({
+                        iconSize: [50, 50],
+                        iconAnchor: [25, 25],
+                        html: `<img src="${plane}" width="50" style="transform-origin: center; transform: rotate(${heading}deg);" />`,
+                    })}
+                />
+                <Controls />
+            </MapContainer>
+        </MapRoot>
+    );
+};
+
+const MapRoot = styled.div`
+    width: 100%;
+    height: 100%;
+`;

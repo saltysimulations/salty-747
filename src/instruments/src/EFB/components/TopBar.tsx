@@ -21,9 +21,11 @@ import styled, { css } from "styled-components";
 import { IoIosBatteryFull } from "react-icons/io";
 import { HiWifi } from "react-icons/hi";
 
-export const TopBar: FC = () => (
+export type BarProps = { bg?: string; textColor?: string; backdropFilter?: string };
+
+export const TopBar: FC<BarProps> = ({ bg = "transparent", textColor = "white", backdropFilter = "none" }) => (
     <div>
-        <StyledBar>
+        <StyledBar bg={bg} textColor={textColor} backdropFilter={backdropFilter}>
             <BarSection>
                 <div>19:46</div>
                 <div>Thu Dec 30</div>
@@ -43,9 +45,12 @@ const StyledBar = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
+    color: ${(props: BarProps) => props.textColor};
+    background-color: ${(props: BarProps) => props.bg};
+    backdrop-filter: ${(props: BarProps) => props.backdropFilter};
     font-size: 20px;
     position: absolute;
+    z-index: 999;
 `;
 
 const BarSection = styled.div`

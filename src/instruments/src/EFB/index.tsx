@@ -19,8 +19,9 @@
 import React, { FC } from "react";
 import { render } from "../Common";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import styled from "styled-components";
 
-import { TopBar } from "./components/TopBar";
+import { TopBar, BarProps } from "./components/TopBar";
 import { HomeScreen } from "./apps/Home";
 import { Maps } from "./apps/Maps";
 
@@ -28,16 +29,30 @@ import "./index.scss";
 
 const EFB: FC = () => {
     return (
-        <>
+        <Root>
             <MemoryRouter>
-                <TopBar />
                 <Routes>
-                    <Route path="/" element={<HomeScreen />} />
-                    <Route path="/maps" element={<Maps />} />
+                    <Route path="/" element={<RouteElement component={<HomeScreen />} />} />
+                    <Route
+                        path="/maps"
+                        element={<RouteElement component={<Maps />} barProps={{ textColor: "black", backdropFilter: "blur(8px)" }} />}
+                    />
                 </Routes>
             </MemoryRouter>
-        </>
+        </Root>
     );
 };
+
+const RouteElement: FC<{ component: React.ReactNode; barProps?: BarProps }> = ({ component, barProps = {} }) => (
+    <>
+        <TopBar {...barProps} />
+        {component}
+    </>
+);
+
+const Root = styled.div`
+    width: 1920px;
+    height: 1160px;
+`;
 
 render(<EFB />);
