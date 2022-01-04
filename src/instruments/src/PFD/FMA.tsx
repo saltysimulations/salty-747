@@ -37,7 +37,10 @@ const getAFDSstatusText = (mode: number): string => {
     return "";
 };
 
-const getActiveAutothrottleText = (mode: number): string => {
+const getActiveAutothrottleText = (mode: number, throttleArmed: boolean): string => {
+    if (!throttleArmed) {
+        return "";
+    }
     switch (mode) {
         case 0:
             return "";
@@ -101,7 +104,10 @@ const getArmedPitchText = (mode: number): string => {
     return "";
 };
 
-const getActiveRollText = (mode: number): string => {
+const getActiveRollText = (mode: number, apOn: boolean, fdOn: boolean): string => {
+    if(!apOn && !fdOn) {
+        return "";
+    }
     switch (mode) {
         case 0:
             return "";
@@ -141,8 +147,8 @@ const getArmedRollText = (mode: number): string => {
     return "";
 };
 
-type FMAColumnProps = { x: number; y: number; topText?: string; bottomText?: string; highlightVar?: boolean };
-export const FMAColumn: FC<FMAColumnProps> = ({x, y, topText, bottomText, highlightVar}) => {
+type FMAColumnProps = { x: number; y: number; topText?: string; bottomText?: string; highlightVar?: boolean; highlightVar2?: boolean };
+export const FMAColumn: FC<FMAColumnProps> = ({x, y, topText, bottomText, highlightVar, highlightVar2}) => {
     const [showGreenBox, setShowGreenBox] = useState<boolean>(false);
 
     useEffect(() => {
@@ -156,7 +162,7 @@ export const FMAColumn: FC<FMAColumnProps> = ({x, y, topText, bottomText, highli
         else {
             setShowGreenBox(false);
         }
-    }, [highlightVar]);
+    }, [highlightVar, highlightVar2]);
 
     return (
         <g> 
@@ -211,7 +217,10 @@ export const AFDSstatus: FC<AFDSstatusProps> = ({bottomText, highlightVar}) => {
 
 export const FMA: FC = () => {
     const [afdsStatus] = useSimVar("L:74S_AFDS_STATUS", "enum");
+    const [fdOn] = useSimVar("AUTOPILOT FLIGHT DIRECTOR ACTIVE", "bool");
+    const [apOn] = useSimVar("AUTOPILOT MASTER", "bool");
     const [throttleMode] = useSimVar("L:74S_AUTOTHROTTLE_MODE_ACTIVE", "enum");
+    const [throttleArmed] = useSimVar("AUTOPILOT THROTTLE ARM", "bool");
     const [rollModeActive] = useSimVar("L:74S_ROLL_MODE_ACTIVE", "enum");
     const [rollModeArmed] = useSimVar("L:74S_ROLL_MODE_ARMED", "enum");
     const [pitchModeActive] = useSimVar("L:74S_PITCH_MODE_ACTIVE", "enum");
@@ -221,21 +230,24 @@ export const FMA: FC = () => {
         <g>
             <FMAColumn 
             x={208} y={10} 
-            topText={getActiveAutothrottleText(throttleMode)} 
+            topText={getActiveAutothrottleText(throttleMode, throttleArmed)} 
             bottomText=""
-            highlightVar={throttleMode} />
+            highlightVar={throttleMode}
+            highlightVar2={throttleArmed} />
 
             <FMAColumn 
             x={356} y={10} 
-            topText={getActiveRollText(rollModeActive)} 
+            topText={getActiveRollText(rollModeActive, fdOn, apOn)} 
             bottomText={getArmedRollText(rollModeArmed)}
-            highlightVar={rollModeActive} />
+            highlightVar={rollModeActive}
+            highlightVar2={fdOn} />
 
             <FMAColumn 
             x={505} y={10} 
             topText={getActivePitchText(pitchModeActive)} 
             bottomText={getArmedPitchText(pitchModeArmed)}
-            highlightVar={pitchModeActive} />
+            highlightVar={pitchModeActive}
+            highlightVar2={fdOn} />
 
             <AFDSstatus 
             bottomText={getAFDSstatusText(afdsStatus)} 

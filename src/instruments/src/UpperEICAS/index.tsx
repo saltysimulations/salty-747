@@ -21,7 +21,6 @@ import { render } from "../Common";
 import { useSimVar } from "react-msfs";
 
 import "./index.scss";
-import "../Common/pixels.scss";
 import img from './EICAS.png';
 
 const getDecimalString = (value: number): string => {
@@ -99,7 +98,6 @@ const UpperEICAS: FC = () => {
     const [stabTrim] = useSimVar("ELEVATOR TRIM PCT", "percent");
     return (
         <>
-            <div className="LcdOverlay" style={{ opacity: "0.2" }} />
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
                 
                 {/*Ref Image*/}
