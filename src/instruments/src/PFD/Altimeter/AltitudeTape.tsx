@@ -39,6 +39,7 @@ export const AltitudeTape: FC = () => {
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
     const [baroMins] = useSimVar("L:SALTY_MINIMUMS_ALT", "feet");
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
+    const [tdze] = useSimVar("L:74S_FMC_TDZE", "feet");
     const [isMtrsOn] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
     const [mtrsOn, setMtrs] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
     
@@ -136,11 +137,15 @@ export const AltitudeTape: FC = () => {
                         );
                     })}
 
+                    <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(altitude)}, h 73, v 100, h -73, Z`} />
+
+                    {/* TDZ Indicator */}
+                    <path className="black-outline" fill="none" d={`M 550 ${382 + tdze * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+                    <path className="amber-line" fill ="none" d={`M 550 ${382 + tdze * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+
                     {/* Minimums Bug */}
                     <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
                     <path className="green-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
-
-                    <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(altitude)}, h 73, v 100, h -73, Z`} />
 
                     {/* Altitude Bug */}
                     <path className="black-outline" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
