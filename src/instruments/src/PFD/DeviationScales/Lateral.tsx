@@ -18,8 +18,6 @@
 
 import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
-import { BlackOutlineWhiteLine } from "../index";
-import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
 export const LateralDeviationScale: FC = () => {
     const [locIndbCourse] = useSimVar("NAV LOCALIZER:3", "degrees");
@@ -27,7 +25,6 @@ export const LateralDeviationScale: FC = () => {
     const [locFrequency] = useSimVar("NAV ACTIVE FREQUENCY:3", "Hz");
     const [locSignal] = useSimVar("NAV HAS NAV:3", "boolean");
     
-
     const getLocDisplacement = (locIndbCourse: number, locRadial: number): number => {
         const x = (locIndbCourse - (locRadial + 180 > 360 ? locRadial -360 : locRadial + 180));
         let boundedX = x;
@@ -37,7 +34,8 @@ export const LateralDeviationScale: FC = () => {
         else if (boundedX < -2.33) {
             boundedX = -2.33;
         }
-        return 349 - (boundedX * 57);
+        const sensitivity = showExpandedLoc(locIndbCourse, locRadial) ? 182 : 57;
+        return 349 - (boundedX * sensitivity);
     };
 
     const isLocAtMaxDeflection = (locIndbCourse: number, locRadial: number): boolean => {
@@ -61,6 +59,14 @@ export const LateralDeviationScale: FC = () => {
         }
         return false;
     };
+
+    const showExpandedLoc = (locIndbCourse: number, locRadial: number): boolean => {
+        const locError = (locIndbCourse - (locRadial + 180 > 360 ? locRadial -360 : locRadial + 180));
+        if (Math.abs(locError) < 0.6) {
+            return true;
+        }
+        return false;
+    };
     
     return (
         <g>
@@ -71,16 +77,25 @@ export const LateralDeviationScale: FC = () => {
                 className="magenta-line"
             />
             <g visibility={`${isLocTuned(locFrequency) === true ? "visible" : "hidden"}`}>
-                <path d="M349 580, v30" className="fpv-outline"/> 
-                <path d="M349 580, v30" className="fpv-line"/>"
-                <circle cx="292" cy="595" r="6" fill="none" className="fpv-outline" />
-                <circle cx="292" cy="595" r="6" fill="none" className="fpv-line" />
-                <circle cx="235" cy="595" r="6" fill="none" className="fpv-outline" />
-                <circle cx="235" cy="595" r="6" fill="none" className="fpv-line" />
-                <circle cx="406" cy="595" r="6" fill="none" className="fpv-outline" />
-                <circle cx="406" cy="595" r="6" fill="none" className="fpv-line" />
-                <circle cx="463" cy="595" r="6" fill="none" className="fpv-outline" />
-                <circle cx="463" cy="595" r="6" fill="none" className="fpv-line" />
+                <path d="M349 580, v30" className="fpv-outline" />
+                <path d="M349 580, v30" className="fpv-line" />"
+                <g visibility={`${(showExpandedLoc(locIndbCourse, locRadial) === false && isLocTuned(locFrequency) === true)? "visible" : "hidden"}`}>
+                    <circle cx="292" cy="595" r="6" fill="none" className="fpv-outline" />
+                    <circle cx="292" cy="595" r="6" fill="none" className="fpv-line" />
+                    <circle cx="235" cy="595" r="6" fill="none" className="fpv-outline" />
+                    <circle cx="235" cy="595" r="6" fill="none" className="fpv-line" />
+                    <circle cx="406" cy="595" r="6" fill="none" className="fpv-outline" />
+                    <circle cx="406" cy="595" r="6" fill="none" className="fpv-line" />
+                    <circle cx="463" cy="595" r="6" fill="none" className="fpv-outline" />
+                    <circle cx="463" cy="595" r="6" fill="none" className="fpv-line" />
+                </g>
+
+                <g visibility={`${(showExpandedLoc(locIndbCourse, locRadial) === true && isLocTuned(locFrequency) === true)? "visible" : "hidden"}`}>
+                    <path d="M252 589, h12, v12, h-12, Z" fill="none" className="fpv-outline" />"
+                    <path d="M252 589, h12, v12, h-12, Z" fill="none" className="fpv-line" />"
+                    <path d="M446 589, h-12, v12, h12, Z" fill="none" className="fpv-outline" />"
+                    <path d="M446 589, h-12, v12, h12, Z" fill="none" className="fpv-line" />"
+                </g>
             </g>
         </g>     
     );
