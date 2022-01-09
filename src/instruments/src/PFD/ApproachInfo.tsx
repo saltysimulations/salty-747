@@ -20,7 +20,17 @@ import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
 
 const getILStext = (frequency: number, ident: string, hasSignal: boolean, course: number): string => {
-    return `${hasSignal ? ident : frequency.toFixed(2)}/` + `${course.toFixed(0)}°`;
+    let courseString = "";
+    if (course < 10) {
+        courseString = `00${course.toFixed(0)}°`;
+    }
+    else if (course < 100) {
+        courseString = `0${course.toFixed(0)}°`;
+    }
+    else {
+        courseString = `${course.toFixed(0)}°`;
+    }
+    return `${hasSignal ? ident : frequency.toFixed(2)}/` + courseString;
 };
 
 const getDMEtext = (hasSignal: boolean, distance: number): string => {
