@@ -17,7 +17,7 @@
  */
 
 import React, { FC } from "react";
-import { useSimVar } from "react-msfs";
+import { useSimVar, useInteractionEvent } from "react-msfs";
 import { BlackOutlineWhiteLine } from "../index";
 import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
@@ -29,17 +29,28 @@ const getRadAltClass = (radAlt: number, radioMins: number, oldClass: string): st
     return radAltClass;
 };
 
+const feetToMetric = (feet: number): number => {
+    const metres = Math.round(feet * 0.3048);
+    return metres;
+};
+
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
     const [baroMins] = useSimVar("L:SALTY_MINIMUMS_ALT", "feet");
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
+    const [isMtrsOn] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
+    const [mtrsOn, setMtrs] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
+    
+    useInteractionEvent("B747_8_PFD_MTRS", () => {
+        setMtrs(!mtrsOn);
+    });
 
     const getAltitudeY = (altitude: number): number => {
         const y = altitude * 0.68;
         return y;
     };
-    
+      
     return (
         <g>
             <clipPath id="altitudetape-clip">
@@ -136,7 +147,37 @@ export const AltitudeTape: FC = () => {
                     <path className="magenta-line" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
                 </g>
             </g>
-            
+
+            {/* Metres Display */}
+            <g visibility={isMtrsOn? "visible" : "hidden"}>
+
+                {/* Metres Box */}
+                <g>
+                    <path
+                        className="indication"
+                        style={{ strokeWidth: "5px", stroke: "black" }}
+                        d="M 632 314, h 104, v 30, h-104, Z"
+                    />
+                    <path
+                        style={{ strokeWidth: "3px" }}
+                        className="indication"
+                        d="M 632 314, h 104, v 30, h-104, Z"
+                    />
+                    <text x="715" y="339" className="text-3 end">{feetToMetric(altitude)}</text>
+                    <text x="728" y="339" className="text-2 cyan end">M</text>
+                </g>
+
+                {/* Metres Selected Alt */}
+                <g>
+                    <text x="681" y="41" className="text-3 magenta end">
+                        {Math.round(feetToMetric(selAlt / 10) * 10)}
+                    </text>
+                    <text x="682" y="41" className="text-2 cyan start">
+                        M
+                    </text>
+                </g>
+            </g>
+
             {/* Altimeter Scroller Box */}
             <path
                 className="indication"
@@ -178,10 +219,10 @@ export const CommandAlt: FC = () => {
             <text x="695" y="80" className="text-3 magenta">
                 {getSmallSelAltText(selAlt)}
             </text>
-            <path className= "indication" 
-                d="M 600 45, h 100, v40, h-100, Z" 
-                fill= "none"
-                visibility = {( altAlertStatus == 1 ? "visible" : "hidden")}/>
+            <path className="indication"
+                d="M 600 45, h 100, v40, h-100, Z"
+                fill="none"
+                visibility={(altAlertStatus == 1 ? "visible" : "hidden")} />
         </g>
     );
 }
