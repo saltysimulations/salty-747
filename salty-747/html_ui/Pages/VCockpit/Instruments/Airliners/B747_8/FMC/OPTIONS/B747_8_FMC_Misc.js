@@ -3,22 +3,28 @@ class FMCSaltyOptions_Misc {
         fmc.clearDisplay();
         let displayCurrentPilotsOption;
         const storedPilotsVis = SaltyDataStore.get("OPTIONS_PILOTS_VISIBILITY", "0");
-        switch(storedPilotsVis) {
-            case '1':
+        switch (storedPilotsVis) {
+            case "1":
                 displayCurrentPilotsOption = `{small}NONE{end}/{green}PILOT{end}/{small}COPILOT{end}/{small}BOTH{end}`;
                 break;
-            case '2':
+            case "2":
                 displayCurrentPilotsOption = `{small}NONE{end}/{small}PILOT{end}/{green}COPILOT{end}/{small}BOTH{end}`;
                 break;
-            case '3':
+            case "3":
                 displayCurrentPilotsOption = `{small}NONE{end}/{small}PILOT{end}/{small}COPILOT{end}/{green}BOTH{end}`;
                 break;
             default:
                 displayCurrentPilotsOption = `{green}NONE{end}/{small}PILOT{end}/{small}COPILOT{end}/{small}BOTH{end}`;
         }
 
+        const onGreen = "{green}ON{end}/{small}OFF{end}";
+        const offGreen = "{small}ON{end}/{green}OFF{end}";
+
         const fpSync = WTDataStore.get("WT_CJ4_FPSYNC", 0);
-        const fpSyncDisplayOption = fpSync >= 1 ? "{green}ON{end}/{small}OFF{end}" : "{small}ON{end}/{green}OFF{end}";
+        const fpSyncDisplayOption = fpSync >= 1 ? onGreen : offGreen;
+
+        const pauseAtTd = WTDataStore.get("PAUSE_AT_TD", 0);
+        const pauseAtTdDisplayOption = pauseAtTd >= 1 ? onGreen : offGreen;
 
         fmc.setTemplate([
             ["MISC OPTIONS"],
@@ -26,14 +32,14 @@ class FMCSaltyOptions_Misc {
             ["<", ">", `${displayCurrentPilotsOption}`],
             ["", "", "FP SYNC (WORLD MAP FP)"],
             [`< ${fpSyncDisplayOption}`, "", ""],
-            ["", ""],
-            ["", ""],
+            ["", "", "PAUSE AT T/D"],
+            [`< ${pauseAtTdDisplayOption}`, "", ""],
             ["", ""],
             ["", ""],
             ["", ""],
             ["", ""],
             ["\xa0RETURN TO", ""],
-            ["<OPTIONS", ""]
+            ["<OPTIONS", ""],
         ]);
 
         /* LSK1 */
@@ -44,10 +50,10 @@ class FMCSaltyOptions_Misc {
             } else {
                 newPVOption--;
             }
-            SaltyDataStore.set("OPTIONS_PILOTS_VISIBILITY", newPVOption+"");
+            SaltyDataStore.set("OPTIONS_PILOTS_VISIBILITY", newPVOption + "");
             SetPilotVar(newPVOption);
             FMCSaltyOptions_Misc.ShowPage(fmc);
-        }
+        };
 
         /* RSK1 */
         fmc.onRightInput[0] = () => {
@@ -57,24 +63,34 @@ class FMCSaltyOptions_Misc {
             } else {
                 newPVOption++;
             }
-            SaltyDataStore.set("OPTIONS_PILOTS_VISIBILITY", newPVOption+"");
+            SaltyDataStore.set("OPTIONS_PILOTS_VISIBILITY", newPVOption + "");
             SetPilotVar(newPVOption);
             FMCSaltyOptions_Misc.ShowPage(fmc);
-        }
+        };
 
         fmc.onLeftInput[1] = () => {
             WTDataStore.set("WT_CJ4_FPSYNC", fpSync >= 1 ? 0 : 1);
             fmc.showErrorMessage("RESTART FLIGHT TO APPLY");
             FMCSaltyOptions_Misc.ShowPage(fmc);
-        }
+        };
+
+        fmc.onLeftInput[2] = () => {
+            WTDataStore.set("PAUSE_AT_TD", pauseAtTd >= 1 ? 0 : 1);
+            SimVar.SetSimVarValue("L:SALTY_PAUSE_AT_TD", "Enum", pauseAtTd >= 1 ? 0 : 1);
+            if (pauseAtTd < 1) {
+                fmc.showErrorMessage("BIND SET PAUSE OFF SETTINGS");
+                setTimeout(() => fmc.showErrorMessage("DO NOT USE ACTIVE PAUSE/ESC"), 5000);
+            }
+            FMCSaltyOptions_Misc.ShowPage(fmc);
+        };
 
         /* LSK6 */
         fmc.onLeftInput[5] = () => {
             FMCSaltyOptions.ShowPage1(fmc);
-        }
+        };
 
         function SetPilotVar(option) {
-            switch(option) {
+            switch (option) {
                 case 1:
                     SimVar.SetSimVarValue("L:SALTY_VIS_PILOT_0", "Number", 0);
                     SimVar.SetSimVarValue("L:SALTY_VIS_PILOT_1", "Number", 1);

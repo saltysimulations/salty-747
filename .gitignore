@@ -8,9 +8,11 @@ salty-747/html_ui/Pages/Salty/fpm
 salty-747/html_ui/Pages/VCockpit/Instruments/74s
 salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/*.gltf
 salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/*.bin
+salty-747/SimObjects/Airplanes/Asobo_B747_8i/panel/*.wasm
 src/modules/dist
 bundles/
 .ace/canvas.json
 .ace/simvars.json
 .ace/live-reload.json
 src/sounds/.cache/
+target/

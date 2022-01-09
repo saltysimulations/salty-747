@@ -23,10 +23,13 @@ jobs:
       - name: Build Salty-747
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 1
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.50
       - run: |
           npm i
-          npm run build
+          npm run build:prod
       - run: ls -R
       - name: Build ZIP files
         run: |
