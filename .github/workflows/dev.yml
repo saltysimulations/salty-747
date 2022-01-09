@@ -23,8 +23,8 @@ jobs:
       - name: Build Salty-747
         uses: actions/setup-node@v1
         with:
-          node-version: 1
-        uses: actions-rs/toolchain@v1
+          node-version: 12
+      - uses: actions-rs/toolchain@v1
         with:
           toolchain: 1.50
       - run: |
