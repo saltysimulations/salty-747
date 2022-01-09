@@ -21,14 +21,14 @@ import { useSimVar } from "react-msfs";
 import { BlackOutlineWhiteLine } from "./index";
 import { getHeadingDelta, getDriftAngle } from "../Common/utils/heading";
 
-const arcCorrection = (heading: number, indicatorHeading: number): number => Math.min(Math.abs(getHeadingDelta(heading, indicatorHeading)), 30);
+const arcCorrection = (heading: number, indicatorHeading: number): number => Math.min(Math.abs(getHeadingDelta(heading, indicatorHeading) * 100), 30);
 
 const HeadingLineElement: FC<{ rotation: number; text?: boolean }> = ({ rotation, text = false }) => {
     const [heading] = useSimVar("PLANE HEADING DEGREES MAGNETIC", "degrees");
 
     return (
         <g transform={`rotate(${-getHeadingDelta(heading, rotation) * 1.6 ?? 0} 349 ${900 + arcCorrection(heading, rotation) ?? 0})`}>
-            <BlackOutlineWhiteLine d={`M349 678, v${text ? 13 : 7}`} />
+            <BlackOutlineWhiteLine d={`M349 680.5, v${text ? 11 : 5.5}`} />
             {text && (
                 <text
                     x="349"
@@ -92,15 +92,15 @@ export const HeadingDisplay: FC = () => {
                 H
             </text>
 
-            {/* Heading Bug */}
-            <g transform={`rotate(${Math.min(-Math.min(getHeadingDelta(heading, mcpHeading) * 1.6,  55), 55) || 0} 349 ${900 + arcCorrection(heading, mcpHeading) || 0})`}>
-                <path className="black-outline" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
-                <path className="magenta-line" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
-            </g>
-
             {/* Heading Triangle */}
             <path className="fpv-outline" fill="none" d="M349 677 l-11 -20 l22 0 Z" stroke-linejoin="round" />
             <path className="fpv-line" fill="none" d="M349 677 l-11 -20 l22 0 Z" stroke-linejoin="round" />
+
+            {/* Heading Bug */}
+            <g fill="none" transform={`rotate(${Math.min(-Math.min(getHeadingDelta(heading, mcpHeading) * 1.6,  55), 55) || 0} 349 ${900 + arcCorrection(heading, mcpHeading) || 0})`}>
+                <path className="black-outline" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
+                <path className="magenta-line" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
+            </g>
 
             {/* Track Line */}
             <g
@@ -108,12 +108,12 @@ export const HeadingDisplay: FC = () => {
                     900 + arcCorrection(heading, heading - getDriftAngle(heading, track)) || 0
                 })`}
             >
-                <path className ="black-outline" d="M349 678, v150" />
+                <path className ="black-outline" d="M349 680, v150" />
                 <path className ="black-outline" d="M343 751, h12" />
-                <path className ="white-line" d="M349 678, v150" />
+                <path className ="white-line" d="M349 680, v150" />
                 <path className ="white-line" d="M343 751, h12" />
             </g>
-            <rect x="250" y="785" width="200" height="5" fill="black" />
+            <rect x="200" y="785" width="300" height="5" fill="black" />
             <rect x="110" y="789" width="480" height="15" fill="black" />
         </g>
     );

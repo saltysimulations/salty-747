@@ -1,7 +1,5 @@
 class SaltyFMA {
     constructor() {
-        console.log("SaltyFMA loaded");
-        this.autoThrottleStatus = "";
     }
     init() {
     }
@@ -22,7 +20,6 @@ class SaltyFMA {
             this.setArmedRollMode(armedRollMode);
             this.setPitchMode(pitchMode);
             this.setArmedPitchMode(armedPitchMode, pitchMode, approachType);
-            console.log(pitchMode)
         } 
     }
     setAfdsMode() {
