@@ -33,6 +33,7 @@ import { RadioAltimeter } from "./Altimeter/AltitudeTape";
 import { LateralDeviationScale } from "./DeviationScales/Lateral";
 import { VerticalDeviationScale } from "./DeviationScales/Vertical";
 import { FMA } from "./FMA";
+import { ApproachInfo } from "./ApproachInfo";
 
 import "./index.scss";
 
@@ -56,6 +57,7 @@ const PFD: FC = () => {
                 <path className="gray-bg" d="M130 10, h450, v50, h-450 Z" />
                 <path className="gray-bg" d="M142 785, h412, c -103 -140, -306 -140, -412 0 Z" />
                 <HeadingDisplay />
+                <ApproachInfo />
 
                 {/* FMA lines */}
                 <BlackOutlineWhiteLine d="M286 10, v50" />
