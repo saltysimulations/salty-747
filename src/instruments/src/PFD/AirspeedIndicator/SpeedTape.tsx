@@ -163,7 +163,7 @@ export const SpeedTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="32" y={`${y + offset}`} className="text-3 white">
+                                <text x="32" y={`${y + offset}`} className="text-3 white" fillOpacity={0.9} letterSpacing={1.2}>
                                     {text}
                                 </text>
                             </>

@@ -33,7 +33,7 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
     const getLine = (length: number) => (
         <>
             <path className="black-outline" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
-            <path className="white-line" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
+            <path className="low-white-line" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
         </>
     );
 
@@ -42,10 +42,10 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
             return (
                 <>
                     {getLine(164)}
-                    <text className="text-2" x={-88} y={y + 7.33}>
+                    <text fillOpacity={0.9} className="text-2" x={-88} y={y + 8.5}>
                         {text}
                     </text>
-                    <text className="text-2" x={109} y={y + 7.33}>
+                    <text fillOpacity={0.9} className="text-2" x={109} y={y + 8.5}>
                         {text}
                     </text>
                 </>

@@ -29,6 +29,13 @@ text {
     stroke-linecap: round;
 }
 
+.low-white-line {
+    stroke: white;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    opacity: 0.9;
+}
+
 .magenta-line {
     stroke: #d570ff;
     stroke-width: 3px;

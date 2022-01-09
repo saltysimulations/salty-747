@@ -59,23 +59,23 @@ export const VSI: FC = () => {
 
 const VSIScale: FC = () => (
     <>
-        <SvgGroup x={741} y={201 + 7.33}>
-            <text x={0} y={0} className="text-2">
+        <SvgGroup x={741} y={201 + 7.33} >
+            <text x={0} y={0} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                 6
             </text>
-            <text x={0} y={40} className="text-2">
+            <text x={0} y={40} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                 2
             </text>
-            <text x={0} y={100} className="text-2">
+            <text x={0} y={100} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                 1
             </text>
-            <text x={0} y={260} className="text-2">
+            <text x={0} y={260} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                 1
             </text>
-            <text x={0} y={320} className="text-2">
+            <text x={0} y={320} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                 2
             </text>
-            <text x={0} y={360} className="text-2">
+            <text x={0} y={360} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                 6
             </text>
         </SvgGroup>

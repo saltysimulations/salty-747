@@ -34,6 +34,7 @@ const HeadingLineElement: FC<{ rotation: number; text?: boolean }> = ({ rotation
                     x="349"
                     y={rotation % 3 === 0 ? 718 : 712}
                     className={`${rotation % 3 === 0 ? "text-3" : "text-2"}`}
+                    fillOpacity={`${rotation % 3 === 0 ? "1" : "0.9"}`}
                     style={{ textAnchor: "middle" }}
                 >
                     {rotation == 360 ? "0" : rotation / 10}

@@ -99,10 +99,10 @@ export const AltitudeTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="638" y={`${y + offset}`} className="text-2">
+                                <text x="641" y={`${y + offset}`} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                                     {hundredsText}
                                 </text>
-                                <text x="600" y={`${y + offset}`} className="text-3">
+                                <text x="600" y={`${y + offset}`} className="text-3" fillOpacity={0.9} letterSpacing={1.2}>
                                     {thousandsText}
                                 </text>
                             </>
@@ -118,7 +118,7 @@ export const AltitudeTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="638" y={`${y + offset}`} className="text-2">
+                                <text x="638" y={`${y + offset}`} className="text-2" fillOpacity={0.85} letterSpacing={1.2}>
                                     {hundredsText}
                                 </text>
                             </>
