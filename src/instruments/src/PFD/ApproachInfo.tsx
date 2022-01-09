@@ -18,18 +18,14 @@
 
 import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
-import { SvgGroup } from "../Common";
-import { BlackOutlineWhiteLine } from "./index";
 
 const getILStext = (frequency: number, ident: string, hasSignal: boolean, course: number): string => {
-    const string = (hasSignal ? ident : frequency.toFixed(2)) + "/" + course.toFixed(0) + "°";
-    return string;
+    return `${hasSignal ? ident : frequency.toFixed(2)}/` + `${course.toFixed(0)}°`;
 };
 
 const getDMEtext = (hasSignal: boolean, distance: number): string => {
     const roundedDist = distance < 100 ? distance.toFixed(1) : distance.toFixed(0);
-    const string = "DME\xa0" + (hasSignal ? roundedDist : "---");
-    return string;
+    return `DME\xa0${hasSignal && distance > 0 ? roundedDist : "---"}`;
 };
 
 export const ApproachInfo: FC = () => {
