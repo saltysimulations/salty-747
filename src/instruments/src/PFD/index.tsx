@@ -19,17 +19,12 @@
 import React, { FC } from "react";
 import { render } from "../Common";
 import { Horizon } from "./AttitudeIndicator/Horizon";
-import { CommandSpeed, MachGS } from "./AirspeedIndicator/SpeedTape";
-import { SpeedTape } from "./AirspeedIndicator/SpeedTape";
-import { SpeedScroller } from "./AirspeedIndicator/AirspeedScroller";
+import { CommandSpeed, MachGS, SpeedTape } from "./AirspeedIndicator/SpeedTape";
+import { SpeedScroller, SpeedTrendVector } from "./AirspeedIndicator/AirspeedScroller";
 import { VSI } from "./VerticalSpeedIndicator";
 import { HeadingDisplay } from "./HeadingDisplay";
 import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
-import { AltitudeTape } from "./Altimeter/AltitudeTape";
-import { CommandAlt } from "./Altimeter/AltitudeTape";
-import { BaroSetting } from "./Altimeter/AltitudeTape";
-import { Minimums } from "./Altimeter/AltitudeTape";
-import { RadioAltimeter } from "./Altimeter/AltitudeTape";
+import { AltitudeTape, CommandAlt, BaroSetting, Minimums, RadioAltimeter } from "./Altimeter/AltitudeTape";
 import { LateralDeviationScale } from "./DeviationScales/Lateral";
 import { VerticalDeviationScale } from "./DeviationScales/Vertical";
 import { FMA } from "./FMA";
@@ -67,6 +62,7 @@ const PFD: FC = () => {
                 <SpeedTape />
                 <CommandSpeed />
                 <SpeedScroller />
+                <SpeedTrendVector />
                 <MachGS />
 
                 <AltitudeTape />
