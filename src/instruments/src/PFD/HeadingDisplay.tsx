@@ -89,7 +89,7 @@ export const HeadingDisplay: FC = () => {
             <text x="305" y="777" className="text-3 magenta">
                 {getSelHeadingString()}
             </text>
-            <text x="317" y="777" className="text-2 magenta">
+            <text x="319" y="777" className="text-2 magenta">
                 H
             </text>
 

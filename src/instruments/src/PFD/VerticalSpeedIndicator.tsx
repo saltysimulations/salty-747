@@ -59,7 +59,7 @@ export const VSI: FC = () => {
 
 const VSIScale: FC = () => (
     <>
-        <SvgGroup x={741} y={201 + 7.33} >
+        <SvgGroup x={740.5} y={202 + 7.33} >
             <text x={0} y={0} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
                 6
             </text>

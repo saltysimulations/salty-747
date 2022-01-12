@@ -218,7 +218,7 @@ export const CommandAlt: FC = () => {
 
     return (
         <g>
-            <text x="647" y="80" className="text-4 magenta">
+            <text x="648" y="80" className="text-4 magenta">
                 {getLargeSelAltText(selAlt)}
             </text>
             <text x="697" y="80" className="text-3 magenta">
@@ -280,7 +280,7 @@ export const Minimums: FC = () => {
     return (
         < g>
             < g visibility={baroMins >= -100 ? "visible" : "hidden"}>
-                <text x="530" y="640" className="text-2 green" >
+                <text x="530" y="638" className="text-2 green" >
                     BARO
                 </text>
                 <text x="530" y="668" className="text-3 green">
