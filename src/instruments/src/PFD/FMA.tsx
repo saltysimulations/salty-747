@@ -206,10 +206,10 @@ export const AFDSstatus: FC<AFDSstatusProps> = ({bottomText, highlightVar}) => {
 
     return (
         <g> 
-            <text x={349} y={170} className={bottomText == "AUTOLAND" ? "text-4 amber middle" : "text-4 green middle"}>{bottomText}</text>
-            <text x={349} y={138} visibility = {bottomText == "AUTOLAND" ? "visible" : "hidden"} className={bottomText == "AUTOLAND" ? "text-4 amber middle" : "text-4 green middle"}>NO</text>
-            <rect x={267} y={138} visibility = {showGreenBox == true ? "visible" : "hidden"} width="164" height="34" fill="none" className="fma-line" />
-            <path d="M 267 138, h59, v-34, h46, v34, h59, v34, h-164, Z" visibility = {showAmberBox == true ? "visible" : "hidden"} className="amber-line" fill="none"/>
+            <text x={349} y={165} className={bottomText == "AUTOLAND" ? "text-4 amber middle" : "text-4 green middle"}>{bottomText}</text>
+            <text x={349} y={133} visibility = {bottomText == "AUTOLAND" ? "visible" : "hidden"} className={bottomText == "AUTOLAND" ? "text-4 amber middle" : "text-4 green middle"}>NO</text>
+            <rect x={267} y={133} visibility = {showGreenBox == true ? "visible" : "hidden"} width="164" height="34" fill="none" className="fma-line" />
+            <path d="M 267 133, h59, v-34, h46, v34, h59, v34, h-164, Z" visibility = {showAmberBox == true ? "visible" : "hidden"} className="amber-line" fill="none"/>
 
         </g>
     );
