@@ -83,28 +83,28 @@ text {
     fill: white;
     stroke: black;
     text-anchor: end;
-    stroke-width: 1.5px;
+    stroke-width: 2px;
     paint-order: stroke;
 }
 
 .text-4 {
     @extend .text;
-    font-size: 40px;
+    font-size: 44px;
 }
 
 .text-3 {
     @extend .text;
-    font-size: 30px;
+    font-size: 33px;
 }
 
 .text-2 {
     @extend .text;
-    font-size: 23.625px;
+    font-size: 26px;
 }
 
 .text-1 {
     @extend .text;
-    font-size: 17.718px;
+    font-size: 19.5px;
 }
 
 .magenta {

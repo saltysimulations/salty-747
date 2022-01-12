@@ -111,10 +111,10 @@ export const AltitudeTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="641" y={`${y + offset}`} className="text-2" fillOpacity={0.9} letterSpacing={1.2}>
+                                <text x="641" y={`${y + offset}`} className="text-2" fillOpacity={0.9} letterSpacing={0}>
                                     {hundredsText}
                                 </text>
-                                <text x="600" y={`${y + offset}`} className="text-3" fillOpacity={0.9} letterSpacing={1.2}>
+                                <text x="600" y={`${y + offset}`} className="text-3" fillOpacity={0.9} letterSpacing={0}>
                                     {thousandsText}
                                 </text>
                             </>
@@ -130,7 +130,7 @@ export const AltitudeTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="638" y={`${y + offset}`} className="text-2" fillOpacity={0.85} letterSpacing={1.2}>
+                                <text x="638" y={`${y + offset}`} className="text-2" fillOpacity={0.85} letterSpacing={0}>
                                     {hundredsText}
                                 </text>
                             </>
@@ -218,10 +218,10 @@ export const CommandAlt: FC = () => {
 
     return (
         <g>
-            <text x="648" y="80" className="text-4 magenta">
+            <text x="647" y="80" className="text-4 magenta">
                 {getLargeSelAltText(selAlt)}
             </text>
-            <text x="695" y="80" className="text-3 magenta">
+            <text x="697" y="80" className="text-3 magenta">
                 {getSmallSelAltText(selAlt)}
             </text>
             <path className="indication"
