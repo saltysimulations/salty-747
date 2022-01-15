@@ -23,6 +23,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: 1.50
+          target: wasm32-wasi
       - name: Build salty-747
         run: |
           npm i
