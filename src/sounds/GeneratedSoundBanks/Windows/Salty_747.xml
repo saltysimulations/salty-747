@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="12" SoundbankVersion="135">
+	<RootPaths>
+		<ProjectRoot>X:\Documents\GitHub\salty-747\src\sounds\</ProjectRoot>
+		<SourceFilesRoot>X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<SoundBanks>
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="4149579093">
+			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
+			<ShortName>Salty_747</ShortName>
+			<Path>Salty_747.bnk</Path>
+			<IncludedEvents>
+				<Event Id="2809333158" Name="Play_Asobo_B747_8i_bank_angle" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_bank_angle" GUID="{DB32A7C5-4B89-469E-A387-9E63F3473097}" DurationType="OneShot" DurationMin="1.490612" DurationMax="1.490612">
+					<IncludedMemoryFiles>
+						<File Id="438977682" Language="SFX">
+							<ShortName>bank_angle.wav</ShortName>
+							<Path>SFX\bank_angle_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3939631457" Name="Play_Asobo_B747_8i_caution_obstacle" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_caution_obstacle" GUID="{5525F6F1-46F5-457E-B0A3-2FA82C054B12}" DurationType="OneShot" DurationMin="1.353719" DurationMax="1.353719">
+					<IncludedMemoryFiles>
+						<File Id="841989067" Language="SFX">
+							<ShortName>caution_obstacle.wav</ShortName>
+							<Path>SFX\caution_obstacle_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1604764289" Name="Play_Asobo_B747_8i_caution_terrain" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_caution_terrain" GUID="{B79E26F5-4FD1-4BA9-AF2C-511212370AFD}" DurationType="OneShot" DurationMin="0.989841" DurationMax="0.989841">
+					<IncludedMemoryFiles>
+						<File Id="93224664" Language="SFX">
+							<ShortName>caution_terrain.wav</ShortName>
+							<Path>SFX\caution_terrain_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1781746709" Name="Play_Asobo_B747_8i_dont_sink" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_dont_sink" GUID="{250F68B6-22F7-4E98-AECC-B7EA0331E5E3}" DurationType="OneShot" DurationMin="0.731111" DurationMax="0.731111">
+					<IncludedMemoryFiles>
+						<File Id="336234418" Language="SFX">
+							<ShortName>dont_sink.wav</ShortName>
+							<Path>SFX\dont_sink_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1077883375" Name="Play_Asobo_B747_8i_minimums" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_minimums" GUID="{D6A22AB7-99CF-4184-9CF2-0CADBBAB25DE}" DurationType="OneShot" DurationMin="0.711088" DurationMax="0.711088">
+					<IncludedMemoryFiles>
+						<File Id="176262890" Language="SFX">
+							<ShortName>minimums.wav</ShortName>
+							<Path>SFX\minimums_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1505420985" Name="Play_Asobo_B747_8i_obstacle_obstacle" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_obstacle_obstacle" GUID="{25D27B71-0AE1-4915-82FD-ACE0AFD032B8}" DurationType="OneShot" DurationMin="1.445556" DurationMax="1.445556">
+					<IncludedMemoryFiles>
+						<File Id="622651067" Language="SFX">
+							<ShortName>obstacle_obstacle.wav</ShortName>
+							<Path>SFX\obstacle_obstacle_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3613032553" Name="Play_Asobo_B747_8i_plus_hundred" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_plus_hundred" GUID="{E8661F7E-F785-428D-91AC-E08B4B0BF655}" DurationType="OneShot" DurationMin="0.804558" DurationMax="0.804558">
+					<IncludedMemoryFiles>
+						<File Id="190940915" Language="SFX">
+							<ShortName>plus_hundred.wav</ShortName>
+							<Path>SFX\plus_hundred_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1346834191" Name="Play_Asobo_B747_8i_pull_up" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_pull_up" GUID="{B30B6EA7-8139-4989-8AC5-453CA99AB50A}" DurationType="OneShot" DurationMin="0.620952" DurationMax="0.620952">
+					<IncludedMemoryFiles>
+						<File Id="1037597979" Language="SFX">
+							<ShortName>pull_up.wav</ShortName>
+							<Path>SFX\pull_up_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2504848834" Name="Play_Asobo_B747_8i_sink_rate" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_sink_rate" GUID="{42A04355-3171-48BD-90F5-0BD0CF8E6549}" DurationType="OneShot" DurationMin="0.472404" DurationMax="0.472404">
+					<IncludedMemoryFiles>
+						<File Id="1037536185" Language="SFX">
+							<ShortName>sink_rate.wav</ShortName>
+							<Path>SFX\sink_rate_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2177641851" Name="Play_Asobo_B747_8i_terrain" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_terrain" GUID="{6A268399-9BE6-4D3D-B390-F6B71A8EC1C6}" DurationType="OneShot" DurationMin="0.532472" DurationMax="0.532472">
+					<IncludedMemoryFiles>
+						<File Id="534888463" Language="SFX">
+							<ShortName>terrain.wav</ShortName>
+							<Path>SFX\terrain_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3466962505" Name="Play_Asobo_B747_8i_terrain_terrain" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_terrain_terrain" GUID="{243D9296-6E31-4026-874D-334B3D2FD384}" DurationType="OneShot" DurationMin="1.063288" DurationMax="1.063288">
+					<IncludedMemoryFiles>
+						<File Id="409881053" Language="SFX">
+							<ShortName>terrain_terrain.wav</ShortName>
+							<Path>SFX\terrain_terrain_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2780512408" Name="Play_Asobo_B747_8i_too_low_flaps" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_flaps" GUID="{0C3EBCE8-96C1-4629-A5CC-BDCBD2C45062}" DurationType="OneShot" DurationMin="1.173447" DurationMax="1.173447">
+					<IncludedMemoryFiles>
+						<File Id="74981196" Language="SFX">
+							<ShortName>too_low_flaps.wav</ShortName>
+							<Path>SFX\too_low_flaps_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3826800809" Name="Play_Asobo_B747_8i_too_low_gear" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_gear" GUID="{4B6B8845-C020-46E8-9C5D-23A8560BE607}" DurationType="OneShot" DurationMin="1.039909" DurationMax="1.039909">
+					<IncludedMemoryFiles>
+						<File Id="617603150" Language="SFX">
+							<ShortName>too_low_gear.wav</ShortName>
+							<Path>SFX\too_low_gear_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3260237411" Name="Play_Asobo_B747_8i_too_low_terrain" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_terrain" GUID="{1A1717A4-D681-4745-BBD6-0CB570E798C2}" DurationType="OneShot" DurationMin="1.106689" DurationMax="1.106689">
+					<IncludedMemoryFiles>
+						<File Id="748162498" Language="SFX">
+							<ShortName>too_low_terrain.wav</ShortName>
+							<Path>SFX\too_low_terrain_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3154175190" Name="Play_Asobo_B747_8i_wailer" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_wailer" GUID="{E6ED7B72-8023-4ADB-A7D4-14104F2DCD2E}" DurationType="OneShot" DurationMin="1.600000" DurationMax="1.600000">
+					<IncludedMemoryFiles>
+						<File Id="51574697" Language="SFX">
+							<ShortName>wailer.wav</ShortName>
+							<Path>SFX\wailer_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2967775321" Name="Play_Asobo_B747_8i_windshear" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_windshear" GUID="{EC038523-16C0-4E65-AFC5-6E6DF25AF6EE}" DurationType="OneShot" DurationMin="3.688390" DurationMax="3.688390">
+					<IncludedMemoryFiles>
+						<File Id="378105868" Language="SFX">
+							<ShortName>windshear.wav</ShortName>
+							<Path>SFX\windshear_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+			</IncludedEvents>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

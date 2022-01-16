@@ -1,0 +1,36 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1077883375	Play_Asobo_B747_8i_minimums			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_minimums	
+	1346834191	Play_Asobo_B747_8i_pull_up			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_pull_up	
+	1505420985	Play_Asobo_B747_8i_obstacle_obstacle			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_obstacle_obstacle	
+	1604764289	Play_Asobo_B747_8i_caution_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_caution_terrain	
+	1781746709	Play_Asobo_B747_8i_dont_sink			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_dont_sink	
+	2177641851	Play_Asobo_B747_8i_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_terrain	
+	2504848834	Play_Asobo_B747_8i_sink_rate			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_sink_rate	
+	2780512408	Play_Asobo_B747_8i_too_low_flaps			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_flaps	
+	2809333158	Play_Asobo_B747_8i_bank_angle			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_bank_angle	
+	2967775321	Play_Asobo_B747_8i_windshear			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_windshear	
+	3154175190	Play_Asobo_B747_8i_wailer			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_wailer	
+	3260237411	Play_Asobo_B747_8i_too_low_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_terrain	
+	3466962505	Play_Asobo_B747_8i_terrain_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_terrain_terrain	
+	3613032553	Play_Asobo_B747_8i_plus_hundred			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_plus_hundred	
+	3826800809	Play_Asobo_B747_8i_too_low_gear			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_gear	
+	3939631457	Play_Asobo_B747_8i_caution_obstacle			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_caution_obstacle	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	51574697	wailer	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\wailer_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\wailer		7624
+	74981196	too_low_flaps	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_flaps_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_flaps		35956
+	93224664	caution_terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\caution_terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\caution_terrain		29210
+	176262890	minimums	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\minimums_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\minimums		20687
+	190940915	plus_hundred	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\plus_hundred_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\plus_hundred		22626
+	336234418	dont_sink	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\dont_sink_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\dont_sink		22728
+	378105868	windshear	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\windshear_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\windshear		107408
+	409881053	terrain_terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\terrain_terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\terrain_terrain		26278
+	438977682	bank_angle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\bank_angle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\bank_angle		45301
+	534888463	terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\terrain		13981
+	617603150	too_low_gear	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_gear_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_gear		27464
+	622651067	obstacle_obstacle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\obstacle_obstacle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\obstacle_obstacle		47304
+	748162498	too_low_terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_terrain		29871
+	841989067	caution_obstacle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\caution_obstacle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\caution_obstacle		43097
+	1037536185	sink_rate	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\sink_rate_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\sink_rate		13622
+	1037597979	pull_up	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\pull_up_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\pull_up		18311
+

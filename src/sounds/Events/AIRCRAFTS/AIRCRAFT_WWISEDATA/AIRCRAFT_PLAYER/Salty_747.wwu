@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{BDA0DE4C-DC97-4A60-B4F4-A06A000F8280}" SchemaVersion="97">
+	<Events>
+		<WorkUnit Name="Salty_747" ID="{BDA0DE4C-DC97-4A60-B4F4-A06A000F8280}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_Asobo_B747_8i_sink_rate" ID="{42A04355-3171-48BD-90F5-0BD0CF8E6549}">
+					<ChildrenList>
+						<Action Name="" ID="{292CF189-380B-4A0F-85AF-8D01AFEED503}" ShortID="581491474">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="sink_rate" ID="{4A74D8BE-A9B1-4515-9318-A962BAC579E7}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_bank_angle" ID="{DB32A7C5-4B89-469E-A387-9E63F3473097}">
+					<ChildrenList>
+						<Action Name="" ID="{783BBAC9-B06E-4736-BC81-1BC337188781}" ShortID="566076390">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="bank_angle" ID="{64951C66-E94E-4B9D-84DD-07BAF0401DCB}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_caution_obstacle" ID="{5525F6F1-46F5-457E-B0A3-2FA82C054B12}">
+					<ChildrenList>
+						<Action Name="" ID="{559C2B44-E0E0-4095-B0C7-97FD4FC59C1C}" ShortID="870262401">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="caution_obstacle" ID="{E64791A0-C010-4D3B-B4EF-CB3C4158C6A9}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_caution_terrain" ID="{B79E26F5-4FD1-4BA9-AF2C-511212370AFD}">
+					<ChildrenList>
+						<Action Name="" ID="{97A55A61-533B-4EE5-95E9-0F5AD4C2FC70}" ShortID="290515676">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="caution_terrain" ID="{2A24346C-3FA3-4894-BD84-8A6B02E13566}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_dont_sink" ID="{250F68B6-22F7-4E98-AECC-B7EA0331E5E3}">
+					<ChildrenList>
+						<Action Name="" ID="{6237D5D2-044A-4FAB-8364-9ADDC8928D8A}" ShortID="67670443">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="dont_sink" ID="{642C0990-AEE1-48A7-8BA1-A200FE3A90C2}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_minimums" ID="{D6A22AB7-99CF-4184-9CF2-0CADBBAB25DE}">
+					<ChildrenList>
+						<Action Name="" ID="{746FEF87-A905-4083-943F-3FA65A38CE39}" ShortID="587493066">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="minimums" ID="{C5A2E6E0-AB71-439E-9A67-165BE6BBE122}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_obstacle_obstacle" ID="{25D27B71-0AE1-4915-82FD-ACE0AFD032B8}">
+					<ChildrenList>
+						<Action Name="" ID="{4626B0A6-5A90-41C4-AAF4-6693429EA76C}" ShortID="1042194964">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="obstacle_obstacle" ID="{ECC700AE-1A1B-4516-A023-31299E1E73DF}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_plus_hundred" ID="{E8661F7E-F785-428D-91AC-E08B4B0BF655}">
+					<ChildrenList>
+						<Action Name="" ID="{08F67064-B791-42B6-A589-482B43F61A67}" ShortID="585153301">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="plus_hundred" ID="{29950E83-6C35-496B-8C9A-E563EC338EA1}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_pull_up" ID="{B30B6EA7-8139-4989-8AC5-453CA99AB50A}">
+					<ChildrenList>
+						<Action Name="" ID="{4AECA5F3-AC10-470B-A620-3613A457E809}" ShortID="440251499">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="pull_up" ID="{614B8A1D-835F-441C-B822-6A9E6F37F46C}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_terrain" ID="{6A268399-9BE6-4D3D-B390-F6B71A8EC1C6}">
+					<ChildrenList>
+						<Action Name="" ID="{CAE00908-4987-42D1-8FA1-23E446805257}" ShortID="555080258">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="terrain" ID="{1F777A22-6216-4540-8282-418ECB1E8CE3}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_terrain_terrain" ID="{243D9296-6E31-4026-874D-334B3D2FD384}">
+					<ChildrenList>
+						<Action Name="" ID="{B6C2E2D7-ED94-42D1-B469-A6212D940515}" ShortID="494648658">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="terrain_terrain" ID="{DB999749-19D0-466C-AB06-B452722D76D9}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_too_low_flaps" ID="{0C3EBCE8-96C1-4629-A5CC-BDCBD2C45062}">
+					<ChildrenList>
+						<Action Name="" ID="{BEA6B4C7-06E8-4F2D-9BF2-3490777C8990}" ShortID="135429098">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="too_low_flaps" ID="{59C27596-AD28-4420-9E9E-C030F11CFB7A}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_too_low_gear" ID="{4B6B8845-C020-46E8-9C5D-23A8560BE607}">
+					<ChildrenList>
+						<Action Name="" ID="{595A03BF-DA91-4342-9BDE-EFB79248D0E3}" ShortID="862502859">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="too_low_gear" ID="{A5426B4C-880A-4BB5-BAA5-BBA599264D6A}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_too_low_terrain" ID="{1A1717A4-D681-4745-BBD6-0CB570E798C2}">
+					<ChildrenList>
+						<Action Name="" ID="{A2876DCF-E142-4FC9-8303-EC286AC2214C}" ShortID="215919743">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="too_low_terrain" ID="{6F66A0FF-F43F-4502-84C2-DB83EB8EE8C6}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_windshear" ID="{EC038523-16C0-4E65-AFC5-6E6DF25AF6EE}">
+					<ChildrenList>
+						<Action Name="" ID="{302AB324-2E80-42EF-B28F-7C964E305A26}" ShortID="62654733">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="windshear" ID="{C79D802A-633A-4414-9EBB-1531EA081D65}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_wailer" ID="{E6ED7B72-8023-4ADB-A7D4-14104F2DCD2E}">
+					<ChildrenList>
+						<Action Name="" ID="{FD7E06A2-15A3-45B9-88A5-075B180C51DD}" ShortID="900556250">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="wailer" ID="{E22567C2-9AEC-4460-BEB8-0EC1E86D6128}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

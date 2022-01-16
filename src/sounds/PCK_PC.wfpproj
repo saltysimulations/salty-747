@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Project Version="7" InfoFilePath="GeneratedSoundBanks\Windows\SoundbanksInfo.xml" OutputDirectory="X:\Documents\GitHub\salty-747\salty-747\SimObjects\Airplanes\Asobo_B747_8i\sound">
+  <ManualPackagingInfo BlockSize="1" UnassignedBanksPackageId="00000000-0000-0000-0000-000000000000" UnassignedStreamsPackageId="00000000-0000-0000-0000-000000000000" UnassignedExternalsPackageId="00000000-0000-0000-0000-000000000000" UnassignedLooseMediaPackageId="00000000-0000-0000-0000-000000000000">
+    <Packages>
+      <Package Id="1dd5246d-d2f9-4235-8ad0-837908528060" Name="MyCompany_Gauge_Aircraft.PC.PCK">
+        <Items>
+          <PackageContentItem Id="3205757781" Language="SFX" FileName="MyCompany_Gauge_Aircraft" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+      <Package Id="e8183133-7d32-49a8-9762-a21d7f9e7861" Name="MyCompany_Gauge_Aircraft_AI.PC.PCK">
+        <Items>
+          <PackageContentItem Id="509158762" Language="SFX" FileName="MyCompany_Gauge_Aircraft_AI" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+      <Package Id="d9446145-bd9f-4e3f-b437-ab0e559571b8" Name="MyCompany_Simple_Aircraft.PC.PCK">
+        <Items>
+          <PackageContentItem Id="807589334" Language="SFX" FileName="MyCompany_Simple_Aircraft" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+      <Package Id="e643ab77-95c5-4d86-845b-a9f16a5fc842" Name="MyCompany_Simple_Aircraft_AI.PC.PCK">
+        <Items>
+          <PackageContentItem Id="1218587771" Language="SFX" FileName="MyCompany_Simple_Aircraft_AI" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+      <Package Id="ee888b08-84f3-4103-9307-0a0a9090cbd7" Name="DA62_SDK_AIRCRAFT.PC.PCK">
+        <Items>
+          <PackageContentItem Id="2210407814" Language="SFX" FileName="DA62_SDK_AIRCRAFT" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+      <Package Id="966f64d2-d7d7-4a98-8653-566f392bf98e" Name="DA62_SDK_AIRCRAFT_AI.PC.PCK">
+        <Items>
+          <PackageContentItem Id="3191897707" Language="SFX" FileName="DA62_SDK_AIRCRAFT_AI" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+      <Package Id="f4441b28-d21d-4b1b-b3e8-9a5e716e2f05" Name="Salty_747.PC.PCK">
+        <Items>
+          <PackageContentItem Id="2247706355" Language="SFX" FileName="Salty_747" InclusionMode="BankAndStreamsAndLooseMedia" />
+        </Items>
+        <LayoutItems>
+          <ContentItemBase Id="0" Language="" FileName="" />
+        </LayoutItems>
+      </Package>
+    </Packages>
+    <DefaultLanguagePackageIds>
+      <LanguagePackageIds Language="SFX" BankPackageId="00000000-0000-0000-0000-000000000000" StreamPackageId="00000000-0000-0000-0000-000000000000" LooseMediaPackageId="00000000-0000-0000-0000-000000000000" />
+    </DefaultLanguagePackageIds>
+  </ManualPackagingInfo>
+</Project>
