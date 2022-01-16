@@ -1,6 +1,8 @@
 Event	ID	Name			Wwise Object Path	Notes
 	533605380	Play_Asobo_B747_8i_autothrottle_switch			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_autothrottle_switch	
+	1007636098	Play_Asobo_B747_8i_hdg_knob			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_knob	
 	1077883375	Play_Asobo_B747_8i_minimums			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_minimums	
+	1149503886	Play_Asobo_B747_8i_ias_mach_button			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_ias_mach_button	
 	1346834191	Play_Asobo_B747_8i_pull_up			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_pull_up	
 	1505420985	Play_Asobo_B747_8i_obstacle_obstacle			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_obstacle_obstacle	
 	1604764289	Play_Asobo_B747_8i_caution_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_caution_terrain	
@@ -8,46 +10,69 @@ Event	ID	Name			Wwise Object Path	Notes
 	1880339872	Play_Asobo_B747_8i_flap_lever			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_flap_lever	
 	2177641851	Play_Asobo_B747_8i_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_terrain	
 	2504848834	Play_Asobo_B747_8i_sink_rate			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_sink_rate	
+	2553901338	Play_Asobo_B747_8i_bank_angle_selector			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_bank_angle_selector	
 	2780512408	Play_Asobo_B747_8i_too_low_flaps			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_flaps	
 	2809333158	Play_Asobo_B747_8i_bank_angle			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_bank_angle	
+	2839033664	Play_Asobo_B747_8i_hdg_select_push_out			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_select_push_out	
 	2967775321	Play_Asobo_B747_8i_windshear			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_windshear	
 	3154175190	Play_Asobo_B747_8i_wailer			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_wailer	
 	3260237411	Play_Asobo_B747_8i_too_low_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_terrain	
+	3445833537	Play_Asobo_B747_8i_hdg_select_push_in			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_select_push_in	
 	3466962505	Play_Asobo_B747_8i_terrain_terrain			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_terrain_terrain	
 	3613032553	Play_Asobo_B747_8i_plus_hundred			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_plus_hundred	
 	3826800809	Play_Asobo_B747_8i_too_low_gear			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_too_low_gear	
 	3939631457	Play_Asobo_B747_8i_caution_obstacle			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_caution_obstacle	
 	4034555697	Play_Asobo_B747_8i_cdu_button			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_cdu_button	
 	4057670823	Play_Asobo_B747_8i_mcp_button			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_mcp_button	
+	4237587060	Play_Asobo_B747_8i_airspeed_knob			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_airspeed_knob	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	25087913	bank angle 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\bank angle 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\bank angle selector\bank angle 1		1799
 	51574697	wailer	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\wailer_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\wailer		7624
+	53946665	hdg knob 5	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg knob 5_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading knob\hdg knob 5		1341
 	74981196	too_low_flaps	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_flaps_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_flaps		35956
 	93224664	caution_terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\caution_terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\caution_terrain		29210
 	148033535	fmc 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\fmc 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\cdu buttons\fmc 1		6306
+	150612530	bank angle 4	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\bank angle 4_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\bank angle selector\bank angle 4		1695
 	176262890	minimums	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\minimums_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\minimums		20687
 	190940915	plus_hundred	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\plus_hundred_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\plus_hundred		22626
+	266785817	hdg select push in 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg select push in 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading select push in\hdg select push in 2		2307
+	286128648	airspeed knob 4	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\airspeed knob 4_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\airspeed knob\airspeed knob 4		1319
+	289478913	hdg select push in 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg select push in 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading select push in\hdg select push in 1		2079
 	336234418	dont_sink	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\dont_sink_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\dont_sink		22728
 	362410930	flap lever extend 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\flap lever extend 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\flap lever\flap lever extend 1		23981
+	375585875	bank angle 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\bank angle 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\bank angle selector\bank angle 2		2082
 	378105868	windshear	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\windshear_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\windshear		107408
+	404493402	airspeed knob 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\airspeed knob 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\airspeed knob\airspeed knob 1		1254
 	409881053	terrain_terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\terrain_terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\terrain_terrain		26278
 	438977682	bank_angle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\bank_angle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\bank_angle		45301
 	479262574	fmc 4	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\fmc 4_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\cdu buttons\fmc 4		7688
 	497962771	fmc 3	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\fmc 3_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\cdu buttons\fmc 3		8403
 	526918637	flap lever retract 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\flap lever retract 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\flap lever\flap lever retract 2		12854
 	534888463	terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\terrain		13981
+	538388402	hdg knob 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg knob 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading knob\hdg knob 1		1411
+	553459975	hdg select push out 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg select push out 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading select push out\hdg select push out 2		1453
+	560045163	hdg knob 3	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg knob 3_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading knob\hdg knob 3		1104
+	568193438	hdg knob 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg knob 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading knob\hdg knob 2		1151
+	586833553	airspeed knob 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\airspeed knob 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\airspeed knob\airspeed knob 2		1411
 	617603150	too_low_gear	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_gear_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_gear		27464
 	621637674	fmc 5	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\fmc 5_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\cdu buttons\fmc 5		8220
 	622651067	obstacle_obstacle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\obstacle_obstacle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\obstacle_obstacle		47304
 	651261553	flap lever retract 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\flap lever retract 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\flap lever\flap lever retract 1		24382
 	669281740	at off	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\at off_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\autothrottle\at off		3424
+	729834792	ias mach selector 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\ias mach selector 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\ias mach button\ias mach selector 2		7568
 	741939783	flap lever extend 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\flap lever extend 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\flap lever\flap lever extend 2		11532
 	748162498	too_low_terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_terrain		29871
+	759311131	hdg knob 4	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg knob 4_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading knob\hdg knob 4		1063
 	791640526	fmc 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\fmc 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\cdu buttons\fmc 2		7678
 	823042522	mcp button 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\mcp button 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\mcp buttons\mcp button 1		10140
 	841989067	caution_obstacle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\caution_obstacle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\caution_obstacle		43097
+	860599199	ias mach selector 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\ias mach selector 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\ias mach button\ias mach selector 1		6797
+	899994886	bank angle 3	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\bank angle 3_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\bank angle selector\bank angle 3		2008
+	900724905	hdg select push out 1	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\hdg select push out 1_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\heading select push out\hdg select push out 1		1701
 	920778841	at on	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\at on_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\autothrottle\at on		2991
 	1037536185	sink_rate	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\sink_rate_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\sink_rate		13622
 	1037597979	pull_up	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\pull_up_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\pull_up		18311
 	1050089981	mcp button 2	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\mcp button 2_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\mcp buttons\mcp button 2		10195
+	1070501139	airspeed knob 3	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\airspeed knob 3_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\cockpit\airspeed knob\airspeed knob 3		1339
 

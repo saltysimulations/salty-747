@@ -394,6 +394,12 @@
 
 	<Sound WwiseData="true" WwiseEvent="mcp_button" ViewPoint="Inside"/>
 	<Sound WwiseData="true" WwiseEvent="autothrottle_switch" ViewPoint="Inside"/>
+	<Sound WwiseData="true" WwiseEvent="hdg_knob" ViewPoint="Inside"/>
+	<Sound WwiseData="true" WwiseEvent="hdg_select_push_in" ViewPoint="Inside"/>
+	<Sound WwiseData="true" WwiseEvent="hdg_select_push_out" ViewPoint="Inside"/>
+	<Sound WwiseData="true" WwiseEvent="bank_angle_selector" ViewPoint="Inside"/>
+	<Sound WwiseData="true" WwiseEvent="airspeed_knob" ViewPoint="Inside"/>
+	<Sound WwiseData="true" WwiseEvent="ias_mach_selector" ViewPoint="Inside"/>
 
 	<!-- Lighting ============================================================================================ -->
     <Sound WwiseData="true" WwiseEvent="landing_light_switch_on" ViewPoint="Inside"/>

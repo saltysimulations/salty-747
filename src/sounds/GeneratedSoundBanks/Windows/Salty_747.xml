@@ -8,11 +8,31 @@
 		<ExternalSourcesOutputRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<SoundBanks>
-		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="4266887211">
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="1756450501">
 			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
 			<ShortName>Salty_747</ShortName>
 			<Path>Salty_747.bnk</Path>
 			<IncludedEvents>
+				<Event Id="4237587060" Name="Play_Asobo_B747_8i_airspeed_knob" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_airspeed_knob" GUID="{87B3765F-569C-449A-90F1-350790712BD8}" DurationType="OneShot" DurationMin="0.028776" DurationMax="0.039138">
+					<IncludedMemoryFiles>
+						<File Id="286128648" Language="SFX">
+							<ShortName>airspeed knob 4.wav</ShortName>
+							<Path>SFX\airspeed knob 4_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="404493402" Language="SFX">
+							<ShortName>airspeed knob 1.wav</ShortName>
+							<Path>SFX\airspeed knob 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="586833553" Language="SFX">
+							<ShortName>airspeed knob 2.wav</ShortName>
+							<Path>SFX\airspeed knob 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="1070501139" Language="SFX">
+							<ShortName>airspeed knob 3.wav</ShortName>
+							<Path>SFX\airspeed knob 3_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="533605380" Name="Play_Asobo_B747_8i_autothrottle_switch" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_autothrottle_switch" GUID="{08794DEC-6D9F-4FE8-B376-B6F500691364}" DurationType="OneShot" DurationMin="0.052358" DurationMax="0.067664">
 					<IncludedMemoryFiles>
 						<File Id="669281740" Language="SFX">
@@ -30,6 +50,26 @@
 						<File Id="438977682" Language="SFX">
 							<ShortName>bank_angle.wav</ShortName>
 							<Path>SFX\bank_angle_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2553901338" Name="Play_Asobo_B747_8i_bank_angle_selector" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_bank_angle_selector" GUID="{425D63C6-D24B-4AEF-9CA7-6A73FBE3A7FE}" DurationType="OneShot" DurationMin="0.044671" DurationMax="0.066417">
+					<IncludedMemoryFiles>
+						<File Id="25087913" Language="SFX">
+							<ShortName>bank angle 1.wav</ShortName>
+							<Path>SFX\bank angle 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="150612530" Language="SFX">
+							<ShortName>bank angle 4.wav</ShortName>
+							<Path>SFX\bank angle 4_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="375585875" Language="SFX">
+							<ShortName>bank angle 2.wav</ShortName>
+							<Path>SFX\bank angle 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="899994886" Language="SFX">
+							<ShortName>bank angle 3.wav</ShortName>
+							<Path>SFX\bank angle 3_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -98,6 +138,66 @@
 						<File Id="741939783" Language="SFX">
 							<ShortName>flap lever extend 2.wav</ShortName>
 							<Path>SFX\flap lever extend 2_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1007636098" Name="Play_Asobo_B747_8i_hdg_knob" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_knob" GUID="{9ED92DD0-2D22-4646-B31B-80732ED378D8}" DurationType="OneShot" DurationMin="0.021769" DurationMax="0.030272">
+					<IncludedMemoryFiles>
+						<File Id="53946665" Language="SFX">
+							<ShortName>hdg knob 5.wav</ShortName>
+							<Path>SFX\hdg knob 5_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="538388402" Language="SFX">
+							<ShortName>hdg knob 1.wav</ShortName>
+							<Path>SFX\hdg knob 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="560045163" Language="SFX">
+							<ShortName>hdg knob 3.wav</ShortName>
+							<Path>SFX\hdg knob 3_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="568193438" Language="SFX">
+							<ShortName>hdg knob 2.wav</ShortName>
+							<Path>SFX\hdg knob 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="759311131" Language="SFX">
+							<ShortName>hdg knob 4.wav</ShortName>
+							<Path>SFX\hdg knob 4_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3445833537" Name="Play_Asobo_B747_8i_hdg_select_push_in" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_select_push_in" GUID="{445F3787-9B84-42B4-9BF8-9D539956A3BB}" DurationType="OneShot" DurationMin="0.057596" DurationMax="0.071973">
+					<IncludedMemoryFiles>
+						<File Id="266785817" Language="SFX">
+							<ShortName>hdg select push in 2.wav</ShortName>
+							<Path>SFX\hdg select push in 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="289478913" Language="SFX">
+							<ShortName>hdg select push in 1.wav</ShortName>
+							<Path>SFX\hdg select push in 1_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2839033664" Name="Play_Asobo_B747_8i_hdg_select_push_out" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_select_push_out" GUID="{8AC5D69D-E0E4-4645-B3CE-34D8BF44A23B}" DurationType="OneShot" DurationMin="0.042449" DurationMax="0.047256">
+					<IncludedMemoryFiles>
+						<File Id="553459975" Language="SFX">
+							<ShortName>hdg select push out 2.wav</ShortName>
+							<Path>SFX\hdg select push out 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="900724905" Language="SFX">
+							<ShortName>hdg select push out 1.wav</ShortName>
+							<Path>SFX\hdg select push out 1_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1149503886" Name="Play_Asobo_B747_8i_ias_mach_button" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_ias_mach_button" GUID="{6DA6905C-91A5-4BA9-86E8-48ED13BAC4AB}" DurationType="OneShot" DurationMin="0.340680" DurationMax="0.383107">
+					<IncludedMemoryFiles>
+						<File Id="729834792" Language="SFX">
+							<ShortName>ias mach selector 2.wav</ShortName>
+							<Path>SFX\ias mach selector 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="860599199" Language="SFX">
+							<ShortName>ias mach selector 1.wav</ShortName>
+							<Path>SFX\ias mach selector 1_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>

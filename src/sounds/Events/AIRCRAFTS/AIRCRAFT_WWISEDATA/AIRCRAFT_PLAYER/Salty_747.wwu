@@ -289,6 +289,90 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_hdg_knob" ID="{9ED92DD0-2D22-4646-B31B-80732ED378D8}">
+					<ChildrenList>
+						<Action Name="" ID="{ABA67AF1-124C-4409-9569-3A0C4DEBBE3F}" ShortID="909276253">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="heading knob" ID="{E71F02DC-03D4-4BA9-B7C3-908E95E90B18}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_bank_angle_selector" ID="{425D63C6-D24B-4AEF-9CA7-6A73FBE3A7FE}">
+					<ChildrenList>
+						<Action Name="" ID="{8616A321-A383-48FC-B0D2-B218A54920F6}" ShortID="582145830">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="bank angle selector" ID="{5F3FB474-7DBF-4C9C-B111-5AF5CC5C54A1}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_airspeed_knob" ID="{87B3765F-569C-449A-90F1-350790712BD8}">
+					<ChildrenList>
+						<Action Name="" ID="{C5B4524A-FDA1-4C9B-A289-C6B8FB6FC672}" ShortID="630976530">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="airspeed knob" ID="{1BE89825-BEC6-463F-B000-4A3C7B193D47}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_hdg_select_push_in" ID="{445F3787-9B84-42B4-9BF8-9D539956A3BB}">
+					<ChildrenList>
+						<Action Name="" ID="{9991CC11-3E3A-4F0D-9203-106674366DD0}" ShortID="1029916696">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="heading select push in" ID="{7F87C51F-3A28-466D-ACFC-75EC61F8CD14}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_hdg_select_push_out" ID="{8AC5D69D-E0E4-4645-B3CE-34D8BF44A23B}">
+					<ChildrenList>
+						<Action Name="" ID="{F5C8D355-FB15-4DB8-A40A-5B4D884CE895}" ShortID="459853054">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="heading select push out" ID="{3B2FC5C4-6BB8-40A3-B356-B1B8CEE27D39}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_ias_mach_button" ID="{6DA6905C-91A5-4BA9-86E8-48ED13BAC4AB}">
+					<ChildrenList>
+						<Action Name="" ID="{462B115F-3FE7-4B06-BCD9-2684C626C688}" ShortID="786171775">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ias mach button" ID="{7F7BCE32-8274-4A0F-B174-B7243E595CD2}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
