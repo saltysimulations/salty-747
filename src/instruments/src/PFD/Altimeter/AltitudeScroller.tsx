@@ -80,7 +80,7 @@ export const AltitudeScroller: FC = () => {
                     {/* Ten Thousands Digits*/}
                     <g transform={`translate( 0 ${getTenThousandsScrollerY(altitude)} )`}>
                         {Array.from({ length: 6 }, (_, i) => {
-                            const y = i == 5 ? 394 : 151 + (49 * i);
+                            const y = i == 5 ? 396 : 151 + (49 * i);
                             const text = i == 5 ? "@" : 5 - i;
                             const size = i == 5 ? "tenkMarker" : "text-4";
                             const x = i == 5 ? 658 : 659;
