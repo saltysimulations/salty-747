@@ -41,7 +41,12 @@
         "additions": [
             {
                 "gltf": "./efb/efb.gltf",
-                "bin": "./efb/efb.bin"
+                "bin": "./efb/efb.bin",
+                "lods": [0, 1, 2, 3]
+            },
+            {
+                "gltf": "./pilots/pilots.gltf",
+                "lods": [0]
             }
         ]
     }
