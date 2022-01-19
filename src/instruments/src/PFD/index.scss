@@ -1,6 +1,6 @@
 @font-face {
     font-family: "BoeingEICAS";
-    src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+    src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -10,7 +10,7 @@
 }
 
 text {
-    font-family: "BoeingEICAS";
+    font-family: "BoeingEFIS";
 }
 
 .gray-bg {
@@ -85,27 +85,30 @@ text {
     text-anchor: end;
     stroke-width: 1.5px;
     paint-order: stroke;
-    letter-spacing: 1px
 }
 
 .text-4 {
     @extend .text;
-    font-size: 44px;
+    font-size: 40px;
+    letter-spacing: 0px;
 }
 
 .text-3 {
     @extend .text;
-    font-size: 33px;
+    font-size: 30px;
+    letter-spacing: -0.25px;
 }
 
 .text-2 {
     @extend .text;
-    font-size: 26px;
+    font-size: 23.4px;
+    letter-spacing: -0.75px;
 }
 
 .text-1 {
     @extend .text;
-    font-size: 19.5px;
+    font-size: 17.55px;
+    letter-spacing: -0.75px;
 }
 
 .magenta {
