@@ -22,6 +22,7 @@ import { SvgGroup } from "../../Common";
 import { BlackOutlineWhiteLine } from "../index";
 import { FD } from "./FlightDirector";
 import { FPV } from "./FlightPathVector";
+import { PLI } from "./PitchLimitIndicator";
 import { MarkerBeacon } from "./MarkerBeacon";
 
 const AH_CENTER_X = 349;
@@ -158,7 +159,8 @@ export const Horizon: FC = () => {
             <BlackOutlineWhiteLine d="M313 179, l3 13" />
             <BlackOutlineWhiteLine d="M385 179, l-3 13" />
 
-            <FD />
+            <FD/>
+            <PLI/>
             <MarkerBeacon />
         </g>
     );
