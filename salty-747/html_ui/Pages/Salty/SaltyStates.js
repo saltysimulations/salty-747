@@ -14,10 +14,6 @@ class SaltyStates {
         this.stabstored = SaltyDataStore.get("747_STAB_LAST_QUANTITY", '') ? parseFloat(SaltyDataStore.get("747_STAB_LAST_QUANTITY", '')) : "";
     }// ends constructor
 
-    Init() {
-
-    }
-
     onFlightStart() {
         console.log("main1 stored on flight start " + this.main1stored);
         
@@ -60,8 +56,4 @@ class SaltyStates {
             }
         }// ends if flighthasstarted
     }// ends onflightstart
-
-    update(_deltaTime) {
-
-    }// ends update
 }
