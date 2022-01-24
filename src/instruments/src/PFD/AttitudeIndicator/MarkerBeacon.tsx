@@ -43,14 +43,21 @@ export const MarkerBeacon: FC = () => {
         else return "";
     };
 
+    const getBeaconBlink = (i: number): string => {
+        if (i == 1) return "OuterMarkerBlink";
+        else if (i == 2) return "MiddleMarkerBlink";
+        else if (i == 3) return "InnerMarkerBlink";
+        else return "";
+    };
+
     return (
-        <g visibility={markerState == 0 ? "hidden" : "visible"}>
+        <g className={getBeaconBlink(markerState)} visibility={markerState == 0 ? "hidden" : "visible"}>
             {/* Marker Circle */}
-            <circle cx="510" cy="210" r="22" fill="black" className="fpv-outline" />
-            <circle cx="510" cy="210" r="22" fill="black" strokeWidth="3px" stroke={getRingColour(markerState)} />
+            <circle cx="507" cy="213" r="20" fill="black" className="fpv-outline" />
+            <circle cx="507" cy="213" r="20" fill="black" strokeWidth="3px" stroke={getRingColour(markerState)} />
             
             {/* Marker Text */}
-            <text x="510" y="221" className={`text-3 ${getTextColour(markerState)} middle`} fillOpacity={0.9}>{getBeaconText(markerState)}</text>
+            <text x="507" y="224" className={`text-3 ${getTextColour(markerState)} middle`} fillOpacity={0.9}>{getBeaconText(markerState)}</text>
         </g>
     );
 };
