@@ -36,7 +36,7 @@ const feetToMetric = (feet: number): number => {
 
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
-    const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
+    const [altAlertStatus] = useSimVar("L:74S_ALT_ALERT", "number");
     const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
     const [tdze] = useSimVar("L:74S_FMC_TDZE", "feet");
@@ -200,7 +200,7 @@ export const AltitudeTape: FC = () => {
 
 export const CommandAlt: FC = () => {
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
-    const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
+    const [altAlertStatus] = useSimVar("L:74S_ALT_ALERT", "enum");
 
     const getLargeSelAltText = (altitude: number): string => {
         let text = altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
@@ -225,7 +225,7 @@ export const CommandAlt: FC = () => {
                 {getSmallSelAltText(selAlt)}
             </text>
             <path className="indication"
-                d="M 600 45, h 100, v40, h-100, Z"
+                d="M 602 48, h 96, v35, h-96, Z"
                 fill="none"
                 visibility={(altAlertStatus == 1 ? "visible" : "hidden")} />
         </g>

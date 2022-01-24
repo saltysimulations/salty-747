@@ -1077,23 +1077,38 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
     }
     updateAltitudeAlerting() {
-        let alertState = SimVar.GetSimVarValue("L:SALTY_ALT_ALERT", "bool");
-        let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-        let alt = Simplane.getAltitude();
-        let vSpeed = Simplane.getVerticalSpeed();
-        if (vSpeed > 400) {
-            if (mcpAlt - alt <= 900 && mcpAlt - alt >= 200) {
-                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+        const flapsPos = SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees");
+        const gearPos = SimVar.GetSimVarValue("GEAR POSITION:2", "percent");
+        const parkBrake = SimVar.GetSimVarValue("BRAKE PARKING POSITION", "percent");
+        const afdsPitchMode = SimVar.GetSimVarValue("L:74S_PITCH_MODE_ACTIVE", "percent");
+        const mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+        const alt = Simplane.getAltitude();
+        const vSpeed = Simplane.getVerticalSpeed();
+
+        //Inhibit Alert Conditions - Park Brake Set or In Landing Config or GS Captured
+        if (parkBrake == 100 || afdsPitchMode == 9 || (flapsPos >= 25 && gearPos == 100)) {
+            this.altAlertingMode = "none";
+            SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 0);
+            return;
+        }
+
+        //Main Logic - Determine Mode - Acquisition or Deviation
+        if ((mcpAlt > alt && vSpeed > 150) || (mcpAlt < alt && vSpeed < -150)) {
+            if (Math.abs(mcpAlt - alt) <= 900 && Math.abs(mcpAlt - alt) >= 200) {
+                SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 1);
             }
         }
-        else if (vSpeed < -400) {
-            if (alt - mcpAlt <= 900 && alt - mcpAlt >= 200) {
-                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+        else if (Math.abs(vSpeed) > 150){
+            if (Math.abs(mcpAlt - alt) <= 900 && Math.abs(mcpAlt - alt) >= 200) {
+                SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 2);
             }
         }
+
+        //Reset Condition
+        const alertState = SimVar.GetSimVarValue("L:74S_ALT_ALERT", "enum");
         if (alertState !== 0) {
             if (Math.abs(mcpAlt - alt) < 200 || Math.abs(mcpAlt - alt) > 900) {
-                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 0);
+                SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 0);
             }
         }
     }
