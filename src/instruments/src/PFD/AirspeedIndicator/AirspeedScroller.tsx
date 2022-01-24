@@ -135,8 +135,8 @@ export const SpeedTrendVector: FC = () => {
 
     return (
         <g visibility={Math.abs(getTrendVector(acceleration)) < 4.5 ? "hidden" : "visible"}>
-            <path fill="none" className="black-outline" d={`M 96 381, v${getTrendVector(acceleration) * -4.6 - 12}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
-            <path fill="none" className="fma-line" d={`M 96 381, v${(getTrendVector(acceleration) * -4.6) - 12}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
+            <path fill="none" className="black-outline" d={`M 96 381, v${getTrendVector(acceleration) * -4.6 - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
+            <path fill="none" className="fma-line" d={`M 96 381, v${(getTrendVector(acceleration) * -4.6) - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
         </g>
     );
 };
