@@ -154,6 +154,10 @@ const getIsOffTape = (subjectSpeed: number, currentSpeed: number): boolean => {
     }
 };
 
+const getBoundedAirspeed = (airspeed: number): number => {
+    return Math.max(airspeed, 30);
+};
+
 export const SpeedTape: FC = () => {
     const [flightPhase] = useSimVar("L:AIRLINER_FLIGHT_PHASE", "number");
     const [selectedFlaps] = useSimVar("FLAPS HANDLE INDEX", "number");
@@ -176,7 +180,7 @@ export const SpeedTape: FC = () => {
             </clipPath>
 
             <g clipPath="url(#speedtape-clip)">
-                <g transform={`translate(50 ${getAirspeedY(airspeed)})`}>
+                <g transform={`translate(50 ${getAirspeedY(getBoundedAirspeed(airspeed))})`}>
                     {Array.from({ length: 40 }, (_, i) => {
                         const y = i * -46 + 382;
                         return (
@@ -205,7 +209,7 @@ export const SpeedTape: FC = () => {
                         <g>
                             <path className="fpv-outline" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
                             <path className="green-line" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
-                            <text x="93" y={`${Math.max(529 + (v1 * -4.6), (520 + (airspeed + 54) * -4.6))}`} className="text-2 green">V1</text>
+                            <text x="93" y={`${Math.max(529 + (v1 * -4.6), (520 + (getBoundedAirspeed(airspeed) + 54) * -4.6))}`} className="text-2 green">V1</text>
                         </g>
 
                         {/* VR Bug */}
@@ -241,34 +245,34 @@ export const SpeedTape: FC = () => {
                     <g visibility= {`${selectedAppSpd == 0 ? "hidden" : "visible"}`}>
                         <path className="fpv-outline" d={`M 45 ${520 + (selectedAppSpd * -4.6)}, h20`} />
                         <path className="green-line" d={`M 45 ${520 + (selectedAppSpd * -4.6)}, h20`} />
-                        <text x="70" y={`${Math.min(529 + (selectedAppSpd * -4.6), (520 + (airspeed - 54) * -4.6))}`} className="text-2 green start">REF</text>
+                        <text x="70" y={`${Math.min(529 + (selectedAppSpd * -4.6), (520 + (getBoundedAirspeed(airspeed) - 54) * -4.6))}`} className="text-2 green start">REF</text>
                     </g>
 
                     {/* Selected Airspeed Bug */}
                     <g fill="none" >
-                        <path className="black-outline" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
-                        <path className="magenta-line" d={`M 49 ${Math.max(520 + (airspeed + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
+                        <path className="black-outline" d={`M 49 ${Math.max(520 + (getBoundedAirspeed(airspeed) + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
+                        <path className="magenta-line" d={`M 49 ${Math.max(520 + (getBoundedAirspeed(airspeed) + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
                     </g>
                 </g>
 
                 {/* V1 Value Preview */}
                 <g>
-                    <text visibility={`${(v1 - airspeed || flightPhase <= 2) > 55 ? "visible" : "hidden"}`}x="155" y={`${155}`} className="text-2 green">{v1.toString()}</text>
+                    <text visibility={`${(v1 - getBoundedAirspeed(getBoundedAirspeed(airspeed)) || flightPhase <= 2) > 55 ? "visible" : "hidden"}`}x="155" y={`${155}`} className="text-2 green">{v1.toString()}</text>
                 </g>
 
                 {/* VREF Value Preview */}
-                <g visibility={`${selectedAppSpd + airspeed > 60.5 ? "visible" : "hidden"}`}>
+                <g visibility={`${selectedAppSpd + getBoundedAirspeed(getBoundedAirspeed(airspeed)) > 60.5 ? "visible" : "hidden"}`}>
                     <text x="120" y={`${652}`} className="text-2 green start">{getRefBugText(landingFlaps, selectedAppSpd)}</text>
                 </g>
 
                 {/*Maneuvering Speed Band*/}
-                <g transform={`translate(50 ${getManeuveringBandY(airspeed, manSpeed)})`}>
+                <g transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), manSpeed)})`}>
                     <path className="black-outline" d="M 62 382, h7, v 1800" fill="none" />
                     <path className="amber-line" d="M 62 382, h7, v 1800" fill="none" />
                 </g>
 
                 {/*Maximum Speed Band*/}
-                <g transform={`translate(50 ${getMaxSpeedBandY(airspeed, maxSpeed)})`}>
+                <g transform={`translate(50 ${getMaxSpeedBandY(getBoundedAirspeed(airspeed), maxSpeed)})`}>
                     <path className="red-band" d="M 60 -1820, h7, v 2202" fill="none" />
                 </g>
             </g>
@@ -276,7 +280,7 @@ export const SpeedTape: FC = () => {
 
             {/* Scroller Box */}
             <path className="indication" style={{ strokeWidth: "5px",  stroke: "black "}} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
-            <path className="indication" style={{ strokeWidth: airspeed < manSpeed ? "9px" : "3px", stroke: airspeed < manSpeed ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
+            <path className="indication" style={{ strokeWidth: getBoundedAirspeed(airspeed) < manSpeed ? "9px" : "3px", stroke: getBoundedAirspeed(airspeed) < manSpeed ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
         </g>
         
     );
