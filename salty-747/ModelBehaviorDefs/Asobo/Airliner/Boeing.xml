@@ -1271,10 +1271,10 @@
 				<Default>
 					<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
 						<ANTICLOCKWISE_CODE>
-							#BARO_ID# (&gt;H:B747_8_PFD_BARO_DEC)
+							#BARO_ID# (&gt;H:B747_8_MFD_BARO_DEC)
 						</ANTICLOCKWISE_CODE>
 						<CLOCKWISE_CODE>
-							#BARO_ID# (&gt;H:B747_8_PFD_BARO_INC)
+							#BARO_ID# (&gt;H:B747_8_MFD_BARO_INC)
 						</CLOCKWISE_CODE>
 						<LEFT_SINGLE_CODE>
 							(L:XMLVAR_Baro#BARO_ID#_ForcedToSTD) ! (&gt;L:XMLVAR_Baro#BARO_ID#_ForcedToSTD)
@@ -1282,7 +1282,7 @@
 								(A:KOHLSMAN SETTING MB:1, mbars) 16 * (&gt;L:XMLVAR_Baro#BARO_ID#_SavedPressure)
 								#BARO_ID# (&gt;K:BAROMETRIC_STD_PRESSURE)
 							} els{
-								#BARO_ID# (L:XMLVAR_Baro#BARO_ID#_SavedPressure) (&gt;K:2:KOHLSMAN_SET) (&gt;H:B747_8_PFD_STD_PUSH)
+								#BARO_ID# (L:XMLVAR_Baro#BARO_ID#_SavedPressure) (&gt;K:2:KOHLSMAN_SET) (&gt;H:B747_8_MFD_STD_PUSH)
 							}
 						</LEFT_SINGLE_CODE>
 						<WWISE_EVENT>autopilot_selector_knob</WWISE_EVENT>

@@ -92,6 +92,9 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.deviationPointer = document.querySelector("#pathDevPointer");
         this.deviationTextTop = document.querySelector("#pathTopText");
         this.deviationTextBottom = document.querySelector("#pathBottomText");
+
+        this.qnhIsPreSelected = false;
+        this.qnhPreSelectVal = 1013;
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
@@ -124,6 +127,7 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         }
     }
     onEvent(_event) {
+        const units = Simplane.getPressureSelectedUnits();
         switch (_event) {
             case "KNOB_AUTOPILOT_CTR":
                 if (this.mapMode != Jet_NDCompass_Display.PLAN) {
@@ -170,6 +174,52 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                     SimVar.SetSimVarValue("L:BTN_TERRONND_ACTIVE", "number", 1);
                     SimVar.SetSimVarValue("L:BTN_WX_ACTIVE", "number", 0);
                 }
+                break;
+            case "BARO_INC":
+                if (SimVar.GetSimVarValue("L:XMLVAR_Baro1_ForcedToSTD", "bool") == true) {
+                    SimVar.SetSimVarValue("L:74S_BARO_PRESEL_VISIBLE", "bool", true);
+                    if (units == "millibar") {
+                        this.qnhPreSelectVal += 1;
+                    }
+                    else {
+                        this.qnhPreSelectVal += 1 * 0.3386;
+                    }
+                    SimVar.SetSimVarValue("L:XMLVAR_Baro1_SavedPressure", "millibar", this.qnhPreSelectVal * 16);
+                }
+                else {
+                    SimVar.SetSimVarValue("K:KOHLSMAN_INC", "number", 1);
+                };
+                break;
+            case "BARO_DEC":
+                if (SimVar.GetSimVarValue("L:XMLVAR_Baro1_ForcedToSTD", "bool") == true) {
+                    SimVar.SetSimVarValue("L:74S_BARO_PRESEL_VISIBLE", "bool", true);
+                    if (units == "millibar") {
+                        this.qnhPreSelectVal -= 1;
+                    }
+                    else {
+                        this.qnhPreSelectVal -= 1 * 0.3386;
+                    }
+                    SimVar.SetSimVarValue("L:XMLVAR_Baro1_SavedPressure", "millibar", this.qnhPreSelectVal * 16);
+                }
+                else {
+                    SimVar.SetSimVarValue("K:KOHLSMAN_DEC", "number", 1);
+                };
+                break;
+            case "STD_PUSH":
+                this.qnhIsPreSelected = false;
+                SimVar.SetSimVarValue("L:74S_BARO_PRESEL_VISIBLE", "bool", false);
+                break;
+            case "Mins_INC":
+                this.minimumReference += 10;
+                this.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_DEC":
+                this.minimumReference -= 10;
+                this.minimumReferenceValue = this.minimumReference;
+                break;
+            case "Mins_Press":
+                this.minimumReference = 200;
+                this.minimumReferenceValue = this.minimumReference;
                 break;
         }
     }

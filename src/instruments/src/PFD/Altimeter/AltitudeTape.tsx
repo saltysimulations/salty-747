@@ -233,40 +233,37 @@ export const CommandAlt: FC = () => {
 }
 
 export const BaroSetting: FC = () => {
-    const [preselBaroHg] = useSimVar("L:XMLVAR_Baro1_SavedPressure", "inHg");
+    const [preselBaro] = useSimVar("L:XMLVAR_Baro1_SavedPressure", "number");
+    const [preselBaroVisible] = useSimVar("L:74S_BARO_PRESEL_VISIBLE", "bool");
+    const [isSTD] = useSimVar("L:XMLVAR_Baro1_ForcedToSTD", "bool");
     const [baroHg] = useSimVar("KOHLSMAN SETTING HG", "inHg");
     const [units] = useSimVar("L:XMLVAR_Baro_Selector_HPA_1", "bool");
 
-    const getIsStd = (): boolean => {
-        const [isStd] = useSimVar("KOHLSMAN SETTING STD", "bool");
-        return isStd;
-    };
-
     return (
         <g>
-            <text x="682" y="710" className="text-4 green" visibility= {getIsStd() == true ? "visible" : "hidden"}>
+            <text x="682" y="710" className="text-4 green" visibility= {isSTD == true ? "visible" : "hidden"}>
                 STD
             </text>
             <text 
                 x={units === 0 ? "685": "680"} 
                 y="710" 
                 className="text-3 green" 
-                visibility= {getIsStd() == false ? "visible" : "hidden"}>
+                visibility= {isSTD == false ? "visible" : "hidden"}>
                 {units === 0 ? baroHg.toFixed(2): (baroHg * 33.86).toFixed(0)}
             </text>
             <text 
                 x={units === 0 ? "715": "725"} 
                 y="710" 
                 className="text-2 green" 
-                visibility= {getIsStd() == false ? "visible" : "hidden"}>
+                visibility= {isSTD == false ? "visible" : "hidden"}>
                 {units === 0 ? " IN": " HPA"}
             </text>
             <text 
                 x="720" 
                 y="745" 
-                visibility={preselBaroHg == -1 ? "hidden" : "visible"}
+                visibility={preselBaroVisible ? "visible" : "hidden"}
                 className="text-2">
-                {units === 0 ? preselBaroHg.toFixed(2) + " IN": (preselBaroHg * 33.86).toFixed(0) + " HPA"}
+                {units === 0 ? (preselBaro / 54182.4).toFixed(2) + " IN": (preselBaro / 1600).toFixed(0) + " HPA"}
             </text>
         </g>
     );
