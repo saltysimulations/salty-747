@@ -46,6 +46,10 @@
     animation: Blinking 200ms infinite;
 }
 
+.RadioMinsBlink {
+    animation: Blinking 300ms 12;
+}
+
 .pfd-svg {
     background-color: black;
 }

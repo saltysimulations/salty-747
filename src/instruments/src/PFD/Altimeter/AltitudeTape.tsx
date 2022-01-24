@@ -18,15 +18,15 @@
 
 import React, { FC } from "react";
 import { useSimVar, useInteractionEvent } from "react-msfs";
-import { BlackOutlineWhiteLine } from "../index";
-import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
 const getRadAltClass = (radAlt: number, radioMins: number, oldClass: string): string => {
     let radAltClass = oldClass;
-    if (radAlt <= radioMins && radAlt !== 0){
-        radAltClass += " amber"
+    if (radAlt <= radioMins && radAlt > 1){
+        return radAltClass += " amber"
     }
-    return radAltClass;
+    else {
+        return radAltClass += "";
+    }
 };
 
 const feetToMetric = (feet: number): number => {
@@ -37,7 +37,7 @@ const feetToMetric = (feet: number): number => {
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
-    const [baroMins] = useSimVar("L:SALTY_MINIMUMS_ALT", "feet");
+    const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
     const [tdze] = useSimVar("L:74S_FMC_TDZE", "feet");
     const [isMtrsOn] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
@@ -270,9 +270,16 @@ export const BaroSetting: FC = () => {
 };
 
 export const Minimums: FC = () => {
-    const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
-    const [radioMins] = useSimVar("L:SALTY_MINS_RADIO", "feet");
-    const [radAlt] = useSimVar("RADIO HEIGHT", "feet");
+    const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
+    const [radioMins] = useSimVar("L:74S_MINS_RADIO", "feet");
+    const [radAlt] = useSimVar("PLANE ALT ABOVE GROUND MINUS CG", "feet");
+
+    const getRadioTextClass = (radAlt: number, radioMins: number, size: number): string => {
+        if (radAlt <= radioMins && radAlt > 1){
+            return `text-${size} amber RadioMinsBlink`;
+        }
+        return `text-${size} green`;
+    };
 
     return (
         < g>
@@ -286,10 +293,10 @@ export const Minimums: FC = () => {
             </g>
 
             < g visibility={radioMins > 0 ? "visible" : "hidden"}>
-                <text x="550" y="85" className={getRadAltClass(radAlt, radioMins, "text-2 green")}>
+                <text x="550" y="85" className={getRadioTextClass(radAlt, radioMins, 2)}>
                     RADIO
                 </text>
-                <text x="550" y="113" className={getRadAltClass(radAlt, radioMins, "text-3 green")}>
+                <text x="550" y="113" className={getRadioTextClass(radAlt, radioMins, 3)}>
                     {radioMins}
                 </text>
             </g>
@@ -300,8 +307,8 @@ export const Minimums: FC = () => {
 };
 
 export const RadioAltimeter: FC = () => {
-    const [radAlt] = useSimVar("RADIO HEIGHT", "feet");
-    const [radioMins] = useSimVar("L:SALTY_MINS_RADIO", "feet");
+    const [radAlt] = useSimVar("PLANE ALT ABOVE GROUND MINUS CG", "feet");
+    const [radioMins] = useSimVar("L:74S_MINS_RADIO", "feet");
 
     const getRadAltRounded = (): number => {
         let alt = 0;

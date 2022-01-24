@@ -93,8 +93,11 @@ class B747_8_MFD_MainPage extends NavSystemPage {
         this.deviationTextTop = document.querySelector("#pathTopText");
         this.deviationTextBottom = document.querySelector("#pathBottomText");
 
+        //PFD EFIS CONTROL PANEL ELEMENTS
         this.qnhIsPreSelected = false;
         this.qnhPreSelectVal = 1013;
+        this.minimumReferenceBaro = -110;
+        this.minimumReferenceRadio = -10;
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
@@ -210,16 +213,26 @@ class B747_8_MFD_MainPage extends NavSystemPage {
                 SimVar.SetSimVarValue("L:74S_BARO_PRESEL_VISIBLE", "bool", false);
                 break;
             case "Mins_INC":
-                this.minimumReference += 10;
-                this.minimumReferenceValue = this.minimumReference;
+                if (SimVar.GetSimVarValue("L:XMLVAR_Mins_Selector_Baro", "bool") == true) {
+                    this.minimumReferenceBaro += 10;
+                    SimVar.SetSimVarValue("L:74S_MINS_BARO", "feet", this.minimumReferenceBaro);
+                }
+                else {
+                    this.minimumReferenceRadio += 10;
+                    SimVar.SetSimVarValue("L:74S_MINS_RADIO", "feet", this.minimumReferenceRadio);
+                }
                 break;
             case "Mins_DEC":
-                this.minimumReference -= 10;
-                this.minimumReferenceValue = this.minimumReference;
+                if (SimVar.GetSimVarValue("L:XMLVAR_Mins_Selector_Baro", "bool") == true) {
+                    this.minimumReferenceBaro -= 10;
+                    SimVar.SetSimVarValue("L:74S_MINS_BARO", "feet", this.minimumReferenceBaro);
+                }
+                else {
+                    this.minimumReferenceRadio -= 10;
+                    SimVar.SetSimVarValue("L:74S_MINS_RADIO", "feet", this.minimumReferenceRadio);
+                }
                 break;
             case "Mins_Press":
-                this.minimumReference = 200;
-                this.minimumReferenceValue = this.minimumReference;
                 break;
         }
     }
