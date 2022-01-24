@@ -1080,7 +1080,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         const flapsPos = SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees");
         const gearPos = SimVar.GetSimVarValue("GEAR POSITION:2", "percent");
         const parkBrake = SimVar.GetSimVarValue("BRAKE PARKING POSITION", "percent");
-        const afdsPitchMode = SimVar.GetSimVarValue("L:74S_PITCH_MODE_ACTIVE", "percent");
+        const afdsPitchMode = SimVar.GetSimVarValue("L:74S_PITCH_MODE_ACTIVE", "number");
         const mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
         const alt = Simplane.getAltitude();
         const vSpeed = Simplane.getVerticalSpeed();

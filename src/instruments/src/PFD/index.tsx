@@ -25,8 +25,6 @@ import { VSI } from "./VerticalSpeedIndicator";
 import { HeadingDisplay } from "./HeadingDisplay";
 import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 import { AltitudeTape, CommandAlt, BaroSetting, Minimums, RadioAltimeter } from "./Altimeter/AltitudeTape";
-import { LateralDeviationScale } from "./DeviationScales/Lateral";
-import { VerticalDeviationScale } from "./DeviationScales/Vertical";
 import { FMA } from "./FMA";
 import { ApproachInfo } from "./ApproachInfo";
 
@@ -71,8 +69,6 @@ const PFD: FC = () => {
                 <BaroSetting />
                 <Minimums />
                 <RadioAltimeter />
-                <LateralDeviationScale />
-                <VerticalDeviationScale />
             </svg>
         </>
     );

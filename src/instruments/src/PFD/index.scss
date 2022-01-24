@@ -66,18 +66,21 @@ text {
     stroke: black;
     stroke-width: 5px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .white-line {
     stroke: white;
     stroke-width: 3px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .low-white-line {
     stroke: white;
     stroke-width: 3px;
     stroke-linecap: round;
+    stroke-linejoin: round;
     opacity: 0.9;
 }
 
@@ -85,24 +88,28 @@ text {
     stroke: #d570ff;
     stroke-width: 3px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .green-line {
     stroke: lime;
     stroke-width: 5px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .fma-line {
     stroke: lime;
     stroke-width: 3px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .amber-line {
     stroke: #ffc400;
     stroke-width: 3px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .red-band {
@@ -116,6 +123,7 @@ text {
     fill: black;
     stroke: white;
     stroke-width: 3px;
+    stroke-linejoin: round;
 }
 
 .indication {
@@ -195,24 +203,28 @@ text {
     stroke: #d570ff;
     stroke-width: 5px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .fd-bar-outline {
     stroke: black;
     stroke-width: 7px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .fpv-outline {
     stroke: black;
     stroke-width: 6px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .fpv-line {
     stroke: white;
     stroke-width: 4px;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .tenkMarker {

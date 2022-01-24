@@ -18,8 +18,6 @@
 
 import React, { FC } from "react";
 import { useSimVar } from "react-msfs";
-import { BlackOutlineWhiteLine } from "../index";
-import { removeLeadingZeros } from "@instruments/common/utils/heading";
 
 export const VerticalDeviationScale: FC = () => {
     const [gsError] = useSimVar("NAV GLIDE SLOPE ERROR:3", "degrees");

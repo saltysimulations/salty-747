@@ -24,6 +24,8 @@ import { FD } from "./FlightDirector";
 import { FPV } from "./FlightPathVector";
 import { PLI } from "./PitchLimitIndicator";
 import { MarkerBeacon } from "./MarkerBeacon";
+import { LateralDeviationScale } from "./DeviationScales/Lateral";
+import { VerticalDeviationScale } from "./DeviationScales/Vertical";
 
 const AH_CENTER_X = 349;
 const AH_CENTER_Y = 382;
@@ -159,6 +161,8 @@ export const Horizon: FC = () => {
             <BlackOutlineWhiteLine d="M313 179, l3 13" />
             <BlackOutlineWhiteLine d="M385 179, l-3 13" />
 
+            <LateralDeviationScale />
+            <VerticalDeviationScale />
             <FD/>
             <PLI/>
             <MarkerBeacon />
