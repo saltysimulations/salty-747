@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    {
+      "translation": [0.481035233, 3.67065585, 24.4719831],
+      "rotation": [0.05, 0.0, 0.0, 1.0],
+      "scale": [0.95, 0.95, 0.95],
+      "extensions": { "ASOBO_unique_id": { "id": "PILOT_0_31975" } },
+      "name": "PILOT_0"
+    },
+    {
+      "translation": [-0.488318443, 3.67065585, 24.4719831],
+      "rotation": [0.05, 0.0, 0.0, 1.0],
+      "scale": [0.95, 0.95, 0.95],
+      "extensions": { "ASOBO_unique_id": { "id": "PILOT_1_31976" } },
+      "name": "PILOT_1"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [0, 1],
+      "name": "Scene"
+    }
+  ]
+}
