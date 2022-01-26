@@ -919,10 +919,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         let theta = 288.15 / (atm + 273.15);
         if (mode === 0) {
           let refN1 = 97.9;
-          if (alt < 0) {
+          /*if (alt < 0) {
               refN1 += alt * 0.00155; 
           }
-          else if (0 <= alt )
+          else if (0 <= alt )*/
           let N1 = refN1 * (temp / 288.15) ** 0.5 * (theta) ** 0.5 * (288.15 / isatemp) ** 0.5;
           let tla = (N1 - 20.2) / 0.798 ;
           SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
