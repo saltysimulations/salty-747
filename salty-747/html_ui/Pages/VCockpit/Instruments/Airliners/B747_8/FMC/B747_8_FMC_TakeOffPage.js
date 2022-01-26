@@ -88,15 +88,22 @@ class FMCTakeOffPage {
         };
         let thrustCell = "---";
         let selectedTemp = fmc.getThrustTakeOffTemp();
-        let mode = Simplane.getEngineThrustTakeOffMode(0);
+        let mode = Simplane.getEngineThrustTakeOffMode();
         let modeText = "";
         if (mode === 1) {
-            modeText = "-1"; 
+            modeText = "\xa01"; 
         }
         if (mode === 2) {
-            modeText = "-2"; 
+            modeText = "\xa02"; 
         }
-        thrustCell = selectedTemp.toFixed(0) + "°\xa0\xa0\xa0TO" + modeText;
+        if (SimVar.GetSimVarValue("L:SALTY_REF_THR_SET", "bool")) {
+            if (SimVar.GetSimVarValue("L:SALTY_ATM_SET", "bool")) {
+                thrustCell = selectedTemp.toFixed(0) + "°\xa0D-TO" + modeText;
+            }
+            else {
+                thrustCell = "---\xa0\xa0TO" + modeText;
+            }
+        }
         let cgCell = "--%";
         if (isFinite(fmc.zeroFuelWeightMassCenter)) {
             cgCell = fmc.zeroFuelWeightMassCenter.toFixed(1) + "%";
@@ -166,20 +173,24 @@ class FMCTakeOffPage {
         let limitTakeoffGrossWeightCell = "";
         
         //Acceleration Height Settable
-        let accelHtCell = "";
-        let airportElevation = 0;
+        let accelHtCell = ""; //SaltyDataStore.get("TO_ACC_HT", 1000);
+        /*let airportElevation = 0;
         let origin = fmc.flightPlanManager.getOrigin();
-        if (origin) {
-            if(origin.altitudeinFP) {
-                airportElevation = Math.round(origin.altitudeinFP / 10) * 10;
-            }
+        if(origin) {
+            airportElevation = origin;
         }
-        let accelHt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number") - airportElevation;
+        else if (Simplane.getIsGrounded()) {
+            airportElevation = SimVar.GetSimVarValue("GROUND ALTITUDE", "feet");
+        }*/
+        let accelHt = SaltyDataStore.get("TO_ACCEL_HT", 1000); //SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number") - airportElevation;
+        fmc.trySetAccelerationAltitude(accelHt);
         if (accelHt) {
-            accelHtCell = accelHt.toFixed(0) + "FT";
+            parseInt(accelHt);
+            accelHtCell = accelHt + "FT";
         }
         fmc.onRightInput[1] = () => {
             let value = fmc.inOut;
+            SaltyDataStore.set("TO_ACCEL_HT", value);
             fmc.clearUserInput();
             fmc.trySetAccelerationAltitude(value, (result) => {
                 if (result) {
@@ -198,12 +209,15 @@ class FMCTakeOffPage {
         if (mode === 2) {
             armedCLBThrust += "-2"; 
         }
-        let thrRedHt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number") - airportElevation;
+        let thrRedHt = SaltyDataStore.get("TO_THR_REDUCTION", 1500); //SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number") - airportElevation;
+        fmc.trySetThrustReductionAltitude(thrRedHt);
         if (thrRedHt) {
-            thrRedCell = armedCLBThrust + "\xa0\xa0\xa0\xa0" + thrRedHt.toFixed(0) + "FT";
+            parseInt(thrRedHt);
+            thrRedCell = armedCLBThrust + "\xa0\xa0\xa0\xa0" + thrRedHt + "FT";
         }
         fmc.onRightInput[2] = () => {
             let value = fmc.inOut;
+            SaltyDataStore.set("TO_THR_REDUCTION", value);
             fmc.clearUserInput();
             fmc.trySetThrustReductionAltitude(value, (result) => {
                 if (result) {

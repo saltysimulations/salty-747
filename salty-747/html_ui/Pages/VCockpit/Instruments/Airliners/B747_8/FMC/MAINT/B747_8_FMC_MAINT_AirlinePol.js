@@ -61,7 +61,7 @@ class FMC_MAINT_AirlinePol {
         }
         
         /* RSK3 */
-        fmc.onLeftInput[2] = () => {
+        fmc.onRightInput[2] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             SaltyDataStore.set("TO_CLB_AT", value);
@@ -69,7 +69,7 @@ class FMC_MAINT_AirlinePol {
         }
         
         /* LSK4 */
-        fmc.onLeftInput[2] = () => {
+        fmc.onLeftInput[3] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             SaltyDataStore.set("TO_THR_REDUCTION", value);
@@ -77,7 +77,7 @@ class FMC_MAINT_AirlinePol {
         }
         
         /* RSK4 */
-        fmc.onLeftInput[2] = () => {
+        fmc.onRightInput[3] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             SaltyDataStore.set("TO_CLB_BY", value);

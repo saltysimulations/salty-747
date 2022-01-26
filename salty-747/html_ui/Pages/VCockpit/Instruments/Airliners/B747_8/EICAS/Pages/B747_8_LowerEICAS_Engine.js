@@ -121,12 +121,12 @@ var B747_8_LowerEICAS_Engine;
         createN2GaugeDefinition() {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.eicas.getN2Value.bind(this, this.engineId);
-            definition.maxValue = 1100;
+            definition.maxValue = 1180;
             definition.valueBoxWidth = 70;
             definition.valueTextPrecision = 0;
             definition.barHeight = 40;
             definition.type = 2;
-            definition.addLineDefinition(1100, 32, "gaugeMarkerDanger");
+            definition.addLineDefinition(1180, 32, "gaugeMarkerDanger");
             definition.addLineDefinition(0, 40, "gaugeMarkerNormal", this.eicas.getN2IdleValue.bind(this));
             return definition;
         }
@@ -140,10 +140,19 @@ var B747_8_LowerEICAS_Engine;
             return definition;
         }
         getFFValue() {
+            /*var mach = SimVar.GetSimVarValue("AIRSPEED MACH", "mach");
+            var theta2 = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "rankine") / 518.67;
+            var P = SimVar.GetSimVarValue("AMBIENT PRESSURE", "hectopascal");
+            var P0 = 1013.25;
+            var delta = P / P0;
+            var delta2 = delta * ((1 + 0.2 * (mach ** 2)) ** 3.5);
+            SimVar.SetSimVarValue("L:SALTY_THETA2", "number", theta2);
+            SimVar.SetSimVarValue("L:SALTY_DELTA2", "number", delta2);
+            SimVar.SetSimVarValue("L:SALTY_DELTA", "number", delta);*/
             if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
-                return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 100);
+                return SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") / 100;
             }
-            return (SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 100);
+            return SimVar.GetSimVarValue("ENG FUEL FLOW GPH:" + this.engineId, "gallons per hour") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 100;
         }
         getOilPValue() {
             return SimVar.GetSimVarValue("ENG OIL PRESSURE:" + this.engineId, "psi");

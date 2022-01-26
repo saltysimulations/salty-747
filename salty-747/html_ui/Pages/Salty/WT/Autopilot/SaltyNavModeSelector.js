@@ -1606,7 +1606,7 @@
         return;
       }
       this.currentAutoThrottleStatus = AutoThrottleModeState.THR;
-      SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 80);
+      //SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 80);
       SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
      }
      else if (mcpAlt < altitude) {
@@ -1652,7 +1652,7 @@
    activateThrustRefMode() {
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.CLIMB);
-     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 90);
+     //SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 90);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
 
@@ -1666,8 +1666,9 @@
 
    activateIdleMode() {
      this.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
-     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 23.2);
-     SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
+     //SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 23.2);
+     //SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
+     SimVar.SetSimVarValue("K:THROTTLE_CUT", "bool", 1);
    }
 
    setAPSpeedHoldMode() {

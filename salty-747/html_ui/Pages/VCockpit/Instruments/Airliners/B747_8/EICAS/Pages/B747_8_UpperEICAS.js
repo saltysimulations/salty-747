@@ -138,7 +138,7 @@ var B747_8_UpperEICAS;
         }
 
         updateReferenceThrust() {
-            const MAX_POSSIBLE_THRUST_DISP = 1060;
+            const MAX_POSSIBLE_THRUST_DISP = 1067;
             for (var i = 1; i < 5; ++i) {
                 this.engRevStatus[i] = SimVar.GetSimVarValue("TURB ENG REVERSE NOZZLE PERCENT:" + i, "percent");
                 if (this.engRevStatus[i] > 1) {
@@ -146,8 +146,13 @@ var B747_8_UpperEICAS;
                     this.refThrust[i].setAttribute("x", (i * 15) - 2 + "%");
                     this.refThrustDecimal[i].style.visibility = "hidden";
                 }
+                else if (SimVar.GetSimVarValue("L:SALTY_REF_THR_SET", "bool")) {
+                    this.refThrust[i].textContent = Math.min(SimVar.GetSimVarValue("L:SALTY_REF_N1", "percent") * 10, MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+                    this.refThrust[i].setAttribute("x", (i * 15) - 1 + "%");
+                    this.refThrustDecimal[i].style.visibility = "visible";
+                }
                 else {
-                    this.refThrust[i].textContent = Math.min((Simplane.getEngineThrottleMaxThrust(i - 1) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+                    this.refThrust[i].textContent = "----";
                     this.refThrust[i].setAttribute("x", (i * 15) - 1 + "%");
                     this.refThrustDecimal[i].style.visibility = "visible";
                 }
@@ -232,12 +237,18 @@ var B747_8_UpperEICAS;
             return Math.abs(Simplane.getEngineThrottleCommandedN1(this.engine - 1)) * 10;
         }
         getN1LimitValue() {
-            return Math.abs(Simplane.getEngineThrottleMaxThrust(this.engine - 1)) * 10;
+            let N1 = "--.-";
+            if (SimVar.GetSimVarValue("L:SALTY_REF_THR_SET", "bool")) {
+                return N1 = Math.abs(Simplane.getEngineThrottleMaxThrust(this.engine - 1)) * 10;
+            }
+            else {
+                return N1;
+            }
         }
         createEGTGaugeDefinition(_engine) {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();
             definition.getValue = this.getEGTValue.bind(this);
-            definition.maxValue = 1000;
+            definition.maxValue = 1060;
             definition.valueBoxWidth = 70;
             definition.barHeight = 40;
             definition.type = 1;
