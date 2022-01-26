@@ -8,7 +8,7 @@ function airplaneCanFuel() {
 
     return !(gs > 0.1 || eng1Running || eng2Running || eng3Running || eng4Running || !isOnGround);
 }
-const REFUEL_FACTOR = 0.42;
+const REFUEL_FACTOR = 2;
 const CENTER_MODIFIER = 3;
 
 class SaltyFueling {
@@ -16,7 +16,7 @@ class SaltyFueling {
     }
     
     init() {
-        const totalFuelGallons = 41594;
+        const totalFuelGallons = 59700;
         const fuelWeight = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms");
         const usingMetrics = SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "Number");
 
@@ -60,7 +60,7 @@ class SaltyFueling {
 
         const refuelStartedByUser = SimVar.GetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool");
         const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
-        const refuelingRate = SimVar.GetSimVarValue("L:747_REFUEL_RATE_SETTING", "Number");
+        const refuelingRate = SaltyDataStore.get("747_REFUEL_RATE_SETTING", "REAL");
         if (!refuelStartedByUser) {
             return;
         }
@@ -94,7 +94,7 @@ class SaltyFueling {
         let centerTarget = centerTargetSimVar;
         let stabTarget = stabTargetSimVar;
 
-        if (refuelingRate == 2) {
+        if (refuelingRate == "INSTANT") {
             SimVar.SetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "Gallons", main1Target);
             SimVar.SetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "Gallons", main2Target);
             SimVar.SetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "Gallons", main3Target);
@@ -105,14 +105,14 @@ class SaltyFueling {
             SimVar.SetSimVarValue("FUEL TANK CENTER2 QUANTITY", "Gallons", stabTarget);
             return;
         }
-        let multiplier = 1 * REFUEL_FACTOR;
-        if (refuelingRate == 1) {
-            multiplier = 5 * REFUEL_FACTOR;
+        let multiplier = 1;
+        if (refuelingRate == "FAST") {
+            multiplier = 3;
         }
         //DEFUELING (order is STAB, CENTER, RES, MAIN)
         /* Stab */
         if (stabCurrent > stabTarget) {
-            stabCurrent += this.defuelTank(multiplier) * CENTER_MODIFIER;
+            stabCurrent += this.defuelTank(multiplier);
             if (stabCurrent < stabTarget) {
                 stabCurrent = stabTarget;
             }
@@ -123,7 +123,7 @@ class SaltyFueling {
         }
         /* Center */
         if (centerCurrent > centerTarget) {
-            centerCurrent += this.defuelTank(multiplier) * CENTER_MODIFIER;
+            centerCurrent += this.defuelTank(multiplier);
             if (centerCurrent < centerTarget) {
                 centerCurrent = centerTarget;
             }
@@ -232,7 +232,7 @@ class SaltyFueling {
         }
         /* Center */
         if (centerCurrent < centerTarget) {
-            centerCurrent += this.refuelTank(multiplier) * CENTER_MODIFIER;
+            centerCurrent += this.refuelTank(multiplier);
             if (centerCurrent > centerTarget) {
                 centerCurrent = centerTarget;
             }
@@ -243,7 +243,7 @@ class SaltyFueling {
         }
         /* Center */
         if (stabCurrent < stabTarget) {
-            stabCurrent += this.refuelTank(multiplier) * CENTER_MODIFIER;
+            stabCurrent += this.refuelTank(multiplier);
             if (stabCurrent > stabTarget) {
                 stabCurrent = stabTarget;
             }

@@ -154,14 +154,14 @@ class SaltyBoarding {
             return;
         }
 
-        let msDelay = 5000;
+        let msDelay = 2000;
 
         if (boardingRate == 'FAST') {
-            msDelay = 1000;
+            msDelay = 750;
         }
 
         if (boardingRate == 'REAL') {
-            msDelay = 5000;
+            msDelay = 2000;
         }
 
         if (this.time > msDelay) {
