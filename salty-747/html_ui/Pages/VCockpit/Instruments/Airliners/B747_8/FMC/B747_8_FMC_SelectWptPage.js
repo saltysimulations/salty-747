@@ -13,11 +13,7 @@ class B747_8_FMC_SelectWptPage {
             [""],
             [""]
         ];
-        function calculateDistance(wpt) {
-            const planeLla = new LatLongAlt(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
-            return Avionics.Utils.computeGreatCircleDistance(planeLla, wpt.infos.coordinates);
-        }
-        const orderedWaypoints = [...waypoints].sort((a, b) => calculateDistance(a) - calculateDistance(b));
+        const orderedWaypoints = [...waypoints].sort((a, b) => this.calculateDistance(a) - this.calculateDistance(b));
 
         for (let i = 0; i < 5; i++) {
             const w = orderedWaypoints[i + 5 * page];
@@ -61,6 +57,11 @@ class B747_8_FMC_SelectWptPage {
                 B747_8_FMC_SelectWptPage.ShowPage(fmc, waypoints, callback, page + 1);
             }
         };
+    }
+
+    static calculateDistance(wpt) {
+        const planeLla = new LatLongAlt(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
+        return Avionics.Utils.computeGreatCircleDistance(planeLla, wpt.infos.coordinates);
     }
 }
 //# sourceMappingURL=B747_8_FMC_SelectWptPage.js.map
