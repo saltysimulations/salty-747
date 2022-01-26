@@ -12,18 +12,19 @@ class FMC_COMM_Boarding {
         SimVar.SetSimVarValue("L:FMC_UPDATE_CURRENT_PAGE", "number", 1);
 
         const refuelStartedByUser = SimVar.GetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool");
-        const refuelingRate = SimVar.GetSimVarValue("L:747_REFUEL_RATE_SETTING", "Number");
+        //const refuelingRate = SimVar.GetSimVarValue("L:747_REFUEL_RATE_SETTING", "Number");
+        const refuelingRate = SaltyDataStore.get("747_REFUEL_RATE_SETTING", 'REAL');
         let refuelingRateText = "";
         switch (refuelingRate) {
-            case 0:
+            case "REAL":
                 // Loads fuel in a realistic time
                 refuelingRateText = "REAL>";
                 break;
-            case 1:
+            case "FAST":
                 // Loads fuel 5 times faster
                 refuelingRateText = "FAST>";
                 break;
-            case 2:
+            case "INSTANT":
                 // Loads fuel instant
                 refuelingRateText = "INSTANT>";
                 break;
@@ -102,20 +103,21 @@ class FMC_COMM_Boarding {
 
         /* Rate of refueling */
         fmc.onRightInput[0] = () => {
+            const refuelingRate = SaltyDataStore.get("747_REFUEL_RATE_SETTING", 'REAL');
             switch (refuelingRate) {
-                case 0:
+                case "INSTANT":
                     // Loads fuel in a realistic time
-                    SimVar.SetSimVarValue("L:747_REFUEL_RATE_SETTING", "Number", 1);
+                    SaltyDataStore.set("L:747_REFUEL_RATE_SETTING", "REAL");
                     updateView();
                     break;
-                case 1:
+                case "REAL":
                     // Loads fuel 5 times faster
-                    SimVar.SetSimVarValue("L:747_REFUEL_RATE_SETTING", "Number", 2);
+                    SaltyDataStore.set("L:747_REFUEL_RATE_SETTING", "FAST");
                     updateView();
                     break;
-                case 2:
+                case "FAST":
                     // Loads fuel instant
-                    SimVar.SetSimVarValue("L:747_REFUEL_RATE_SETTING", "Number", 0);
+                    SaltyDataStore.set("L:747_REFUEL_RATE_SETTING", "INSTANT");
                     updateView();
                     break;
                 default:

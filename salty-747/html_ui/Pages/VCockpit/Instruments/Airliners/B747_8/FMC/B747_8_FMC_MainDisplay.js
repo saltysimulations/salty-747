@@ -287,7 +287,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.saltyBoarding.update(_deltaTime);
         this.saltyFueling.update(_deltaTime);
         this.saltyModules.update(_deltaTime);
-        this.saltyStates.update(_deltaTime);
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
             this.useLbs = false;

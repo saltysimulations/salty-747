@@ -189,6 +189,7 @@ var B747_8_LowerEICAS_Fuel;
                 this.querySelector('#JettTime').setAttribute("style", "opacity: 0;");
                 this.querySelector('#JettTimeValue').setAttribute("style", "opacity: 0;");
             }
+            this.fuelPreselected();
         }
         getTotalFuelInMegagrams() {
             let factor = this.gallonToMegapounds;
@@ -203,6 +204,18 @@ var B747_8_LowerEICAS_Fuel;
                 factor = this.gallonToMegagrams;
             }
             return (SimVar.GetSimVarValue("FUELSYSTEM TANK QUANTITY:" + _index, "gallons") * factor);
+        }
+        fuelPreselected(){
+            let isRefueling = SimVar.GetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool");
+            let preselectedFuelQty = SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "Number");
+            this.querySelector("#FuelPreselectValue").textContent = (preselectedFuelQty / 1000).toFixed(1);
+            if (isRefueling == 1) {
+                this.querySelector("#FuelPreselect").setAttribute("style", "opacity: 100;");
+                this.querySelector("#FuelPreselectValue").setAttribute("style", "opacity: 100;");
+            } else {
+                this.querySelector("#FuelPreselect").setAttribute("style", "opacity: 0;");
+                this.querySelector("#FuelPreselectValue").setAttribute("style", "opacity: 0;");
+            }
         }
     }
     B747_8_LowerEICAS_Fuel.Display = Display;
