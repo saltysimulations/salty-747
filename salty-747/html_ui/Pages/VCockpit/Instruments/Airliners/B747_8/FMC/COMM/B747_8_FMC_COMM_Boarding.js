@@ -107,17 +107,17 @@ class FMC_COMM_Boarding {
             switch (refuelingRate) {
                 case "INSTANT":
                     // Loads fuel in a realistic time
-                    SaltyDataStore.set("L:747_REFUEL_RATE_SETTING", "REAL");
+                    SaltyDataStore.set("747_REFUEL_RATE_SETTING", "REAL");
                     updateView();
                     break;
                 case "REAL":
                     // Loads fuel 5 times faster
-                    SaltyDataStore.set("L:747_REFUEL_RATE_SETTING", "FAST");
+                    SaltyDataStore.set("747_REFUEL_RATE_SETTING", "FAST");
                     updateView();
                     break;
                 case "FAST":
                     // Loads fuel instant
-                    SaltyDataStore.set("L:747_REFUEL_RATE_SETTING", "INSTANT");
+                    SaltyDataStore.set("747_REFUEL_RATE_SETTING", "INSTANT");
                     updateView();
                     break;
                 default:
