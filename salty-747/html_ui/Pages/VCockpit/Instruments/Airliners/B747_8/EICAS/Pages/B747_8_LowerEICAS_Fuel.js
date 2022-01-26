@@ -7,7 +7,7 @@ var B747_8_LowerEICAS_Fuel;
             this.allFuelComponents = new Array();
             this.gallonToMegagrams = 0;
             this.gallonToMegapounds = 0;
-            this.units;
+            this.units = true;
             this.isInitialised = false;
         }
         get templateID() { return "B747_8LowerEICASFuelTemplate"; }
@@ -147,9 +147,6 @@ var B747_8_LowerEICAS_Fuel;
                     break;
                 default:
                     this.units = true;
-            }
-            if (!this.isInitialised) {
-                return;
             }
             if (!this.isInitialised) {
                 return;
