@@ -10,23 +10,74 @@ var Boeing;
 
         getText(phase, mode) {
             let text = "-";
-            let alt = Simplane.getAltitude();
-            let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
+            //let ground = SimVar.GetSimVarValue("L:SALTY_GROUND", "bool"); //Simplane.getIsGrounded();
+            //let mode = (ground ? SimVar.GetSimVarValue("L:AIRLINER_THRUST_TAKEOFF_MODE", "number") : SimVar.GetSimVarValue("L:AIRLINER_THRUST_CLIMB_MODE", "number"));
+            //let alt = Simplane.getAltitude();
+            //let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
 
-            if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB) 
+            /*if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB) 
                 text = `${(alt <= thrRedAlt && phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) ? "TO" :  "CLB"}${(mode == 1 || mode == 2) ? " - " + mode : ""}`;
-            else if (phase <= FlightPhase.FLIGHT_PHASE_CRUISE)
-                text = `CRZ`;
-
-            return text;
+            */
+            if (phase <= /*1*/ FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:SALTY_REF_THR_SET", "bool") == false) {
+                text = "-";
+                return text;
+            }
+            else if (phase <= /*1*/ FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:SALTY_REF_THR_SET", "bool") == true) {
+                /*let mode = SimVar.GetSimVarValue("L:AIRLINER_THRUST_TAKEOFF_MODE", "number");*/
+                if (mode == 0){
+                    if (SimVar.GetSimVarValue("L:SALTY_ATM_SET", "bool") == true) {
+                        let AT = SimVar.GetSimVarValue("L:SALTY_ASSUMED_TEMP", "number");
+                        text = "D-TO " + "+" + AT + "C";
+                        return text;
+                    }
+                    else {
+                        text = "TO";
+                        return text;
+                    }
+                }
+                else if (mode == 1 || mode == 2){
+                    if (SimVar.GetSimVarValue("L:SALTY_ATM_SET", "bool") == true) {
+                        let AT = SimVar.GetSimVarValue("L:SALTY_ASSUMED_TEMP", "number");
+                        text = "D-TO " + mode + "+" + AT + "C";
+                        return text;
+                    }
+                    else {
+                        text = "TO - " + mode;
+                        return text;
+                    }
+                }
+            }
+            else {
+                /*let mode = SimVar.GetSimVarValue("L:AIRLINER_THRUST_CLIMB_MODE", "number");*/
+                if (mode == 0){
+                    text = "CLB";
+                    return text;
+                }
+                else if (mode == 1 || mode == 2){
+                    text = "CLB - " + mode;
+                    return text;
+                }
+                else if (mode == 3) {
+                    text = "GA";
+                    return text;
+                }
+                else if (mode == 4) {
+                    text = "CON";
+                    return text;
+                }
+                else {
+                    text = "CRZ";
+                    return text;
+                }
+            }
         }
-
         update() {
-            let phase = Simplane.getCurrentFlightPhase();
-            let mode = 0;
+            let phase = Simplane.getCurrentFlightPhase(); //SimVar.GetSimVarValue("L:SALTY_PHASE", "Enum") ; //Simplane.getCurrentFlightPhase();
+            //let ground = SimVar.GetSimVarValue("L:SALTY_GROUND", "bool") ; //Simplane.getIsGrounded();
             let alt = Simplane.getAltitude();
             let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
-            if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF && alt < thrRedAlt) {
+            var mode;
+            if (phase <= /*1*/ FlightPhase.FLIGHT_PHASE_TAKEOFF && alt < thrRedAlt) {
                 mode = Simplane.getEngineThrustTakeOffMode(0);
             }
             else {
@@ -94,14 +145,13 @@ var Boeing;
             this.bar = _bar;
             this.gauge = _gauge;
             this.cockpitSettings = SimVar.GetGameVarValue("", "GlassCockpitSettings");
-            this.refreshValue(0, 0, 0, 0, true);
+            this.refreshValue(0, 0, 0, true);
         }
         update(_deltaTime) {
             var leverPos = Simplane.getFlapsHandleIndex();
             var flapsPercent = ((SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT PERCENT", "percent") + SimVar.GetSimVarValue("TRAILING EDGE FLAPS RIGHT PERCENT", "percent")) * 0.5) * 0.01;
-            var leadingEdgePercent = ((SimVar.GetSimVarValue("LEADING EDGE FLAPS LEFT PERCENT", "percent") + SimVar.GetSimVarValue("LEADING EDGE FLAPS RIGHT PERCENT", "percent")) * 0.5) * 0.01;
             var flapsAngle = (SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees") + SimVar.GetSimVarValue("TRAILING EDGE FLAPS RIGHT ANGLE", "degrees")) * 0.5;
-            this.refreshValue(leverPos, flapsPercent, flapsAngle, leadingEdgePercent);
+            this.refreshValue(leverPos, flapsPercent, flapsAngle);
             if ((this.currentAngle <= 0) && (this.timeout > 0)) {
                 this.timeout -= _deltaTime;
                 if (this.timeout <= 0) {
@@ -111,11 +161,10 @@ var Boeing;
                 }
             }
         }
-        refreshValue(_leverPos, _realFlapsPercent, _realFlapsAngle, _leadingEdgeFlapsPercent, _force = false) {
-            if ((_leverPos != this.currentLeverPosition) || (_realFlapsPercent != this.currentPercent) || (_realFlapsAngle != this.currentAngle) || (_leadingEdgeFlapsPercent != this.currentLeadingEdgePercent) || _force) {
+        refreshValue(_leverPos, _realFlapsPercent, _realFlapsAngle, _force = false) {
+            if ((_leverPos != this.currentLeverPosition) || (_realFlapsPercent != this.currentPercent) || (_realFlapsAngle != this.currentAngle) || _force) {
                 this.currentLeverPosition = _leverPos;
                 this.currentPercent = _realFlapsPercent;
-                this.currentLeadingEdgePercent = _leadingEdgeFlapsPercent;
                 this.currentAngle = _realFlapsAngle;
                 var targetAngle = this.flapsLeverPositionToAngle(this.currentLeverPosition);
                 var barTop = 0;
@@ -137,25 +186,11 @@ var Boeing;
                     this.valueText.setAttribute("y", markerYStr - 2);
                 }
                 if (this.gauge != null) {
-                    //Normalises non-linear flap settings for gauge.
-                    const seg1 = barHeight * this.currentLeadingEdgePercent / 6;
-                    const seg2 = barHeight * Math.min(this.currentPercent, 0.333);
-                    const seg3 = Math.min(barHeight * 0.5 * Math.max(this.currentPercent - 0.333, 0), 22);
-                    const seg4 = barHeight * Math.max(this.currentPercent - 0.667, 0);
-                    var height = seg1 + seg2 + seg3 + seg4;
-
+                    var height = barHeight * this.currentPercent;
                     this.gauge.setAttribute("height", height.toString());
                 }
                 if (this.rootElement != null) {
-                    if (this.currentLeverPosition == 0) {
-                        this.rootElement.setAttribute("class", (Math.round(_leadingEdgeFlapsPercent * 100) == Math.round(0)) ? "static" : "transit");
-                    }
-                    else if (this.currentLeverPosition == 1) {
-                        this.rootElement.setAttribute("class", (Math.round(_leadingEdgeFlapsPercent * 100) == Math.round(100) && Math.round(this.currentAngle) == Math.round(0)) ? "static" : "transit");
-                    }
-                    else {
-                        this.rootElement.setAttribute("class", (Math.round(this.currentAngle) == Math.round(targetAngle)) ? "static" : "transit");
-                    }
+                    this.rootElement.setAttribute("class", (Math.round(this.currentAngle) == Math.round(targetAngle)) ? "static" : "transit");
                 }
                 if (this.currentAngle <= 0) {
                     this.timeout = Boeing.FlapsDisplay.TIMEOUT_LENGTH;
@@ -173,9 +208,9 @@ var Boeing;
         flapsAngleToPercentage(_angle) {
             const angToPercent = {
                 0: 0,
-                1: 0.167,
-                5: 0.333,
-                10: 0.5,
+                1: 0.033,
+                5: 0.167,
+                10: 0.333,
                 20: 0.667,
                 25: 0.833,
                 30: 1
