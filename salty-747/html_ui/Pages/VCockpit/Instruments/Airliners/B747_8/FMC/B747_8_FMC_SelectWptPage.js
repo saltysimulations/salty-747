@@ -13,21 +13,31 @@ class B747_8_FMC_SelectWptPage {
             [""],
             [""]
         ];
+        function calculateDistance(wpt) {
+            const planeLla = new LatLongAlt(SimVar.GetSimVarValue("PLANE LATITUDE", "degree latitude"), SimVar.GetSimVarValue("PLANE LONGITUDE", "degree longitude"));
+            return Avionics.Utils.computeGreatCircleDistance(planeLla, wpt.infos.coordinates);
+        }
+        const orderedWaypoints = [...waypoints].sort((a, b) => calculateDistance(a) - calculateDistance(b));
+
         for (let i = 0; i < 5; i++) {
-            let w = waypoints[i + 5 * page];
+            const w = orderedWaypoints[i + 5 * page];
             if (w) {
                 let t = "";
+                let freq = "";
                 if (w.icao[0] === "V") {
                     t = " VOR";
+                    freq = (w.infos.frequencyMHz) ? fastToFixed(w.infos.frequencyMHz, 1).toString() : " ";
                 }
                 else if (w.icao[0] === "N") {
                     t = " NDB";
+                    freq = (w.infos.frequencyMHz) ? fastToFixed(w.infos.frequencyMHz, 1).toString() : " ";
                 }
                 else if (w.icao[0] === "A") {
                     t = " AIRPORT";
+                    freq = " ";
                 }
                 rows[2 * i] = [w.ident + t];
-                rows[2 * i + 1] = [w.infos.coordinates.toDegreeString()];
+                rows[2 * i + 1] = [freq, w.infos.coordinates.toDegreeString()];
                 fmc.onLeftInput[i] = () => {
                     callback(w);
                 };
