@@ -125,18 +125,40 @@ class FMC_COMM_Boarding {
         }
         
         /* Fetch fuel from flight plan */
-        fmc.onRightInput[4] = () => {
+        /*fmc.onRightInput[4] = () => {
             getFplnFromSimBrief(fmc, "", updateView, () => {
                 setTargetPax(fmc.simbrief.paxCount).then(() => {
                     insertPerfUplink(fmc, updateView);
                 });
             });
-        };
+        };*/
 
         /* Starts refueling */ 
         fmc.onRightInput[5] = async () => {
-            await SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", !refuelStartedByUser);
-            updateView();
+            switch (refuelingRate) {
+                case "REAL":
+                    if (airplaneCanFuel()) {
+                        await SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", !refuelStartedByUser);
+                        updateView()
+                    }
+                    else {
+                       fmc.showErrorMessage("ENGINES RUNNING")
+                    }
+                    break;
+                case "FAST":
+                    if (airplaneCanFuel()) {
+                        await SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", !refuelStartedByUser);
+                        updateView()
+                    }
+                    else {
+                       fmc.showErrorMessage("ENGINES RUNNING")
+                    }
+                    break;
+                case "INSTANT":
+                    await SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", !refuelStartedByUser);
+                    updateView()
+                    break;
+            }
         };
         
         fmc.onLeftInput[5] = () => {
@@ -636,4 +658,15 @@ function buildStationValue(fmc, station) {
             updateView();
         }
     );
+}
+
+function airplaneCanFuel() {
+    const gs = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
+    const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
+    const eng1Running = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
+    const eng2Running = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
+    const eng3Running = SimVar.GetSimVarValue("ENG COMBUSTION:3", "Bool");
+    const eng4Running = SimVar.GetSimVarValue("ENG COMBUSTION:4", "Bool");
+
+    return !(gs > 0.1 || eng1Running || eng2Running || eng3Running || eng4Running || !isOnGround);
 }
