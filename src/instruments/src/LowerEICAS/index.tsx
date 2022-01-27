@@ -26,7 +26,6 @@ import { ELEC } from "./ELEC/ELEC";
 import { HYD } from "./HYD/HYD";
 
 import "./index.scss";
-import "../Common/pixels.scss";
 
 type BlackOutlineWhiteLineProps = { d: string; blackStroke?: number; whiteStroke?: number; color?: string };
 export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, blackStroke = 4, whiteStroke = 3, color = "white" }) => (
