@@ -21,7 +21,6 @@ import { render } from "../Common";
 import { useSimVar } from "react-msfs";
 
 import "./index.scss";
-import "../Common/pixels.scss";
 import img from './EICAS.png';
 
 const getDecimalString = (value: number): string => {
@@ -99,11 +98,10 @@ const UpperEICAS: FC = () => {
     const [stabTrim] = useSimVar("ELEVATOR TRIM PCT", "percent");
     return (
         <>
-            <div className="LcdOverlay" style={{ opacity: "0.2" }} />
             <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
                 
                 {/*Ref Image*/}
-                <image href={img} x="0" y="0" width={800} height={800} opacity={0.4}/>
+                <image href={img} x="0" y="0" width={800} height={800} opacity={0.3}/>
 
                 {/*TAT Info*/}   
                 <text x={95} y={42} className="text-2 cyan">TAT</text>
@@ -226,7 +224,7 @@ const UpperEICAS: FC = () => {
                 <text x={760} y={776} className="text-3">{getTempPrefix(fuelTemp) + fuelTemp.toFixed(0)}</text>               
                 <text x={773} y={776} className="text-2">C</text>
 
-                {/*Fuel & TAT Info*/}
+                {/*STAB Indicator*/}
                 <text x={769} y={437} className="text-2 cyan">ND</text>
                 <text x={769} y={659} className="text-2 cyan">NU</text>
                 <path className="white-line" fill="none" d={`M746 450, h7, v180, h-7`} />
@@ -241,6 +239,12 @@ const UpperEICAS: FC = () => {
                 <path className="minimums-line" fill="none" d={`M723 667, h58, v36, h-58, Z`} />
                 <text x={776} y={696} className="text-3 green">{getDecimalString(stabTrim)}</text>
                 <text x={760} y={696} className="text-3 green decimal">{getDecimalPointString(stabTrim)}</text>
+                
+                {/*EICAS Messages*/}
+                <text x={762} y={42} className="text-3 amber">DOOR R UPPER DK</text>
+                <text x={657} y={275} className="text-3">PACKS OFF</text>
+                <text x={702} y={335} className="text-3">DOORS MANUAL</text>
+                <text x={732} y={305} className="text-3">PARK BRAKE SET</text>
             </svg>
         </>
     );

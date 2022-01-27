@@ -80,17 +80,17 @@ export const AltitudeScroller: FC = () => {
                     {/* Ten Thousands Digits*/}
                     <g transform={`translate( 0 ${getTenThousandsScrollerY(altitude)} )`}>
                         {Array.from({ length: 6 }, (_, i) => {
-                            const y = i == 5 ? 394 : 151 + (49 * i);
+                            const y = i == 5 ? 396 : 151 + (49 * i);
                             const text = i == 5 ? "@" : 5 - i;
                             const size = i == 5 ? "tenkMarker" : "text-4";
-                            const x = i == 5 ? 659 : 660;
+                            const x = i == 5 ? 658 : 659;
                             return (
                                 <>
                                     <text className={size} x={x} y={y} >{text}</text>
                                 </>
                             );
                         })}
-                        <text className="text-4" x="660" y="445" >
+                        <text className="text-4" x="659" y="445" >
                             -
                         </text>
                     </g>
@@ -102,11 +102,11 @@ export const AltitudeScroller: FC = () => {
                             let text = 9 - i;
                             return (
                                 <>
-                                    <text x="682" y={y} >{text}</text>
+                                    <text x="681" y={y} >{text}</text>
                                 </>
                             );
                         })}
-                        <text x="682" y="-94" >
+                        <text x="681" y="-94" >
                             0
                         </text>
                     </g>
@@ -118,17 +118,17 @@ export const AltitudeScroller: FC = () => {
                             let text = 9 - i;
                             return (
                                 <>
-                                    <text x="699" y={y} >{text}</text>
+                                    <text x="700" y={y} >{text}</text>
                                 </>
                             );
                         })}
-                        <text x="699" y="-147" >
+                        <text x="700" y="-147" >
                             1
                         </text>
-                        <text x="699" y="-98" >
+                        <text x="700" y="-98" >
                             0
                         </text>
-                        <text x="699" y="439" >
+                        <text x="700" y="439" >
                             9
                         </text>
                     </g>
@@ -143,17 +143,17 @@ export const AltitudeScroller: FC = () => {
                             }
                             return (
                                 <>
-                                    <text x="730" y={y} >{text}</text>
+                                    <text x="732" y={y} >{text}</text>
                                 </>
                             );
                         })}
-                        <text x="730" y="236" >
+                        <text x="732" y="236" >
                             20
                         </text>
-                        <text x="730" y="262" >
+                        <text x="732" y="262" >
                             00
                         </text>
-                        <text x="730" y="418" >
+                        <text x="732" y="418" >
                             80
                         </text>
                     </g>

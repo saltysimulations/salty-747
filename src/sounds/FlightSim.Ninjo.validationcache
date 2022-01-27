@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ValidationCache Version="1" SchemaVersion="97">
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Virtual Acoustics\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Triggers\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Switches\surface.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Switches\levers.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Switches\flight_control.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Switches\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\States\flow_states.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\States\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\States\aircraft.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Soundcaster Sessions\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\SoundBanks\Salty_747.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\SoundBanks\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Queries\Factory Queries.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Queries\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Presets\Factory Spatial Audio.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Presets\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Modulators\planes.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Modulators\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Mixing Sessions\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Master-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\simvar.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\npc.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\gui.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\gplay.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\environment.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\engine.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\control_signal.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Game Parameters\_NOT_IN_GAME\Factory SoundSeed Air Game Syncs.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\FlightSim.wproj" DateLow="1636293367" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Events\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747.wwu" DateLow="1636293367" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\reverb_roomverb.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\reverb_convolution.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\meter.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\flanger.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\eq.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\distortion.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Effects\_NOT_IN_GAME\Factory Effects.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Dynamic Dialogue\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Conversion Settings\Factory Conversion Settings.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Conversion Settings\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Control Surface Sessions\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Audio Devices\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Attenuations\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Attenuations\aircraft.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1628633810" DateHigh="0"/>
+	<ValidationCacheItem File="X:\Documents\GitHub\salty-747\src\sounds\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747.wwu" DateLow="1636295604" DateHigh="0"/>
+</ValidationCache>

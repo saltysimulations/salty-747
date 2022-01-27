@@ -17,29 +17,41 @@
  */
 
 import React, { FC } from "react";
-import { useSimVar } from "react-msfs";
-import { BlackOutlineWhiteLine } from "../index";
-import { removeLeadingZeros } from "@instruments/common/utils/heading";
+import { useSimVar, useInteractionEvent } from "react-msfs";
 
 const getRadAltClass = (radAlt: number, radioMins: number, oldClass: string): string => {
     let radAltClass = oldClass;
-    if (radAlt <= radioMins && radAlt !== 0){
-        radAltClass += " amber"
+    if (radAlt <= radioMins && radAlt > 1){
+        return radAltClass += " amber"
     }
-    return radAltClass;
+    else {
+        return radAltClass += "";
+    }
+};
+
+const feetToMetric = (feet: number): number => {
+    const metres = Math.round(feet * 0.3048);
+    return metres;
 };
 
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
-    const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
-    const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
-    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:1", "feet");
+    const [altAlertStatus] = useSimVar("L:74S_ALT_ALERT", "number");
+    const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
+    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
+    const [tdze] = useSimVar("L:74S_FMC_TDZE", "feet");
+    const [isMtrsOn] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
+    const [mtrsOn, setMtrs] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
+    
+    useInteractionEvent("B747_8_PFD_MTRS", () => {
+        setMtrs(!mtrsOn);
+    });
 
     const getAltitudeY = (altitude: number): number => {
         const y = altitude * 0.68;
         return y;
     };
-    
+      
     return (
         <g>
             <clipPath id="altitudetape-clip">
@@ -99,10 +111,10 @@ export const AltitudeTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="638" y={`${y + offset}`} className="text-2">
+                                <text x="640" y={`${y + offset}`} className="text-2" fillOpacity={0.9}>
                                     {hundredsText}
                                 </text>
-                                <text x="600" y={`${y + offset}`} className="text-3">
+                                <text x="603" y={`${y + offset}`} className="text-3" fillOpacity={0.9}>
                                     {thousandsText}
                                 </text>
                             </>
@@ -118,27 +130,58 @@ export const AltitudeTape: FC = () => {
                         }
                         return (
                             <>
-                                <text x="638" y={`${y + offset}`} className="text-2">
+                                <text x="638" y={`${y + offset}`} className="text-2" fillOpacity={0.85}>
                                     {hundredsText}
                                 </text>
                             </>
                         );
                     })}
 
-                    {/* Minimums Bug */}
-                    <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
-                    <path className="minimums-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
-
                     <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(altitude)}, h 73, v 100, h -73, Z`} />
 
+                    {/* TDZ Indicator */}
+                    <path className="black-outline" fill="none" d={`M 550 ${382 + tdze * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+                    <path className="amber-line" fill ="none" d={`M 550 ${382 + tdze * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+
+                    {/* Minimums Bug */}
+                    <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
+                    <path className="green-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
+
                     {/* Altitude Bug */}
-                    <path className="black-outline" fill="none" d={`M 550 ${382}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
-=
-                    <path className="magenta-line" fill="none" d={`M 550 ${382}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
+                    <path className="black-outline" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
+                    <path className="magenta-line" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
                 </g>
             </g>
-            
 
+            {/* Metres Display */}
+            <g visibility={isMtrsOn? "visible" : "hidden"}>
+
+                {/* Metres Box */}
+                <g>
+                    <path
+                        className="indication"
+                        style={{ strokeWidth: "5px", stroke: "black" }}
+                        d="M 632 314, h 104, v 30, h-104, Z"
+                    />
+                    <path
+                        style={{ strokeWidth: "3px" }}
+                        className="indication"
+                        d="M 632 314, h 104, v 30, h-104, Z"
+                    />
+                    <text x="715" y="339" className="text-3 end">{feetToMetric(altitude)}</text>
+                    <text x="728" y="339" className="text-2 cyan end">M</text>
+                </g>
+
+                {/* Metres Selected Alt */}
+                <g>
+                    <text x="681" y="41" className="text-3 magenta end">
+                        {Math.round(feetToMetric(selAlt / 10) * 10)}
+                    </text>
+                    <text x="682" y="41" className="text-2 cyan start">
+                        M
+                    </text>
+                </g>
+            </g>
 
             {/* Altimeter Scroller Box */}
             <path
@@ -149,14 +192,15 @@ export const AltitudeTape: FC = () => {
             <path 
                 style={{ strokeWidth: (altAlertStatus != 0 ? "9px" : "3px"), stroke: (altAlertStatus != 2 ? "white" : "#ffc400") }}
                 className="indication" 
-                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" />
+                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" 
+            />
         </g>     
     );
 };
 
 export const CommandAlt: FC = () => {
-    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:1", "feet");
-    const [altAlertStatus] = useSimVar("L:SALTY_ALTITUDE_ALERT", "number");
+    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
+    const [altAlertStatus] = useSimVar("L:74S_ALT_ALERT", "enum");
 
     const getLargeSelAltText = (altitude: number): string => {
         let text = altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
@@ -174,69 +218,73 @@ export const CommandAlt: FC = () => {
 
     return (
         <g>
-            <text x="648" y="80" className="text-4 magenta">
+            <text x="649" y="80" className="text-4 magenta">
                 {getLargeSelAltText(selAlt)}
             </text>
             <text x="695" y="80" className="text-3 magenta">
                 {getSmallSelAltText(selAlt)}
             </text>
-            <path className= "indication" 
-                d="M 600 45, h 100, v40, h-100, Z" 
-                fill= "none"
-                visibility = {( altAlertStatus == 1 ? "visible" : "hidden")}/>
+            <path className="indication"
+                d="M 602 48, h 96, v35, h-96, Z"
+                fill="none"
+                visibility={(altAlertStatus == 1 ? "visible" : "hidden")} />
         </g>
     );
 }
 
 export const BaroSetting: FC = () => {
-    const [preselBaroHg] = useSimVar("L:XMLVAR_Baro1_SavedPressure", "inHg");
+    const [preselBaro] = useSimVar("L:XMLVAR_Baro1_SavedPressure", "number");
+    const [preselBaroVisible] = useSimVar("L:74S_BARO_PRESEL_VISIBLE", "bool");
+    const [isSTD] = useSimVar("L:XMLVAR_Baro1_ForcedToSTD", "bool");
     const [baroHg] = useSimVar("KOHLSMAN SETTING HG", "inHg");
     const [units] = useSimVar("L:XMLVAR_Baro_Selector_HPA_1", "bool");
 
-    const getIsStd = (): boolean => {
-        const [isStd] = useSimVar("KOHLSMAN SETTING STD", "bool");
-        return isStd;
-    };
-
     return (
         <g>
-            <text x="682" y="710" className="text-4 green" visibility= {getIsStd() == true ? "visible" : "hidden"}>
+            <text x="682" y="710" className="text-4 green" visibility= {isSTD == true ? "visible" : "hidden"}>
                 STD
             </text>
             <text 
                 x={units === 0 ? "685": "680"} 
                 y="710" 
                 className="text-3 green" 
-                visibility= {getIsStd() == false ? "visible" : "hidden"}>
+                visibility= {isSTD == false ? "visible" : "hidden"}>
                 {units === 0 ? baroHg.toFixed(2): (baroHg * 33.86).toFixed(0)}
             </text>
             <text 
                 x={units === 0 ? "715": "725"} 
                 y="710" 
                 className="text-2 green" 
-                visibility= {getIsStd() == false ? "visible" : "hidden"}>
+                visibility= {isSTD == false ? "visible" : "hidden"}>
                 {units === 0 ? " IN": " HPA"}
             </text>
             <text 
                 x="720" 
                 y="745" 
-                visibility={preselBaroHg == -1 ? "hidden" : "visible"}
+                visibility={preselBaroVisible ? "visible" : "hidden"}
                 className="text-2">
-                {units === 0 ? preselBaroHg.toFixed(2) + " IN": (preselBaroHg * 33.86).toFixed(0) + " HPA"}
+                {units === 0 ? (preselBaro / 54182.4).toFixed(2) + " IN": (preselBaro / 1600).toFixed(0) + " HPA"}
             </text>
         </g>
     );
 };
 
 export const Minimums: FC = () => {
-    const [baroMins] = useSimVar("L:SALTY_MINS_BARO", "feet");
-    const [radioMins] = useSimVar("L:SALTY_MINS_RADIO", "feet");
-    const [radAlt] = useSimVar("RADIO HEIGHT", "feet");
+    const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
+    const [radioMins] = useSimVar("L:74S_MINS_RADIO", "feet");
+    const [radAlt] = useSimVar("PLANE ALT ABOVE GROUND MINUS CG", "feet");
+
+    const getRadioTextClass = (radAlt: number, radioMins: number, size: number): string => {
+        if (radAlt <= radioMins && radAlt > 1){
+            return `text-${size} amber RadioMinsBlink`;
+        }
+        return `text-${size} green`;
+    };
 
     return (
         < g>
             < g visibility={baroMins >= -100 ? "visible" : "hidden"}>
-                <text x="530" y="640" className="text-2 green" >
+                <text x="530" y="638" className="text-2 green" >
                     BARO
                 </text>
                 <text x="530" y="668" className="text-3 green">
@@ -245,10 +293,10 @@ export const Minimums: FC = () => {
             </g>
 
             < g visibility={radioMins > 0 ? "visible" : "hidden"}>
-                <text x="550" y="85" className={getRadAltClass(radAlt, radioMins, "text-2 green")}>
+                <text x="550" y="85" className={getRadioTextClass(radAlt, radioMins, 2)}>
                     RADIO
                 </text>
-                <text x="550" y="113" className={getRadAltClass(radAlt, radioMins, "text-3 green")}>
+                <text x="550" y="113" className={getRadioTextClass(radAlt, radioMins, 3)}>
                     {radioMins}
                 </text>
             </g>
@@ -259,8 +307,8 @@ export const Minimums: FC = () => {
 };
 
 export const RadioAltimeter: FC = () => {
-    const [radAlt] = useSimVar("RADIO HEIGHT", "feet");
-    const [radioMins] = useSimVar("L:SALTY_MINS_RADIO", "feet");
+    const [radAlt] = useSimVar("PLANE ALT ABOVE GROUND MINUS CG", "feet");
+    const [radioMins] = useSimVar("L:74S_MINS_RADIO", "feet");
 
     const getRadAltRounded = (): number => {
         let alt = 0;

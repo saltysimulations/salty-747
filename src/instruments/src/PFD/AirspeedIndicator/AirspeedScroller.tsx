@@ -66,7 +66,7 @@ export const SpeedScroller: FC = () => {
                             let text = i == 4 ? "" : 4 - i;
                             return (
                                 <>
-                                    <text x="37" y={y} >{text}</text>
+                                    <text x="35" y={y} >{text}</text>
                                 </>
                             );
                         })}
@@ -79,7 +79,7 @@ export const SpeedScroller: FC = () => {
                             let text = 9 - i;
                             return (
                                 <>
-                                    <text x="57" y={y} >{text}</text>
+                                    <text x="56" y={y} >{text}</text>
                                 </>
                             );
                         })}
@@ -117,3 +117,28 @@ export const SpeedScroller: FC = () => {
         </g>
     );
 };
+
+const getTrendVector = (acceleration: number): number => {
+    if (acceleration > 0) {
+        return Math.min(acceleration * 5.925, 60.5);
+    }
+    else {
+        return Math.max(acceleration * 5.925, -60.5);
+    }
+};
+
+
+//TODO - This should also include some component based on airspeed change vs delta time, not just acceleration.
+export const SpeedTrendVector: FC = () => {
+    const [acceleration] = useSimVar('ACCELERATION BODY Z', 'Feet per second squared');
+    const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
+
+    return (
+        <g visibility={Math.abs(getTrendVector(acceleration)) < 4.5 ? "hidden" : "visible"}>
+            <path fill="none" className="black-outline" d={`M 96 381, v${getTrendVector(acceleration) * -4.6 - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
+            <path fill="none" className="fma-line" d={`M 96 381, v${(getTrendVector(acceleration) * -4.6) - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
+        </g>
+    );
+};
+
+

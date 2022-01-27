@@ -259,7 +259,7 @@ class Boeing_FMC extends FMCMainDisplay {
         return this._isSPDActive;
     }
     getIsSpeedInterventionActive() {
-        return this._isSpeedInterventionActive;
+        return SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "boolean");
     }
     toggleSpeedIntervention() {
         if (this.getIsSpeedInterventionActive()) {

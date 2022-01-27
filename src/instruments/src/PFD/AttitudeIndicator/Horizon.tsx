@@ -22,6 +22,10 @@ import { SvgGroup } from "../../Common";
 import { BlackOutlineWhiteLine } from "../index";
 import { FD } from "./FlightDirector";
 import { FPV } from "./FlightPathVector";
+import { PLI } from "./PitchLimitIndicator";
+import { MarkerBeacon } from "./MarkerBeacon";
+import { LateralDeviationScale } from "./DeviationScales/Lateral";
+import { VerticalDeviationScale } from "./DeviationScales/Vertical";
 
 const AH_CENTER_X = 349;
 const AH_CENTER_Y = 382;
@@ -33,7 +37,7 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
     const getLine = (length: number) => (
         <>
             <path className="black-outline" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
-            <path className="white-line" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
+            <path className="low-white-line" transform={`translate(-${length / 2} ${y})`} d={`M0 0,h${length}`} />
         </>
     );
 
@@ -42,10 +46,10 @@ const GraduationLine: FC<GraduationLineProps> = ({ type, y, text }) => {
             return (
                 <>
                     {getLine(164)}
-                    <text className="text-2" x={-88} y={y + 7.33}>
+                    <text fillOpacity={0.9} className="text-2" x={-88} y={y + 8.5}>
                         {text}
                     </text>
-                    <text className="text-2" x={109} y={y + 7.33}>
+                    <text fillOpacity={0.9} className="text-2" x={109} y={y + 8.5}>
                         {text}
                     </text>
                 </>
@@ -157,7 +161,11 @@ export const Horizon: FC = () => {
             <BlackOutlineWhiteLine d="M313 179, l3 13" />
             <BlackOutlineWhiteLine d="M385 179, l-3 13" />
 
-            <FD />
+            <LateralDeviationScale />
+            <VerticalDeviationScale />
+            <FD/>
+            <PLI/>
+            <MarkerBeacon />
         </g>
     );
 };
