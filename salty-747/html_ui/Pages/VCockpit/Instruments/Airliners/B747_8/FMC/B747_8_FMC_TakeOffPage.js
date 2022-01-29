@@ -121,7 +121,7 @@ class FMCTakeOffPage {
         }
         let taxiBurn = 2;
         let grossWeight;
-        if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+        if (SaltyDataStore.get("OPTIONS_UNITS", "KG")) {
             grossWeight = fmc.getWeight(false);
         }
         else {
