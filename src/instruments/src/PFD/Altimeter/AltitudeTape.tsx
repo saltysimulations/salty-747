@@ -59,7 +59,7 @@ export const AltitudeTape: FC = () => {
             </clipPath>
 
             <g clipPath="url(#altitudetape-clip)">
-                <g transform={`translate(50 ${getAltitudeY(altitude)})`}>
+                <g transform={`translate(50 ${getAltitudeY(Math.round(altitude))})`}>
                     {Array.from({ length: 501 }, (_, i) => {
                         const y = i * -68 + 382;
                         const x = (i * 200) % 500 == 0 ? "M540" : "M550";
@@ -137,7 +137,7 @@ export const AltitudeTape: FC = () => {
                         );
                     })}
 
-                    <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(altitude)}, h 73, v 100, h -73, Z`} />
+                    <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(Math.round(altitude))}, h 73, v 100, h -73, Z`} />
 
                     {/* TDZ Indicator */}
                     <path className="black-outline" fill="none" d={`M 550 ${382 + tdze * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
@@ -148,8 +148,8 @@ export const AltitudeTape: FC = () => {
                     <path className="green-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
 
                     {/* Altitude Bug */}
-                    <path className="black-outline" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
-                    <path className="magenta-line" fill="none" d={`M 550 ${Math.max(382 + (altitude + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (altitude - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
+                    <path className="black-outline" fill="none" d={`M 550 ${Math.max(382 + (Math.round(altitude) + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (Math.round(altitude) - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
+                    <path className="magenta-line" fill="none" d={`M 550 ${Math.max(382 + (Math.round(altitude) + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (Math.round(altitude) - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
                 </g>
             </g>
 
@@ -168,7 +168,7 @@ export const AltitudeTape: FC = () => {
                         className="indication"
                         d="M 632 314, h 104, v 30, h-104, Z"
                     />
-                    <text x="715" y="339" className="text-3 end">{feetToMetric(altitude)}</text>
+                    <text x="715" y="339" className="text-3 end">{feetToMetric(Math.round(altitude))}</text>
                     <text x="728" y="339" className="text-2 cyan end">M</text>
                 </g>
 
@@ -293,10 +293,10 @@ export const Minimums: FC = () => {
             </g>
 
             < g visibility={radioMins > 0 ? "visible" : "hidden"}>
-                <text x="550" y="85" className={getRadioTextClass(radAlt, radioMins, 2)}>
+                <text x="550" y="85" className={getRadioTextClass(Math.round(radAlt), radioMins, 2)}>
                     RADIO
                 </text>
-                <text x="550" y="113" className={getRadioTextClass(radAlt, radioMins, 3)}>
+                <text x="550" y="113" className={getRadioTextClass(Math.round(radAlt), radioMins, 3)}>
                     {radioMins}
                 </text>
             </g>
@@ -327,7 +327,7 @@ export const RadioAltimeter: FC = () => {
     return (
         < g>
             < g visibility={radAlt <= 2500 ? "visible" : "hidden"}>
-                <text x="550" y="150" className={getRadAltClass(radAlt, radioMins, "text-4")}>
+                <text x="550" y="150" className={getRadAltClass(Math.round(radAlt), radioMins, "text-4")}>
                     {getRadAltRounded()}
                 </text>
             </g>

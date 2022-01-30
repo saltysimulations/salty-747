@@ -21,7 +21,8 @@ import { useSimVar } from "react-msfs";
 
 
 export const FD: FC = () => {
-    const [isFdOn] = useSimVar("AUTOPILOT FLIGHT DIRECTOR ACTIVE", "bool");
+    const [isFdOn] = useSimVar("AUTOPILOT FLIGHT DIRECTOR ACTIVE:1", "bool");
+    const [afdsStatus] = useSimVar("L:74S_AFDS_STATUS", "enum");
     const [fdPitch] = useSimVar("AUTOPILOT FLIGHT DIRECTOR PITCH", "degrees");
     const [fdRoll] = useSimVar("AUTOPILOT FLIGHT DIRECTOR BANK", "degrees");
     const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
@@ -35,13 +36,13 @@ export const FD: FC = () => {
             <path d="M343 377, h11, v11, h-11, Z" strokeWidth="4" stroke="black" fill="black" />
 
             {/* FD Bar Pitch */}
-            <g transform={`translate(0 ${degreesToPixels(fdPitch - pitch) || 0})`} visibility={isFdOn ? "visible" : "hidden"}>
+            <g transform={`translate(0 ${degreesToPixels(Math.round(fdPitch * 10) / 10 - Math.round(pitch * 10) / 10) || 0})`} visibility={isFdOn ? "visible" : "hidden"}>
                 <path className="fd-bar-outline" d="M239 382, h220" />
                 <path className="fd-bar" d="M239 382, h220" />
             </g>
 
             {/* FD Bar Roll */}
-            <g transform={`translate(${degreesToPixels((-fdRoll + bank) / 4) || 0} 0)`} visibility={isFdOn ? "visible" : "hidden"}>
+            <g transform={`translate(${degreesToPixels((-Math.round(fdRoll * 10) / 10 + Math.round(bank * 10) / 10) / 4) || 0} 0)`} visibility={isFdOn ? "visible" : "hidden"}>
                 <path className="fd-bar-outline" d="M349 272, v220" />
                 <path className="fd-bar" d="M349 272, v220" />
             </g>

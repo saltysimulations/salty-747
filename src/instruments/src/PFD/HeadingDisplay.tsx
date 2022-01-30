@@ -27,7 +27,7 @@ const HeadingLineElement: FC<{ rotation: number; text?: boolean }> = ({ rotation
     const [heading] = useSimVar("PLANE HEADING DEGREES MAGNETIC", "degrees");
 
     return (
-        <g transform={`rotate(${-getHeadingDelta(heading, rotation) * 1.6 ?? 0} 349 ${900 + arcCorrection(heading, rotation) ?? 0})`}>
+        <g transform={`rotate(${-getHeadingDelta(Math.round(heading * 10) / 10, rotation) * 1.6 ?? 0} 349 ${900 + arcCorrection(Math.round(heading * 10), rotation) ?? 0})`}>
             <BlackOutlineWhiteLine d={`M349 680.5, v${text ? 11 : 5.5}`} />
             {text && (
                 <text
@@ -98,15 +98,15 @@ export const HeadingDisplay: FC = () => {
             <path className="fpv-line" fill="none" d="M349 677 l-11 -20 l22 0 Z" stroke-linejoin="round" />
 
             {/* Heading Bug */}
-            <g fill="none" transform={`rotate(${Math.min(-Math.min(getHeadingDelta(heading, mcpHeading) * 1.6,  55), 55) || 0} 349 ${900 + arcCorrection(heading, mcpHeading) || 0})`}>
+            <g fill="none" transform={`rotate(${Math.min(-Math.min(getHeadingDelta(Math.round(heading * 10) / 10, mcpHeading) * 1.6,  55), 55) || 0} 349 ${900 + arcCorrection(Math.round(heading * 10) / 10, mcpHeading) || 0})`}>
                 <path className="black-outline" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
                 <path className="magenta-line" d="M 335 679, h28, v-14, h-4, l-7 14, h-6, l-7 -14, h-4, Z"></path>
             </g>
 
             {/* Track Line */}
             <g
-                transform={`rotate(${getHeadingDelta(heading, heading - getDriftAngle(heading, track)) * 1.6 || 0} 349 ${
-                    900 + arcCorrection(heading, heading - getDriftAngle(heading, track)) || 0
+                transform={`rotate(${getHeadingDelta(Math.round(heading * 10) / 10, Math.round(heading * 10) / 10 - getDriftAngle(Math.round(heading * 10) / 10, Math.round(track * 10) / 10)) * 1.6 || 0} 349 ${
+                    900 + arcCorrection(Math.round(heading * 10) / 10, Math.round(heading * 10) / 10 - getDriftAngle(Math.round(heading * 10) / 10, Math.round(track * 10) / 10)) || 0
                 })`}
             >
                 <path className ="black-outline" d="M349 680, v150" />

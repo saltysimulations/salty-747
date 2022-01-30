@@ -60,7 +60,7 @@ export const SpeedScroller: FC = () => {
 
                 <g className="text-4" clipPath="url(#asi-clip)">
                     {/* Hundreds Digits*/}
-                    <g transform={`translate( 0 ${getHundredsScrollerY(airspeed)} )`}>
+                    <g transform={`translate( 0 ${getHundredsScrollerY(Math.round(airspeed * 40) / 40)} )`}>
                         {Array.from({ length: 5 }, (_, i) => {
                             const y = 200 + (49 * i);
                             let text = i == 4 ? "" : 4 - i;
@@ -73,7 +73,7 @@ export const SpeedScroller: FC = () => {
                     </g>
 
                     {/* Tens Digits*/}
-                    <g transform={`translate( 0 ${getTensScrollerY(airspeed)} )`}>
+                    <g transform={`translate( 0 ${getTensScrollerY(Math.round(airspeed * 40) / 40)} )`}>
                         {Array.from({ length: 10 }, (_, i) => {
                             const y = -45 + (49 * i);
                             let text = 9 - i;
@@ -89,7 +89,7 @@ export const SpeedScroller: FC = () => {
                     </g>
 
                     {/* Single Digits*/}
-                    <g transform={`translate( 0 ${getDigitScrollerY(airspeed)} )`}>
+                    <g transform={`translate( 0 ${getDigitScrollerY(Math.round(airspeed * 40) / 40)} )`}>
                         {Array.from({ length: 10 }, (_, i) => {
                             const y = 99 + (33 * i);
                             let text = 9 - i;

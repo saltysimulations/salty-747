@@ -42,7 +42,7 @@ export const FPV: FC = () => {
     };
 
     const trackToPixels = (): number => {
-        let driftAngle = heading - track;
+        let driftAngle = Math.round(heading * 10) / 10 - Math.round(track * 10) / 10;
         if (driftAngle > 180) {
             driftAngle -= 360;
         } else if (driftAngle < -180) {
@@ -60,7 +60,7 @@ export const FPV: FC = () => {
     return (
         <g  transform={`translate(${trackToPixels() || 0} ${-vertVecToPixels() || 0})`} visibility={isFPVon ? "visible" : "hidden"}>
             <g>
-                <g transform={`rotate(${-roll || 0} 349 382)`}>
+                <g transform={`rotate(${-Math.round(roll * 10) / 10 || 0} 349 382)`}>
                     {/* FPV symbol */}
                     <path className="fpv-outline" d="M311 382, h28" />
                     <path className="fpv-outline" d="M359 382, h28" />

@@ -155,7 +155,7 @@ const getIsOffTape = (subjectSpeed: number, currentSpeed: number): boolean => {
 };
 
 const getBoundedAirspeed = (airspeed: number): number => {
-    return Math.max(airspeed, 30);
+    return Math.max(Math.round(airspeed * 40) / 40, 30);
 };
 
 export const SpeedTape: FC = () => {
@@ -250,8 +250,8 @@ export const SpeedTape: FC = () => {
 
                     {/* Selected Airspeed Bug */}
                     <g fill="none" >
-                        <path className="black-outline" d={`M 49 ${Math.max(520 + (getBoundedAirspeed(airspeed) + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
-                        <path className="magenta-line" d={`M 49 ${Math.max(520 + (getBoundedAirspeed(airspeed) + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (airspeed - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
+                        <path className="black-outline" d={`M 49 ${Math.max(520 + (getBoundedAirspeed(airspeed) + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (getBoundedAirspeed(airspeed) - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
+                        <path className="magenta-line" d={`M 49 ${Math.max(520 + (getBoundedAirspeed(airspeed) + 61.5) * -4.6, Math.min(520 + selSpd * -4.6, 520 + (getBoundedAirspeed(airspeed) - 60.5) * -4.6))}, l 15 11.5, h32, v-23, h-32, Z`} />
                     </g>
                 </g>
 
@@ -309,17 +309,17 @@ export const MachGS: FC = () => {
             <text 
                 x="100" y="730" 
                 className="text-4"
-                style = {{visibility: machSpeed >= 0.4 ? "visible" : "hidden"}}>
-                {removeLeadingZeros(machSpeed.toFixed(3) ?? 0)}
+                style = {{visibility: Math.round(machSpeed * 100) / 100 >= 0.4 ? "visible" : "hidden"}}>
+                {removeLeadingZeros((Math.round(machSpeed * 100) / 100).toFixed(3) ?? 0)}
             </text>
-            <g style = {{visibility: machSpeed < 0.4 ? "visible" : "hidden"}}>
+            <g style = {{visibility: Math.round(machSpeed * 100) / 100 < 0.4 ? "visible" : "hidden"}}>
                 <text x="46" y="730" className="text-3">
                     GS
                 </text>
                 <text 
                     x="110" y="730" 
                     className="text-4">
-                    {groundSpeed.toFixed(0) ?? 0}
+                    {Math.round(groundSpeed).toFixed(0) ?? 0}
                 </text>
             </g>
         </g>

@@ -78,7 +78,7 @@ export const AltitudeScroller: FC = () => {
 
                 <g  clipPath="url(#alt-clip)">
                     {/* Ten Thousands Digits*/}
-                    <g transform={`translate( 0 ${getTenThousandsScrollerY(altitude)} )`}>
+                    <g transform={`translate( 0 ${getTenThousandsScrollerY(Math.round(altitude * 5) / 5)} )`}>
                         {Array.from({ length: 6 }, (_, i) => {
                             const y = i == 5 ? 396 : 151 + (49 * i);
                             const text = i == 5 ? "@" : 5 - i;
@@ -96,7 +96,7 @@ export const AltitudeScroller: FC = () => {
                     </g>
 
                     {/* Thousands Digits*/}
-                    <g className="text-4" transform={`translate( 0 ${getThousandsScrollerY(altitude)} )`}>
+                    <g className="text-4" transform={`translate( 0 ${getThousandsScrollerY(Math.round(altitude * 5) / 5)} )`}>
                         {Array.from({ length: 10 }, (_, i) => {
                             const y = -45 + (49 * i);
                             let text = 9 - i;
@@ -112,7 +112,7 @@ export const AltitudeScroller: FC = () => {
                     </g>
 
                     {/* Hundreds Digits*/}
-                    <g className="text-3" transform={`translate( 0 ${getHundredsScrollerY(altitude)} )`}>
+                    <g className="text-3" transform={`translate( 0 ${getHundredsScrollerY(Math.round(altitude * 5) / 5)} )`}>
                         {Array.from({ length: 10 }, (_, i) => {
                             const y = -49 + (49 * i);
                             let text = 9 - i;
@@ -134,7 +134,7 @@ export const AltitudeScroller: FC = () => {
                     </g>
 
                     {/* Twenties */}
-                    <g className="text-3" transform={`translate( 0 ${getTwentiesScrollerY(altitude)} )`}>
+                    <g className="text-3" transform={`translate( 0 ${getTwentiesScrollerY(Math.round(altitude * 5) / 5)} )`}>
                         {Array.from({ length: 5 }, (_, i) => {
                             const y = (26 * i) + 288;
                             let text = (((9 - i) * 20) % 100).toFixed(0);

@@ -58,7 +58,7 @@ export const ApproachInfo: FC = () => {
                 x={160}
                 y={127}
                 className="text-2 start"
-            >{getDMEtext(dmeHasSignal, dmeDistance)}
+            >{getDMEtext(dmeHasSignal, Math.round(dmeDistance * 10) / 10)}
             </text>
             {/* TODO RNP/ANP Source */}
             <text

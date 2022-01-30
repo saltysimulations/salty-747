@@ -77,15 +77,15 @@ export const Horizon: FC = () => {
         else return "half-size";
     };
 
-    const sideslipAngleToDisplacment = (sideslip: number): number => Math.min(sideslip, 33);
+    const sideslipAngleToDisplacment = (sideslip: number): number => Math.min(sideslip * 1.25, 33);
 
     return (
         <g>
-            <clipPath id="ah-clip" transform={`translate(0 18) translate(0 ${pitchToGraduationPixels(pitch) || 0})`}>
+            <clipPath id="ah-clip" transform={`translate(0 18) translate(0 ${pitchToGraduationPixels(Math.round(pitch * 10) / 10) || 0})`}>
                 <path d="M156 350, h30, v-40 c 83 -115 243 -115 323 0, v40, h30, v280, h-383 Z" />
             </clipPath>
 
-            <g transform={`rotate(${roll || 0} ${AH_CENTER_X} ${AH_CENTER_Y}) translate(0 -18) translate(0 ${pitchToGraduationPixels(-pitch) || 0})`}>
+            <g transform={`rotate(${Math.round(roll * 10) / 10 || 0} ${AH_CENTER_X} ${AH_CENTER_Y}) translate(0 -18) translate(0 ${pitchToGraduationPixels(-Math.round(pitch * 10) / 10) || 0})`}>
                 {/* AH top */}
                 <rect x={0} y={-800} width={800} height={1200} fill="#1469BC" />
 
@@ -116,14 +116,14 @@ export const Horizon: FC = () => {
             <path className="black-outline" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
             <path className="cursor" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
 
-            <g transform={`rotate(${roll || 0} ${AH_CENTER_X} ${AH_CENTER_Y})`}>
+            <g transform={`rotate(${Math.round(roll * 10) / 10 || 0} ${AH_CENTER_X} ${AH_CENTER_Y})`}>
                 {/* Slip/Skid Indicator */}
-                <g transform={`translate(${sideslipAngleToDisplacment(sideslip) || 0} 0)`}>
+                <g transform={`translate(${sideslipAngleToDisplacment(Math.round(sideslip * 10) / 10) || 0} 0)`}>
                     <path fill="none" stroke="black" strokeWidth="4" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
                     <path
-                        fill={Math.abs(roll) > 35 ? "#ffc400" : "white"}
-                        fill-opacity={Math.abs(sideslipAngleToDisplacment(sideslip)) >= 33 ? "1" : "0"}
-                        stroke={Math.abs(roll) > 35 ? "#ffc400" : "white"}
+                        fill={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
+                        fill-opacity={Math.abs(sideslipAngleToDisplacment(Math.round(sideslip * 10) / 10)) >= 33 ? "1" : "0"}
+                        stroke={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
                         strokeWidth="3"
                         d="M333 214, h32, v 6, h-32, Z"
                         stroke-linejoin="round"
@@ -133,8 +133,8 @@ export const Horizon: FC = () => {
                 {/* Bank Pointer */}
                 <path fill="none" stroke="black" strokeWidth="4" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
                 <path
-                    fill={Math.abs(roll) > 35 ? "#ffc400" : "none"}
-                    stroke={Math.abs(roll) > 35 ? "#ffc400" : "white"}
+                    fill={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "none"}
+                    stroke={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
                     strokeWidth="3"
                     d="M349 194, l-16 20, h32, Z"
                     stroke-linejoin="round"

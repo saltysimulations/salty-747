@@ -39,15 +39,15 @@ export const VSI: FC = () => {
             <path className="gray-bg" d="M 723 184 h 35 l 34 97 v 200 l -34 97 h -35 v -130 l 20 -10 v -114 l -20 -10 Z" />
             <VSIScale />
 
-            <BlackOutlineWhiteLine d={`M 825 381, l -73 ${fpmToPixels(verticalSpeed)}`} whiteStroke={5} blackStroke={6} />
+            <BlackOutlineWhiteLine d={`M 825 381, l -73 ${fpmToPixels(Math.round(verticalSpeed))}`} whiteStroke={5} blackStroke={6} />
 
             <text
                 x={785}
-                y={verticalSpeed > 0 ? 170 - 7.33 : 630 - 7.33}
-                visibility={Math.abs(verticalSpeed) < 400 ? "hidden" : "visible"}
+                y={Math.round(verticalSpeed) > 0 ? 170 - 7.33 : 630 - 7.33}
+                visibility={Math.abs(Math.round(verticalSpeed)) < 400 ? "hidden" : "visible"}
                 className="text-3"
             >
-                {Math.abs(verticalSpeed) > 9975 ? 9999 : Math.round(Math.abs(verticalSpeed) / 50) * 50}
+                {Math.abs(Math.round(verticalSpeed)) > 9975 ? 9999 : Math.round(Math.abs(Math.round(verticalSpeed)) / 50) * 50}
             </text>
 
             <SelectedVSIBug selectedVsi={selectedVsi} vsActive={vsActive} />
