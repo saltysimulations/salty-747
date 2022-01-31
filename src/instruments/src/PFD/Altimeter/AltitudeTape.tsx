@@ -34,14 +34,21 @@ const feetToMetric = (feet: number): number => {
     return metres;
 };
 
+const determineTDZE = (origin: number, dest: number, isHalfway: boolean): number => {
+    const tdze = isHalfway ? dest : origin;
+    return tdze;
+};
+
 export const AltitudeTape: FC = () => {
     const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
     const [altAlertStatus] = useSimVar("L:74S_ALT_ALERT", "number");
     const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
     const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
-    const [tdze] = useSimVar("L:74S_FMC_TDZE", "feet");
+    const [isHalfway] = useSimVar("L:74S_FMC_PASSED_HALFWAY", "bool");
     const [isMtrsOn] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
     const [mtrsOn, setMtrs] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
+    const [originElev] = useSimVar("L:74S_FMC_ORIGIN_ELEVATION", "number");
+    const [destElev] = useSimVar("L:74S_FMC_DEST_ELEVATION", "number");
     
     useInteractionEvent("B747_8_PFD_MTRS", () => {
         setMtrs(!mtrsOn);
@@ -51,7 +58,7 @@ export const AltitudeTape: FC = () => {
         const y = altitude * 0.68;
         return y;
     };
-      
+
     return (
         <g>
             <clipPath id="altitudetape-clip">
@@ -140,8 +147,10 @@ export const AltitudeTape: FC = () => {
                     <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(Math.round(altitude))}, h 73, v 100, h -73, Z`} />
 
                     {/* TDZ Indicator */}
-                    <path className="black-outline" fill="none" d={`M 550 ${382 + tdze * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
-                    <path className="amber-line" fill ="none" d={`M 550 ${382 + tdze * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+                    <g visibility={originElev == -1 && destElev == -1 ? "visible" : "visible"}>
+                        <path className="black-outline" fill="none" d={`M 550 ${382 + determineTDZE(originElev, destElev, isHalfway) * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+                        <path className="amber-line" fill="none" d={`M 550 ${382 + determineTDZE(originElev, destElev, isHalfway) * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+                    </g>
 
                     {/* Minimums Bug */}
                     <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
@@ -151,6 +160,10 @@ export const AltitudeTape: FC = () => {
                     <path className="black-outline" fill="none" d={`M 550 ${Math.max(382 + (Math.round(altitude) + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (Math.round(altitude) - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
                     <path className="magenta-line" fill="none" d={`M 550 ${Math.max(382 + (Math.round(altitude) + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (Math.round(altitude) - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
                 </g>
+            </g>
+
+            <g visibility={originElev == -1 && destElev == -1? "visible" : "hidden"}>
+                <NoTDZ />    
             </g>
 
             {/* Metres Display */}
@@ -334,5 +347,15 @@ export const RadioAltimeter: FC = () => {
 
         </g>
 
+    );
+};
+
+export const NoTDZ: FC = () => {
+
+    return (
+        <g>
+            <text x="722" y="645" className="text-2 amber start">NO</text>
+            <text x="722" y="666" className="text-2 amber start">TDZ</text>
+        </g>
     );
 };

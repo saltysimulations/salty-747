@@ -274,6 +274,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (this.timer == 1000) {
             this.updateVREF25();
             this.updateVREF30();
+            this.updateHalfwayToDest();
             this.timer = 0;
         }
         this.saltyBase.update(this.isElectricityAvailable());
@@ -535,6 +536,24 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return 204 + 40 * dWeight;
     }
 
+    /* Logic to determine if half way to destination (or less than 400NM if applicable) */
+    updateHalfwayToDest() {
+        let destinationDistance = NaN;
+        const destination = this.flightPlanManager.getDestination();
+        const waypointActive = this.flightPlanManager.getActiveWaypoint();
+        if (destination && waypointActive) {
+            destinationDistance = destination.cumulativeDistanceInFP - waypointActive.cumulativeDistanceInFP + this.flightPlanManager.getDistanceToActiveWaypoint();
+            if (destinationDistance < destination.cumulativeDistanceInFP / 2 || destinationDistance < 400) {
+                SimVar.SetSimVarValue("L:74S_FMC_PASSED_HALFWAY", "bool", true);
+            }
+            else {
+                SimVar.SetSimVarValue("L:74S_FMC_PASSED_HALFWAY", "bool", false);
+            }
+        }
+        else {
+            SimVar.SetSimVarValue("L:74S_FMC_PASSED_HALFWAY", "bool", false);
+        }
+    }
 
     /* Sets VNAV CLB or DES speed restriction and altitude */
     setSpeedRestriction(_speed, _altitude, _isDescent) {
