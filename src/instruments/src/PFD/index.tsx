@@ -17,12 +17,13 @@
  */
 
 import React, { FC } from "react";
+import { useSimVar } from "react-msfs";
 import { render } from "../Common";
 import { Horizon } from "./AttitudeIndicator/Horizon";
 import { CommandSpeed, MachGS, SpeedTape } from "./AirspeedIndicator/SpeedTape";
 import { SpeedScroller, SpeedTrendVector } from "./AirspeedIndicator/AirspeedScroller";
 import { VSI } from "./VerticalSpeedIndicator";
-import { HeadingDisplay } from "./HeadingDisplay";
+import { HeadingDisplay, HeadingDisplayFail } from "./HeadingDisplay";
 import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 import { AltitudeTape, CommandAlt, BaroSetting, Minimums, RadioAltimeter } from "./Altimeter/AltitudeTape";
 import { FMA } from "./FMA";
@@ -48,7 +49,7 @@ const PFD: FC = () => {
                 <path className="gray-bg" d="M13 100, h100 v560 h -100 Z" />
                 <path className="gray-bg" d="M600 100, h100 v560 h-100 Z" />
                 <path className="gray-bg" d="M130 10, h450, v50, h-450 Z" />
-                <path className="gray-bg" d="M142 785, h412, c -103 -140, -306 -140, -412 0 Z" />
+                <HeadingDisplayFail />
                 <HeadingDisplay />
                 <ApproachInfo />
 

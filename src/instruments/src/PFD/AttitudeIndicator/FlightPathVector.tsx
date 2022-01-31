@@ -29,6 +29,7 @@ export const FPV: FC = () => {
     const [heading] = useSimVar("PLANE HEADING DEGREES TRUE", "degrees");
     const [track] = useSimVar("GPS GROUND TRUE TRACK", "degrees");
     const [fpv, setFpv] = useSimVar("L:SALTY_FPV_ON", "bool");
+    const [irsState] = useSimVar("L:SALTY_IRS_STATE", "enum");
 
     useInteractionEvent("B747_8_PFD_FPV", () => {
         setFpv(!fpv);
@@ -58,20 +59,37 @@ export const FPV: FC = () => {
     };
 
     return (
-        <g  transform={`translate(${trackToPixels() || 0} ${-vertVecToPixels() || 0})`} visibility={isFPVon ? "visible" : "hidden"}>
-            <g>
-                <g transform={`rotate(${-Math.round(roll * 10) / 10 || 0} 349 382)`}>
-                    {/* FPV symbol */}
-                    <path className="fpv-outline" d="M311 382, h28" />
-                    <path className="fpv-outline" d="M359 382, h28" />
-                    <path className="fpv-outline" d="M349 372, v-14" />
-                    <circle className="fpv-outline" cx="349" cy="382" r="10" stroke="white" fill="none" />
-                    <path className="fpv-line" d="M311 382, h28" />
-                    <path className="fpv-line" d="M359 382, h28" />
-                    <path className="fpv-line" d="M349 372, v-14" />
-                    <circle className="fpv-line" cx="349" cy="382" r="10" fill="none" />
+        <g>
+            <g visibility={irsState == 0 && isFPVon ? "visible" : "hidden"}>
+                <FPVFail />
+            </g>
+
+            <g transform={`translate(${trackToPixels() || 0} ${-vertVecToPixels() || 0})`}>
+                <g>
+
+
+                    <g transform={`rotate(${-Math.round(roll * 10) / 10 || 0} 349 382)`} visibility={irsState == 2 && isFPVon ? "visible" : "hidden"}>
+                        {/* FPV symbol */}
+                        <path className="fpv-outline" d="M311 382, h28" />
+                        <path className="fpv-outline" d="M359 382, h28" />
+                        <path className="fpv-outline" d="M349 372, v-14" />
+                        <circle className="fpv-outline" cx="349" cy="382" r="10" stroke="white" fill="none" />
+                        <path className="fpv-line" d="M311 382, h28" />
+                        <path className="fpv-line" d="M359 382, h28" />
+                        <path className="fpv-line" d="M349 372, v-14" />
+                        <circle className="fpv-line" cx="349" cy="382" r="10" fill="none" />
+                    </g>
                 </g>
             </g>
+        </g>
+    );
+};
+
+export const FPVFail: FC = () => {
+    return (
+        <g>
+            <rect x="196" y="270" width="52" height="27" className="amber-line" fill="none"/>
+            <text x="222" y="294" className="text-3 amber middle">FPV</text>
         </g>
     );
 };

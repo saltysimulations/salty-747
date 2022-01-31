@@ -33,26 +33,35 @@ export const VSI: FC = () => {
     const [verticalSpeed] = useSimVar("VERTICAL SPEED", "feet per minute");
     const [vsActive] = useSimVar("L:AP_VS_ACTIVE", "boolean");
     const [selectedVsi] = useSimVar("AUTOPILOT VERTICAL HOLD VAR", "feet per minute");
+    const [irsState] = useSimVar("L:SALTY_IRS_STATE", "enum");
 
     return (
         <g>
-            <path className="gray-bg" d="M 723 184 h 35 l 34 97 v 200 l -34 97 h -35 v -130 l 20 -10 v -114 l -20 -10 Z" />
-            <VSIScale />
 
-            <BlackOutlineWhiteLine d={`M 825 381, l -73 ${fpmToPixels(Math.round(verticalSpeed))}`} whiteStroke={5} blackStroke={6} />
 
-            <text
+            <g visibility= {irsState >= 1 ? 'visible' : 'hidden'}>
+                <path className="gray-bg" d="M 723 184 h 35 l 34 97 v 200 l -34 97 h -35 v -130 l 20 -10 v -114 l -20 -10 Z" />
+            </g>
+            
+            <g visibility= {irsState == 0 ? 'visible' : 'hidden'}>
+                <VertFail />
+            </g>
+
+            <g visibility= {irsState >= 2 ? 'visible' : 'hidden'}>
+                <VSIScale />
+                <BlackOutlineWhiteLine d={`M 825 381, l -73 ${fpmToPixels(Math.round(verticalSpeed))}`} whiteStroke={5} blackStroke={6} />
+                <text
                 x={785}
                 y={Math.round(verticalSpeed) > 0 ? 170 - 7.33 : 630 - 7.33}
-                visibility={Math.abs(Math.round(verticalSpeed)) < 400 ? "hidden" : "visible"}
+                visibility={irsState >= 2 && Math.abs(Math.round(verticalSpeed)) > 400 ? "visible" : "hidden"}
                 className="text-3"
             >
                 {Math.abs(Math.round(verticalSpeed)) > 9975 ? 9999 : Math.round(Math.abs(Math.round(verticalSpeed)) / 50) * 50}
-            </text>
+                </text>
 
-            <SelectedVSIBug selectedVsi={selectedVsi} vsActive={vsActive} />
-
-            <rect x={792} y={290} width={8} height={190} fill="black" />
+                <SelectedVSIBug selectedVsi={selectedVsi} vsActive={vsActive} />
+            </g>
+            <rect x={792} y={290} width={9} height={190} fill="black" />
         </g>
     );
 };
@@ -103,3 +112,16 @@ const SelectedVSIBug: FC<{ selectedVsi: number; vsActive: boolean }> = ({ select
         <BlackOutlineWhiteLine d="M 749 379 h 14" color="#d570ff" />
     </g>
 );
+
+export const VertFail: FC = () => {
+
+    return (
+        <g>
+            <rect x="751" y="328" width="24" height="103" className="amber-line" fill="none"/>
+            <text x="763" y="353" className="text-3 amber middle">V</text>
+            <text x="763" y="378" className="text-3 amber middle">E</text>
+            <text x="763" y="403" className="text-3 amber middle">R</text>
+            <text x="763" y="428" className="text-3 amber middle">T</text>
+        </g>
+    );
+};

@@ -67,6 +67,7 @@ export const Horizon: FC = () => {
     const [pitch] = useSimVar("PLANE PITCH DEGREES", "degrees");
     const [roll] = useSimVar("PLANE BANK DEGREES", "degrees");
     const [sideslip] = useSimVar("INCIDENCE BETA", "degrees");
+    const [irsState] = useSimVar("L:SALTY_IRS_STATE", "enum");
 
     const pitchToGraduationPixels = (pitch: number): number => pitch * 8;
 
@@ -84,62 +85,71 @@ export const Horizon: FC = () => {
             <clipPath id="ah-clip" transform={`translate(0 18) translate(0 ${pitchToGraduationPixels(Math.round(pitch * 10) / 10) || 0})`}>
                 <path d="M156 350, h30, v-40 c 83 -115 243 -115 323 0, v40, h30, v280, h-383 Z" />
             </clipPath>
+            
+            <g visibility= {irsState != 2 ? 'visible' : 'hidden'}>
+                <HorizonFail />
+            </g>
 
-            <g transform={`rotate(${Math.round(roll * 10) / 10 || 0} ${AH_CENTER_X} ${AH_CENTER_Y}) translate(0 -18) translate(0 ${pitchToGraduationPixels(-Math.round(pitch * 10) / 10) || 0})`}>
-                {/* AH top */}
-                <rect x={0} y={-800} width={800} height={1200} fill="#1469BC" />
+            <g visibility= {irsState >= 2 ? 'visible' : 'hidden'}>
+                <g transform={`rotate(${Math.round(roll * 10) / 10 || 0} ${AH_CENTER_X} ${AH_CENTER_Y}) translate(0 -18) translate(0 ${pitchToGraduationPixels(-Math.round(pitch * 10) / 10) || 0})`}>
+                    {/* AH top */}
+                    <rect x={0} y={-800} width={800} height={1200} fill="#1469BC" />
 
-                {/* AH bottom*/}
-                <rect x={0} y={400} width={800} height={1200} fill="#764D17" />
+                    {/* AH bottom*/}
+                    <rect x={0} y={400} width={800} height={1200} fill="#764D17" />
 
-                {/* AH seperator*/}
-                <rect x={0} y={397.5} width={800} height={4} fill="#fff" stroke="black" stroke-width="1" />
+                    {/* AH seperator*/}
+                    <rect x={0} y={397.5} width={800} height={4} fill="#fff" stroke="black" stroke-width="1" />
 
-                <g clipPath="url(#ah-clip)">
-                    <SvgGroup x={AH_CENTER_X} y={400}>
-                        {Array.from({ length: 37 }, (_, i) => {
-                            const number = ((i + 1) / 4) * 10 - 2.5;
-                            return (
-                                <>
-                                    <GraduationLine type={indexToGraduationLineType(i)} y={i * 20} text={number} />
-                                    <GraduationLine type={indexToGraduationLineType(i)} y={i * -20} text={number} />
-                                </>
-                            );
-                        })}
-                    </SvgGroup>
+                    <g clipPath="url(#ah-clip)">
+                        <SvgGroup x={AH_CENTER_X} y={400}>
+                            {Array.from({ length: 37 }, (_, i) => {
+                                const number = ((i + 1) / 4) * 10 - 2.5;
+                                return (
+                                    <>
+                                        <GraduationLine type={indexToGraduationLineType(i)} y={i * 20} text={number} />
+                                        <GraduationLine type={indexToGraduationLineType(i)} y={i * -20} text={number} />
+                                    </>
+                                );
+                            })}
+                        </SvgGroup>
+                    </g>
+                </g>
+
+                <g transform={`rotate(${Math.round(roll * 10) / 10 || 0} ${AH_CENTER_X} ${AH_CENTER_Y})`}>
+                    {/* Slip/Skid Indicator */}
+                    <g transform={`translate(${sideslipAngleToDisplacment(Math.round(sideslip * 10) / 10) || 0} 0)`}>
+                        <path fill="none" stroke="black" strokeWidth="4" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
+                        <path
+                            fill={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
+                            fill-opacity={Math.abs(sideslipAngleToDisplacment(Math.round(sideslip * 10) / 10)) >= 33 ? "1" : "0"}
+                            stroke={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
+                            strokeWidth="3"
+                            d="M333 214, h32, v 6, h-32, Z"
+                            stroke-linejoin="round"
+                        />
+                    </g>
+
+                    {/* Bank Pointer */}
+                    <path fill="none" stroke="black" strokeWidth="4" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
+                    <path
+                        fill={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "none"}
+                        stroke={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
+                        strokeWidth="3"
+                        d="M349 194, l-16 20, h32, Z"
+                        stroke-linejoin="round"
+                    />
+                    <FPV />
                 </g>
             </g>
 
-            {/* Aircraft wing symbols */}
-            <path className="black-outline" d="M190 377, h84, v30 h-11 v-20 h-73 Z" />
-            <path className="cursor" d="M190 377, h84, v30 h-11 v-20 h-73 Z" />
-            <path className="black-outline" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
-            <path className="cursor" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
+            <g visibility={irsState >= 0 ? 'visible' : 'hidden'}>
 
-            <g transform={`rotate(${Math.round(roll * 10) / 10 || 0} ${AH_CENTER_X} ${AH_CENTER_Y})`}>
-                {/* Slip/Skid Indicator */}
-                <g transform={`translate(${sideslipAngleToDisplacment(Math.round(sideslip * 10) / 10) || 0} 0)`}>
-                    <path fill="none" stroke="black" strokeWidth="4" d="M333 214, h32, v 6, h-32, Z" stroke-linejoin="round" />
-                    <path
-                        fill={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
-                        fill-opacity={Math.abs(sideslipAngleToDisplacment(Math.round(sideslip * 10) / 10)) >= 33 ? "1" : "0"}
-                        stroke={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
-                        strokeWidth="3"
-                        d="M333 214, h32, v 6, h-32, Z"
-                        stroke-linejoin="round"
-                    />
-                </g>
-
-                {/* Bank Pointer */}
-                <path fill="none" stroke="black" strokeWidth="4" d="M349 194, l-16 20, h32, Z" stroke-linejoin="round" />
-                <path
-                    fill={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "none"}
-                    stroke={Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white"}
-                    strokeWidth="3"
-                    d="M349 194, l-16 20, h32, Z"
-                    stroke-linejoin="round"
-                />
-                <FPV />
+                {/* Aircraft wing symbols */}
+                <path className="black-outline" d="M190 377, h84, v30 h-11 v-20 h-73 Z" />
+                <path className="cursor" d="M190 377, h84, v30 h-11 v-20 h-73 Z" />
+                <path className="black-outline" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
+                <path className="cursor" d="M422 377, h84, v11, h-73, v20, h-11 Z" />
             </g>
 
             {/* AH square masks */}
@@ -163,9 +173,20 @@ export const Horizon: FC = () => {
 
             <LateralDeviationScale />
             <VerticalDeviationScale />
-            <FD/>
+            <FD/>   
             <PLI/>
             <MarkerBeacon />
+        </g>
+    );
+};
+
+export const HorizonFail: FC = () => {
+    const [irsState] = useSimVar("L:SALTY_IRS_STATE", "enum");
+    
+    return (
+        <g visibility= {irsState == 0 ? 'visible' : 'hidden'}>
+            <rect x="322" y="299.5" width="52" height="27" className="amber-line" fill="none"/>
+            <text x="348" y="324" className="text-3 amber middle">ATT</text>
         </g>
     );
 };

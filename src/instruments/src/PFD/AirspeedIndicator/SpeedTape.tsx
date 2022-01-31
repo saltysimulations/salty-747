@@ -204,24 +204,23 @@ export const SpeedTape: FC = () => {
                             </>
                         );
                     })}
-                    <g visibility= {`${(radioHeight < 25 &&  flightPhase <= 2)? "visible" : "hidden"}`}>
-                        {/* V1 Bug */}
-                        <g>
-                            <path className="fpv-outline" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
-                            <path className="green-line" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
-                            <text x="93" y={`${Math.max(529 + (v1 * -4.6), (520 + (getBoundedAirspeed(airspeed) + 54) * -4.6))}`} className="text-2 green">V1</text>
-                        </g>
+                        
+                    {/* V1 Bug */}
+                    <g visibility={`${(radioHeight < 25 && flightPhase <= 2 && v1 != 0) ? "visible" : "hidden"}`}>
+                        <path className="fpv-outline" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
+                        <path className="green-line" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
+                        <text x="93" y={`${Math.max(529 + (v1 * -4.6), (520 + (getBoundedAirspeed(airspeed) + 54) * -4.6))}`} className="text-2 green">V1</text>
+                    </g>
 
-                        {/* VR Bug */}
-                        <g>
-                            <path className="fpv-outline" d={`M 55 ${520 + (vR * -4.6)}, h10`} />
-                            <path className="green-line" d={`M 55 ${520 + (vR * -4.6)}, h10`} />
-                            <text x="105" y={`${529 + vR * -4.6}`} className="text-2 green">{getVRbugText(v1, vR)}</text>
-                        </g>
+                    {/* VR Bug */}
+                    <g visibility={`${(radioHeight < 25 && flightPhase <= 2 && vR != 0) ? "visible" : "hidden"}`}>
+                        <path className="fpv-outline" d={`M 55 ${520 + (vR * -4.6)}, h10`} />
+                        <path className="green-line" d={`M 55 ${520 + (vR * -4.6)}, h10`} />
+                        <text x="105" y={`${529 + vR * -4.6}`} className="text-2 green">{getVRbugText(v1, vR)}</text>
                     </g>
 
                     {/* V2 Bug */}
-                    <g visibility= {`${flightPhase > 2 ? "hidden" : "visible"}`}>
+                    <g visibility= {`${flightPhase < 2 && v2 != 0? "visible" : "hidden"}`}>
                         <path className="fpv-outline" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
                         <path className="green-line" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
                         <text x="93" y={`${529 + v2 * -4.6}`} className="text-2 green">V2</text>
@@ -278,6 +277,11 @@ export const SpeedTape: FC = () => {
             </g>
             <path className="gray-bg" d="M 14 332, h 71, v 100, h -71, Z" />
 
+            <g visibility= {v1 == 0 ? 'visible' : 'hidden'}>
+                <NoVSpeed />
+            </g>
+
+
             {/* Scroller Box */}
             <path className="indication" style={{ strokeWidth: "5px",  stroke: "black "}} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
             <path className="indication" style={{ strokeWidth: getBoundedAirspeed(airspeed) < manSpeed ? "9px" : "3px", stroke: getBoundedAirspeed(airspeed) < manSpeed ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
@@ -322,6 +326,19 @@ export const MachGS: FC = () => {
                     {Math.round(groundSpeed).toFixed(0) ?? 0}
                 </text>
             </g>
+        </g>
+    );
+};
+
+export const NoVSpeed: FC = () => {
+
+    return (
+        <g>
+            <text x="135" y="238" className="text-3 amber middle">NO</text>
+            <text x="135" y="270" className="text-3 amber middle">V</text>
+            <text x="135" y="302" className="text-3 amber middle">S</text>
+            <text x="135" y="327" className="text-3 amber middle">P</text>
+            <text x="135" y="352" className="text-3 amber middle">D</text>
         </g>
     );
 };
