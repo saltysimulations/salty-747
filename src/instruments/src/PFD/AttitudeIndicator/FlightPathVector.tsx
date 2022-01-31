@@ -60,10 +60,6 @@ export const FPV: FC = () => {
 
     return (
         <g>
-            <g visibility={irsState == 0 && isFPVon ? "visible" : "hidden"}>
-                <FPVFail />
-            </g>
-
             <g transform={`translate(${trackToPixels() || 0} ${-vertVecToPixels() || 0})`}>
                 <g>
 
@@ -86,8 +82,10 @@ export const FPV: FC = () => {
 };
 
 export const FPVFail: FC = () => {
+    const [isFPVon] = useSimVar("L:SALTY_FPV_ON", "bool");
+    const [irsState] = useSimVar("L:SALTY_IRS_STATE", "enum");
     return (
-        <g>
+        <g visibility={irsState == 0 && isFPVon ? "visible" : "hidden"}>
             <rect x="196" y="270" width="52" height="27" className="amber-line" fill="none"/>
             <text x="222" y="294" className="text-3 amber middle">FPV</text>
         </g>

@@ -21,7 +21,7 @@ import { useSimVar } from "react-msfs";
 import { SvgGroup } from "../../Common";
 import { BlackOutlineWhiteLine } from "../index";
 import { FD } from "./FlightDirector";
-import { FPV } from "./FlightPathVector";
+import { FPV, FPVFail } from "./FlightPathVector";
 import { PLI } from "./PitchLimitIndicator";
 import { MarkerBeacon } from "./MarkerBeacon";
 import { LateralDeviationScale } from "./DeviationScales/Lateral";
@@ -116,6 +116,7 @@ export const Horizon: FC = () => {
                     </g>
                 </g>
 
+                <FPVFail />
                 <g transform={`rotate(${Math.round(roll * 10) / 10 || 0} ${AH_CENTER_X} ${AH_CENTER_Y})`}>
                     {/* Slip/Skid Indicator */}
                     <g transform={`translate(${sideslipAngleToDisplacment(Math.round(sideslip * 10) / 10) || 0} 0)`}>

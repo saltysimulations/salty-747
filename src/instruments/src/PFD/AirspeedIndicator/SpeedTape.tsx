@@ -256,11 +256,11 @@ export const SpeedTape: FC = () => {
 
                 {/* V1 Value Preview */}
                 <g>
-                    <text visibility={`${(v1 - getBoundedAirspeed(getBoundedAirspeed(airspeed)) || flightPhase <= 2) > 55 ? "visible" : "hidden"}`}x="155" y={`${155}`} className="text-2 green">{v1.toString()}</text>
+                    <text visibility={`${(v1 - getBoundedAirspeed(airspeed) > 55) && flightPhase <= 2 ? "visible" : "hidden"}`}x="155" y={`${155}`} className="text-2 green">{v1.toString()}</text>
                 </g>
 
                 {/* VREF Value Preview */}
-                <g visibility={`${selectedAppSpd + getBoundedAirspeed(getBoundedAirspeed(airspeed)) > 60.5 ? "visible" : "hidden"}`}>
+                <g visibility={`${selectedAppSpd + getBoundedAirspeed(airspeed) > 60.5 ? "visible" : "hidden"}`}>
                     <text x="120" y={`${652}`} className="text-2 green start">{getRefBugText(landingFlaps, selectedAppSpd)}</text>
                 </g>
 
