@@ -154,9 +154,10 @@ export class FlightPlanManager {
   /**
    * Switches the active flight plan index to the supplied index.
    * @param index The index to now use for the active flight plan.
+   * @param thenSetActive Indicates if the flight plan should become the active flightplan. (inop here)
    * @param callback A callback to call when the operation has completed.
    */
-  public setCurrentFlightPlanIndex(index: number, callback = EmptyCallback.Boolean): void {
+  public setCurrentFlightPlanIndex(index: number, thenSetActive = false, callback = EmptyCallback.Boolean): void {
     if (index >= 0 && index < this._flightPlans.length) {
       this._currentFlightPlanIndex = index;
       callback(true);
@@ -839,19 +840,6 @@ export class FlightPlanManager {
   }
 
   /**
-   * Gets the heading of the selected departure runway.
-   */
-  public getDepartureRunwayDirection(): Number {
-    const origin = this.getOrigin();
-    const currentFlightPlan = this._flightPlans[this._currentFlightPlanIndex];
-    if (origin && origin.infos instanceof AirportInfo && currentFlightPlan.procedureDetails.originRunwayIndex !== -1) {
-      const runway = origin.infos.oneWayRunways[currentFlightPlan.procedureDetails.originRunwayIndex];
-      return runway.direction;
-    }
-    return undefined;
-  }
-
-  /**
    * Gets the best runway based on the current plane heading.
    */
   public getDetectedCurrentRunway(): OneWayRunway {
@@ -1059,8 +1047,8 @@ export class FlightPlanManager {
    * Clears a discontinuity from the end of a waypoint.
    * @param index 
    */
-  public clearDiscontinuity(index: number): void {
-    const currentFlightPlan = this._flightPlans[this._currentFlightPlanIndex];
+  public clearDiscontinuity(index: number, fplnIndex = this._currentFlightPlanIndex): void {
+    const currentFlightPlan = this._flightPlans[fplnIndex];
     const waypoint = currentFlightPlan.getWaypoint(index);
 
     if (waypoint !== undefined) {
@@ -1245,10 +1233,10 @@ export class FlightPlanManager {
       const approachRunway = this.getApproach().runway.trim();
 
       const aptInfo = destination.infos as AirportInfo;
-      const frequency = aptInfo.namedFrequencies.find(f => f.name.replace("RW0", "").replace("RW", "").indexOf(approachRunway) !== -1);
+      const frequency = aptInfo.frequencies.find(f => f.name.replace("RW0", "").replace("RW", "").indexOf(approachRunway) !== -1);
 
       if (frequency) {
-        return frequency.value;
+        return Math.round(frequency.freqMHz * 100) / 100;
       }
     }
 
@@ -1549,4 +1537,16 @@ export class FlightPlanManager {
     this._updateFlightPlanVersion();
   }
 
+  /**
+  * Gets the heading of the selected departure runway.
+  */
+  public getDepartureRunwayDirection(): Number {
+    const origin = this.getOrigin();
+    const currentFlightPlan = this._flightPlans[this._currentFlightPlanIndex];
+    if (origin && origin.infos instanceof AirportInfo && currentFlightPlan.procedureDetails.originRunwayIndex !== -1) {
+      const runway = origin.infos.oneWayRunways[currentFlightPlan.procedureDetails.originRunwayIndex];
+      return runway.direction;
+    }
+    return undefined;
+  }
 }
