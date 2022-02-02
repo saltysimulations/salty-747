@@ -340,6 +340,7 @@
       switch (this.currentLateralActiveState) {
         case LateralNavModeState.ROLL:
           SimVar.SetSimVarValue("L:WT_CJ4_NAV_ON", "number", 1);
+          SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 1);
           this.changeToCorrectLNavForMode(true, false);
           break;
         case LateralNavModeState.LNAV:
@@ -348,6 +349,7 @@
         case LateralNavModeState.TO:
         case LateralNavModeState.GA:
           SimVar.SetSimVarValue("L:WT_CJ4_NAV_ON", "number", 1);
+          SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 1);
           SimVar.SetSimVarValue("L:WT_CJ4_HDG_ON", "number", 0);
           this.changeToCorrectLNavForMode(false, false);
           SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 1);

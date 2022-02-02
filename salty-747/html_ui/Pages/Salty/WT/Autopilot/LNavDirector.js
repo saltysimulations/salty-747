@@ -1,7 +1,7 @@
 /**
  * A class that manages flight plan lateral guidance.
  */
-class LNavDirector {
+ class LNavDirector {
   /**
    * Creates an instance of the LNavDirector.
    * @param {FlightPlanManager} fpm The FlightPlanManager to use with this instance. 
@@ -221,14 +221,13 @@ class LNavDirector {
    */
   getAnticipationDistance(planeState, turnAngle) {
     const headwind = AutopilotMath.windComponents(planeState.trueHeading, planeState.windDirection, planeState.windSpeed).headwind;
-    const turnRadius = AutopilotMath.turnRadius(planeState.trueAirspeed - headwind, planeState.maxBankAngle);
+    const turnRadius = AutopilotMath.turnRadius(planeState.trueAirspeed - headwind, this.options.maxBankAngle);
 
-    const bankDiff = (Math.sign(turnAngle) * planeState.maxBankAngle) - planeState.bankAngle;
-    const enterBankDistance = 0.5 * (Math.abs(bankDiff) / this.options.bankRate) * ((planeState.trueAirspeed - headwind) / 3600);
+    const bankDiff = (Math.sign(turnAngle) * this.options.maxBankAngle) - planeState.bankAngle;
+    const enterBankDistance = (Math.abs(bankDiff) / this.options.bankRate) * ((planeState.trueAirspeed - headwind) / 3600);
 
     const turnAnticipationAngle = Math.min(this.options.maxTurnAnticipationAngle, Math.abs(turnAngle)) * Avionics.Utils.DEG2RAD;
-    const value = turnRadius * Math.abs(Math.tan(turnAnticipationAngle / 2)) + enterBankDistance;
-    return value;
+    return Math.min((turnRadius * Math.abs(Math.tan(turnAnticipationAngle / 2))) + enterBankDistance, this.options.maxTurnAnticipationDistance(planeState));
   }
 
   /**
@@ -268,7 +267,6 @@ class LNavDirector {
       if (currentWaypoint && currentWaypoint.endsInDiscontinuity) {
         this.state = LNavState.IN_DISCONTINUITY;
         SimVar.SetSimVarValue("L:WT_CJ4_IN_DISCONTINUITY", "number", 1);
-
         this.sequencingMode = FlightPlanSequencing.INHIBIT;
         LNavDirector.setCourse(SimVar.GetSimVarValue('PLANE HEADING DEGREES TRUE', 'Radians') * Avionics.Utils.RAD2DEG, planeState);
         SimVar.SetSimVarValue('L:WT_CJ4_WPT_ALERT', 'number', 0);
@@ -277,11 +275,11 @@ class LNavDirector {
         this.sequencingMode = FlightPlanSequencing.INHIBIT;
 
         this.state = LNavState.TURN_COMPLETING;
-        this.fpm.setActiveWaypointIndex(this.activeFlightPlan.activeWaypointIndex + 1);
+        this.fpm.setActiveWaypointIndex(this.activeFlightPlan.activeWaypointIndex + 1, EmptyCallback.Void, 0);
       }
       else {
         this.state = LNavState.TURN_COMPLETING;
-        this.fpm.setActiveWaypointIndex(this.activeFlightPlan.activeWaypointIndex + 1);
+        this.fpm.setActiveWaypointIndex(this.activeFlightPlan.activeWaypointIndex + 1, EmptyCallback.Void, 0);
       }
     }
   }
@@ -297,8 +295,8 @@ class LNavDirector {
 
       const nextWaypointIndex = this.activeFlightPlan.activeWaypointIndex + 1;
 
-      this.fpm.setActiveWaypointIndex(nextWaypointIndex);
-      this.fpm.clearDiscontinuity(nextWaypointIndex - 1);
+      this.fpm.setActiveWaypointIndex(nextWaypointIndex, EmptyCallback.Void, 0);
+      this.fpm.clearDiscontinuity(nextWaypointIndex - 1, 0);
     }
 
     this.sequencingMode = FlightPlanSequencing.AUTO;
@@ -316,7 +314,24 @@ class LNavDirector {
    * @param {number} navSensitivity The current nav sensitivity.
    */
   postDisplayedNavSensitivity(navSensitivity) {
+    if (navSensitivity !== this.currentNavSensitivity) {
+      this.currentNavSensitivity = navSensitivity;
 
+      switch (this.currentNavSensitivity) {
+        case NavSensitivity.TERMINAL:
+          //MessageService.getInstance().post(FMS_MESSAGE_ID.TERM, () => this.currentNavSensitivity !== NavSensitivity.TERMINAL);
+          break;
+        case NavSensitivity.TERMINALLPV:
+          //MessageService.getInstance().post(FMS_MESSAGE_ID.TERM_LPV, () => this.currentNavSensitivity !== NavSensitivity.TERMINALLPV);
+          break;
+        case NavSensitivity.APPROACH:
+          //MessageService.getInstance().post(FMS_MESSAGE_ID.APPR, () => this.currentNavSensitivity !== NavSensitivity.APPROACH);
+          break;
+        case NavSensitivity.APPROACHLPV:
+          //MessageService.getInstance().post(FMS_MESSAGE_ID.APPR_LPV, () => this.currentNavSensitivity !== NavSensitivity.APPROACHLPV);
+          break;
+      }
+    }
   }
 
   /**
@@ -346,7 +361,6 @@ class LNavDirector {
       }
 
       if (Math.abs(xtk) < activationXtk) {
-        SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 1);
         this.navModeSelector.queueEvent(NavModeEvent.LNAV_ACTIVE);
       }
     }
@@ -426,7 +440,6 @@ class LNavDirector {
     state.trueTrack = SimVar.GetSimVarValue('GPS GROUND TRUE TRACK', 'Radians') * Avionics.Utils.RAD2DEG;
 
     state.bankAngle = SimVar.GetSimVarValue('PLANE BANK DEGREES', 'Radians') * Avionics.Utils.RAD2DEG;
-    state.maxBankAngle = SimVar.GetSimVarValue('AUTOPILOT MAX BANK', 'Radians') * Avionics.Utils.RAD2DEG;
 
     return state;
   }

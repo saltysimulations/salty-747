@@ -1,7 +1,7 @@
 /** 
  * A class for mapping raw facility data to WayPoints. 
  */
-export class RawDataMapper {
+ export class RawDataMapper {
 
   /**
    * Maps a raw facility record to a WayPoint.
@@ -42,6 +42,8 @@ export class RawDataMapper {
 
         info.oneWayRunways = [];
         facility.runways.forEach(runway => info.oneWayRunways.push(...Object.assign(new Runway(), runway).splitIfTwoWays()));
+
+        info.frequencies = facility.frequencies;
 
         info.oneWayRunways.sort(RawDataMapper.sortRunways);
         waypoint.infos = info;
@@ -143,4 +145,3 @@ export class RawDataMapper {
     return enrouteTransition.legs[enrouteTransition.legs.length - 1].fixIcao.substring(7, 12).trim();
   }
 }
-
