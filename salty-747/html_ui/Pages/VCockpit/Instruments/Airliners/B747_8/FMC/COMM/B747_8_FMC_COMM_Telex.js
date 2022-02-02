@@ -1,4 +1,4 @@
-class FMC_ATC_Log {
+class FMC_ATC_Telex {
     static ShowPage(fmc) {
         fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
