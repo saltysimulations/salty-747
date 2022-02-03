@@ -17,50 +17,54 @@
  */
 
 import React, { FC } from "react";
-import { useSimVar } from "react-msfs";
+import { useSimVar, useUpdate } from "react-msfs";
 import img3 from '../DRS.png';
 
 export const DRS: FC = () => {
+    const [entry1L] = useSimVar('INTERACTIVE POINT OPEN:10', 'percent', 1000);
+    const [entry5R] = useSimVar('INTERACTIVE POINT OPEN:1', 'percent', 1000);
+    const [cargoFwd] = useSimVar('INTERACTIVE POINT OPEN:12', 'percent', 1000);
+
     return (
         <g>
             {/*Ref Image*/}
             <image href={img3} x="25" y="25" width={750} height={750} opacity={0.0}/>
 
             {/*Escape Slide Status*/}  
-            <text x={333} y={211} className="text-3">M</text>
-            <text x={333} y={286} className="text-3">M</text>
-            <text x={333} y={327} className="text-3">M</text>
-            <text x={333} y={431} className="text-3">M</text>
-            <text x={333} y={541} className="text-3">M</text>
-            <text x={333} y={643} className="text-3">M</text>
+            <text x={333} y={211} id="entry1L" className="text-3">{entry1L > 20 ? 'M' : 'A'}</text>
+            <text x={333} y={286} className="text-3">A</text>
+            <text x={333} y={327} className="text-3">A</text>
+            <text x={333} y={431} className="text-3">A</text>
+            <text x={333} y={541} className="text-3">A</text>
+            <text x={333} y={643} className="text-3">A</text>
 
-            <text x={483} y={211} className="text-3">M</text>
-            <text x={483} y={286} className="text-3">M</text>
-            <text x={483} y={327} className="text-3">M</text>
-            <text x={483} y={431} className="text-3">M</text>
-            <text x={483} y={541} className="text-3">M</text>
-            <text x={483} y={643} className="text-3">M</text>
+            <text x={483} y={211} className="text-3">A</text>
+            <text x={483} y={286} className="text-3">A</text>
+            <text x={483} y={327} className="text-3">A</text>
+            <text x={483} y={431} className="text-3">A</text>
+            <text x={483} y={541} className="text-3">A</text>
+            <text x={483} y={643} className="text-3">{entry5R > 20 ? 'M' : 'A'}</text>
 
             {/*Door Status*/}
-            <rect className="amber-line" x="382" y="164" width="14" height="14"/>
-            <rect className="amber-line" x="390" y="354" width="20" height="20"/>
-            <rect className="amber-line" x="356" y="194" width="23" height="12"/>
-            <rect className="amber-line" x="371" y="270" width="23" height="12"/>
-            <rect className="amber-line" x="356" y="310" width="23" height="12"/>
-            <rect className="amber-line" x="356" y="414" width="23" height="12"/>
-            <rect className="amber-line" x="356" y="524" width="23" height="12"/>
-            <rect className="amber-line" x="356" y="624" width="23" height="12"/>
+            <rect className="hidden-line" x="382" y="164" width="14" height="14"/>
+            <rect className="hidden-line" x="390" y="354" width="20" height="20"/>
+            <rect className={entry1L > 20 ? 'amber-line' : 'hidden-line'} x="356" y="194" width="23" height="12"/>
+            <rect className="hidden-line" x="371" y="270" width="23" height="12"/>
+            <rect className="hidden-line" x="356" y="310" width="23" height="12"/>
+            <rect className="hidden-line" x="356" y="414" width="23" height="12"/>
+            <rect className="hidden-line" x="356" y="524" width="23" height="12"/>
+            <rect className="hidden-line" x="356" y="624" width="23" height="12"/>
 
-            <rect className="amber-line" x="421" y="194" width="23" height="12"/>
-            <rect className="amber-line" x="406" y="270" width="23" height="12"/>
-            <rect className="amber-line" x="421" y="310" width="23" height="12"/>
-            <rect className="amber-line" x="421" y="414" width="23" height="12"/>
-            <rect className="amber-line" x="421" y="524" width="23" height="12"/>
-            <rect className="amber-line" x="421" y="624" width="23" height="12"/>
+            <rect className="hidden-line" x="421" y="194" width="23" height="12"/>
+            <rect className="hidden-line" x="406" y="270" width="23" height="12"/>
+            <rect className="hidden-line" x="421" y="310" width="23" height="12"/>
+            <rect className="hidden-line" x="421" y="414" width="23" height="12"/>
+            <rect className="hidden-line" x="421" y="524" width="23" height="12"/>
+            <rect className={entry5R > 20 ? 'amber-line' : 'hidden-line'} x="421" y="624" width="23" height="12"/>
 
-            <rect className="amber-line" x="421" y="224" width="28" height="28"/>
-            <rect className="amber-line" x="421" y="552" width="28" height="28"/>
-            <rect className="amber-line" x="429" y="586" width="20" height="20"/>
+            <rect className={cargoFwd > 20 ? 'amber-line' : 'hidden-line'} x="421" y="224" width="28" height="28"/>
+            <rect className="hidden-line" x="421" y="552" width="28" height="28"/>
+            <rect className="hidden-line" x="429" y="586" width="20" height="20"/>
 
             {/*Door Labels*/}
             <text x={227} y={181} className="text-3 cyan">MAIN ELEC</text>
