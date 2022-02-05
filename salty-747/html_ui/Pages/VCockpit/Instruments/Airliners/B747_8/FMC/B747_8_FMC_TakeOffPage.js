@@ -121,6 +121,18 @@ class FMCTakeOffPage {
             trimCell = fmc.takeOffTrim.toFixed(1);
         }
         let taxiBurn = 2;
+        let units = true;
+        const storedUnits = SaltyDataStore.get("OPTIONS_UNITS", "KG");
+            switch (storedUnits) {
+                case "KG":
+                    units = true;
+                    break;
+                case "LBS":
+                    units = false;
+                    break;
+                default:
+                    units = true;
+            }
         let grossWeight;
         if (units) {
             grossWeight = fmc.getWeight(false);
