@@ -18,6 +18,7 @@
 		<Include ModelBehaviorFile="Asobo\Airliner\Boeing.xml"/>
 		<Include ModelBehaviorFile="Asobo\Airliner\FMC.xml"/>
 		<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
+		<Include ModelBehaviorFile="Asobo\Airliner\74S\74S_Interior.xml"/>
 
 		<Component ID="Yoke_Controls">
 			<UseTemplate Name="ASOBO_HANDLING_RudderPedals_Template">
@@ -2422,7 +2423,7 @@
 				eicas_master_switch_hdg_ref
 				eicas_knob_master_fmc_master
 				-->
-				<UseTemplate Name="ASOBO_EICAS_PAGE_SELECTION_Template_Boeing">
+				<UseTemplate Name="74S_EICAS_PAGE_SELECTION_Template">
 					<PANEL_NAME>B747_8_EICAS_2</PANEL_NAME>
 				</UseTemplate>
 			</Component>

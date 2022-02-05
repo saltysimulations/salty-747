@@ -20,6 +20,7 @@ import React, { FC, useState } from "react";
 import { render } from "../Common";
 import { useInteractionEvent, useInteractionSimVar, useSimVar } from "react-msfs";
 
+import { ENG } from "./ENG/ENG";
 import { ECS } from "./ECS/ECS";
 import { DRS } from "./DRS/DRS";
 import { ELEC } from "./ELEC/ELEC";
@@ -63,6 +64,7 @@ export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, black
 
 /*0: <ENG/>,*/
 /*1: <STAT/>,*/
+/*2: <ELEC/>,*/
 /*3: <FUEL/>,*/
 /*4: <ECS/>,*/
 /*5: <FCTL/>,*/
@@ -70,31 +72,55 @@ export const BlackOutlineWhiteLine: FC<BlackOutlineWhiteLineProps> = ({ d, black
 /*9: <INFO/>,*/
 /*10: <CHKL/>,*/
 /*10: <NAV/>,*/
-function setCurrentPage(currentPage: number) {
+
+const LowerEICAS: FC = () => {
+    const [currentPage, setCurrentPage] = useSimVar("L:XMLVAR_EICAS_SELECTED_PAGE", "enum");
+    useInteractionEvent("74S_EICAS_CHANGE_PAGE", () => 
+            setCurrentPage(useSimVar("L:XMLVAR_EICAS_SELECTED_PAGE", "enum"))
+    );
     switch (currentPage) {
+        case 0:
+            return (
+                <>
+                    <div className="LcdOverlay" style={{ opacity: "0.2" }} />
+                    <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
+                    <ENG/>
+                    </svg>
+                </>
+            )
         case 2:
-            return <ELEC/>;
+            return (
+                <>
+                    <div className="LcdOverlay" style={{ opacity: "0.2" }} />
+                    <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
+                    <ELEC/>
+                    </svg>
+                </>
+            )
+        case 4:
+            return <ECS/>;
         case 6:
             return <HYD/>;
         case 7:
-            return <DRS/>;
+            return  (
+                <>
+                    <div className="LcdOverlay" style={{ opacity: "0.2" }} />
+                    <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
+                    <DRS/>
+                    </svg>
+                </>
+            )
+        case 15:
+            return  (
+                <>
+                    <div className="LcdOverlay" style={{ opacity: "0.2" }} />
+                    <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
+                    </svg>
+                </>
+            )
         default:
             return <ELEC/>
     }
-}
-
-const LowerEICAS: FC = () => {
-    const [currentPage] = useSimVar("L:XMLVAR_EICAS_CURRENT_PAGE", "enum");
-    var pageToRender = setCurrentPage(currentPage);
-
-    return (
-        <>
-            <div className="LcdOverlay" style={{ opacity: "0.2" }} />
-            <svg className="pfd-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg"> 
-            {pageToRender}
-            </svg>
-        </>
-    );
 };
 
 render(<LowerEICAS />);

@@ -1,0 +1,85 @@
+b747-8-eicas-gauge {
+    display: inline-block;
+    width: 14%;
+    height: 33%;
+    overflow: visible; }
+    b747-8-eicas-gauge #RootSVG {
+      width: 100%;
+      height: 100%; }
+    b747-8-eicas-gauge rect.gauge {
+      fill: var(--eicasGrey); }
+    b747-8-eicas-gauge rect.bar {
+      stroke: var(--eicasWhite);
+      stroke-width: 3px;
+      fill: none; }
+    b747-8-eicas-gauge rect.value {
+      stroke: var(--eicasWhite);
+      stroke-width: 3px;
+      fill: none; }
+    b747-8-eicas-gauge text.value {
+      fill: var(--eicasWhite);
+      font-size: 26px;
+      letter-spacing: -2px;
+      text-anchor: end;
+      alignment-baseline: central; }
+    b747-8-eicas-gauge line {
+      stroke-width: 3px; }
+  
+  b747-8-eicas-gauge-dual {
+    display: inline-block;
+    width: 27.5%;
+    height: 12%;
+    overflow: visible; }
+    b747-8-eicas-gauge-dual #RootSVG {
+      width: 100%;
+      height: 100%; }
+    b747-8-eicas-gauge-dual text.normal {
+      fill: var(--eicasWhite);
+      font-size: 30px;
+      alignment-baseline: central; }
+    b747-8-eicas-gauge-dual line.bar {
+      stroke: var(--eicasGrey);
+      stroke-width: 3px;
+      fill: none; }
+    b747-8-eicas-gauge-dual .indicatorNormal {
+      stroke: var(--eicasGrey);
+      stroke-width: 2px;
+      fill: none; }
+  
+  #ENG {
+    position: relative;
+    left: 3.5%;
+    width: 95.5%;
+    top: 4.25%;
+    height: 88%;
+    display: block; }
+    #ENG svg {
+      width: 100%;
+      height: 100%; }
+    #ENG text {
+      fill: var(--eicasWhite);
+      font-size: 20px;
+      text-anchor: middle;
+      alignment-baseline: baseline; }
+    #ENG text.Label {
+      fill: cyan;
+      font-size: 15px; }
+    #ENG #EngineStates text {
+      fill: lime;
+      font-size: 16px; }
+    #ENG #EngineStates .white {
+      fill: var(--eicasWhite); }
+    #ENG #N2Gauges {
+      top: 7%; }
+    #ENG #FFGauges {
+      top: 28%; }
+    #ENG #OilPGauges {
+      top: 45%; }
+    #ENG #OilTGauges {
+      top: 60%; }
+    #ENG #OilQGauges {
+      top: 69%; }
+    #ENG #VIBGauges {
+      top: 81%; }
+  
+  
