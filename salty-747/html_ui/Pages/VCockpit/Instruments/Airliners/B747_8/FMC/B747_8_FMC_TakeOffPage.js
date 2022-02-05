@@ -8,6 +8,7 @@ class FMCTakeOffPage {
                 FMCTakeOffPage.ShowPage1(fmc);
             }
         };
+        let units = fmc.useLbs;
         let v1 = "---";
         if (fmc.v1Speed) {
             v1 = fmc.v1Speed + "KT";
@@ -121,7 +122,7 @@ class FMCTakeOffPage {
         }
         let taxiBurn = 2;
         let grossWeight;
-        if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+        if (units) {
             grossWeight = fmc.getWeight(false);
         }
         else {
