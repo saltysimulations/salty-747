@@ -121,11 +121,12 @@ class FMCTakeOffPage {
         }
         let taxiBurn = 2;
         let grossWeight;
-        if (SaltyDataStore.get("OPTIONS_UNITS", "KG")) {
-            grossWeight = fmc.getWeight(false);
+        let units = fmc.useLbs;
+        if (units) {
+            grossWeight = fmc.getWeight(true);
         }
         else {
-            grossWeight = fmc.getWeight(true);
+            grossWeight = fmc.getWeight(false);
         }
         let grossWeightCell = "\xa0\xa0" + grossWeight.toFixed(1);
         let takeoffGrossWeight = grossWeight - taxiBurn;
