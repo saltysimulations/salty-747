@@ -39,8 +39,9 @@ class B747_8_FMC_ProgPage {
                     waypointActiveDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                 }
                 let fuelLeft = fmc.computeFuelLeft(waypointActiveDistance, speed, currentFuel, currentFuelFlow);
+                let units = fmc.useLbs;
                 if (isFinite(fuelLeft)) {
-                    if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+                    if (!units) {
                         waypointActiveFuelCell = (fuelLeft / 2.204).toFixed(1);
                     }
                     else {
