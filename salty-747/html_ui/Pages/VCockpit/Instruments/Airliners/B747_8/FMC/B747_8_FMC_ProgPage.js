@@ -38,6 +38,7 @@ class B747_8_FMC_ProgPage {
                 else {
                     waypointActiveDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                 }
+                let fuelLeft = fmc.computeFuelLeft(waypointActiveDistance, speed, currentFuel, currentFuelFlow);
                 let units = fmc.useLbs;
                 if (isFinite(fuelLeft)) {
                     if (!units) {
