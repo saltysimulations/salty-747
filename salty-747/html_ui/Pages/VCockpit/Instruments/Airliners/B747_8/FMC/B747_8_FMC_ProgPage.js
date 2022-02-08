@@ -38,7 +38,6 @@ class B747_8_FMC_ProgPage {
                 else {
                     waypointActiveDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                 }
-                let fuelLeft = fmc.computeFuelLeft(waypointActiveDistance, speed, currentFuel, currentFuelFlow);
                 let units = fmc.useLbs;
                 if (isFinite(fuelLeft)) {
                     if (!units) {
@@ -77,8 +76,9 @@ class B747_8_FMC_ProgPage {
                             waypointActiveNextDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                         }
                         let fuelLeft = fmc.computeFuelLeft(waypointActiveNextDistance, speed, currentFuel, currentFuelFlow);
+                        let units = fmc.useLbs;
                         if (isFinite(fuelLeft)) {
-                            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+                            if (!units) {
                                 waypointActiveNextFuelCell = (fuelLeft / 2.204).toFixed(1);
                             }
                             else {
@@ -125,8 +125,9 @@ class B747_8_FMC_ProgPage {
                         destinationDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
                     }
                     let fuelLeft = fmc.computeFuelLeft(destinationDistance, speed, currentFuel, currentFuelFlow);
+                    let units = fmc.useLbs;
                     if (isFinite(fuelLeft)) {
-                        if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+                        if (!units) {
                             destinationFuelCell = (fuelLeft / 2.204).toFixed(1);
                         }
                         else {
