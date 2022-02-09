@@ -150,9 +150,8 @@ class B747_8_FMC_ProgPage {
         }
         let todTimeCell = "";
         let todDistanceCell = "";
-        let todDist = SimVar.GetSimVarValue("L:WT_CJ4_TOD_DISTANCE", "number");
-        if (todDist > 0) {
-            let distanceToTOD = destinationDistance - todDist;
+        let distanceToTOD = SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number");
+        if (distanceToTOD > 0) {
             if (isFinite(distanceToTOD)) {
                 todDistanceCell = distanceToTOD.toFixed(0)  + "NM";
                 todTimeCell = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
