@@ -148,23 +148,22 @@ class B747_8_FMC_ProgPage {
         else {
             crzSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
         }
+        let todTimeCell = "";
         let todDistanceCell = "";
         let todDist = SimVar.GetSimVarValue("L:WT_CJ4_TOD_DISTANCE", "number");
         if (todDist > 0) {
             let distanceToTOD = destinationDistance - todDist;
             if (isFinite(distanceToTOD)) {
-                for (let i = 0; i < 3 - Math.log10(distanceToTOD); i++) {
-                    todDistanceCell += "&nbsp";
-                }
-                todDistanceCell = distanceToTOD.toFixed(0) + " ";
+                todDistanceCell = distanceToTOD.toFixed(0)  + "NM";
+                todTimeCell = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
                 let eta = undefined;
                 eta = (B747_8_FMC_ProgPage.computeEtaToWaypoint(distanceToTOD, speed) + currentTime) % 86400;
                 if (isFinite(eta)) {
                     let etaHours = Math.floor(eta / 3600);
                     let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                    todDistanceCell += etaHours.toFixed(0).padStart(2, '0') + etaMinutes.toFixed(0).padStart(2, '0') + "z";
+                    todTimeCell += etaHours.toFixed(0).padStart(2, '0') + etaMinutes.toFixed(0).padStart(2, '0') + "z /";
                 } else {
-                    todDistanceCell += "&nbsp&nbsp&nbsp&nbsp&nbsp";
+                    todTimeCell += "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
                 }
             }
         }
@@ -172,14 +171,14 @@ class B747_8_FMC_ProgPage {
             [progressTitle],
             ["\xa0TO", "FUEL", "DTG\xa0\xa0ETA"],
             [waypointActiveCell + "[color]magenta", waypointActiveFuelCell, waypointActiveDistanceCell],
-            ["\xa0NEXT", "", "\xa0\xa0\xa0\xa0\xa0ETA"],
+            ["\xa0NEXT", "", ""],
             [waypointActiveNextCell, waypointActiveNextFuelCell, waypointActiveNextDistanceCell],
             ["\xa0DEST"],
             [destinationCell, destinationFuelCell, destinationDistanceCell],
-            ["\xa0SEL SPD"],
-            [crzSpeedCell],
-            ["\xa0TO TOD", "", "\xa0\xa0\xa0\xa0\xa0ETA"],
-            ["", "", todDistanceCell],
+            ["\xa0SEL SPD", "TO T/D", ""],
+            [crzSpeedCell + "[color]magenta", todDistanceCell, todTimeCell],
+            ["", "", ""],
+            ["", "", ""],
             ["__FMCSEPARATOR"],
             ["<POS REPORT", "POS REF>"]
         ]);
