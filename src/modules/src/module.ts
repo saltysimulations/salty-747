@@ -1,3 +1,3 @@
-export abstract class Module {
-    abstract update(_dt: number);
+export interface Module {
+    update(_dt: number): void;
 }
