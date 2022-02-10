@@ -17,8 +17,14 @@ class FMCSaltyOptions_Misc {
                 displayCurrentPilotsOption = `{green}NONE{end}/{small}PILOT{end}/{small}COPILOT{end}/{small}BOTH{end}`;
         }
 
+        const onGreen = "{green}ON{end}/{small}OFF{end}";
+        const offGreen = "{small}ON{end}/{green}OFF{end}";
+
         const fpSync = WTDataStore.get("WT_CJ4_FPSYNC", 0);
-        const fpSyncDisplayOption = fpSync >= 1 ? "{green}ON{end}/{small}OFF{end}" : "{small}ON{end}/{green}OFF{end}";
+        const fpSyncDisplayOption = fpSync >= 1 ? onGreen : offGreen;
+
+        const pauseAtTd = WTDataStore.get("PAUSE_AT_TD", 0);
+        const pauseAtTdDisplayOption = pauseAtTd >= 1 ? onGreen : offGreen;
 
         fmc.setTemplate([
             ["MISC OPTIONS"],
@@ -26,8 +32,8 @@ class FMCSaltyOptions_Misc {
             ["<", ">", `${displayCurrentPilotsOption}`],
             ["", "", "FP SYNC (WORLD MAP FP)"],
             [`< ${fpSyncDisplayOption}`, "", ""],
-            ["", ""],
-            ["", ""],
+            ["", "", "PAUSE AT T/D"],
+            [`< ${pauseAtTdDisplayOption}`, `${pauseAtTd >= 1 ? "UNPAUSE>" : ""}`],
             ["", ""],
             ["", ""],
             ["", ""],
@@ -62,11 +68,20 @@ class FMCSaltyOptions_Misc {
             FMCSaltyOptions_Misc.ShowPage(fmc);
         }
 
+        fmc.onRightInput[2] = () => {
+            SimVar.SetSimVarValue("K:PAUSE_OFF", "number", 0);
+        }
+
         fmc.onLeftInput[1] = () => {
             WTDataStore.set("WT_CJ4_FPSYNC", fpSync >= 1 ? 0 : 1);
             fmc.showErrorMessage("RESTART FLIGHT TO APPLY");
             FMCSaltyOptions_Misc.ShowPage(fmc);
         }
+
+        fmc.onLeftInput[2] = () => {
+            WTDataStore.set("PAUSE_AT_TD", pauseAtTd >= 1 ? 0 : 1);
+            FMCSaltyOptions_Misc.ShowPage(fmc);
+        };
 
         /* LSK6 */
         fmc.onLeftInput[5] = () => {

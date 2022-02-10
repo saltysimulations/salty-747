@@ -1,4 +1,4 @@
-class FMC_ATC_Message {
+class FMC_COMM_Message {
     static ShowPage(fmc, message, offset = 0, store = {currPage: 1}) {
         fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
