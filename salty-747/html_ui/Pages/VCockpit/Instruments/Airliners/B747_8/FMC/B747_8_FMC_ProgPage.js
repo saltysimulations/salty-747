@@ -150,20 +150,31 @@ class B747_8_FMC_ProgPage {
         }
         let todTimeCell = "";
         let todDistanceCell = "";
+        let toToDText = "";
         let distanceToTOD = SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number");
         if (distanceToTOD > 0) {
-            if (isFinite(distanceToTOD)) {
-                todDistanceCell = distanceToTOD.toFixed(0)  + "NM";
-                todTimeCell = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
-                let eta = undefined;
-                eta = (B747_8_FMC_ProgPage.computeEtaToWaypoint(distanceToTOD, speed) + currentTime) % 86400;
-                if (isFinite(eta)) {
-                    let etaHours = Math.floor(eta / 3600);
-                    let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                    todTimeCell += etaHours.toFixed(0).padStart(2, '0') + etaMinutes.toFixed(0).padStart(2, '0') + "z"+"&nbsp"+"/";
+            if (isFinite(distanceToTOD) && distanceToTOD < 201) {
+                toToDText = "TO T/D";
+                if (distanceToTOD < 5) {
+                    todDistanceCell = "NOW";
                 } else {
-                    todTimeCell += "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+                    todDistanceCell = distanceToTOD.toFixed(0)  + "NM";
+                    todTimeCell = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+                    let eta = undefined;
+                    eta = (B747_8_FMC_ProgPage.computeEtaToWaypoint(distanceToTOD, speed) + currentTime) % 86400;
+                    if (isFinite(eta)) {
+                        let etaHours = Math.floor(eta / 3600);
+                        let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
+                        todTimeCell += etaHours.toFixed(0).padStart(2, '0') + etaMinutes.toFixed(0).padStart(2, '0') + "z"+"&nbsp"+"/";
+                    } else {
+                        todTimeCell += "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+                    }
                 }
+            }
+            else {
+                toToDText = "";
+                todTimeCell = "";
+                todDistanceCell = "";
             }
         }
         fmc.setTemplate([
@@ -174,7 +185,7 @@ class B747_8_FMC_ProgPage {
             [waypointActiveNextCell, waypointActiveNextFuelCell, waypointActiveNextDistanceCell],
             ["\xa0DEST"],
             [destinationCell, destinationFuelCell, destinationDistanceCell],
-            ["\xa0SEL SPD", "TO T/D", ""],
+            ["\xa0SEL SPD", toToDText, ""],
             [crzSpeedCell + "[color]magenta", todDistanceCell, todTimeCell],
             ["", "", ""],
             ["", "", ""],
