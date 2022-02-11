@@ -8,31 +8,50 @@ var Boeing;
             this.refresh("", true);
         }
 
-        getText(phase, mode) {
-            let text = "-";
-            let alt = Simplane.getAltitude();
-            let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
-
-            if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB) 
-                text = `${(alt <= thrRedAlt && phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) ? "TO" :  "CLB"}${(mode == 1 || mode == 2) ? " - " + mode : ""}`;
-            else if (phase <= FlightPhase.FLIGHT_PHASE_CRUISE)
-                text = `CRZ`;
-
+        getText() {
+            const thrustMode = SimVar.GetSimVarValue("L:74S_FMC_REFTHR_MODE", "Number");
+            const derate = SimVar.GetSimVarValue("L:74S_FMC_REFTHR_DERATE", "Number");
+            const assumedTemp = SimVar.GetSimVarValue("L:74S_FMC_ASSUMED_TEMP", "Number");
+            let text = "";
+            if (thrustMode == 0 && assumedTemp != -1) {
+                text += "D-"
+            }
+            
+            
+            switch (thrustMode) {
+                case 0:
+                    text += "TO"
+                    break;
+                case 1:
+                    text += "CLB"
+                    break;
+                case 2:
+                    text += "CRZ"
+                    break;
+                case 3:
+                    text += "CON"
+                    break;
+                case 4:
+                    text += "GA"
+                    break;
+            }
+            if (thrustMode == 0 || thrustMode == 1) {
+                switch (derate) {
+                    case 0:
+                        break;
+                    case 1:
+                        text += " 1"
+                        break;
+                    case 2:
+                        text += " 2"
+                        break;
+                }
+            }
             return text;
         }
 
         update() {
-            let phase = Simplane.getCurrentFlightPhase();
-            let mode = 0;
-            let alt = Simplane.getAltitude();
-            let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
-            if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF && alt < thrRedAlt) {
-                mode = Simplane.getEngineThrustTakeOffMode(0);
-            }
-            else {
-                mode = Simplane.getEngineThrustClimbMode(0);
-            }
-            let tmaText = this.getText(phase, mode);
+            let tmaText = this.getText();
             this.refresh(tmaText);
         }
         refresh(_text, _force = false) {
