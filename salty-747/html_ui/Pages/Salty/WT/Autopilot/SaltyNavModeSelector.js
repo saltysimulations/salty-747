@@ -340,6 +340,7 @@
       switch (this.currentLateralActiveState) {
         case LateralNavModeState.ROLL:
           SimVar.SetSimVarValue("L:WT_CJ4_NAV_ON", "number", 1);
+          SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 1);
           this.changeToCorrectLNavForMode(true, false);
           break;
         case LateralNavModeState.LNAV:
@@ -348,6 +349,7 @@
         case LateralNavModeState.TO:
         case LateralNavModeState.GA:
           SimVar.SetSimVarValue("L:WT_CJ4_NAV_ON", "number", 1);
+          SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 1);
           SimVar.SetSimVarValue("L:WT_CJ4_HDG_ON", "number", 0);
           this.changeToCorrectLNavForMode(false, false);
           SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 1);
@@ -1651,8 +1653,9 @@
 
    activateThrustRefMode() {
      this.currentAutoThrottleStatus = AutoThrottleModeState.THRREF;
+     const n1 = SimVar.GetSimVarValue("L:74S_FMC_REF_N1", "number");
      Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.CLIMB);
-     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", 90);
+     SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", n1);
      SimVar.SetSimVarValue("K:AP_N1_HOLD", "bool", 1);
    }
 

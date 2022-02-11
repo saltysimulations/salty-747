@@ -1,22 +1,31 @@
 class FMCThrustLimPage {
     static ShowPage1(fmc) {
         fmc.clearDisplay();
-        let selectedTempCell = fmc.getThrustTakeOffTemp() + "°";
+        FMCThrustLimPage._timer = 0;
+        fmc.pageUpdate = () => {
+            FMCThrustLimPage._timer++;
+            if (FMCThrustLimPage._timer >= 20) {
+                FMCThrustLimPage.ShowPage1(fmc);
+            }
+        };
+        let selectedTemp = fmc.getThrustTakeOffTemp();
+        let selectedTempCell = selectedTemp == -1 ? '--' : selectedTemp + "°C";
         fmc.onLeftInput[0] = () => {
             let value = fmc.inOut;
             fmc.clearUserInput();
             if (fmc.setThrustTakeOffTemp(value)) {
-                FMCThrustLimPage.ShowPage1(fmc);
+                FMCThrustLimPage.ShowPage1(fmc); 
             }
         };
-        let toN1Cell = fmc.getThrustTakeOffLimit().toFixed(1) + "%";
+        let toN1Cell = SimVar.GetSimVarValue('L:74S_FMC_REF_N1', 'number').toFixed(1) + "%";
         let oatValue = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-        let oatCell = oatValue.toFixed(0) + "°C";
+        let oatCell = oatValue.toFixed(0) + "°C\xa0\xa0\xa0";
         let thrustTOMode = fmc.getThrustTakeOffMode();
         let thrustClimbMode = fmc.getThrustCLBMode();
         fmc.onLeftInput[1] = () => {
             fmc.setThrustTakeOffMode(0);
             fmc.setThrustCLBMode(0);
+
             FMCThrustLimPage.ShowPage1(fmc);
         };
         fmc.onLeftInput[2] = () => {
@@ -43,16 +52,16 @@ class FMCThrustLimPage {
         };
         fmc.setTemplate([
             ["THRUST LIM"],
-            ["SEL", "TO N1", "OAT"],
+            ["\xa0SEL", "TO N1", "OAT\xa0\xa0\xa0\xa0"],
             [selectedTempCell, toN1Cell, oatCell],
             [""],
-            ["\<TO" + (thrustTOMode === 0 ? " <SEL>" : ""), (thrustClimbMode === 0 ? "<SEL> " : "") + "CLB>"],
-            ["TO 1"],
-            ["\<-10%" + (thrustTOMode === 1 ? " <SEL>" : ""), (thrustClimbMode === 1 ? "<SEL> " : "") + "CLB 1>"],
-            ["TO 2"],
-            ["\<-20%" + (thrustTOMode === 2 ? " <SEL>" : ""), (thrustClimbMode === 2 ? "<SEL> " : "") + "CLB 2>"],
+            [`&ltTO${thrustTOMode == 0 ? "\xa0\xa0\xa0\xa0<SEL>" : ""}`, (thrustClimbMode == 0 ? "<ARM>\xa0\xa0\xa0\xa0" : "") + "CLB>"],
+            ["\xa0TO 1"],
+            [`&lt-20%${thrustTOMode == 1 ? "\xa0\xa0<SEL>" : ""}`, (thrustClimbMode == 1 ? "<ARM>\xa0\xa0" : "") + "CLB 1>"],
+            ["\xa0TO 2"],
+            [`&lt-20%${thrustTOMode == 2 ? "\xa0\xa0<SEL>" : ""}`, (thrustClimbMode == 2 ? "<ARM>\xa0\xa0" : "") + "CLB 2>"],
             [""],
-            ["\<TO-B"],
+            [],
             ["__FMCSEPARATOR"],
             ["\<INDEX", "TAKEOFF>"]
         ]);

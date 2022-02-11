@@ -7,6 +7,7 @@ var B747_8_LowerEICAS_Fuel;
             this.allFuelComponents = new Array();
             this.gallonToMegagrams = 0;
             this.gallonToMegapounds = 0;
+            this.units = true;
             this.isInitialised = false;
         }
         get templateID() { return "B747_8LowerEICASFuelTemplate"; }
@@ -136,6 +137,17 @@ var B747_8_LowerEICAS_Fuel;
             }
         }
         update(_deltaTime) {
+            const storedUnits = SaltyDataStore.get("OPTIONS_UNITS", "KG");
+            switch (storedUnits) {
+                case "KG":
+                    this.units = true;
+                    break;
+                case "LBS":
+                    this.units = false;
+                    break;
+                default:
+                    this.units = true;
+            }
             if (!this.isInitialised) {
                 return;
             }
@@ -154,7 +166,7 @@ var B747_8_LowerEICAS_Fuel;
                 }
             }
             if (this.unitTextSVG) {
-                if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+                if (this.units) {
                     this.unitTextSVG.textContent = "KGS X 1000";
                 }
                 else {
@@ -192,14 +204,14 @@ var B747_8_LowerEICAS_Fuel;
         }
         getTotalFuelInMegagrams() {
             let factor = this.gallonToMegapounds;
-            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+            if (this.units) {
                 factor = this.gallonToMegagrams;
             }
             return (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * factor);
         }
         getMainTankFuelInMegagrams(_index) {
             let factor = this.gallonToMegapounds;
-            if (SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool")) {
+            if (this.units) {
                 factor = this.gallonToMegagrams;
             }
             return (SimVar.GetSimVarValue("FUELSYSTEM TANK QUANTITY:" + _index, "gallons") * factor);

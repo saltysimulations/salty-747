@@ -1,13 +1,13 @@
 import { Module } from "./module";
 import { SoundManager } from "./sound/soundmanager";
+import { PauseAtTD } from "./qol/PauseAtTD";
 import { FMCThrustManagement } from "./fmc/ThrustManagement";
 
-export class SaltyModules extends Module {
+export class SaltyModules implements Module {
     private modules: Module[];
 
     constructor() {
-        super();
-        this.modules = [new FMCThrustManagement(), new SoundManager()];
+        this.modules = [new SoundManager(), new PauseAtTD(), new FMCThrustManagement()];
     }
 
     public update(dt: number) {

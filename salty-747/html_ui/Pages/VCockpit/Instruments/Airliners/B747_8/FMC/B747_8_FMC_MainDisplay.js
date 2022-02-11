@@ -866,7 +866,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     setThrustTakeOffMode(m) {
         if (m >= 0 && m <= 2) {
             this._thrustTakeOffMode = m;
-            SimVar.SetSimVarValue("L:AIRLINER_THRUST_TAKEOFF_MODE", "number", this._thrustTakeOffMode);
+            SimVar.SetSimVarValue("L:74S_FMC_REFTHR_DERATE", "enum", this._thrustTakeOffMode);
         }
     }
     getThrustCLBMode() {
@@ -875,21 +875,26 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     setThrustCLBMode(m) {
         if (m >= 0 && m <= 2) {
             this._thrustCLBMode = m;
-            SimVar.SetSimVarValue("L:AIRLINER_THRUST_CLIMB_MODE", "number", this._thrustCLBMode);
+            SimVar.SetSimVarValue("L:74S_FMC_REFTHR_CLB_DERATE", "enum", this._thrustCLBMode);
         }
     }
     getThrustTakeOffTemp() {
-        return this._thrustTakeOffTemp;
+        return SimVar.GetSimVarValue('L:74S_FMC_ASSUMED_TEMP', 'number');
     }
     setThrustTakeOffTemp(s) {
+        if (s == 'DELETE') {
+            SimVar.SetSimVarValue('L:74S_FMC_ASSUMED_TEMP', 'number', -1);
+            return true;
+        }
         let v = parseFloat(s);
         if (isFinite(v)) {
             let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-            if (v >= oat && v < 80) {
+            if (v >= oat && v > -1 && v < 100) {
                 this._thrustTakeOffTemp = v;
+                SimVar.SetSimVarValue('L:74S_FMC_ASSUMED_TEMP', 'number', this._thrustTakeOffTemp);
                 return true;
             }
-            this.showErrorMessage("OUT OF RANGE");
+            this.showErrorMessage("INVALID ENTRY");
             return false;
         }
         this.showErrorMessage(this.defaultInputErrorMessage);
@@ -984,6 +989,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     console.error(error);
                 }
             }*/
+
+            this.updateN1();
+
             if (this._pendingVNAVActivation) {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude > 400) {
@@ -1062,6 +1070,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             this.updateAutopilotCooldown = this._apCooldown;
+        }
+    }
+    updateN1() {
+        if (this._navModeSelector.currentAutoThrottleStatus == AutoThrottleModeState.THRREF) {
+            const updateN1 = SimVar.GetSimVarValue("L:74S_FMC_REF_N1", "number");
+            SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", updateN1);
         }
     }
     handleTogaMode() {

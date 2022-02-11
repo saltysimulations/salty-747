@@ -1,16 +1,17 @@
 import { Module } from "../module";
 
-export class FMCThrustManagement extends Module {
+export class FMCThrustManagement implements Module {
     private timeOut: number;
 
     constructor() {
-        super();
         this.timeOut = 0;
     }
 
     public update(_dt: number) {
+        this.updateMode();
         const mode = SimVar.GetSimVarValue("L:74S_FMC_REFTHR_MODE", "enum");
         const fixedDerate = SimVar.GetSimVarValue("L:74S_FMC_REFTHR_DERATE", "enum");
+        const clbFixedDerate = SimVar.GetSimVarValue("L:74S_FMC_REFTHR_CLB_DERATE", "enum");
         const mach = SimVar.GetSimVarValue("AIRSPEED MACH", "number");
         const oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "kelvin");
         const alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
@@ -18,10 +19,36 @@ export class FMCThrustManagement extends Module {
 
         switch (mode) {
             case 0: this.setRefThrust(this.getTakeOffRefThrust(fixedDerate, oat, alt, atm));
-            case 1: this.setRefThrust(this.getClimbRefThrust(fixedDerate, oat, alt, mach));
+                break;
+            case 1: this.setRefThrust(this.getClimbRefThrust(clbFixedDerate, oat, alt, mach));
+                break;
             case 2: this.setRefThrust(this.getCruiseRefThrust(oat, mach, alt));
+                break;
             case 3: this.setRefThrust(this.getContinuousRefThrust(oat, mach, alt));
+                break;
             case 4: this.setRefThrust(this.getGoAroundRefThrust(oat, mach, alt));
+                break;
+        }
+    }
+
+    /**
+    * Sets a Thrust Reference Value (%N1).
+    * @param n1 Reference N1 to set.
+    */
+    public updateMode() {
+        const phase = SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "enum");
+        const flapsPos = SimVar.GetSimVarValue("FLAPS HANDLE INDEX", "enum");
+        if (phase <= 2) {
+            SimVar.SetSimVarValue("L:74S_FMC_REFTHR_MODE", "enum", 0);
+        }
+        else if (phase == 3) {
+            SimVar.SetSimVarValue("L:74S_FMC_REFTHR_MODE", "enum", 1);
+        }
+        else if (phase == 4) {
+            SimVar.SetSimVarValue("L:74S_FMC_REFTHR_MODE", "enum", 2);
+        }
+        else if (phase >= 4 && flapsPos != 0) {
+            SimVar.SetSimVarValue("L:74S_FMC_REFTHR_MODE", "enum", 4);
         }
     }
     
@@ -31,7 +58,6 @@ export class FMCThrustManagement extends Module {
     */
     public setRefThrust(n1: number) {
         SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", (n1 - 20.2) / 0.798);
-        SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", n1);
         SimVar.SetSimVarValue("L:74S_FMC_REF_N1", "number", n1);
     }
 
@@ -46,8 +72,11 @@ export class FMCThrustManagement extends Module {
         let n1Ref = 97.9;
         switch (mode) {
             case 0: n1Ref = 97.9;
+                break;
             case 1: n1Ref = 93.6;
+                break;
             case 2: n1Ref = 89.4;
+                break;
         }
         const isaTemp = Math.round(288.15 - 2 * (alt / 1000));
         const theta = 288.15 / (atm + 273.15);
