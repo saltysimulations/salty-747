@@ -17,10 +17,11 @@
  */
 
 import React, { FC } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L, { Map } from "leaflet";
 import { useSimVar } from "react-msfs";
+import "leaflet/dist/leaflet.css";
 
 import "./Map.scss";
 import { Controls } from "./Controls";
@@ -45,7 +46,7 @@ export const Maps: FC = () => {
                     icon={L.divIcon({
                         iconSize: [50, 50],
                         iconAnchor: [25, 25],
-                        html: `<img src="${plane}" width="50" style="transform-origin: center; transform: rotate(${heading}deg);" />`,
+                        html: `<img src="${plane}" width="50" style="transform-origin: center; transform: rotate(${heading}deg);" alt="" />`,
                     })}
                 />
                 <Controls />

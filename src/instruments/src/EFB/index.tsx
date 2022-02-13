@@ -22,6 +22,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 
 import { TopBar, BarProps } from "./components/TopBar";
+import { HomeButton } from "./components/HomeButton";
 import { HomeScreen } from "./apps/Home";
 import { Maps } from "./apps/Maps";
 
@@ -46,6 +47,7 @@ const EFB: FC = () => {
 const RouteElement: FC<{ component: React.ReactNode; barProps?: BarProps }> = ({ component, barProps = {} }) => (
     <>
         <TopBar {...barProps} />
+        <HomeButton />
         {component}
     </>
 );
