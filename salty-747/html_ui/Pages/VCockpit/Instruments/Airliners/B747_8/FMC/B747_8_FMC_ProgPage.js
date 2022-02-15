@@ -151,30 +151,22 @@ class B747_8_FMC_ProgPage {
         let todTimeCell = "";
         let todDistanceCell = "";
         let toToDText = "";
-        let distanceToTOD = SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number");
-        if (distanceToTOD > 0) {
+        const distanceToTOD = SimVar.GetSimVarValue("L:WT_CJ4_TOD_REMAINING", "number");
+        if (distanceToTOD > 0.1) {
             if (isFinite(distanceToTOD) && distanceToTOD < 201) {
                 toToDText = "TO T/D";
-                if (distanceToTOD < 5) {
+                if (distanceToTOD < 5.1) {
                     todDistanceCell = "NOW";
                 } else {
                     todDistanceCell = distanceToTOD.toFixed(0)  + "NM";
                     todTimeCell = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
-                    let eta = undefined;
-                    eta = (B747_8_FMC_ProgPage.computeEtaToWaypoint(distanceToTOD, speed) + currentTime) % 86400;
+                    const eta = fmc.computeETA(distanceToTOD, speed, currentTime % 86400);
                     if (isFinite(eta)) {
                         let etaHours = Math.floor(eta / 3600);
                         let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
-                        todTimeCell += etaHours.toFixed(0).padStart(2, '0') + etaMinutes.toFixed(0).padStart(2, '0') + "z"+"&nbsp"+"/";
-                    } else {
-                        todTimeCell += "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+                        todTimeCell += etaHours.toFixed(0).padStart(2, '0') + etaMinutes.toFixed(0).padStart(2, '0') + "z&nbsp/";
                     }
-                }
-            }
-            else {
-                toToDText = "";
-                todTimeCell = "";
-                todDistanceCell = "";
+                }   
             }
         }
         fmc.setTemplate([
@@ -192,14 +184,6 @@ class B747_8_FMC_ProgPage {
             ["__FMCSEPARATOR"],
             ["<POS REPORT", "POS REF>"]
         ]);
-    }
-    static computeEtaToWaypoint(distance, groundSpeed) {
-        if (groundSpeed < 50) {
-            groundSpeed = 50;
-        }
-        if (groundSpeed > 0.1) {
-            return distance / groundSpeed * 3600;
-        }
     }
 }
 B747_8_FMC_ProgPage._timer = 0;
