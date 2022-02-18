@@ -160,7 +160,7 @@ class B747_8_FMC_ProgPage {
                 } else {
                     todDistanceCell = distanceToTOD.toFixed(0)  + "NM";
                     todTimeCell = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
-                    const eta = fmc.computeETA(distanceToTOD, speed, currentTime % 86400);
+                    const eta = fmc.computeETA(distanceToTOD, speed, currentTime);
                     if (isFinite(eta)) {
                         let etaHours = Math.floor(eta / 3600);
                         let etaMinutes = Math.floor((eta - etaHours * 3600) / 60);
