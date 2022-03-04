@@ -43,7 +43,7 @@ class FMC_COMM_Message {
                     console.log(offset) ;
                     store.currPage = store.currPage - 1;
                 }
-                FMC_ATC_Message.ShowPage(fmc, message, offset, store);
+                FMC_COMM_Message.ShowPage(fmc, message, offset, store);
             };
             fmc.onNextPage = () => {
                 if (lines[offset + 10]) {
@@ -51,7 +51,7 @@ class FMC_COMM_Message {
                     console.log(offset) ;
                     store.currPage = store.currPage + 1;
                 }
-                FMC_ATC_Message.ShowPage(fmc, message, offset, store);
+                FMC_COMM_Message.ShowPage(fmc, message, offset, store);
             };
         }
 
