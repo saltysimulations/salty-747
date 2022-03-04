@@ -137,17 +137,29 @@
 				<USE_INTEGRATED_TRIM>True</USE_INTEGRATED_TRIM>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_HANDLING_Spoilers_Template">
+				<ANIM_NAME_LEFT>spoiler_ground_l</ANIM_NAME_LEFT>
+				<ANIM_NAME_RIGHT>spoiler_ground_r</ANIM_NAME_RIGHT>
+				<ANIM_LAG>25</ANIM_LAG>
+				<MAX_VALUE>45</MAX_VALUE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Spoilers_Template">
 				<ANIM_EVENT_EFFECT_NAME>CAM_SPOILERS</ANIM_EVENT_EFFECT_NAME>
 				<NORMALIZED_TIME>0.5</NORMALIZED_TIME>
 				<DIRECTION>Both</DIRECTION>
-				<USE_GROUND_SPOILER>GROUND_ONLY</USE_GROUND_SPOILER>
-				<ANIM_NAME_GROUND_LEFT>spoiler_ground_l</ANIM_NAME_GROUND_LEFT>
-				<ANIM_NAME_GROUND_LEFT_2>spoiler_ground_1_l</ANIM_NAME_GROUND_LEFT_2>
-				<ANIM_NAME_GROUND_RIGHT>spoiler_ground_r</ANIM_NAME_GROUND_RIGHT>
-				<ANIM_NAME_GROUND_RIGHT_2>spoiler_ground_1_r</ANIM_NAME_GROUND_RIGHT_2>
+				<ANIM_NAME_LEFT>spoiler_ground_1_l</ANIM_NAME_LEFT>
+				<ANIM_NAME_RIGHT>spoiler_ground_1_r</ANIM_NAME_RIGHT>
+				<MAX_VALUE>45</MAX_VALUE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Spoilers_Template">
+				<ANIM_NAME_LEFT>spoiler_ground_2_l</ANIM_NAME_LEFT>
+				<ANIM_NAME_RIGHT>spoiler_ground_2_r</ANIM_NAME_RIGHT>
+				<ANIM_LAG>25</ANIM_LAG>
+				<MAX_VALUE>45</MAX_VALUE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_HANDLING_Spoilers_Template">
+				<TYPE>SPEEDBRAKES_AND_GROUND</TYPE>
 				<ANIM_NAME_LEFT>l_spoiler_key</ANIM_NAME_LEFT>
 				<ANIM_NAME_RIGHT>r_spoiler_key</ANIM_NAME_RIGHT>
-				<ANIM_LAG_GROUND>25</ANIM_LAG_GROUND>
 				<MAX_VALUE>45</MAX_VALUE>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_HANDLING_Flaps_Template">
