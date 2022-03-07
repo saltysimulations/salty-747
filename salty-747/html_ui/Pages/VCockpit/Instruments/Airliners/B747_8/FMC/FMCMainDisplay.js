@@ -482,7 +482,7 @@ class FMCMainDisplay extends BaseAirliners {
     ensureCurrentFlightPlanIsTemporary(callback = EmptyCallback.Boolean) {
         if (this.flightPlanManager.getCurrentFlightPlanIndex() === 0) {
             this.flightPlanManager.copyCurrentFlightPlanInto(1, () => {
-                this.flightPlanManager.setCurrentFlightPlanIndex(1, (result) => {
+                this.flightPlanManager.setCurrentFlightPlanIndex(1, false, (result) => {
                     SimVar.SetSimVarValue("L:FMC_FLIGHT_PLAN_IS_TEMPORARY", "number", 1);
                     SimVar.SetSimVarValue("L:MAP_SHOW_TEMPORARY_FLIGHT_PLAN", "number", 1);
                     callback(result);
@@ -868,7 +868,7 @@ class FMCMainDisplay extends BaseAirliners {
         this.flightPlanManager.clearArrivalDiscontinuity(callback);
     }
     eraseTemporaryFlightPlan(callback = EmptyCallback.Void) {
-        this.flightPlanManager.setCurrentFlightPlanIndex(0, () => {
+        this.flightPlanManager.setCurrentFlightPlanIndex(0, false, () => {
             SimVar.SetSimVarValue("L:FMC_FLIGHT_PLAN_IS_TEMPORARY", "number", 0);
             SimVar.SetSimVarValue("L:MAP_SHOW_TEMPORARY_FLIGHT_PLAN", "number", 0);
             callback();
@@ -877,7 +877,7 @@ class FMCMainDisplay extends BaseAirliners {
     insertTemporaryFlightPlan(callback = EmptyCallback.Void) {
         if (this.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
             this.flightPlanManager.copyCurrentFlightPlanInto(0, () => {
-                this.flightPlanManager.setCurrentFlightPlanIndex(0, () => {
+                this.flightPlanManager.setCurrentFlightPlanIndex(0, false, () => {
                     SimVar.SetSimVarValue("L:FMC_FLIGHT_PLAN_IS_TEMPORARY", "number", 0);
                     SimVar.SetSimVarValue("L:MAP_SHOW_TEMPORARY_FLIGHT_PLAN", "number", 0);
                     if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
