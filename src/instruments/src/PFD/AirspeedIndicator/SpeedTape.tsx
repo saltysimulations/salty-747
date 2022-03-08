@@ -165,8 +165,9 @@ export const SpeedTape: FC = () => {
     const [radioHeight] = useSimVar("RADIO HEIGHT", "feet");
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
     const [selSpd] = useSimVar("AUTOPILOT AIRSPEED HOLD VAR", "knots");
-    const [manSpeed] = useSimVar("L:SALTY_MANEUVERING_SPEED", "knots");
-    const [maxSpeed] = useSimVar("L:SALTY_MAXIMUM_SPEED", "knots");
+    const [manSpeed] = useSimVar("L:74S_ADC_MANUEVERING_SPEED", "knots");
+    const [maxSpeed] = useSimVar("L:74S_ADC_MAXIMUM_SPEED", "knots");
+    const [minSpeed] = useSimVar("L:74S_ADC_MINIMUM_SPEED", "knots");
     const [v1] = useSimVar("L:AIRLINER_V1_SPEED", "knots");
     const [vR] = useSimVar("L:AIRLINER_VR_SPEED", "knots");
     const [v2] = useSimVar("L:AIRLINER_V2_SPEED", "knots");
@@ -261,18 +262,24 @@ export const SpeedTape: FC = () => {
 
                 {/* VREF Value Preview */}
                 <g visibility={`${selectedAppSpd + getBoundedAirspeed(airspeed) > 60.5 ? "visible" : "hidden"}`}>
-                    <text x="120" y={`${652}`} className="text-2 green start">{getRefBugText(landingFlaps, selectedAppSpd)}</text>
+                    <text x="123" y={`${652}`} className="text-2 green start">{getRefBugText(landingFlaps, selectedAppSpd)}</text>
                 </g>
 
                 {/*Maneuvering Speed Band*/}
                 <g transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), manSpeed)})`}>
                     <path className="black-outline" d="M 62 382, h7, v 1800" fill="none" />
-                    <path className="amber-line" d="M 62 382, h7, v 1800" fill="none" />
+                    <path className="amber-line" d={`M 62 382, h7, v 1800`} fill="none" />
                 </g>
 
                 {/*Maximum Speed Band*/}
                 <g transform={`translate(50 ${getMaxSpeedBandY(getBoundedAirspeed(airspeed), maxSpeed)})`}>
-                    <path className="red-band" d="M 60 -1820, h7, v 2202" fill="none" />
+                    <path className="red-band" d="M 67 -1826, v 2209" fill="none" />
+                </g>
+                
+                {/*Minimum Speed Band*/}
+                <g transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), Math.round(minSpeed))})`}>
+                    <path d="M 63 382, h9, v 1800, h-9, Z" fill="black" />
+                    <path className="red-band" d="M 67 382, v 1800" fill="none" />
                 </g>
             </g>
             <path className="gray-bg" d="M 14 332, h 71, v 100, h -71, Z" />
