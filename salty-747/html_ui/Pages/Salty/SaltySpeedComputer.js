@@ -7,8 +7,8 @@ class SaltySpeedComputer {
     }
     update() {
         this.updateMaxSpeed();
-        this.updateMaxManSpeed();
         this.updateMinSpeeds();
+        this.computeMach();
     }
     updateMaxSpeed() {
         const vmo = Math.min(360, SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", 0.9));
@@ -61,5 +61,10 @@ class SaltySpeedComputer {
             SimVar.SetSimVarValue("L:74S_ADC_MANUEVERING_SPEED", "knots", stallSpeed1G * Math.sqrt(1.3));
             SimVar.SetSimVarValue("L:74S_ADC_MINIMUM_SPEED", "knots", stallSpeed1G * Math.sqrt(gLoad));
         }
+    }
+    computeMach() {
+        const ias = SimVar.GetSimVarValue("AIRSPEED INDICATED", "knots");
+        const mach = SimVar.GetGameVarValue("FROM KIAS TO MACH", "number", ias);
+        SimVar.SetSimVarValue("L:74S_ADC_MACH_NUMBER", "number", mach);
     }
 }

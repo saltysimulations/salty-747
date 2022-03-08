@@ -161,6 +161,8 @@ const getBoundedAirspeed = (airspeed: number): number => {
 export const SpeedTape: FC = () => {
     const [flightPhase] = useSimVar("L:AIRLINER_FLIGHT_PHASE", "number");
     const [selectedFlaps] = useSimVar("FLAPS HANDLE INDEX", "number");
+    const [actualFlapAngle] = useSimVar("TRAILING EDGE FLAPS LEFT ANGLE", "degree");
+    const [takeoffFlaps] = useSimVar("L:SALTY_TAKEOFF_FLAP_VALUE", "number");
     const [landingFlaps] = useSimVar("L:SALTY_SELECTED_APPROACH_FLAP", "number");
     const [radioHeight] = useSimVar("RADIO HEIGHT", "feet");
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
@@ -245,7 +247,7 @@ export const SpeedTape: FC = () => {
                     <g visibility= {`${selectedAppSpd == 0 ? "hidden" : "visible"}`}>
                         <path className="fpv-outline" d={`M 45 ${520 + (selectedAppSpd * -4.6)}, h20`} />
                         <path className="green-line" d={`M 45 ${520 + (selectedAppSpd * -4.6)}, h20`} />
-                        <text x="70" y={`${Math.min(529 + (selectedAppSpd * -4.6), (520 + (getBoundedAirspeed(airspeed) - 54) * -4.6))}`} className="text-2 green start">REF</text>
+                        <text x="71" y={`${Math.min(529 + (selectedAppSpd * -4.6), (520 + (getBoundedAirspeed(airspeed) - 54) * -4.6))}`} className="text-2 green start">REF</text>
                     </g>
 
                     {/* Selected Airspeed Bug */}
@@ -262,22 +264,22 @@ export const SpeedTape: FC = () => {
 
                 {/* VREF Value Preview */}
                 <g visibility={`${selectedAppSpd + getBoundedAirspeed(airspeed) > 60.5 ? "visible" : "hidden"}`}>
-                    <text x="123" y={`${652}`} className="text-2 green start">{getRefBugText(landingFlaps, selectedAppSpd)}</text>
+                    <text x="121" y={`${652}`} className="text-2 green start">{getRefBugText(landingFlaps, selectedAppSpd)}</text>
                 </g>
 
                 {/*Maneuvering Speed Band*/}
-                <g transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), manSpeed)})`}>
+                <g visibility={`${(radioHeight > 25 && takeoffFlaps != actualFlapAngle) ? "visible" : "hidden"}`} transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), manSpeed)})`}>
                     <path className="black-outline" d="M 62 382, h7, v 1800" fill="none" />
                     <path className="amber-line" d={`M 62 382, h7, v 1800`} fill="none" />
                 </g>
 
                 {/*Maximum Speed Band*/}
-                <g transform={`translate(50 ${getMaxSpeedBandY(getBoundedAirspeed(airspeed), maxSpeed)})`}>
+                <g visibility={`${(radioHeight > 25) ? "visible" : "hidden"}`} transform={`translate(50 ${getMaxSpeedBandY(getBoundedAirspeed(airspeed), maxSpeed)})`}>
                     <path className="red-band" d="M 67 -1826, v 2209" fill="none" />
                 </g>
                 
                 {/*Minimum Speed Band*/}
-                <g transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), Math.round(minSpeed))})`}>
+                <g visibility={`${(radioHeight > 25) ? "visible" : "hidden"}`} transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), Math.round(minSpeed))})`}>
                     <path d="M 63 382, h9, v 1800, h-9, Z" fill="black" />
                     <path className="red-band" d="M 67 382, v 1800" fill="none" />
                 </g>
@@ -291,7 +293,7 @@ export const SpeedTape: FC = () => {
 
             {/* Scroller Box */}
             <path className="indication" style={{ strokeWidth: "5px",  stroke: "black "}} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
-            <path className="indication" style={{ strokeWidth: getBoundedAirspeed(airspeed) < manSpeed ? "9px" : "3px", stroke: getBoundedAirspeed(airspeed) < manSpeed ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
+            <path className="indication" style={{ strokeWidth: getBoundedAirspeed(airspeed) < manSpeed && radioHeight > 25 ? "9px" : "3px", stroke: getBoundedAirspeed(airspeed) < manSpeed && radioHeight > 25 ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
         </g>
         
     );
@@ -312,7 +314,7 @@ export const CommandSpeed: FC = () => {
 };
 
 export const MachGS: FC = () => {
-    const [machSpeed] = useSimVar("L:SALTY_ADC_CURRENT_MACH", "number");
+    const [machSpeed] = useSimVar("L:74S_ADC_MACH_NUMBER", "number");
     const [groundSpeed] = useSimVar("GPS GROUND SPEED", "knots");
 
     return (
@@ -320,10 +322,10 @@ export const MachGS: FC = () => {
             <text 
                 x="100" y="730" 
                 className="text-4"
-                style = {{visibility: Math.round(machSpeed * 100) / 100 >= 0.4 ? "visible" : "hidden"}}>
-                {removeLeadingZeros((Math.round(machSpeed * 100) / 100).toFixed(3) ?? 0)}
+                style = {{visibility: machSpeed >= 0.4 ? "visible" : "hidden"}}>
+                {removeLeadingZeros(machSpeed.toFixed(3) ?? 0)}
             </text>
-            <g style = {{visibility: Math.round(machSpeed * 100) / 100 < 0.4 ? "visible" : "hidden"}}>
+            <g style = {{visibility: machSpeed < 0.4 ? "visible" : "hidden"}}>
                 <text x="46" y="730" className="text-3">
                     GS
                 </text>
