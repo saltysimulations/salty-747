@@ -1,12 +1,12 @@
 import { Module } from "./module";
 import { SoundManager } from "./sound/soundmanager";
+import { PauseAtTD } from "./qol/PauseAtTD";
 
-export class SaltyModules extends Module {
+export class SaltyModules implements Module {
     private modules: Module[];
 
     constructor() {
-        super();
-        this.modules = [new SoundManager()];
+        this.modules = [new SoundManager(), new PauseAtTD()];
     }
 
     public update(dt: number) {

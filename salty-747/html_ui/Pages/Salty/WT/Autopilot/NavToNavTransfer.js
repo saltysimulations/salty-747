@@ -72,11 +72,11 @@ class NavToNavTransfer {
 
   handleTunePending() {
     const timeStamp = Date.now();
-    if (timeStamp - this.termTimestamp > 30000 || this.navRadioSystem.radioStates[1].mode === NavRadioMode.Auto) {
+    if (timeStamp - this.termTimestamp > 30000 || this.navRadioSystem.radioStates[3].mode === NavRadioMode.Auto) {
       const frequency = this.fpm.getApproachNavFrequency();
 
       if (isFinite(frequency) && frequency >= 108 && frequency <= 117.95) {
-        this.navRadioSystem.radioStates[1].setManualFrequency(frequency);
+        this.navRadioSystem.radioStates[3].setManualFrequency(frequency);
         this.transferState = NavToNavTransfer.ARMED;
       }
       else {
@@ -86,7 +86,7 @@ class NavToNavTransfer {
   }
 
   handleTuneFailed() {
-    const hasLoc = SimVar.GetSimVarValue('NAV HAS LOCALIZER:1', 'number');
+    const hasLoc = SimVar.GetSimVarValue('NAV HAS LOCALIZER:3', 'number');
     const frequency = this.fpm.getApproachNavFrequency();
 
     if (isNaN(frequency)) {
@@ -108,7 +108,7 @@ class NavToNavTransfer {
   handleArmed() {
     const frequency = this.fpm.getApproachNavFrequency();
     if (isNaN(frequency)) {
-      const hasLoc = SimVar.GetSimVarValue('NAV HAS LOCALIZER:1', 'number') !== 0;
+      const hasLoc = SimVar.GetSimVarValue('NAV HAS LOCALIZER:3', 'number') !== 0;
       if (!hasLoc) {
         this.transferState = NavToNavTransfer.TUNE_FAILED;
       }
@@ -138,7 +138,7 @@ class NavToNavTransfer {
    * Attempts to auto-tune the localizer.
    */
   tryTuneLocalizer() {
-    if (this.navRadioSystem.radioStates[1].mode !== NavRadioMode.Auto) {
+    if (this.navRadioSystem.radioStates[3].mode !== NavRadioMode.Auto) {
       this.termTimestamp = Date.now();
     }
 
