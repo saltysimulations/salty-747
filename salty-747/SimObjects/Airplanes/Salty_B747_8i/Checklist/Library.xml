@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SimBase.Document Type="CheckpointLibrary" version="1,0">
+	<Checklist.CheckpointLibrary>
+		<Checkpoint Id="ENGINES_1_2_3_REPEAT_START_ROCEDURE">
+			<Clue name="TT:CLUE.ENGINES_1_2_3_START_REPEAT_PROCEDURE"/>
+			<Feedback name="TT:FEEDBACK.OPPOSITE_ENGINES_1_2_3_START_REPEAT_PROCEDURE"/>
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINES_1_2_3" ExpectationTT="TT:GAME.CHECKLIST_REPEAT_PROCEDURE"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Operator OpType="AND">
+							<Operator OpType="EQUAL">
+								<Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
+								<Val Value="1"/>
+							</Operator>
+							<Val SimVarName="GENERAL ENG STARTER:1" Units="boolean"/>
+						</Operator>
+					</TestValue>
+					<Instrument Id="ENGINE_Switch_Starter1"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_1_Start)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="AND">
+							<Operator OpType="EQUAL">
+								<Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
+								<Val Value="1"/>
+							</Operator>
+							<Val SimVarName="GENERAL ENG STARTER:2" Units="boolean"/>
+						</Operator>
+					</TestValue>
+					<Instrument Id="ENGINE_Switch_Starter2"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_2_Start)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="AND">
+							<Operator OpType="EQUAL">
+								<Val SimVarName="TURB ENG IGNITION SWITCH EX1:3" Units="Enum"/>
+								<Val Value="1"/>
+							</Operator>
+							<Val SimVarName="GENERAL ENG STARTER:3" Units="boolean"/>
+						</Operator>
+					</TestValue>
+					<Instrument Id="ENGINE_Switch_Starter3"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_3_Start)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM VALVE SWITCH:5" Units="boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="5"/>
+					<Instrument Id="FUEL_Switch_Valve5"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM VALVE SWITCH:6" Units="boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="6"/>
+					<Instrument Id="FUEL_Switch_Valve6"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM VALVE SWITCH:7" Units="boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="7"/>
+					<Instrument Id="FUEL_Switch_Valve7"/>
+				</Test>
+			</Sequence>
+		</Checkpoint>
+		<Checkpoint Id="FUEL_PUMPS_AIRLINER_4_ENGINES">
+			<Clue name="TT:CLUE.FUEL_PUMPS_AIRLINER_2_ENGINES_ON"/>
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_PUMPS" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:1" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="1"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump1"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:2" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="2"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump2"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:3" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="3"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump3"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:4" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="4"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump4"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:5" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="5"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump5"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:6" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="6"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump6"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:7" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="7"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump7"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:8" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="8"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump8"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:9" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="9"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump9"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:10" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="10"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump10"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:11" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="11"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump11"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:12" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="12"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump12"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:13" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="13"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump13"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:14" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="14"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump14"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:15" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="15"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump15"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:16" Units="Boolean"/>
+					</TestValue>
+					<Instrument Id="FUEL_Push_Pump"/>
+					<!-- Highlights all fuel pumps -->
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="16"/>
+					<Instrument Id="AIRBUS_Push_Fuel_Pump16"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY"/>
+				</Test>
+			</Sequence>
+		</Checkpoint>
+		<Checkpoint Id="Engine_4_Start_Switch_Pull">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_4_START_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_PULL"/>
+			<Clue name="TT:CLUE.ENGINE_4_START_SWITCH_PULL"/>
+			<Test>
+				<TestValue>
+					<Operator OpType="AND">
+						<Operator OpType="EQUAL">
+							<Val SimVarName="TURB ENG IGNITION SWITCH EX1:4" Units="Enum"/>
+							<Val Value="1"/>
+						</Operator>
+						<Val SimVarName="GENERAL ENG STARTER:4" Units="boolean"/>
+					</Operator>
+				</TestValue>
+				<Instrument Id="ENGINE_Switch_Starter4"/>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_4_Start)"/>
+			</Test>
+		</Checkpoint>
+		<Checkpoint Id="Engine_4_Fuel_Control_Switch_Run">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_4_FUEL_CONTROL_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_RUN"/>
+			<Clue name="TT:CLUE.ENGINE_4_FUEL_CONTROL_SWITCH_RUN"/>
+			<Test>
+				<TestValue>
+					<Val SimVarName="FUELSYSTEM VALVE SWITCH:8" Units="boolean"/>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="8"/>
+				<Instrument Id="FUEL_Switch_Valve8"/>
+			</Test>
+		</Checkpoint>
+		<Checkpoint Id="Standby_Power_Selector_Auto_B747">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_STANDBY_POWER_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AUTO"/>
+			<Clue name="TT:CLUE.STANDBY_POWER_SELECTOR_AUTO"/>
+			<Test>
+				<TestValue>
+					<Val Code="(B:AIRLINER_Standby_Power_Selector) 1 =="/>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:AIRLINER_Standby_Power_Selector_Set)"/>
+				<Instrument Id="BOEING_StandbyPower_Selector"/>
+			</Test>
+		</Checkpoint>
+		<Checkpoint Id="Battery_Switch_On_B747">
+			<Clue name="TT:CLUE.BATTERY_SWITCH_ON"/>
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BATTERY_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+			<Test>
+				<TestValue>
+					<Val Code="(B:ELECTRICAL_Battery_1)"/>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ELECTRICAL_Battery_1_Set)"/>
+				<Instrument Id="ELECTRICAL_Switch_Battery_Master"/>
+				<Instrument Id="knob_electric_master"/>
+			</Test>
+		</Checkpoint>
+		<Checkpoint Id="ENGINE_BLEED_AIR_SWITCHES_ON_4ENGINES">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_BLEED_AIR_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+			<Clue name="TT:CLUE.ENGINE_BLEED_AIR_SWITCHES_ON"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Val Code="(B:ELECTRICAL_Engine_Bleed_1, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_1_On)"/>
+					<Instrument Id="ELECTRICAL_Push_Engine_Bleed1"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(B:ELECTRICAL_Engine_Bleed_2, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_2_On)"/>
+					<Instrument Id="ELECTRICAL_Push_Engine_Bleed2"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(B:ELECTRICAL_Engine_Bleed_3, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_3_On)"/>
+					<Instrument Id="ELECTRICAL_Push_Engine_Bleed3"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(B:ELECTRICAL_Engine_Bleed_4, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_4_On)"/>
+					<Instrument Id="ELECTRICAL_Push_Engine_Bleed4"/>
+				</Test>
+			</Sequence>
+		</Checkpoint>
+	</Checklist.CheckpointLibrary>
+</SimBase.Document>

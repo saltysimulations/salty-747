@@ -1,0 +1,67 @@
+﻿<link rel="stylesheet" href="B747_8_EICAS.css" />
+
+<script type="text/html" id="B747_8_EICAS">
+    <glasscockpit-highlight id="highlight"></glasscockpit-highlight>
+    <div id="Mainframe">
+        <div id="Electricity" state="off">
+            <div id="TopScreen">
+                <b747-8-upper-eicas></b747-8-upper-eicas>
+            </div>
+
+            <div id="BottomScreen">
+                <b747-8-lower-eicas-fuel style="display:block"></b747-8-lower-eicas-fuel>
+                <b747-8-lower-eicas-engine style="display:none"></b747-8-lower-eicas-engine>
+                <b747-8-lower-eicas-stat style="display:none"></b747-8-lower-eicas-stat>
+                <b747-8-lower-eicas-fctl style="display:none"></b747-8-lower-eicas-fctl>
+                <b747-8-lower-eicas-drs style="display:none"></b747-8-lower-eicas-drs>
+                <b747-8-lower-eicas-elec style="display:none"></b747-8-lower-eicas-elec>
+                <b747-8-lower-eicas-gear style="display:none"></b747-8-lower-eicas-gear>
+                <b747-8-lower-eicas-ecl style="display:none"></b747-8-lower-eicas-ecl>
+                <b747-8-lower-eicas-info style="display:none"></b747-8-lower-eicas-info>
+            </div>
+        </div>
+    </div>
+    <div id="DUborder">
+        <svg viewBox="0 0 600 600" style="position:absolute; top:0%; left: 2.5%; width: 100%; height: 100%;">
+            <path d= "M 0 578 L 571 578 L 571 0 L 600 0 L 600 570 L 600 600 L 0 600 Z" fill="black"></path>
+            <path d= "M 0 0 L 585 0 L 585 15 L 15 15 L 15 585 L 0 585 Z" fill="black"></path>
+        </svg>
+    </div>
+</script>
+
+<script type="text/html" import-script="/JS/SimPlane.js"></script>
+
+<script type="text/html" import-script="/Pages/Salty/SaltyUtils.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlan.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlanManager.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/GeoCalc.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SelectableElement.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Salty_NavSystem.js"></script>
+
+<script type="text/html" import-script="/Pages/Salty/SaltyDataStore.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/GaugeElement.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/Salty_BaseAirliners.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Boeing_Common.js"></script> <!-- Modified -->
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_EICASGauge.js"></script>
+
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_UpperEICAS.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_Fuel.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_Engine.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_Stat.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_FCTL.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_GEAR.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_ECL.html"></script>
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_INFO.html"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/B747_8_EICAS.js"></script>

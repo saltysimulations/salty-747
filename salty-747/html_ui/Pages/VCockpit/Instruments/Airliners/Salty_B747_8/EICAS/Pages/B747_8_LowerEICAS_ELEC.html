@@ -1,0 +1,249 @@
+<link rel="stylesheet" href="./B747_8_LowerEICAS_ELEC.css" />
+
+<script type="text/html" id="B747_8LowerEICASELECTemplate">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" style="background:black;">
+
+        <g id="ssb-rects">
+            <rect x="282" y="126" width="37" height="9" id="ssbon-rect" />
+            <rect x="282" y="116" width="37" height="9" id="ssboff-rect" />
+            <circle cx="275" cy="131" r="6" />
+            <circle cx="325" cy="131" r="6" />
+        </g>
+        <g id="bustie-rects">
+            <rect x="43" y="164" width="47" height="47" id="bustie1-rect" />
+            <rect x="173" y="164" width="47" height="47" id="bustie2-rect" />
+            <rect x="380" y="164" width="47" height="47" id="bustie3-rect" />
+            <rect x="510" y="164" width="47" height="47" id="bustie4-rect" />
+        </g>
+        <g id="gen-rects">
+            <rect x="43" y="383" width="47" height="47" id="gen1-rect" />
+            <rect x="173" y="383" width="47" height="47" id="gen2-rect" />
+            <rect x="380" y="383" width="47" height="47" id="gen3-rect" />
+            <rect x="510" y="383" width="47" height="47" id="gen4-rect" />
+        </g>
+        <g id="blank-rects">
+            <rect x="62" y="370" width="7" height="30" id="blank1-rect" />
+            <rect x="192" y="370" width="7" height="30" id="blank2-rect" />
+            <rect x="399" y="370" width="8" height="30" id="blank3-rect" />
+            <rect x="528" y="370" width="8" height="30" id="blank4-rect" />
+            <rect x="62" y="164" width="7" height="60" id="blank5-rect" />
+            <rect x="192" y="164" width="7" height="60" id="blank6-rect" />
+            <rect x="399" y="164" width="8" height="60" id="blank7-rect" />
+            <rect x="528" y="164" width="8" height="60" id="blank8-rect" />
+        </g>
+        <g id="drive-rects">
+            <rect x="38" y="448" width="58" height="58" id="drive1-rect" />
+            <rect x="168" y="448" width="58" height="58" id="drive2-rect" />
+            <rect x="377" y="448" width="58" height="58" id="drive3-rect" />
+            <rect x="505" y="448" width="58" height="58" id="drive4-rect" />
+        </g>
+        <g id="buslabel-rects">
+            <rect x="28" y="302" width="73" height="28" ry="14" id="bus1label-rect" />
+            <rect x="160" y="302" width="73" height="28" ry="14" id="bus2label-rect" />
+            <rect x="366" y="302" width="73" height="28" ry="14" id="bus3label-rect" />
+            <rect x="497" y="302" width="73" height="28" ry="14" id="bus4label-rect" />
+        </g>
+        <g id="labels-cyantext">
+            <text x="85" y="70">EXT 1</text>
+            <text x="140" y="70">APU 1</text>
+            <text x="420" y="70">APU 2</text>
+            <text x="478" y="70">EXT 2</text>
+            <text x="289" y="155">SSB</text>
+            <text x="272" y="190">BUS TIE</text>
+            <text x="268" y="410">GEN CONT</text>
+            <text x="280" y="480">DRIVE</text>
+            <text x="62" y="530">1</text>
+            <text x="193" y="530">2</text>
+            <text x="400" y="530">3</text>
+            <text x="532" y="530">4</text>
+        </g>
+        <g id="labels-greentext">
+            <text x="93" y="275" id="utility1-text">UTILITY</text>
+            <text x="222" y="275" id="utility2-text">UTILITY</text>
+            <text x="324" y="275" id="utility3-text">UTILITY</text>
+            <text x="455" y="275" id="utility4-text">UTILITY</text>
+            <text x="93" y="292" id="galley1-text">GALLEY</text>
+            <text x="222" y="292" id="galley2-text">GALLEY</text>
+            <text x="332" y="292" id="galley3-text">GALLEY</text>
+            <text x="463" y="292" id="galley4-text">GALLEY</text>
+            <text x="42" y="322" id="bus1off-text">BUS 1</text>
+            <text x="174" y="322" id="bus2off-text">BUS 2</text>
+            <text x="380" y="322" id="bus3off-text">BUS 3</text>
+            <text x="510" y="322" id="bus4off-text">BUS 4</text>
+        </g>
+        <g id="labels-ambertext">
+            <text x="55" y="410" id="gen1off-text">OFF</text>
+            <text x="185" y="410" id="gen2off-text">OFF</text>
+            <text x="392" y="410" id="gen3off-text">OFF</text>
+            <text x="522" y="410" id="gen4off-text">OFF</text>
+            <text x="50" y="193" id="bus1iso-text">ISLN</text>
+            <text x="180" y="193" id="bus2iso-text">ISLN</text>
+            <text x="387" y="193" id="bus3iso-text">ISLN</text>
+            <text x="517" y="193" id="bus4iso-text">ISLN</text>
+            <text x="47" y="468" id="drive1offupper-text">DRIVE</text>
+            <text x="47" y="483" id="drive1offmiddle-text">TEMP/</text>
+            <text x="47" y="498" id="drive1offlower-text">PRESS</text>
+            <text x="177" y="468" id="drive2offupper-text">DRIVE</text>
+            <text x="177" y="483" id="drive2offmiddle-text">TEMP/</text>
+            <text x="177" y="498" id="drive2offlower-text">PRESS</text>
+            <text x="386" y="468" id="drive3offupper-text">DRIVE</text>
+            <text x="386" y="483" id="drive3offmiddle-text">TEMP/</text>
+            <text x="386" y="498" id="drive3offlower-text">PRESS</text>
+            <text x="514" y="468" id="drive4offupper-text">DRIVE</text>
+            <text x="514" y="483" id="drive4offmiddle-text">TEMP/</text>
+            <text x="514" y="498" id="drive4offlower-text">PRESS</text>
+        </g>
+        <g id="lines-busoutline">
+        //BUS 1
+            <line x1="61" y1="383" x2="61" y2="331" />
+            <line x1="70" y1="383" x2="70" y2="331" />
+            <line x1="61" y1="302" x2="61" y2="211" />
+            <line x1="70" y1="302" x2="70" y2="211" />
+            <line x1="61" y1="164" x2="61" y2="126" />
+            <line x1="70" y1="164" x2="70" y2="135" />
+        //BUS 2
+            <line x1="191" y1="383" x2="191" y2="331" />
+            <line x1="200" y1="383" x2="200" y2="331" />
+            <line x1="191" y1="302" x2="191" y2="211" />
+            <line x1="200" y1="302" x2="200" y2="211" />
+            <line x1="191" y1="164" x2="191" y2="135" />
+            <line x1="200" y1="164" x2="200" y2="135" />
+        //BUS 3
+            <line x1="398" y1="383" x2="398" y2="331" />
+            <line x1="407" y1="383" x2="407" y2="331" />
+            <line x1="398" y1="302" x2="398" y2="211" />
+            <line x1="407" y1="302" x2="407" y2="211" />
+            <line x1="398" y1="164" x2="398" y2="135" />
+            <line x1="407" y1="164" x2="407" y2="135" />
+        //BUS 4
+            <line x1="528" y1="383" x2="528" y2="331" />
+            <line x1="537" y1="383" x2="537" y2="331" />
+            <line x1="528" y1="302" x2="528" y2="211" />
+            <line x1="537" y1="302" x2="537" y2="211" />
+            <line x1="528" y1="164" x2="528" y2="135" />
+            <line x1="537" y1="164" x2="537" y2="126" />
+        //EXT 1 & APU 1
+            <line x1="98" y1="126" x2="98" y2="82" />
+            <line x1="107" y1="126" x2="107" y2="82" />
+            <line x1="98" y1="82" x2="107" y2="82" />
+            <line x1="154" y1="126" x2="154" y2="82" />
+            <line x1="163" y1="126" x2="163" y2="82" />
+            <line x1="154" y1="82" x2="163" y2="82" />
+        //EXT 2 & APU 2
+            <line x1="435" y1="126" x2="435" y2="82" />
+            <line x1="444" y1="126" x2="444" y2="82" />
+            <line x1="435" y1="82" x2="444" y2="82" />
+            <line x1="491" y1="126" x2="491" y2="82" />
+            <line x1="500" y1="126" x2="500" y2="82" />
+            <line x1="491" y1="82" x2="500" y2="82" />
+        //SYNC BUS
+            <line x1="61" y1="126" x2="98" y2="126" />
+            <line x1="107" y1="126" x2="154" y2="126" />
+            <line x1="163" y1="126" x2="268" y2="126" />
+            <line x1="268" y1="126" x2="268" y2="135" />
+            <line x1="332" y1="126" x2="435" y2="126" />
+            <line x1="444" y1="126" x2="491" y2="126" />
+            <line x1="500" y1="126" x2="537" y2="126" />
+            <line x1="332" y1="126" x2="332" y2="135" />
+            <line x1="70" y1="135" x2="191" y2="135" />
+            <line x1="200" y1="135" x2="268" y2="135" />
+            <line x1="332" y1="135" x2="398" y2="135" />
+            <line x1="407" y1="135" x2="528" y2="135" />
+        //BUS TIE INTERNAL
+            //BUS1
+            <line x1="61" y1="211" x2="61" y2="164" id="bustie1outline-left" />
+            <line x1="70" y1="211" x2="70" y2="164" id="bustie1outline-right" />
+            //BUS2
+            <line x1="191" y1="211" x2="191" y2="164" id="bustie2outline-left"  />
+            <line x1="200" y1="211" x2="200" y2="164" id="bustie2outline-right"  />
+            //BUS3
+            <line x1="398" y1="211" x2="398" y2="164" id="bustie3outline-left"  />
+            <line x1="407" y1="211" x2="407" y2="164" id="bustie3outline-right"  />
+            //BUS4
+            <line x1="528" y1="211" x2="528" y2="164" id="bustie4outline-left"  />
+            <line x1="537" y1="211" x2="537" y2="164" id="bustie4outline-right"  />
+        //GEN CONT INTERNAL
+            //BUS1
+            <line x1="61" y1="383" x2="61" y2="430" id="gen1outline-left" />
+            <line x1="70" y1="383" x2="70" y2="430" id="gen1outline-right" />
+            //BUS2
+            <line x1="191" y1="383" x2="191" y2="430" id="gen2outline-left" />
+            <line x1="200" y1="383" x2="200" y2="430" id="gen2outline-right" />
+            //BUS3
+            <line x1="398" y1="383" x2="398" y2="430" id="gen3outline-left" />
+            <line x1="407" y1="383" x2="407" y2="430" id="gen3outline-right" />
+            //BUS4
+            <line x1="528" y1="383" x2="528" y2="430" id="gen4outline-left" />
+            <line x1="537" y1="383" x2="537" y2="430" id="gen4outline-right" />
+        </g>
+        <g id="lines-galleyutils">
+        //UTILITY
+            <line x1="90" y1="270" x2="75" y2="270" id="utilityline1a" />
+            <line x1="75" y1="270" x2="75" y2="302" id="utilityline1b" />
+            <line x1="219" y1="270" x2="204" y2="270" id="utilityline2a" />
+            <line x1="204" y1="270" x2="204" y2="302" id="utilityline2b" />
+            <line x1="383" y1="270" x2="393" y2="270" id="utilityline3a" />
+            <line x1="393" y1="270" x2="393" y2="302" id="utilityline3b" />
+            <line x1="512" y1="270" x2="522" y2="270" id="utilityline4a" />
+            <line x1="522" y1="270" x2="522" y2="302" id="utilityline4b" />
+        //GALLEY
+            <line x1="90" y1="287" x2="79" y2="287" id="galleyline1a" />
+            <line x1="79" y1="287" x2="79" y2="302" id="galleyline1b" />
+            <line x1="219" y1="287" x2="208" y2="287" id="galleyline2a" />
+            <line x1="208" y1="287" x2="208" y2="302" id="galleyline2b" />
+            <line x1="383" y1="287" x2="389" y2="287" id="galleyline3a" />
+            <line x1="389" y1="287" x2="389" y2="302" id="galleyline3b" />
+            <line x1="512" y1="287" x2="518" y2="287" id="galleyline4a" />
+            <line x1="518" y1="287" x2="518" y2="302" id="galleyline4b" />
+        </g>
+        <g id="lines-greenpath">
+        //BUS1
+            <line x1="66" y1="383" x2="66" y2="329" id="gen1tobus-greenpath" />
+            <line x1="66" y1="302" x2="66" y2="211" id="bus1tobustie-greenpath" />
+            //BUS TIE ON
+            <line x1="66" y1="212" x2="66" y2="163" id="bustie1-greenpath" />
+            //GEN ON
+            <line x1="66" y1="382" x2="66" y2="430" id="gen1-greenpath" />
+        //BUS2
+            <line x1="196" y1="383" x2="196" y2="329" id="gen2tobus-greenpath" />
+            <line x1="196" y1="302" x2="196" y2="211" id="bus2tobustie-greenpath" />
+            //BUS TIE ON
+            <line x1="196" y1="212" x2="196" y2="163" id="bustie2-greenpath" />
+            //GEN ON
+            <line x1="196" y1="382" x2="196" y2="430" id="gen2-greenpath" />
+        //BUS3
+            <line x1="403" y1="383" x2="403" y2="329" id="gen3tobus-greenpath" />
+            <line x1="403" y1="302" x2="403" y2="211" id="bus3tobustie-greenpath" />
+            //BUS TIE ON
+            <line x1="403" y1="212" x2="403" y2="163" id="bustie3-greenpath" />
+            //GEN ON
+            <line x1="403" y1="382" x2="403" y2="430" id="gen3-greenpath" />
+        //BUS4
+            <line x1="533" y1="383" x2="533" y2="329" id="gen4tobus-greenpath" />
+            <line x1="533" y1="302" x2="533" y2="211" id="bus4tobustie-greenpath" />
+            //BUS TIE ON
+            <line x1="533" y1="212" x2="533" y2="163" id="bustie4-greenpath" />
+            //GEN ON
+            <line x1="533" y1="382" x2="533" y2="430" id="gen4-greenpath" />
+        //SYNC BUS
+            <line x1="66" y1="130" x2="66" y2="164" />
+            <line x1="196" y1="130" x2="196" y2="164" />
+            <line x1="403" y1="130" x2="403" y2="164" />
+            <line x1="533" y1="130" x2="533" y2="164" />
+            <line x1="64" y1="130" x2="268" y2="130" />
+            <line x1="535" y1="130" x2="332" y2="130" />
+        //SSB
+            <line x1="282" y1="130" x2="319" y2="130" id="ssb-greenpath" />
+        //APU1 ON
+            <line x1="159" y1="84" x2="159" y2="130" id="apu1-greenpath" />
+        //APU2 ON
+            <line x1="440" y1="84" x2="440" y2="130" id="apu2-greenpath" />
+        //EXT1 ON
+            <line x1="103" y1="84" x2="103" y2="130" id="ext1-greenpath" />
+        //EXT2 ON
+            <line x1="496" y1="84" x2="496" y2="130" id="ext2-greenpath" />
+        </g>
+    </svg>
+</script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_ELEC.js"></script>

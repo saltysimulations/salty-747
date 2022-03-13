@@ -1,0 +1,1650 @@
+<ModelBehaviors>
+	<Template Name="ASOBO_GT_Knob_Dummy_Boeing">
+		<Parameters Type="Default">
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Anim">
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+			<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_COM_BUTTON_Template_Boeing">
+		<Parameters Type="Default">
+			<BASE_NAME>UNKNOWN</BASE_NAME>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>com#COM_INDEX#_push_#BASE_NAME#</NODE_ID>
+			<NODE_ID_DECAL>com#COM_INDEX#_push_#BASE_NAME#_decal</NODE_ID_DECAL>
+			<ANIM_NAME_BUTTON>com#COM_INDEX#_push_#BASE_NAME#</ANIM_NAME_BUTTON>
+			<EVENT_NAME>#PANEL_NAME#_#COM_INDEX#_BTN_#BASE_NAME#</EVENT_NAME>
+			<WWISE_PREFIX>radio</WWISE_PREFIX>
+			<ON_PUSH_EVENT/>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>COMM_#COM_INDEX#_Button_#BASE_NAME#</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<SET_STATE_EXTERNAL>if{ (&gt;H:#EVENT_NAME#) #ON_PUSH_EVENT# }</SET_STATE_EXTERNAL>
+			<ANIM_NAME>#ANIM_NAME_BUTTON#</ANIM_NAME>
+		</UseTemplate>
+		<Component ID="#NODE_ID_DECAL#" Node="#NODE_ID_DECAL#">
+			<Switch>
+				<Case Check="POTENTIOMETER">
+					<UseTemplate Name="ASOBO_GT_Emissive_Potentiometer"/>
+				</Case>
+				<Case Valid="SIMVAR_POWER_SETTING">
+					<UseTemplate Name="ASOBO_GT_Emissive_Power_Setting"/>
+				</Case>
+			</Switch>
+		</Component>
+	</Template>
+	<Template Name="ASOBO_COM_FREQ_LED_Template_Boeing">
+		<Parameters Type="Default">
+			<LED_NAME>UNKNOWN</LED_NAME>
+			<FREQ_INDEX>-1</FREQ_INDEX>
+			<NODE_ID_LED>com#COM_INDEX#_led_#LED_NAME#</NODE_ID_LED>
+		</Parameters>
+		<Component ID="#NODE_ID_LED#" Node="#NODE_ID_LED#">
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(L:XMLVAR_COM#COM_INDEX#_CURRENT_FREQ) #FREQ_INDEX# ==</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+	<Template Name="ASOBO_BOEING_TCP_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<BUTTON_NAME_PREFIX>BOEING_TCP</BUTTON_NAME_PREFIX>
+			<BTN_NODE_ID_1>vhf</BTN_NODE_ID_1>
+			<BTN_NODE_ID_2>hf</BTN_NODE_ID_2>
+			<BTN_NODE_ID_3>sat</BTN_NODE_ID_3>
+			<BTN_NODE_ID_4>cab</BTN_NODE_ID_4>
+			<BTN_NODE_ID_5>gpws</BTN_NODE_ID_5>
+			<BTN_NODE_ID_6>wxr</BTN_NODE_ID_6>
+			<BTN_NODE_ID_7>xpdr</BTN_NODE_ID_7>
+			<BTN_NODE_ID_8>L1</BTN_NODE_ID_8>
+			<BTN_NODE_ID_9>L2</BTN_NODE_ID_9>
+			<BTN_NODE_ID_10>L3</BTN_NODE_ID_10>
+			<BTN_NODE_ID_11>L4</BTN_NODE_ID_11>
+			<BTN_NODE_ID_12>R1</BTN_NODE_ID_12>
+			<BTN_NODE_ID_13>R2</BTN_NODE_ID_13>
+			<BTN_NODE_ID_14>R3</BTN_NODE_ID_14>
+			<BTN_NODE_ID_15>R4</BTN_NODE_ID_15>
+			<BTN_NODE_ID_16>1</BTN_NODE_ID_16>
+			<BTN_NODE_ID_17>2</BTN_NODE_ID_17>
+			<BTN_NODE_ID_18>3</BTN_NODE_ID_18>
+			<BTN_NODE_ID_19>4</BTN_NODE_ID_19>
+			<BTN_NODE_ID_20>5</BTN_NODE_ID_20>
+			<BTN_NODE_ID_21>6</BTN_NODE_ID_21>
+			<BTN_NODE_ID_22>7</BTN_NODE_ID_22>
+			<BTN_NODE_ID_23>8</BTN_NODE_ID_23>
+			<BTN_NODE_ID_24>9</BTN_NODE_ID_24>
+			<BTN_NODE_ID_25>0</BTN_NODE_ID_25>
+			<BTN_NODE_ID_26>clr</BTN_NODE_ID_26>
+			<BTN_NODE_ID_27>star</BTN_NODE_ID_27>
+			<BTN_NODE_ID_28>prev</BTN_NODE_ID_28>
+			<BTN_NODE_ID_29>next</BTN_NODE_ID_29>
+			<BTN_NODE_ID_30>nav</BTN_NODE_ID_30>
+			<BTN_NODE_ID_31>menu</BTN_NODE_ID_31>
+			<BTN_NODE_ID_32>paneloff</BTN_NODE_ID_32>
+			<BTN_NODE_ID_33>stbyup</BTN_NODE_ID_33>
+			<BTN_NODE_ID_34>stbydn</BTN_NODE_ID_34>
+			<BTN_NODE_ID_35>swap</BTN_NODE_ID_35>
+			<TT_ID_1>AIRLINER_COM_PUSH_VHF</TT_ID_1>
+			<TT_ID_2>AIRLINER_COM_PUSH_HF</TT_ID_2>
+			<TT_ID_3>AIRLINER_COMMNAV_SAT</TT_ID_3>
+			<TT_ID_4>AIRLINER_COMMNAV_CAB</TT_ID_4>
+			<TT_ID_5>AIRLINER_COMMNAV_GPWS</TT_ID_5>
+			<TT_ID_6>AIRLINER_COMMNAV_WXR</TT_ID_6>
+			<TT_ID_7>AIRLINER_COMMNAV_XPDR</TT_ID_7>
+			<TT_ID_8>SOFTKEY</TT_ID_8>
+			<TT_ID_9>SOFTKEY</TT_ID_9>
+			<TT_ID_10>SOFTKEY</TT_ID_10>
+			<TT_ID_11>SOFTKEY</TT_ID_11>
+			<TT_ID_12>SOFTKEY</TT_ID_12>
+			<TT_ID_13>SOFTKEY</TT_ID_13>
+			<TT_ID_14>SOFTKEY</TT_ID_14>
+			<TT_ID_15>SOFTKEY</TT_ID_15>
+			<TT_SOFTKEY_SIDE_8>@TT_Left</TT_SOFTKEY_SIDE_8>
+			<TT_SOFTKEY_SIDE_9>@TT_Left</TT_SOFTKEY_SIDE_9>
+			<TT_SOFTKEY_SIDE_10>@TT_Left</TT_SOFTKEY_SIDE_10>
+			<TT_SOFTKEY_SIDE_11>@TT_Left</TT_SOFTKEY_SIDE_11>
+			<TT_SOFTKEY_SIDE_12>@TT_Right</TT_SOFTKEY_SIDE_12>
+			<TT_SOFTKEY_SIDE_13>@TT_Right</TT_SOFTKEY_SIDE_13>
+			<TT_SOFTKEY_SIDE_14>@TT_Right</TT_SOFTKEY_SIDE_14>
+			<TT_SOFTKEY_SIDE_15>@TT_Right</TT_SOFTKEY_SIDE_15>
+			<TT_SOFTKEY_ID_8>1</TT_SOFTKEY_ID_8>
+			<TT_SOFTKEY_ID_9>2</TT_SOFTKEY_ID_9>
+			<TT_SOFTKEY_ID_10>3</TT_SOFTKEY_ID_10>
+			<TT_SOFTKEY_ID_11>4</TT_SOFTKEY_ID_11>
+			<TT_SOFTKEY_ID_12>1</TT_SOFTKEY_ID_12>
+			<TT_SOFTKEY_ID_13>2</TT_SOFTKEY_ID_13>
+			<TT_SOFTKEY_ID_14>3</TT_SOFTKEY_ID_14>
+			<TT_SOFTKEY_ID_15>4</TT_SOFTKEY_ID_15>
+			<!-- <TT_ID_16>1</TT_ID_16> -->
+			<!-- <TT_ID_17>2</TT_ID_17> -->
+			<!-- <TT_ID_18>3</TT_ID_18> -->
+			<!-- <TT_ID_19>4</TT_ID_19> -->
+			<!-- <TT_ID_20>5</TT_ID_20> -->
+			<!-- <TT_ID_21>6</TT_ID_21> -->
+			<!-- <TT_ID_22>7</TT_ID_22> -->
+			<!-- <TT_ID_23>8</TT_ID_23> -->
+			<!-- <TT_ID_24>9</TT_ID_24> -->
+			<!-- <TT_ID_25>0</TT_ID_25> -->
+			<TT_ID_26>TRANSPONDER_PUSH_CLR</TT_ID_26>
+			<!-- <TT_ID_27>star</TT_ID_27> -->
+			<TT_ID_28>FMC_PUSH_PREVPAGE</TT_ID_28>
+			<TT_ID_29>FMC_PUSH_NEXTPAGE</TT_ID_29>
+			<TT_ID_30>EICAS_PUSH_NAV</TT_ID_30>
+			<TT_ID_31>FMC_PUSH_MENU</TT_ID_31>
+			<TT_ID_32>TCP_PUSH_PANEL_OFF</TT_ID_32>
+			<TT_ID_33>TCP_PUSH_STBY_UP</TT_ID_33>
+			<TT_ID_34>TCP_PUSH_STBY_DN</TT_ID_34>
+			<TT_ID_35>AIRLINER_COM_PUSH_SWAP</TT_ID_35>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="ID">
+				<Case Value="1">
+					<TT_INDEX>'TCP' (R:1:@TT_Package.GT_STATE_PILOT_FMS) @sprintf</TT_INDEX>
+					<INPUT_EVENT_ID_SOURCE>AIRLINER_TCP_Pilot</INPUT_EVENT_ID_SOURCE>
+				</Case>
+				<Case Value="2">
+					<TT_INDEX>'TCP' (R:1:@TT_Package.GT_STATE_COPILOT_FMS) @sprintf</TT_INDEX>
+					<INPUT_EVENT_ID_SOURCE>AIRLINER_TCP_Copilot</INPUT_EVENT_ID_SOURCE>
+				</Case>
+				<Case Value="3">
+					<TT_INDEX>'TCP' (R:1:@TT_Package.GT_STATE_PEDESTAL_FMS) @sprintf</TT_INDEX>
+					<INPUT_EVENT_ID_SOURCE>AIRLINER_TCP_Pedestal</INPUT_EVENT_ID_SOURCE>
+				</Case>
+			</Switch>
+			<BTN_ID_1>#BTN_NODE_ID_1#</BTN_ID_1>
+			<BTN_ID_2>#BTN_NODE_ID_2#</BTN_ID_2>
+			<BTN_ID_3>#BTN_NODE_ID_3#</BTN_ID_3>
+			<BTN_ID_4>#BTN_NODE_ID_4#</BTN_ID_4>
+			<BTN_ID_5>#BTN_NODE_ID_5#</BTN_ID_5>
+			<BTN_ID_6>#BTN_NODE_ID_6#</BTN_ID_6>
+			<BTN_ID_7>#BTN_NODE_ID_7#</BTN_ID_7>
+			<BTN_ID_8>#BTN_NODE_ID_8#</BTN_ID_8>
+			<BTN_ID_9>#BTN_NODE_ID_9#</BTN_ID_9>
+			<BTN_ID_10>#BTN_NODE_ID_10#</BTN_ID_10>
+			<BTN_ID_11>#BTN_NODE_ID_11#</BTN_ID_11>
+			<BTN_ID_12>#BTN_NODE_ID_12#</BTN_ID_12>
+			<BTN_ID_13>#BTN_NODE_ID_13#</BTN_ID_13>
+			<BTN_ID_14>#BTN_NODE_ID_14#</BTN_ID_14>
+			<BTN_ID_15>#BTN_NODE_ID_15#</BTN_ID_15>
+			<BTN_ID_16>BTN_#BTN_NODE_ID_16#</BTN_ID_16>
+			<BTN_ID_17>BTN_#BTN_NODE_ID_17#</BTN_ID_17>
+			<BTN_ID_18>BTN_#BTN_NODE_ID_18#</BTN_ID_18>
+			<BTN_ID_19>BTN_#BTN_NODE_ID_19#</BTN_ID_19>
+			<BTN_ID_20>BTN_#BTN_NODE_ID_20#</BTN_ID_20>
+			<BTN_ID_21>BTN_#BTN_NODE_ID_21#</BTN_ID_21>
+			<BTN_ID_22>BTN_#BTN_NODE_ID_22#</BTN_ID_22>
+			<BTN_ID_23>BTN_#BTN_NODE_ID_23#</BTN_ID_23>
+			<BTN_ID_24>BTN_#BTN_NODE_ID_24#</BTN_ID_24>
+			<BTN_ID_25>BTN_#BTN_NODE_ID_25#</BTN_ID_25>
+			<BTN_ID_26>#BTN_NODE_ID_26#</BTN_ID_26>
+			<BTN_ID_27>#BTN_NODE_ID_27#</BTN_ID_27>
+			<BTN_ID_28>#BTN_NODE_ID_28#</BTN_ID_28>
+			<BTN_ID_29>#BTN_NODE_ID_29#</BTN_ID_29>
+			<BTN_ID_30>#BTN_NODE_ID_30#</BTN_ID_30>
+			<BTN_ID_31>#BTN_NODE_ID_31#</BTN_ID_31>
+			<BTN_ID_32>#BTN_NODE_ID_32#</BTN_ID_32>
+			<BTN_ID_33>#BTN_NODE_ID_33#</BTN_ID_33>
+			<BTN_ID_34>#BTN_NODE_ID_34#</BTN_ID_34>
+			<BTN_ID_35>#BTN_NODE_ID_35#</BTN_ID_35>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_BOEING_TCP_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_TCP_SubTemplate">
+		<Parameters Type="Default">
+			<SCREEN_NODE_ID>#BUTTON_NAME_PREFIX#_Screen#SUFFIX_ID#</SCREEN_NODE_ID>
+		</Parameters>
+		<Parameters Type="Override">
+			<SYSTEM_NAME>Com_#ID#</SYSTEM_NAME>
+		</Parameters>
+		<Component ID="TCP#SUFFIX_ID#">
+			<Loop>
+				<Setup>
+					<Param>CUR_ID</Param>
+					<From>1</From>
+					<Inc>1</Inc>
+					<To>35</To>
+				</Setup>
+				<Do>
+					<Parameters Type="Override">
+						<BTN_NODE_ID Process="Param">BTN_NODE_ID_#CUR_ID#</BTN_NODE_ID>
+						<ID_BTN Process="Param">BTN_ID_#CUR_ID#</ID_BTN>
+						<Condition NotEmpty="TT_ID_#CUR_ID#">
+							<TT_ID Process="Param">TT_ID_#CUR_ID#</TT_ID>
+						</Condition>
+					</Parameters>
+					<Parameters Type="Override">
+						<Condition NotEmpty="TT_ID">
+							<True>
+								<Switch Param="TT_ID">
+									<Case Value="SOFTKEY">
+										<TT_SOFTKEY_ID Process="Param">TT_SOFTKEY_ID_#CUR_ID#</TT_SOFTKEY_ID>
+										<TT_SOFTKEY_SIDE Process="Param">TT_SOFTKEY_SIDE_#CUR_ID#</TT_SOFTKEY_SIDE>
+									</Case>
+								</Switch>
+							</True>
+						</Condition>
+					</Parameters>
+					<Parameters Type="Default">
+						<BUTTON_#CUR_ID#_ANIM_NAME>#BUTTON_NAME_PREFIX#_Push_#BTN_NODE_ID##SUFFIX_ID#</BUTTON_#CUR_ID#_ANIM_NAME>
+						<BUTTON_#CUR_ID#_NODE_ID>#BUTTON_NAME_PREFIX#_Push_#BTN_NODE_ID##SUFFIX_ID#</BUTTON_#CUR_ID#_NODE_ID>
+						<Condition NotEmpty="TT_ID">
+							<True>
+								<Switch Param="TT_ID">
+									<Case Value="SOFTKEY">
+										<TOOLTIP_TITLE_ID>@TT_Package.FMC_PUSH_OPTION_TITLE</TOOLTIP_TITLE_ID>
+										<TOOLTIP_TITLE_INDEX>#TT_INDEX#</TOOLTIP_TITLE_INDEX>
+										<TT_DESCRIPTION_ID>@TT_Package.FMC_PUSH_OPTION_ACTION</TT_DESCRIPTION_ID>
+										<TT_DESCRIPTION_INDEX>#TT_INDEX# #TT_SOFTKEY_ID# #TT_SOFTKEY_SIDE#</TT_DESCRIPTION_INDEX>
+									</Case>
+									<Default>
+										<TOOLTIP_TITLE>@TT_Package.#TT_ID#_TITLE</TOOLTIP_TITLE>
+										<TT_DESCRIPTION_ID>@TT_Package.#TT_ID#_ACTION</TT_DESCRIPTION_ID>
+									</Default>
+								</Switch>
+							</True>
+							<False>
+								<TT_DESCRIPTION_ID>@TT_Package.FMC_PUSH_CHAR_ACTION</TT_DESCRIPTION_ID>
+								<TT_DESCRIPTION_INDEX>#TT_INDEX# '#ID_BTN#'</TT_DESCRIPTION_INDEX>
+								<TOOLTIP_DISABLED>True</TOOLTIP_DISABLED>
+							</False>
+						</Condition>
+					</Parameters>
+					<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+						<ANIM_NAME Process="Param">BUTTON_#CUR_ID#_ANIM_NAME</ANIM_NAME>
+						<NODE_ID Process="Param">BUTTON_#CUR_ID#_NODE_ID</NODE_ID>
+					</UseTemplate>
+				</Do>
+			</Loop>
+			<Component ID="#SCREEN_NODE_ID#" Node="#SCREEN_NODE_ID#">
+				<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+					<EMISSIVE_CODE>0.5</EMISSIVE_CODE>
+				</UseTemplate>
+			</Component>
+		</Component>
+	</Template>
+	<Template Name="ASOBO_COM_Template_Boeing">
+		<Parameters Type="Default">
+			<PANEL_NAME>Boeing_Com</PANEL_NAME>
+			<NODE_ID_VISIBILITY>com#COM_INDEX#_led_sel</NODE_ID_VISIBILITY>
+		</Parameters>
+		<Parameters Type="Override">
+			<!-- Buttons -->
+			<ID_BTN_0>0</ID_BTN_0>
+			<ID_BTN_1>1</ID_BTN_1>
+			<ID_BTN_2>2</ID_BTN_2>
+			<ID_BTN_3>3</ID_BTN_3>
+			<ID_BTN_4>4</ID_BTN_4>
+			<ID_BTN_5>5</ID_BTN_5>
+			<ID_BTN_6>6</ID_BTN_6>
+			<ID_BTN_7>7</ID_BTN_7>
+			<ID_BTN_8>8</ID_BTN_8>
+			<ID_BTN_9>9</ID_BTN_9>
+			<ID_BTN_10>rcl</ID_BTN_10>
+			<ID_BTN_11>clr</ID_BTN_11>
+			<ID_BTN_12>swap</ID_BTN_12>
+			<ID_BTN_13>data</ID_BTN_13>
+			<ID_BTN_14>am</ID_BTN_14>
+			<TT_BTN_ID_10>ECAM_PUSH_RCL</TT_BTN_ID_10>
+			<TT_BTN_ID_11>TRANSPONDER_PUSH_CLR</TT_BTN_ID_11>
+			<TT_BTN_ID_12>AIRLINER_COM_PUSH_SWAP</TT_BTN_ID_12>
+			<TT_BTN_ID_13>AIRLINER_COM_PUSH_DATA</TT_BTN_ID_13>
+			<TT_BTN_ID_14>AIRLINER_COM_PUSH_AM</TT_BTN_ID_14>
+			<!-- Leds -->
+			<ID_LED_0>vhf_L</ID_LED_0>
+			<ID_LED_1>vhf_C</ID_LED_1>
+			<ID_LED_2>vhf_R</ID_LED_2>
+			<ID_LED_3>hf_L</ID_LED_3>
+			<ID_LED_4>hf_R</ID_LED_4>
+		</Parameters>
+		<Loop>
+			<Setup>
+				<Param>CUR_ID</Param>
+				<From>0</From>
+				<Inc>1</Inc>
+				<To>14</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Override">
+					<Condition NotEmpty="TT_BTN_ID_#CUR_ID#">
+						<TT_ID Process="Param">TT_BTN_ID_#CUR_ID#</TT_ID>
+					</Condition>
+					<BASE_NAME Process="Param">ID_BTN_#CUR_ID#</BASE_NAME>
+				</Parameters>
+				<UseTemplate Name="ASOBO_COM_BUTTON_Template_Boeing">
+					<Condition NotEmpty="TT_ID">
+						<True>
+							<TT_DESCRIPTION_ID>@TT_Package.#TT_ID#_ACTION</TT_DESCRIPTION_ID>
+							<TOOLTIP_TITLE>@TT_Package.#TT_ID#_TITLE</TOOLTIP_TITLE>
+						</True>
+						<False>
+							<TT_DESCRIPTION_ID>@TT_Package.FMC_PUSH_CHAR_ACTION</TT_DESCRIPTION_ID>
+							<TT_DESCRIPTION_INDEX>'COMM #COM_INDEX#' '#BASE_NAME#'</TT_DESCRIPTION_INDEX>
+							<Condition>
+								<Test>
+									<Lower>
+										<Value>CUR_ID</Value>
+										<Number>10</Number>
+									</Lower>
+								</Test>
+								<True>
+									<TOOLTIP_DISABLED>True</TOOLTIP_DISABLED>
+								</True>
+							</Condition>
+						</False>
+					</Condition>
+				</UseTemplate>
+			</Do>
+		</Loop>
+		<Loop>
+			<Setup>
+				<Param>CUR_ID</Param>
+				<From>0</From>
+				<Inc>1</Inc>
+				<To>4</To>
+			</Setup>
+			<Do>
+				<UseTemplate Name="ASOBO_COM_FREQ_LED_Template_Boeing">
+					<LED_NAME Process="Param">ID_LED_#CUR_ID#</LED_NAME>
+					<FREQ_INDEX>#CUR_ID#</FREQ_INDEX>
+				</UseTemplate>
+			</Do>
+		</Loop>
+		<Component ID="#NODE_ID_VISIBILITY#" Node="#NODE_ID_VISIBILITY#">
+			<UseTemplate Name="ASOBO_GT_Visibility_Code">
+				<VISIBILITY_CODE>0</VISIBILITY_CODE>
+			</UseTemplate>
+		</Component>
+		<!--VHF MODE SELECTION-->
+		<UseTemplate Name="ASOBO_COM_BUTTON_Template_Boeing">
+			<BASE_NAME>vhf</BASE_NAME>
+			<TT_VALUE>(L:XMLVAR_COM#COM_INDEX#_CURRENT_FREQ) sp0 l0 0 == if{ 'VHF L' quit }  els{ 'VHF C' 'VHF R' l0 1 == ? quit } (R:1:@TT_Package.GT_STATE_OFF)</TT_VALUE>
+			<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+			<ON_PUSH_EVENT>(L:XMLVAR_COM#COM_INDEX#_CURRENT_FREQ) 0 max 2 min ++ sp0 0 l0 l0 2 &gt; ? (&gt;L:XMLVAR_COM#COM_INDEX#_CURRENT_FREQ)</ON_PUSH_EVENT>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_COM_PUSH_VHF_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_COM_PUSH_VHF_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+		<!--HF MODE SELECTION-->
+		<UseTemplate Name="ASOBO_COM_BUTTON_Template_Boeing">
+			<BASE_NAME>hf</BASE_NAME>
+			<TT_VALUE>(L:XMLVAR_COM#COM_INDEX#_CURRENT_FREQ) sp0 l0 3 == if{ 'HF L' quit } els{ l0 4 == if{ 'HF R' quit } } (R:1:@TT_Package.GT_STATE_OFF)</TT_VALUE>
+			<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+			<ON_PUSH_EVENT>(L:XMLVAR_COM#COM_INDEX#_CURRENT_FREQ) 3 max 4 min ++ sp0 3 l0 l0 4 &gt; ? (&gt;L:XMLVAR_COM#COM_INDEX#_CURRENT_FREQ)</ON_PUSH_EVENT>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_COM_PUSH_HF_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_COM_PUSH_HF_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Knob_StandbyPower_Template">
+		<Parameters Type="Default">
+			<ARROW_TYPE>Curved</ARROW_TYPE>
+			<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
+			<SWITCH_POSITION_VAR>XMLVAR_StandbyPower_Selector</SWITCH_POSITION_VAR>
+			<PART_ID>BOEING_StandbyPower_Selector</PART_ID>
+			<WWISE_PREFIX>standbypower_selector</WWISE_PREFIX>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_KNOB_STANDBY_SELECTOR_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_KNOB_STANDBY_SELECTOR_ACTION</TT_DESCRIPTION_ID>
+			<POS_OFF>0</POS_OFF>
+			<POS_AUTO>1</POS_AUTO>
+			<POS_BAT>2</POS_BAT>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Standby_Power_Selector</IE_NAME>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<KNOB_TYPE>X_STATES</KNOB_TYPE>
+			<NUM_STATES>3</NUM_STATES>
+			<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+			<STR_STATE_#POS_AUTO#>Auto</STR_STATE_#POS_AUTO#>
+			<STR_STATE_#POS_BAT#>Battery</STR_STATE_#POS_BAT#>
+			<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+			<TT_VALUE_#POS_AUTO#>@TT_Package.GT_STATE_AUTO</TT_VALUE_#POS_AUTO#>
+			<TT_VALUE_#POS_BAT#>@TT_Package.GT_STATE_BATTERY</TT_VALUE_#POS_BAT#>
+			<SET_STATE_#POS_OFF#>
+				#BATTERY_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#MAIN_BUS_ID#, Bool) if{
+					#BATTERY_BUS_ID# #MAIN_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+				} 0 (&gt;L:XMLVAR_STANDBY_POWER_IS_ON_BAT)
+			</SET_STATE_#POS_OFF#>
+			<SET_STATE_#POS_AUTO#>
+				#BATTERY_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#MAIN_BUS_ID#, Bool) ! if{
+					#BATTERY_BUS_ID# #MAIN_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+				} 0 (&gt;L:XMLVAR_STANDBY_POWER_IS_ON_BAT)
+			</SET_STATE_#POS_AUTO#>
+			<SET_STATE_#POS_BAT#>
+				#BATTERY_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#MAIN_BUS_ID#, Bool) ! if{
+					#BATTERY_BUS_ID# #MAIN_BUS_ID# (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)
+				} 1 (&gt;L:XMLVAR_STANDBY_POWER_IS_ON_BAT)
+			</SET_STATE_#POS_BAT#>
+			<GET_STATE_EXTERNAL>#BATTERY_BUS_ID# (&gt;A:BUS LOOKUP INDEX, Number) (A:BUS CONNECTION ON:#MAIN_BUS_ID#, Bool) sp0 (L:XMLVAR_STANDBY_POWER_IS_ON_BAT) sp1</GET_STATE_EXTERNAL>
+			<ENUM_VAL_TO_POS_EXTERNAL>l0 ! if{ #POS_OFF# sp2 g2 } els{ #POS_BAT# #POS_AUTO# l1 ? sp2 g2 } :2 l2</ENUM_VAL_TO_POS_EXTERNAL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
+		<Parameters Type="Default">
+			<NODE_ID>eicas_push_#BASE_NAME#</NODE_ID>
+			<ANIM_NAME>eicas_push_#BASE_NAME#</ANIM_NAME>
+			<LED_NODE_ID>eicas_push_#BASE_NAME#_decal</LED_NODE_ID>
+			<EVENT_NAME>#PANEL_NAME#_EICAS_CHANGE_PAGE_#BASE_NAME#</EVENT_NAME>
+			<STATE_VAR_NAME>XMLVAR_EICAS_CURRENT_PAGE</STATE_VAR_NAME>
+			<WWISE_PREFIX>radio</WWISE_PREFIX>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<Condition>
+				<Test>
+					<GreaterOrEqual>
+						<Value>GROUP_INDEX</Value>
+						<Number>0</Number>
+					</GreaterOrEqual>
+				</Test>
+				<False>
+					<IS_INOP>True</IS_INOP>
+				</False>
+			</Condition>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IE_NAME>Page_#BASE_NAME#</IE_NAME>
+			<SET_STATE_EXTERNAL>if{ #GROUP_INDEX# -1 &gt; if{ (&gt;H:#EVENT_NAME#) #GROUP_INDEX# (&gt;L:#STATE_VAR_NAME#) } }</SET_STATE_EXTERNAL>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+			<NODE_ID>#LED_NODE_ID#</NODE_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_EICAS_PAGE_SELECTION_Template_Boeing">
+		<Parameters Type="Default">
+			<PANEL_NAME>Boeing_EICAS_2</PANEL_NAME>
+			<INPUT_EVENT_ID_SOURCE>AILRINER_EICAS</INPUT_EVENT_ID_SOURCE>
+			<!-- BTN list -->
+			<ID_BTN_0>eng</ID_BTN_0>
+			<ID_BTN_1>stat</ID_BTN_1>
+			<ID_BTN_2>elec</ID_BTN_2>
+			<ID_BTN_3>fuel</ID_BTN_3>
+			<ID_BTN_4>ecs</ID_BTN_4>
+			<ID_BTN_5>fctl</ID_BTN_5>
+			<ID_BTN_6>hyd</ID_BTN_6>
+			<ID_BTN_7>drs</ID_BTN_7>
+			<ID_BTN_8>gear</ID_BTN_8>
+			<ID_BTN_9>info</ID_BTN_9>
+			<ID_BTN_10>chkl</ID_BTN_10>
+			<ID_BTN_11>nav</ID_BTN_11>
+			<ID_BTN_12>l_insd</ID_BTN_12>
+			<ID_BTN_13>lwr_ctr</ID_BTN_13>
+			<ID_BTN_14>r_insd</ID_BTN_14>
+			<!-- GROUP_ID config list, negative = inop -->
+			<GROUP_ID_0>3</GROUP_ID_0>
+			<GROUP_ID_1>-1</GROUP_ID_1>
+			<GROUP_ID_2>-2</GROUP_ID_2>
+			<GROUP_ID_3>0</GROUP_ID_3>
+			<GROUP_ID_4>-3</GROUP_ID_4>
+			<GROUP_ID_5>4</GROUP_ID_5>
+			<GROUP_ID_6>-5</GROUP_ID_6>
+			<GROUP_ID_7>6</GROUP_ID_7>
+			<GROUP_ID_8>7</GROUP_ID_8>
+			<GROUP_ID_9>-8</GROUP_ID_9>
+			<GROUP_ID_10>9</GROUP_ID_10>
+			<GROUP_ID_11>-10</GROUP_ID_11>
+			<GROUP_ID_12>-11</GROUP_ID_12>
+			<GROUP_ID_13>-12</GROUP_ID_13>
+			<GROUP_ID_14>-13</GROUP_ID_14>
+			<!-- TT list -->
+			<TT_ID_0>EICAS_PUSH_ENG</TT_ID_0>
+			<TT_ID_1>EICAS_PUSH_STAT</TT_ID_1>
+			<TT_ID_2>EICAS_PUSH_ELEC</TT_ID_2>
+			<TT_ID_3>EICAS_PUSH_FUEL</TT_ID_3>
+			<TT_ID_4>EICAS_PUSH_ECS</TT_ID_4>
+			<TT_ID_5>EICAS_PUSH_FCTL</TT_ID_5>
+			<TT_ID_6>EICAS_PUSH_HYD</TT_ID_6>
+			<TT_ID_7>EICAS_PUSH_DRS</TT_ID_7>
+			<TT_ID_8>EICAS_PUSH_GEAR</TT_ID_8>
+			<TT_ID_9>EICAS_PUSH_INFO</TT_ID_9>
+			<TT_ID_10>EICAS_PUSH_CHKL</TT_ID_10>
+			<TT_ID_11>EICAS_PUSH_NAV</TT_ID_11>
+			<TT_ID_12>EICAS_PUSH_L_INBD</TT_ID_12>
+			<TT_ID_13>EICAS_PUSH_LWR_CTR</TT_ID_13>
+			<TT_ID_14>EICAS_PUSH_R_INBD</TT_ID_14>
+		</Parameters>
+		<Loop>
+			<Setup>
+				<Param>CUR_ID</Param>
+				<From>0</From>
+				<Inc>1</Inc>
+				<To>14</To>
+			</Setup>
+			<Do>
+				<Parameters Type="Override">
+					<TT_ID Process="Param">TT_ID_#CUR_ID#</TT_ID>
+					<GROUP_INDEX Process="Param">GROUP_ID_#CUR_ID#</GROUP_INDEX>
+					<BASE_NAME Process="Param">ID_BTN_#CUR_ID#</BASE_NAME>
+				</Parameters>
+				<UseTemplate Name="ASOBO_EICAS_PAGE_BUTTON_Template_Boeing">
+					<TOOLTIP_TITLE>@TT_Package.#TT_ID#_TITLE</TOOLTIP_TITLE>
+					<TT_DESCRIPTION_ID>@TT_Package.#TT_ID#_ACTION</TT_DESCRIPTION_ID>
+				</UseTemplate>
+			</Do>
+		</Loop>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_WXR_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_WRX_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_WRX_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<ID_BTN>WXR</ID_BTN>
+		</Parameters>
+		<Switch Param="PLANE_PREFIX">
+			<Case Value="B747_8">
+				<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+					<ONOFF_VARIABLE>BTN_WX_ACTIVE</ONOFF_VARIABLE>
+				</UseTemplate>
+			</Case>
+			<Case Value="AS01B">
+				<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+					<SYSTEM_NAME>MFD</SYSTEM_NAME>
+				</UseTemplate>
+			</Case>
+		</Switch>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_STA_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_STA_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_STA_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>STA</ID_BTN>
+			<PLANE_PREFIX>B747_8</PLANE_PREFIX>
+			<ONOFF_VARIABLE>BTN_NDB_FILTER_ACTIVE</ONOFF_VARIABLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_WPT_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_WPT_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_WPT_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>WPT</ID_BTN>
+			<PLANE_PREFIX>B747_8</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_ARPT_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_ARPT_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_ARPT_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>ARPT</ID_BTN>
+			<PLANE_PREFIX>B747_8</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_DATA_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<ONOFF_VARIABLE>BTN_CSTR_FILTER_ACTIVE</ONOFF_VARIABLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_DATA_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_DATA_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>DATA</ID_BTN>
+			<PLANE_PREFIX>B747_8</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_POS_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<ONOFF_VARIABLE>BTN_VORD_FILTER_ACTIVE</ONOFF_VARIABLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_POS_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_POS_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+			<ID_BTN>POS</ID_BTN>
+			<PLANE_PREFIX>B747_8</PLANE_PREFIX>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_TERR_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_PUSH_TERRONND_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_PUSH_TERRONND_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<Parameters Type="Override">
+			<ID_BTN>TERR</ID_BTN>
+		</Parameters>
+		<Switch Param="PLANE_PREFIX">
+			<Case Value="B747_8">
+				<UseTemplate Name="ASOBO_AIRLINER_GlassCockpit_Push_Template">
+					<ONOFF_VARIABLE>BTN_TERRONND_ACTIVE</ONOFF_VARIABLE>
+				</UseTemplate>
+			</Case>
+			<Case Value="AS01B">
+				<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+					<SYSTEM_NAME>MFD</SYSTEM_NAME>
+				</UseTemplate>
+			</Case>
+		</Switch>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_Heading_Track_Template">
+		<Parameters Type="Default">
+			<NODE_ID>BOEING_Push_HDG_TRK</NODE_ID>
+			<ANIM_NAME>BOEING_Push_HDG_TRK</ANIM_NAME>
+			<PART_ID>BOEING_Push_HDG_TRK</PART_ID>
+			<STATE_VAR_NAME>XMLVAR_TRK_MODE_ACTIVE</STATE_VAR_NAME>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_HEADING_TRACK_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_HEADING_TRACK_ACTION_SET</TT_DESCRIPTION_ID>
+			<WWISE_EVENT_1>autopilot_push_button2_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_push_button2_off</WWISE_EVENT_2>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>HDG_TRK</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<SET_STATE_EXTERNAL>p0 (&gt;L:#STATE_VAR_NAME#)</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<STR_STATE_ON>TRK</STR_STATE_ON>
+			<STR_STATE_OFF>HDG</STR_STATE_OFF>
+			<TT_VALUE_ON>'TRK'</TT_VALUE_ON>
+			<TT_VALUE_OFF>'HDG'</TT_VALUE_OFF>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_VS_FPA_Template">
+		<Parameters Type="Default">
+			<NODE_ID>Btn_main_panel_H_009</NODE_ID>
+			<ANIM_NAME>Btn_main_panel_H_009</ANIM_NAME>
+			<PART_ID>Btn_main_panel_H_009</PART_ID>
+			<STATE_VAR_NAME>XMLVAR_FPA_MODE_ACTIVE</STATE_VAR_NAME>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_VS_FPA_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_VS_FPA_ACTION</TT_DESCRIPTION_ID>
+			<WWISE_EVENT_1>autopilot_push_button2_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_push_button2_off</WWISE_EVENT_2>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>HDG_TRK</IE_NAME>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<SET_STATE_EXTERNAL>p0 (&gt;L:#STATE_VAR_NAME#)</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<STR_STATE_ON>FPA</STR_STATE_ON>
+			<STR_STATE_OFF>VS</STR_STATE_OFF>
+			<TT_VALUE_ON>'FPA'</TT_VALUE_ON>
+			<TT_VALUE_OFF>'VS'</TT_VALUE_OFF>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>BOEING_Push_#ID_BTN#_#ID#</NODE_ID>
+			<ANIM_NAME>BOEING_Push_#ID_BTN#_#ID#</ANIM_NAME>
+			<Condition Valid="EMISSIVE_BUTTON">
+				<False>
+					<NODE_ID_DECAL>BOEING_Push_#ID_BTN#_#ID#_Text</NODE_ID_DECAL>
+				</False>
+			</Condition>
+			<PART_ID>BOEING_Push_#ID_BTN#</PART_ID>
+			<WWISE_EVENT_1>autopilot_push_button2_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_push_button2_off</WWISE_EVENT_2>
+			<Switch Param="PLANE_PREFIX">
+				<Case Value="AS01B">
+					<ON_PUSH_EVENT>(&gt;H:#PLANE_PREFIX#_#SYSTEM_NAME#_#ID#_#ID_BTN#)</ON_PUSH_EVENT>
+				</Case>
+				<Default>
+					<ON_PUSH_EVENT>(&gt;H:#PLANE_PREFIX#_#SYSTEM_NAME#_#ID_BTN#)</ON_PUSH_EVENT>
+				</Default>
+			</Switch>
+			<Condition>
+				<Test>
+					<And>
+						<Arg Valid="EMISSIVE_BUTTON"/>
+						<Arg Check="POTENTIOMETER"/>
+					</And>
+				</Test>
+				<True>
+					<EMISSIVE_TEMPLATE_TO_USE>ASOBO_GT_Emissive_Potentiometer</EMISSIVE_TEMPLATE_TO_USE>
+				</True>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<SET_STATE_EXTERNAL>if{ #ON_PUSH_EVENT# }</SET_STATE_EXTERNAL>
+			<IE_NAME>#ID_BTN#_#ID#</IE_NAME>
+		</UseTemplate>
+		<Condition>
+			<Test>
+				<And>
+					<Arg Valid="NODE_ID_DECAL"/>
+					<Arg Check="POTENTIOMETER"/>
+				</And>
+			</Test>
+			<True>
+				<Component ID="#NODE_ID_DECAL#" Node="#NODE_ID_DECAL#">
+					<UseTemplate Name="ASOBO_GT_Emissive_Potentiometer"/>
+				</Component>
+			</True>
+		</Condition>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_TFC_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>TFC</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.CCP_PUSH_TFC_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.CCP_PUSH_TFC_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_SYS_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>SYS</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_SYS_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_SYS_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_CDU_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>CDU</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_CDU_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_CDU_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_INFO_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>INFO</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.EICAS_PUSH_INFO_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.EICAS_PUSH_INFO_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_CHKL_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>CHKL</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_CHKL_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_CHKL_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_COMM_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>COMM</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_COMM_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_COMM_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_ND_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>ND</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_NDB_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_NDB_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_MFD_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<Switch Param="SIDE">
+				<Case Value="L">
+					<ENUM_VAL>0</ENUM_VAL>
+				</Case>
+				<Case Value="R">
+					<ENUM_VAL>1</ENUM_VAL>
+				</Case>
+			</Switch>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_PUSH_DISPLAY_MFD_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_PUSH_DISPLAY_MFD_ACTION</TT_DESCRIPTION_ID>
+			<WWISE_PREFIX>mfd</WWISE_PREFIX>
+		</Parameters>
+		<Parameters Type="Override">
+			<STATE_VAR_NAME>XMLVAR_MFD_Side_#ID#</STATE_VAR_NAME>
+			<IE_NAME>MFD_Side_#ID#_#SIDE#</IE_NAME>
+		</Parameters>
+		<Component ID="#EMISSIVE_NODE_ID#" Node="#EMISSIVE_NODE_ID#">
+			<UseTemplate Name="ASOBO_GT_Emissive_Gauge">
+				<EMISSIVE_CODE>(L:#STATE_VAR_NAME#) #ENUM_VAL# ==</EMISSIVE_CODE>
+			</UseTemplate>
+		</Component>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<SET_STATE_EXTERNAL>#ENUM_VAL# (&gt;L:#STATE_VAR_NAME#)</SET_STATE_EXTERNAL>
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) #ENUM_VAL# == sp0</GET_STATE_EXTERNAL>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<TT_VALUE>(L:#STATE_VAR_NAME#) 0 == if{ 'Left' } els{ 'Right' }</TT_VALUE>
+			<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_ENG_Template">
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>ENG</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.EICAS_PUSH_ENG_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.EICAS_PUSH_ENG_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_EICAS_Template">
+		<Parameters Type="Default">
+			<NODE_ID>DISPLAY_Push_EICAS</NODE_ID>
+		</Parameters>
+		<UseTemplate Name="ASOBO_BOEING_Push_HTML_Generic_Template">
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
+			<ID_BTN>EICAS</ID_BTN>
+			<TOOLTIP_TITLE>@TT_Package.EICAS_PUSH_EICAS_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.EICAS_PUSH_EICAS_ACTION</TT_DESCRIPTION_ID>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_AudioReceiver_Knobs_Template">
+		<Parameters Type="Default">
+			<KNOB_NAME_PREFIX>BOEING_AudioReceiver_Knob_</KNOB_NAME_PREFIX>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+			<TEMPLATE_TO_CALL>ASOBO_BOEING_AudioReceiver_Knobs_SubTemplate</TEMPLATE_TO_CALL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_AudioReceiver_Knobs_SubTemplate">
+		<Parameters Type="Default">
+			<KNOB_1_NAME>vhf_l</KNOB_1_NAME>
+			<KNOB_2_NAME>vhf_c</KNOB_2_NAME>
+			<KNOB_3_NAME>vhf_r</KNOB_3_NAME>
+			<KNOB_4_NAME>flt</KNOB_4_NAME>
+			<KNOB_5_NAME>cab</KNOB_5_NAME>
+			<KNOB_6_NAME>pa</KNOB_6_NAME>
+			<KNOB_7_NAME>hf_l</KNOB_7_NAME>
+			<KNOB_8_NAME>hf_r</KNOB_8_NAME>
+			<KNOB_9_NAME>sat_l</KNOB_9_NAME>
+			<KNOB_10_NAME>sat_r</KNOB_10_NAME>
+			<KNOB_11_NAME>spkr</KNOB_11_NAME>
+			<KNOB_12_NAME>01</KNOB_12_NAME>
+			<KNOB_13_NAME>02</KNOB_13_NAME>
+		</Parameters>
+		<Component ID="BOEING_AudioReceiver_Knobs_#SUFFIX_ID#">
+			<UseTemplate Name="ASOBO_GT_Helper_Recursive_ID">
+				<!-- VV Recursive parameters VV -->
+				<EXIT_TEMPLATE>ASOBO_BOEING_AudioReceiver_Knob_Template</EXIT_TEMPLATE>
+				<MAX_ID>13</MAX_ID>
+				<!-- Dyn param -->
+				<PROCESS_PARAM1>True</PROCESS_PARAM1>
+				<PARAM1>KNOB_NAME</PARAM1>
+				<PARAM1_PREFIX>KNOB_</PARAM1_PREFIX>
+				<PARAM1_SUFFIX>_NAME</PARAM1_SUFFIX>
+				<PROCESS_PARAM2>True</PROCESS_PARAM2>
+				<PARAM2>NODE_ID</PARAM2>
+				<PARAM2_PREFIX>KNOB_</PARAM2_PREFIX>
+				<PARAM2_SUFFIX>_NODE_ID</PARAM2_SUFFIX>
+				<PROCESS_PARAM3>True</PROCESS_PARAM3>
+				<PARAM3>ANIM_NAME</PARAM3>
+				<PARAM3_PREFIX>KNOB_</PARAM3_PREFIX>
+				<PARAM3_SUFFIX>_ANIM_NAME</PARAM3_SUFFIX>
+			</UseTemplate>
+		</Component>
+	</Template>
+	<Template Name="ASOBO_BOEING_AudioReceiver_Knob_Template">
+		<Parameters Type="Default">
+			<NODE_ID>#KNOB_NAME_PREFIX##KNOB_NAME##SUFFIX_ID#</NODE_ID>
+			<KNOB_NAME_PREFIX>BOEING_AudioReceiver_Knob_</KNOB_NAME_PREFIX>
+		</Parameters>
+		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Switch_VOR_ADF_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<Switch Param="TT_SIDE">
+				<Case Value="L">
+					<TT_ID>@TT_Left</TT_ID>
+				</Case>
+				<Case Value="R">
+					<TT_ID>@TT_Right</TT_ID>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>BOEING_Switch_VOR_ADF_#SIDE#_#ID#</NODE_ID>
+			<ANIM_NAME>BOEING_Switch_VOR_ADF_#SIDE#_#ID#</ANIM_NAME>
+			<PART_ID>BOEING_Switch_VOR_ADF_#SIDE#</PART_ID>
+			<STATE_VAR_NAME>XMLVAR_NAV_AID_SWITCH_#SIDE##ID#_State</STATE_VAR_NAME>
+			<WWISE_PREFIX>boeing_vor_adf</WWISE_PREFIX>
+			<POS_VOR>0</POS_VOR>
+			<POS_OFF>1</POS_OFF>
+			<POS_ADF>2</POS_ADF>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_SWITCH_VOR_ADF_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_SWITCH_VOR_ADF_ACTION</TT_DESCRIPTION_ID>
+			<Switch Param="SIDE">
+				<Case Value="L">
+					<TT_DESCRIPTION_INDEX>#TT_ID# @TT_Left</TT_DESCRIPTION_INDEX>
+				</Case>
+				<Case Value="R">
+					<TT_DESCRIPTION_INDEX>#TT_ID# @TT_Right</TT_DESCRIPTION_INDEX>
+				</Case>
+			</Switch>
+		</Parameters>
+		<Parameters Type="Override">
+			<ENUM_VAL_VOR>0</ENUM_VAL_VOR>
+			<ENUM_VAL_OFF>1</ENUM_VAL_OFF>
+			<ENUM_VAL_ADF>2</ENUM_VAL_ADF>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>#SIDE#_VOR_ADF_#ID#</IE_NAME>
+			<INTERACTION_TYPE>Switch</INTERACTION_TYPE>
+			<NUM_STATES>3</NUM_STATES>
+			<STR_STATE_#POS_ADF#>ADF_#ID#</STR_STATE_#POS_ADF#>
+			<STR_STATE_#POS_OFF#>Off</STR_STATE_#POS_OFF#>
+			<STR_STATE_#POS_VOR#>VOR_#ID#</STR_STATE_#POS_VOR#>
+			<TT_VALUE_#POS_ADF#>@TT_Package.GT_STATE_ADF#TT_SIDE#</TT_VALUE_#POS_ADF#>
+			<TT_VALUE_#POS_OFF#>@TT_Package.GT_STATE_OFF</TT_VALUE_#POS_OFF#>
+			<TT_VALUE_#POS_VOR#>@TT_Package.GT_STATE_VOR#TT_SIDE#</TT_VALUE_#POS_VOR#>
+			<SET_STATE_#POS_ADF#>#ENUM_VAL_ADF# (&gt;L:#STATE_VAR_NAME#)</SET_STATE_#POS_ADF#>
+			<SET_STATE_#POS_OFF#>#ENUM_VAL_OFF# (&gt;L:#STATE_VAR_NAME#)</SET_STATE_#POS_OFF#>
+			<SET_STATE_#POS_VOR#>#ENUM_VAL_VOR# (&gt;L:#STATE_VAR_NAME#)</SET_STATE_#POS_VOR#>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+			<ENUM_VAL_TO_POS_EXTERNAL>l0 #ENUM_VAL_OFF# == if{ #POS_OFF# sp1 g2 } els{ #POS_ADF# #POS_VOR# l0 #ENUM_VAL_ADF# == ? sp1 g2 } :2 l1</ENUM_VAL_TO_POS_EXTERNAL>
+			<SWITCH_DIRECTION>Vertical</SWITCH_DIRECTION>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_FPV_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>BOEING_Push_FPV_#ID#</NODE_ID>
+			<ANIM_NAME>BOEING_Push_FPV_#ID#</ANIM_NAME>
+			<PLANE_PREFIX>B747_8_PFD</PLANE_PREFIX>
+			<SYSTEM_NAME>PFD</SYSTEM_NAME>
+			<WWISE_PREFIX>fpv</WWISE_PREFIX>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_FPV_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_FPV_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IE_NAME>FPV</IE_NAME>
+			<SET_STATE_EXTERNAL>if{ (&gt;H:#PLANE_PREFIX#_#SYSTEM_NAME#_FPV) }</SET_STATE_EXTERNAL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Push_MTRS_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>BOEING_Push_MTRS_#ID#</NODE_ID>
+			<ANIM_NAME>BOEING_Push_MTRS_#ID#</ANIM_NAME>
+			<PLANE_PREFIX>B747_8</PLANE_PREFIX>
+			<SYSTEM_NAME>PFD</SYSTEM_NAME>
+			<WWISE_PREFIX>mtrs</WWISE_PREFIX>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_MTRS_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_MTRS_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IE_NAME>MTRS</IE_NAME>
+			<SET_STATE_EXTERNAL>if{ (&gt;H:#PLANE_PREFIX#_#SYSTEM_NAME#_MTRS) }</SET_STATE_EXTERNAL>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Knob_Mins_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>BOEING_Knob_Mins_#ID#</NODE_ID>
+			<ANIM_NAME>BOEING_Knob_Mins_#ID#</ANIM_NAME>
+			<BUTTON_NODE_ID>BOEING_Knob_Mins_#ID#_Push</BUTTON_NODE_ID>
+			<BUTTON_ANIM_NAME>BOEING_Knob_Mins_#ID#_Push</BUTTON_ANIM_NAME>
+			<PART_ID>BOEING_Knob_Mins</PART_ID>
+			<SYSTEM_NAME>PFD</SYSTEM_NAME>
+			<WWISE_EVENT>autopilot_mins_knob</WWISE_EVENT>
+			<WWISE_PREFIX>autopilot_mins_knob</WWISE_PREFIX>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_KNOB_BARO_KNOB_MINS_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_KNOB_BARO_KNOB_MINS_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID_BUTTON>@TT_Package.AIRLINER_KNOB_BARO_PUSH_MINS_ACTION</TT_DESCRIPTION_ID_BUTTON>
+			<TOOLTIP_TITLE_BUTTON>@TT_Package.AIRLINER_KNOB_BARO_PUSH_MINS_TITLE</TOOLTIP_TITLE_BUTTON>
+		</Parameters>
+		<Parameters Type="Override">
+			<IE_NAME_KNOB>Mins</IE_NAME_KNOB>
+			<IE_NAME_BTN>Mins_Button</IE_NAME_BTN>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<IE_NAME>#IE_NAME_KNOB#</IE_NAME>
+			<SET_STATE_EXTERNAL>p0 0 &gt; if{ (&gt;H:#PLANE_PREFIX#_#SYSTEM_NAME#_Mins_INC) } els{ (&gt;H:#PLANE_PREFIX#_#SYSTEM_NAME#_Mins_DEC) }</SET_STATE_EXTERNAL>
+			<IS_INFINITE>True</IS_INFINITE>
+		</UseTemplate>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<INTERACTION_TYPE>Push</INTERACTION_TYPE>
+			<IE_NAME>#IE_NAME_BTN#</IE_NAME>
+			<SET_STATE_EXTERNAL>if{ (&gt;H:#PLANE_PREFIX#_#SYSTEM_NAME#_Mins_Press) }</SET_STATE_EXTERNAL>
+			<ANIM_NAME>#BUTTON_ANIM_NAME#</ANIM_NAME>
+			<NODE_ID>#BUTTON_NODE_ID#</NODE_ID>
+			<TT_DESCRIPTION_ID>#TT_DESCRIPTION_ID_BUTTON#</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>#TOOLTIP_TITLE_BUTTON#</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+	<Template Name="ASOBO_BOEING_Switch_Mins_Selector_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+		</Parameters>
+		<Parameters Type="Default">
+			<NODE_ID>BOEING_Switch_Baro_Selector_#ID#</NODE_ID>
+			<ANIM_NAME>BOEING_Switch_Baro_Selector_#ID#</ANIM_NAME>
+			<PART_ID>BOEING_Switch_Baro_Selector</PART_ID>
+			<WWISE_EVENT_1>autopilot_baro_selector_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_baro_selector_button_off</WWISE_EVENT_2>
+			<STATE_VAR_NAME>XMLVAR_Mins_Selector_Baro</STATE_VAR_NAME>
+			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_KNOB_BARO_SOURCE_SELECTOR_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AIRLINER_KNOB_BARO_SOURCE_SELECTOR_TITLE</TOOLTIP_TITLE>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AIRLINER_Base_Template">
+			<IE_NAME>Mins_Selector</IE_NAME>
+			<INTERACTION_TYPE>Knob</INTERACTION_TYPE>
+			<KNOB_TYPE>X_STATES</KNOB_TYPE>
+			<NUM_STATES>2</NUM_STATES>
+			<SET_STATE_EXTERNAL>p0 (&gt;L:#STATE_VAR_NAME#)</SET_STATE_EXTERNAL>
+			<GET_STATE_EXTERNAL>(L:#STATE_VAR_NAME#) sp0</GET_STATE_EXTERNAL>
+			<LOCAL_VAR_TO_WATCH_0>#STATE_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_IRS_Knob_Template">
+		<DefaultTemplateParameters>
+		<ID>1</ID>
+		</DefaultTemplateParameters>
+
+	<UseTemplate Name="ASOBO_AIRLINER_IRS_Knob_SubTemplate">
+	</UseTemplate>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_IRS_Knob_SubTemplate">
+	<DefaultTemplateParameters>
+		<NODE_ID>knob_ovhd_irs_#ID#</NODE_ID>
+		<ANIM_NAME>knob_ovhd_irs_#ID#</ANIM_NAME>
+		<WWISE_EVENT>standbypower_selector_knob</WWISE_EVENT>
+		<WWISE_EVENT_1>standbypower_selector_knob</WWISE_EVENT_1>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+		<WWISE_EVENT_2>standbypower_selector_knob</WWISE_EVENT_2>
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+
+		<KNOB_NUM_STATE>4</KNOB_NUM_STATE>
+		<KNOB_POSITION_TYPE>L</KNOB_POSITION_TYPE>
+		<KNOB_POSITION_VAR>747_IRS_KNOB_#ID#</KNOB_POSITION_VAR>
+		<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
+	</DefaultTemplateParameters>
+
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Switch_#KNOB_NUM_STATE#States">
+			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+			<ARROW_TYPE>Curved</ARROW_TYPE>
+			<SWITCH_POSITION_TYPE>#KNOB_POSITION_TYPE#</SWITCH_POSITION_TYPE>
+			<SWITCH_POSITION_VAR>#KNOB_POSITION_VAR#</SWITCH_POSITION_VAR>
+		</UseTemplate>
+	</Component>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Aircond_Knob_Template">
+	<DefaultTemplateParameters>
+		<ID>1</ID>
+	</DefaultTemplateParameters>
+
+	<UseTemplate Name="ASOBO_AIRLINER_Aircond_Knob_SubTemplate">
+	</UseTemplate>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Aircond_Knob_SubTemplate">
+	<DefaultTemplateParameters>
+		<NODE_ID>knob_ovhd_air_cond_#ID#</NODE_ID>
+		<ANIM_NAME>knob_ovhd_air_cond_#ID#</ANIM_NAME>
+		<WWISE_EVENT>standbypower_selector_knob</WWISE_EVENT>
+		<WWISE_EVENT_1>standbypower_selector_knob</WWISE_EVENT_1>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+		<WWISE_EVENT_2>standbypower_selector_knob</WWISE_EVENT_2>
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+
+		<KNOB_NUM_STATE>7</KNOB_NUM_STATE>
+		<KNOB_POSITION_TYPE>L</KNOB_POSITION_TYPE>
+		<KNOB_POSITION_VAR>747_Aircond_Knob_#ID#</KNOB_POSITION_VAR>
+		<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
+	</DefaultTemplateParameters>
+
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Switch_#KNOB_NUM_STATE#States">
+			<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+			<ARROW_TYPE>Curved</ARROW_TYPE>
+			<SWITCH_POSITION_TYPE>#KNOB_POSITION_TYPE#</SWITCH_POSITION_TYPE>
+			<SWITCH_POSITION_VAR>#KNOB_POSITION_VAR#</SWITCH_POSITION_VAR>
+		</UseTemplate>
+	</Component>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Jettison_Knob_Template">
+	<DefaultTemplateParameters>
+		<ID>1</ID>
+		<NODE_ID>knob_ovhd_start_fuel_jettison_sel</NODE_ID>
+		<ANIM_NAME>ovhd_knob_start_fuel_jettison_sel</ANIM_NAME>
+		<WWISE_EVENT>standbypower_selector_knob</WWISE_EVENT>
+		<WWISE_EVENT_1>standbypower_selector_knob</WWISE_EVENT_1>
+		<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+		<WWISE_EVENT_2>standbypower_selector_knob</WWISE_EVENT_2>
+		<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+
+		<KNOB_NUM_STATE>5</KNOB_NUM_STATE>
+		<KNOB_POSITION_TYPE>L</KNOB_POSITION_TYPE>
+		<KNOB_POSITION_VAR>747_JETTISON_KNOB_POS</KNOB_POSITION_VAR>
+		<ANIMCURSOR_MAX>1</ANIMCURSOR_MAX>
+	</DefaultTemplateParameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_GT_Switch_#KNOB_NUM_STATE#States">
+				<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
+				<ARROW_TYPE>Curved</ARROW_TYPE>
+				<SWITCH_POSITION_TYPE>#KNOB_POSITION_TYPE#</SWITCH_POSITION_TYPE>
+				<SWITCH_POSITION_VAR>#KNOB_POSITION_VAR#</SWITCH_POSITION_VAR>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="ASOBO_AIRLINER_Fuel_To_Remain_Knob_Template">
+	<DefaultTemplateParameters>
+	<ID>1</ID>
+	<ANIM_NAME>ovhd_knob_start_fuel_to_remain</ANIM_NAME>
+	<ANIMREF_ID>-1</ANIMREF_ID>
+	<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
+	<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
+	<INCREMENTATION_INDEX>0</INCREMENTATION_INDEX>
+	<WWISE_EVENT>autopilot_altitude_knob</WWISE_EVENT>
+	<COUNT>36</COUNT>
+	<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+	<THRESHOLD_X_MOUSE>0.01</THRESHOLD_X_MOUSE>
+	</DefaultTemplateParameters>
+
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+			<CLOCKWISE_CODE>
+				(L:747_FUEL_TO_REMAIN) 0.5 + (&gt;L:747_FUEL_TO_REMAIN)
+			</CLOCKWISE_CODE>
+			<ANTICLOCKWISE_CODE>
+				(L:747_FUEL_TO_REMAIN) 0.5 - (&gt;L:747_FUEL_TO_REMAIN)
+			</ANTICLOCKWISE_CODE>
+		</UseTemplate>
+	</Component>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Knob_Baro_Template">
+	<DefaultTemplateParameters>
+		<ID>1</ID>
+		<ANIMREF_ID>-1</ANIMREF_ID>
+		<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_BARO_KNOB_INCREASE</ANIMTIP_0>
+		<ANIMTIP_0_ON_CURSOR>TurnRight</ANIMTIP_0_ON_CURSOR>
+		<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_BARO_KNOB_DECREASE</ANIMTIP_1>
+		<ANIMTIP_1_ON_CURSOR>TurnLeft</ANIMTIP_1_ON_CURSOR>
+		<ANIMTIP_2>TT:COCKPIT.TOOLTIPS.BARO_REF_SET_STD</ANIMTIP_2>
+		<ANIMTIP_2_ON_CURSOR>DownArrow</ANIMTIP_2_ON_CURSOR>
+		<ANIMTIP_3>TT:COCKPIT.TOOLTIPS.BARO_ENABLE_SELECTION</ANIMTIP_3>
+		<ANIMTIP_3_ON_CURSOR>UpArrow</ANIMTIP_3_ON_CURSOR>
+		<ANIMTIP_4>TT:COCKPIT.TOOLTIPS.BARO_REF_SET_STD</ANIMTIP_4>
+		<ANIMTIP_4_ON_CURSOR>Hand</ANIMTIP_4_ON_CURSOR>
+	</DefaultTemplateParameters>
+
+	<UseTemplate Name="ASOBO_GT_Helper_Suffix_ID_Appender">
+		<TEMPLATE_TO_CALL>SALTY_AUTOPILOT_Knob_Baro_SubTemplate1</TEMPLATE_TO_CALL>
+	</UseTemplate>
+</Template>
+
+<Template Name="SALTY_AUTOPILOT_Knob_Baro_SubTemplate1">
+	<DefaultTemplateParameters>
+		<NODE_ID>AUTOPILOT_Knob_Baro_#ID##SUFFIX_ID#</NODE_ID>
+		<ANIM_NAME>AUTOPILOT_Knob_Baro_#ID##SUFFIX_ID#</ANIM_NAME>
+		<PART_ID>AUTOPILOT_Knob_Baro</PART_ID>
+		<ANIMREF_ID>-1</ANIMREF_ID>
+		<ANIMTIP_0>TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_BARO_KNOB_INCREASE</ANIMTIP_0>
+		<ANIMTIP_0_ON_CURSOR>TurnRight</ANIMTIP_0_ON_CURSOR>
+		<ANIMTIP_1>TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_BARO_KNOB_DECREASE</ANIMTIP_1>
+		<ANIMTIP_1_ON_CURSOR>TurnLeft</ANIMTIP_1_ON_CURSOR>
+
+	</DefaultTemplateParameters>
+	<Component ID="#NODE_ID#" Node="#NODE_ID#">
+		<UseTemplate Name="SALTY_AUTOPILOT_Knob_Baro_SubTemplate2">
+		</UseTemplate>
+	</Component>
+	</Template>
+	<Template Name="SALTY_AUTOPILOT_Knob_Baro_SubTemplate2">
+	<DefaultTemplateParameters>
+		<BARO_ID>#ID#</BARO_ID>
+		<ANIM_NAME_KNOB>#ANIM_NAME#</ANIM_NAME_KNOB>
+		<ANIM_NAME_PUSH>AUTOPILOT_Knob_Baro_#ID#_push#SUFFIX_ID#</ANIM_NAME_PUSH>
+		<Switch Param="AIRLINER_TYPE">
+			<Case Value="A320">
+				<MODE_BARO>0</MODE_BARO>
+				<MODE_QNH>1</MODE_QNH>
+				<MODE_STD>2</MODE_STD>
+				<ANIM_NAME_PUSHPULL>AUTOPILOT_Knob_Baro_#ID#_pushpull#SUFFIX_ID#</ANIM_NAME_PUSHPULL>
+			</Case>
+		</Switch>
+		<Condition Valid="USE_PUSH_STD">
+			<PUSH/>
+		</Condition>
+	</DefaultTemplateParameters>
+
+	<Switch>
+		<Case Check="PUSH">
+			<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
+				<ANTICLOCKWISE_CODE>#BARO_ID# (&gt;K:KOHLSMAN_DEC) (&gt;H:AP_BARO_DEC)</ANTICLOCKWISE_CODE>
+				<CLOCKWISE_CODE>#BARO_ID# (&gt;K:KOHLSMAN_INC) (&gt;H:AP_BARO_INC)</CLOCKWISE_CODE>
+				<LEFT_SINGLE_CODE>#BARO_ID# (&gt;K:BAROMETRIC)</LEFT_SINGLE_CODE>
+				<WWISE_EVENT>autopilot_knob_turn</WWISE_EVENT>
+				<COUNT>36</COUNT>
+				<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>
+				<WWISE_EVENT_2>autopilot_knob_push_button_off</WWISE_EVENT_2>
+				<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+				<THRESHOLD_X_MOUSE>0.01</THRESHOLD_X_MOUSE>
+				<THRESHOLD_INPUT>0.05</THRESHOLD_INPUT>
+				<THRESHOLD_MOUSE>0.01</THRESHOLD_MOUSE>
+			</UseTemplate>
+		</Case>
+		<Case Check="AIRLINER_TYPE">
+			<Switch Param="AIRLINER_TYPE">
+				<Case Value="A320">
+					<UseTemplate Name="ASOBO_GT_Knob_Infinite_PushPull">
+						<ANTICLOCKWISE_CODE>
+							#BARO_ID# (&gt;K:KOHLSMAN_DEC) (&gt;H:AP_BARO_Down)
+						</ANTICLOCKWISE_CODE>
+						<CLOCKWISE_CODE>
+							#BARO_ID# (&gt;K:KOHLSMAN_INC) (&gt;H:AP_BARO_Up)
+						</CLOCKWISE_CODE>
+						<CLOCKWISE_CONDITION>(L:XMLVAR_Baro#BARO_ID#_Mode) #MODE_STD# !=</CLOCKWISE_CONDITION>
+						<ANTICLOCKWISE_CONDITION>(L:XMLVAR_Baro#BARO_ID#_Mode) #MODE_STD# !=</ANTICLOCKWISE_CONDITION>
+						<PULL_CODE>
+							#MODE_STD# (&gt;L:XMLVAR_Baro#BARO_ID#_Mode)
+						</PULL_CODE>
+						<PUSH_CODE>
+							(L:XMLVAR_Baro#BARO_ID#_Mode) #MODE_STD# == if{ #MODE_BARO# (&gt;L:XMLVAR_Baro#BARO_ID#_Mode) } els{ (L:XMLVAR_Baro#BARO_ID#_Mode) ! (&gt;L:XMLVAR_Baro#BARO_ID#_Mode) }
+						</PUSH_CODE>
+						<CENTER_RADIUS>0</CENTER_RADIUS>
+						<OVERRIDE_PUSH_ANIM_CODE>0 100 (L:XMLVAR_Baro#BARO_ID#_Mode) #MODE_STD# == ? 50 (O:_PushAnimVar) ?</OVERRIDE_PUSH_ANIM_CODE>
+						<WWISE_EVENT>autopilot_selector_knob</WWISE_EVENT>
+						<COUNT>36</COUNT>
+						<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>
+						<WWISE_EVENT_2>autopilot_knob_push_button_off</WWISE_EVENT_2>
+					</UseTemplate>
+				</Case>
+				<Default>
+					<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
+						<ANTICLOCKWISE_CODE>
+							#BARO_ID# (&gt;H:B747_8_PFD_BARO_DEC)
+						</ANTICLOCKWISE_CODE>
+						<CLOCKWISE_CODE>
+							#BARO_ID# (&gt;H:B747_8_PFD_BARO_INC)
+						</CLOCKWISE_CODE>
+						<LEFT_SINGLE_CODE>
+							(L:XMLVAR_Baro#BARO_ID#_ForcedToSTD) ! (&gt;L:XMLVAR_Baro#BARO_ID#_ForcedToSTD)
+							(L:XMLVAR_Baro#BARO_ID#_ForcedToSTD) if{
+								(A:KOHLSMAN SETTING MB:1, mbars) 16 * (&gt;L:XMLVAR_Baro#BARO_ID#_SavedPressure)
+								#BARO_ID# (&gt;K:BAROMETRIC_STD_PRESSURE)
+							} els{
+								#BARO_ID# (L:XMLVAR_Baro#BARO_ID#_SavedPressure) (&gt;K:2:KOHLSMAN_SET) (&gt;H:B747_8_PFD_STD_PUSH)
+							}
+						</LEFT_SINGLE_CODE>
+						<WWISE_EVENT>autopilot_selector_knob</WWISE_EVENT>
+						<COUNT>36</COUNT>
+						<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>
+						<NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+						<WWISE_EVENT_2>autopilot_knob_push_button_off</WWISE_EVENT_2>
+						<NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+					</UseTemplate>
+				</Default>
+			</Switch>
+		</Case>
+		<Default>
+			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+				<ANTICLOCKWISE_CODE>#BARO_ID# (&gt;K:KOHLSMAN_DEC)</ANTICLOCKWISE_CODE>
+				<CLOCKWISE_CODE>#BARO_ID# (&gt;K:KOHLSMAN_INC)</CLOCKWISE_CODE>
+				<WWISE_EVENT>autopilot_knob</WWISE_EVENT>
+				<COUNT>36</COUNT>
+			</UseTemplate>
+		</Default>
+	</Switch>
+	</Template>
+
+	<Template Name="SALTY_ECL_SEL_Template">
+        <DefaultTemplateParameters>
+			<WWISE_EVENT_1>autopilot_knob_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>autopilot_knob_push_button_off</WWISE_EVENT_2>
+            <NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+            <NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+        </DefaultTemplateParameters>
+
+        <Component ID="#NODE_ID#" Node="#NODE_ID#">
+            <UseTemplate Name="ASOBO_GT_Push_Button">
+                <ANIM_NAME>#ANIM_NAME_BUTTON#</ANIM_NAME>
+                <LEFT_SINGLE_CODE>
+                1 (&gt;H:B747_8_EICAS_2_ECL_SEL_PUSH)
+                </LEFT_SINGLE_CODE>
+            </UseTemplate>
+        </Component>
+	</Template>
+	<Template Name="SALTY_ECL_Knob_Template">
+		<DefaultTemplateParameters>
+			<ID>1</ID>
+			<ANIMREF_ID>-1</ANIMREF_ID>
+			<ANIMTIP_0_ON_CURSOR>TurnLeft</ANIMTIP_0_ON_CURSOR>
+			<ANIMTIP_1_ON_CURSOR>TurnRight</ANIMTIP_1_ON_CURSOR>
+			<INCREMENTATION_INDEX>0</INCREMENTATION_INDEX>
+			<WWISE_EVENT>autopilot_altitude_knob</WWISE_EVENT>
+			<COUNT>360</COUNT>
+			<THRESHOLD_X_INPUT>0.05</THRESHOLD_X_INPUT>
+			<THRESHOLD_X_MOUSE>0.01</THRESHOLD_X_MOUSE>
+		</DefaultTemplateParameters>
+
+		<Component ID="#NODE_ID#" Node="#NODE_ID#">
+			<UseTemplate Name="ASOBO_GT_Knob_Infinite">
+				<CLOCKWISE_CODE>
+                1 (&gt;H:B747_8_EICAS_2_ECL_KNOB_FWD)
+				</CLOCKWISE_CODE>
+				<ANTICLOCKWISE_CODE>
+                1 (&gt;H:B747_8_EICAS_2_ECL_KNOB_BACK)
+				</ANTICLOCKWISE_CODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_FlightDirector_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<FD_TOGGLE_CONDITION>1</FD_TOGGLE_CONDITION>
+		</Parameters>
+		<Parameters Type="Default">
+			<DEFAULT_NAME>FlightDirector</DEFAULT_NAME>
+			<Condition Check="TOGGLEABLE">
+				<True>
+					<ANIM_CODE>(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) 100 *</ANIM_CODE>
+				</True>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<LEFT_SINGLE_CODE> (&gt;B:AUTOPILOT_FD_1_Mode_Toggle) (&gt;H:B747_8_FMC_1_AP_FD_TOGGLE)</LEFT_SINGLE_CODE>
+			<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#</EMISSIVE_SIMVAR_ACTIVE>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#</SIMVAR_TO_WATCH_0>
+			<Condition Valid="ON_WHEN_AP_MODE_TURNED_ON">
+				<SIMVAR_TO_WATCH_1>AUTOPILOT MASTER</SIMVAR_TO_WATCH_1>
+				<GET_INIT_STATE_EXTERNAL>
+					(A:AUTOPILOT MASTER, Bool) (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) or sp0
+					l0 (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) ! and if{ #ID# (&gt;K:TOGGLE_FLIGHT_DIRECTOR) } l0
+				</GET_INIT_STATE_EXTERNAL>
+				<ON_STATE_CHANGED_NEW_STATE_TO_POS_EXTERNAL>(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool)</ON_STATE_CHANGED_NEW_STATE_TO_POS_EXTERNAL>
+			</Condition>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE:#ID#, Bool) sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<SET_STATE_EXTERNAL>#FD_TOGGLE_CONDITION# if{ #ID# (&gt;K:TOGGLE_FLIGHT_DIRECTOR)}</SET_STATE_EXTERNAL>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_FLIGHTDIRECTOR_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_FLIGHTDIRECTOR_TITLE</TOOLTIP_TITLE>
+			<BTN_ID>FD_#ID#_Mode</BTN_ID>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_Localizer_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Localizer</DEFAULT_NAME>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_CODE_ACTIVE>(L:AP_LOC_ARMED, Bool) (L:AP_APP_ARMED, Bool) ! and</EMISSIVE_CODE_ACTIVE>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and sp0</GET_STATE_EXTERNAL>
+			<!-- To APPROACH and LOCALIZER are the same as far as toggling, so has to toggle twice if already active from other mode -->
+			<SET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and if{ (&gt;H:B747_8_FMC_1_AP_LOC_ARMED) } (&gt;H:B747_8_FMC_1_AP_LOC_ARMED)</SET_STATE_EXTERNAL>
+			<BTN_ID>Localizer_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_LOC_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_LOC_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_Approach_Template">
+		<Parameters Type="Default">
+			<MAX_BANK_DEGREES>30</MAX_BANK_DEGREES>
+			<DEFAULT_NAME>Approach</DEFAULT_NAME>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="DISABLE_GPS_MODE">
+				<True>
+					<GPS_DISABLE_CODE>(A:GPS DRIVES NAV1, Bool) if{ (A:GPS APPROACH APPROACH TYPE, Enum) 4 == if{ (&gt;K:TOGGLE_GPS_DRIVES_NAV1) } } els{ (A:GPS APPROACH APPROACH TYPE, Enum) 10 == if{ (&gt;K:TOGGLE_GPS_DRIVES_NAV1) } }</GPS_DISABLE_CODE>
+				</True>
+				<False>
+					<GPS_DISABLE_CODE/>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<EMISSIVE_CODE_ACTIVE>(L:AP_APP_ARMED, Bool)</EMISSIVE_CODE_ACTIVE>
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>(A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) and sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#GPS_DISABLE_CODE# (A:AUTOPILOT APPROACH HOLD, Bool) (A:AUTOPILOT GLIDESLOPE HOLD, Bool) ! and if{ (&gt;H:B747_8_FMC_1_AP_APP_ARMED) } (&gt;H:B747_8_FMC_1_AP_APP_ARMED)</SET_STATE_EXTERNAL>
+			<BTN_ID>Approach_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_APPROACH_ACTION</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_APPROACH_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_Vertical_Navigation_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>VerticalNavigation</DEFAULT_NAME>
+			<ON_VNAV_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Default>
+					<EMISSIVE_DEFAULT_NAME>AUTOPILOT_Push_VerticalNavigation_Text</EMISSIVE_DEFAULT_NAME>
+				</Default>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_VNAV_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:WT_CJ4_VNAV_ON)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_VNAV_ARMED)</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_VNAV)</SET_STATE_EXTERNAL>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(L:XMLVAR_VNAVButtonValue) ! (&gt;L:XMLVAR_VNAVButtonValue)</SET_STATE_EXTERNAL>
+					<EMISSIVE_CODE_ACTIVE>(L:XMLVAR_VNAVButtonValue)</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(L:XMLVAR_VNAVButtonValue)</IS_SWITCH_ON>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>VNAV_Mode</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_VERTICALNAVIGATION_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_VERTICALNAVIGATION_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_FlightLevelChange_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>FlightLevelChange</DEFAULT_NAME>
+			<ON_FLC_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_FLC_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_FLCH_ACTIVE)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_FLCH_ACTIVE) (L:WT_CJ4_VNAV_ON) ! and</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_FLCH)</SET_STATE_EXTERNAL>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:FLIGHT_LEVEL_CHANGE) (A:AIRSPEED INDICATED, knots) (&gt;K:AP_SPD_VAR_SET)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT FLIGHT LEVEL CHANGE</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT FLIGHT LEVEL CHANGE</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>FLC_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_FLIGHTLEVELCHANGE_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_FLIGHTLEVELCHANGE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_VerticalSpeed_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>VerticalSpeed</DEFAULT_NAME>
+			<ON_VS_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_VS_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_VS_ACTIVE)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_VS_ACTIVE) (L:WT_CJ4_VNAV_ON) ! and</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_VSPEED)</SET_STATE_EXTERNAL>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:AP_PANEL_VS_HOLD)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT VERTICAL HOLD, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT VERTICAL HOLD</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT VERTICAL HOLD</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>VS_Mode</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_VERTICALSPEED_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_VERTICALSPEED_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
+<Template Name="SALTY_AUTOPILOT_Push_Altitude_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Altitude</DEFAULT_NAME>
+			<ON_ALTITUDE_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_ALTITUDE_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<IS_SWITCH_ON>(L:AP_ALT_HOLD_ACTIVE)</IS_SWITCH_ON>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_ALT_HOLD_ACTIVE) (L:WT_CJ4_VNAV_ON) ! and</EMISSIVE_CODE_ACTIVE>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_ALT_HOLD)</SET_STATE_EXTERNAL>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>(&gt;K:AP_ALT_HOLD)</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT ALTITUDE LOCK, Bool)</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT ALTITUDE LOCK</SIMVAR_TO_WATCH_0>
+					<EMISSIVE_SIMVAR_ACTIVE>AUTOPILOT ALTITUDE LOCK</EMISSIVE_SIMVAR_ACTIVE>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+			<BTN_ID>Altitude_Button</BTN_ID>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_ALTITUDE_ACTION_SET</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_ALTITUDE_TITLE</TOOLTIP_TITLE>
+		</UseTemplate>
+	</Template>
+
+	<Template Name="SALTY_AUTOPILOT_Push_Speed_Template">
+		<Parameters Type="Default">
+			<DEFAULT_NAME>Speed</DEFAULT_NAME>
+			<IS_MACH_CODE>0</IS_MACH_CODE>
+			<ON_SPEED_MODE_SWITCH/>
+		</Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+					<EMISSIVE_CODE_ACTIVE>(L:AP_SPD_ACTIVE) (L:WT_CJ4_VNAV_ON) ! and</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(L:AP_SPD_ACTIVE)</IS_SWITCH_ON>
+				</Case>
+				<Case Value="AS01B">
+					<IS_USING_L_VAR_FOR_STATE>True</IS_USING_L_VAR_FOR_STATE>
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+					<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT THROTTLE ARM, Bool) (A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or and</EMISSIVE_CODE_ACTIVE>
+					<IS_SWITCH_ON>(A:AUTOPILOT THROTTLE ARM, Bool) (A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or and</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT AIRSPEED HOLD</SIMVAR_TO_WATCH_0>
+					<SIMVAR_TO_WATCH_1>AUTOPILOT MACH HOLD</SIMVAR_TO_WATCH_1>
+					<SIMVAR_TO_WATCH_2>AUTOPILOT THROTTLE ARM</SIMVAR_TO_WATCH_2>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_SPEED_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
+		<Parameters Type="Override">
+			<Condition Valid="IS_USING_L_VAR_FOR_STATE">
+				<True>
+					<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_SPD)</SET_STATE_EXTERNAL>
+					<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_AUTOPILOT_PUSH_SPEED_ACTION</TT_DESCRIPTION_ID>
+					<TOOLTIP_TITLE>@TT_Package.AIRLINER_AUTOPILOT_PUSH_SPEED_TITLE</TOOLTIP_TITLE>
+					<BTN_ID>IAS_Mode</BTN_ID>
+				</True>
+				<False>
+					<SET_STATE_EXTERNAL>#IS_MACH_CODE# if{ (&gt;K:AP_PANEL_MACH_HOLD) } els{ (&gt;K:AP_PANEL_SPEED_HOLD) }</SET_STATE_EXTERNAL>
+					<IS_SWITCH_ON>(A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or</IS_SWITCH_ON>
+					<SIMVAR_TO_WATCH_0>AUTOPILOT AIRSPEED HOLD</SIMVAR_TO_WATCH_0>
+					<SIMVAR_TO_WATCH_1>AUTOPILOT MACH HOLD</SIMVAR_TO_WATCH_1>
+					<EMISSIVE_CODE_ACTIVE>(A:AUTOPILOT AIRSPEED HOLD, Bool) (A:AUTOPILOT MACH HOLD, Bool) or</EMISSIVE_CODE_ACTIVE>
+					<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_SPEEDMODE_ACTION_SET</TT_DESCRIPTION_ID>
+					<TT_DESCRIPTION_IS_DYNAMIC>True</TT_DESCRIPTION_IS_DYNAMIC>
+					<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_SPEEDMODE_TITLE</TOOLTIP_TITLE>
+					<BTN_ID>Speed_Mode</BTN_ID>
+				</False>
+			</Condition>
+		</Parameters>
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
+			<GET_STATE_EXTERNAL>#IS_SWITCH_ON# sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>#SET_STATE_EXTERNAL# #ON_AP_MODE_STATE_CHANGED#</SET_STATE_EXTERNAL>
+		</UseTemplate>
+	</Template>
+
+</ModelBehaviors>
