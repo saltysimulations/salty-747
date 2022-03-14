@@ -257,7 +257,7 @@ class WT_VerticalAutopilot {
     }
 
     get glideslopeFpa() {
-        return SimVar.GetSimVarValue("NAV RAW GLIDE SLOPE:" + this.navMode, "Degree");
+        return SimVar.GetSimVarValue("NAV RAW GLIDE SLOPE:3", "Degree");
     }
 
     get approachMode() {
@@ -290,6 +290,13 @@ class WT_VerticalAutopilot {
         this._vnavState = this.checkVnavState();
         this._glidepathStatus = this.checkGlidepathStatus();
         this._glideslopeStatus = this.checkGlideslopeStatus();
+        if (this._glideslopeStatus === GlideslopeStatus.GS_ACTIVE) {
+            if (!SimVar.GetSimVarValue("AUTOPILOT GLIDESLOPE ACTIVE", "bool")) {
+                SimVar.SetSimVarValue("K:AP_APR_HOLD_ON", "bool", 1);
+                this._navModeSelector.currentVerticalActiveState = VerticalNavModeState.GS;
+            }
+            return;
+        }
         switch (this._vnavPathStatus) {
             case VnavPathStatus.NONE:
                 break;
@@ -553,7 +560,7 @@ class WT_VerticalAutopilot {
     }
 
     canGlideslopeActivate() {
-        const gsi = SimVar.GetSimVarValue("NAV GSI:" + this.navMode, "number");
+        const gsi = SimVar.GetSimVarValue("NAV GSI:3", "number");
         if (gsi < 50 && gsi > -50 && gsi != 0) {
             return true;
         }
@@ -633,8 +640,8 @@ class WT_VerticalAutopilot {
     }
 
     trackGlideslope() {
-        const gsi = SimVar.GetSimVarValue("NAV GSI:" + this.navMode, "number");
-        const gslla = SimVar.GetSimVarValue("NAV GS LATLONALT:" + this.navMode, "latlonalt");
+        const gsi = SimVar.GetSimVarValue("NAV GSI:3", "number");
+        const gslla = SimVar.GetSimVarValue("NAV GS LATLONALT:3", "latlonalt");
         const distance = Avionics.Utils.computeDistance(this._vnav._currPos, gslla);
         let correctedgsi = gsi;
         if (distance) {

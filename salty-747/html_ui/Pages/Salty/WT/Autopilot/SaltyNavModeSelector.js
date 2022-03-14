@@ -240,12 +240,9 @@
       if (mode === LateralNavModeState.APPR) {
         if (this.approachMode === WT_ApproachType.RNAV && this.lNavModeState === LNavModeState.FMS) {
           mode = "LNV1";
-        } else if (this.approachMode === WT_ApproachType.ILS || this.lNavModeState === LNavModeState.NAV1) {
+        } else {
           mode = "LOC1";
-        } else if (this.lNavModeState === LNavModeState.NAV2) {
-          mode = "LOC2";
-        }
-
+        } 
         mode = "APPR " + mode;
       }
 
@@ -1209,12 +1206,10 @@
           break;
         case WT_ApproachType.NONE:
         case WT_ApproachType.VISUAL:
-          if (this.lNavModeState === LNavModeState.NAV1 || this.lNavModeState === LNavModeState.NAV2) {
             const navSource = 3;
             if (SimVar.GetSimVarValue(`NAV HAS LOCALIZER:` + navSource, 'Bool') !== 0) {
               this.currentLateralArmedState = this.currentLateralArmedState !== LateralNavModeState.APPR ? LateralNavModeState.APPR : LateralNavModeState.NONE;
             }
-          }
           break;
       }
     };
@@ -1406,8 +1401,8 @@
 
     if (this.glidepathState === GlidepathStatus.GP_ACTIVE && !SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
       SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "number", 1);
-    } else if (this.glideslopeState === GlideslopeStatus.GS_ACTIVE && !SimVar.GetSimVarValue("AUTOPILOT VERTICAL HOLD", "Boolean")) {
-      SimVar.SetSimVarValue("K:AP_PANEL_VS_HOLD", "number", 1);
+    } else if (this.glideslopeState === GlideslopeStatus.GS_ACTIVE) {
+      SimVar.SetSimVarValue("K:AP_APR_HOLD_ON", "bool", 1);
     }
     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
     SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
