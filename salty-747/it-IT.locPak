@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "it-IT",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "Il 747 viene concepito per la prima volta negli anni '60 come proposta di Boeing per uno studio dell'aeronautica statunitense su velivoli da trasporto strategico sovradimensionati. L'ampio aereo commerciale di linea viene poi inserito all'interno del servizio pubblico della Pan Am World Airways nel 1970, dove viene soprannominato il primo \"Jumbo Jet\" del settore e dove detiene il record di capacità passeggeri per 37 anni.<\/br><\/br>Dopo decenni di sperimentazione con modelli a maggiore capacità, nel 2004 Boeing annuncia il lancio del 747 Advanced, un modello allungato denominato ufficialmente 747-8 l'anno successivo, con la presentazione di una variante cargo (747-8F) nell'ottobre 2011 e di una variante passeggeri intercontinentale (747-8I) per Lufthansa nel giugno 2012.<\/br><\/br>Affermandosi come evoluzione del 747-400, il 747-8 perfeziona e aggiorna i motori del suo predecessore, utilizzando inoltre la vasta tecnologia per la cabina di pilotaggio del 787 Dreamliner. Ne risulta un propulsore leggero ad alta tecnologia, progettato per potenziare le prestazioni e diminuire rumore ed emissioni. Il design è ulteriormente migliorato grazie a un sistema alare completamente rinnovato che riduce la turbolenza di scia, la resistenza e il consumo di carburante, aumentando l'autonomia e l'aerodinamica generale.<\/br><\/br>Con le sue dimensioni da super jumbo jet e un avanzamento ingegneristico equivalente a 60 anni di esperienza, il 747-8 si distanzia facilmente dalle sue origini. Ma è sufficiente uno sguardo alla sua silhouette per farne trasparire il lignaggio, con le eleganti curve della struttura a due piani che lo rendono uno degli aeromobili più riconoscibili al mondo, per sempre degno del grazioso soprannome conferito al primo esemplare della linea: la \"regina dei cieli\".",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Regola a sinistra la rotta selezionata",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Regola a destra la rotta selezionata"
+    }
+  }
+}

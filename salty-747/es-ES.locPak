@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "es-ES",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "El 747 fue concebido por primera vez en los años 60 como un estudio que Boeing le propuso a las Fuerzas Aéreas de los EE. UU. sobre aeronaves de transporte estratégico de gran tamaño. El avión comercial de fuselaje ancho entró en servicio público con Pan Am World Airways en 1970, donde se le empezó a conocer como el primer jumbo jet de la industria y ostentó el récord de capacidad de pasajeros durante 37 años.<\/br><\/br>Después de décadas profundizando en versiones de mayor capacidad, en 2004 Boeing anunció el 747 Advanced. Era un modelo más afinado al que se designó oficialmente 747-8 un año más tarde. Contaba con una variante de carga (747-8F), que se lanzó en octubre de 2011, y una variante intercontinental (747-8I) para los pasajeros que volaran con Lufthansa en junio de 2012.<\/br><\/br>Como evolución del 747-400, el 747-8 refina y mejora los motores de su predecesor y, además, utiliza la tecnología de cabina del 787 Dreamliner. El resultado se traduce en una unidad de potencia de alta tecnología y bajo peso diseñada para un mayor rendimiento, menor ruido y mínimas emisiones. El diseño mejoraría aún más con un sistema de alas completamente renovado que disminuye la estela turbulenta y la resistencia, favoreciendo el ahorro de combustible, el alcance y la aerodinámica general.<\/br><\/br>Con su tamaño de superjumbo y 60 años de desarrollo en ingeniería, el 747-8 parece que se ha alejado mucho de sus orígenes. Sin embargo, una mirada a su silueta y su brillante categoría a través de las elegantes curvas de su forma de dos pisos lo convierten en una de las aeronaves más reconocibles del mundo, siempre digna del gracioso apodo otorgado a la primera de su línea: la Reina de los cielos.",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Ajustar rumbo seleccionado a la izquierda",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Ajustar rumbo seleccionado a la derecha"
+    }
+  }
+}
