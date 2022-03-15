@@ -155,7 +155,7 @@ class B747_8_FMC_ProgPage {
         if (distanceToTOD > 0.1) {
             if (isFinite(distanceToTOD) && distanceToTOD < 201) {
                 toToDText = "TO T/D";
-                if (distanceToTOD > 0.1) {
+                if (distanceToTOD < 0.5) {
                     todDistanceCell = "NOW";
                 } else {
                     todDistanceCell = distanceToTOD.toFixed(0)  + "NM";
