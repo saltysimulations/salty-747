@@ -53,13 +53,15 @@ class FMC_ATC_LogonStatus {
                 fltNoCell = store.fltNo
             }
             if (store.at != "") {
-                atcCtrCell = store.actCtr
+                //atcCtrCell = store.actCtr
+                atcCtrCell = "XXXX"
             }
             if (store.nextCtr != "") {
                 nextCtrCell = store.nextCtr
             }
             if (store.maxUlDelay != "") {
-                maxUlDelayCell = store.maxUlDelay
+                //maxUlDelayCell = store.maxUlDelay
+                maxUlDelayCell = 300
             }
             fmc.setTemplate([
                 ["ATC LOGON/STATUS", "1", "2"],
@@ -122,20 +124,9 @@ class FMC_ATC_LogonStatus {
         }
 
         fmc.onRightInput[0] = () => {
+            HoppieApi.sendLogon("PMDY", "DLH99");
             if (store.logonTo != "" && store.fltNo != "" && fmc.atcComm.maxUlDelay != "") {
                 store.sendStatus = "SENDING\xa0";
-                updateView();
-                setTimeout(function () {
-                    store.sendStatus = "SENT\xa0";
-                    fmc.atcComm.estab = true;
-                    fmc.atcComm.loggedTo = store.logonTo;
-                    fmc.atcComm.maxUlDelay = store.maxUlDelay;
-                    fmc.atcComm.dlnkStatus = "READY";
-                    updateView();
-                }, fmc.getInsertDelay());
-                setTimeout(function () {
-                    FMC_ATC_Index.ShowPage(fmc)
-                }, fmc.getUplinkDelay());
             }
         }
 

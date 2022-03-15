@@ -6,7 +6,7 @@ class FMC_COMM_PDC {
         let deptCell = "----";
         let atisCell = "□";
         let standCell = "----";
-        let acTypeCell = "B748";
+        let acTypeCell = "----";
         let destCell = "----";
         let freeTextCell = "<";
         let atsCell = "□□□□";
@@ -34,6 +34,9 @@ class FMC_COMM_PDC {
             standCell = fmc.pdc.stand;
         }
         if (fmc.pdc.acType != "") {
+            acTypeCell = fmc.pdc.acType;
+        } else {
+            fmc.pdc.acType = "B748";
             acTypeCell = fmc.pdc.acType;
         }
         if (fmc.atcComm.dest != "") {
@@ -63,7 +66,7 @@ class FMC_COMM_PDC {
                 ["----------", "TO ATS UNIT"],
                 ["", `${atsCell}`],
                 ["\xa0RETURN TO", ""],
-                ["<REQUESTS", `${store.sendStatus}[color]inop`]
+                ["<REQUESTS", `${store.sendStatus}`]
             ]);
         }
         updateView();
@@ -156,21 +159,16 @@ class FMC_COMM_PDC {
             FMC_COMM_PDC.ShowPage(fmc);
         };
 
-        /*fmc.onRightInput[5] = () => {
-            store.sendStatus = "SENDING";
-            updateView();
-            setTimeout(
-                function() {
-                    store.sendStatus = "SENT";
-                    updateView();
-                }, 1000
-            );
-            setTimeout(
-                function() {
-                    store.sendStatus = "SEND>";
-                    updateView();
-                }, 5000
-            );
-        };*/
+        fmc.onRightInput[5] = () => {
+            fmc.pdc.fltNo = "BAW21G";
+            fmc.pdc.ats = "PMDY";
+            fmc.pdc.origin = "EGLL";
+            fmc.pdc.dest = "KBOS";
+            fmc.pdc.stand = "575";
+            fmc.pdc.atis = "A";
+            fmc.pdc.freeText = "";
+            let msg = "REQUEST PREDEP CLEARANCE%0D%0A" + fmc.atcComm.fltNo + " " + fmc.pdc.acType + " TO " + fmc.pdc.dest + "%0D%0AAT " + fmc.pdc.origin + " STAND " + fmc.pdc.stand + "%0D%0AATIS " + fmc.pdc.atis + "%0D%0A" + fmc.pdc.freeText;
+            HoppieApi.sendTelex(fmc.pdc.ats, fmc.atcComm.fltNo, msg)
+        };
     }
 }

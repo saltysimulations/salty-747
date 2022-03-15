@@ -145,7 +145,7 @@ const getSimBriefPlan = (fmc, store, updateView) => {
             fmc.simbrief["costIndex"] = data.general.costindex;
             fmc.simbrief["navlog"] = data.navlog.fix;
             fmc.simbrief["icao_airline"] = typeof data.general.icao_airline === 'string' ? data.general.icao_airline : "";
-            fmc.simbrief["flight_number"] = data.general.flight_number;
+            fmc.simbrief["flight_number"] = data.atc.callsign;
             fmc.simbrief["alternateIcao"] = data.alternate.icao_code;
             fmc.simbrief["avgTropopause"] = data.general.avg_tropopause;
             /* TIMES */
