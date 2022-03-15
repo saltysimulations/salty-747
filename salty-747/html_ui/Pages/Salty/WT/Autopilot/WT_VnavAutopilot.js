@@ -290,9 +290,13 @@ class WT_VerticalAutopilot {
         this._vnavState = this.checkVnavState();
         this._glidepathStatus = this.checkGlidepathStatus();
         this._glideslopeStatus = this.checkGlideslopeStatus();
-        if (this._glideslopeStatus === GlideslopeStatus.GS_ACTIVE) {
+        if (this._glideslopeStatus === GlideslopeStatus.GS_ACTIVE && this._navModeSelector.currentVerticalActiveState != VerticalNavModeState.GA) {
             if (!SimVar.GetSimVarValue("AUTOPILOT GLIDESLOPE ACTIVE", "bool")) {
                 SimVar.SetSimVarValue("K:AP_APR_HOLD_ON", "bool", 1);
+                SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+                SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
+                SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 0);
+                SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
                 this._navModeSelector.currentVerticalActiveState = VerticalNavModeState.GS;
             }
             return;
