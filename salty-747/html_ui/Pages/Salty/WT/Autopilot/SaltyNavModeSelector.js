@@ -482,7 +482,9 @@
    * Handles when the VS button is pressed.
    */
   handleVSPressed() {
-
+    if (this.currentVerticalActiveState === VerticalNavModeState.GS) {
+      return;
+    }
     switch (this.currentVerticalActiveState) {
       case VerticalNavModeState.TO:
       case VerticalNavModeState.GA:
@@ -515,6 +517,9 @@
  * Handles when the FLC button is pressed.
  */
   handleFLCPressed() {
+    if (this.currentVerticalActiveState === VerticalNavModeState.GS) {
+      return;
+    }
     switch (this.currentVerticalActiveState) {
       case VerticalNavModeState.TO:
       case VerticalNavModeState.GA:
@@ -620,6 +625,9 @@
   * Handles when the Altitude Intervention Knob is pressed.
   */
      handleAltHoldPressed() {
+      if (this.currentVerticalActiveState === VerticalNavModeState.GS) {
+        return;
+      }
       switch (this.currentVerticalActiveState) {
         case VerticalNavModeState.TO:
         case VerticalNavModeState.GA:
@@ -741,6 +749,9 @@
    * Handles when the VNAV button is pressed.
    */
   handleVNAVPressed() {
+    if (this.currentVerticalActiveState === VerticalNavModeState.GS) {
+      return;
+    }
     if (this.currentVerticalActiveState !== VerticalNavModeState.GP && this.currentVerticalActiveState !== VerticalNavModeState.GS) {
       if (Simplane.getIsGrounded()) {
         this.isVNAVOn = !this.isVNAVOn;
@@ -997,6 +1008,9 @@
    * Handles when the HDG button is pressed.
    */
   handleHDGPressed() {
+    if (this.currentVerticalActiveState === VerticalNavModeState.GS) {
+      return;
+    }
     switch (this.currentLateralActiveState) {
       case LateralNavModeState.ROLL:
       case LateralNavModeState.NAV:
@@ -1040,6 +1054,9 @@
     }
   }
   handleHDGHOLDPressed() {
+    if (this.currentVerticalActiveState === VerticalNavModeState.GS) {
+      return;
+    }
     this._headingHoldValue = Simplane.getHeadingMagnetic();
     switch (this.currentLateralActiveState) {
       case LateralNavModeState.ROLL:
@@ -1101,6 +1118,9 @@
    * Handles when the NAV button is pressed.
    */
   handleNAVPressed() {
+    if (this.currentVerticalActiveState === VerticalNavModeState.GS) {
+      return;
+    }
     if (this.currentLateralArmedState !== LateralNavModeState.LNAV) {
       switch (this.currentLateralActiveState) {
         case LateralNavModeState.ROLL:
