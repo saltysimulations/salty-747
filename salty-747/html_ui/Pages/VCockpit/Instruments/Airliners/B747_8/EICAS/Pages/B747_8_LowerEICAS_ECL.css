@@ -8,11 +8,11 @@
     --eicasRed: red;
     --eicasMagenta: magenta; }
     :root text {
-      font-family: BoeingEICAS; }
+      font-family: BoeingEFIS; }
 
 @font-face {
-    font-family: "BoeingEICAS";
-    src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+    font-family: "BoeingEFIS";
+    src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
     font-weight: normal;
     font-style: normal; }
 

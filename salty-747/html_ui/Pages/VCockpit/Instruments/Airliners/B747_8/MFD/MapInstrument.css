@@ -2,8 +2,8 @@
   --bodyHeightScale: 1; }
 
 @font-face {
-  font-family: "BoeingEICAS";
-  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-family: "BoeingEFIS";
+  src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
 
@@ -21,7 +21,7 @@ html {
   overflow: hidden; }
   html body {
     -webkit-user-select: none;
-    font-family: "BoeingEICAS" !important;
+    font-family: "BoeingEFIS" !important;
     font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100);
     color: white;
     height: 100%;
