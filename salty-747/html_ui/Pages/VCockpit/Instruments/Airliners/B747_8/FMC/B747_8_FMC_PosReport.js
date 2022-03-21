@@ -146,33 +146,7 @@ class FMC_PosReport {
         };
 
         function getUTC(p) {
-            if (p == "ata") {
-                var utc = new Date();
-                if (utc.getUTCHours() <= 9) {
-                    var utcHours = "0" + utc.getUTCHours();
-                } else {
-                    var utcHours = utc.getUTCHours();
-                }
-                if (utc.getUTCMinutes() <= 9) {
-                    var utcMinutes = "0" + utc.getUTCMinutes();
-                } else {
-                    var utcMinutes = utc.getUTCMinutes();
-                }
-                return utcHours.toString() + utcMinutes.toString() + "Z";
-            } else if (p == "eta") {
-                var utc = new Date();
-                if (utc.getUTCHours() <= 9) {
-                    var utcHours = "0" + utc.getUTCHours();
-                } else {
-                    var utcHours = utc.getUTCHours();
-                }
-                if (utc.getUTCMinutes() <= 9) {
-                    var utcMinutes = "0" + utc.getUTCMinutes();
-                } else {
-                    var utcMinutes = utc.getUTCMinutes();
-                }
-                return utcHours.toString() + utcMinutes.toString() + "Z";
-            } else if (p == "dest") {
+            if (p == "ata" || p == "eta" || p == "dest") {
                 var utc = new Date();
                 if (utc.getUTCHours() <= 9) {
                     var utcHours = "0" + utc.getUTCHours();
