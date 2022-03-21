@@ -15,6 +15,8 @@ class B747_8_FMC_SelectWptPage {
         ];
         const orderedWaypoints = [...waypoints].sort((a, b) => this.calculateDistance(a) - this.calculateDistance(b));
 
+        let alreadyPressed = false;
+
         for (let i = 0; i < 5; i++) {
             const w = orderedWaypoints[i + 5 * page];
             if (w) {
@@ -34,12 +36,16 @@ class B747_8_FMC_SelectWptPage {
                 }
                 rows[2 * i] = [w.ident + t];
                 rows[2 * i + 1] = [freq, w.infos.coordinates.toDegreeString()];
-                fmc.onLeftInput[i] = () => {
-                    callback(w);
-                };
-                fmc.onRightInput[i] = () => {
-                    callback(w);
-                };
+
+                const onInput = () => {
+                    if (!alreadyPressed) {
+                        callback(w);
+                        alreadyPressed = true;
+                    }
+                }
+
+                fmc.onLeftInput[i] = () => onInput();
+                fmc.onRightInput[i] = () => onInput();
             }
         }
         fmc.setTemplate([
