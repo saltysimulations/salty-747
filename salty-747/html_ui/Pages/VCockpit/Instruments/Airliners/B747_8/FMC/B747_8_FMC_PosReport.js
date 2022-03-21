@@ -159,7 +159,7 @@ class FMC_PosReport {
                     var utcMinutes = utc.getUTCMinutes();
                 }
                 return utcHours.toString() + utcMinutes.toString() + "Z";
-            } else if (p == "ete") {
+            } else if (p == "eta") {
                 var utc = new Date();
                 if (utc.getUTCHours() <= 9) {
                     var utcHours = "0" + utc.getUTCHours();

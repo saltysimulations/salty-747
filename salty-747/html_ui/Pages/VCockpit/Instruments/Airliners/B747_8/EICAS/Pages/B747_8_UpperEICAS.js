@@ -162,8 +162,8 @@ var B747_8_UpperEICAS;
             else {
                 this.pressureInfo.style.visibility = "visible";
             }
-            this.cabinAlt.textContent = (Math.round(Simplane.getPressurisationCabinAltitude() / 100) * 100).toFixed(0);
-            this.cabinRate.textContent = (Math.round(Simplane.getPressurisationCabinAltitudeRate() / 100) * 100).toFixed(0);
+            this.cabinAlt.textContent = this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#CAB_ALT_Value"), Simplane.getPressurisationCabinAltitude));
+            this.cabinRate.textContent = this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#RATE_Value"), Simplane.getPressurisationCabinAltitudeRate));
             let deltaPValue = Math.abs(Simplane.getPressurisationDifferential() * 10);
             if (Math.round(deltaPValue) < 10) {
                 this.deltaP.textContent = "0" + deltaPValue.toFixed(0);
