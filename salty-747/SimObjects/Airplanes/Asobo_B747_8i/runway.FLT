@@ -272,7 +272,6 @@ IsUsedForLesson=False
 ForceDisplayUI=False
 MaxBankIndex=6
 
-
 [Controls.0]
 SpoilersHandle=000.00
 FlapsHandle=050.00

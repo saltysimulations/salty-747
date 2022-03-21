@@ -273,7 +273,6 @@ GPSdrivesNAV1=True
 IsUsedForLesson=False
 ForceDisplayUI=False
 
-
 [Controls.0]
 SpoilersHandle=000.00
 FlapsHandle=000.00
