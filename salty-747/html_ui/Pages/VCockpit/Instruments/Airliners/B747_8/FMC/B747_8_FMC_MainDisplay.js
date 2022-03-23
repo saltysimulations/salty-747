@@ -994,7 +994,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             //IDLE at 25' RA if AT still engaged.
-            if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") >= 5) {
+            if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") >= 5 && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GA) {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude < 25 && this.throttleHasIdled === false) {
                     this._navModeSelector.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
