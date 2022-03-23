@@ -166,7 +166,15 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('FD_TOGGLE');
         }
         else if (_event.indexOf("AP_SPD") != -1) {
-
+            const altitude = Simplane.getAltitudeAboveGround();
+            if (altitude >= 400 || this.currentFlightPhase > FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+                if (this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.FLC 
+                && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.TO
+                && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GA
+                && !SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number")) {
+                    this._navModeSelector.activateSpeedMode();
+                }
+            }
         }
         else if (_event.indexOf("AP_SPEED_INTERVENTION") != -1) {
             this.toggleSpeedIntervention();
