@@ -15,7 +15,7 @@ html {
   overflow: hidden; }
   html body {
     -webkit-user-select: none;
-    font-family: "BoeingEICAS";
+    font-family: "BoeingEFIS";
     font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100);
     color: white;
     height: 100%;
@@ -36,8 +36,8 @@ html {
     display: none; }
 
 @font-face {
-  font-family: "BoeingEICAS";
-  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-family: "BoeingEFIS";
+  src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
 
@@ -49,7 +49,7 @@ b747-8-mfd-element {
   width: 100%;
   height: 100%;
   background-color: black;
-  font-family: "BoeingEICAS";
+  font-family: "BoeingEFIS";
   overflow: hidden; }
   b747-8-mfd-element #Electricity {
     width: 100%;
@@ -163,7 +163,7 @@ b747-8-mfd-element {
       b747-8-mfd-element #Mainframe #TopBox text {
         width: 100%;
         height: 100%;
-        font-family: "BoeingEICAS"; }
+        font-family: "BoeingEFIS"; }
       b747-8-mfd-element #Mainframe #TopBox text.Value {
         font-size: 42px;
         fill: white; }
@@ -183,7 +183,7 @@ b747-8-mfd-element {
         font-size: 32px;
         fill: cyan; }
   b747-8-mfd-element #Mainframe #VORDMENavaids {
-    font-family: "BoeingEICAS"; }
+    font-family: "BoeingEFIS"; }
     b747-8-mfd-element #Mainframe #VORDMENavaids div {
       top: 86%;
       width: 25%;
@@ -237,7 +237,7 @@ b747-8-mfd-element {
       b747-8-mfd-element #Mainframe #Symbols text {
         width: 100%;
         height: 100%;
-        font-family: "BoeingEICAS"; }
+        font-family: "BoeingEFIS"; }
       b747-8-mfd-element #Mainframe #Symbols text.Small {
         font-size: 36px;
         fill: cyan; }

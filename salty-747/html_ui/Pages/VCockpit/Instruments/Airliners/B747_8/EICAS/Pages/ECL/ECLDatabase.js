@@ -75,17 +75,13 @@ const menus = [
                 y: "405"
             },
             {
-                name: "AFTER LANDING",
+                name: "SHUTDOWN",
                 y: "450"
             },
             {
-                name: "SHUTDOWN",
+                name: "SECURE",
                 y: "495"
             },
-            {
-                name: "SECURE",
-                y: "540"
-            }
         ]
     }
 ]
@@ -100,17 +96,17 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "OXYGEN.......................................SET",
+                name: "Oxygen............................Tested, 100%",
                 conditionType: "open",
                 y: "130"
             },
             {
-                name: "FLIGHT INSTRUMENTS......HEADING___, ALTIMETER___",
+                name: "Flight instruments....Heading __, Altimeter __",
                 conditionType: "open",
                 y: "170"
             },
             {
-                name: "PARKING BRAKE................................SET",
+                name: "Parking brake..............................Set",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -122,7 +118,7 @@ const normalChecklists = [
                 y: "210"
             },
             {
-                name: "FUEL CONTROL SWITCHES.....................CUTOFF",
+                name: "Fuel control switches...................CUTOFF",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -160,42 +156,42 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "FLIGHT DECK DOOR...............CLOSED AND LOCKED",
+                name: "Flight deck door.............Closed and locked",
                 conditionType: "open",
                 y: "130"
             },
             {
-                name: "PASSENGER SIGNS...............................__",
+                name: "Passenger signs.............................__",
                 conditionType: "open",
                 y: "170"
             },
             {
-                name: "MCP...........................V2__, HDG__, ALT__",
+                name: "MCP......................V2 __, HDG __, ALT __",
                 conditionType: "open",
                 y: "210"
             },
             {
-                name: "TAKEOFF SPEEDS..................V1__, VR__, V2__",
+                name: "Takeoff speeds.............V1 __, VR __, V2 __",
                 conditionType: "open",
                 y: "250"
             },
             {
-                name: "CDU PREFLIGHT..........................COMPLETED",
+                name: "CDU preflight........................Completed",
                 conditionType: "open",
                 y: "290"
             },
             {
-                name: "TRIM..............................__ UNITS, 0, 0",
+                name: "Trim............................__ Units, 0, 0",
                 conditionType: "open",
                 y: "330"
             },
             {
-                name: "TAXI AND TAKEOFF BRIEFING..............COMPLETED",
+                name: "Taxi and takeoff briefing............Completed",
                 conditionType: "open",
                 y: "370"
             },
             {
-                name: "BEACON........................................ON",
+                name: "Beacon....................................BOTH",
                 conditionType: "open",
                 y: "410"
             },
@@ -211,17 +207,17 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "ANTI-ICE......................................__",
+                name: "Anti-ice....................................__",
                 conditionType: "open",
                 y: "130"
             },
             {
-                name: "RECALL...................................CHECKED",
+                name: "Recall.................................Checked",
                 conditionType: "open",
                 y: "170"
             },
             {
-                name: "AUTOBRAKE....................................RTO",
+                name: "Autobrake..................................RTO",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -233,12 +229,12 @@ const normalChecklists = [
                 y: "210"
             },
             {
-                name: "FLIGHT CONTROLS..........................CHECKED",
+                name: "Flight controls........................Checked",
                 conditionType: "open",
                 y: "250"
             },
             {
-                name: "GROUND EQUIPMENT...........................CLEAR",
+                name: "Ground equipment.........................Clear",
                 conditionType: "open",
                 y: "290"
             }
@@ -255,7 +251,7 @@ const normalChecklists = [
         items: [
             {
                 special: true,
-                name: "FLAPS.........................................--",
+                name: "Flaps.......................................--",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -279,7 +275,7 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "LANDING GEAR..................................UP",
+                name: "Landing gear................................UP",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -291,7 +287,7 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "FLAPS.........................................UP",
+                name: "Flaps.......................................UP",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -314,27 +310,27 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "RECALL...................................CHECKED",
+                name: "Recall.................................Checked",
                 conditionType: "open",
                 y: "130"
             },
             {
-                name: "NOTES....................................CHECKED",
+                name: "Notes..................................Checked",
                 conditionType: "open",
                 y: "170"
             },
             {
-                name: "AUTOBRAKE....................................SET",
+                name: "Autobrake...................................__",
                 conditionType: "open",
                 y: "210"
             },
             {
-                name: "LANDING DATA..................VREF__, MINIMUMS__",
+                name: "Landing data..............VREF __, Minimums __",
                 conditionType: "open",
                 y: "250"
             },
             {
-                name: "APPROACH BRIEFING......................COMPLETED",
+                name: "Approach briefing....................Completed",
                 conditionType: "open",
                 y: "290"
             },
@@ -345,19 +341,14 @@ const normalChecklists = [
         checklistTitle: "APPROACH",
         checklistType: "normal",
         pageCount: 1,
-        itemCount: 2,
+        itemCount: 1,
         normalChecklistSequence: 6,
         checklistPriority: 0,
         items: [
             {
-                name: "ALTIMETERS...................................SET",
+                name: "Altimeters..................................__",
                 conditionType: "open",
                 y: "130"
-            },
-            {
-                name: "PASSENGER SIGNS...............................__",
-                conditionType: "open",
-                y: "170"
             },
         ]
     },
@@ -371,7 +362,7 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "SPEEDBRAKE.................................ARMED",
+                name: "Speedbrake...............................Armed",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -383,7 +374,7 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "LANDING GEAR................................DOWN",
+                name: "Landing gear..............................Down",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -396,7 +387,7 @@ const normalChecklists = [
             },
             {
                 special: true,
-                name: "FLAPS.........................................--",
+                name: "Flaps.......................................--",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -412,90 +403,6 @@ const normalChecklists = [
     },
 
     {
-        checklistTitle: "AFTER LANDING",
-        checklistType: "normal",
-        pageCount: 1,
-        itemCount: 8,
-        normalChecklistSequence: 8,
-        checklistPriority: 0,
-        items: [
-            {
-                name: "SPEEDBRAKE LEVER............................DOWN",
-                conditionType: "closed",
-                conditions: [
-                    {
-                        simvar: "SPOILERS HANDLE POSITION",
-                        simvarType: "percent",
-                        simvarTrueCondition: 0
-                    }
-                ],
-                y: "130"
-            },
-            {
-                name: "APU SELECTOR..................................__",
-                conditionType: "open",
-                y: "170"
-            },
-            {
-                name: "ENG ANTI-ICE..................................__",
-                conditionType: "open",
-                y: "210"
-            },
-            {
-                name: "EXTERIOR LIGHTS...............................__",
-                conditionType: "open",
-                y: "250"
-            },
-            {
-                name: "WXR/TERR.....................................OFF",
-                conditionType: "closed",
-                conditions: [
-                    {
-                        simvar: "L:BTN_WX_ACTIVE",
-                        simvarType: "bool",
-                        simvarTrueCondition: 0
-                    },
-                    {
-                        simvar: "L:BTN_TERRONND_ACTIVE",
-                        simvarType: "bool",
-                        simvarTrueCondition: 0
-                    }
-                ],
-                y: "290"
-            },
-            {
-                name: "AUTOBRAKE....................................OFF",
-                conditionType: "closed",
-                conditions: [
-                    {
-                        simvar: "AUTO BRAKE SWITCH CB",
-                        simvarType: "enum",
-                        simvarTrueCondition: 1
-                    }
-                ],
-                y: "330"
-            },
-            {
-                name: "FLAPS.........................................UP",
-                conditionType: "closed",
-                conditions: [
-                    {
-                        simvar: "TRAILING EDGE FLAPS LEFT PERCENT",
-                        simvarType: "percent",
-                        simvarTrueCondition: 0
-                    }
-                ],
-                y: "370"
-            },
-            {
-                name: "TRANSPONDER MODE SELECTOR.....................__",
-                conditionType: "open",
-                y: "410"
-            },
-        ]
-    },
-
-    {
         checklistTitle: "SHUTDOWN",
         checklistType: "normal",
         pageCount: 1,
@@ -504,12 +411,12 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "HYDRAULIC PANEL..............................SET",
+                name: "Hydraulic panel............................Set",
                 conditionType: "open",
                 y: "130"
             },
             {
-                name: "FUEL PUMPS...................................OFF",
+                name: "Fuel pumps.................................Off",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -596,7 +503,7 @@ const normalChecklists = [
                 y: "170"
             },
             {
-                name: "FLAPS.........................................UP",
+                name: "Flaps.......................................UP",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -608,12 +515,12 @@ const normalChecklists = [
                 y: "210"
             },
             {
-                name: "PARKING BRAKE.................................__",
+                name: "Parking brake...............................__",
                 conditionType: "open",
                 y: "250"
             },
             {
-                name: "FUEL CONTROL SWITCHES.....................CUTOFF",
+                name: "Fuel control switches...................CUTOFF",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -640,7 +547,7 @@ const normalChecklists = [
                 y: "290"
             },
             {
-                name: "WEATHER RADAR................................OFF",
+                name: "Weather radar..............................Off",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -662,7 +569,7 @@ const normalChecklists = [
         checklistPriority: 0,
         items: [
             {
-                name: "IRS SWITCHES.................................OFF",
+                name: "IRS........................................OFF",
                 conditionType: "closed",
                 conditions: [
                     {
@@ -684,12 +591,12 @@ const normalChecklists = [
                 y: "130"
             },
             {
-                name: "EMERGENCY LIGHTS.............................OFF",
+                name: "Emergency lights...........................OFF",
                 conditionType: "open",
                 y: "170"
             },
             {
-                name: "PACKS........................................OFF",
+                name: "Packs......................................OFF",
                 conditionType: "open",
                 y: "210"
             },
