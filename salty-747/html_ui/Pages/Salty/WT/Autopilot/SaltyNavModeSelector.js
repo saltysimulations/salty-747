@@ -858,6 +858,14 @@
    * Handles when the pitch ref changes in the sim.
    */
   handleTogaChanged() {
+    //SET THROTTLE INTO THR REF
+    this.setAPSpeedHoldMode();
+    Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
+    this.activateThrustRefMode();
+    if (Simplane.getIsGrounded()) {
+      this.togaPushedForTO = true;
+    }
+
     if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") === 2) {
       this.setProperAltitudeArmedState();
       return;
@@ -914,15 +922,6 @@
           SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 1);
         }
         this.currentLateralActiveState = LateralNavModeState.ROLL;
-      }
-      //SET VERTICAL
-      if (this.currentVerticalActiveState === VerticalNavModeState.TO || this.currentVerticalActiveState === VerticalNavModeState.GA) {
-        if (this.isVNAVOn) {
-          this.currentVerticalActiveState = VerticalNavModeState.FLC;
-        }
-        else {
-          this.currentVerticalActiveState = VerticalNavModeState.PTCH;
-        }
       }
     }
     this.setProperAltitudeArmedState();
