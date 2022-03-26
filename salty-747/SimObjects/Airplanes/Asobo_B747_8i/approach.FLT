@@ -271,6 +271,7 @@ AutoThrottleArm=False
 GPSdrivesNAV1=True
 IsUsedForLesson=False
 ForceDisplayUI=False
+MaxBankIndex=6
 
 [Controls.0]
 SpoilersHandle=000.00

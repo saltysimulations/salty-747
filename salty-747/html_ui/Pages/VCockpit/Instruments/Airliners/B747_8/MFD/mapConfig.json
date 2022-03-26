@@ -7,7 +7,7 @@
   },
 
   "waypointLabelFontSize": 18,
-  "waypointLabelFontFamily": "BoeingEICAS",
+  "waypointLabelFontFamily": "BoeingEFIS",
   "waypointLabelColor": "white",
   "waypointLabelStrokeColor": "#3f3f3f",
   "waypointLabelStrokeWidth": 0,
@@ -28,7 +28,7 @@
   "preventLabelOverlap": false,
 
   "cityLabelFontSize": 24,
-  "cityLabelFontFamily": "BoeingEICAS",
+  "cityLabelFontFamily": "BoeingEFIS",
   "cityLabelColor": "#black",
   "cityLabelStrokeColor": "#3f3f3f",
   "cityLabelStrokeWidth": 0,
@@ -54,7 +54,7 @@
 
   "latLonStrokeColor": "gray",
   "latLonStrokeWidth": 1,
-  "latLonLabelFontFamily": "BoeingEICAS",
+  "latLonLabelFontFamily": "BoeingEFIS",
   "latLonLabelFontSize": 14,
   "latLonLabelColor": "white",
   "latLonLabelStrokeColor": "none",
