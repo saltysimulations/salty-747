@@ -144,15 +144,21 @@ class Boeing_FMC extends FMCMainDisplay {
             let altitude = Simplane.getAltitudeAboveGround();
             if (altitude < 400) {
                 this._pendingVNAVActivation = true;
-                if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 0) {
+                if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 0 && !isFinite(this.cruiseFlightLevel)) {
+                    SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
+                    this.showErrorMessage("PERF/VNAV UNAVAILABLE");
+                } else if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 0 && isFinite(this.cruiseFlightLevel)) {
                     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 1);
-                }
-                else {
+                } else {
                     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
                 }
             }
             else {
-                this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+                if (isFinite(this.cruiseFlightLevel) == true) {
+                    this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+                } else {
+                    this.showErrorMessage("PERF/VNAV UNAVAILABLE");
+                }
             }
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
