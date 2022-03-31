@@ -27,7 +27,7 @@ class FMCMainDisplay extends BaseAirliners {
         this.customVRSpeed = false;
         this.customV2Speed = false;
         this.transitionAltitude = 5000;
-        this.perfTOTemp = 20;
+        this.perfTOTemp = undefined;
         this.overSpeedLimitThreshold = false;
         this._overridenFlapApproachSpeed = NaN;
         this._overridenSlatApproachSpeed = NaN;
@@ -58,12 +58,19 @@ class FMCMainDisplay extends BaseAirliners {
         this.flightPhaseHasChangedToCruise = false;
         this.flightPhaseHasChangedToDescent = false;
         this._flightPhases = ["PREFLIGHT", "TAXI", "TAKEOFF", "CLIMB", "CRUISE", "DESCENT", "APPROACH", "GOAROUND"];
-        if (!SimVar.GetSimVarValue("SIM ON GROUND","bool")) {
+        /*if (!SimVar.GetSimVarValue("SIM ON GROUND","bool")) {
+
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
         }
         else {
+            let i = Simplane.getEngineCount();
+            while (i <= 0) {
+                i = i--;
+            }
+            if 
             this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
-        }
+        }*/
+        this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_PREFLIGHT;
         this._lockConnectIls = false;
         this._apNavIndex = 1;
         this._apLocalizerOn = false;
@@ -238,7 +245,8 @@ class FMCMainDisplay extends BaseAirliners {
             e.classList.add(color);
             content = content.split("[color]")[0];
         }
-        content = content.replace("\<", "&lt");
+        content = content.replaceAll("\<", "&lt");
+        content = content.replaceAll(">", "&gt");
         this._lines[row][col] = content;
         this._lineElements[row][col].innerHTML = this._lines[row][col];
     }
@@ -346,6 +354,7 @@ class FMCMainDisplay extends BaseAirliners {
             .replace(/{left}/g, "<span class='left'>")
             .replace(/{right}/g, "<span class='right'>")
             .replace(/{end}/g, "</span>");
+            //.replace(/{})
     }
 
     getNavDataDateRange() {
@@ -999,8 +1008,11 @@ class FMCMainDisplay extends BaseAirliners {
         let accAlt = NaN;
         let airportElevation = 0;
         let origin = this.flightPlanManager.getOrigin();
-        if(isFinite(origin.altitudeinFP)) {
-            airportElevation = Math.round(origin.altitudeinFP / 10) * 10;
+        if(isFinite(origin)) {
+            airportElevation = origin;
+        }
+        else if (Simplane.getIsGrounded()){
+            airportElevation = SimVar.GetSimVarValue("GROUND ALTITUDE", "feet");
         }
         if (s) {
             accAlt = parseInt(s);
@@ -1017,8 +1029,11 @@ class FMCMainDisplay extends BaseAirliners {
         let thrRed = NaN;
         let airportElevation = 0;
         let origin = this.flightPlanManager.getOrigin();
-        if(isFinite(origin.altitudeinFP)) {
-            airportElevation = Math.round(origin.altitudeinFP / 10) * 10;
+        if(isFinite(origin)) {
+            airportElevation = origin;
+        }
+        else if (Simplane.getIsGrounded()){
+            airportElevation = SimVar.GetSimVarValue("GROUND ALTITUDE", "feet");
         }
         if (s) {
             thrRed = parseInt(s);

@@ -140,7 +140,15 @@ class B747_8_EICAS extends Airliners.BaseEICAS {
     }
     
     getN2IdleValue() {
-        return 600;
+        let idleN2SL = 68;
+        let alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet") / 1000;
+        let M = SimVar.GetSimVarValue("AIRSPEED MACH", "number");
+        let T = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "kelvin");
+        let T0 = 288.15 - 2 * alt;
+        let theta2 = T * (1 + 0.2 * M ** 2) / T0;
+        let N2 = idleN2SL * theta2 ** 0.5;
+        SimVar.SetSimVarValue("L:SALTY_IDLE_N2", "number", N2);
+        return N2 * 10;
     }
     getN2Value(_engineId) {
         return SimVar.GetSimVarValue("ENG N2 RPM:" + _engineId, "percent") * 10;

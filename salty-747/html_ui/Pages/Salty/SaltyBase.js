@@ -5,6 +5,10 @@ class SaltyBase {
         this.pilots = new SaltyPilots();
         this.jettison = new SaltyJettison();
         this.speedComputer = new SaltySpeedComputer();
+        this.airground = new SaltyAirGroundLogic();
+        //this.flightphase = new SaltyFlightPhaseLogic();
+        this.adc = new SaltyADC();
+        //this.fadec = new SaltyFADEC();
     }
     init() {
         this.fma.init();
@@ -12,6 +16,10 @@ class SaltyBase {
         this.pilots.init();
         this.jettison.init();
         this.speedComputer.init();
+        this.airground.init();
+        //this.flightphase.init();
+        this.adc.init();
+        //this.fadec.init();
     }
     update(electricityIsAvail) {
         this.fma.update();
@@ -19,5 +27,9 @@ class SaltyBase {
         this.irs.update(electricityIsAvail);
         this.jettison.update();
         this.speedComputer.update();
+        this.airground.update();
+        //this.flightphase.update();
+        this.adc.update();
+        //this.fadec.update();
     }
 }
