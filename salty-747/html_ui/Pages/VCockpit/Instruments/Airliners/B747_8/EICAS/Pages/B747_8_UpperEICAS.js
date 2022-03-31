@@ -31,6 +31,7 @@ var B747_8_UpperEICAS;
                 this.refThrustDecimal[i] = this.querySelector("#THROTTLE" + i +"_Decimal");
             }
             this.tmaDisplay = new Boeing.ThrustModeDisplay(this.querySelector("#TMA_Value"));
+            this.assumedTemp = this.querySelector("#TMA_Value2");
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#TAT_Value"), Simplane.getTotalAirTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
             this.allValueComponents.push(new Airliners.DynamicValueComponent(this.querySelector("#SAT_Value"), Simplane.getAmbientTemperature, 0, Airliners.DynamicValueComponent.formatValueToPosNegTemperature));
             this.pressureInfo = this.querySelector("#PressureInfo");
@@ -139,6 +140,8 @@ var B747_8_UpperEICAS;
 
         updateReferenceThrust() {
             const MAX_POSSIBLE_THRUST_DISP = 1060;
+            const thrustMode = SimVar.GetSimVarValue("L:74S_FMC_REFTHR_MODE", "Number");
+            const assumedTemp = SimVar.GetSimVarValue("L:74S_FMC_ASSUMED_TEMP", "Number");
             for (var i = 1; i < 5; ++i) {
                 this.engRevStatus[i] = SimVar.GetSimVarValue("TURB ENG REVERSE NOZZLE PERCENT:" + i, "percent");
                 if (this.engRevStatus[i] > 1) {
@@ -147,10 +150,16 @@ var B747_8_UpperEICAS;
                     this.refThrustDecimal[i].style.visibility = "hidden";
                 }
                 else {
-                    this.refThrust[i].textContent = Math.min((Simplane.getEngineThrottleMaxThrust(i - 1) * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
+                    this.refThrust[i].textContent = Math.min((SimVar.GetSimVarValue("L:74S_FMC_REF_N1", "number") * 10), MAX_POSSIBLE_THRUST_DISP).toFixed(0);
                     this.refThrust[i].setAttribute("x", (i * 15) - 1 + "%");
                     this.refThrustDecimal[i].style.visibility = "visible";
                 }
+            }
+            if (thrustMode == 0 && assumedTemp != -1) {
+                this.assumedTemp.textContent = "+" + assumedTemp + "C";
+            }
+            else {
+                this.assumedTemp.textContent = "";
             }
             return;
         }
@@ -232,7 +241,7 @@ var B747_8_UpperEICAS;
             return Math.abs(Simplane.getEngineThrottleCommandedN1(this.engine - 1)) * 10;
         }
         getN1LimitValue() {
-            return Math.abs(Simplane.getEngineThrottleMaxThrust(this.engine - 1)) * 10;
+            return Math.abs(SimVar.GetSimVarValue("L:74S_FMC_REF_N1", "number") * 10);
         }
         createEGTGaugeDefinition(_engine) {
             var definition = new B747_8_EICAS_Common.GaugeDefinition();

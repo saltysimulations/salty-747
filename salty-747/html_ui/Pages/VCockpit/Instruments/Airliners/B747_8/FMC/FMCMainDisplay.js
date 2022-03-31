@@ -1708,12 +1708,11 @@ class FMCMainDisplay extends BaseAirliners {
             if (this.currentFlightPhase === 0) {
                 this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_TAKEOFF;
             }
-            //Modified to change to FLIGHT_PHASE_CLIMB when passing acceleration altitude instead of Thrust reduction previously
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_TAKEOFF) {
                 let enterClimbPhase = false;
                 let alt = Simplane.getAltitude();
-                let accelAlt = SimVar.GetSimVarValue("L:AIRLINER_ACC_ALT", "number");
-                if (alt > accelAlt) {
+                let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
+                if (alt > thrRedAlt) {
                     this.currentFlightPhase = FlightPhase.FLIGHT_PHASE_CLIMB;
                     this.togaSpeedSet = false;
                     enterClimbPhase = true;
