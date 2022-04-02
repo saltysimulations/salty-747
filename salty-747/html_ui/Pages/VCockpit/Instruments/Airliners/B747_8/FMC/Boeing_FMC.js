@@ -242,6 +242,11 @@ class Boeing_FMC extends FMCMainDisplay {
         else if (_event.indexOf("EXEC") != -1) {
             this.onExec();
         }
+        else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
+            if (!Simplane.getIsGrounded() && !SimVar.GetSimVarValue("AUTOTHROTTLE ACTIVE", "bool")) {
+                this._navModeSelector.handleTogaChanged(true);
+            }
+        }
     }
     setThrottleMode(_mode) {
         if (this.getIsSPDActive() && this.aircraftType == Aircraft.AS01B)

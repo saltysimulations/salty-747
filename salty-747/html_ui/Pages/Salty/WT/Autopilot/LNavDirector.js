@@ -73,9 +73,8 @@
       if (!this.delegateToHoldsDirector(activeWaypoint) && activeWaypoint && previousWaypoint) {
         this.generateGuidance(activeWaypoint, planeState, previousWaypoint, navSensitivity, navSensitivityScalar);
       }
-      else {
-        this.delegateToLocDirector();
-      }
+      //Always Check if a LOC signal is available
+      this.delegateToLocDirector();
     }
   }
 

@@ -866,7 +866,7 @@
   /**
    * Handles when the pitch ref changes in the sim.
    */
-  handleTogaChanged() {
+  handleTogaChanged(atOff = false) {
     //SET THROTTLE INTO THR REF
     this.setAPSpeedHoldMode();
     Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
@@ -879,7 +879,7 @@
       this.setProperAltitudeArmedState();
       return;
     }
-    if (this._inputDataStates.toga.state) {
+    if (this._inputDataStates.toga.state || atOff == true) {
       const flightDirector = SimVar.GetSimVarValue("AUTOPILOT FLIGHT DIRECTOR ACTIVE", "Boolean") == 1;
       if (!flightDirector) {
         SimVar.SetSimVarValue("K:TOGGLE_FLIGHT_DIRECTOR", "number", 1);
@@ -1022,6 +1022,7 @@
         SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
         break;
       case LateralNavModeState.LNAV:
+      case LateralNavModeState.HDGHOLD:
       case LateralNavModeState.TO:
       case LateralNavModeState.GA:
         if (SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "number") == 0) {
@@ -1035,7 +1036,6 @@
         SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
         break;
       case LateralNavModeState.HDG:
-      case LateralNavModeState.HDGHOLD:
       case LateralNavModeState.APPR:
         if (this.approachMode !== WT_ApproachType.ILS) {
           this.cancelApproachMode(false);
