@@ -2,7 +2,7 @@ class FMC_PosReport {
     static ShowPage(fmc, store = {sendCompany: "<SEND", sendAtc: "SEND>"}) {
         fmc.activeSystem = "FMC";
         fmc.clearDisplay();
-        
+
         let fltNoCell = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") ? SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string") : "XXXX";
         let currPos = new LatLong(SimVar.GetSimVarValue("GPS POSITION LAT", "degree latitude"), SimVar.GetSimVarValue("GPS POSITION LON", "degree longitude")).toDegreeString();
         let posCell = "---";
@@ -30,7 +30,7 @@ class FMC_PosReport {
         let posFuelCell = fmc.getBlockFuel(true).toFixed(1);
         let companySendCell = "SEND";
         let atcSendCell = "SEND";
-        
+
         let speed = Simplane.getGroundSpeed();
         let currentTime = SimVar.GetGlobalVarValue("LOCAL TIME", "seconds");
         let currentFuel = SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds") / 1000;
@@ -146,7 +146,7 @@ class FMC_PosReport {
         };
 
         function getUTC(p) {
-            if (p == "ata" || p == "eta") {
+            if (p == "ata" || p == "ete" || p == "dest") {
                 var utc = new Date();
                 if (utc.getUTCHours() <= 9) {
                     var utcHours = "0" + utc.getUTCHours();

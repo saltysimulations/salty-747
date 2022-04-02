@@ -26,7 +26,7 @@ class Boeing_FMC extends FMCMainDisplay {
     Init() {
         super.Init();
         this.maxCruiseFL = 450;
-        this.cruiseFlightLevel = null;
+        this.cruiseFlightLevel;
         this.onExec = () => {
             if (this.onExecPage) {
                 console.log("if this.onExecPage");
@@ -131,7 +131,7 @@ class Boeing_FMC extends FMCMainDisplay {
             if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 0) {
                 SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 1);
             }
-            else if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1 
+            else if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1
             && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GP
             && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GS) {
                 SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 0);
@@ -231,7 +231,7 @@ class Boeing_FMC extends FMCMainDisplay {
                 if (mcpAlt !== Math.round(altitude/100) * 100) {
                     this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
                 }
-            }      
+            }
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
             this._navModeSelector.onNavChangedEvent('ALT_HOLD_PRESSED');
