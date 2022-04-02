@@ -91,7 +91,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.topSpeedText.setAttribute("y", (_top - 22).toString());
         this.topSpeedText.setAttribute("fill", "white");
         this.topSpeedText.setAttribute("font-size", (this.fontSize * 1.2).toString());
-        this.topSpeedText.setAttribute("font-family", "BoeingEICAS");
+        this.topSpeedText.setAttribute("font-family", "BoeingEFIS");
         this.topSpeedText.setAttribute("text-anchor", "end");
         this.topSpeedText.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.topSpeedText);
@@ -127,7 +127,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 text.setAttribute("y", (y + 2).toString());
                 text.setAttribute("fill", "white");
                 text.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                text.setAttribute("font-family", "BoeingEICAS");
+                text.setAttribute("font-family", "BoeingEFIS");
                 text.setAttribute("text-anchor", "start");
                 text.setAttribute("alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
@@ -147,7 +147,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
                 text.setAttribute("y", (y + 2).toString());
                 text.setAttribute("fill", "white");
                 text.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                text.setAttribute("font-family", "BoeingEICAS");
+                text.setAttribute("font-family", "BoeingEFIS");
                 text.setAttribute("text-anchor", "start");
                 text.setAttribute("alignment-baseline", "central");
                 this.graduationsGroup.appendChild(text);
@@ -198,7 +198,7 @@ class Jet_PFD_VerticalSpeedIndicator extends HTMLElement {
         this.bottomSpeedText.setAttribute("y", (_top + _height + 25).toString());
         this.bottomSpeedText.setAttribute("fill", "white");
         this.bottomSpeedText.setAttribute("font-size", (this.fontSize * 1.2).toString());
-        this.bottomSpeedText.setAttribute("font-family", "BoeingEICAS");
+        this.bottomSpeedText.setAttribute("font-family", "BoeingEFIS");
         this.bottomSpeedText.setAttribute("text-anchor", "end");
         this.bottomSpeedText.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.bottomSpeedText);

@@ -935,7 +935,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (!this._navModeSelector) {
                 this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
             }
-
+            
             //RUN VNAV ALWAYS
             if (this._vnav === undefined) {
                 this._vnav = new WT_BaseVnav(this.flightPlanManager, this);
@@ -994,7 +994,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 }
             }
             //IDLE at 25' RA if AT still engaged.
-            if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") >= 5) {
+            if (SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "number") >= 5 && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GA) {
                 let altitude = Simplane.getAltitudeAboveGround();
                 if (altitude < 25 && this.throttleHasIdled === false) {
                     this._navModeSelector.currentAutoThrottleStatus = AutoThrottleModeState.IDLE;
@@ -1011,7 +1011,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     this.landingReverseAvail = true;
                 }
             }
-            if (Simplane.getAutoPilotThrottleArmed() && this.togaPushedForTO === true) {
+            if (Simplane.getAutoPilotThrottleArmed() && this._navModeSelector.togaPushedForTO === true) {
                 if (!this._hasSwitchedToHoldOnTakeOff) {
                     let speed = Simplane.getIndicatedSpeed();
                     if (speed > 65) {

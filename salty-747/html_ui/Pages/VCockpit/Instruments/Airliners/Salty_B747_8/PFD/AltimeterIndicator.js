@@ -99,7 +99,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.targetAltitudeTextSVG1.setAttribute("y", (posY + sideTextHeight * 0.5).toString());
         this.targetAltitudeTextSVG1.setAttribute("fill", "#D570FF");
         this.targetAltitudeTextSVG1.setAttribute("font-size", (this.fontSize * 1.6).toString());
-        this.targetAltitudeTextSVG1.setAttribute("font-family", "BoeingEICAS");
+        this.targetAltitudeTextSVG1.setAttribute("font-family", "BoeingEFIS");
         this.targetAltitudeTextSVG1.setAttribute("text-anchor", "end");
         this.targetAltitudeTextSVG1.setAttribute("alignment-baseline", "bottom");
         this.targetAltitudeTextSVG1.style.letterSpacing = "1px";
@@ -110,7 +110,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.targetAltitudeTextSVG2.setAttribute("width", width.toString());
         this.targetAltitudeTextSVG2.setAttribute("fill", "#D570FF");
         this.targetAltitudeTextSVG2.setAttribute("font-size", (this.fontSize * 1.29).toString());
-        this.targetAltitudeTextSVG2.setAttribute("font-family", "BoeingEICAS");
+        this.targetAltitudeTextSVG2.setAttribute("font-family", "BoeingEFIS");
         this.targetAltitudeTextSVG2.setAttribute("text-anchor", "start");
         this.targetAltitudeTextSVG2.setAttribute("alignment-baseline", "bottom");
         this.targetAltitudeTextSVG2.style.letterSpacing = "1px";
@@ -172,7 +172,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                     line.SVGText1.setAttribute("y", "10");
                     line.SVGText1.setAttribute("fill", "white");
                     line.SVGText1.setAttribute("font-size", (this.fontSize * 1.15).toString());
-                    line.SVGText1.setAttribute("font-family", "BoeingEICAS");
+                    line.SVGText1.setAttribute("font-family", "BoeingEFIS");
                     line.SVGText1.setAttribute("text-anchor", "end");
                     line.SVGText1.setAttribute("alignment-baseline", "bottom");
                     line.SVGText1.style.letterSpacing = "1px";
@@ -182,7 +182,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                     line.SVGText2.setAttribute("y", "10");
                     line.SVGText2.setAttribute("fill", "white");
                     line.SVGText2.setAttribute("font-size", (this.fontSize * 0.85).toString());
-                    line.SVGText2.setAttribute("font-family", "BoeingEICAS");
+                    line.SVGText2.setAttribute("font-family", "BoeingEFIS");
                     line.SVGText2.setAttribute("text-anchor", "start");
                     line.SVGText2.setAttribute("alignment-baseline", "bottom");
                     line.SVGText2.style.letterSpacing = "2px";
@@ -334,10 +334,10 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.cursorSVGShape.setAttribute("stroke", "white");
                 this.cursorSVGShape.setAttribute("stroke-width", this.strokeSize);
                 this.cursorSVG.appendChild(this.cursorSVGShape);
-                this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 22, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
-                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 43, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.6, "white");
-                this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX + 60, _cursorPosY + 2, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
-                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 94, _cursorPosY, _width, "BoeingEICAS", this.fontSize * 1.28, "white");
+                this.cursorIntegrals[0].construct(this.cursorSVG, _cursorPosX + 22, _cursorPosY + 2, _width, "BoeingEFIS", this.fontSize * 1.6, "white");
+                this.cursorIntegrals[1].construct(this.cursorSVG, _cursorPosX + 43, _cursorPosY + 2, _width, "BoeingEFIS", this.fontSize * 1.6, "white");
+                this.cursorIntegrals[2].construct(this.cursorSVG, _cursorPosX + 60, _cursorPosY + 2, _width, "BoeingEFIS", this.fontSize * 1.28, "white");
+                this.cursorDecimals.construct(this.cursorSVG, _cursorPosX + 94, _cursorPosY, _width, "BoeingEFIS", this.fontSize * 1.28, "white");
                 this.cursorSVGShapeMask = document.createElementNS(Avionics.SVG.NS, "path");
                 this.cursorSVGShapeMask.setAttribute("fill", "transparent");
                 this.cursorSVGShapeMask.setAttribute("d", "M 21 5 L 117 5 L 117 75 L 21 75 Z");
@@ -376,7 +376,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.mtrsSelectedSVGText.setAttribute("y", (10 + sideTextHeight * 0.5).toString());
                 this.mtrsSelectedSVGText.setAttribute("fill", "#D570FF");
                 this.mtrsSelectedSVGText.setAttribute("font-size", (this.fontSize * 1.2).toString());
-                this.mtrsSelectedSVGText.setAttribute("font-family", "BoeingEICAS");
+                this.mtrsSelectedSVGText.setAttribute("font-family", "BoeingEFIS");
                 this.mtrsSelectedSVGText.setAttribute("text-anchor", "end");
                 this.mtrsSelectedSVGText.setAttribute("alignment-baseline", "bottom");
                 this.mtrsSelectedGroup.appendChild(this.mtrsSelectedSVGText);
@@ -386,7 +386,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 mtrsSelectedSVGUnit.setAttribute("y", (10 + sideTextHeight * 0.5).toString());
                 mtrsSelectedSVGUnit.setAttribute("fill", "cyan");
                 mtrsSelectedSVGUnit.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                mtrsSelectedSVGUnit.setAttribute("font-family", "BoeingEICAS");
+                mtrsSelectedSVGUnit.setAttribute("font-family", "BoeingEFIS");
                 mtrsSelectedSVGUnit.setAttribute("text-anchor", "start");
                 mtrsSelectedSVGUnit.setAttribute("alignment-baseline", "bottom");
                 this.mtrsSelectedGroup.appendChild(mtrsSelectedSVGUnit);
@@ -415,7 +415,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 this.mtrsCursorSVGText.setAttribute("y", (mtrsCursorHeight * 0.84).toString());
                 this.mtrsCursorSVGText.setAttribute("fill", "white");
                 this.mtrsCursorSVGText.setAttribute("font-size", (this.fontSize * 1.2).toString());
-                this.mtrsCursorSVGText.setAttribute("font-family", "BoeingEICAS");
+                this.mtrsCursorSVGText.setAttribute("font-family", "BoeingEFIS");
                 this.mtrsCursorSVGText.setAttribute("text-anchor", "end");
                 this.mtrsCursorSVGText.setAttribute("alignment-baseline", "bottom");
                 this.mtrsCursorGroup.appendChild(this.mtrsCursorSVGText);
@@ -425,7 +425,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
                 mtrsCursorSVGUnit.setAttribute("y", (mtrsCursorHeight * 0.84).toString());
                 mtrsCursorSVGUnit.setAttribute("fill", "cyan");
                 mtrsCursorSVGUnit.setAttribute("font-size", (this.fontSize * 0.9).toString());
-                mtrsCursorSVGUnit.setAttribute("font-family", "BoeingEICAS");
+                mtrsCursorSVGUnit.setAttribute("font-family", "BoeingEFIS");
                 mtrsCursorSVGUnit.setAttribute("text-anchor", "start");
                 mtrsCursorSVGUnit.setAttribute("alignment-baseline", "bottom");
                 this.mtrsCursorGroup.appendChild(mtrsCursorSVGUnit);
@@ -448,7 +448,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.pressureSVG.setAttribute("y", (posY + height - 5 + sideTextHeight * 0.5).toString());
         this.pressureSVG.setAttribute("fill", "#24F000");
         this.pressureSVG.setAttribute("font-size", (this.fontSize * 1.0).toString());
-        this.pressureSVG.setAttribute("font-family", "BoeingEICAS");
+        this.pressureSVG.setAttribute("font-family", "BoeingEFIS");
         this.pressureSVG.setAttribute("text-anchor", "end");
         this.pressureSVG.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.pressureSVG);
@@ -459,7 +459,7 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
         this.preSelectQNH.setAttribute("y", (posY + height + 30 + sideTextHeight * 0.5).toString());
         this.preSelectQNH.setAttribute("fill", "white");
         this.preSelectQNH.setAttribute("font-size", (this.fontSize * 0.9).toString());
-        this.preSelectQNH.setAttribute("font-family", "BoeingEICAS");
+        this.preSelectQNH.setAttribute("font-family", "BoeingEFIS");
         this.preSelectQNH.setAttribute("text-anchor", "end");
         this.preSelectQNH.setAttribute("alignment-baseline", "central");
         this.rootGroup.appendChild(this.preSelectQNH);

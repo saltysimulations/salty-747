@@ -400,7 +400,7 @@ var Boeing_FMA;
                 if (this.approachType === "rnav" && this.verticalMode !== "GP") {
                     return 1;
                 }
-                else if (this.approachType === "ils" && this.verticalMode !== "GS") {
+                else if (this.verticalMode !== "GS" && this.verticalMode !== "GP") {
                     return 2;
                 }
             }

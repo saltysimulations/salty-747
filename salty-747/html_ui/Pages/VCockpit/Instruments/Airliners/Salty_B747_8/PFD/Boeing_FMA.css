@@ -58,11 +58,11 @@ boeing-fma {
   boeing-fma #Background {
     height: 100%; }
   boeing-fma .top {
-    top: 0%;
+    top: -10%;
     height: 55%;
     font-size: 45px; }
   boeing-fma .middle {
-    top: 60%;
+    top: 55%;
     height: 33%;
     font-size: 13px; }
   boeing-fma .bottom {
@@ -114,7 +114,7 @@ boeing-fma.B747_8_PFD {
     background-color: #343B51; }
   boeing-fma.B747_8_PFD #Column2 .bottom {
     left: -2% !important;
-    top: 255%;
+    top: 240%;
     font-size: 60px; }
   boeing-fma.B747_8_PFD #Column2 #COL2_BOTTOM_ARROWS {
     top: 210%; }

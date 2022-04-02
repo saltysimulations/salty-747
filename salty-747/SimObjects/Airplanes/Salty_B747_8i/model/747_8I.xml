@@ -190,17 +190,8 @@
 				<ANIM_NAME_LEFT>l_slats</ANIM_NAME_LEFT>
 				<ANIM_NAME_RIGHT>r_slats</ANIM_NAME_RIGHT>
 			</UseTemplate>
-		</Component>
-		<Component ID="WipersLeft">
 			<UseTemplate Name="ASOBO_HANDLING_Wipers_Template">
-				<ANIM_NAME>HANDLING_Wipers_left</ANIM_NAME>
 				<CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
-			</UseTemplate>
-		</Component>
-		<Component ID="WipersRight">
-			<UseTemplate Name="ASOBO_HANDLING_Wipers_Template">
-				<ANIM_NAME>HANDLING_Wipers_right</ANIM_NAME>
-				<CIRCUIT_ID_WIPERS>121</CIRCUIT_ID_WIPERS>
 			</UseTemplate>
 		</Component>
 		<Component ID="ENGINE">

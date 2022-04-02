@@ -45,7 +45,7 @@ class FMCPosInitPage {
         ]);
 
         fmc.onPrevPage = () => {
-            FMCPosInitPage.ShowPage3(fmc);
+            FMCPosInitPage.ShowPage4(fmc);
         };
 
         fmc.onNextPage = () => {
@@ -202,7 +202,7 @@ class FMCPosInitPage {
         if (fmc.initCoordinates) {
             irsPos = fmc.initCoordinates;
         }
-        let irsGs = SimVar.GetSimVarValue("SURFACE RELATIVE GROUND SPEED", "knots") + "KT";
+        let irsGs = SimVar.GetSimVarValue("SURFACE RELATIVE GROUND SPEED", "knots").toFixed(0) + "KT";
         fmc.setTemplate([
             ["POS REF", "4", "4"],
             ["\xa0IRS L", "GS"],

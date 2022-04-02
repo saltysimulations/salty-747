@@ -34,15 +34,15 @@ class LocDirector {
     switch (this.state) {
       case LocDirectorState.NONE:
         this.handleNone();
-        console.log("LOC DIRECTOR OFF");
+        //console.log("LOC DIRECTOR OFF");
         break;
       case LocDirectorState.ARMED:
         this.handleArmed(radioState);
-        console.log("LOC DIRECTOR ARMED");
+        //console.log("LOC DIRECTOR ARMED");
         break;
       case LocDirectorState.ACTIVE:
         this.handleActive(radioState);
-        console.log("LOC DIRECTOR ACTIVE");
+        //console.log("LOC DIRECTOR ACTIVE");
         break;
     }
   }

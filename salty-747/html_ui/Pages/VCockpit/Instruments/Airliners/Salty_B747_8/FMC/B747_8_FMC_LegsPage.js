@@ -115,7 +115,7 @@ class B747_8_FMC_LegsPage {
 
                 // format distance
                 distance = distance.toFixed(0);
-                
+
                 //Get and Format FMC CRZ speed
                 let crzMode = SimVar.GetSimVarValue("L:SALTY_VNAV_CRZ_MODE", "Enum");
                 let crzSpeedCell = ""
@@ -142,6 +142,10 @@ class B747_8_FMC_LegsPage {
                 }
                 else if (crzMode === 4) {
                     crzSpeedCell = SimVar.GetSimVarValue("L:SALTY_CRZ_MACH", "mach").toFixed(3).substring(1);
+                }
+
+                if (isNaN(crzSpeedCell)) {
+                    crzSpeedCell = "---";
                 }
 
                 let currentSegment = this._fmc.flightPlanManager.getSegmentFromWaypoint(waypoint.fix);
@@ -248,7 +252,7 @@ class B747_8_FMC_LegsPage {
                 }
 
                 previousSegment = currentSegment;
-                
+
             }
         }
         displayWaypoints.shift();
@@ -260,7 +264,7 @@ class B747_8_FMC_LegsPage {
         for (let i = 0; i < this._wayPointsToRender.length; i++) {
             const offsetRender = Math.floor((this._currentPage - 1) * 5);
             const wptRender = this._wayPointsToRender[i + offsetRender];
-            
+
             // if its a real fix
             if (wptRender && (wptRender.fix.ident !== "$EMPTY" || wptRender.fix.ident !== "$DISCO")) {
                 this._fmc.onRightInput[i] = () => {

@@ -101,7 +101,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                             text.setAttribute("y", (-(circleRadius - 45 - length - 18)).toString());
                             text.setAttribute("fill", "white");
                             text.setAttribute("font-size", (i % 3 == 0) ? "28" : "20");
-                            text.setAttribute("font-family", "BoeingEICAS");
+                            text.setAttribute("font-family", "BoeingEFIS");
                             text.setAttribute("text-anchor", "middle");
                             text.setAttribute("alignment-baseline", "central");
                             text.setAttribute("transform", "rotate(" + degrees + " 50 50)");
@@ -280,7 +280,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.currentRefMode.setAttribute("y", (centerY + 5).toString());
                     this.currentRefMode.setAttribute("fill", "lime");
                     this.currentRefMode.setAttribute("font-size", "26");
-                    this.currentRefMode.setAttribute("font-family", "BoeingEICAS");
+                    this.currentRefMode.setAttribute("font-family", "BoeingEFIS");
                     this.currentRefMode.setAttribute("text-anchor", "end");
                     this.currentRefMode.setAttribute("alignment-baseline", "central");
                     this.currentRefGroup.appendChild(this.currentRefMode);
@@ -303,7 +303,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.currentRefValue.setAttribute("y", (centerY + 2).toString());
                     this.currentRefValue.setAttribute("fill", "white");
                     this.currentRefValue.setAttribute("font-size", "30");
-                    this.currentRefValue.setAttribute("font-family", "BoeingEICAS");
+                    this.currentRefValue.setAttribute("font-family", "BoeingEFIS");
                     this.currentRefValue.setAttribute("text-anchor", "middle");
                     this.currentRefValue.setAttribute("alignment-baseline", "central");
                     this.currentRefValue.style.letterSpacing = "1px";
@@ -314,7 +314,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     this.currentRefType.setAttribute("y", (centerY + 5).toString());
                     this.currentRefType.setAttribute("fill", "lime");
                     this.currentRefType.setAttribute("font-size", "26");
-                    this.currentRefType.setAttribute("font-family", "BoeingEICAS");
+                    this.currentRefType.setAttribute("font-family", "BoeingEFIS");
                     this.currentRefType.setAttribute("text-anchor", "start");
                     this.currentRefType.setAttribute("alignment-baseline", "central");
                     this.currentRefGroup.appendChild(this.currentRefType);
@@ -341,11 +341,11 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     textTitle.setAttribute("y", (centerY - 10).toString());
                     textTitle.setAttribute("fill", "white");
                     textTitle.setAttribute("font-size", "25");
-                    textTitle.setAttribute("font-family", "BoeingEICAS");
+                    textTitle.setAttribute("font-family", "BoeingEFIS");
                     textTitle.setAttribute("text-anchor", "middle");
                     textTitle.setAttribute("alignment-baseline", "central");
                     rangeGroup.appendChild(textTitle);
-                    this.addMapRange(rangeGroup, centerX, (centerY + 15), "white", "25", false, 1.0, false);
+                    this.addMapRange(rangeGroup, centerX, (centerY + 15), "white", "30", false, 1.0, false);
                 }
                 viewBox.appendChild(rangeGroup);
             }
@@ -435,7 +435,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                         else {
                             text.setAttribute("font-size", "50");
                         }
-                        text.setAttribute("font-family", "BoeingEICAS");
+                        text.setAttribute("font-family", "BoeingEFIS");
                         text.setAttribute("text-anchor", "middle");
                         text.setAttribute("alignment-baseline", "central");
                         text.setAttribute("transform", "rotate(" + -fastToFixed(i * 90, 0) + " 500 115)");
@@ -489,11 +489,11 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                 textTitle.setAttribute("y", (centerY - 15).toString());
                 textTitle.setAttribute("fill", "white");
                 textTitle.setAttribute("font-size", "25");
-                textTitle.setAttribute("font-family", "BoeingEICAS");
+                textTitle.setAttribute("font-family", "BoeingEFIS");
                 textTitle.setAttribute("text-anchor", "middle");
                 textTitle.setAttribute("alignment-baseline", "central");
                 rangeGroup.appendChild(textTitle);
-                this.addMapRange(rangeGroup, centerX, (centerY + 15), "white", "25", false, 1.0, false);
+                this.addMapRange(rangeGroup, centerX, (centerY + 15), "white", "30", false, 1.0, false);
             }
             this.root.appendChild(rangeGroup);
         }
@@ -562,7 +562,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
                     text.setAttribute("y", (500 - circleRadius + 52).toString());
                     text.setAttribute("fill", "white");
                     text.setAttribute("font-size", "32");
-                    text.setAttribute("font-family", "BoeingEICAS");
+                    text.setAttribute("font-family", "BoeingEFIS");
                     text.setAttribute("text-anchor", "middle");
                     text.setAttribute("alignment-baseline", "central");
                     text.setAttribute("transform", "rotate(" + fastToFixed(i * 10, 0) + " 500 500)");
@@ -781,7 +781,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
             this.currentRefMode.setAttribute("y", centerY.toString());
             this.currentRefMode.setAttribute("fill", "lime");
             this.currentRefMode.setAttribute("font-size", "35");
-            this.currentRefMode.setAttribute("font-family", "BoeingEICAS");
+            this.currentRefMode.setAttribute("font-family", "BoeingEFIS");
             this.currentRefMode.setAttribute("text-anchor", "end");
             this.currentRefMode.setAttribute("alignment-baseline", "central");
             this.currentRefGroup.appendChild(this.currentRefMode);
@@ -804,7 +804,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
             this.currentRefValue.setAttribute("y", centerY.toString());
             this.currentRefValue.setAttribute("fill", "white");
             this.currentRefValue.setAttribute("font-size", "45");
-            this.currentRefValue.setAttribute("font-family", "BoeingEICAS");
+            this.currentRefValue.setAttribute("font-family", "BoeingEFIS");
             this.currentRefValue.setAttribute("text-anchor", "middle");
             this.currentRefValue.setAttribute("alignment-baseline", "central");
             this.currentRefGroup.appendChild(this.currentRefValue);
@@ -814,7 +814,7 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
             this.currentRefType.setAttribute("y", centerY.toString());
             this.currentRefType.setAttribute("fill", "lime");
             this.currentRefType.setAttribute("font-size", "35");
-            this.currentRefType.setAttribute("font-family", "BoeingEICAS");
+            this.currentRefType.setAttribute("font-family", "BoeingEFIS");
             this.currentRefType.setAttribute("text-anchor", "start");
             this.currentRefType.setAttribute("alignment-baseline", "central");
             this.currentRefGroup.appendChild(this.currentRefType);
@@ -841,11 +841,11 @@ class Jet_MFD_NDCompass extends Jet_NDCompass {
             textTitle.setAttribute("y", (centerY - 15).toString());
             textTitle.setAttribute("fill", "white");
             textTitle.setAttribute("font-size", "25");
-            textTitle.setAttribute("font-family", "BoeingEICAS");
+            textTitle.setAttribute("font-family", "BoeingEFIS");
             textTitle.setAttribute("text-anchor", "middle");
             textTitle.setAttribute("alignment-baseline", "central");
             rangeGroup.appendChild(textTitle);
-            this.addMapRange(rangeGroup, centerX, (centerY + 15), "white", "25", false, 1.0, false);
+            this.addMapRange(rangeGroup, centerX, (centerY + 15), "white", "30", false, 1.0, false);
         }
         this.root.appendChild(rangeGroup);
     }
