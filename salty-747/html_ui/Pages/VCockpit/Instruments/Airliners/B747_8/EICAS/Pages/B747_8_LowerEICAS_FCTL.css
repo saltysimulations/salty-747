@@ -9,7 +9,14 @@
     --eicasMagenta: #D570FF;
 }
 :root text {
-    font-family: Roboto-Bold;
+    font-family: "BoeingEFIS";
+}
+
+@font-face {
+    font-family: "BoeingEFIS";
+    src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal; 
 }
 
 b747-8-lower-eicas-fctl {
@@ -27,6 +34,7 @@ b747-8-lower-eicas-fctl svg {
 b747-8-lower-eicas-fctl text {
     fill: var(--eicasBlue);
     font-size: 15px;
+    stroke-width: 0; 
 }
 b747-8-lower-eicas-fctl #aircraft {
     fill: gray;

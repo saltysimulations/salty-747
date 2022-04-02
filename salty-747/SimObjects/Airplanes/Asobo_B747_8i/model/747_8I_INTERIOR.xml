@@ -948,21 +948,10 @@
 			</DefaultTemplateParameters>
 
 			<UseTemplate Name="ASOBO_HANDLING_Knob_Wipers_Template">
-				<ID>1</ID>
 				<NODE_ID>SAFETY_Knob_Wipers</NODE_ID>
-				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>
+				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>      
 				<CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
 				<OFF_INT_LOW_HIGH>True</OFF_INT_LOW_HIGH>
-				<IE_WIPERS_ID>Wipers_left</IE_WIPERS_ID>
-			</UseTemplate>
-
-			<UseTemplate Name="ASOBO_HANDLING_Knob_Wipers_Template">
-				<ID>2</ID>
-				<NODE_ID>SAFETY_Knob_Wipers_02</NODE_ID>
-				<ANIM_NAME>SAFETY_Knob_Wipers_02</ANIM_NAME>
-				<CIRCUIT_ID_WIPERS>121</CIRCUIT_ID_WIPERS>
-				<OFF_INT_LOW_HIGH>True</OFF_INT_LOW_HIGH>
-				<IE_WIPERS_ID>Wipers_right</IE_WIPERS_ID>
 			</UseTemplate>
 
 			<Component ID="Instruments">
@@ -4293,9 +4282,9 @@
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_ant_iice_windshield_washer_r</NODE_ID>
 			</UseTemplate>
-			<!--<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
+			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>SAFETY_Knob_Wipers_02</NODE_ID>
-			</UseTemplate>-->
+			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>push_ovhd_air_data_ram_turbine</NODE_ID>
 			</UseTemplate>

@@ -100,7 +100,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                             text.setAttribute("x", this.rotatingCompassX.toString());
                             text.setAttribute("fill", "white");
                             text.setAttribute("font-size", fontSize.toString());
-                            text.setAttribute("font-family", "BoeingEICAS");
+                            text.setAttribute("font-family", "BoeingEFIS");
                             text.setAttribute("text-anchor", "middle");
                             text.setAttribute("alignment-baseline", "central");
                             text.setAttribute("transform", "rotate(" + angle + " " + this.rotatingCompassX + " " + this.rotatingCompassY + ")");                      
@@ -155,7 +155,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.selectedHeadingText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.74).toString());
                 this.selectedHeadingText.setAttribute("fill", "#D570FF");
                 this.selectedHeadingText.setAttribute("font-size", (this.fontSize * 0.27).toString());
-                this.selectedHeadingText.setAttribute("font-family", "BoeingEICAS");
+                this.selectedHeadingText.setAttribute("font-family", "BoeingEFIS");
                 this.selectedHeadingText.setAttribute("text-anchor", "start");
                 this.selectedHeadingText.setAttribute("alignment-baseline", "central");
                 this.selectedHeadingText.style.transform = "scale(1.25, 0.952)";
@@ -166,7 +166,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.selectedHeadingMode.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.745).toString());
                 this.selectedHeadingMode.setAttribute("fill", "#D570FF");
                 this.selectedHeadingMode.setAttribute("font-size", (this.fontSize * 0.22).toString());
-                this.selectedHeadingMode.setAttribute("font-family", "BoeingEICAS");
+                this.selectedHeadingMode.setAttribute("font-family", "BoeingEFIS");
                 this.selectedHeadingMode.setAttribute("text-anchor", "start");
                 this.selectedHeadingMode.setAttribute("alignment-baseline", "central");
                 this.selectedHeadingMode.style.transform = "scale(1.25, 0.952)";
@@ -177,7 +177,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.selectedHeadingTextRef.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.745).toString());
                 this.selectedHeadingTextRef.setAttribute("fill", "lime");
                 this.selectedHeadingTextRef.setAttribute("font-size", (this.fontSize * 0.22).toString());
-                this.selectedHeadingTextRef.setAttribute("font-family", "BoeingEICAS");
+                this.selectedHeadingTextRef.setAttribute("font-family", "BoeingEFIS");
                 this.selectedHeadingTextRef.setAttribute("text-anchor", "end");
                 this.selectedHeadingTextRef.setAttribute("alignment-baseline", "central");
                 this.selectedHeadingTextRef.style.transform = "scale(1.25, 0.952)";
@@ -196,7 +196,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.minimumReferenceModeText.setAttribute("y", (this.rotatingCompassY - circleRadius * 1.0475).toString());
                 this.minimumReferenceModeText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
                 this.minimumReferenceModeText.setAttribute("font-size", (this.fontSize * 0.23).toString());
-                this.minimumReferenceModeText.setAttribute("font-family", "BoeingEICAS");
+                this.minimumReferenceModeText.setAttribute("font-family", "BoeingEFIS");
                 this.minimumReferenceModeText.setAttribute("text-anchor", "end");
                 this.minimumReferenceModeText.style.transform = "scale(1.25, 0.952)";
                 fixedElements.appendChild(this.minimumReferenceModeText);
@@ -208,7 +208,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
                 this.minimumReferenceValueText.setAttribute("y", (this.rotatingCompassY - circleRadius * 0.975).toString());
                 this.minimumReferenceValueText.setAttribute("fill", (this.isHud) ? "lime" : "#24F000");
                 this.minimumReferenceValueText.setAttribute("font-size", (this.fontSize * 0.31).toString());
-                this.minimumReferenceValueText.setAttribute("font-family", "BoeingEICAS");
+                this.minimumReferenceValueText.setAttribute("font-family", "BoeingEFIS");
                 this.minimumReferenceValueText.setAttribute("text-anchor", "end");
                 this.minimumReferenceValueText.style.transform = "scale(1.25, 0.952)";
                 fixedElements.appendChild(this.minimumReferenceValueText);
