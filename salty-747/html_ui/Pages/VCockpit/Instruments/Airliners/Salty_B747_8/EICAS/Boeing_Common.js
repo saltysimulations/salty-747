@@ -13,7 +13,7 @@ var Boeing;
             let alt = Simplane.getAltitude();
             let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
 
-            if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB) 
+            if (phase <= FlightPhase.FLIGHT_PHASE_CLIMB)
                 text = `${(alt <= thrRedAlt && phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) ? "TO" :  "CLB"}${(mode == 1 || mode == 2) ? " - " + mode : ""}`;
             else if (phase <= FlightPhase.FLIGHT_PHASE_CRUISE)
                 text = `CRZ`;
@@ -117,7 +117,7 @@ var Boeing;
                 this.currentPercent = _realFlapsPercent;
                 this.currentLeadingEdgePercent = _leadingEdgeFlapsPercent;
                 this.currentAngle = _realFlapsAngle;
-                var targetAngle = this.flapsLeverPositionToAngle(this.currentLeverPosition);
+                var targetAngle = Math.ceil(this.flapsLeverPositionToAngle(this.currentLeverPosition));
                 var barTop = 0;
                 var barBottom = 0;
                 var barHeight = 0;
@@ -127,6 +127,7 @@ var Boeing;
                     barHeight = (barBottom - barTop);
                 }
                 var markerY = barTop + (barHeight * this.flapsAngleToPercentage(targetAngle));
+                console.log("marker bruh" + targetAngle);
                 var markerYStr = markerY.toString();
                 if (this.marker != null) {
                     this.marker.setAttribute("y1", markerYStr);
@@ -181,7 +182,7 @@ var Boeing;
                 30: 1
             };
 
-            return angToPercent[_angle]; 
+            return angToPercent[_angle];
         }
     }
 
@@ -217,7 +218,7 @@ var Boeing;
             }
             this.refreshValue(0, true);
         }
-        
+
         update(_deltaTime, _isLowerEICAS) {
             this.refreshValue(SimVar.GetSimVarValue("ELEVATOR TRIM POSITION", "degree"));
             //Hides Greenband and trim value if airborne.
@@ -364,7 +365,7 @@ var Boeing;
                     if (this.isSwitched && this.isActive && (this.index === 1 || this.index === 2) && this.jettisonActive) {
                         className+= "-jett";
                     }
-                        
+
 
                     this.element.setAttribute("class", "fuelpump-" + className);
                 }
@@ -595,14 +596,14 @@ var Boeing;
                         this.allDivs[i].style.visibility = "hidden";
                         return this.allDivs[i];
                     }
-                }           
+                }
             }
             else {
                 for (var i = 0; i < this.allDivs.length; ++i) {
                     if (this.allDivs[i].textContent.length == 0) {
                         if (i > 10) {
                             this.allDivs[i].style.visibility = "hidden";
-                        } 
+                        }
                         else {
                             this.allDivs[i].style.visibility = "visible";
                         }

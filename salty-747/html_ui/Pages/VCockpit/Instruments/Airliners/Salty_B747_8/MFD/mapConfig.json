@@ -44,7 +44,7 @@
   "airplaneIcon1": "ICON_MAP_PLANE_B747",
   "airplaneIcon2": "ICON_MAP_PLANE_B747",
 
-  "imagesDir": "/Pages/VCockpit/Instruments/Airliners/B747_8/MFD/Images/",
+  "imagesDir": "/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Images/",
 
   "runwayFillColor": "white",
   "runwayStrokeColor": "gray",
@@ -139,4 +139,3 @@
 
 
 
-  
