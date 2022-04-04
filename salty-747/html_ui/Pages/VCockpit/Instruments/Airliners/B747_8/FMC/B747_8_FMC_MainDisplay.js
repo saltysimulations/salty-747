@@ -82,6 +82,24 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this._pageRefreshTimer = null;
 
         /* SALTY 747 VARS */
+        this.desForWindSpd = {
+            unit1: "",
+            unit2: "",
+            unit3: "",
+            unit4: ""
+        }
+        this.desForWindDir = {
+            unit1: "",
+            unit2: "",
+            unit3: "",
+            unit4: ""
+        }
+        this.desForWindAlt = {
+            unit1: "",
+            unit2: "",
+            unit3: "",
+            unit4: ""
+        }
         this._TORwyWindHdg = "";
         this._TORwyWindSpd = "";
         this.messages = [];
@@ -382,6 +400,20 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                 this.showErrorMessage(value);
             }
         }
+    }    
+    trySetTransAltitude(s) {
+        if (!/^\d+$/.test(s)) {
+            this.showErrorMessage("FORMAT ERROR");
+            return false;
+        }
+        let v = parseInt(s);
+        if (isFinite(v) && v > 0) {
+            this.transitionAltitude = v;
+            SimVar.SetSimVarValue("L:AIRLINER_TRANS_ALT", "Number", this.transitionAltitude);
+            return true;
+        }
+        this.showErrorMessage(this.defaultInputErrorMessage);
+        return false;
     }
     _getIndexFromTemp(temp) {
         if (temp < -10)

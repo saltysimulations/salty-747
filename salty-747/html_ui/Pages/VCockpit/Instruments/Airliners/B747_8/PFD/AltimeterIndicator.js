@@ -479,6 +479,26 @@ class Jet_PFD_AltimeterIndicator extends HTMLElement {
             if (selectedAltitude === 0) {
                 selectedAltitude = Math.max(0, Simplane.getAutoPilotDisplayedAltitudeLockValue());
             }
+        }        
+        /* Transition Logic */
+        const transAlt = SimVar.GetSimVarValue("L:AIRLINER_TRANS_ALT", "Number");
+        const transLvl = SimVar.GetSimVarValue("L:AIRLINER_APPR_TRANS_ALT", "Number");
+        const fltPhase = SimVar.GetSimVarValue("L:AIRLINER_FLIGHT_PHASE", "Number");
+        if (fltPhase > 1 && fltPhase <= 3) {
+            if (transAlt < selectedAltitude && transAlt < (indicatedAltitude - 300) && baroMode !== "STD") {
+                console.log(baroMode + "BARO MODE");
+                this.pressureSVG.setAttribute("fill", "#f9dd02");
+            } else {
+                console.log("BELOW TRANS ALT");
+                this.pressureSVG.setAttribute("fill", "#24F000");
+            }
+        }
+        if (fltPhase >= 4 && fltPhase <= 7) {
+            if (transLvl > selectedAltitude && transLvl > (indicatedAltitude + 300) && baroMode === "STD") {
+                this.pressureSVG.setAttribute("fill", "#f9dd02");
+            } else {
+                this.pressureSVG.setAttribute("fill", "#24F000");
+            }
         }
         this.updateGraduationScrolling(indicatedAltitude);
         this.updateCursorScrolling(indicatedAltitude);

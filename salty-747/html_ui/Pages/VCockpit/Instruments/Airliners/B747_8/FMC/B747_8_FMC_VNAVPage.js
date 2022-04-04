@@ -52,6 +52,12 @@ class B747_8_FMC_VNAVPage {
                 break;
         }
 
+        /* Transition altitude */       
+        let transAltCell = "□□□□□";
+        if (fmc.transitionAltitude) {
+            transAltCell = fmc.transitionAltitude.toString();
+        }
+
         /* LSK 1L  - Cruise Level */
         let crzAltCell = "□□□□□";
         if (fmc.cruiseFlightLevel) {
@@ -139,15 +145,14 @@ class B747_8_FMC_VNAVPage {
             spdTransCell += "/10000";
         }
 
-        /* LSK 3R  - Transition Altitude */
-        let transAltCell = "";
-        let origin = fmc.flightPlanManager.getOrigin();
-        if (origin) {
-            if (origin.infos.transitionAltitude) {
-                let transitionAltitude = origin.infos.transitionAltitude;
-                transAltCell = transitionAltitude.toFixed(0);
+        /* RSK 3R  - Transition Altitude */
+        fmc.onRightInput[2] = () => {
+            let value = fmc.inOut;
+            if (fmc.trySetTransAltitude(value)) {
+                fmc.clearUserInput();
+                B747_8_FMC_VNAVPage.ShowPage1(fmc);
             }
-        }
+        };
 
         /* LSK 4L  - Speed Restriction */
         let spdRestrCell = "---/-----";
@@ -557,6 +562,15 @@ class B747_8_FMC_VNAVPage {
                 }
             }
         };
+
+        fmc.onRightInput[4] = () => {
+            setTimeout(
+                function() {
+                    B747_8_FMC_ForecastPage.ShowPage(fmc);
+                }, 500
+            );
+        };
+        B747_8_FMC_ForecastPage
 
         fmc.setTemplate([
             [desPageTitle, "3", "3"],
