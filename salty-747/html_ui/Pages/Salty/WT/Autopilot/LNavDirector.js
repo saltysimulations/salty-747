@@ -73,6 +73,8 @@
       if (!this.delegateToHoldsDirector(activeWaypoint) && activeWaypoint && previousWaypoint) {
         this.generateGuidance(activeWaypoint, planeState, previousWaypoint, navSensitivity, navSensitivityScalar);
       }
+      //Always Check if a LOC signal is available
+      this.delegateToLocDirector();
     }
   }
 
@@ -204,12 +206,11 @@
     const armedState = this.navModeSelector.currentLateralArmedState;
     const activeState = this.navModeSelector.currentLateralActiveState;
 
-    if ((armedState === LateralNavModeState.APPR || activeState === LateralNavModeState.APPR)
-       && (this.navModeSelector.approachMode === WT_ApproachType.ILS || this.navModeSelector.lNavModeState === LNavModeState.NAV1 || this.navModeSelector.lNavModeState === LNavModeState.NAV2)) {
+    if (armedState === LateralNavModeState.APPR || activeState === LateralNavModeState.APPR) {
       this.locDirector.update();
       return this.locDirector.state === LocDirectorState.ACTIVE;
-    }
 
+    }
     return false;
   }
 
