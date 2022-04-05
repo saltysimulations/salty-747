@@ -61,7 +61,7 @@ class LocDirector {
    * @param {LocRadioState} radioState The current localizer radio state.
    */
   handleArmed(radioState) {
-    if (radioState.hasLocSignal && radioState.hasGlideslopeSignal) {
+    if (radioState.hasLocSignal) {
       if (Math.abs(radioState.lateralDevation) < 120) {
         this.state = LocDirectorState.ACTIVE;
         this.navModeSelector.queueEvent(NavModeEvent.LOC_ACTIVE);
@@ -77,7 +77,7 @@ class LocDirector {
    * @param {LocRadioState} radioState The current localizer radio state.
    */
   handleActive(radioState) {
-    if (radioState.hasLocSignal && radioState.hasGlideslopeSignal && this.navModeSelector.currentLateralActiveState === LateralNavModeState.APPR) {
+    if (radioState.hasLocSignal && this.navModeSelector.currentLateralActiveState === LateralNavModeState.APPR) {
       const interceptAngle = AutopilotMath.interceptAngle((-1 * radioState.lateralDevation) / 127, NavSensitivity.NORMAL, 12.5);
 
       const now = Date.now();
