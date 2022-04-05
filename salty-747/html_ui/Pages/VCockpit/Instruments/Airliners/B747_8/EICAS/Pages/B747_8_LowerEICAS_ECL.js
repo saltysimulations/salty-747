@@ -44,7 +44,7 @@ var B747_8_LowerEICAS_ECL;
             if (this.eventTimeout == 0) {
                 if (_event === "EICAS_CHANGE_PAGE_chkl" && this.nextChecklistIsPending === true) {
                     this.nextChecklistIsPending = false;
-                    if (this.normalChecklistSequence < 10) {
+                    if (this.normalChecklistSequence < 9) {
                         SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_chkl", "bool", 1);
                         setTimeout(() => {
                             this.normalChecklistSequence ++;
@@ -92,7 +92,7 @@ var B747_8_LowerEICAS_ECL;
                             this.refreshChecklist();
                         }
                         else if (this.cursorPosition === this.getMaxCursorIndex() - 4) {
-                            if (this.normalChecklistSequence < 10) {
+                            if (this.normalChecklistSequence < 9) {
                                 this.normalChecklistSequence ++;
                                 this.refreshChecklist();
                             }
@@ -457,7 +457,7 @@ var B747_8_LowerEICAS_ECL;
             this.updateBottomMenus();
         }
         clearMenu() {
-            for (let i = 0; i < 11; i++) {
+            for (let i = 0; i < 10; i++) {
                 let item = this.querySelector("#menu-item" + i);
                 item.style.visibility = "hidden";
             }

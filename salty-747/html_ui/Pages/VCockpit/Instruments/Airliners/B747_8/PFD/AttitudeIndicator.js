@@ -228,7 +228,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                             leftText.setAttribute("y", ((pitchFactor * angle - height / 2 + fontSize / 2) - 1).toString());
                             leftText.setAttribute("text-anchor", "end");
                             leftText.setAttribute("font-size", fontSize.toString());
-                            leftText.setAttribute("font-family", "BoeingEICAS");
+                            leftText.setAttribute("font-family", "BoeingEFIS");
                             leftText.setAttribute("fill", "white");
                             this.attitude_pitch_grads[0].appendChild(leftText);
                             let rightText = document.createElementNS(Avionics.SVG.NS, "text");
@@ -237,7 +237,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                             rightText.setAttribute("y", ((pitchFactor * angle - height / 2 + fontSize / 2) - 1).toString());
                             rightText.setAttribute("text-anchor", "start");
                             rightText.setAttribute("font-size", fontSize.toString());
-                            rightText.setAttribute("font-family", "BoeingEICAS");
+                            rightText.setAttribute("font-family", "BoeingEFIS");
                             rightText.setAttribute("fill", "white");
                             this.attitude_pitch_grads[0].appendChild(rightText);
                         }
@@ -386,7 +386,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.radioDecisionHeight.setAttribute("y", "-192");
                 this.radioDecisionHeight.setAttribute("text-anchor", "end");
                 this.radioDecisionHeight.setAttribute("font-size", "14");
-                this.radioDecisionHeight.setAttribute("font-family", "BoeingEICAS");
+                this.radioDecisionHeight.setAttribute("font-family", "BoeingEFIS");
                 this.radioDecisionHeight.setAttribute("fill", "lime");
                 this.radioAltitudeGroup.appendChild(this.radioDecisionHeight);
                 this.radioAltitude = document.createElementNS(Avionics.SVG.NS, "text");
@@ -395,7 +395,7 @@ class Jet_PFD_AttitudeIndicator extends HTMLElement {
                 this.radioAltitude.setAttribute("y", "-190");
                 this.radioAltitude.setAttribute("text-anchor", "end");
                 this.radioAltitude.setAttribute("font-size", "26");
-                this.radioAltitude.setAttribute("font-family", "BoeingEICAS");
+                this.radioAltitude.setAttribute("font-family", "BoeingEFIS");
                 this.radioAltitude.setAttribute("fill", "white");
                 this.radioAltitudeGroup.appendChild(this.radioAltitude);
             }

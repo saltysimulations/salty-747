@@ -309,7 +309,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.ILSIdent.setAttribute("y", "12");
             this.ILSIdent.setAttribute("fill", "white");
             this.ILSIdent.setAttribute("font-size", "14");
-            this.ILSIdent.setAttribute("font-family", "BoeingEICAS");
+            this.ILSIdent.setAttribute("font-family", "BoeingEFIS");
             this.ILSIdent.setAttribute("text-anchor", "start");
             this.ILSIdent.setAttribute("alignment-baseline", "central");
             this.InfoGroup.appendChild(this.ILSIdent);
@@ -319,7 +319,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.ILSDist.setAttribute("y", "29");
             this.ILSDist.setAttribute("fill", "white");
             this.ILSDist.setAttribute("font-size", "14");
-            this.ILSDist.setAttribute("font-family", "BoeingEICAS");
+            this.ILSDist.setAttribute("font-family", "BoeingEFIS");
             this.ILSDist.setAttribute("text-anchor", "start");
             this.ILSDist.setAttribute("alignment-baseline", "central");
             this.InfoGroup.appendChild(this.ILSDist);
@@ -329,7 +329,7 @@ class Jet_PFD_ILSIndicator extends HTMLElement {
             this.ILSOrigin.setAttribute("y", "50");
             this.ILSOrigin.setAttribute("fill", "white");
             this.ILSOrigin.setAttribute("font-size", "18");
-            this.ILSOrigin.setAttribute("font-family", "BoeingEICAS");
+            this.ILSOrigin.setAttribute("font-family", "BoeingEFIS");
             this.ILSOrigin.setAttribute("text-anchor", "start");
             this.ILSOrigin.setAttribute("alignment-baseline", "central");
             this.InfoGroup.appendChild(this.ILSOrigin);

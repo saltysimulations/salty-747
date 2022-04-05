@@ -1728,7 +1728,7 @@ class FMCMainDisplay extends BaseAirliners {
                 }
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CLIMB) {
-                let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
+                let altitude = SimVar.GetSimVarValue("INDICATED ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel * 100;
                 if (isFinite(cruiseFlightLevel)) {
                     if (altitude >= 0.98 * cruiseFlightLevel) {
@@ -1738,7 +1738,7 @@ class FMCMainDisplay extends BaseAirliners {
                 }
             }
             if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_CRUISE) {
-                let altitude = SimVar.GetSimVarValue("PLANE ALTITUDE", "feet");
+                let altitude = SimVar.GetSimVarValue("INDICATED ALTITUDE", "feet");
                 let cruiseFlightLevel = this.cruiseFlightLevel * 100;
                 if (isFinite(cruiseFlightLevel)) {
                     if (altitude < 0.90 * cruiseFlightLevel && !this._isStepClimbing) {
