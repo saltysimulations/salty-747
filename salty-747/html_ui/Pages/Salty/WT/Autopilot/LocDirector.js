@@ -78,27 +78,7 @@ class LocDirector {
    */
   handleActive(radioState) {
     if (radioState.hasLocSignal && this.navModeSelector.currentLateralActiveState === LateralNavModeState.APPR) {
-      const interceptAngle = AutopilotMath.interceptAngle((-1 * radioState.lateralDevation) / 127, NavSensitivity.NORMAL, 12.5);
 
-      const now = Date.now();
-      const elapsedTime = (now - this.previousTime) / 1000;
-      const interceptRate = Math.sign(this.previousDeviation) === 1
-        ? Math.max(this.previousDeviation - radioState.lateralDevation, 0)
-        : -1 * Math.min(this.previousDeviation - radioState.lateralDevation, 0);
-
-      const interceptRateScalar = radioState.lateralDevation < 40
-        ? 1 - Math.min(interceptRate / 10, 1.15)
-        : 1;
-
-      const magVar = SimVar.GetSimVarValue('MAGVAR', 'Degrees');
-
-      const trueCourse = GeoMath.removeMagvar(radioState.course, magVar);
-      const setCourse = AutopilotMath.normalizeHeading(trueCourse + (interceptAngle * interceptRateScalar));
-
-      this.previousDeviation = radioState.lateralDevation;
-      this.previousTime = now;
-
-      LNavDirector.setCourse(setCourse, LNavDirector.getAircraftState());
     }
     else {
       this.state = LocDirectorState.NONE;

@@ -317,8 +317,8 @@
       this.currentLateralArmedState = LateralNavModeState.NONE;
       this.currentLateralActiveState = LateralNavModeState.APPR;
 
-      if (SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "number") != 1) {
-        SimVar.SetSimVarValue("K:AP_PANEL_HEADING_HOLD", "number", 1);
+      if (SimVar.GetSimVarValue("AUTOPILOT APPROACH HOLD", "number") != 1) {
+        SimVar.SetSimVarValue("K:AP_LOC_HOLD_ON", "number", 1);
       }
       SimVar.SetSimVarValue("K:HEADING_SLOT_INDEX_SET", "number", 2);
       SimVar.SetSimVarValue("AUTOPILOT APPROACH ACTIVE", "bool", 1);
