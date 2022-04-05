@@ -1,0 +1,255 @@
+﻿:root {
+  --bodyHeightScale: 1; }
+
+@keyframes TemporaryShow {
+  0%, 100% {
+    visibility: visible; } }
+
+@keyframes TemporaryHide {
+  0%, 100% {
+    visibility: hidden; } }
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
+  html body {
+    -webkit-user-select: none;
+    font-family: "BoeingEFIS";
+    font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100);
+    color: white;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0; }
+
+#highlight {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 10; }
+
+#Electricity {
+  width: 100%;
+  height: 100%; }
+  #Electricity[state=off] {
+    display: none; }
+
+@font-face {
+  font-family: "BoeingEFIS";
+  src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+#Mainframe {
+  --refWidth: 1024;
+  --refHeight: 1024; }
+
+b747-8-mfd-element {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  font-family: "BoeingEFIS";
+  overflow: hidden; }
+  b747-8-mfd-element #Electricity {
+    width: 100%;
+    height: 100%; }
+    b747-8-mfd-element #Electricity[state=off] {
+      display: none; }
+  b747-8-mfd-element #highlight {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 10; }
+  b747-8-pfd-element #DUborder {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative; }
+  b747-8-mfd-element #Mainframe {
+    width: 95%;
+    height: 95%;
+    left: 2.5%;
+    top: 2.5%;
+    display: block;
+    position: relative; }
+    b747-8-mfd-element #Mainframe #Compass {
+      transform: rotateX(0);
+      position: absolute;
+      border: none;
+      left: 0%;
+      top: -2%;
+      width: 100%;
+      height: 100%; }
+    b747-8-mfd-element #Mainframe #Map {
+      position: absolute;
+      height: 150%;
+      width: 150%;
+      top: -27%;
+      left: -25%;
+      display: block;
+      /* Map position (left and top) is set in mapConfig.json file (see SvgMapConfig.ts) (makes it editable at runtime) */
+      /* Map position (left and top) is set in mapConfig.json file (see SvgMapConfig.ts) (makes it editable at runtime) */ }
+      b747-8-mfd-element #Mainframe #Map #MapOrientation {
+        position: absolute;
+        top: 0%;
+        right: 0%;
+        width: 10%;
+        height: calc( 3 * 1vh * var(--bodyHeightScale));
+        background-color: #1a1d21;
+        color: white; }
+      b747-8-mfd-element #Mainframe #Map #WindData {
+        position: absolute;
+        top: 0%;
+        width: 7%;
+        right: 10%; }
+      b747-8-mfd-element #Mainframe #Map #MapRange {
+        position: absolute;
+        bottom: 0%;
+        right: 0%;
+        width: 7%;
+        height: calc( 3 * 1vh * var(--bodyHeightScale));
+        background-color: #1a1d21;
+        color: #36c8d2; }
+      b747-8-mfd-element #Mainframe #Map #MapSVG, b747-8-mfd-element #Mainframe #Map #road-network-canvas {
+        transform: rotateX(0);
+        position: absolute; }
+      b747-8-mfd-element #Mainframe #Map bing-map {
+        transform: rotateX(0);
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%; }
+    b747-8-mfd-element #Mainframe #ModeChangeMask {
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      display: none;
+      position: absolute;
+      background-color: black; }
+    b747-8-mfd-element #Mainframe #TopBox {
+      top: 2%;
+      left: 4%;
+      width: 92%;
+      height: 13%;
+      position: absolute; }
+      b747-8-mfd-element #Mainframe #TopBox #Speed {
+        top: 15%;
+        height: 150%;
+        left: 0%;
+        width: 40%;
+        position: absolute; }
+      b747-8-mfd-element #Mainframe #TopBox #Approach {
+        top: 15%;
+        height: 100%;
+        left: 60%;
+        width: 40%;
+        position: absolute; }
+        b747-8-mfd-element #Mainframe #TopBox #Approach text {
+          text-anchor: end; }
+      b747-8-mfd-element #Mainframe #TopBox #Waypoint {
+        top: 15%;
+        height: 100%;
+        left: 60%;
+        width: 40%;
+        position: absolute; }
+        b747-8-mfd-element #Mainframe #TopBox #Waypoint text {
+          text-anchor: end; }
+      b747-8-mfd-element #Mainframe #TopBox svg {
+        width: 100%;
+        height: 100%; }
+      b747-8-mfd-element #Mainframe #TopBox text {
+        width: 100%;
+        height: 100%;
+        font-family: "BoeingEFIS"; }
+      b747-8-mfd-element #Mainframe #TopBox text.Value {
+        font-size: 42px;
+        fill: white; }
+      b747-8-mfd-element #Mainframe #TopBox text.ValueVor {
+        font-size: 42px;
+        fill: cyan; }
+      b747-8-mfd-element #Mainframe #TopBox text.ValueIls {
+        font-size: 42px;
+        fill: #D570FF; }
+      b747-8-mfd-element #Mainframe #TopBox text.Small {
+        font-size: 32px;
+        fill: white; }
+      b747-8-mfd-element #Mainframe #TopBox text.Large {
+        font-size: 42px;
+        fill: white; }
+      b747-8-mfd-element #Mainframe #TopBox text.Units {
+        font-size: 32px;
+        fill: cyan; }
+  b747-8-mfd-element #Mainframe #VORDMENavaids {
+    font-family: "BoeingEFIS"; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids div {
+      top: 86%;
+      width: 25%;
+      height: 13%;
+      position: absolute; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids svg {
+      width: 100%;
+      height: 100%; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #VORDMENavaid_Left {
+      left: 2.5%;
+      text-anchor: start; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #VORDMENavaid_Left #Distance {
+      text-anchor: end; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #VORDMENavaid_Right {
+      right: 2.5%;
+      text-anchor: start; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #VORDMENavaid_Right #Unit {
+      text-anchor: start; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #VORDMENavaid_Right #Distance {
+      text-anchor: end; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #State {
+      font-size: 48px; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #ID {
+      font-size: 48px; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #Mode {
+      font-size: calc( 3 * 1vh * var(--bodyHeightScale));
+      fill: none; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #Distance {
+      font-size: 48px;
+      fill: lime; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #Unit {
+      font-size: calc( 2.75 * 1vh * var(--bodyHeightScale));
+      fill: lime; }
+    b747-8-mfd-element #Mainframe #VORDMENavaids #ArrowVor {
+      fill: none;
+      stroke: lime;
+      stroke-width: 4px; }
+    b747-8-mdf-element #Mainframe #VORDMENavaids #ArrowAdf {
+      fill: none;
+      stroke: cyan;
+      stroke-width: 4px; }
+    b747-8-mfd-element #Mainframe #Symbols {
+      top: 65%;
+      left: 3%;
+      width: 50%;
+      height: 50%;
+      position: absolute; }
+      b747-8-mfd-element #Mainframe #Symbols svg {
+        width: 100%;
+        height: 100%; }
+      b747-8-mfd-element #Mainframe #Symbols text {
+        width: 100%;
+        height: 100%;
+        font-family: "BoeingEFIS"; }
+      b747-8-mfd-element #Mainframe #Symbols text.Small {
+        font-size: 36px;
+        fill: cyan; }
+      b747-8-mfd-element #Mainframe #Symbols text.Large {
+        font-size: 48px;
+        fill: cyan; }
+  b747-8-mfd-element[mapstyle=rose] #Mainframe #Compass {
+    top: 4.5%; }
+  b747-8-mfd-element[mapstyle=rose] #Mainframe #Map {
+    top: -17.5%; }
+  b747-8-mfd-element[mapstyle=plan] #Mainframe #Compass {
+    top: 3%; }
+  b747-8-mfd-element[mapstyle=plan] #Mainframe #Map {
+    top: -22%; }
+

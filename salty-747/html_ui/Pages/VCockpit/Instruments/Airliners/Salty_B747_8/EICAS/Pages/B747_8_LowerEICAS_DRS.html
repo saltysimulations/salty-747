@@ -1,0 +1,88 @@
+<link rel="stylesheet" href="./B747_8_LowerEICAS_DRS.css" />
+
+<script type="text/html" id="B747_8LowerEICASDRSTemplate">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" style="background:black;">
+        <g id="aircraft-shape">
+            <line x1="265" y1="100" x2="265" y2="500" />
+            <line x1="335" y1="100" x2="335" y2="500" />
+            <line x1="265" y1="200" x2="20" y2="350" />
+            <line x1="335" y1="200" x2="580" y2="350" />
+            <line x1="265" y1="295" x2="180" y2="328" />
+            <line x1="335" y1="295" x2="420" y2="328" />
+            <path d="M 265 100 C 265 100, 295 -30, 335 100" />
+            <line x1="265" y1="500" x2="280" y2="560" />
+            <line x1="335" y1="500" x2="320" y2="560" />
+            <line x1="270" y1="520" x2="230" y2="560" />
+            <line x1="330" y1="520" x2="370" y2="560" />
+            <path d="M 265 500 C 265 500, 295 560, 335 500" />
+        </g>
+        <g id="labels-l">
+            <text x="100" y="97">MAIN ELEC</text>
+            <text x="100" y="114">ENTRY 1</text>
+            <text x="100" y="170">UPPER DECK</text>
+            <text x="100" y="198">ENTRY 2</text>
+            <rect x="115" y="260" width="45" height="35" />
+            <text x="100" y="280">ENTRY 3</text>
+            <text x="100" y="355">ENTRY 4</text>
+            <text x="100" y="450">ENTRY 5</text>
+        </g>
+        <g id="labels-r">
+            <text x="410" y="114">ENTRY 1</text>
+            <text x="410" y="142">FWD CARGO</text>
+            <text x="410" y="170">UPPER DECK</text>
+            <text x="410" y="198">ENTRY 2</text>
+            <rect x="373" y="202" width="35" height="35" />
+            <text x="410" y="235">CTR ELEC</text>
+            <rect x="438" y="260" width="35" height="35" />
+            <text x="410" y="280">ENTRY 3</text>
+            <text x="410" y="355">ENTRY 4</text>
+            <text x="410" y="395">AFT CARGO</text>
+            <text x="410" y="422">BULK CARGO</text>
+            <text x="410" y="450">ENTRY 5</text>
+        </g>
+        <g id="lines-l">
+            <line x1="182" y1="91" x2="261" y2="91" />
+            <line x1="170" y1="108" x2="245" y2="108" />
+            <line x1="190" y1="163" x2="245" y2="163" />
+            <line x1="170" y1="192" x2="245" y2="192" />
+            <line x1="170" y1="274" x2="245" y2="274" />
+            <line x1="170" y1="349" x2="245" y2="349" />
+            <line x1="170" y1="446" x2="245" y2="446" />
+        </g>
+        <g id="lines-r">
+            <line x1="400" y1="108" x2="355" y2="108" />
+            <line x1="400" y1="136" x2="340" y2="136" />
+            <line x1="400" y1="163" x2="355" y2="163" />
+            <line x1="400" y1="192" x2="355" y2="192" />
+            <line x1="400" y1="229" x2="340" y2="229" />
+            <line x1="400" y1="274" x2="355" y2="274" />
+            <line x1="400" y1="349" x2="355" y2="349" />
+            <line x1="400" y1="389" x2="340" y2="389" />
+            <line x1="400" y1="416" x2="340" y2="416" />
+            <line x1="400" y1="446" x2="355" y2="446" />
+        </g>
+        <g id="status-l">
+            <text x="248" y="114" id="entry1-status">A</text>
+            <text x="248" y="170">A</text>
+            <text x="248" y="198">A</text>
+            <text x="248" y="280">A</text>
+            <text x="248" y="355">A</text>
+            <text x="248" y="450">A</text>
+        </g>
+        <g id="status-r">
+            <text x="340" y="114">A</text>
+            <text x="340" y="170">A</text>
+            <text x="340" y="198">A</text>
+            <text x="340" y="280">A</text>
+            <text x="340" y="355">A</text>
+            <text x="340" y="450" id="entry5-status">A</text>
+        </g>
+        <g id="open-rects">
+            <rect x="270" y="106" width="13" height="5.5" id="entry1-rect" />
+            <rect x="319" y="131" width="13" height="11" id="fwdcargo-rect" />
+            <rect x="317" y="442.5" width="13" height="5.5" id="entry5-rect" />
+        </g>
+    </svg>
+</script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/EICAS/Pages/B747_8_LowerEICAS_DRS.js"></script>
