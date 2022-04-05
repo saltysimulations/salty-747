@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "en-US",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "The 747 was first conceived in the 1960s, as Boeing's proposed entry for a U.S. Air Force study into supersized strategic transport aircraft. The wide-body commercial airliner would eventually enter public service with Pan Am World Airways in 1970, where it was dubbed the industry's first 'Jumbo Jet' and would go on to hold the passenger capacity record for 37 years.<\/br><\/br>After decades exploring larger-capacity versions, in 2004 Boeing announced the 747 Advanced -- a stretched model they officially designated as the 747-8 a year later, with a Freighter variant (747-8F) for cargo launching in October 2011, and an Intercontinental variant (747-8I) for passengers taking flight with Lufthansa in June 2012.<\/br><\/br>As an evolution of the 747-400, the 747-8 refines and upgrades its predecessor's engines, at the same time utilizing extensive cockpit technology from the 787 Dreamliner. The result is a high-tech, low-weight powerhouse designed for increased performance, reduced noise, and ultra low emissions -- a design further improved by a thoroughly re-imagined wing system that decreases wake turbulence and drag, boosting fuel economy, range, and overall aerodynamics.<\/br><\/br>With its super-jumbo-jet size and 60 years worth of engineering maturity, the 747-8 could easily seem far-removed from its origins. But one look at its silhouette and the lineage shines through, in the elegant curves of its double-decker form that make it one of the most recognizable planes in the world, forever worthy of the graceful nickname bestowed on the first of its line: 'Queen of the Skies'.",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Adjust selected heading to the left",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Adjust selected heading to the right  "
+    }
+  }
+}

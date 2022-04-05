@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "de-DE",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "Die Konzeptionsanfänge der 747 reichen bis in die 1960er Jahre zurück – als Boeings Beitrag für eine Studie der US-amerikanischen Luftwaffe hinsichtlich eines strategischen Transportflugzeugs. Das Großraumpassagierflugzeug trat seinen offiziellen Dienst das erste Mal mit der Pan Am World Airways 1970 an, als es die Bezeichnung erster industrieller „Jumbo-Jet“ erhielt und von da an 37 Jahre lang den Rekord für die größte Passagierkapazität hielt.<\/br><\/br>Nach Dekaden des Forschens an Versionen mit größeren Kapazitäten, kündigte Boeing im Jahre 2004 die 747 Advanced an – ein gestreckteres Modell, dem 1 Jahr später die offizielle Bezeichnung 747-8 verliehen wurde. Wobei ferner eine Frachtvariante (747-8F) für Frachten im Oktober 2011 und eine interkontinentale Variante (747-8I) für Passagiere der Lufthansa im Juni 2012 an den Start gingen.<\/br><\/br>Als eine Weiterentwicklung der 747-400 verbessert die 747-8 nicht nur die Triebwerke ihres Vorgängers, sondern greift auch auf die umfangreiche Cockpit-Technologie der 787 Dreamliner zurück. Das Resultat ist ein leichtgewichtiges Hightech-Kraftpaket mit einer besseren Leistung, einem reduzierten Geräuschpegel und einem sehr geringen Wert an Emissionen – ein Design, das noch zusätzlich durch ein neu überdachtes Flügelsystem ergänzt wird, das zu einer Verringerung von Wirbelschleppe und Luftwiderstand führt und den Treibstoffhaushalt, die Reichweite und die allgemeine Aerodynamik verbessert.<\/br><\/br>Mit seiner Super-Jumbo-Jet-Größe und einer technischen Reife von 60 Jahren Entwicklungsgeschichte erscheint die 747-8 beinahe schon zu weit von ihrem ursprünglichen Modell entfernt. Allerdings genügt ein Blick auf die Silhouette, um das Vermächtnis zu erkennen, das sich in den eleganten Kurven der Doppeldeckerform abzeichnet und das diesem Flugzeug sowohl seinen weltweiten Wiedererkennungswert als auch seinen wohlverdienten Spitznamen gibt: die „Königin der Lüfte“.",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Ausgewählten Kurs nach links anpassen",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Ausgewählten Kurs nach rechts anpassen  "
+    }
+  }
+}

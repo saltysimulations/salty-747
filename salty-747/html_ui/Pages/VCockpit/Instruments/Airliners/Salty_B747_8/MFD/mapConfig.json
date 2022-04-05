@@ -1,0 +1,141 @@
+﻿{
+  "altitudeArc": {
+    "strokeColor": "white",
+    "outlineColor": "white",
+    "strokeWidth": "2",
+    "outlineWidth": "4"
+  },
+
+  "waypointLabelFontSize": 18,
+  "waypointLabelFontFamily": "BoeingEFIS",
+  "waypointLabelColor": "white",
+  "waypointLabelStrokeColor": "#3f3f3f",
+  "waypointLabelStrokeWidth": 0,
+  "waypointLabelUseBackground": false,
+  "waypointLabelBackgroundColor": "#3f4851",
+  "waypointLabelBackgroundStrokeColor": "black",
+  "waypointLabelBackgroundStrokeWidth": 0,
+  "waypointLabelBackgroundPadding": "2 2 2 2",
+  "waypointLabelDistanceX": 34,
+  "waypointLabelDistance": -20,
+  "waypointIconSize": 28,
+
+  "vorLabelColor": "cyan",
+  "ndbLabelColor": "cyan",
+  "airportLabelColor": "cyan",
+  "intersectionLabelColor": "cyan",
+
+  "preventLabelOverlap": false,
+
+  "cityLabelFontSize": 24,
+  "cityLabelFontFamily": "BoeingEFIS",
+  "cityLabelColor": "#black",
+  "cityLabelStrokeColor": "#3f3f3f",
+  "cityLabelStrokeWidth": 0,
+  "cityLabelUseBackground": false,
+  "cityLabelBackgroundColor": "white",
+  "cityLabelBackgroundStrokeColor": "red",
+  "cityLabelBackgroundStrokeWidth": 10,
+  "cityLabelBackgroundPadding": "7 12 0 12",
+  "cityLabelDistance": 0.45,
+  "cityIconSize": 90,
+
+  "airplaneIconSize": 30,
+  "airplaneIcon1": "ICON_MAP_PLANE_B747",
+  "airplaneIcon2": "ICON_MAP_PLANE_B747",
+
+  "imagesDir": "/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Images/",
+
+  "runwayFillColor": "white",
+  "runwayStrokeColor": "gray",
+  "runwayStrokeWidth": 3,
+  "runwayCornerRadius": 8,
+  "runwayMinimalWidth": 16,
+
+  "latLonStrokeColor": "gray",
+  "latLonStrokeWidth": 1,
+  "latLonLabelFontFamily": "BoeingEFIS",
+  "latLonLabelFontSize": 14,
+  "latLonLabelColor": "white",
+  "latLonLabelStrokeColor": "none",
+  "latLonLabelStrokeWidth": 0,
+
+  "flightPlanActiveLegColor": "#D570FF",
+  "flightPlanActiveLegWidth": 2,
+  "flightPlanActiveLegStrokeColor": "#D570FF",
+  "flightPlanActiveLegStrokeWidth": 0,
+  "flightPlanNonActiveLegColor": "#D570FF",
+  "flightPlanNonActiveLegWidth": 2,
+  "flightPlanNonActiveLegStrokeColor": "#D570FF",
+  "flightPlanNonActiveLegStrokeWidth": 0,
+
+  "roadMotorWayColor": "#7a7a7a",
+  "roadMotorWayWidth": 2,
+  "roadTrunkColor": "#7a7a7a",
+  "roadTrunkWidth": 1.5,
+  "roadPrimaryColor": "#7a7a7a",
+  "roadPrimaryWidth": 1,
+
+  "railwayStrokeColor": "gray",
+  "railwayWidth": 2,
+  "railwayDashLength": 6,
+
+  "netBingTextureResolution": 1024,
+  "netBingAltitudeColors1": [],
+  "netBingWaterColor1": "#0000ff",
+  "netBingHeightColor1": [
+    {
+      "alt": 0,
+      "color": "#000000"
+    },
+    {
+      "alt": 9000,
+      "color": "#000000"
+    }
+  ],
+
+  "netBingAltitudeColors2": [],
+  "netBingWaterColor2": "#184b77",
+  "netBingHeightColor2": [
+    {
+      "alt": 0,
+      "color": "#6DA36C"
+    },
+    {
+      "alt": 1500,
+      "color": "#9CAF57"
+    },
+    {
+      "alt": 6000,
+      "color": "#c8b46e"
+    },
+    {
+      "alt": 8000,
+      "color": "#b0975b"
+    },
+    {
+      "alt": 10000,
+      "color": "#9a7c48"
+    },
+    {
+      "alt": 13000,
+      "color": "#906a3b"
+    },
+    {
+      "alt": 16000,
+      "color": "#7b5936"
+    },
+    {
+      "alt": 24000,
+      "color": "#5a462e"
+    },
+    {
+      "alt": 32000,
+      "color": "#abb0b5"
+    }
+  ]
+}
+
+
+
+

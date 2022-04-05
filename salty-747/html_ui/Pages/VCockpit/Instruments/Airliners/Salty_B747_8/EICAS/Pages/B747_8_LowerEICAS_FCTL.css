@@ -1,0 +1,63 @@
+:root {
+    --eicasWhite: white;
+    --eicasBlack: black;
+    --eicasGrey: #c8c8c8;
+    --eicasBlue: cyan;
+    --eicasGreen: lime;
+    --eicasOrange: #db7200;
+    --eicasRed: red;
+    --eicasMagenta: #D570FF;
+}
+:root text {
+    font-family: "BoeingEFIS";
+}
+
+@font-face {
+    font-family: "BoeingEFIS";
+    src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal; 
+}
+
+b747-8-lower-eicas-fctl {
+    position: relative;
+    left: 3.5%;
+    width: 95.5%;
+    top: 6.75%;
+    height: 88%;
+    display: block;
+}
+b747-8-lower-eicas-fctl svg {
+    width: 100%;
+    height: 100%;
+}
+b747-8-lower-eicas-fctl text {
+    fill: var(--eicasBlue);
+    font-size: 15px;
+    stroke-width: 0; 
+}
+b747-8-lower-eicas-fctl #aircraft {
+    fill: gray;
+    stroke: var(--eicasBlue);
+    stroke-width: 2px;
+}
+b747-8-lower-eicas-fctl #measurement {
+    fill: var(--eicasWhite);
+}
+b747-8-lower-eicas-fctl #cursor {
+    fill: var(--eicasWhite);
+}
+b747-8-lower-eicas-fctl #trim {
+    stroke-width: 2px;
+    text-anchor: end !important;
+    letter-spacing: 2px;
+    stroke: var(--eicasGreen);
+}
+b747-8-lower-eicas-fctl .Gauge {
+    fill: var(--eicasWhite);
+}
+b747-8-lower-eicas-fctl .Spoilers {
+    fill: var(--eicasBlack);
+    stroke: var(--eicasWhite);
+    stroke-width: 1px;
+}

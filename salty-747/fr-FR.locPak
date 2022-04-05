@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "fr-FR",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "Le 747 a été conçu dans les années 1960, il s'agissait de l'entrée proposée de Boeing pour une étude de l'U.S. Air Force en un avion de transport stratégique très grande taille. L'avion de ligne commercial à fuselage entrera finalement en service public avec la compagnie Pan Am World Airways en 1970, où il a été surnommé le premier « Jumbo Jet » de l'industrie et conservera le record de capacité en passagers pendant 37 ans.<\/br><\/br>Après des décennies à explorer des modèles de capacité supérieure, Boeing a annoncé en 2004 le 747 Advanced -- un modèle étiré qu'ils ont officiellement appelé 747-8 l'année suivante, avec une variante cargo (747-8F) lancée en octobre 2011, et une variante Intercontinentale (747-8I) pour les passagers voyageant avec Lufthansa en juin 2012.<\/br><\/br>Évolution du 747-400, le 747-8 raffine et met à jour les moteurs de son prédécesseur, au même moment utilisant une partie majeure de la technologie de cockpit du 787 Dreamliner. Il en résulte une puissance haute technologie et légère conçue pour des performances améliorées, une réduction du bruit, et des émissions extrêmement faibles -- conception encore améliorée par un système d'aile complètement repensé qui diminue la turbulence de sillage et la traînée, augmente les économies de carburant, la plage, et l'aérodynamique globale.<\/br><\/br>Avec sa taille de très gros porteur et 60 ans d'expérience en ingénierie, le 747-8 peut facilement sembler aux antipodes de ses origines. Mais il suffit de jeter ne serait-ce qu'un coup d'œil à sa silhouette pour voir son héritage briller, dans les courbes élégantes de sa forme à double pont qui en font l'un des avions les plus reconnaissables au monde, qui méritera à jamais le nom conféré au premier de la gamme : la « Reine des cieux ».",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Adapter le cap souhaité sur la gauche",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Adapter le cap souhaité sur la droite"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+
+<SimBase.Document Type="Checklist" version="1,0">
+  <Checklist.Checklist>
+    <IncludeCheckpointLibrary FileName="CheckpointsLibrary\\Asobo_DefaultCheckpointLibrary.xml"/>
+    <IncludeCheckpointLibrary FileName="SimObjects\\Airplanes\\Asobo_B747_8i\\Checklist\\Library.xml"/>
+
+    <Step ChecklistStepId="PREFLIGHT_GATE">
+
+
+      <!-- Before starting engine -->
+      <Page SubjectTT="TT:GAME.CHECKLIST_BEFORE_STARTING_ENGINE">
+        <Checkpoint ReferenceId="Battery_Switch_On_B747"/>
+        <Checkpoint ReferenceId="Standby_Power_Selector_Auto_B747">
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+        <Checkpoint ReferenceId="External_Power_On_If_Avail"/>
+        <Checkpoint ReferenceId="APU_START_ON_BOEING">
+          <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_APU_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_START_THEN_ON"/>
+          <Clue name="TT:CLUE.APU_SELECTOR_START_THEN_ON"/>
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+        <Checkpoint ReferenceId="APU_Gen_Switches_On_When_Avail_Lit"/>
+        <Checkpoint ReferenceId="FUEL_PUMPS_AIRLINER_4_ENGINES">
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+        <Checkpoint ReferenceId="Beacon_Light_On">
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+      </Page>
+
+
+      <!-- Starting Engine -->
+      <Page SubjectTT="TT:GAME.CHECKLIST_STARTING_ENGINE">
+        <Checkpoint ReferenceId="POWER_LEVERS_IDLE_4ENGINES">
+          <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_THRUST_LEVERS" ExpectationTT="TT:GAME.CHECKLIST_IDLE"/>
+        </Checkpoint>
+		
+		<Checkpoint ReferenceId="APU_Bleed_On">
+		  <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+		
+		<Checkpoint ReferenceId="ENGINE_BLEED_AIR_SWITCHES_ON_4ENGINES">
+		 <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+		
+        <Checkpoint ReferenceId="Engine_4_Start_Switch_Pull">
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+        <Checkpoint ReferenceId="Engine_4_Fuel_Control_Switch_Run"/>
+        <Checkpoint ReferenceId="EICAS_Monitor">
+          <ForceCamera name="Instruments03"/>
+        </Checkpoint>
+        <Checkpoint ReferenceId="ENGINES_1_2_3_REPEAT_START_ROCEDURE">
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+      </Page>
+
+      <!-- After starting engine 1/2 -->
+      <Page SubjectTT="TT:GAME.CHECKLIST_AFTER_STARTING_ENGINE_1">
+        <Checkpoint ReferenceId="APU_SELECTOR_OFF">
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+        <Checkpoint ReferenceId="LIGHTS_AS_REQUIRED_AIRLINER">
+          <ForceCamera name="Instruments09"/>
+        </Checkpoint>
+      </Page>
+
+    </Step>
+
+  </Checklist.Checklist>
+
+</SimBase.Document>
