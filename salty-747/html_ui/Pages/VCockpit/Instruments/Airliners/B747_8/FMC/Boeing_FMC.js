@@ -26,7 +26,7 @@ class Boeing_FMC extends FMCMainDisplay {
     Init() {
         super.Init();
         this.maxCruiseFL = 450;
-        //this.cruiseFlightLevel = 100;
+        this.cruiseFlightLevel;
         this.onExec = () => {
             if (this.onExecPage) {
                 console.log("if this.onExecPage");
@@ -131,7 +131,7 @@ class Boeing_FMC extends FMCMainDisplay {
             if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 0) {
                 SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 1);
             }
-            else if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1 
+            else if (SimVar.GetSimVarValue("L:AP_APP_ARMED", "bool") === 1
             && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GP
             && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GS) {
                 SimVar.SetSimVarValue("L:AP_APP_ARMED", "bool", 0);
@@ -144,15 +144,20 @@ class Boeing_FMC extends FMCMainDisplay {
             let altitude = Simplane.getAltitudeAboveGround();
             if (altitude < 400) {
                 this._pendingVNAVActivation = true;
-                if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 0) {
+                if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 0 && !this.cruiseFlightLevel) {
+                    this.showErrorMessage("PERF/VNAV UNAVAILABLE");
+                } else if (SimVar.GetSimVarValue("L:AP_VNAV_ARMED", "number") === 0 && this.cruiseFlightLevel) {
                     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 1);
-                }
-                else {
+                } else {
                     SimVar.SetSimVarValue("L:AP_VNAV_ARMED", "number", 0);
                 }
             }
             else {
-                this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+                if (this.cruiseFlightLevel) {
+                    this._navModeSelector.onNavChangedEvent('VNAV_PRESSED');
+                } else {
+                    this.showErrorMessage("PERF/VNAV UNAVAILABLE");
+                }
             }
         }
         else if (_event.indexOf("AP_FLCH") != -1) {
@@ -166,7 +171,15 @@ class Boeing_FMC extends FMCMainDisplay {
             this._navModeSelector.onNavChangedEvent('FD_TOGGLE');
         }
         else if (_event.indexOf("AP_SPD") != -1) {
-
+            const altitude = Simplane.getAltitudeAboveGround();
+            if (altitude >= 400 || this.currentFlightPhase > FlightPhase.FLIGHT_PHASE_TAKEOFF) {
+                if (this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.FLC 
+                && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.TO
+                && this._navModeSelector.currentVerticalActiveState !== VerticalNavModeState.GA
+                && !SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "number")) {
+                    this._navModeSelector.activateSpeedMode();
+                }
+            }
         }
         else if (_event.indexOf("AP_SPEED_INTERVENTION") != -1) {
             this.toggleSpeedIntervention();
@@ -226,21 +239,18 @@ class Boeing_FMC extends FMCMainDisplay {
                 if (mcpAlt !== Math.round(altitude/100) * 100) {
                     this._navModeSelector.onNavChangedEvent('ALT_INT_PRESSED');
                 }
-            }      
+            }
         }
         else if (_event.indexOf("AP_ALT_HOLD") != -1) {
             this._navModeSelector.onNavChangedEvent('ALT_HOLD_PRESSED');
         }
-        else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
-            this._navModeSelector.setAPSpeedHoldMode();
-            Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.TOGA);
-            this._navModeSelector.activateThrustRefMode();
-            if (Simplane.getIsGrounded()) {
-                this.togaPushedForTO = true;
-            }
-        }
         else if (_event.indexOf("EXEC") != -1) {
             this.onExec();
+        }
+        else if (_event.indexOf("THROTTLE_TO_GA") != -1) {
+            if (!Simplane.getIsGrounded() && !SimVar.GetSimVarValue("AUTOTHROTTLE ACTIVE", "bool")) {
+                this._navModeSelector.handleTogaChanged(true);
+            }
         }
     }
     setThrottleMode(_mode) {
@@ -259,7 +269,7 @@ class Boeing_FMC extends FMCMainDisplay {
         return this._isSPDActive;
     }
     getIsSpeedInterventionActive() {
-        return this._isSpeedInterventionActive;
+        return SimVar.GetSimVarValue("L:AP_SPEED_INTERVENTION_ACTIVE", "boolean");
     }
     toggleSpeedIntervention() {
         if (this.getIsSpeedInterventionActive()) {
@@ -330,51 +340,12 @@ class Boeing_FMC extends FMCMainDisplay {
         let displayedAltitude = Simplane.getAutoPilotDisplayedAltitudeLockValue();
         this.cruiseFlightLevel = Math.floor(displayedAltitude / 100);
     }
-    /*getThrustTakeOffLimit() {
-        /*return 85;
-        let mode = SimVar.GetSimVarValue("L:AIRLINER_THRUST_TAKEOFF_MODE", "number");
-        if (mode === 0) {
-            let SLSN1 = 97.9;
-            let rho = SimVar.GetSimVarValue("AMBIENT DENSITY", "kilogram per cubic meter");
-            let rho0 = 1.225;
-            let rho2 = (rho0 - rho) / rho0;
-            let N1 = SLSN1 * (1 + rho2);
-            SimVar.SetSimVarValue("L:SALTY_TO_N1", "number", N1);
-            //SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", N1 / 100);
-            return N1;
-        }
-        else if (mode === 1) {
-            let SLSN1 = 93.6;
-            let rho = SimVar.GetSimVarValue("AMBIENT DENSITY", "kilogram per cubic meter");
-            let rho0 = 1.225;
-            let rho2 = (rho0 - rho) / rho0;
-            let N1 = SLSN1 * (1 + rho2);
-            SimVar.SetSimVarValue("L:SALTY_TO_N1", "number", N1);
-            //SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", N1 / 100);
-            return N1;
-        }
-        else {
-            let SLSN1 = 89.4;
-            let rho = SimVar.GetSimVarValue("AMBIENT DENSITY", "kilogram per cubic meter");
-            let rho0 = 1.225;
-            let rho2 = (rho0 - rho) / rho0;
-            let N1 = SLSN1 * (1 + rho2);
-            SimVar.SetSimVarValue("L:SALTY_TO_N1", "number", N1);
-            //SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", N1 / 100);
-            return N1;
-        }
-
+    getThrustTakeOffLimit() {
+        return 85;
     }
     getThrustClimbLimit() {
-        /*return 80;
-        let targetCN1 = 95.80;
-        let TAT = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "rankine");
-        let T0 = 518.67;
-        let theta2 = TAT / T0;
-        let N1 = targetCN1 * theta2 ** 0.5;
-        SimVar.SetSimVarValue("L:SALTY_CLB_N1", "number", N1);
-        return N1;
-    }*/
+        return 80;
+    }
     getTakeOffManagedSpeed() {
         if (this.v2Speed) {
             return this.v2Speed + 10;

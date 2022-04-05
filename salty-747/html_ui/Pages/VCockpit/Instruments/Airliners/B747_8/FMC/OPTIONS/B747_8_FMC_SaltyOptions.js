@@ -17,7 +17,7 @@ class FMCSaltyOptions {
             ["", ""],
             ["<METAR SRC", "ATIS SRC>"],
             ["", ""],
-            ["<TAF SRC", ""],
+            ["<TAF SRC", "DEBUG PAGE>"],
             ["", ""],
             [`<SIMBRIEF`, ""],
             ["", ""],
@@ -44,9 +44,14 @@ class FMCSaltyOptions {
               FMCSaltyOptions_Atis.ShowPage(fmc);
         };
 
-        /* RSK3 */
+        /* LSK3 */
         fmc.onLeftInput[2] = () => {
               FMCSaltyOptions_Taf.ShowPage(fmc);
+        };
+
+        /* LSK3 */
+        fmc.onRightInput[2] = () => {
+            SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_info", "bool", 1);
         };
         
         /* LSK4 */

@@ -8,9 +8,9 @@
   --eicasRed: red;
   --eicasMagenta: #D570FF; }
   :root div {
-    font-family: BoeingEICAS; }
+    font-family: BoeingEFIS; }
   :root text {
-    font-family: BoeingEICAS; }
+    font-family: BoeingEFIS; }
   :root div.gauges {
     position: absolute;
     left: 6%;
@@ -38,8 +38,8 @@
     fill: none; }
 
 @font-face {
-  font-family: "BoeingEICAS";
-  src: url("/Fonts/BoeingEICAS.ttf") format("truetype");
+  font-family: "BoeingEFIS";
+  src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
 
