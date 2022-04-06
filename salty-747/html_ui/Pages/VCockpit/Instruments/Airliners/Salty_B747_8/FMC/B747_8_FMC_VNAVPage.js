@@ -365,10 +365,9 @@ class B747_8_FMC_VNAVPage {
 
         /* Maximum Flight level - Calculates uses linear regression derived formula from actual aircraft data */
         let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "kilograms");
-        let weightLimitedFltLevel = Math.min(431,(((-0.04894505 * currentWeight) + 53688.13852814) / 100));
+        let maxFltLevel = Math.min(431,(((-0.04894505 * currentWeight) + 53688.13852814) / 100));
         let optFltLevel  = Math.min(431,(((-0.06056044 * currentWeight) + 56063.51648352) / 100)) ;
         let recmdFltLevel = Math.round(optFltLevel / 10) * 10;
-        let maxFltLevel = Math.min(431, weightLimitedFltLevel);
 
         /* LSK 5L  - ECON Button */
         let lsk5lCell = "";
