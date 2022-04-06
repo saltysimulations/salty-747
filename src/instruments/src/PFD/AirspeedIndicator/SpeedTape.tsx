@@ -223,21 +223,21 @@ export const SpeedTape: FC = () => {
                     </g>
 
                     {/* V2 Bug */}
-                    <g visibility= {`${flightPhase < 2 && v2 != 0? "visible" : "hidden"}`}>
+                    <g visibility= {`${(flightPhase < 2 && v2 != 0) ? "visible" : "hidden"}`}>
                         <path className="fpv-outline" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
                         <path className="green-line" d={`M 55 ${520 + (v2 * -4.6)}, h10`} />
                         <text x="93" y={`${529 + v2 * -4.6}`} className="text-2 green">V2</text>
                     </g>
 
                     {/* Current Flap Manuevering Speed Bug */}
-                    <g visibility= {`${flightPhase > 2 ? "visible" : "hidden"}`}>
+                    <g visibility= {`${(flightPhase > 2 && radioHeight > 25) ? "visible" : "hidden"}`}>
                         <path className="fpv-outline" d={`M 55 ${520 + (getCurrentFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps) * -4.6)}, h10`} />
                         <path className="green-line" d={`M 55 ${520 + (getCurrentFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps) * -4.6)}, h10`} />
                         <text x="93" y={`${529 + (getCurrentFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)) * -4.6}`} className="text-2 green">{getCurrentFlapMarkerText(selectedFlaps)}</text>
                     </g>
 
                     {/* Next Flap Manuevering Speed Bug */}
-                    <g visibility= {`${flightPhase > 2 ? "visible" : "hidden"}`}>
+                    <g visibility= {`${(flightPhase > 2 && radioHeight > 25) ? "visible" : "hidden"}`}>
                         <path className="fpv-outline" d={`M 55 ${520 + (getNextFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)* -4.6)}, h10`} />
                         <path className="green-line" d={`M 55 ${520 + (getNextFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)* -4.6)}, h10`} />
                         <text x="93" y={`${529 + (getNextFlapMarkerSpeed(selectedFlaps, vRef30, vRef25, landingFlaps)) * -4.6}`} className="text-2 green">{getNextFlapMarkerText(selectedFlaps, landingFlaps)}</text>
