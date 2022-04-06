@@ -30,16 +30,22 @@ export const FPV: FC = () => {
     const [track] = useSimVar("GPS GROUND TRUE TRACK", "degrees");
     const [fpv, setFpv] = useSimVar("L:SALTY_FPV_ON", "bool");
     const [irsState] = useSimVar("L:SALTY_IRS_STATE", "enum");
+    const [groundSpeed] = useSimVar("GROUND VELOCITY", "knots");
 
     useInteractionEvent("B747_8_PFD_FPV", () => {
         setFpv(!fpv);
     });
 
-    const degreesToPixels = (angle: number): number => (angle < 0 ? Math.max(angle * 8, -16 * 8) : Math.min(angle * 8, 22.5 * 8));
+    const degreesToPixels = (angle: number): number => {
+        if (groundSpeed < 1) {
+            angle = 0;
+        }
+        return angle < 0 ? Math.max(angle * 8, -16 * 8) : Math.min(angle * 8, 22.5 * 8)
+    };
 
     const vertVecToPixels = (): number => {
         const fpa = 180/Math.PI * Math.asin(vertVelocity / horizVelocity);
-        return degreesToPixels(fpa + pitch);
+        return degreesToPixels(groundSpeed < 1 ? 0 : fpa + pitch);
     };
 
     const trackToPixels = (): number => {

@@ -244,10 +244,14 @@ export const SpeedTape: FC = () => {
                     </g>
 
                     {/* Ref Speed Bug */}
-                    <g visibility= {`${selectedAppSpd == 0 ? "hidden" : "visible"}`}>
+                    <g visibility= {`${(selectedAppSpd != 0 && getBoundedAirspeed(airspeed) - selectedAppSpd < 52.5)? "visible" : "hidden"}`}>
+                        <text x="71" y={`${Math.min(529 + (selectedAppSpd * -4.6), (529 + (getBoundedAirspeed(airspeed) - 52.5) * -4.6))}`} className="text-2 green start">REF</text>
+                    </g>
+                        
+                    {/* Ref Speed Bug Line*/}
+                    <g visibility= {`${selectedAppSpd != 0 ? "visible" : "hidden"}`}>
                         <path className="fpv-outline" d={`M 45 ${520 + (selectedAppSpd * -4.6)}, h20`} />
                         <path className="green-line" d={`M 45 ${520 + (selectedAppSpd * -4.6)}, h20`} />
-                        <text x="71" y={`${Math.min(529 + (selectedAppSpd * -4.6), (520 + (getBoundedAirspeed(airspeed) - 54) * -4.6))}`} className="text-2 green start">REF</text>
                     </g>
 
                     {/* Selected Airspeed Bug */}
@@ -262,8 +266,13 @@ export const SpeedTape: FC = () => {
                     <text visibility={`${(v1 - getBoundedAirspeed(airspeed) > 55) && flightPhase <= 2 ? "visible" : "hidden"}`}x="155" y={`${155}`} className="text-2 green">{v1.toString()}</text>
                 </g>
 
+                {/* REF Value Label */}
+                <g visibility={`${getBoundedAirspeed(airspeed) - selectedAppSpd > 52.5 ? "visible" : "hidden"}`}>
+                    <text x="121" y={`${632}`} className="text-2 green start">{selectedAppSpd != 0 ? "REF" : ""}</text>
+                </g>
+
                 {/* VREF Value Preview */}
-                <g visibility={`${selectedAppSpd + getBoundedAirspeed(airspeed) > 60.5 ? "visible" : "hidden"}`}>
+                <g visibility={`${getBoundedAirspeed(airspeed) - selectedAppSpd > 52.5 ? "visible" : "hidden"}`}>
                     <text x="121" y={`${652}`} className="text-2 green start">{getRefBugText(landingFlaps, selectedAppSpd)}</text>
                 </g>
 

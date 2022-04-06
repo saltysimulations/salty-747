@@ -118,7 +118,10 @@ export const SpeedScroller: FC = () => {
     );
 };
 
-const getTrendVector = (acceleration: number): number => {
+const getTrendVector = (acceleration: number, airSpeed: number): number => {
+    if (airSpeed < 30) {
+        return 0;
+    }
     if (acceleration > 0) {
         return Math.min(acceleration * 5.925, 60.5);
     }
@@ -134,9 +137,9 @@ export const SpeedTrendVector: FC = () => {
     const [airspeed] = useSimVar("AIRSPEED INDICATED", "knots");
 
     return (
-        <g visibility={Math.abs(getTrendVector(acceleration)) < 4.5 ? "hidden" : "visible"}>
-            <path fill="none" className="black-outline" d={`M 96 381, v${getTrendVector(acceleration) * -4.6 - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
-            <path fill="none" className="fma-line" d={`M 96 381, v${(getTrendVector(acceleration) * -4.6) - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
+        <g visibility={Math.abs(getTrendVector(acceleration, airspeed)) < 4.5 ? "hidden" : "visible"}>
+            <path fill="none" className="black-outline" d={`M 96 381, v${getTrendVector(acceleration, airspeed) * -4.6 - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
+            <path fill="none" className="fma-line" d={`M 96 381, v${(getTrendVector(acceleration, airspeed) * -4.6) - (acceleration > 0 ? - 12 : 12)}, m-6 0, h12, m0 0, l-6 ${acceleration > 0 ? "-" : ""}12, m0 0, l-6 ${acceleration < 0 ? "-" : ""}12`} />
         </g>
     );
 };
