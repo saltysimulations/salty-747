@@ -13,34 +13,19 @@ class SaltySpeedComputer {
     updateMaxSpeed() {
         const vmo = Math.min(360, SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", 0.9));
         const gearPos = SimVar.GetSimVarValue("GEAR POSITION", "number");
+        const leFlapPos = SimVar.GetSimVarValue("LEADING EDGE FLAPS LEFT ANGLE", "degree");
+        const teFlapPos = SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degree");
+        const baseLimit = 15 * leFlapPos;
         let gearLim = 600;
         if (gearPos != 0) {
             gearLim = Math.min(320, SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", 0.82));
         }
-        let flapLim = 0;
-        switch (SimVar.GetSimVarValue("FLAPS HANDLE INDEX", "number")) {
-            case 0:
-                flapLim = 600; 
-                break;
-            case 1:
-                flapLim = 285;
-                break;
-            case 2:
-                flapLim = 265;
-                break;
-            case 3:
-                flapLim = 245;
-                break;
-            case 4:
-                flapLim = 235;
-                break;
-            case 5:
-                flapLim = 210;
-                break;
-            case 6:
-                flapLim = 185;
-                break;
-        }
+      
+        const flaps1to10 = Utils.Clamp(teFlapPos, 0, 10);
+        const flaps10to20 = Utils.Clamp(teFlapPos -10, 0, 10);
+        const flaps20to30 = Utils.Clamp(teFlapPos -20, 0, 10);
+        const flapLim = 600 - baseLimit - flaps1to10 * 4 - flaps10to20 - 5 * flaps20to30;
+
         const maxSpeed = Math.min(vmo, Math.min(gearLim, flapLim));
         SimVar.SetSimVarValue("L:74S_ADC_MAXIMUM_SPEED", "knots", maxSpeed);
     }

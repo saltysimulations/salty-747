@@ -283,7 +283,7 @@ export const SpeedTape: FC = () => {
                 </g>
 
                 {/*Maximum Speed Band*/}
-                <g visibility={`${(radioHeight > 25) ? "visible" : "hidden"}`} transform={`translate(50 ${getMaxSpeedBandY(getBoundedAirspeed(airspeed), maxSpeed)})`}>
+                <g visibility={`${(radioHeight > 25) ? "visible" : "hidden"}`} transform={`translate(50 ${getMaxSpeedBandY(getBoundedAirspeed(airspeed), Math.round(maxSpeed))})`}>
                     <path className="red-band" d="M 67 -1826, v 2209" fill="none" />
                 </g>
                 

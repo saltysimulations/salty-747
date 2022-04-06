@@ -127,7 +127,6 @@ var Boeing;
                     barHeight = (barBottom - barTop);
                 }
                 var markerY = barTop + (barHeight * this.flapsAngleToPercentage(targetAngle));
-                console.log("marker bruh" + targetAngle);
                 var markerYStr = markerY.toString();
                 if (this.marker != null) {
                     this.marker.setAttribute("y1", markerYStr);
