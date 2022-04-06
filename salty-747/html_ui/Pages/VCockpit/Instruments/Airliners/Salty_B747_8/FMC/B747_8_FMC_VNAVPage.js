@@ -71,6 +71,9 @@ class B747_8_FMC_VNAVPage {
         /* LSK 2L  - Climb Speed */
         let clbSpeedCell = fmc.getClbManagedSpeed(true).toFixed(0);
         let machMode = Simplane.getAutoPilotMachModeActive();
+        if (isNaN(clbSpeedCell)) {
+            clbSpeedCell = "";
+        }
         if (clbMode === 2) {
             clbSpeedCell = SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_SPEED", "knots").toFixed(0);
         }
@@ -97,9 +100,6 @@ class B747_8_FMC_VNAVPage {
                 clbSpeedCell = Simplane.getAutoPilotAirspeedHoldValue().toFixed(0);
             }
             clbSpeedCell += "[color]magenta";
-        }
-        if (isNaN(clbSpeedCell)) {
-            clbSpeedCell = "";
         }
 
         fmc.onLeftInput[1] = () => {
@@ -291,6 +291,9 @@ class B747_8_FMC_VNAVPage {
         let crzSpeedCell = ""
         let crzSpeed = fmc.getCrzManagedSpeed(true);
         let crzMach = fmc.getCrzMach();
+        if (isNaN(crzSpeedCell)) {
+            crzSpeedCell = "";
+        }
         if (crzMach !== 1) {
             crzSpeedCell = crzMach.toFixed(3).substring(1);
         }
@@ -316,10 +319,6 @@ class B747_8_FMC_VNAVPage {
         if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
             crzSpeedCell += "[color]magenta";
         }
-        if (isNaN(crzSpeedCell)) {
-            crzSpeedCell = "";
-        }
-
         fmc.onLeftInput[1] = () => {
             let value = fmc.inOut;
             if (crzMode === 2) {
@@ -365,8 +364,10 @@ class B747_8_FMC_VNAVPage {
         }
 
         /* Maximum Flight level - Calculates uses linear regression derived formula from actual aircraft data */
-        let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
-        let weightLimitedFltLevel = (((-0.02809 * currentWeight) + 56571.91142) / 100);
+        let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "kilograms");
+        let weightLimitedFltLevel = Math.min(431,(((-0.04894505 * currentWeight) + 53688.13852814) / 100));
+        let optFltLevel  = Math.min(431,(((-0.06056044 * currentWeight) + 56063.51648352) / 100)) ;
+        let recmdFltLevel = Math.round(optFltLevel / 10) * 10;
         let maxFltLevel = Math.min(431, weightLimitedFltLevel);
 
         /* LSK 5L  - ECON Button */
@@ -392,7 +393,7 @@ class B747_8_FMC_VNAVPage {
             ["\xa0N1"],
             [n1Cell],
             ["\xa0STEP", "RECMD", "OPT\xa0\xa0\xa0MAX"],
-            ["RVSM", "", "\xa0\xa0\xa0\xa0\xa0\xa0" + "FL" + maxFltLevel.toFixed(0)],
+            ["RVSM", "FL" + recmdFltLevel.toFixed(0), "FL" + optFltLevel.toFixed(0) + "\xa0\xa0" + "FL" + maxFltLevel.toFixed(0)],
             ["__FMCSEPARATOR"],
             [lsk5lCell, "ENG OUT>"],
             [],
@@ -455,6 +456,9 @@ class B747_8_FMC_VNAVPage {
         /* LSK 2L  - Descent Speed */
         let desSpeedCell = SimVar.GetSimVarValue("L:SALTY_DES_SPEED", "knots").toFixed(0);
         let machMode = Simplane.getAutoPilotMachModeActive();
+        if (isNaN(desSpeedCell)) {
+            desSpeedCell = "";
+        }
         if (Simplane.getCurrentFlightPhase() >= FlightPhase.FLIGHT_PHASE_DESCENT && SimVar.GetSimVarValue("L:AP_VNAV_ACTIVE", "bool") && desMode === 1) {
             if (machMode) {
                 let desMachNo = Simplane.getAutoPilotMachHoldValue().toFixed(3);
@@ -489,9 +493,6 @@ class B747_8_FMC_VNAVPage {
             if (altitude > 10500) {
                 desSpeedCell += "[color]magenta";
             }
-        }
-        if (isNaN(desSpeedCell)) {
-            desSpeedCell = "";
         }
 
         fmc.onLeftInput[1] = () => {
