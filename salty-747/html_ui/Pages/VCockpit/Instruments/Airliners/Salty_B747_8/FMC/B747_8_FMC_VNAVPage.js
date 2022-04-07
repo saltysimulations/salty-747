@@ -71,12 +71,11 @@ class B747_8_FMC_VNAVPage {
         /* LSK 2L  - Climb Speed */
         let clbSpeedCell = fmc.getClbManagedSpeed(true).toFixed(0);
         let machMode = Simplane.getAutoPilotMachModeActive();
-        let clbSpeed = SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_SPEED", "knots").toFixed(0);
-        if (isNaN(clbSpeed)) {
+        if (isNaN(clbSpeedCell)) {
             clbSpeedCell = "";
         }
         if (clbMode === 2) {
-            clbSpeedCell = clbSpeed;
+            clbSpeedCell = SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_SPEED", "knots").toFixed(0);
         }
         if (Simplane.getAltitude() > 10000 && Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB) {
             clbSpeedCell += "[color]magenta";
@@ -366,7 +365,7 @@ class B747_8_FMC_VNAVPage {
 
         /* Maximum Flight level - Calculates uses linear regression derived formula from actual aircraft data */
         let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "kilograms");
-        let maxFltLevel = Math.min(431,(((-0.04894505 * currentWeight) + 53688.13852814) / 100));
+        let maxFltLevel = Math.min(431,(((-0.04894505 * currentWeight) + 54680.43956044) / 100));
         let optFltLevel  = Math.min(431,(((-0.06056044 * currentWeight) + 56063.51648352) / 100)) ;
         let recmdFltLevel = Math.round(optFltLevel / 10) * 10;
 
