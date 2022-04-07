@@ -71,11 +71,12 @@ class B747_8_FMC_VNAVPage {
         /* LSK 2L  - Climb Speed */
         let clbSpeedCell = fmc.getClbManagedSpeed(true).toFixed(0);
         let machMode = Simplane.getAutoPilotMachModeActive();
-        if (isNaN(clbSpeedCell)) {
+        let clbSpeed = SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_SPEED", "knots").toFixed(0);
+        if (isNaN(clbSpeed)) {
             clbSpeedCell = "";
         }
         if (clbMode === 2) {
-            clbSpeedCell = SimVar.GetSimVarValue("L:SALTY_VNAV_CLB_SPEED", "knots").toFixed(0);
+            clbSpeedCell = clbSpeed;
         }
         if (Simplane.getAltitude() > 10000 && Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB) {
             clbSpeedCell += "[color]magenta";
@@ -291,7 +292,7 @@ class B747_8_FMC_VNAVPage {
         let crzSpeedCell = ""
         let crzSpeed = fmc.getCrzManagedSpeed(true);
         let crzMach = fmc.getCrzMach();
-        if (isNaN(crzSpeedCell)) {
+        if (isNaN(crzSpeed) || isNaN(crzMach)) {
             crzSpeedCell = "";
         }
         if (crzMach !== 1) {
