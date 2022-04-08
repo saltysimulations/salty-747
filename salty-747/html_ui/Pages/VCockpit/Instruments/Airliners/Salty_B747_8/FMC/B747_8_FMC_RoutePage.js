@@ -121,9 +121,6 @@ class FMCRoutePage {
                 this._depRwyCell = "RW" + selectedDepRunway.designation;
             }
             this._coRouteCell = "--------";
-            if (this._fmc.simbrief.originIcao && this._fmc.simbrief.destinationIcao) {
-                this._coRouteCell = this._fmc.simbrief.originIcao + this._fmc.simbrief.destinationIcao;
-            }
         }
 
         if (this._fmc.flightPlanManager.getCurrentFlightPlanIndex() === 1) {
@@ -271,12 +268,20 @@ class FMCRoutePage {
             this._fmc.onLeftInput[2] = () => {
                 this.store.requestData = "\xa0SENDING";
                 this.update(true);
-                setTimeout(() => {
-                    this.store.requestData = "<SEND";
-                    this.rteUplinkReady = true;
-                    this._fmc.showErrorMessage("ROUTE 1 UPLINK READY");
-                    this.update(true)
-                }, this._fmc.getInsertDelay())
+                getSimBriefPlan(this._fmc).then(result => {
+                    setTimeout(() => {
+                        this.store.requestData = "<SEND";
+                        if (result) {
+                            this.rteUplinkReady = true;
+                            this._fmc.setMsg("ROUTE 1 UPLINK READY");
+                            Coherent.call("PLAY_INSTRUMENT_SOUND", "uplink_chime");
+                        } else {
+                            this._fmc.showErrorMessage("WRONG PILOT ID");
+                        }
+                        this.update(true);
+                    }, this._fmc.getInsertDelay());
+                });
+
             };
 
             /*

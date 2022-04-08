@@ -27,6 +27,7 @@ namespace AK
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_FLAPS = 2780512408U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_GEAR = 3826800809U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_TERRAIN = 3260237411U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_UPLINK_CHIME = 603812818U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_WAILER = 3154175190U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_WINDSHEAR = 2967775321U;
     } // namespace EVENTS

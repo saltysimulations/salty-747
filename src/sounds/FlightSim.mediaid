@@ -235,6 +235,12 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="uplink_chime.wav">
+          <WObject ID="{136B2E3B-1EA0-4ACA-AAE0-999978A82DE5}">
+            <MediaID ID="665657662" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="wailer.wav">
           <WObject ID="{068B7655-4A49-46C7-99A1-7440F5607947}">
             <MediaID ID="51574697" />

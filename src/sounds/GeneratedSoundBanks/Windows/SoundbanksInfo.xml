@@ -82,7 +82,7 @@
 				</StateGroup>
 			</StateGroups>
 		</SoundBank>
-		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="4149579093">
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="2814402511">
 			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
 			<ShortName>Salty_747</ShortName>
 			<Path>Salty_747.bnk</Path>
@@ -196,6 +196,14 @@
 						<File Id="748162498" Language="SFX">
 							<ShortName>too_low_terrain.wav</ShortName>
 							<Path>SFX\too_low_terrain_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="603812818" Name="Play_Asobo_B747_8i_uplink_chime" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_uplink_chime" GUID="{F3F6962B-5DE1-4CE3-BFFC-9F60EB155E47}" DurationType="OneShot" DurationMin="1.333000" DurationMax="1.333000">
+					<IncludedMemoryFiles>
+						<File Id="665657662" Language="SFX">
+							<ShortName>uplink_chime.wav</ShortName>
+							<Path>SFX\uplink_chime_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>

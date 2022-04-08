@@ -301,6 +301,7 @@
 	<Sound WwiseData="true" WwiseEvent="aural_dont_sink" NodeName="COMPASS_CYLINDER"/>
 	<Sound WwiseData="true" WwiseEvent="aural_v1" NodeName="COMPASS_CYLINDER"/>
 	<Sound WwiseData="true" WwiseEvent="wailer" NodeName="COMPASS_CYLINDER"/>
+	<Sound WwiseData="true" WwiseEvent="uplink_chime" NodeName="COMPASS_CYLINDER"/>
 	<Sound WwiseData="true" WwiseEvent="tone_altitude_alert_default" ViewPoint="Inside" NodeName="COMPASS_CYLINDER"/>
   </AvionicSounds>
 

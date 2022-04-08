@@ -227,6 +227,20 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_uplink_chime" ID="{F3F6962B-5DE1-4CE3-BFFC-9F60EB155E47}">
+					<ChildrenList>
+						<Action Name="" ID="{C7DBE0A8-0506-4847-A34E-E1676BC272E2}" ShortID="981331829">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="uplink_chime" ID="{C2136959-AA34-40A3-8A9F-38601F3A1EB8}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
