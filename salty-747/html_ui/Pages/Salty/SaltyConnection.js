@@ -240,7 +240,7 @@ const getFplnFromSimBrief = async (fmc) => {
         return false;
     };
 
-    const cleanSimBriefRoute = async (routeArr) => {
+    const cleanSimBriefRoute = async () => {
         let cleanedRoute = [];
 
         // Inserting DCT between coordinates
@@ -292,7 +292,6 @@ const getFplnFromSimBrief = async (fmc) => {
             }
             fmc.updateFlightNo(flightNo);
             fmc.setMsg("FLT NUMBER UPLINK");
-            console.log("flr nubmer dnf");
         }
 
         updateRoute();
