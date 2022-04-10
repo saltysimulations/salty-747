@@ -83,7 +83,7 @@ class FMCPerfInitPage {
                 store.perfUplinkHeader = "----PERF INIT DATA ----";
                 store.requestData = "<REJECT";
                 stepSizeCell = "ACCEPT>";
-                crzAltCell = fmc.simbrief.cruiseAltitude;
+                crzAltCell = "FL" + fmc.simbrief.cruiseAltitude.substr(0, fmc.simbrief.cruiseAltitude.length - 2);
                 costIndex = fmc.simbrief.costIndex;
                 // zeroFuelWeightCell = (parseFloat(fmc.simbrief.estZfw) / 1000).toFixed(1);
                 grossWeightCell = ((parseFloat(zeroFuelWeightCell) + (parseFloat(blockFuelCell)))).toFixed(1);
