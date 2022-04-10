@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "fi-FI",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "747 suunniteltiin ensimmäisen kerran 1960-luvulla Boeingin ehdotukseksi Yhdysvaltain ilmavoimien tutkiessa mahdollisia jättikokoisia strategisia kuljetuskoneita. Leveärunkoinen kaupallinen lentokone siirtyisi lopulta julkiseen käyttöön Pan Am World Airwaysilla vuonna 1970, jolloin sitä kutsuttiin alan ensimmäiseksi jumbojetiksi ja joka piti matkustajakapasiteettiennätystä hallussaan 37 vuoden ajan.<\/br><\/br>Vuosikymmeniä kestäneiden suuremman kapasiteetin versioiden tutkimusten jälkeen julkisti Boeing vuonna 2004 747 Advanced -mallin. Se oli venytetty malli, joka vuotta myöhemmin virallisesti nimettiin 747-8:ksi ja josta lanseerattiin vielä rahtiversio (747-8F) lokakuussa 2011 ja mannertenväliseen matkustajaliikenteeseen versio (747-8I) Lufthansalle kesäkuussa 2012.<\/br><\/br>747-400:n kehittyneempänä versiona 747-8:ssa jalostettiin ja päivitettiin edeltäjän moottoreita ja samalla otettiin käyttöön kattavaa ohjaamoteknologiaa 787 Dreamlineristä. Tuloksena on huipputekninen, pienipainoinen voimanpesä, jossa on parantunut suorituskyky, vähentynyt melu ja erittäin alhaiset päästöt. Parannuksia korostaa täysin uusi siipijärjestelmä, joka pienentää jättöpyörrettä ja vastusta, tehostaa polttoainetaloudellisuutta ja parantaa kantamaa sekä aerodynamiikkaa.<\/br><\/br>Superjumbojetin kokoinen ja 60 vuoden insinöörityön tulos 747-8 vaikuttaisi olevan kaukana alkuperäisestä. Kuitenkin vilkaisu sen siluettiin riittää, ja sukulaisuus paistaa läpi kaksikerroksisen rungon eleganteissa muodoissa. Niiden ansiosta tämä onkin yksi maailman tunnistettavimmista lentokoneista ja ikuisesti ansaitsee kantaa jo ensimmäisen version saaneen hienostuneen lempinimen: Queen of the Skies, Taivaiden kuningatar.",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Säädä valittua ohjaussuuntaa vasemmalle",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Säädä valittua ohjaussuuntaa oikealle  "
+    }
+  }
+}

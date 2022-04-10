@@ -1,0 +1,282 @@
+{
+  "LocalisationFile": {
+    "Version": 2,
+    "UUID": "672d8d93-6499-4812-8465-0f74ad84de7b",
+    "Languages": [
+      "en-US",
+      "fr-FR",
+      "es-ES",
+      "de-DE",
+      "it-IT",
+      "pl-PL",
+      "pt-BR",
+      "ru-RU",
+      "ja-JP",
+      "nl-NL",
+      "nb-NO",
+      "sv-SE",
+      "fi-FI",
+      "zh-CN"
+    ],
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": {
+        "UUID": "1711af40-4356-404e-afcc-e16843343984",
+        "LastModifiedBy": "jdebarry",
+        "LastModifiedDate": "2022-01-24 14:37:09",
+        "LocalizationStatus": "TranslationNeeded",
+        "Languages": {
+          "en-US": {
+            "Text": "The 747 was first conceived in the 1960s, as Boeing's proposed entry for a U.S. Air Force study into supersized strategic transport aircraft. The wide-body commercial airliner would eventually enter public service with Pan Am World Airways in 1970, where it was dubbed the industry's first 'Jumbo Jet' and would go on to hold the passenger capacity record for 37 years.</br></br>After decades exploring larger-capacity versions, in 2004 Boeing announced the 747 Advanced -- a stretched model they officially designated as the 747-8 a year later, with a Freighter variant (747-8F) for cargo launching in October 2011, and an Intercontinental variant (747-8I) for passengers taking flight with Lufthansa in June 2012.</br></br>As an evolution of the 747-400, the 747-8 refines and upgrades its predecessor's engines, at the same time utilizing extensive cockpit technology from the 787 Dreamliner. The result is a high-tech, low-weight powerhouse designed for increased performance, reduced noise, and ultra low emissions -- a design further improved by a thoroughly re-imagined wing system that decreases wake turbulence and drag, boosting fuel economy, range, and overall aerodynamics.</br></br>With its super-jumbo-jet size and 60 years worth of engineering maturity, the 747-8 could easily seem far-removed from its origins. But one look at its silhouette and the lineage shines through, in the elegant curves of its double-decker form that make it one of the most recognizable planes in the world, forever worthy of the graceful nickname bestowed on the first of its line: 'Queen of the Skies'."
+          },
+          "fr-FR": {
+            "Text": "Le 747 a été conçu dans les années 1960, il s'agissait de l'entrée proposée de Boeing pour une étude de l'U.S. Air Force en un avion de transport stratégique très grande taille. L'avion de ligne commercial à fuselage entrera finalement en service public avec la compagnie Pan Am World Airways en 1970, où il a été surnommé le premier « Jumbo Jet » de l'industrie et conservera le record de capacité en passagers pendant 37 ans.</br></br>Après des décennies à explorer des modèles de capacité supérieure, Boeing a annoncé en 2004 le 747 Advanced -- un modèle étiré qu'ils ont officiellement appelé 747-8 l'année suivante, avec une variante cargo (747-8F) lancée en octobre 2011, et une variante Intercontinentale (747-8I) pour les passagers voyageant avec Lufthansa en juin 2012.</br></br>Évolution du 747-400, le 747-8 raffine et met à jour les moteurs de son prédécesseur, au même moment utilisant une partie majeure de la technologie de cockpit du 787 Dreamliner. Il en résulte une puissance haute technologie et légère conçue pour des performances améliorées, une réduction du bruit, et des émissions extrêmement faibles -- conception encore améliorée par un système d'aile complètement repensé qui diminue la turbulence de sillage et la traînée, augmente les économies de carburant, la plage, et l'aérodynamique globale.</br></br>Avec sa taille de très gros porteur et 60 ans d'expérience en ingénierie, le 747-8 peut facilement sembler aux antipodes de ses origines. Mais il suffit de jeter ne serait-ce qu'un coup d'œil à sa silhouette pour voir son héritage briller, dans les courbes élégantes de sa forme à double pont qui en font l'un des avions les plus reconnaissables au monde, qui méritera à jamais le nom conféré au premier de la gamme : la « Reine des cieux ».",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "es-ES": {
+            "Text": "El 747 fue concebido por primera vez en los años 60 como un estudio que Boeing le propuso a las Fuerzas Aéreas de los EE. UU. sobre aeronaves de transporte estratégico de gran tamaño. El avión comercial de fuselaje ancho entró en servicio público con Pan Am World Airways en 1970, donde se le empezó a conocer como el primer jumbo jet de la industria y ostentó el récord de capacidad de pasajeros durante 37 años.</br></br>Después de décadas profundizando en versiones de mayor capacidad, en 2004 Boeing anunció el 747 Advanced. Era un modelo más afinado al que se designó oficialmente 747-8 un año más tarde. Contaba con una variante de carga (747-8F), que se lanzó en octubre de 2011, y una variante intercontinental (747-8I) para los pasajeros que volaran con Lufthansa en junio de 2012.</br></br>Como evolución del 747-400, el 747-8 refina y mejora los motores de su predecesor y, además, utiliza la tecnología de cabina del 787 Dreamliner. El resultado se traduce en una unidad de potencia de alta tecnología y bajo peso diseñada para un mayor rendimiento, menor ruido y mínimas emisiones. El diseño mejoraría aún más con un sistema de alas completamente renovado que disminuye la estela turbulenta y la resistencia, favoreciendo el ahorro de combustible, el alcance y la aerodinámica general.</br></br>Con su tamaño de superjumbo y 60 años de desarrollo en ingeniería, el 747-8 parece que se ha alejado mucho de sus orígenes. Sin embargo, una mirada a su silueta y su brillante categoría a través de las elegantes curvas de su forma de dos pisos lo convierten en una de las aeronaves más reconocibles del mundo, siempre digna del gracioso apodo otorgado a la primera de su línea: la Reina de los cielos.",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "de-DE": {
+            "Text": "Die Konzeptionsanfänge der 747 reichen bis in die 1960er Jahre zurück – als Boeings Beitrag für eine Studie der US-amerikanischen Luftwaffe hinsichtlich eines strategischen Transportflugzeugs. Das Großraumpassagierflugzeug trat seinen offiziellen Dienst das erste Mal mit der Pan Am World Airways 1970 an, als es die Bezeichnung erster industrieller „Jumbo-Jet“ erhielt und von da an 37 Jahre lang den Rekord für die größte Passagierkapazität hielt.</br></br>Nach Dekaden des Forschens an Versionen mit größeren Kapazitäten, kündigte Boeing im Jahre 2004 die 747 Advanced an – ein gestreckteres Modell, dem 1 Jahr später die offizielle Bezeichnung 747-8 verliehen wurde. Wobei ferner eine Frachtvariante (747-8F) für Frachten im Oktober 2011 und eine interkontinentale Variante (747-8I) für Passagiere der Lufthansa im Juni 2012 an den Start gingen.</br></br>Als eine Weiterentwicklung der 747-400 verbessert die 747-8 nicht nur die Triebwerke ihres Vorgängers, sondern greift auch auf die umfangreiche Cockpit-Technologie der 787 Dreamliner zurück. Das Resultat ist ein leichtgewichtiges Hightech-Kraftpaket mit einer besseren Leistung, einem reduzierten Geräuschpegel und einem sehr geringen Wert an Emissionen – ein Design, das noch zusätzlich durch ein neu überdachtes Flügelsystem ergänzt wird, das zu einer Verringerung von Wirbelschleppe und Luftwiderstand führt und den Treibstoffhaushalt, die Reichweite und die allgemeine Aerodynamik verbessert.</br></br>Mit seiner Super-Jumbo-Jet-Größe und einer technischen Reife von 60 Jahren Entwicklungsgeschichte erscheint die 747-8 beinahe schon zu weit von ihrem ursprünglichen Modell entfernt. Allerdings genügt ein Blick auf die Silhouette, um das Vermächtnis zu erkennen, das sich in den eleganten Kurven der Doppeldeckerform abzeichnet und das diesem Flugzeug sowohl seinen weltweiten Wiedererkennungswert als auch seinen wohlverdienten Spitznamen gibt: die „Königin der Lüfte“.",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "it-IT": {
+            "Text": "Il 747 viene concepito per la prima volta negli anni '60 come proposta di Boeing per uno studio dell'aeronautica statunitense su velivoli da trasporto strategico sovradimensionati. L'ampio aereo commerciale di linea viene poi inserito all'interno del servizio pubblico della Pan Am World Airways nel 1970, dove viene soprannominato il primo \"Jumbo Jet\" del settore e dove detiene il record di capacità passeggeri per 37 anni.</br></br>Dopo decenni di sperimentazione con modelli a maggiore capacità, nel 2004 Boeing annuncia il lancio del 747 Advanced, un modello allungato denominato ufficialmente 747-8 l'anno successivo, con la presentazione di una variante cargo (747-8F) nell'ottobre 2011 e di una variante passeggeri intercontinentale (747-8I) per Lufthansa nel giugno 2012.</br></br>Affermandosi come evoluzione del 747-400, il 747-8 perfeziona e aggiorna i motori del suo predecessore, utilizzando inoltre la vasta tecnologia per la cabina di pilotaggio del 787 Dreamliner. Ne risulta un propulsore leggero ad alta tecnologia, progettato per potenziare le prestazioni e diminuire rumore ed emissioni. Il design è ulteriormente migliorato grazie a un sistema alare completamente rinnovato che riduce la turbolenza di scia, la resistenza e il consumo di carburante, aumentando l'autonomia e l'aerodinamica generale.</br></br>Con le sue dimensioni da super jumbo jet e un avanzamento ingegneristico equivalente a 60 anni di esperienza, il 747-8 si distanzia facilmente dalle sue origini. Ma è sufficiente uno sguardo alla sua silhouette per farne trasparire il lignaggio, con le eleganti curve della struttura a due piani che lo rendono uno degli aeromobili più riconoscibili al mondo, per sempre degno del grazioso soprannome conferito al primo esemplare della linea: la \"regina dei cieli\".",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "pl-PL": {
+            "Text": "Model 747 powstał w latach 60. XX wieku jako propozycja firmy Boeing przedstawiona na potrzeby prowadzonego przez siły powietrzne Stanów Zjednoczonych badania mającego na celu opracowanie dużego transportowego statku powietrznego o znaczeniu strategicznym. Ten szerokokadłubowy samolot pasażerski wszedł do ogólnego użytku w roku 1970 w liniach Pan Am World Airways, gdzie zyskał przydomek „Jumbo Jet”. Przez kolejne 37 lat dzierżył rekord w zakresie maksymalnej liczby pasażerów mieszczących się na pokładzie.</br></br>W 2004 roku, po wielu latach prac nad wersjami umożliwiającymi zwiększenie tej liczby, firma Boeing opracowała powiększony model 747 Advanced, który rok później oficjalnie przemianowano na 747-8. W październiku 2011 roku powstała wersja przeznaczona do transportu ładunków (model 747-8F), a w czerwcu 2012 roku oddano do użytku model międzykontynentalny do przewozu pasażerów linii Lufthansa (model 747-8i).</br></br>Powstały na bazie modelu 747-400, 747-8 posiada ulepszone w stosunku do swojego poprzednika silniki i złożony technologicznie kokpit zaczerpnięty z modelu 787 Dreamliner. W rezultacie powstał nowoczesny, lekki i cichy statek powietrzny o zwiększonych osiągach i ultraniskiej emisji spalin. Jego projekt został następnie ulepszony poprzez dodanie opracowanego na nowo układu skrzydeł, który zmniejsza oddziaływanie wirów brzegowych i oporu, poprawiając przy tym zużycie paliwa, zasięg i ogólne właściwości aerodynamiczne.</br></br>Rozmiar „Super Jumbo Jet” oraz 60 lat doświadczeń inżynieryjnych sprawiają, że model 747-8 na pierwszy rzut oka nie przypomina swoich poprzedników. Jego rodowód potwierdza jednak linia sylwetki oraz eleganckie krzywe piętrowego kadłuba, które sprawiają, że jest to jeden z najbardziej rozpoznawalnych samolotów na świecie, w pełni godzien nadanemu mu miana „Królowej Przestworzy”.",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "pt-BR": {
+            "Text": "O 747 foi concebido pela primeira vez nos anos 60, como proposta de entrada da Boeing para um estudo da Força Aérea Americana de uma aeronave de transporte superdimensionada. O avião comercial de corpo amplo eventualmente entraria no serviço público com a Pan Am World Airways em 1970, onde foi apelidado como o primeiro \"Jato Jumbo\" da indústria e manteve o recorde de capacidade de passageiros por 37 anos.</br></br>Depois de décadas explorando versões com capacidades maiores, a Boeing anunciou em 2004 o 747 Advanced – um modelo alongado que eles oficialmente chamaram de 747-8; um ano depois, com uma variante de Cargueiro (747-8F) para cargo a ser lançada em outubro de 2011 e uma variante Intercontinental (747-8I) para passageiros que embarcaram na Lufthansa em junho de 2012.</br></br>Como uma evolução do 747-400, o 747-8 refina e atualiza os motores de seu predecessor, utilizando uma tecnologia de cockpit extensiva do 787 Dreamliner. O resultado é uma central de energia de alta tecnologia e baixo peso projetada para maior desempenho, ruídos reduzidos e emissões ultrabaixas, um design ainda mais aprimorado por um sistema de asa cuidadosamente reimaginado que reduz a esteira de turbulência e o arrasto, aumentando a economia de combustível, alcance e aerodinâmica geral.</br></br>Com esse tamanho de super jato jumbo e 60 anos de maturidade de engenharia, o 747-8 parecia estar distante de suas origens. Mas uma olhada em sua silhueta e a linhagem brilha, nas curvas elegantes de sua forma de dois andares que o tornam um dos aviões mais conhecidos no mundo, sempre merecedor do honroso apelido dado ao primeiro de sua linha: \"Rainha dos Céus\".",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "ru-RU": {
+            "Text": "Boeing 747 был создан в 1960-х годах на базе военно-транспортного самолёта, который компания Boeing разрабатывала для ВВС США. Boeing проиграла тендер компании Lockheed, однако авиакомпания Pan Am World Airways заинтересовалась проектом и предложила доработать его под свои требования. В 1970 году авиакомпания ввела B747 в эксплуатацию. Широкофюзеляжный коммерческий авиалайнер быстро получил прозвище «Джамбо джет» и в течение 37 лет удерживал рекорд по пассажировместимости.</br></br>Несколько десятилетий корпорация Boeing постепенно увеличивала вместимость «Джамбо джета», пока в 2004 году не представила версию 747 Advanced, или 747-8, которая отличалась от предшественников более длинным фюзеляжем. В октябре 2011 года поступила в эксплуатацию грузовая версия 747-8F, а первый пассажирский вариант для межконтинентальных перелётов 747-8I авиакомпания Lufthansa получила в июне 2012 года.</br></br>Модель 747-8 является прямым преемником 747-400, но во многом превосходит его. Позаимствованная у 787 Dreamliner авионика здорово осовременила 747-8, а обновлённые двигатели обладают большей экономичностью и технологичностью, производят намного меньше выбросов и шума. Изменённая конструкция крыла ещё больше снизила лобовое сопротивление и турбулентность в спутном следе, что помогло улучшить экономичность, аэродинамику и дальность самолёта.</br></br>Шесть десятилетий непрерывной эволюции отразились в 747-8: достаточно одного взгляда на узнаваемый силуэт этого двухпалубного красавца, чтобы понять, что 747 — уникальный самолёт, который невозможно перепутать ни с одним другим. Эта модель по-прежнему достойна своего прозвища «Королева небес».",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "ja-JP": {
+            "Text": "747は、米空軍の超大型戦略輸送機リサーチに提案するための機体として、ボーイング社によって 1960 年代に初めて考案された。1970 年、最終的にこのワイドボディ商用旅客機は、パンアメリカン航空で一般向けに運航されることになり、業界初の「ジャンボ ジェット」と呼ばれた。そして、37 年間にわたって乗客定員数の記録を保持し続けた。</br></br>数十年かけて、より多くの乗客を収容できる機体を追求した末、2004年、ボーイング社は 747 アドバンスドを発表した。 翌年、747-8 という正式名称を与えられたこの拡張モデルには、2011 年 10 月に送り出されたフレイター型 (747-8F) と、2012 年 6 月にルフトハンザドイツ航空で就航した航空旅客用のインターコンチネンタル型 (747-8I) がある。</br></br>747-8 は、747-400 の進化形として、従来機のエンジンを改良し、アップグレードしているだけでなく、787 ドリームライナーに由来する総合的なコックピット技術をも活用している。その結果、性能の向上、騒音の削減、超低排出ガスを念頭に置いて設計された、低重量のハイテク航空機が生まれた。後方乱気流と抗力を低減し、燃料効率、航続距離、全体的な空力特性を向上させることのできる新構想のウィング システムにより、その設計はさらに改善されている。</br></br>スーパー ジャンボ ジェットにふさわしいサイズと 60 年間におよぶ円熟した運用によって、747-8 は、ともするとその原点からはかけ離れてしまったように見えるかもしれない。しかし、そのシルエットは明らかに 747 の系統を引継ぎ、初代に「空の女王」という美しい名前が贈られる由来ともなった、世界で最も有名なダブルデッカーの優雅な曲線を見てとることができる。"
+          },
+          "nl-NL": {
+            "Text": "Het idee achter de 747 stamt uit de jaren 1960 en komt voort uit een bijdrage van Boeing aan een onderzoek van de Amerikaanse luchtmacht naar een groot strategisch transportvliegtuig. Uiteindelijk zou de widebody in 1970 als commercieel passagiersvliegtuig worden geïntroduceerd bij Pan Am World Airways, waar de naam 'Jumbo Jet' zijn oorsprong vond. Het vliegtuig zou 37 jaar lang recordhouder blijven op het gebied van passagierscapaciteit.</br></br>Nadat decennialang grotere versies waren onderzocht, kondigde Boeing in 2004 de 747 Advanced aan – een verlengd model dat een jaar later officieel 747-8 werd gedoopt, met een vrachtvariant (747-8F) die in oktober 2011 werd gelanceerd en een intercontinentale variant (747-8I) voor Lufthansa-passagiers die in juni 2012 verscheen.</br></br>De 747-8 is een doorontwikkeling van de 747-400 met verbeterde motoren, die tevens veel cockpittechnologie van de nieuwe 787 Dreamliner bevat. Het resultaat is een relatief lichte, hightech krachtpatser die betere prestaties, minder lawaai en ultralage emissies biedt. Het ontwerp is verder verfijnd met een geheel opnieuw ontworpen vleugelsysteem dat de zogturbulentie en luchtweerstand vermindert, zodat het brandstofverbruik, het bereik en de algehele aerodynamica worden verbeterd.</br></br>Met zijn formaat van een superjumbojet en 60 jaar engineeringhistorie heeft de 747-8 een lange weg afgelegd sinds het begin. Maar één blik op het silhouet laat geen enkele twijfel over zijn oorsprong bestaan. De elegante rondingen van de dubbeldekker maken de 747 tot een van de meest herkenbare vliegtuigen ter wereld en het verdient zonder meer de sierlijke bijnaam die het vliegtuig op zijn eerste route kreeg: 'Queen of the Skies'."
+          },
+          "nb-NO": {
+            "Text": "747 ble først skapt på 60-tallet, som Boeings foreslåtte bidrag til en studie gjennomført av det amerikanske flyvåpenet om overdimensjonerte, strategiske transportfly. Det kommersielle passasjerflyet med bred kropp endte opp i offentlig tjeneste hos Pan Am World Airways i 1970, hvor det ble kalt bransjens første «Jumbo Jet», og det skulle vise seg å beholde denne rekorden for antall passasjerer i hele 37 år.</br></br>Etter flere tiår med forskning på versjoner med enda større kapasitet, lanserte Boeing i 2004 flyet 747 Advanced – en forlenget modell som offisielt ble kalt 747-8 ett år senere, med en variant for fraktgods (747-8F) lansert i oktober 2011, og en interkontinental variant (747-8I) for passasjerer satt i drift for første gang hos Lufthansa i juni 2012.</br></br>Som en videreutvikling av 747-400, ble 747-8 sine motorer forbedret og oppgradert, samtidig som det ble benyttet omfattende cockpitteknologi fra 787 Dreamliner. Resultatet er et høyteknologisk fly med lav vekt og kraftige motorer, designet for økt ytelse, mindre støy og svært lave utslipp – et design som ytterligere forbedres av et nyutviklet vingesystem som reduserer kjølvannsturbulens og motstand, forbedrer drivstofføkonomien, rekkevidden og den generelle aerodynamikken.</br></br>Med sin super-jumbo-jet-størrelse og 60 år med ingeniørarbeid i bagasjen, kan 747-8 virke å være noe helt annet enn det opprinnelige flyet. Men tar man en titt på silhuetten, ser man tydelige trekk fra de eldre utgavene, blant annet i de elegante kurvene til dobbeltdekkerformen, som gjør det til et av de mest gjenkjennelige flyene i verden, som for alltid vil være verdig det grasiøse kallenavnet den første versjonen fikk: «Queen of the Skies»."
+          },
+          "sv-SE": {
+            "Text": "Idén om 747:an föddes på 1960-talet med Boeings förslag i en studie av amerikanska flygvapnet om extra stora strategiska transportflygplan. Det kommersiella bredkroppade trafikflygplanet hamnade så småningom i allmän tjänst hos Pan Am World Airways 1970, där det kallades branschens första ”jumbojet\" och skulle fortsätta hålla rekordet för passagerarkapacitet i 37 år.</br></br>Efter årtionden av försök att utveckla versioner med högre kapacitet presenterade Boeing 2004 747 Advanced – en förlängd modell som de ett år senare officiellt betecknade 747-8, med en Freighter-variant (747-8F) för transport som lanserades i oktober 2011, och en Intercontinental-variant (747-8I) för Lufthansas passagerare i juni 2012.</br></br>Som en utveckling av 747-400 förfinar och uppgraderar 747-8 sin föregångares motorer, samtidigt som den använder sig av omfattande cockpit-teknik från 787 Dreamliner. Resultatet är ett högteknologiskt, lättviktigt kraftpaket som utformats för ökad prestanda, minskat buller och extremt låga utsläpp – en design som ytterligare förbättras genom en grundligt omarbetat vingsystem som minskar ändvirveln och motståndet, förbättrar bränsleekonomin, räckvidden och den övergripande aerodynamiken.</br></br>Med sin superjumbojet-storlek och 60 år av teknisk mognad kan det verka som om 747-8 är ett långt steg från sitt ursprung. Men efter en snabb titt på dess silhuett lyser släktskapet igenom i de eleganta kurvorna på dubbeldäckarformen som gör det till ett av de mest kända flygplanen i världen, och fortfarande värdigt det graciösa smeknamnet som gavs till den första medlemmen i släktledet: \"Queen of the Skies\"."
+          },
+          "fi-FI": {
+            "Text": "747 suunniteltiin ensimmäisen kerran 1960-luvulla Boeingin ehdotukseksi Yhdysvaltain ilmavoimien tutkiessa mahdollisia jättikokoisia strategisia kuljetuskoneita. Leveärunkoinen kaupallinen lentokone siirtyisi lopulta julkiseen käyttöön Pan Am World Airwaysilla vuonna 1970, jolloin sitä kutsuttiin alan ensimmäiseksi jumbojetiksi ja joka piti matkustajakapasiteettiennätystä hallussaan 37 vuoden ajan.</br></br>Vuosikymmeniä kestäneiden suuremman kapasiteetin versioiden tutkimusten jälkeen julkisti Boeing vuonna 2004 747 Advanced -mallin. Se oli venytetty malli, joka vuotta myöhemmin virallisesti nimettiin 747-8:ksi ja josta lanseerattiin vielä rahtiversio (747-8F) lokakuussa 2011 ja mannertenväliseen matkustajaliikenteeseen versio (747-8I) Lufthansalle kesäkuussa 2012.</br></br>747-400:n kehittyneempänä versiona 747-8:ssa jalostettiin ja päivitettiin edeltäjän moottoreita ja samalla otettiin käyttöön kattavaa ohjaamoteknologiaa 787 Dreamlineristä. Tuloksena on huipputekninen, pienipainoinen voimanpesä, jossa on parantunut suorituskyky, vähentynyt melu ja erittäin alhaiset päästöt. Parannuksia korostaa täysin uusi siipijärjestelmä, joka pienentää jättöpyörrettä ja vastusta, tehostaa polttoainetaloudellisuutta ja parantaa kantamaa sekä aerodynamiikkaa.</br></br>Superjumbojetin kokoinen ja 60 vuoden insinöörityön tulos 747-8 vaikuttaisi olevan kaukana alkuperäisestä. Kuitenkin vilkaisu sen siluettiin riittää, ja sukulaisuus paistaa läpi kaksikerroksisen rungon eleganteissa muodoissa. Niiden ansiosta tämä onkin yksi maailman tunnistettavimmista lentokoneista ja ikuisesti ansaitsee kantaa jo ensimmäisen version saaneen hienostuneen lempinimen: Queen of the Skies, Taivaiden kuningatar."
+          }
+        }
+      },
+      "AIRCRAFT.UI_MANUFACTURER": {
+        "UUID": "1f371424-e037-485c-b870-c02e304a9970",
+        "LastModifiedBy": "jdebarry",
+        "LastModifiedDate": "2022-01-24 14:37:09",
+        "Languages": {
+          "en-US": {
+            "Text": "Boeing"
+          },
+          "fr-FR": {
+            "Text": "Boeing"
+          },
+          "es-ES": {
+            "Text": "Boeing"
+          },
+          "de-DE": {
+            "Text": "Boeing"
+          },
+          "it-IT": {
+            "Text": "Boeing"
+          },
+          "pl-PL": {
+            "Text": "Boeing"
+          },
+          "pt-BR": {
+            "Text": "Boeing"
+          },
+          "ru-RU": {
+            "Text": "Boeing"
+          },
+          "ja-JP": {
+            "Text": "ボーイング"
+          },
+          "nl-NL": {
+            "Text": "Boeing"
+          },
+          "nb-NO": {
+            "Text": "Boeing"
+          },
+          "sv-SE": {
+            "Text": "Boeing"
+          },
+          "fi-FI": {
+            "Text": "Boeing"
+          }
+        }
+      },
+      "AIRCRAFT.UI_MODEL": {
+        "UUID": "59243afd-8907-479c-95e6-ed977766dccb",
+        "LastModifiedBy": "jdebarry",
+        "LastModifiedDate": "2022-01-24 14:37:09",
+        "LocalizationStatus": "TranslationNeeded",
+        "Languages": {
+          "en-US": {
+            "Text": "747-8 Intercontinental",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "fr-FR": {
+            "Text": "747-8 Intercontinental"
+          },
+          "es-ES": {
+            "Text": "747-8 Intercontinental"
+          },
+          "de-DE": {
+            "Text": "747-8 Intercontinental"
+          },
+          "it-IT": {
+            "Text": "747-8 Intercontinental"
+          },
+          "pl-PL": {
+            "Text": "747-8 Intercontinental"
+          },
+          "pt-BR": {
+            "Text": "747-8 Intercontinental"
+          },
+          "ru-RU": {
+            "Text": "747-8 Intercontinental"
+          },
+          "ja-JP": {
+            "Text": "747-8 インターコンチネンタル"
+          },
+          "nl-NL": {
+            "Text": "747-8 Intercontinental"
+          },
+          "nb-NO": {
+            "Text": "747-8 Intercontinental"
+          },
+          "sv-SE": {
+            "Text": "747-8 Intercontinental"
+          },
+          "fi-FI": {
+            "Text": "747-8 Intercontinental"
+          }
+        }
+      },
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": {
+        "UUID": "dbc15493-8c6c-42a7-ba1f-0e1e68abf6bb",
+        "LastModifiedBy": "jdebarry",
+        "LastModifiedDate": "2022-01-24 14:37:09",
+        "LocalizationStatus": "TranslationNeeded",
+        "Tags": {
+          "Locked": "False"
+        },
+        "Languages": {
+          "en-US": {
+            "Text": "Adjust selected heading to the left",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "fr-FR": {
+            "Text": "Adapter le cap souhaité sur la gauche"
+          },
+          "es-ES": {
+            "Text": "Ajustar rumbo seleccionado a la izquierda"
+          },
+          "de-DE": {
+            "Text": "Ausgewählten Kurs nach links anpassen"
+          },
+          "it-IT": {
+            "Text": "Regola a sinistra la rotta selezionata"
+          },
+          "pl-PL": {
+            "Text": "Zmień wybrany kurs w lewo"
+          },
+          "pt-BR": {
+            "Text": "Ajustar o curso selecionado para a esquerda"
+          },
+          "ru-RU": {
+            "Text": "Скорректировать заданный курс влево"
+          },
+          "ja-JP": {
+            "Text": "選択した針路を左に調整する"
+          },
+          "nl-NL": {
+            "Text": "Geselecteerde kop naar links aanpassen"
+          },
+          "nb-NO": {
+            "Text": "Juster valgt kurs til venstre"
+          },
+          "sv-SE": {
+            "Text": "Justera den valda kursen åt vänster"
+          },
+          "fi-FI": {
+            "Text": "Säädä valittua ohjaussuuntaa vasemmalle"
+          },
+          "zh-CN": {
+            "Text": "向左调整所选航向",
+            "LocalizationStatus": "TranslationNeeded"
+          }
+        }
+      },
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": {
+        "UUID": "de990f74-5d13-43a0-b4bd-40929dc37fcd",
+        "LastModifiedBy": "jdebarry",
+        "LastModifiedDate": "2022-01-24 14:37:09",
+        "LocalizationStatus": "TranslationNeeded",
+        "Tags": {
+          "Locked": "False"
+        },
+        "Languages": {
+          "en-US": {
+            "Text": "Adjust selected heading to the right  ",
+            "LocalizationStatus": "TranslationNeeded"
+          },
+          "fr-FR": {
+            "Text": "Adapter le cap souhaité sur la droite"
+          },
+          "es-ES": {
+            "Text": "Ajustar rumbo seleccionado a la derecha"
+          },
+          "de-DE": {
+            "Text": "Ausgewählten Kurs nach rechts anpassen  "
+          },
+          "it-IT": {
+            "Text": "Regola a destra la rotta selezionata"
+          },
+          "pl-PL": {
+            "Text": "Zmień wybrany kurs w prawo"
+          },
+          "pt-BR": {
+            "Text": "Ajustar o curso selecionado para a direita"
+          },
+          "ru-RU": {
+            "Text": "Скорректировать заданный курс вправо"
+          },
+          "ja-JP": {
+            "Text": "選択した針路を右に調整する"
+          },
+          "nl-NL": {
+            "Text": "Geselecteerde kop naar rechts aanpassen  "
+          },
+          "nb-NO": {
+            "Text": "Juster valgt kurs til høyre  "
+          },
+          "sv-SE": {
+            "Text": "Justera den valda kursen åt höger  "
+          },
+          "fi-FI": {
+            "Text": "Säädä valittua ohjaussuuntaa oikealle  "
+          },
+          "zh-CN": {
+            "Text": "向右调整所选航向",
+            "LocalizationStatus": "TranslationNeeded"
+          }
+        }
+      }
+    }
+  }
+}
