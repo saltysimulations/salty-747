@@ -77,23 +77,23 @@ class FMCPerfInitPage {
             let crzCg = "11.00%";
             let stepSize =  SaltyDataStore.get("PERF_STEP_SIZE", "RVSM");
             let stepSizeCell;
-            if (fmc.simbrief.perfUplinkReady) {
+            if (this.perfUplinkReady) {
                 store.dataLink = "";
                 store.stepSizeLabel = "";
                 store.perfUplinkHeader = "----PERF INIT DATA ----";
                 store.requestData = "<REJECT";
                 stepSizeCell = "ACCEPT>";
-                crzAltCell = fmc.simbrief.cruiseAltitude;
+                crzAltCell = "FL" + fmc.simbrief.cruiseAltitude.substr(0, fmc.simbrief.cruiseAltitude.length - 2);
                 costIndex = fmc.simbrief.costIndex;
-                zeroFuelWeightCell = (parseFloat(fmc.simbrief.estZfw) / 1000).toFixed(1);
-                grossWeightCell = ((parseFloat(zeroFuelWeightCell) + (parseFloat(blockFuelCell)))).toFixed(1); 
-                reservesCell = ((parseFloat(fmc.simbrief.finResFuel) + (parseFloat(fmc.simbrief.altnFuel))) / 1000).toFixed(1);                
+                // zeroFuelWeightCell = (parseFloat(fmc.simbrief.estZfw) / 1000).toFixed(1);
+                grossWeightCell = ((parseFloat(zeroFuelWeightCell) + (parseFloat(blockFuelCell)))).toFixed(1);
+                reservesCell = ((parseFloat(fmc.simbrief.finResFuel) + (parseFloat(fmc.simbrief.altnFuel))) / 1000).toFixed(1);
             } else {
                 store.dataLink = "REQUEST";
                 store.stepSizeLabel = "STEP SIZE";
                 store.perfUplinkHeader = "";
                 store.requestData = "<SEND";
-                stepSizeCell = stepSize;              
+                stepSizeCell = stepSize;
             }
 
             const updateView = () => {
@@ -127,30 +127,30 @@ class FMCPerfInitPage {
                 FMCPerfInitPage.ShowPage1(fmc);
             };
 
-            /* 
+            /*
                 LSK5
                 REQUEST DATA
                 REJECT DATA
-            */    
+            */
             fmc.onLeftInput[4] = () => {
-                if (!fmc.simbrief.perfUplinkReady) {
+                if (!this.perfUplinkReady) {
                     store.requestData = "\xa0SENDING";
                     updateView();
-                    const getInfo = async () => {
-                        getSimBriefPlan(fmc, store, updateView);
-                    };
-
-                    getInfo()
-                        .then(() => {
-                            setTimeout(
-                                function() {
-                                    store.requestData = "<SEND";
-                                    updateView();
-                                }, fmc.getUplinkDelay()
-                            );
+                    getSimBriefPlan(fmc, store).then((result) => {
+                        setTimeout(() => {
+                            store.requestData = "<SEND";
+                            if (result) {
+                                this.perfUplinkReady = true;
+                                fmc.setMsg("PERF INIT UPLINK");
+                                Coherent.call("PLAY_INSTRUMENT_SOUND", "uplink_chime");
+                            } else {
+                                fmc.showErrorMessage("WRONG PILOT ID");
+                            }
+                            FMCPerfInitPage.ShowPage1(fmc);
+                        }, fmc.getInsertDelay());
                     });
                 } else {
-                    fmc.simbrief.perfUplinkReady = false;
+                    this.perfUplinkReady = false;
                     updateView();
                 }
             };
@@ -161,7 +161,7 @@ class FMCPerfInitPage {
                 2. ACCEPT DATA
             */
             fmc.onRightInput[4] = () => {
-                if (!fmc.simbrief.perfUplinkReady) {
+                if (!this.perfUplinkReady) {
                     let value = fmc.inOut;
                     if (value == "RVSM" || value == "ICAO") {
                         fmc.clearUserInput();
@@ -178,24 +178,12 @@ class FMCPerfInitPage {
                         value = (value / 100).toFixed(0);
                         value = value * 100;
                         SaltyDataStore.set("PERF_STEP_SIZE", value.toString());
-                    }
-                    else {
+                    } else {
                         fmc.showErrorMessage(fmc.defaultInputErrorMessage);
                     }
                 } else {
-                    fmc.simbrief.perfUplinkReady = false;
-                    const insertInfo = async () => {
-                        insertPerfUplink(fmc, updateView);
-                    };
-                    insertInfo()
-                        .then(() => {
-                            setTimeout(
-                                function() {
-                                    //updateView();
-                                }, fmc.getInsertDelay()
-                            );
-                        }
-                    );
+                    this.perfUplinkReady = false;
+                    insertPerfUplink(fmc);
                 }
             };
 

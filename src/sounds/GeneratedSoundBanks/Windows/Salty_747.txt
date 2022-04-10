@@ -1,4 +1,5 @@
 Event	ID	Name			Wwise Object Path	Notes
+	603812818	Play_Asobo_B747_8i_uplink_chime			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_uplink_chime	
 	1077883375	Play_Asobo_B747_8i_minimums			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_minimums	
 	1346834191	Play_Asobo_B747_8i_pull_up			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_pull_up	
 	1505420985	Play_Asobo_B747_8i_obstacle_obstacle			\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_obstacle_obstacle	
@@ -29,6 +30,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	534888463	terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\terrain		13981
 	617603150	too_low_gear	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_gear_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_gear		27464
 	622651067	obstacle_obstacle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\obstacle_obstacle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\obstacle_obstacle		47304
+	665657662	uplink_chime	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\uplink_chime_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\uplink_chime		2988
 	748162498	too_low_terrain	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\too_low_terrain_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\too_low_terrain		29871
 	841989067	caution_obstacle	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\caution_obstacle_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\caution_obstacle		43097
 	1037536185	sink_rate	X:\Documents\GitHub\salty-747\src\sounds\.cache\Windows\SFX\sink_rate_1E8ECBBC.wem		\Actor-Mixer Hierarchy\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\sink_rate		13622
