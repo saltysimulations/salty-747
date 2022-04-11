@@ -8,8 +8,7 @@
 		<LOD minSize="40" ModelFile="747_8I_LOD01.gltf"/>
 		<LOD minSize="30" ModelFile="747_8I_LOD02.gltf"/>
 		<LOD minSize="20" ModelFile="747_8I_LOD03.gltf"/>
-		<LOD minSize="10" ModelFile="747_8I_LOD04.gltf"/>
-		<LOD minSize="4" ModelFile="747_8I_LOD05.gltf"/>
+		<LOD minSize="2" ModelFile="747_8I_LOD04.gltf"/>
 		<LOD minSize="1" ModelFile="747_8I_LOD06.gltf"/>
 	</LODS>
 	<!-- Custom animation definition. -->
