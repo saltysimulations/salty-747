@@ -17,23 +17,23 @@ const execute = async () => {
                 },
                 {
                     name: "Textures",
-                    sourceDir: "./SimObjects/AirPlanes/Salty_B747_8i/TEXTURE",
+                    sourceDir: "./SimObjects/Airplanes/Salty_B747_8i/TEXTURE",
                 },
                 {
                     name: "Livery",
-                    sourceDir: "./SimObjects/AirPlanes/Salty_B747_8i-livery",
+                    sourceDir: "./SimObjects/Airplanes/Salty_B747_8i-livery",
                 },
                 {
                     name: "Sound",
-                    sourceDir: "./SimObjects/AirPlanes/Salty_B747_8i/sound",
+                    sourceDir: "./SimObjects/Airplanes/Salty_B747_8i/sound",
                 },
                 {
                     name: "Model",
-                    sourceDir: "./SimObjects/AirPlanes/Salty_B747_8i/model",
+                    sourceDir: "./SimObjects/Airplanes/Salty_B747_8i/model",
                 },
                 {
                     name: "Panel",
-                    sourceDir: "./SimObjects/AirPlanes/Salty_B747_8i/panel",
+                    sourceDir: "./SimObjects/Airplanes/Salty_B747_8i/panel",
                 }
             ],
         });
