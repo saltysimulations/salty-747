@@ -2235,8 +2235,8 @@ class Cabin_Annunciations extends Annunciations {
         this.displayCaution = [];
         this.displayAdvisory = [];
         this.displayMemo = [];
-        this.warningToneNameZ = new Name_Z("tone_warning");
-        this.cautionToneNameZ = new Name_Z("tone_caution");
+        this.warningToneNameZ = new Name_Z("siren");
+        this.cautionToneNameZ = new Name_Z("caution_aural");
         this.warningTone = false;
         this.firstAcknowledge = true;
         this.offStart = false;
@@ -2245,6 +2245,7 @@ class Cabin_Annunciations extends Annunciations {
         super.init(root);
         this.alwaysUpdate = true;
         this.isPlayingWarningTone = false;
+        this.isPlayingCautionTone = false;
         for (var i = 0; i < this.allMessages.length; i++) {
             var message = this.allMessages[i];
             var value = false;
@@ -2292,10 +2293,24 @@ class Cabin_Annunciations extends Annunciations {
                             break;
                         case Annunciation_MessageType.CAUTION:
                             this.displayCaution.push(message);
-                            if (!message.Acknowledged && !this.isPlayingWarningTone && this.gps.isPrimary) {
-                                let res = this.gps.playInstrumentSound("tone_caution");
-                                if (res)
-                                    this.isPlayingWarningTone = true;
+
+                            //Caution sound inhibited when fuel switches off and on ground or for ENG X SHUTDOWN message.
+                            let shutdownInhibit = false;
+                            let fuelSwitches = 0;
+                            for (let i = 5; i < 9; i++) {
+                                if (SimVar.GetSimVarValue("FUELSYSTEM VALVE SWITCH:" + i, "bool")) {
+                                    fuelSwitches++;
+                                }
+                            }
+                            if ((fuelSwitches == 0 && Simplane.getIsGrounded()) || message.Text.indexOf('SHUTDOWN') !== -1) {
+                                shutdownInhibit = true;
+                            }
+
+                            if (!message.Acknowledged && !this.isPlayingCautionTone && this.gps.isPrimary && !shutdownInhibit) {
+                                let res = this.gps.playInstrumentSound("caution_aural");
+                                if (res) {
+                                    this.isPlayingCautionTone = true;
+                                }
                             }
                             break;
                         case Annunciation_MessageType.ADVISORY:
@@ -2381,7 +2396,7 @@ class Cabin_Annunciations extends Annunciations {
             this.needReload = false;
         }
         if (this.warningTone && !this.isPlayingWarningTone && this.gps.isPrimary) {
-            let res = this.gps.playInstrumentSound("tone_warning");
+            let res = this.gps.playInstrumentSound("siren");
             if (res)
                 this.isPlayingWarningTone = true;
         }
@@ -2412,8 +2427,11 @@ class Cabin_Annunciations extends Annunciations {
         }
     }
     onSoundEnd(_eventId) {
-        if (Name_Z.compare(_eventId, this.warningToneNameZ) || Name_Z.compare(_eventId, this.cautionToneNameZ)) {
+        if (Name_Z.compare(_eventId, this.warningToneNameZ)) {
             this.isPlayingWarningTone = false;
+        }
+        else if (Name_Z.compare(_eventId, this.cautionToneNameZ)) {
+            this.isPlayingCautionTone = false;
         }
     }
     onShutDown() {
