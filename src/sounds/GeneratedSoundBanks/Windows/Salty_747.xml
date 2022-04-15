@@ -8,7 +8,7 @@
 		<ExternalSourcesOutputRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<SoundBanks>
-		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="3592093915">
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="3088961249">
 			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
 			<ShortName>Salty_747</ShortName>
 			<Path>Salty_747.bnk</Path>
