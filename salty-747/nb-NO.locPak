@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "nb-NO",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "747 ble først skapt på 60-tallet, som Boeings foreslåtte bidrag til en studie gjennomført av det amerikanske flyvåpenet om overdimensjonerte, strategiske transportfly. Det kommersielle passasjerflyet med bred kropp endte opp i offentlig tjeneste hos Pan Am World Airways i 1970, hvor det ble kalt bransjens første «Jumbo Jet», og det skulle vise seg å beholde denne rekorden for antall passasjerer i hele 37 år.<\/br><\/br>Etter flere tiår med forskning på versjoner med enda større kapasitet, lanserte Boeing i 2004 flyet 747 Advanced – en forlenget modell som offisielt ble kalt 747-8 ett år senere, med en variant for fraktgods (747-8F) lansert i oktober 2011, og en interkontinental variant (747-8I) for passasjerer satt i drift for første gang hos Lufthansa i juni 2012.<\/br><\/br>Som en videreutvikling av 747-400, ble 747-8 sine motorer forbedret og oppgradert, samtidig som det ble benyttet omfattende cockpitteknologi fra 787 Dreamliner. Resultatet er et høyteknologisk fly med lav vekt og kraftige motorer, designet for økt ytelse, mindre støy og svært lave utslipp – et design som ytterligere forbedres av et nyutviklet vingesystem som reduserer kjølvannsturbulens og motstand, forbedrer drivstofføkonomien, rekkevidden og den generelle aerodynamikken.<\/br><\/br>Med sin super-jumbo-jet-størrelse og 60 år med ingeniørarbeid i bagasjen, kan 747-8 virke å være noe helt annet enn det opprinnelige flyet. Men tar man en titt på silhuetten, ser man tydelige trekk fra de eldre utgavene, blant annet i de elegante kurvene til dobbeltdekkerformen, som gjør det til et av de mest gjenkjennelige flyene i verden, som for alltid vil være verdig det grasiøse kallenavnet den første versjonen fikk: «Queen of the Skies».",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Juster valgt kurs til venstre",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Juster valgt kurs til høyre  "
+    }
+  }
+}

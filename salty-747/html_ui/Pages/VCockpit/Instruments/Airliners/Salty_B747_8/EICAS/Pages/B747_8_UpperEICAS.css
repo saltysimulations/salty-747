@@ -1,0 +1,208 @@
+﻿@font-face {
+  font-family: "BoeingEFIS";
+  src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+:root {
+  --eicasWhite: white;
+  --eicasBlack: black;
+  --eicasGrey: #c8c8c8;
+  --eicasBlue: cyan;
+  --eicasGreen: lime;
+  --eicasOrange: rgb(255, 196, 0);
+  --eicasRed: red;
+  --eicasMagenta: #D570FF; }
+  :root div {
+    font-family: "BoeingEFIS" !important; }
+  :root text {
+    font-family: "BoeingEFIS" !important; }
+  :root div.gauges {
+    position: absolute;
+    left: 6%;
+    width: 100%;
+    height: 100%;
+    stroke-width: 1px; }
+  :root line.gaugeMarkerCurrent {
+    stroke: var(--eicasWhite);
+    stroke-width: 2px !important;
+    fill: none; }
+  :root line.gaugeMarkerManaged {
+    stroke: var(--eicasMagenta);
+    stroke-width: 2px !important;
+    fill: none; }
+  :root line.gaugeMarkerNormal {
+    stroke: lime !important;
+    stroke-width: 2px !important;
+    fill: none; }
+  :root line.gaugeMarkerWarning {
+    stroke: rgb(255, 196, 0);
+    stroke-width: 2px !important;
+    fill: none; }
+  :root line.gaugeMarkerDanger {
+    stroke: var(--eicasRed);
+    stroke-width: 2px !important;
+    fill: none; }
+
+b747-8-upper-eicas {
+  position: relative;
+  left: 1%;
+  width: 99%;
+  top: 4.5%;
+  height: 92%;
+  display: block; }
+  b747-8-upper-eicas svg {
+    width: 100%;
+    height: 100%; }
+  b747-8-upper-eicas text {
+    fill: var(--eicasWhite);
+    font-size: 20px;
+    text-anchor: start;
+    alignment-baseline: baseline; 
+    letter-spacing: 1px !important;}
+  b747-8-upper-eicas text.Label {
+    fill: cyan;
+    letter-spacing: 0px !important;
+    font-size: 15px; }
+  b747-8-upper-eicas text.VLabel {
+    fill: cyan;
+    font-size: 15px;
+    glyph-orientation-vertical: 0;
+    writing-mode: vertical-lr; }
+  b747-8-upper-eicas text.ValueGreen, b747-8-upper-eicas text.ValueGreenSmall {
+    fill: lime;
+    text-anchor: end; }
+  b747-8-upper-eicas text.ValueGreenSmall {
+    font-size: 15px; }
+  b747-8-upper-eicas rect.ValueGreen {
+    stroke: lime;
+    stroke-width: 4px;
+    fill: none; }
+  b747-8-upper-eicas text.ValueOrange {
+    fill: rgb(255, 196, 0);
+    text-anchor: end; }
+  b747-8-upper-eicas text.ValueWhite {
+    fill: var(--eicasWhite);
+    letter-spacing: 1px !important;
+    text-anchor: end; }
+  b747-8-upper-eicas text.ValueWhiteSmall {
+    fill: var(--eicasWhite);
+    font-size: 15px;
+    letter-spacing: 1px !important;
+    text-anchor: end;}
+  b747-8-upper-eicas text.ValueWhiteLarge {
+    fill: var(--eicasWhite);
+    font-size: 26px;
+    text-anchor: end;}
+  b747-8-upper-eicas #GearInfo text {
+    text-anchor: middle; }
+  b747-8-upper-eicas #GearInfo rect {
+    stroke-width: 2px;
+    fill: none; }
+  b747-8-upper-eicas #GearInfo line {
+    stroke: var(--eicasWhite);
+    stroke-width: 2px;
+    fill: none; }
+  b747-8-upper-eicas #GearInfo.down {
+    display: block; }
+    b747-8-upper-eicas #GearInfo.down line {
+      display: none; }
+    b747-8-upper-eicas #GearInfo.down rect {
+      stroke: lime; }
+    b747-8-upper-eicas #GearInfo.down text.down {
+      fill: lime; }
+    b747-8-upper-eicas #GearInfo.down text.up {
+      fill: none; }
+  b747-8-upper-eicas #GearInfo.transit {
+    display: block; }
+    b747-8-upper-eicas #GearInfo.transit line {
+      display: block; }
+    b747-8-upper-eicas #GearInfo.transit rect {
+      stroke: var(--eicasWhite); }
+    b747-8-upper-eicas #GearInfo.transit text.down {
+      fill: none; }
+    b747-8-upper-eicas #GearInfo.transit text.up {
+      fill: none; }
+  b747-8-upper-eicas #GearInfo.up {
+    display: block; }
+    b747-8-upper-eicas #GearInfo.up line {
+      display: none; }
+    b747-8-upper-eicas #GearInfo.up rect {
+      stroke: var(--eicasWhite); }
+    b747-8-upper-eicas #GearInfo.up text.down {
+      fill: none; }
+    b747-8-upper-eicas #GearInfo.up text.up {
+      fill: var(--eicasWhite); }
+  b747-8-upper-eicas #GearInfo.inactive {
+    display: none; }
+  b747-8-upper-eicas #FlapsInfo rect.innerBar {
+    fill: var(--eicasGrey); }
+  b747-8-upper-eicas #FlapsInfo rect.outerBar {
+    stroke: var(--eicasWhite);
+    stroke-width: 2px;
+    fill: none; }
+  b747-8-upper-eicas #FlapsInfo line {
+    stroke-width: 2px;
+    fill: none; }
+  b747-8-upper-eicas #FlapsInfo text.value {
+    font-size: 20px !important; }
+  b747-8-upper-eicas #FlapsInfo.static {
+    display: block; }
+    b747-8-upper-eicas #FlapsInfo.static line {
+      stroke: lime; }
+    b747-8-upper-eicas #FlapsInfo.static text.value {
+      fill: lime; }
+  b747-8-upper-eicas #FlapsInfo.transit {
+    display: block; }
+    b747-8-upper-eicas #FlapsInfo.transit line {
+      stroke: var(--eicasMagenta); }
+    b747-8-upper-eicas #FlapsInfo.transit text.value {
+      fill: var(--eicasMagenta); }
+  b747-8-upper-eicas #FlapsInfo.inactive {
+    display: none; }
+  b747-8-upper-eicas #StabInfo line {
+    stroke: var(--eicasWhite);
+    stroke-width: 2px;
+    fill: none; }
+  b747-8-upper-eicas #StabInfo .trimBand {
+    fill: lime; }
+  b747-8-upper-eicas #StabInfo .arrow {
+    fill: var(--eicasWhite); }
+  b747-8-upper-eicas #StabInfo .value {
+    fill: lime;
+    font-size: 20px;
+    letter-spacing: 1px !important;
+    text-anchor: end; }
+  b747-8-upper-eicas #StabInfo #valueStroke {
+    fill: none;
+    stroke: lime;
+    stroke-width: 2px; }
+  b747-8-upper-eicas #N1Gauges {
+    top: 14%;
+    stroke-width: 1px !important; 
+    letter-spacing: 0px !important}
+  b747-8-upper-eicas #EGTGauges {
+    top: 53%;
+    stroke-width: 1px !important; 
+    letter-spacing: 0px !important}
+  b747-8-upper-eicas #InfoPanel {
+    position: absolute;
+    left: 67%;
+    width: 32%;
+    top: 6.25%;
+    height: 40%; }
+    b747-8-upper-eicas #InfoPanel div {
+      width: 100%;
+      height: 8.5% !important;
+      font-size: 44px !important;
+      text-align: left;
+      color: red; }
+    b747-8-upper-eicas #InfoPanel .InfoMemo {
+      color: white; }
+    b747-8-upper-eicas #InfoPanel .InfoAdvisory {
+      color: rgb(255, 196, 0); }
+    b747-8-upper-eicas #InfoPanel .InfoCaution {
+      color: rgb(255, 196, 0); }
+    b747-8-upper-eicas #InfoPanel .InfoWarning {
+      color: red; }
+

@@ -14,6 +14,8 @@ jobs:
       MASTER_PRE_RELEASE_ID: 42630416
       MASTER_PRE_RELEASE_TAG: vdev
       MASTER_ZIP_NAME: salty-747-dev.zip
+      INSTALLER_PRE_RELEASE_ID: 64499039
+      INSTALLER_PRE_RELEASE_TAG: vinstaller
       BUILD_DIR_NAME: vdev
     steps:
       - name: Checkout source
@@ -27,6 +29,7 @@ jobs:
       - run: |
           npm i
           npm run build
+          npm run fragment
       - run: ls -R
       - name: Build ZIP files
         run: |
@@ -66,3 +69,27 @@ jobs:
             --data-raw '{
               "body": "This pre-release has its ${{ env.MASTER_ZIP_NAME }} asset updated on every commit to the master branch\nLast updated on ${{ env.BUILT_DATE_TIME }} from commit ${{ github.sha }}\nThis link will always point to the latest master build: https://github.com/${{ github.repository }}/releases/download/${{ env.MASTER_PRE_RELEASE_TAG }}/${{ env.MASTER_ZIP_NAME }}"
             }'
+      - name: Get and delete installer pre-release zip assets
+        run: |
+          echo 'checking for first release asset...'
+          assets=$( \
+            curl --location --request GET \
+              --url https://api.github.com/repos/${{ github.repository }}/releases/${{ env.INSTALLER_PRE_RELEASE_ID }}/assets
+          )
+          if [ $(echo $assets | jq '.[0].size') -eq '0' ]; then
+            echo 'no asset to delete'
+          else
+            echo $assets | jq -c '.[]' | while read -r row
+            do
+              assetId=$(echo $row | jq '.id')
+              echo 'deleting asset '$assetId
+              curl --request DELETE \
+                --url https://api.github.com/repos/${{ github.repository }}/releases/assets/$assetId \
+                --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'
+            done
+          fi
+      - name: Upload installer zip assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          hub release edit $(find build-modules -type f -printf "-a %p ") -m "" "${{ env.INSTALLER_PRE_RELEASE_TAG }}"

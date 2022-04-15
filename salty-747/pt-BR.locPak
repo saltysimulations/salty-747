@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "pt-BR",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "O 747 foi concebido pela primeira vez nos anos 60, como proposta de entrada da Boeing para um estudo da Força Aérea Americana de uma aeronave de transporte superdimensionada. O avião comercial de corpo amplo eventualmente entraria no serviço público com a Pan Am World Airways em 1970, onde foi apelidado como o primeiro \"Jato Jumbo\" da indústria e manteve o recorde de capacidade de passageiros por 37 anos.<\/br><\/br>Depois de décadas explorando versões com capacidades maiores, a Boeing anunciou em 2004 o 747 Advanced – um modelo alongado que eles oficialmente chamaram de 747-8; um ano depois, com uma variante de Cargueiro (747-8F) para cargo a ser lançada em outubro de 2011 e uma variante Intercontinental (747-8I) para passageiros que embarcaram na Lufthansa em junho de 2012.<\/br><\/br>Como uma evolução do 747-400, o 747-8 refina e atualiza os motores de seu predecessor, utilizando uma tecnologia de cockpit extensiva do 787 Dreamliner. O resultado é uma central de energia de alta tecnologia e baixo peso projetada para maior desempenho, ruídos reduzidos e emissões ultrabaixas, um design ainda mais aprimorado por um sistema de asa cuidadosamente reimaginado que reduz a esteira de turbulência e o arrasto, aumentando a economia de combustível, alcance e aerodinâmica geral.<\/br><\/br>Com esse tamanho de super jato jumbo e 60 anos de maturidade de engenharia, o 747-8 parecia estar distante de suas origens. Mas uma olhada em sua silhueta e a linhagem brilha, nas curvas elegantes de sua forma de dois andares que o tornam um dos aviões mais conhecidos no mundo, sempre merecedor do honroso apelido dado ao primeiro de sua linha: \"Rainha dos Céus\".",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Ajustar o curso selecionado para a esquerda",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Ajustar o curso selecionado para a direita"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+﻿
+<link rel="stylesheet" href="./MapInstrument.css" />
+
+<script type="text/html" id="MapInstrumentTemplate">
+    <bing-map></bing-map>
+    <div id="WXRMask">
+        <svg viewBox="0 0 600 600" style="position:absolute; top:0%; left: 0%; width: 100%; height:100%;">
+            <path d= "M 0 490 L 0 700 L 1600 700 L 1600 490 Z" fill="black"></path>
+        </svg>
+    </div>
+    <canvas id="road-network-canvas" width="1000" height="1000"></canvas>
+    <svg id="MapSVG"></svg>
+    <div id="MapRange">80NM</div>
+    <div id="MapOrientation">NORTH UP</div>
+    <svg id="MapCursor" height="3%" viewBox="0 0 100 100" style="display: none">
+        <polygon points="0,0 75,25 60,40 100,80 80,100 40,60 25,75" fill="white" stroke="black" stroke-width="5"></polygon>
+    </svg>
+</script>
+
+<script type="text/html" import-script="/JS/Types.js" import-async="false"></script>
+<script type="text/html" import-script="/JS/Inputs.js"></script>
+<script type="text/html" import-script="/JS/SortedList.js"></script>
+<script type="text/html" import-script="/JS/NetBingMap.js"></script>
+<script type="text/html" import-script="/JS/WasmSimCanvas.js"></script>
+<script type="text/html" import-script="/JS/avionics.js"></script>
+<script type="text/html" import-script="/JS/simplane.js"></script>
+
+<script type="text/html" import-script="/Pages/Salty/WT/DataStore.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WaypointLoader.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlan.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Waypoint.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/NearestWaypoint.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Approach.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Runway.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/GeoCalc.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Canvas/CanvasUtils.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Cities/City.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Cities/Cities.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgMapConfig.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgMapElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Svg/SvgAirlinerElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgCityElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgCityManager.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Svg/SvgRoadElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgRoadNetworkElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Svg/SvgAirwayElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgWaypointElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgNearestAirportElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgNearestIntersectionElement.js"></script>  <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgNearestNDBElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgNearestVORElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgConstraintElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgObstacleElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Svg/SvgAirportElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgAirplaneElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Svg/SvgAirspaceElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Svg/SvgLatLonElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Map/Svg/SvgRailwayElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgFlightPlanElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgTextManager.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgMaskElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgLabeledRingElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgRangeRingElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgRangeCompassElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgTrackVectorElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgFuelRingElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgAltitudeInterceptElement.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Svg/SvgMap.js"></script> <!-- WT -->
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/MapInstrument.js"></script> <!-- WT -->
+
+

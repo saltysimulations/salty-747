@@ -8,6 +8,7 @@
         "build:fpm": "cd src/modules && tsc --module commonjs && rollup -c rollup.config.ts",
         "build:models": "node src/models/build.js",
         "build": "npm run build:instruments && npm run build:fpm && npm run build:models && npm run build:layout",
+        "fragment": "node scripts/fragment.js",
         "dev": "rollup -wc src/instruments/rollup.config.js"
     },
     "author": "Salty Simulations",
@@ -20,6 +21,7 @@
         "@babel/preset-react": "^7.14.5",
         "@babel/preset-typescript": "^7.15.0",
         "@flybywiresim/rollup-plugin-msfs": "^0.3.1",
+        "@flybywiresim/fragmenter": "^0.5.1",
         "@rollup/plugin-babel": "^5.3.0",
         "@rollup/plugin-commonjs": "^20.0.0",
         "@rollup/plugin-image": "^2.1.1",

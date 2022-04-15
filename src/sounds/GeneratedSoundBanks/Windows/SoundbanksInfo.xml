@@ -82,7 +82,7 @@
 				</StateGroup>
 			</StateGroups>
 		</SoundBank>
-		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="4149579093">
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="3088961249">
 			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
 			<ShortName>Salty_747</ShortName>
 			<Path>Salty_747.bnk</Path>
@@ -92,6 +92,14 @@
 						<File Id="438977682" Language="SFX">
 							<ShortName>bank_angle.wav</ShortName>
 							<Path>SFX\bank_angle_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1166893861" Name="Play_Asobo_B747_8i_caution_aural" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_caution_aural" GUID="{61DD5E4C-8C1E-4315-B241-965AA4086F03}" DurationType="OneShot" DurationMin="0.742125" DurationMax="0.742125">
+					<IncludedMemoryFiles>
+						<File Id="878680392" Language="SFX">
+							<ShortName>CautionAural(1).wav</ShortName>
+							<Path>SFX\CautionAural(1)_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -108,6 +116,14 @@
 						<File Id="93224664" Language="SFX">
 							<ShortName>caution_terrain.wav</ShortName>
 							<Path>SFX\caution_terrain_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2152551899" Name="Play_Asobo_B747_8i_cchord" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_cchord" GUID="{E908B8BB-BCD9-41A8-B68D-7ADFF2BF0314}" DurationType="OneShot" DurationMin="1.500000" DurationMax="1.500000">
+					<IncludedMemoryFiles>
+						<File Id="827158873" Language="SFX">
+							<ShortName>CChord.wav</ShortName>
+							<Path>SFX\CChord_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -196,6 +212,14 @@
 						<File Id="748162498" Language="SFX">
 							<ShortName>too_low_terrain.wav</ShortName>
 							<Path>SFX\too_low_terrain_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="603812818" Name="Play_Asobo_B747_8i_uplink_chime" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_uplink_chime" GUID="{F3F6962B-5DE1-4CE3-BFFC-9F60EB155E47}" DurationType="OneShot" DurationMin="1.333000" DurationMax="1.333000">
+					<IncludedMemoryFiles>
+						<File Id="665657662" Language="SFX">
+							<ShortName>uplink_chime.wav</ShortName>
+							<Path>SFX\uplink_chime_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
