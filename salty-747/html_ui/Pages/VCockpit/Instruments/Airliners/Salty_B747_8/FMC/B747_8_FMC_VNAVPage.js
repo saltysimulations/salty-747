@@ -98,7 +98,7 @@ class B747_8_FMC_VNAVPage {
             }
             clbSpeedCell += "[color]magenta";
         }
-        if (isNaN(clbSpeedCell)) {
+        if (isNaN(fmc.cruiseFlightLevel)) {
             clbSpeedCell = "";
         }
 
@@ -316,10 +316,9 @@ class B747_8_FMC_VNAVPage {
         if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CRUISE) {
             crzSpeedCell += "[color]magenta";
         }
-        if (isNaN(crzSpeedCell)) {
+        if (isNaN(crzSpeed) || isNaN(crzMach)) {
             crzSpeedCell = "";
         }
-
         fmc.onLeftInput[1] = () => {
             let value = fmc.inOut;
             if (crzMode === 2) {
@@ -365,9 +364,10 @@ class B747_8_FMC_VNAVPage {
         }
 
         /* Maximum Flight level - Calculates uses linear regression derived formula from actual aircraft data */
-        let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "pounds");
-        let weightLimitedFltLevel = (((-0.02809 * currentWeight) + 56571.91142) / 100);
-        let maxFltLevel = Math.min(431, weightLimitedFltLevel);
+        let currentWeight = SimVar.GetSimVarValue("TOTAL WEIGHT", "kilograms");
+        let maxFltLevel = Math.min(431,(((-0.04894505 * currentWeight) + 54680.43956044) / 100));
+        let optFltLevel  = Math.min(431,(((-0.06056044 * currentWeight) + 56063.51648352) / 100)) ;
+        let recmdFltLevel = Math.round(optFltLevel / 10) * 10;
 
         /* LSK 5L  - ECON Button */
         let lsk5lCell = "";
@@ -391,8 +391,8 @@ class B747_8_FMC_VNAVPage {
             [crzSpeedCell],
             ["\xa0N1"],
             [n1Cell],
-            ["\xa0STEP", "RECMD", "OPT\xa0\xa0\xa0MAX"],
-            ["RVSM", "", "\xa0\xa0\xa0\xa0\xa0\xa0" + "FL" + maxFltLevel.toFixed(0)],
+            ["\xa0STEP", "MAX\xa0\xa0\xa0RECMD", "OPT\xa0\xa0\xa0\xa0\xa0\xa0"],
+            ["RVSM", "FL" + recmdFltLevel.toFixed(0), "\xa0FL" + optFltLevel.toFixed(0) + "\xa0\xa0" + "FL" + maxFltLevel.toFixed(0)],
             ["__FMCSEPARATOR"],
             [lsk5lCell, "ENG OUT>"],
             [],
@@ -490,7 +490,7 @@ class B747_8_FMC_VNAVPage {
                 desSpeedCell += "[color]magenta";
             }
         }
-        if (isNaN(desSpeedCell)) {
+        if (isNaN(fmc.cruiseFlightLevel)) {
             desSpeedCell = "";
         }
 

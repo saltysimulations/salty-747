@@ -14,8 +14,10 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID PLAY_ASOBO_B747_8I_BANK_ANGLE = 2809333158U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_AURAL = 1166893861U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_OBSTACLE = 3939631457U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_TERRAIN = 1604764289U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_CCHORD = 2152551899U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_DONT_SINK = 1781746709U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_MINIMUMS = 1077883375U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_OBSTACLE_OBSTACLE = 1505420985U;
@@ -27,6 +29,7 @@ namespace AK
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_FLAPS = 2780512408U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_GEAR = 3826800809U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_TERRAIN = 3260237411U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_UPLINK_CHIME = 603812818U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_WAILER = 3154175190U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_WINDSHEAR = 2967775321U;
     } // namespace EVENTS
