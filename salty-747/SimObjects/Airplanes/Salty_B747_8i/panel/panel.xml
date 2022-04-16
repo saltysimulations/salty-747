@@ -895,7 +895,7 @@
 
 		<Alert>
 			<Type>SoundOnly</Type>
-			<SoundEvent>tone_altitude_alert_default</SoundEvent>
+			<SoundEvent>cchord</SoundEvent>
 			<Condition>
 				<StateMachine>
 					<State id="Armed" value="0">
