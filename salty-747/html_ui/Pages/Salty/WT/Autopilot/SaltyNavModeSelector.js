@@ -502,6 +502,7 @@
         this.currentVerticalActiveState = VerticalNavModeState.VS;
         this.vnavOff();
         this.engageVerticalSpeed();
+        SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 1);
         SimVar.SetSimVarValue("K:SPEED_SLOT_INDEX_SET", "number", 1);
         SimVar.SetSimVarValue("K:AP_MANAGED_SPEED_IN_MACH_OFF", "number", 1);
         SimVar.SetSimVarValue("L:XMLVAR_AirSpeedIsInMach", "bool", 0);
@@ -596,20 +597,15 @@
   * Handles when the Altitude Intervention Knob is pressed.
   */
    handleAltIntPressed() {
+     console.log(this.currentVerticalActiveState)
      switch (this.currentVerticalActiveState) {
-       case VerticalNavModeState.TO:
-       case VerticalNavModeState.GA:
-       case VerticalNavModeState.PTCH:
-       case VerticalNavModeState.VS:
        case VerticalNavModeState.ALTCAP:
        case VerticalNavModeState.ALTVCAP:
        case VerticalNavModeState.ALTSCAP:
        case VerticalNavModeState.ALTV:
        case VerticalNavModeState.ALTS:
        case VerticalNavModeState.ALT:
-       case VerticalNavModeState.GS:
        case VerticalNavModeState.PATH:
-       case VerticalNavModeState.GP:
         if (this.isVNAVOn) {
           this.currentVerticalActiveState = VerticalNavModeState.FLC;
           this.engageFlightLevelChange();
@@ -694,7 +690,6 @@
       }
     }
     SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "number", 1);
-    SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "number", 1);
     SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
     SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "number", 0);
     this.checkVerticalSpeedActive();
@@ -903,8 +898,10 @@
         SimVar.SetSimVarValue("L:AP_LOC_ARMED", "bool", 0);
         SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "bool", 0);
         SimVar.SetSimVarValue("L:AP_FLCH_ACTIVE", "bool", 0);
+        SimVar.SetSimVarValue("L:AP_ALT_HOLD_ACTIVE", "number", 0);
         SimVar.SetSimVarValue("L:AP_VS_ACTIVE", "bool", 0);
         SimVar.SetSimVarValue("L:AP_SPD_ACTIVE", "bool", 0);
+        SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
 
         //SET LATERAL
         if (SimVar.GetSimVarValue("AUTOPILOT HEADING LOCK", "number") != 1) {
@@ -1034,6 +1031,7 @@
         this.currentLateralActiveState = LateralNavModeState.HDG;
         SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
         SimVar.SetSimVarValue("L:AP_LNAV_ACTIVE", "number", 0);
+        SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
         break;
       case LateralNavModeState.HDG:
       case LateralNavModeState.APPR:
@@ -1136,7 +1134,7 @@
           SimVar.SetSimVarValue("L:WT_CJ4_HDG_ON", "number", 0);
           this.changeToCorrectLNavForMode(false, true);
           SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 1);
-          //SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
+          SimVar.SetSimVarValue("L:AP_HEADING_HOLD_ACTIVE", "number", 0);
           break;
         case LateralNavModeState.NAV:
           SimVar.SetSimVarValue("L:AP_LNAV_ARMED", "number", 0);
