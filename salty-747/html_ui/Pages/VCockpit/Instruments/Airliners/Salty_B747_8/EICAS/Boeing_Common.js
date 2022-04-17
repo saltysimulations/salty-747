@@ -239,7 +239,7 @@ var Boeing;
         }
         refreshValue(_value, _force = false) {
             if ((_value != this.currentValue) || _force) {
-                var displayValue = ((_value * 3.75) + 75);
+                const displayValue = (_value + 3) * 10;
                 if (Math.round(displayValue) < 10) {
                     this.valueText.textContent = "0" + displayValue.toFixed(0);
                 }
