@@ -1,6 +1,6 @@
 var Boeing;
 (function (Boeing) {
-    class ThrustModeDisplay {
+    /*class ThrustModeDisplay {
         constructor(_rootElement) {
             this.rootElement = null;
             this.currentText = "";
@@ -26,6 +26,90 @@ var Boeing;
             let mode = 0;
             let alt = Simplane.getAltitude();
             let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
+            if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF && alt < thrRedAlt) {
+                mode = Simplane.getEngineThrustTakeOffMode(0);
+            }
+            else {
+                mode = Simplane.getEngineThrustClimbMode(0);
+            }
+            let tmaText = this.getText(phase, mode);
+            this.refresh(tmaText);
+        }
+        refresh(_text, _force = false) {
+            if ((_text != this.currentText) || _force) {
+                this.currentText = _text;
+                if (this.rootElement != null) {
+                    this.rootElement.innerHTML = this.currentText;
+                }
+            }
+        }
+    }*/
+    class ThrustModeDisplay {
+        constructor(_rootElement) {
+            this.rootElement = null;
+            this.currentText = "";
+            this.rootElement = _rootElement;
+            this.refresh("", true);
+        }
+
+        getText(phase, mode) {
+            let text = "-";
+            if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:SALTY_REF_THR_SET", "bool") == false) {
+                text = "-";
+                return text;
+            }
+            else if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF && SimVar.GetSimVarValue("L:SALTY_REF_THR_SET", "bool") == true) {
+                if (mode == 0){
+                    if (SimVar.GetSimVarValue("L:SALTY_ATM_SET", "bool") == true) {
+                        let AT = SimVar.GetSimVarValue("L:SALTY_ASSUMED_TEMP", "number");
+                        text = "D-TO " + "+" + AT + "C";
+                        return text;
+                    }
+                    else {
+                        text = "TO";
+                        return text;
+                    }
+                }
+                else if (mode == 1 || mode == 2){
+                    if (SimVar.GetSimVarValue("L:SALTY_ATM_SET", "bool") == true) {
+                        let AT = SimVar.GetSimVarValue("L:SALTY_ASSUMED_TEMP", "number");
+                        text = "D-TO " + mode + "+" + AT + "C";
+                        return text;
+                    }
+                    else {
+                        text = "TO - " + mode;
+                        return text;
+                    }
+                }
+            }
+            else {
+                if (mode == 0){
+                    text = "CLB";
+                    return text;
+                }
+                else if (mode == 1 || mode == 2){
+                    text = "CLB - " + mode;
+                    return text;
+                }
+                else if (mode == 3) {
+                    text = "GA";
+                    return text;
+                }
+                else if (mode == 4) {
+                    text = "CON";
+                    return text;
+                }
+                else {
+                    text = "CRZ";
+                    return text;
+                }
+            }
+        }
+        update() {
+            let phase = Simplane.getCurrentFlightPhase();
+            let alt = Simplane.getAltitude();
+            let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
+            var mode;
             if (phase <= FlightPhase.FLIGHT_PHASE_TAKEOFF && alt < thrRedAlt) {
                 mode = Simplane.getEngineThrustTakeOffMode(0);
             }
