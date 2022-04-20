@@ -217,7 +217,7 @@ class FMCTakeOffPage {
         }
         let thrRedHt = SaltyDataStore.get("TO_THR_REDUCTION", 1500); //SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number") - airportElevation;
         if (thrRedHt) {
-            thrRedCell = armedCLBThrust + "\xa0\xa0\xa0\xa0" + thrRedHt.toFixed(0) + "FT";
+            thrRedCell = armedCLBThrust + "\xa0\xa0\xa0\xa0" + thrRedHt + "FT";
         }
         fmc.onRightInput[2] = () => {
             let value = fmc.inOut;
