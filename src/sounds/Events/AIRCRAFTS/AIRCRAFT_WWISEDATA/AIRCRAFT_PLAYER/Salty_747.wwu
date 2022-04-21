@@ -241,6 +241,34 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_fire_bell" ID="{61709C64-CC92-4245-B23D-5F83FAF460CF}">
+					<ChildrenList>
+						<Action Name="" ID="{C71AC9E4-1B07-48BC-BF27-385B44571A8E}" ShortID="284602617">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fire_bell" ID="{950B419B-5420-44A0-932A-90E368434FE2}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_fire_relay" ID="{9CE9EFBB-820F-434C-A275-924188C73777}">
+					<ChildrenList>
+						<Action Name="" ID="{84B7CDAE-7FA8-43FF-A728-99BB91FD0B31}" ShortID="953131725">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fire_relay" ID="{D03B57C1-7744-46A5-B446-939A6EFF13F4}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

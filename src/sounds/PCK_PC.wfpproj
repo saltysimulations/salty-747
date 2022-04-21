@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<Project Version="7" InfoFilePath="GeneratedSoundBanks\Windows\SoundbanksInfo.xml" OutputDirectory="X:\Documents\GitHub\salty-747\salty-747\SimObjects\Airplanes\Asobo_B747_8i\sound">
+<Project Version="7" InfoFilePath="GeneratedSoundBanks\Windows\SoundbanksInfo.xml" OutputDirectory="X:\Documents\GitHub\salty-747\salty-747\SimObjects\Airplanes\Salty_B747_8i\sound">
   <ManualPackagingInfo BlockSize="1" UnassignedBanksPackageId="00000000-0000-0000-0000-000000000000" UnassignedStreamsPackageId="00000000-0000-0000-0000-000000000000" UnassignedExternalsPackageId="00000000-0000-0000-0000-000000000000" UnassignedLooseMediaPackageId="00000000-0000-0000-0000-000000000000">
     <Packages>
       <Package Id="1dd5246d-d2f9-4235-8ad0-837908528060" Name="MyCompany_Gauge_Aircraft.PC.PCK">

@@ -82,7 +82,7 @@
 				</StateGroup>
 			</StateGroups>
 		</SoundBank>
-		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="2814402511">
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="3012436763">
 			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
 			<ShortName>Salty_747</ShortName>
 			<Path>Salty_747.bnk</Path>
@@ -116,6 +116,22 @@
 						<File Id="336234418" Language="SFX">
 							<ShortName>dont_sink.wav</ShortName>
 							<Path>SFX\dont_sink_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="662920980" Name="Play_Asobo_B747_8i_fire_bell" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fire_bell" GUID="{61709C64-CC92-4245-B23D-5F83FAF460CF}" DurationType="Infinite">
+					<IncludedMemoryFiles>
+						<File Id="707527931" Language="SFX">
+							<ShortName>firebell.wav</ShortName>
+							<Path>SFX\firebell_89DC6E16.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4261687602" Name="Play_Asobo_B747_8i_fire_relay" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fire_relay" GUID="{9CE9EFBB-820F-434C-A275-924188C73777}" DurationType="OneShot" DurationMin="0.076871" DurationMax="0.076871">
+					<IncludedMemoryFiles>
+						<File Id="956086398" Language="SFX">
+							<ShortName>fire_relay.wav</ShortName>
+							<Path>SFX\fire_relay_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>

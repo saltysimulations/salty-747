@@ -175,6 +175,18 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="fire_relay.wav">
+          <WObject ID="{C73C1C3E-EFED-46C4-A523-C35CA8F363CB}">
+            <MediaID ID="956086398" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="firebell.wav">
+          <WObject ID="{ADCA93E8-D6C9-4D17-B80B-75B65D472AEF}">
+            <MediaID ID="707527931" />
+            <Hash Platform="Windows" Value="2312924694" />
+          </WObject>
+        </File>
         <File Name="minimums.wav">
           <WObject ID="{4F406A6D-91D1-4453-8824-686FE9D49F97}">
             <MediaID ID="176262890" />
