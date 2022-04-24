@@ -84,17 +84,17 @@ class SaltyFuel {
         const theta2 = theta * (1 + 0.2 * mach ** 2);
         const CFF = SimVar.GetSimVarValue(`TURB ENG CORRECTED FF:1`, "pound per hour");
         const FF = CFF * delta2 * theta2 ** 0.5;
-        SimVar.SetSimVarValue("L:74S_ENG_1_FUEL_FLOW", "pound per hour", FF);
         const fuelWeight = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds");
         const correction = FF * dt * 2.7777777777778E-7 / fuelWeight;
         const fuelQty = SimVar.GetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons");
         SimVar.SetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons", fuelQty - correction);
+        SimVar.SetSimVarValue("L:74S_ENG_1_FUEL_FLOW", "pound per hour", FF);
     }
 }
 
 class FuelTank { }
 FuelTank.CENTER = 'CENTER';
-FuelTank.MAIN1 = 'LEFT MAIN';
-FuelTank.MAIN2 = 'LEFT AUX';
+FuelTank.MAIN1 = 'LEFT AUX';
+FuelTank.MAIN2 = 'LEFT MAIN';
 FuelTank.MAIN3 = 'RIGHT MAIN';
 FuelTank.MAIN4 = 'RIGHT AUX';
