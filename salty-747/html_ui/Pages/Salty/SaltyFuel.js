@@ -184,7 +184,8 @@ class SaltyFuel {
         const CFF = SimVar.GetSimVarValue(`TURB ENG CORRECTED FF:${engineNo}`, "pound per hour");
         const FF = CFF * delta2 * theta2 ** 0.5;
         const fuelWeight = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds");
-        const correction = FF * dt * 2.7777777777778E-7 / fuelWeight;
+        const simRate = SimVar.GetGlobalVarValue('SIMULATION RATE', 'number');
+        const correction = FF * dt * 2.7777777777778E-7 / fuelWeight * simRate;
         const fuelQty = SimVar.GetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons");
         SimVar.SetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons", fuelQty - correction);
         SimVar.SetSimVarValue(`L:74S_ENG_${engineNo}_FUEL_FLOW`, "pound per hour", FF);
