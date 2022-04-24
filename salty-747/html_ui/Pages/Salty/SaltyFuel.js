@@ -32,6 +32,7 @@ class SaltyFuel {
         engTankConfig[4] = this.getEng4Tank();
         for (let i = 1; i < 5; i++) {
             this.updateEngines(i, engTankConfig[i], dt);
+            this.updateTransfers();
         }
         this.lastTime = t0;
     }
@@ -51,6 +52,10 @@ class SaltyFuel {
         this.anyMain2Running = SimVar.GetSimVarValue(`FUELSYSTEM LINE FUEL FLOW:24`, "gallon per hour");
         this.anyMain3Running = SimVar.GetSimVarValue(`FUELSYSTEM LINE FUEL FLOW:34`, "gallon per hour");
         this.anyMain4Running = SimVar.GetSimVarValue(`FUELSYSTEM LINE FUEL FLOW:45`, "gallon per hour");
+        this.leftStbRunning = SimVar.GetSimVarValue(`FUELSYSTEM LINE FUEL FLOW:61`, "gallon per hour");
+        this.rightStbRunning = SimVar.GetSimVarValue(`FUELSYSTEM LINE FUEL FLOW:63`, "gallon per hour");
+        this.fuelWeight = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds");
+        this.simRate = SimVar.GetGlobalVarValue('SIMULATION RATE', 'number');
     }
 
     getEng1Tank() {
@@ -183,12 +188,47 @@ class SaltyFuel {
         const theta2 = theta * (1 + 0.2 * mach ** 2);
         const CFF = SimVar.GetSimVarValue(`TURB ENG CORRECTED FF:${engineNo}`, "pound per hour");
         const FF = CFF * delta2 * theta2 ** 0.5;
-        const fuelWeight = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds");
-        const simRate = SimVar.GetGlobalVarValue('SIMULATION RATE', 'number');
-        const correction = FF * dt * 2.7777777777778E-7 / fuelWeight * simRate;
+        const correction = FF * dt * 2.7777777777778E-7 / this.fuelWeight * this.simRate;
         const fuelQty = SimVar.GetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons");
         SimVar.SetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons", fuelQty - correction);
         SimVar.SetSimVarValue(`L:74S_ENG_${engineNo}_FUEL_FLOW`, "pound per hour", FF);
+    }
+
+    updateTransfers() {
+        /* Stab Transfer */
+        if (this.leftStbRunning > 1 || this.rightStbRunning > 1) {
+            const stabTransferRate = 0.0175 * this.simRate;
+            const stabQty = SimVar.GetSimVarValue(`FUEL TANK CENTER2 QUANTITY`, "gallons");
+            SimVar.SetSimVarValue(`FUEL TANK CENTER2 QUANTITY`, "gallons", stabQty - stabTransferRate);
+            const ctrQty = SimVar.GetSimVarValue(`FUEL TANK CENTER QUANTITY`, "gallons");
+            SimVar.SetSimVarValue(`FUEL TANK CENTER QUANTITY`, "gallons", ctrQty + stabTransferRate);
+        }
+        /* Res 1 Transfer */
+        const main1Weight = SimVar.GetSimVarValue(`FUEL TANK LEFT AUX QUANTITY`, "gallons") * this.fuelWeight;
+        const res1Qty = SimVar.GetSimVarValue(`FUEL TANK LEFT TIP QUANTITY`, "gallons");
+        if (main1Weight < 13400 & res1Qty > 0.01) {
+            const resTransferRate = 0.02 * this.simRate;
+            SimVar.SetSimVarValue(`FUEL TANK LEFT TIP QUANTITY`, "gallons", res1Qty - resTransferRate);
+            const main1Qty = SimVar.GetSimVarValue(`FUEL TANK LEFT AUX QUANTITY`, "gallons");
+            SimVar.SetSimVarValue(`FUEL TANK LEFT AUX QUANTITY`, "gallons", main1Qty + resTransferRate);
+            SimVar.SetSimVarValue(`L:74S_FUEL_RES1_TRANSFER_ACTIVE`, "bool", true);
+        }
+        else {
+            SimVar.SetSimVarValue(`L:74S_FUEL_RES1_TRANSFER_ACTIVE`, "bool", false);
+        }
+        /* Res 4 Transfer */
+        const main4Weight = SimVar.GetSimVarValue(`FUEL TANK RIGHT AUX QUANTITY`, "gallons") * this.fuelWeight;
+        const res4Qty = SimVar.GetSimVarValue(`FUEL TANK RIGHT TIP QUANTITY`, "gallons");
+        if (main4Weight < 13400 & res4Qty > 0.01) {
+            const resTransferRate = 0.02 * this.simRate;
+            SimVar.SetSimVarValue(`FUEL TANK RIGHT TIP QUANTITY`, "gallons", res4Qty - resTransferRate);
+            const main4Qty = SimVar.GetSimVarValue(`FUEL TANK RIGHT AUX QUANTITY`, "gallons");
+            SimVar.SetSimVarValue(`FUEL TANK RIGHT AUX QUANTITY`, "gallons", main4Qty + resTransferRate);
+            SimVar.SetSimVarValue(`L:74S_FUEL_RES4_TRANSFER_ACTIVE`, "bool", true);
+        }
+        else {
+            SimVar.SetSimVarValue(`L:74S_FUEL_RES4_TRANSFER_ACTIVE`, "bool", false);
+        }
     }
 }
 
@@ -198,3 +238,6 @@ FuelTank.MAIN1 = 'LEFT AUX';
 FuelTank.MAIN2 = 'LEFT MAIN';
 FuelTank.MAIN3 = 'RIGHT MAIN';
 FuelTank.MAIN4 = 'RIGHT AUX';
+FuelTank.RES1 = 'LEFT TIP';
+FuelTank.RES4 = 'RIGHT TIP';
+FuelTank.STAB = 'CENTER2';

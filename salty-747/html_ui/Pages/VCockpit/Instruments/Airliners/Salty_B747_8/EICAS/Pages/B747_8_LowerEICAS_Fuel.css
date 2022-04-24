@@ -144,5 +144,5 @@ b747-8-lower-eicas-fuel {
     stroke: var(--eicasWhite); }
   b747-8-lower-eicas-fuel #TransferFlow {
     stroke-width: 0px;
-    fill: var(--eicasGreen);
-    stroke: var(--eicasGreen); }
+    fill: lime;
+    stroke: lime; }
