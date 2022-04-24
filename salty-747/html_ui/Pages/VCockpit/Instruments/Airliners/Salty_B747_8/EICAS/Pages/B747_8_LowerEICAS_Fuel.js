@@ -266,7 +266,7 @@ var B747_8_LowerEICAS_Fuel;
             }
         }
         updateTransferArrows() {
-            if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:18", "bool")) {
+            if (SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:61", "gallons per hour") > 1 || SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:63", "gallons per hour") > 1) {
                 this.flowStabOutline.style.visibility = "visible";
                 this.flowStab.style.visibility = "visible";
             } else {
@@ -274,7 +274,7 @@ var B747_8_LowerEICAS_Fuel;
                 this.flowStab.style.visibility = "hidden";
             }
             
-            if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:10", "bool")) {
+            if (SimVar.GetSimVarValue(`L:74S_FUEL_RES1_TRANSFER_ACTIVE`, "bool")) {
                 this.flowRes1Outline.style.visibility = "visible";
                 this.flowRes1.style.visibility = "visible";
             } else {
@@ -282,7 +282,7 @@ var B747_8_LowerEICAS_Fuel;
                 this.flowRes1.style.visibility = "hidden";
             }
             
-            if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:12", "bool")) {
+            if (SimVar.GetSimVarValue(`L:74S_FUEL_RES4_TRANSFER_ACTIVE`, "bool")) {
                 this.flowRes4Outline.style.visibility = "visible";
                 this.flowRes4.style.visibility = "visible";
             } else {

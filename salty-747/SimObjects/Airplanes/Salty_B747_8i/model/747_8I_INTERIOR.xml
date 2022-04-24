@@ -138,7 +138,11 @@
 					<FRAME_ARMED>1</FRAME_ARMED>
 					<FRAME_RET>0</FRAME_RET>
 					<FRAME_HALF>5</FRAME_HALF>
-					<FRAME_FULL>9</FRAME_FULL>
+					<FRAME_FULL>
+					(A:SIM ON GROUND, Bool) ! if{ #FRAME_FULL# 5 } els{
+						#FRAME_FULL# 9
+					}
+					</FRAME_FULL>
 					<FRAME_COUNT>9</FRAME_COUNT>
 				</DefaultTemplateParameters>
 				<UseTemplate Name="ASOBO_HANDLING_Lever_Spoilers_Template">

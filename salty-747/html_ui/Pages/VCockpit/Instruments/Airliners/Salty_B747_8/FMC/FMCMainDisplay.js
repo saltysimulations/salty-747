@@ -239,6 +239,7 @@ class FMCMainDisplay extends BaseAirliners {
             content = content.split("[color]")[0];
         }
         content = content.replace("\<", "&lt");
+        content = content.replaceAll(">", "&gt");
         this._lines[row][col] = content;
         this._lineElements[row][col].innerHTML = this._lines[row][col];
     }

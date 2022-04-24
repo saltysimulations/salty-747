@@ -38,20 +38,20 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             [97.2, 98.8, 100.4, 100.4, 100.4, 100.4, 100.4, 100.1, 100, 99.9, 99.5, 99.2, 98.8],
             [96.4, 98, 99.6, 100.1, 100.7, 101.1, 101.1, 101.1, 101.7, 101.3, 100.3, 99.9, 99.5],
             [95.6, 97.2, 98.8, 99.3, 99.9, 100.5, 101.1, 101.8, 102.2, 102.4, 102.1, 101.5, 100.3],
-            [94.8, 96.3, 97.9, 98.4, 99, 99.6, 1012, 101, 101.7, 102.5, 102.5, 102.2, 1011],
+            [94.8, 96.3, 97.9, 98.4, 99, 99.6, 1012, 101, 101.7, 102.5, 102.5, 102.2, 101.1],
             [93.9, 95.5, 97.1, 97.6, 981, 98.8, 99.4, 100.1, 100.8, 101.6, 101.8, 102, 102.3],
-            [93.1, 94.7, 96.2, 96.7, 97.3, 97.9, 98.5, 991, 99.9, 100.7, 100.9, 101.2, 101.4],
+            [93.1, 94.7, 96.2, 96.7, 97.3, 97.9, 98.5, 99.1, 99.9, 100.7, 100.9, 101.2, 101.4],
             [92.3, 93.8, 95.3, 95.8, 96.4, 97, 97.6, 98.3, 99.1, 99.8, 100, 100.3, 100.6],
             [90.6, 92.1, 93.6, 94.1, 94.6, 95.2, 95.9, 96.6, 97.3, 98, 8.3, 98.5, 98.8],
             [88.8, 90.3, 91.8, 92.3, 92.8, 93.4, 94.1, 94.8, 95.5, 96.3, 96.5, 96.7, 97],
             [87.0, 815, 89.9, 90.4, 91, 91.6, 92.3, 93, 93.7, 94.4, 94.7, 94.9, 95.2],
             [85.2, 86.7, 88.1, 88.6, 89.1, 89.8, 90.5, 91.2, 91.9, 92.6, 92.8, 93.1, 93.4],
-            [83.4, 84.8, 861, 86.7, 87.3, 87.9, 88.6, 89.3, 90, 90.7, 91, 91.2, 91.5]
+            [83.4, 84.8, 86.1, 86.7, 87.3, 87.9, 88.6, 89.3, 90, 90.7, 91, 91.2, 91.5]
         ];
         this._takeOffN1TempRow = [70, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -10, -20, -30, -40, -50];
         this._thrustTakeOffMode = 0;
         this._thrustCLBMode = 0;
-        this._thrustTakeOffTemp = 20;
+        //this._thrustTakeOffTemp = 20;
         this._lastUpdateAPTime = NaN;
         this.refreshFlightPlanCooldown = 0;
         this.updateAutopilotCooldown = 0;
@@ -189,8 +189,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         // Maybe this gets rid of slowdown on first fpln mod
         this.flightPlanManager.copyCurrentFlightPlanInto(1);
         this.timer = 0;
-        let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-        this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
+        //let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
+        //this._thrustTakeOffTemp = Math.ceil(oat / 10) * 10;
+        SimVar.SetSimVarValue("L:SALTY_ASSUMED_TEMP", "number", 0);
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
@@ -205,7 +206,12 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         this.updateVREF30();
         this.onInit = () => {
-            B747_8_FMC_InitRefIndexPage.ShowPage1(this);
+            if (Simplane.getCurrentFlightPhase() === FlightPhase.FLIGHT_PHASE_CLIMB) {
+                FMCThrustLimPage.ShowPage1(this);
+            }
+            else {
+                B747_8_FMC_InitRefIndexPage.ShowPage1(this);
+            }
         };
         this.onLegs = () => {
             B747_8_FMC_LegsPage.ShowPage1(this);
@@ -214,7 +220,8 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             FMCRoutePage.ShowPage1(this);
         };
         this.onDepArr = () => {
-            B747_8_FMC_DepArrIndexPage.ShowPage1(this);
+            //B747_8_FMC_DepArrIndexPage.ShowPage1(this);
+            B747_8_FMC_DepArrIndexPage.ShowIndexPage(this);
         };
         this.onRad = () => {
             B747_8_FMC_NavRadioPage.ShowPage(this);
@@ -888,43 +895,183 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     getThrustCLBMode() {
         return this._thrustCLBMode;
     }
-    setThrustCLBMode(m) {
+    /*setThrustCLBMode(m) {
         if (m >= 0 && m <= 2) {
             this._thrustCLBMode = m;
             SimVar.SetSimVarValue("L:AIRLINER_THRUST_CLIMB_MODE", "number", this._thrustCLBMode);
         }
+    }*/
+    setThrustCLBMode(m) {
+        if (m >= 0 && m <= 5) {
+            this._thrustCLBMode = m;
+            SimVar.SetSimVarValue("L:AIRLINER_THRUST_CLIMB_MODE", "number", this._thrustCLBMode);
+        }
     }
-    getThrustTakeOffTemp() {
+    /*getThrustTakeOffTemp() {
         return this._thrustTakeOffTemp;
+    }*/
+    getThrustTakeOffTemp() {
+        return SimVar.GetSimVarValue("L:SALTY_ASSUMED_TEMP", "number");
     }
     setThrustTakeOffTemp(s) {
         let v = parseFloat(s);
         if (isFinite(v)) {
-            let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
-            if (v >= oat && v < 80) {
-                this._thrustTakeOffTemp = v;
-                return true;
+            let oat = Math.round(SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius"));
+            if (v >= oat && v < 100) {
+                SimVar.SetSimVarValue("L:SALTY_ATM_SET", "bool", true);
+                return SimVar.SetSimVarValue("L:SALTY_ASSUMED_TEMP", "number", v);
             }
             this.showErrorMessage("OUT OF RANGE");
             return false;
         }
-        this.showErrorMessage(this.defaultInputErrorMessage);
-        return false;
+        else if (v==FMCMainDisplay.clrValue) {
+            return SimVar.SetSimVarValue("L:SALTY_ATM_SET", "bool", false);
+        }
+        /*this.showErrorMessage(this.defaultInputErrorMessage);
+        return false;*/
     }
-    getThrustTakeOffLimit() {
-        /*let airport = this.flightPlanManager.getOrigin();
+    getThrustTakeOffLimit () {
+        let mode = SimVar.GetSimVarValue("L:AIRLINER_THRUST_TAKEOFF_MODE", "number");
+        let temp = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
+        let alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
+        let atm = SimVar.GetSimVarValue("L:SALTY_ASSUMED_TEMP", "number");
+        let isatemp = 288.15 - 2 * (alt / 1000);
+        let theta = 288.15 / (atm + 273.15);
+        let isa = Math.max(288.15 - 2 * (alt / 1000), 216.65);
+        if (mode === 0) {
+          let refN1 = 95.3;
+          /*if (alt < 0) {
+              refN1 += alt * 0.00155; 
+          }
+          else if (0 <= alt )*/
+          /*if (!bleed || !packs) {
+              refN1 += 0.5 + (alt / 1000) * 0.0167;
+          }*/
+          //let N1 = refN1 * Math.min(((Math.max(288.15, 273.15 + Math.abs(temp)) / Math.min(288.15, 273.15 + Math.abs(temp))) ** 0.5), (303.15/288.15) ** 0.5);
+          let N1 = refN1 * Math.min(((273.15 + Math.abs(temp))/(273.15 + atm)), (303.15/273.15)) ** 0.5;
+          N1 += 0.5 * (alt / 1000); 
+          let tla = (N1 - 20.2) / 0.798 ;
+          SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+          SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+          return N1;
+        }
+        if (mode === 1) {
+          let refN1 = 93.6;
+          let N1 = refN1 * (temp / 288.15) ** 0.5 * (theta) ** 0.5 * (288.15 / isatemp) ** 0.5
+          let tla = (N1 - 20.2) / 0.798 ;
+          SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+          SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+          return N1;
+        }
+        if (mode === 2) {
+          let refN1 = 89.4;
+          let N1 = refN1 * (temp / 288.15) ** 0.5 * (theta) ** 0.5 * (288.15 / isatemp) ** 0.5
+          let tla = (N1 - 20.2) / 0.798 ;
+          SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+          SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+          SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+          return N1;
+        }
+    }
+    getThrustClimbLimit() {
+        let mode = SimVar.GetSimVarValue("L:AIRLINER_THRUST_CLIMB_MODE", "number");
+        let mach = SimVar.GetSimVarValue("AIRSPEED MACH", "number");
+        let tat = SimVar.GetSimVarValue("TOTAL AIR TEMPERATURE", "kelvin");
+        let oat = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "kelvin");
+        let alt = SimVar.GetSimVarValue("PRESSURE ALTITUDE", "feet");
+        let isa = Math.max(288.15 - 2 * (alt / 1000), 216.65);
+        let thetabrk = 303.15 / 288.15;
+        let thetamax = thetabrk * (1 + 0.2 * mach ** 2);
+        let theta = (oat / isa) * (1 + 0.2 * mach ** 2);
+        //if (theta)
+        if (mode === 0) {
+            //let N1 = 90.38;
+            let refN1 = 88.00;
+            let N1 = Math.min(refN1 * (1 + 0.2 * mach ** 2) ** 0.5 * theta ** 0.5, 100);
+            SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+            let tla = (N1 - 20.2) / 0.798 ;
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+            SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+            return N1;
+        }
+        if (mode === 1) {
+            let refN1 = 84.74;
+            if (alt > 9999) {
+                refN1 += 0.000652 * (alt - 10000);
+                refN1 = Math.min(refN1, 88.00);
+            }
+            if (alt > 14999) {
+                refN1 = 88.00;
+                this.setThrustCLBMode(0);
+            }
+            let N1 = Math.min(refN1 * (1 + 0.2 * mach ** 2) ** 0.5 * theta ** 0.5, 100);
+            SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+            let tla = (N1 - 20.2) / 0.798 ;
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+            SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+            return N1;
+        }
+        if (mode === 2) {
+            let refN1 = 81.48;
+            if (alt > 9999) {
+                refN1 += 0.001304 * (alt - 10000);
+                refN1 = Math.min(refN1, 88.00);
+            }
+            if (alt > 14999) {
+                refN1 = 88.00;
+                this.setThrustCLBMode(0);
+            }
+            let N1 = Math.min(refN1 * (1 + 0.2 * mach ** 2) ** 0.5 * theta ** 0.5, 100);
+            SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+            let tla = (N1 - 20.2) / 0.798 ;
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+            SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+            return N1;
+        }
+        if (mode === 3) {
+            let refN1 = 91.87;
+            let N1 = Math.min(refN1 * (1 + 0.2 * mach ** 2) ** 0.5 * theta ** 0.5, 100);
+            SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+            let tla = (N1 - 20.2) / 0.798 ;
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+            SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+            return N1;
+        }
+        if (mode === 4) {
+            let refN1 = 92.56;
+            let N1 = Math.min(refN1 * (1 + 0.2 * mach ** 2) ** 0.5 * theta ** 0.5, 100);
+            SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+            let tla = (N1 - 20.2) / 0.798 ;
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+            SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+            return N1;
+        }
+        if (mode === 5) {
+            let refN1 = 90.45;
+            let N1 = Math.min(refN1 * (1 + 0.2 * mach ** 2) ** 0.5 * theta ** 0.5, 100);
+            SimVar.SetSimVarValue("L:SALTY_REF_N1", "percent", N1);
+            let tla = (N1 - 20.2) / 0.798 ;
+            SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "percent", tla);
+            SimVar.SetSimVarValue("K:AP_N1_REF_SET", "number", N1);
+            return N1;
+        }
+    }
+    /*getThrustTakeOffLimit() {
+        let airport = this.flightPlanManager.getOrigin();
         if (airport) {
             let altitude = airport.infos.coordinates.alt;
             let n1 = this.getTakeOffThrustN1(this.getThrustTakeOffTemp(), altitude) - this.getThrustTakeOffMode() * 10;
             return n1;
-        }*/
+        }
         return 85;
-    }
-    getThrustClimbLimit() {
-        /*let altitude = Simplane.getAltitude();
-        let temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");*/
+    }*/
+    /*getThrustClimbLimit() {
+        let altitude = Simplane.getAltitude();
+        let temperature = SimVar.GetSimVarValue("AMBIENT TEMPERATURE", "celsius");
         return 80;
-    }
+    }*/
     updateAutopilot() {
         let now = performance.now();
         let dt = now - this._lastUpdateAPTime;
@@ -945,8 +1092,23 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this._apHasDeactivated = !currentApMasterStatus && this._previousApMasterStatus;
             this._previousApMasterStatus = currentApMasterStatus;
             if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_TAKEOFF) {
-                let n1 = this.getThrustTakeOffLimit() / 100;
-                SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
+                /*let n1 = this.getThrustTakeOffLimit() / 100;
+                SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);*/
+                let mode = this.getThrustTakeOffMode();
+                this.getThrustTakeOffLimit(mode);
+            }
+            else if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_CRUISE) {
+                let mode = this.getThrustCLBMode();
+                this.getThrustClimbLimit(mode);
+            }
+            else if (this.currentFlightPhase <= FlightPhase.FLIGHT_PHASE_APPROACH) {
+                this.setThrustCLBMode(5);
+            }
+            else if (this.currentFlightPhase === FlightPhase.FLIGHT_PHASE_APPROACH) {
+                this.setThrustCLBMode(3);
+            }
+            else {
+                return;
             }
             if (!this._navModeSelector) {
                 this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
@@ -1046,10 +1208,9 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
                     //Sets CLB Thrust when passing thrust reduction altitude
                     let alt = Simplane.getAltitude();
                     let thrRedAlt = SimVar.GetSimVarValue("L:AIRLINER_THR_RED_ALT", "number");
-                    let n1 = 85;
+                    let n1 = this.getThrustTakeOffLimit();
                     if (alt > thrRedAlt) {
-                        n1 = this.getThrustClimbLimit() / 100;
-                        SimVar.SetSimVarValue("AUTOPILOT THROTTLE MAX THRUST", "number", n1);
+                        n1 = this.getThrustClimbLimit();
                     }
                 }
             }
