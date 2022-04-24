@@ -46,40 +46,31 @@ class SaltyFuel {
     }
     getEng1Tank() {
         if (!this.xFeed1Open) {
-            //console.log("TANK 1")
-            return 2;
+            return FuelTank.MAIN1;
         }
         else if (this.leftCtrRunning > 100 || this.rightCtrRunning > 100) {
-            //console.log("CTR TANK")
-            return 1;
+            return FuelTank.CENTER;
         }
         else if (this.ovrd2AftRunning > 100 || this.ovrd2FwdRunning > 100) {
-            //console.log("TANK 2")
-            return 3;
+            return FuelTank.MAIN2;
         }
         else if (this.ovrd3AftRunning > 100 || this.ovrd3FwdRunning > 100) {
-            //console.log("TANK 3")
-            return 4;
+            return FuelTank.MAIN3;
         }
         else if (this.anyMain1Running > 100) {
-            //console.log("TANK 1")
-            return 2;
+            return FuelTank.MAIN1;
         }
         else if (this.xFeed2Open && this.anyMain2Running > 100) {
-            //console.log("TANK 2")
-            return 3;
+            return FuelTank.MAIN2;
         }
         else if (this.xFeed3Open && this.anyMain3Running > 100) {
-            //console.log("TANK 3")
-            return 4;
+            return FuelTank.MAIN3;
         }
         else if (this.xFeed4Open && this.anyMain4Running > 100) {
-            //console.log("TANK 4")
-            return 5;
+            return FuelTank.MAIN4;
         }
         else {
-            //console.log("TANK 1 SUCTION FEED")
-            return 2;
+            return FuelTank.MAIN1;
         }
     }
     
@@ -94,10 +85,16 @@ class SaltyFuel {
         const CFF = SimVar.GetSimVarValue(`TURB ENG CORRECTED FF:1`, "pound per hour");
         const FF = CFF * delta2 * theta2 ** 0.5;
         SimVar.SetSimVarValue("L:74S_ENG_1_FUEL_FLOW", "pound per hour", FF);
-        
-        
-        const correction = FF * dt * 2.7777777777778E-7;
-        const fuelQty = SimVar.GetSimVarValue(`FUELSYSTEM TANK WEIGHT:${tank}`, "pounds");
-        SimVar.SetSimVarValue(`FUELSYSTEM TANK WEIGHT:${tank}`, "pounds", fuelQty - correction);
+        const fuelWeight = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "pounds");
+        const correction = FF * dt * 2.7777777777778E-7 / fuelWeight;
+        const fuelQty = SimVar.GetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons");
+        SimVar.SetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons", fuelQty - correction);
     }
 }
+
+class FuelTank { }
+FuelTank.CENTER = 'CENTER';
+FuelTank.MAIN1 = 'LEFT MAIN';
+FuelTank.MAIN2 = 'LEFT AUX';
+FuelTank.MAIN3 = 'RIGHT MAIN';
+FuelTank.MAIN4 = 'RIGHT AUX';
