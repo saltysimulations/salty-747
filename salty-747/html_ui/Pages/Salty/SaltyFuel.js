@@ -190,7 +190,10 @@ class SaltyFuel {
         const FF = CFF * delta2 * theta2 ** 0.5;
         const correction = FF * dt * 2.7777777777778E-7 / this.fuelWeight * this.simRate;
         const fuelQty = SimVar.GetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons");
-        SimVar.SetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons", fuelQty - correction);
+        const unlimitedFuel = SimVar.GetSimVarValue("UNLIMITED FUEL", "bool");
+        if (!unlimitedFuel) {
+            SimVar.SetSimVarValue(`FUEL TANK ${tank} QUANTITY`, "gallons", fuelQty - correction);
+        }
         SimVar.SetSimVarValue(`L:74S_ENG_${engineNo}_FUEL_FLOW`, "pound per hour", FF);
     }
 
