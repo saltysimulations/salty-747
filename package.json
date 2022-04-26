@@ -1,6 +1,6 @@
 {
     "name": "salty-747",
-    "version": "0.4.0",
+    "version": "0.6.0",
     "description": "An open-source modification for the default MSFS 747-8, aiming to improve the lacking features and realism of the default aircraft.",
     "scripts": {
         "build:layout": "node scripts/build.js",
@@ -12,7 +12,7 @@
         "dev": "rollup -wc src/instruments/rollup.config.js"
     },
     "author": "Salty Simulations",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "devDependencies": {
         "@babel/core": "^7.15.5",
         "@babel/plugin-proposal-class-properties": "^7.14.5",
