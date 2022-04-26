@@ -227,6 +227,48 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_uplink_chime" ID="{F3F6962B-5DE1-4CE3-BFFC-9F60EB155E47}">
+					<ChildrenList>
+						<Action Name="" ID="{C7DBE0A8-0506-4847-A34E-E1676BC272E2}" ShortID="981331829">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="uplink_chime" ID="{C2136959-AA34-40A3-8A9F-38601F3A1EB8}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_cchord" ID="{E908B8BB-BCD9-41A8-B68D-7ADFF2BF0314}">
+					<ChildrenList>
+						<Action Name="" ID="{18556187-81EA-4D40-BF37-C504D37E7293}" ShortID="106686326">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="cchord" ID="{F6B2ADFE-5F90-4DB1-AB61-8077752B9E9C}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_caution_aural" ID="{61DD5E4C-8C1E-4315-B241-965AA4086F03}">
+					<ChildrenList>
+						<Action Name="" ID="{6BD7991B-A155-4191-AFF3-29FD70E6CFC9}" ShortID="979025113">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="caution_aural" ID="{5960839E-FC6A-428D-8AB3-17A58228FAB7}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

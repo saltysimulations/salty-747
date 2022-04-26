@@ -842,7 +842,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.onPrevPage = EmptyCallback.Void;
         this.onNextPage = EmptyCallback.Void;
     }
-    getOrSelectWaypointByIdent(ident, callback) {
+    getOrSelectWaypointByIdent(ident, callback, coords) {
         this.dataManager.GetWaypointsByIdent(ident).then((waypoints) => {
             if (!waypoints || waypoints.length === 0) {
                 return callback(undefined);
@@ -850,7 +850,23 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (waypoints.length === 1) {
                 return callback(waypoints[0]);
             }
-            B747_8_FMC_SelectWptPage.ShowPage(this, waypoints, callback);
+
+            // when uplinking the route, we know the coordinates, so we choose the waypoint that matches the coordinates
+            if (coords) {
+                let matchingWaypoint = waypoints[0];
+                let distance = parseInt(Avionics.Utils.computeGreatCircleDistance(coords, waypoints[0].infos.coordinates));
+
+                for (const waypoint of waypoints) {
+                    const waypointDistance = parseInt(Avionics.Utils.computeGreatCircleDistance(coords, waypoint.infos.coordinates));
+                    if (waypointDistance < distance) {
+                        matchingWaypoint = waypoint;
+                        distance = waypointDistance;
+                    }
+                }
+                return callback(matchingWaypoint);
+            } else {
+                B747_8_FMC_SelectWptPage.ShowPage(this, waypoints, callback);
+            }
         });
     }
     getClimbThrustN1(temperature, altitude) {
@@ -954,7 +970,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             if (!this._navModeSelector) {
                 this._navModeSelector = new CJ4NavModeSelector(this.flightPlanManager);
             }
-            
+
             //RUN VNAV ALWAYS
             if (this._vnav === undefined) {
                 this._vnav = new WT_BaseVnav(this.flightPlanManager, this);

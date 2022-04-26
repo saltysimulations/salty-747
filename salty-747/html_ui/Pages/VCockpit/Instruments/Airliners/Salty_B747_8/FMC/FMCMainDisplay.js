@@ -681,29 +681,29 @@ class FMCMainDisplay extends BaseAirliners {
         this.flightPlanManager.removeDeparture();
         return true;
     }
-    setApproachIndex(approachIndex, callback = EmptyCallback.Boolean) {	
-        this.ensureCurrentFlightPlanIsTemporary(() => {	
-            this.flightPlanManager.setApproachIndex(approachIndex, () => {	
-                let frequency = this.flightPlanManager.getApproachNavFrequency();	
-                if (isFinite(frequency)) {	
-                    let freq = Math.round(frequency * 100) / 100;	
-                    let approach = this.flightPlanManager.getApproach();	
+    setApproachIndex(approachIndex, callback = EmptyCallback.Boolean) {
+        this.ensureCurrentFlightPlanIsTemporary(() => {
+            this.flightPlanManager.setApproachIndex(approachIndex, () => {
+                let frequency = this.flightPlanManager.getApproachNavFrequency();
+                if (isFinite(frequency)) {
+                    let freq = Math.round(frequency * 100) / 100;
+                    let approach = this.flightPlanManager.getApproach();
                     if (approach && approach.name && approach.isLocalizer()) {
-                        if (this.connectIlsFrequency(freq)) {	
-                            SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_ILS", "number", freq);	
-                            let runway = this.flightPlanManager.getApproachRunway();	
-                            if (runway) {	
-                                SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_COURSE", "number", runway.direction);	
-                            }	
-                        }	
-                    }	
-                    else {	
-                        this.vor1Frequency = freq;	
-                    }	
-                }	
-                callback(true);	
-            });	
-        });	
+                        if (this.connectIlsFrequency(freq)) {
+                            SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_ILS", "number", freq);
+                            let runway = this.flightPlanManager.getApproachRunway();
+                            if (runway) {
+                                SimVar.SetSimVarValue("L:FLIGHTPLAN_APPROACH_COURSE", "number", runway.direction);
+                            }
+                        }
+                    }
+                    else {
+                        this.vor1Frequency = freq;
+                    }
+                }
+                callback(true);
+            });
+        });
     }
     updateFlightNo(flightNo, callback = EmptyCallback.Boolean) {
         if (flightNo.length > 7) {
@@ -785,7 +785,7 @@ class FMCMainDisplay extends BaseAirliners {
         this.showErrorMessage("NOT IN DATABASE");
         callback(false);
     }
-    insertWaypoint(newWaypointTo, index, callback = EmptyCallback.Boolean) {
+    insertWaypoint(newWaypointTo, index, callback = EmptyCallback.Boolean, coords) {
         this.ensureCurrentFlightPlanIsTemporary(async () => {
             this.getOrSelectWaypointByIdent(newWaypointTo, (waypoint) => {
                 if (!waypoint) {
@@ -795,7 +795,7 @@ class FMCMainDisplay extends BaseAirliners {
                 this.flightPlanManager.addWaypoint(waypoint.icao, index, () => {
                     return callback(true);
                 });
-            });
+            }, coords);
         });
     }
     insertWaypointsAlongAirway(lastWaypointIdent, index, airwayName, callback = EmptyCallback.Boolean) {
@@ -1025,7 +1025,7 @@ class FMCMainDisplay extends BaseAirliners {
         }
         if (isFinite(thrRed)) {
             this.thrustReductionAltitude = thrRed + airportElevation;
-            SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", this.thrustReductionAltitude);   
+            SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", this.thrustReductionAltitude);
             return true;
         }
         this.showErrorMessage(this.defaultInputErrorMessage);
@@ -1701,7 +1701,7 @@ class FMCMainDisplay extends BaseAirliners {
         }
         return false;
     }
-    
+
     checkUpdateFlightPhase() {
         let airSpeed = SimVar.GetSimVarValue("AIRSPEED TRUE", "knots");
         if (airSpeed > 10) {
@@ -1775,22 +1775,22 @@ class FMCMainDisplay extends BaseAirliners {
     }
     onFlightPhaseChanged() {
     }
-    connectVorFrequency(_index, _freq) {	
-        if (_freq >= 108 && _freq <= 117.95 && RadioNav.isHz50Compliant(_freq)) {	
-            if (_index == 1) {	
-                SimVar.SetSimVarValue("L:FMC_VOR_FREQUENCY:1", "Hz", _freq * 1000000);	
-                if (!this.isRadioNavActive()) {	
-                    this.radioNav.setVORActiveFrequency(1, _freq);	
-                }	
-            }	
-            else if (_index == 2) {	
-                SimVar.SetSimVarValue("L:FMC_VOR_FREQUENCY:2", "Hz", _freq * 1000000);	
-                if (!this.isRadioNavActive()) {	
-                    this.radioNav.setVORActiveFrequency(2, _freq);	
-                }	
-            }	
-        }	
-        return false;	
+    connectVorFrequency(_index, _freq) {
+        if (_freq >= 108 && _freq <= 117.95 && RadioNav.isHz50Compliant(_freq)) {
+            if (_index == 1) {
+                SimVar.SetSimVarValue("L:FMC_VOR_FREQUENCY:1", "Hz", _freq * 1000000);
+                if (!this.isRadioNavActive()) {
+                    this.radioNav.setVORActiveFrequency(1, _freq);
+                }
+            }
+            else if (_index == 2) {
+                SimVar.SetSimVarValue("L:FMC_VOR_FREQUENCY:2", "Hz", _freq * 1000000);
+                if (!this.isRadioNavActive()) {
+                    this.radioNav.setVORActiveFrequency(2, _freq);
+                }
+            }
+        }
+        return false;
     }
     connectIlsFrequency(_freq) {
         if (_freq >= 108 && _freq <= 111.95 && RadioNav.isHz50Compliant(_freq)) {
@@ -1992,37 +1992,37 @@ class FMCMainDisplay extends BaseAirliners {
     isRadioNavActive() {
         return this.radioNav.getRADIONAVActive((this.isPrimary) ? 1 : 2);
     }
-    get vhf1Frequency() { return this._vhf1Frequency; }	
-    get vhf2Frequency() { return this._vhf2Frequency; }	
-    get vor1FrequencyIdent() { return this._vor1FrequencyIdent; }	
-    get vor1Frequency() { return this._vor1Frequency; }	
-    get vor1Course() { return this._vor1Course; }	
-    get vor2FrequencyIdent() { return this._vor2FrequencyIdent; }	
-    get vor2Frequency() { return this._vor2Frequency; }	
-    get vor2Course() { return this._vor2Course; }	
-    get ilsFrequencyIdent() { return this._ilsFrequencyIdent; }	
-    get ilsFrequency() { return this._ilsFrequency; }	
-    get ilsCourse() { return this._ilsCourse; }	
-    get adf1Frequency() { return this._adf1Frequency; }	
-    get adf2Frequency() { return this._adf2Frequency; }	
-    get rcl1Frequency() { return this._rcl1Frequency; }	
-    get pre2Frequency() { return this._pre2Frequency; }	
-    get atc1Frequency() { return this._atc1Frequency; }	
-    set vhf1Frequency(_frq) { this._vhf1Frequency = _frq; }	
-    set vhf2Frequency(_frq) { this._vhf2Frequency = _frq; }	
-    set vor1FrequencyIdent(_ident) { this._vor1FrequencyIdent = _ident; this.radioNav.setVORActiveIdent(1, _ident); }	
-    set vor1Frequency(_frq) { this._vor1Frequency = _frq; this.connectVorFrequency(1, _frq); }	
-    set vor1Course(_crs) { this._vor1Course = _crs; }	
-    set vor2FrequencyIdent(_ident) { this._vor2FrequencyIdent = _ident; this.radioNav.setVORActiveIdent(2, _ident); }	
-    set vor2Frequency(_frq) { this._vor2Frequency = _frq; this.connectVorFrequency(2, _frq); }	
-    set vor2Course(_crs) { this._vor2Course = _crs; }	
-    set ilsFrequencyIdent(_ident) { this._ilsFrequencyIdent = _ident; this.radioNav.setILSActiveIdent(1, _ident); }	
-    set ilsFrequency(_frq) { this._ilsFrequency = _frq; }	
-    set ilsCourse(_crs) { this._ilsCourse = _crs; }	
-    set adf1Frequency(_frq) { this._adf1Frequency = _frq; }	
-    set adf2Frequency(_frq) { this._adf2Frequency = _frq; }	
-    set rcl1Frequency(_frq) { this._rcl1Frequency = _frq; }	
-    set pre2Frequency(_frq) { this._pre2Frequency = _frq; }	
+    get vhf1Frequency() { return this._vhf1Frequency; }
+    get vhf2Frequency() { return this._vhf2Frequency; }
+    get vor1FrequencyIdent() { return this._vor1FrequencyIdent; }
+    get vor1Frequency() { return this._vor1Frequency; }
+    get vor1Course() { return this._vor1Course; }
+    get vor2FrequencyIdent() { return this._vor2FrequencyIdent; }
+    get vor2Frequency() { return this._vor2Frequency; }
+    get vor2Course() { return this._vor2Course; }
+    get ilsFrequencyIdent() { return this._ilsFrequencyIdent; }
+    get ilsFrequency() { return this._ilsFrequency; }
+    get ilsCourse() { return this._ilsCourse; }
+    get adf1Frequency() { return this._adf1Frequency; }
+    get adf2Frequency() { return this._adf2Frequency; }
+    get rcl1Frequency() { return this._rcl1Frequency; }
+    get pre2Frequency() { return this._pre2Frequency; }
+    get atc1Frequency() { return this._atc1Frequency; }
+    set vhf1Frequency(_frq) { this._vhf1Frequency = _frq; }
+    set vhf2Frequency(_frq) { this._vhf2Frequency = _frq; }
+    set vor1FrequencyIdent(_ident) { this._vor1FrequencyIdent = _ident; this.radioNav.setVORActiveIdent(1, _ident); }
+    set vor1Frequency(_frq) { this._vor1Frequency = _frq; this.connectVorFrequency(1, _frq); }
+    set vor1Course(_crs) { this._vor1Course = _crs; }
+    set vor2FrequencyIdent(_ident) { this._vor2FrequencyIdent = _ident; this.radioNav.setVORActiveIdent(2, _ident); }
+    set vor2Frequency(_frq) { this._vor2Frequency = _frq; this.connectVorFrequency(2, _frq); }
+    set vor2Course(_crs) { this._vor2Course = _crs; }
+    set ilsFrequencyIdent(_ident) { this._ilsFrequencyIdent = _ident; this.radioNav.setILSActiveIdent(1, _ident); }
+    set ilsFrequency(_frq) { this._ilsFrequency = _frq; }
+    set ilsCourse(_crs) { this._ilsCourse = _crs; }
+    set adf1Frequency(_frq) { this._adf1Frequency = _frq; }
+    set adf2Frequency(_frq) { this._adf2Frequency = _frq; }
+    set rcl1Frequency(_frq) { this._rcl1Frequency = _frq; }
+    set pre2Frequency(_frq) { this._pre2Frequency = _frq; }
     set atc1Frequency(_frq) { this._atc1Frequency = _frq; }
     Init() {
         super.Init();
