@@ -14,8 +14,10 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID PLAY_ASOBO_B747_8I_BANK_ANGLE = 2809333158U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_AURAL = 1166893861U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_OBSTACLE = 3939631457U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_TERRAIN = 1604764289U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_CCHORD = 2152551899U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_DONT_SINK = 1781746709U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_FIRE_BELL = 662920980U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_FIRE_RELAY = 4261687602U;

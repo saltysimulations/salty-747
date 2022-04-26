@@ -241,29 +241,29 @@
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="Play_Asobo_B747_8i_fire_bell" ID="{61709C64-CC92-4245-B23D-5F83FAF460CF}">
+				<Event Name="Play_Asobo_B747_8i_cchord" ID="{E908B8BB-BCD9-41A8-B68D-7ADFF2BF0314}">
 					<ChildrenList>
-						<Action Name="" ID="{C71AC9E4-1B07-48BC-BF27-385B44571A8E}" ShortID="284602617">
+						<Action Name="" ID="{18556187-81EA-4D40-BF37-C504D37E7293}" ShortID="106686326">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="fire_bell" ID="{950B419B-5420-44A0-932A-90E368434FE2}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+									<ObjectRef Name="cchord" ID="{F6B2ADFE-5F90-4DB1-AB61-8077752B9E9C}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="Play_Asobo_B747_8i_fire_relay" ID="{9CE9EFBB-820F-434C-A275-924188C73777}">
+				<Event Name="Play_Asobo_B747_8i_caution_aural" ID="{61DD5E4C-8C1E-4315-B241-965AA4086F03}">
 					<ChildrenList>
-						<Action Name="" ID="{84B7CDAE-7FA8-43FF-A728-99BB91FD0B31}" ShortID="953131725">
+						<Action Name="" ID="{6BD7991B-A155-4191-AFF3-29FD70E6CFC9}" ShortID="979025113">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="fire_relay" ID="{D03B57C1-7744-46A5-B446-939A6EFF13F4}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+									<ObjectRef Name="caution_aural" ID="{5960839E-FC6A-428D-8AB3-17A58228FAB7}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

@@ -221,6 +221,61 @@
 		</Annunciation>
 
 		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>DOOR FWD CARGO</Text>
+		  <Condition>
+			<Greater>
+			  <Simvar name="INTERACTIVE POINT OPEN:12" unit="percent"/>
+			  <Constant>40</Constant>
+			</Greater>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ENG 1 SHUTDOWN</Text>
+		  <Condition>
+			<Equal>
+			  <Simvar name="FUELSYSTEM VALVE SWITCH:5" unit="bool"/>
+			  <Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ENG 2 SHUTDOWN</Text>
+		  <Condition>
+			<Equal>
+			  <Simvar name="FUELSYSTEM VALVE SWITCH:6" unit="bool"/>
+			  <Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ENG 3 SHUTDOWN</Text>
+		  <Condition>
+			<Equal>
+			  <Simvar name="FUELSYSTEM VALVE SWITCH:7" unit="bool"/>
+			  <Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
+		  <Text>ENG 4 SHUTDOWN</Text>
+		  <Condition>
+			<Equal>
+			  <Simvar name="FUELSYSTEM VALVE SWITCH:8" unit="bool"/>
+			  <Constant>0</Constant>
+			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
 		  <Type>Advisory</Type>
 		  <Text>\FUEL TANK/ENG</Text>
 		  <Condition>
@@ -840,7 +895,7 @@
 
 		<Alert>
 			<Type>SoundOnly</Type>
-			<SoundEvent>tone_altitude_alert_default</SoundEvent>
+			<SoundEvent>cchord</SoundEvent>
 			<Condition>
 				<StateMachine>
 					<State id="Armed" value="0">

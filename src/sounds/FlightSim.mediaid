@@ -169,6 +169,32 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="CautionAural(1).wav">
+          <WObject ID="{8D10E057-1942-40E9-B705-C43888F88701}">
+            <MediaID ID="878680392" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+          <WObject ID="{B65E6C22-F8FA-465E-836E-B0D0EA98D705}">
+            <MediaID ID="878680392" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="CChord.wav">
+          <WObject ID="{E9FD55ED-5DB4-4A61-801B-C2BD2880CCFB}">
+            <MediaID ID="827158873" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="Chime2(1).wav">
+          <WObject ID="{31689EFE-17D1-47E1-A063-910877ED5DEB}">
+            <MediaID ID="809326456" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+          <WObject ID="{E5FC5BDC-4543-4ACB-95DB-1A46C6601176}">
+            <MediaID ID="809326456" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="dont_sink.wav">
           <WObject ID="{AD3EB7E4-5C65-47F2-B6D4-3857B29519EF}">
             <MediaID ID="336234418" />

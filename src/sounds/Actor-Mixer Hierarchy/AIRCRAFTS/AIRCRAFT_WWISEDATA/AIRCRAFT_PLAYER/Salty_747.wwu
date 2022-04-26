@@ -23,6 +23,26 @@
 							<Language>SFX</Language>
 							<AudioFile>bank_angle.wav</AudioFile>
 						</AudioFileSource>
+						<AudioFileSource Name="CautionAural(1)" ID="{8D10E057-1942-40E9-B705-C43888F88701}">
+							<PropertyList>
+								<Property Name="LoopBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="LoopEnd" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimEnd" Type="Real64" Value="-0.001"/>
+							</PropertyList>
+							<Language>SFX</Language>
+							<AudioFile>CautionAural(1).wav</AudioFile>
+						</AudioFileSource>
+						<AudioFileSource Name="Chime2(1)" ID="{31689EFE-17D1-47E1-A063-910877ED5DEB}">
+							<PropertyList>
+								<Property Name="LoopBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="LoopEnd" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimEnd" Type="Real64" Value="-0.001"/>
+							</PropertyList>
+							<Language>SFX</Language>
+							<AudioFile>Chime2(1).wav</AudioFile>
+						</AudioFileSource>
 					</ChildrenList>
 					<ActiveSourceList>
 						<ActiveSource Name="bank_angle" ID="{4EE6D210-4D1C-4088-A9E5-4DD7106FFBED}" Platform="Linked"/>
@@ -444,50 +464,24 @@
 						<ActiveSource Name="uplink_chime" ID="{136B2E3B-1EA0-4ACA-AAE0-999978A82DE5}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
-				<Sound Name="fire_relay" ID="{D03B57C1-7744-46A5-B446-939A6EFF13F4}" ShortID="697094996">
-					<ReferenceList>
-						<Reference Name="Conversion">
-							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{72C899CE-308C-4CA7-87C0-8E1504B1D757}"/>
-						</Reference>
-						<Reference Name="OutputBus">
-							<ObjectRef Name="miscellaneous_inside_ambisonic" ID="{0293167E-170D-4A34-9B66-745DFBFC3F5B}" WorkUnitID="{D8341C40-AF31-4D5B-9D65-E60D709F4609}"/>
-						</Reference>
-					</ReferenceList>
-					<ChildrenList>
-						<AudioFileSource Name="fire_relay" ID="{C73C1C3E-EFED-46C4-A523-C35CA8F363CB}">
-							<PropertyList>
-								<Property Name="LoopBegin" Type="Real64" Value="-0.001"/>
-								<Property Name="LoopEnd" Type="Real64" Value="-0.001"/>
-								<Property Name="TrimBegin" Type="Real64" Value="-0.001"/>
-								<Property Name="TrimEnd" Type="Real64" Value="-0.001"/>
-							</PropertyList>
-							<Language>SFX</Language>
-							<AudioFile>fire_relay.wav</AudioFile>
-						</AudioFileSource>
-					</ChildrenList>
-					<ActiveSourceList>
-						<ActiveSource Name="fire_relay" ID="{C73C1C3E-EFED-46C4-A523-C35CA8F363CB}" Platform="Linked"/>
-					</ActiveSourceList>
-				</Sound>
-				<Sound Name="fire_bell" ID="{950B419B-5420-44A0-932A-90E368434FE2}" ShortID="547904177">
+				<Sound Name="cchord" ID="{F6B2ADFE-5F90-4DB1-AB61-8077752B9E9C}" ShortID="298472009">
 					<PropertyList>
-						<Property Name="InitialDelay" Type="Real64">
+						<Property Name="Volume" Type="Real64">
 							<ValueList>
-								<Value>0.5</Value>
+								<Value>-25</Value>
 							</ValueList>
 						</Property>
-						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{72C899CE-308C-4CA7-87C0-8E1504B1D757}"/>
 						</Reference>
 						<Reference Name="OutputBus">
-							<ObjectRef Name="warning_inside_ambisonic" ID="{7E253B1D-450B-433A-A3C1-2273AE123BFC}" WorkUnitID="{D8341C40-AF31-4D5B-9D65-E60D709F4609}"/>
+							<ObjectRef Name="warning_inside_generic" ID="{6C22F7CB-D5EB-4419-8CF6-BA4C5E88B5F0}" WorkUnitID="{D8341C40-AF31-4D5B-9D65-E60D709F4609}"/>
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<AudioFileSource Name="firebell" ID="{ADCA93E8-D6C9-4D17-B80B-75B65D472AEF}">
+						<AudioFileSource Name="CChord" ID="{E9FD55ED-5DB4-4A61-801B-C2BD2880CCFB}">
 							<PropertyList>
 								<Property Name="LoopBegin" Type="Real64" Value="-0.001"/>
 								<Property Name="LoopEnd" Type="Real64" Value="-0.001"/>
@@ -495,11 +489,75 @@
 								<Property Name="TrimEnd" Type="Real64" Value="-0.001"/>
 							</PropertyList>
 							<Language>SFX</Language>
-							<AudioFile>firebell.wav</AudioFile>
+							<AudioFile>CChord.wav</AudioFile>
 						</AudioFileSource>
 					</ChildrenList>
 					<ActiveSourceList>
-						<ActiveSource Name="firebell" ID="{ADCA93E8-D6C9-4D17-B80B-75B65D472AEF}" Platform="Linked"/>
+						<ActiveSource Name="CChord" ID="{E9FD55ED-5DB4-4A61-801B-C2BD2880CCFB}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="caution_aural" ID="{5960839E-FC6A-428D-8AB3-17A58228FAB7}" ShortID="327854695">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>-15</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{72C899CE-308C-4CA7-87C0-8E1504B1D757}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{D8341C40-AF31-4D5B-9D65-E60D709F4609}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="CautionAural(1)" ID="{B65E6C22-F8FA-465E-836E-B0D0EA98D705}">
+							<PropertyList>
+								<Property Name="LoopBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="LoopEnd" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimEnd" Type="Real64" Value="-0.001"/>
+							</PropertyList>
+							<Language>SFX</Language>
+							<AudioFile>CautionAural(1).wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="CautionAural(1)" ID="{B65E6C22-F8FA-465E-836E-B0D0EA98D705}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="chime2" ID="{81772C71-55F9-4412-BF92-D9C4541244E4}" ShortID="619568856">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>-15</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{72C899CE-308C-4CA7-87C0-8E1504B1D757}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{D8341C40-AF31-4D5B-9D65-E60D709F4609}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Chime2(1)" ID="{E5FC5BDC-4543-4ACB-95DB-1A46C6601176}">
+							<PropertyList>
+								<Property Name="LoopBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="LoopEnd" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimBegin" Type="Real64" Value="-0.001"/>
+								<Property Name="TrimEnd" Type="Real64" Value="-0.001"/>
+							</PropertyList>
+							<Language>SFX</Language>
+							<AudioFile>Chime2(1).wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Chime2(1)" ID="{E5FC5BDC-4543-4ACB-95DB-1A46C6601176}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
 			</ChildrenList>
