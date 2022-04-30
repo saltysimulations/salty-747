@@ -59,6 +59,8 @@
 	<Behaviors>
 		<Include ModelBehaviorFile="Asobo\Common.xml"/>
 		<Include ModelBehaviorFile="Asobo\Exterior.xml"/>
+		<Include ModelBehaviorFile="Salty\Index.xml"/>
+		<Include Path="Salty\Engines.xml"/>		
 		<Include RelativeFile="747_8I_FX.xml"/>
 		<Component ID="GEARS">
 			<UseTemplate Name="ASOBO_GEAR_Center_Template">
