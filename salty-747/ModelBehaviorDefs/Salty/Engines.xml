@@ -19,8 +19,8 @@ SOFTWARE.-->
     <Template Name="Salty_747_ENGINE_Turbine_Template">
             <DefaultTemplateParameters>
                 <ID>1</ID>
-                <MIN_N1_PCT_FOR_SLOW>7</MIN_N1_PCT_FOR_SLOW>
-                <MIN_N1_PCT_FOR_BLUR>110</MIN_N1_PCT_FOR_BLUR>
+                <MIN_N1_PCT_FOR_SLOW>120</MIN_N1_PCT_FOR_SLOW>
+                <MIN_N1_PCT_FOR_BLUR>160</MIN_N1_PCT_FOR_BLUR>
                 <FROSTED>False</FROSTED>
             </DefaultTemplateParameters>
             <UseTemplate Name="Salty_747_ENGINE_Turbine_SubTemplate"/>
