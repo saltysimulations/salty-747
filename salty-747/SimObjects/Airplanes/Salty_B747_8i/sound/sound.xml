@@ -277,20 +277,21 @@
 		<WwiseRTPC SimVar="GROUND VELOCITY" Units="METERS PER SECOND" Index="0" RTPCName="SIMVAR_GROUND_VELOCITY" />
 	</Sound>
 
-	<Sound WwiseData="true" WwiseEvent="fire_bell" NodeName="COMPASS_CYLINDER" ViewPoint="Inside" SimVar="L:SALTY_FIRE_TEST_PRESSED" Units="BOOLEAN" Index="0">
+	<Sound WwiseData="true" WwiseEvent="fire_bell" NodeName="COMPASS_CYLINDER" ViewPoint="Inside" LocalVar="SALTY_FIRE_TEST_PRESSED">
 	    <Range LowerBound="1.0" />
 		<Requires SimVar="ELECTRICAL MASTER BATTERY" Units="BOOL" Index="0">
             <Range LowerBound="1" />
         </Requires>
 	</Sound>
 
-	<Sound WwiseData="true" WwiseEvent="fire_relay" NodeName="COMPASS_CYLINDER" ViewPoint="Inside" SimVar="L:SALTY_FIRE_TEST" Units="BOOLEAN" Index="0">
+	<Sound WwiseData="true" WwiseEvent="fire_relay" NodeName="HANDLE_OVHD_Fire_Protect_Fire_Shutoff_02" ViewPoint="Inside" LocalVar="SALTY_FIRE_TEST" Continuous="False">
 	    <Range LowerBound="1.0" />
 		<Requires SimVar="ELECTRICAL MASTER BATTERY" Units="BOOL" Index="0">
             <Range LowerBound="1" />
         </Requires>
 	</Sound>
 
+	<Sound WwiseData="true" WwiseEvent="fire_test_push" ViewPoint="Inside" LocalVar="SALTY_FIRE_TEST_PRESSED" />
   </SimVarSounds>
 
 <!-- AvionicSounds ========================================================================================== -->

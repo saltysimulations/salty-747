@@ -8,7 +8,7 @@
 		<ExternalSourcesOutputRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<SoundBanks>
-		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="3088961249">
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="3300637741">
 			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
 			<ShortName>Salty_747</ShortName>
 			<Path>Salty_747.bnk</Path>
@@ -58,6 +58,38 @@
 						<File Id="336234418" Language="SFX">
 							<ShortName>dont_sink.wav</ShortName>
 							<Path>SFX\dont_sink_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="662920980" Name="Play_Asobo_B747_8i_fire_bell" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fire_bell" GUID="{4AD83A22-6CBC-4903-AB16-8E1F02A836A1}" DurationType="Infinite">
+					<IncludedMemoryFiles>
+						<File Id="862594571" Language="SFX">
+							<ShortName>firebell.wav</ShortName>
+							<Path>SFX\firebell_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4261687602" Name="Play_Asobo_B747_8i_fire_relay" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fire_relay" GUID="{69B42542-F994-458C-9FB1-5FC0982DB01A}" DurationType="OneShot" DurationMin="0.076871" DurationMax="0.076871">
+					<IncludedMemoryFiles>
+						<File Id="956086398" Language="SFX">
+							<ShortName>fire_relay.wav</ShortName>
+							<Path>SFX\fire_relay_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1064975126" Name="Play_Asobo_B747_8i_fire_test_push" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fire_test_push" GUID="{066F403C-FEFF-475E-BB04-A1F65532BBA4}" DurationType="OneShot" DurationMin="0.060159" DurationMax="0.060159">
+					<IncludedMemoryFiles>
+						<File Id="890353172" Language="SFX">
+							<ShortName>fire_test_push.wav</ShortName>
+							<Path>SFX\fire_test_push_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3742606833" Name="Play_Asobo_B747_8i_fire_test_release" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fire_test_release" GUID="{A92D4A54-F878-481E-9357-7A65B6DBD756}" DurationType="OneShot" DurationMin="0.066825" DurationMax="0.066825">
+					<IncludedMemoryFiles>
+						<File Id="458225774" Language="SFX">
+							<ShortName>fire_test_release.wav</ShortName>
+							<Path>SFX\fire_test_release_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>

@@ -1,0 +1,10 @@
+<ModelBehaviors>
+    <Template Name="Salty_Fire_Test">
+        <UseTemplate Name="Salty_Push_Held">
+            <HOLD_SIMVAR>L:SALTY_FIRE_TEST_PRESSED</HOLD_SIMVAR>
+            <WWISE_EVENT_1>wailer</WWISE_EVENT_1>
+            <WWISE_EVENT_2>wailer</WWISE_EVENT_2>
+            <ANIM_HANDLED_SEPARATELY>True</ANIM_HANDLED_SEPARATELY>
+        </UseTemplate>
+    </Template>
+</ModelBehaviors>

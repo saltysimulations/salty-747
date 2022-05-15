@@ -269,6 +269,62 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_fire_bell" ID="{4AD83A22-6CBC-4903-AB16-8E1F02A836A1}">
+					<ChildrenList>
+						<Action Name="" ID="{D9188653-10F8-4DAD-A683-E60A457CA528}" ShortID="784759601">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fire bell" ID="{2F316068-5872-4DA6-BC6A-E86DA7C43002}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_fire_relay" ID="{69B42542-F994-458C-9FB1-5FC0982DB01A}">
+					<ChildrenList>
+						<Action Name="" ID="{4C6FC28E-293A-4DE6-9423-680BF8EFEFE4}" ShortID="255814514">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fire_relay" ID="{61E73604-8BE7-4BEB-9A0B-40B932EC0805}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_fire_test_push" ID="{066F403C-FEFF-475E-BB04-A1F65532BBA4}">
+					<ChildrenList>
+						<Action Name="" ID="{A9AA89C7-64B1-4707-9186-03184FD8FDBF}" ShortID="695494460">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fire_test_push" ID="{7E963F64-611D-4F88-BA30-06223A5400F3}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_fire_test_release" ID="{A92D4A54-F878-481E-9357-7A65B6DBD756}">
+					<ChildrenList>
+						<Action Name="" ID="{43AB2B33-391B-416F-847F-6895E038BD4B}" ShortID="808312116">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fire_test_release" ID="{F3D50413-45B8-4DF6-9C6E-DDA020F69060}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

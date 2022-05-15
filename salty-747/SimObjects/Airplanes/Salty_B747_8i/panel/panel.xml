@@ -163,6 +163,28 @@
 		</Annunciation>
 
 		<Annunciation>
+			<Type>Warning</Type>
+			<Text>TEST IN PROG</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="L:SALTY_FIRE_TEST" unit="enum"/>
+					<Constant>1</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Warning</Type>
+			<Text>FIRE TEST PASS</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="L:SALTY_FIRE_TEST" unit="enum"/>
+					<Constant>2</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
 		  <Type>Caution</Type>
 		  <Text>FUEL QTY LOW</Text>
 		  <Condition>

@@ -16,6 +16,7 @@
 		<Include ModelBehaviorFile="Asobo\Common.xml"/> <!-- ##################################### -->
 		<Include ModelBehaviorFile="Asobo\Airliner\AirlinerCommon.xml"/>
 		<Include ModelBehaviorFile="Salty\Salty_Boeing.xml"/>
+		<Include ModelBehaviorFile="Salty\Interior\Salty_Includes.xml"/>
 		<Include ModelBehaviorFile="Asobo\Airliner\FMC.xml"/>
 		<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
 
@@ -949,7 +950,7 @@
 
 			<UseTemplate Name="ASOBO_HANDLING_Knob_Wipers_Template">
 				<NODE_ID>SAFETY_Knob_Wipers</NODE_ID>
-				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>      
+				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>
 				<CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
 				<OFF_INT_LOW_HIGH>True</OFF_INT_LOW_HIGH>
 			</UseTemplate>
@@ -1130,9 +1131,11 @@
 				</DefaultTemplateParameters>
 				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 					<NODE_ID>handle_ovhd_fire_protect_cargo_arm_fwd</NODE_ID>
+					<SEQ2_EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</SEQ2_EMISSIVE_CODE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 					<NODE_ID>handle_ovhd_fire_protect_cargo_arm_aft</NODE_ID>
+					<SEQ2_EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</SEQ2_EMISSIVE_CODE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 					<NODE_ID>push_ovhd_fire_protect_cargo_dish</NODE_ID>
@@ -2966,19 +2969,19 @@
 				<Component ID="FUEL">
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>btn_fuel_flow_ctrl_4_text</NODE_ID>
-						<EMISSIVE_CODE>0</EMISSIVE_CODE>
+						<EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>btn_fuel_flow_ctrl_3_text</NODE_ID>
-						<EMISSIVE_CODE>0</EMISSIVE_CODE>
+						<EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>btn_fuel_flow_ctrl_2_text</NODE_ID>
-						<EMISSIVE_CODE>0</EMISSIVE_CODE>
+						<EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>btn_fuel_flow_ctrl_1_text</NODE_ID>
-						<EMISSIVE_CODE>0</EMISSIVE_CODE>
+						<EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</EMISSIVE_CODE>
 					</UseTemplate>
 				</Component>
 				<Component ID="MISC">
@@ -3105,6 +3108,11 @@
 						<EMISSIVE_CODE>0</EMISSIVE_CODE>
 						<SEQ2_EMISSIVE_DRIVES_VISIBILITY>False</SEQ2_EMISSIVE_DRIVES_VISIBILITY>
 					</OverrideTemplateParameters>
+
+					<UseTemplate Name="Salty_Fire_Test">
+						<NODE_ID>push_ovhd_misc_fire_ovth_test</NODE_ID>
+					</UseTemplate>
+
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>push_ovhd_fire_protect_btl_dish_a_l_text</NODE_ID>
 					</UseTemplate>
@@ -3120,22 +3128,27 @@
 					<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 						<NODE_ID>HANDLE_OVHD_Fire_Protect_Fire_Shutoff_01</NODE_ID>
 						<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
+						<SEQ2_EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</SEQ2_EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 						<NODE_ID>HANDLE_OVHD_Fire_Protect_Fire_Shutoff_02</NODE_ID>
 						<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
+						<SEQ2_EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</SEQ2_EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 						<NODE_ID>HANDLE_OVHD_Fire_Protect_Fire_Shutoff_03</NODE_ID>
 						<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
+						<SEQ2_EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</SEQ2_EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 						<NODE_ID>HANDLE_OVHD_Fire_Protect_Fire_Shutoff_04</NODE_ID>
 						<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
+						<SEQ2_EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</SEQ2_EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 						<NODE_ID>HANDLE_OVHD_Fire_Protect_APU</NODE_ID>
 						<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
+						<SEQ2_EMISSIVE_CODE>(L:SALTY_FIRE_TEST)</SEQ2_EMISSIVE_CODE>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>push_ovhd_fire_protect_apu_dish_btltext</NODE_ID>
@@ -4219,9 +4232,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_misc_emer_light</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>push_ovhd_misc_fire_ovth_test</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>handle_ovhd_fire_protect_fire_shutoff_04</NODE_ID>

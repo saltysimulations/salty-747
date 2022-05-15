@@ -1,0 +1,42 @@
+<ModelBehaviors>
+    <Template Name="Salty_Push_Held">
+        <DefaultTemplateParameters>
+            <ANIM_NAME>#NODE_ID#</ANIM_NAME>
+            <WWISE_EVENT_1>fire_test_push</WWISE_EVENT_1>
+            <WWISE_EVENT_2>fire_test_push</WWISE_EVENT_2>
+            <CURSOR>Hand</CURSOR>
+        </DefaultTemplateParameters>
+
+        <Component ID="#NODE_ID#" Node="#NODE_ID#">
+            <UseTemplate Name="ASOBO_GT_Push_Button_Held">
+                <Condition Valid="LEFT_SINGLE_CODE">
+                    <True>
+                        <Condition Valid="LEFT_LEAVE_CODE">
+                            <True>
+                                <LEFT_SINGLE_CODE>#LEFT_SINGLE_CODE#</LEFT_SINGLE_CODE>
+                                <LEFT_LEAVE_CODE>#LEFT_LEAVE_CODE#</LEFT_LEAVE_CODE>
+                            </True>
+                            <False>
+                                <LEFT_SINGLE_CODE>#LEFT_SINGLE_CODE#</LEFT_SINGLE_CODE>
+                                <LEFT_LEAVE_CODE></LEFT_LEAVE_CODE>
+                            </False>
+                        </Condition>
+                    </True>
+                    <False>
+                        <Condition Valid="LEFT_LEAVE_CODE">
+                            <True>
+                                <LEFT_SINGLE_CODE></LEFT_SINGLE_CODE>
+                                <LEFT_LEAVE_CODE>#LEFT_LEAVE_CODE#</LEFT_LEAVE_CODE>
+                            </True>
+                            <False>
+                                <LEFT_SINGLE_CODE>1 (>#HOLD_SIMVAR#)</LEFT_SINGLE_CODE>
+                                <LEFT_LEAVE_CODE>0 (>#HOLD_SIMVAR#)</LEFT_LEAVE_CODE>
+                            </False>
+                        </Condition>
+                    </False>
+                </Condition>
+            </UseTemplate>
+        </Component>
+
+    </Template>
+</ModelBehaviors>

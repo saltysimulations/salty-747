@@ -1,0 +1,4 @@
+<ModelBehaviors>
+    <Include RelativeFile="Salty_Generic.xml" />
+    <Include RelativeFile="Salty_Fire.xml" />
+</ModelBehaviors>

@@ -21,6 +21,8 @@ namespace AK
         static const AkUniqueID PLAY_ASOBO_B747_8I_DONT_SINK = 1781746709U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_FIRE_BELL = 662920980U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_FIRE_RELAY = 4261687602U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_FIRE_TEST_PUSH = 1064975126U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_FIRE_TEST_RELEASE = 3742606833U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_MINIMUMS = 1077883375U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_OBSTACLE_OBSTACLE = 1505420985U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_PLUS_HUNDRED = 3613032553U;
