@@ -565,7 +565,7 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         
         /* Provides Low Airspeed Warning for PFD and EICAS */
         SimVar.SetSimVarValue("L:74S_FMC_MIN_MANUEVER_SPEED", "knots", stallProtectionMin);
-        if (indicatedSpeed <= stallProtectionMin) {
+        if (indicatedSpeed <= stallProtectionMin && !Simplane.getIsGrounded()) {
             this.cursorSVGShape.setAttribute("stroke", "orange");
             this.cursorSVGShape.setAttribute("stroke-width", "6");
         } 

@@ -235,10 +235,16 @@
 		  <Type>Caution</Type>
 		  <Text>AIRSPEED LOW</Text>
 		  <Condition>
-			<LowerEqual>
-			  <Simvar name="AIRSPEED INDICATED" unit="knots"/>
-			  <Simvar name="L:74S_FMC_MIN_MANUEVER_SPEED" unit="knots"/>		  
-			</LowerEqual>
+		  	<And>
+				<LowerEqual>
+			  		<Simvar name="AIRSPEED INDICATED" unit="knots"/>
+			  		<Simvar name="L:74S_FMC_MIN_MANUEVER_SPEED" unit="knots"/>		  
+				</LowerEqual>
+				<GreaterEqual>
+					<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+					<Constant>55</Constant>
+			  	</GreaterEqual>
+			</And>
 		  </Condition>
 		</Annunciation>
 
