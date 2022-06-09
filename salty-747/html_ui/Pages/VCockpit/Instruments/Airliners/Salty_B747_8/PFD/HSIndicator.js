@@ -14,6 +14,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
         this.nbSecondaryGraduations = 1;
         this.totalGraduations = this.nbPrimaryGraduations + ((this.nbPrimaryGraduations - 1) * this.nbSecondaryGraduations);
         this.graduationSpacing = 50;
+        this.minimumReferenceValue = 200;
         this._showILS = false;
         this._aircraft = Aircraft.A320_NEO;
     }
@@ -127,7 +128,7 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             this.rootSVG.appendChild(this.hdgBugTextRef);
 
             this.hdgModeText = document.createElementNS(Avionics.SVG.NS, "text");
-            this.hdgModeText.setAttribute("x", "435");;
+            this.hdgModeText.setAttribute("x", "435");
             this.hdgModeText.setAttribute("y", "777");
             this.hdgModeText.setAttribute("fill", "lime");
             this.hdgModeText.textContent = "MAG";
@@ -143,10 +144,35 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             this.trkLine.setAttribute("stroke-width", "3px");
             this.rootSVG.appendChild(this.trkLine);
         }
+        {
+            if (!this.minimumReferenceModeText) {
+                this.minimumReferenceModeText = document.createElementNS(Avionics.SVG.NS, "text");
+            }
+            this.minimumReferenceModeText.textContent = "BARO";
+            this.minimumReferenceModeText.setAttribute("x", "525");
+            this.minimumReferenceModeText.setAttribute("y", "655");
+            this.minimumReferenceModeText.setAttribute("fill", "lime");
+            this.minimumReferenceModeText.setAttribute("font-size", "22");
+            this.minimumReferenceModeText.setAttribute("font-family", "BoeingEFIS");
+            this.minimumReferenceModeText.setAttribute("text-anchor", "end");
+            this.rootSVG.appendChild(this.minimumReferenceModeText);
+            if (!this.minimumReferenceValueText) {
+                this.minimumReferenceValueText = document.createElementNS(Avionics.SVG.NS, "text");
+            }
+            this.minimumReferenceValueText.textContent = "210";
+            this.minimumReferenceValueText.setAttribute("x", "525");
+            this.minimumReferenceValueText.setAttribute("y", "685");
+            this.minimumReferenceValueText.setAttribute("fill", "lime");
+            this.minimumReferenceValueText.setAttribute("font-size", "30");
+            this.minimumReferenceValueText.setAttribute("font-family", "BoeingEFIS");
+            this.minimumReferenceValueText.setAttribute("text-anchor", "end");
+            this.rootSVG.appendChild(this.minimumReferenceValueText);
+        }
         this.appendChild(this.rootSVG);
     }
     update(dTime) {
         this.updateHeadingInstrument();
+        this.updateMinimumText(this.minimumReferenceValue, Simplane.getMinimumReferenceMode());
     }
     updateHeadingInstrument() {
         if (this.rotatingGroup) {
@@ -185,6 +211,18 @@ class Jet_PFD_HSIndicator extends HTMLElement {
             hdgString = "00" + hdgString;
         }
         return hdgString;
+    }
+    updateMinimumText(minimumAltitude, minimumMode) {
+        if (minimumAltitude < -100){
+            this.minimumReferenceValueText.setAttribute("visibility", "hidden");
+            this.minimumReferenceModeText.setAttribute("visibility", "hidden");
+        } 
+        else {
+            this.minimumReferenceValueText.setAttribute("visibility", "visible");
+            this.minimumReferenceModeText.setAttribute("visibility", "visible");
+        }
+        this.minimumReferenceValueText.textContent = minimumAltitude.toFixed(0);
+        this.minimumReferenceModeText.textContent = minimumMode === MinimumReferenceMode.BARO ? "BARO" : "RADIO";
     }
 }
 customElements.define("jet-pfd-hs-indicator", Jet_PFD_HSIndicator);
