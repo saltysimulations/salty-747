@@ -562,6 +562,18 @@ class Jet_PFD_AirspeedIndicator extends HTMLElement {
         let stallSpeed1G = this.getStallSpeed1G();
         let stallSpeed = stallSpeed1G * Math.sqrt(gLoad);
         let stallProtectionMin = Math.round(stallSpeed1G * Math.sqrt(1.3));
+        
+        /* Provides Low Airspeed Warning for PFD and EICAS */
+        SimVar.SetSimVarValue("L:74S_FMC_MIN_MANUEVER_SPEED", "knots", stallProtectionMin);
+        if (indicatedSpeed <= stallProtectionMin) {
+            this.cursorSVGShape.setAttribute("stroke", "orange");
+            this.cursorSVGShape.setAttribute("stroke-width", "6");
+        } 
+        else {
+            this.cursorSVGShape.setAttribute("stroke", "white");
+            this.cursorSVGShape.setAttribute("stroke-width", "3");
+        }
+
         let altitudeAboveGround = Simplane.getAltitudeAboveGround();
         this.smoothSpeeds(indicatedSpeed, dTime, maxSpeed, lowestSelectableSpeed, stallProtectionMin, stallProtectionMax, stallSpeed);
         this.updateSpeedTrendArrow(indicatedSpeed, speedTrend);
