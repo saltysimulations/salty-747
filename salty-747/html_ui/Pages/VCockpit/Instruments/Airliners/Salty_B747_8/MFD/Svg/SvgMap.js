@@ -74,7 +74,7 @@ class SvgMap {
         this.trackline = document.createElementNS(Avionics.SVG.NS, "line");
         this.trackline.setAttribute("x1", "500");
         this.trackline.setAttribute("x2", "500");
-        this.trackline.setAttribute("y1", "490");
+        this.trackline.setAttribute("y1", "342");
         this.trackline.setAttribute("y2", "0");
         this.trackline.setAttribute("stroke", "white");
         this.trackline.setAttribute("stroke-width", "2.5px");
@@ -95,7 +95,7 @@ class SvgMap {
         this.trackLineMarker2.setAttribute("stroke", "white");
         this.trackLineMarker2.setAttribute("stroke-width", "2.5px");
         this.trackLineGroup.appendChild(this.trackLineMarker2);
-        this.trackLineMarker3 = document.createElementNS(Avionics.SVG.NS, "line");
+        /*this.trackLineMarker3 = document.createElementNS(Avionics.SVG.NS, "line");
         this.trackLineMarker3.setAttribute("x1", "494");
         this.trackLineMarker3.setAttribute("x2", "506");
         this.trackLineMarker3.setAttribute("y1", "370");
@@ -103,6 +103,7 @@ class SvgMap {
         this.trackLineMarker3.setAttribute("stroke", "white");
         this.trackLineMarker3.setAttribute("stroke-width", "2.5px");
         this.trackLineGroup.appendChild(this.trackLineMarker3);
+        */
         this.halfRangeText = document.createElementNS(Avionics.SVG.NS, "text");
         this.halfRangeText.setAttribute("x", "490");
         this.halfRangeText.setAttribute("y", "250");
@@ -112,6 +113,15 @@ class SvgMap {
         this.halfRangeText.setAttribute("text-anchor", "end");
         this.halfRangeText.textContent = "80";
         this.trackLineGroup.appendChild(this.halfRangeText);
+
+        /* Construct Turn Prediction Arc */
+        this.turnArc = document.createElementNS(Avionics.SVG.NS, "path");
+        this.turnArc.setAttribute("d", "M 500, 400 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0 ");
+        this.turnArc.setAttribute("stroke", "white");
+        this.turnArc.setAttribute("stroke-width", "2.5px");
+        this.turnArc.setAttribute("fill", "none");
+        this.turnArc.setAttribute("stroke-dasharray", "40 8 40 8 40 30000");
+        this.trackLineGroup.appendChild(this.turnArc);
 
         /* End Salty Mods */
 
@@ -715,6 +725,18 @@ class SvgMap {
         }
         else { 
             this.greenArc.style.visibility = "hidden";
+        }
+        /* Update Turn Prediction */
+        const bankAngle = SimVar.GetSimVarValue("ATTITUDE INDICATOR BANK DEGREES:1", "radians");
+        const turnRadius = (speed * speed) / (11.26 * Math.tan(Math.abs(bankAngle))) / 4076;
+        const pixelRadius = turnRadius / mapRange * 460;
+        const arcDir = bankAngle < 0 ? pixelRadius * 2 : pixelRadius * -2;
+        const sweepFlag = bankAngle < 0 ? 1 : 0;
+        if (Math.abs(bankAngle) < 0.012) {
+            this.turnArc.setAttribute("d", "M500 485, v-150");
+        }
+        else {
+            this.turnArc.setAttribute("d", `M 500, 485 a ${pixelRadius.toString()},${pixelRadius.toString()} 0 1,${sweepFlag} ${arcDir},0 a ${pixelRadius.toString()},${pixelRadius.toString()} 0 1,${sweepFlag} ${-arcDir},0 `);
         }
     }
 }
