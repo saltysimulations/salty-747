@@ -7,5 +7,9 @@
         "moduleResolution": "node",
         "skipLibCheck": true,
         "strict": true
-    }
+    },
+    "include": [
+        "src/**/*",
+        "../../typings/**/*.d.ts"
+  ]
 }

@@ -5,7 +5,10 @@ node_modules/
 salty-747/manifest.json
 salty-747/layout.json
 salty-747/html_ui/Pages/Salty/fpm
-salty-747/html_ui/Pages/VCockpit/Instruments/74s
+salty-747/html_ui/Pages/VCockpit/Instruments/74s/*
+!salty-747/html_ui/Pages/VCockpit/Instruments/74s/NewPFD
+salty-747/html_ui/Pages/VCockpit/Instruments/74s/NewPFD/*.css
+salty-747/html_ui/Pages/VCockpit/Instruments/74s/NewPFD/*.js
 salty-747/SimObjects/Airplanes/Salty_B747_8i/model/*.gltf
 salty-747/SimObjects/Airplanes/Salty_B747_8i/model/*.bin
 src/modules/dist
@@ -15,3 +18,6 @@ bundles/
 .ace/live-reload.json
 src/sounds/.cache/
 .idea/
+msfs-avionics-mirror/src/garminsdk
+msfs-avionics-mirror/src/workingtitle-instruments-g1000
+msfs-avionics-mirror/src/sdk/build
