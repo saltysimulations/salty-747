@@ -74,7 +74,7 @@ class SvgMap {
         this.trackline = document.createElementNS(Avionics.SVG.NS, "line");
         this.trackline.setAttribute("x1", "500");
         this.trackline.setAttribute("x2", "500");
-        this.trackline.setAttribute("y1", "490");
+        this.trackline.setAttribute("y1", "342");
         this.trackline.setAttribute("y2", "0");
         this.trackline.setAttribute("stroke", "white");
         this.trackline.setAttribute("stroke-width", "2.5px");
@@ -112,6 +112,15 @@ class SvgMap {
         this.halfRangeText.setAttribute("text-anchor", "end");
         this.halfRangeText.textContent = "80";
         this.trackLineGroup.appendChild(this.halfRangeText);
+
+        /* Construct Turn Prediction Arc */
+        this.turnArc = document.createElementNS(Avionics.SVG.NS, "path");
+        this.turnArc.setAttribute("d", "M 500, 400 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0 ");
+        this.turnArc.setAttribute("stroke", "white");
+        this.turnArc.setAttribute("stroke-width", "3px");
+        this.turnArc.setAttribute("fill", "none");
+        this.turnArc.setAttribute("stroke-dasharray", "40 8 40 8 40 30000");
+        this.trackLineGroup.appendChild(this.turnArc);
 
         /* End Salty Mods */
 
@@ -715,6 +724,40 @@ class SvgMap {
         }
         else { 
             this.greenArc.style.visibility = "hidden";
+        }
+        /* Update Turn Prediction */
+        const segDist = speed * 0.0083 / mapRange * 460;
+        if (Simplane.getIsGrounded()){
+            this.turnArc.setAttribute("stroke-dasharray", `0 30000`);
+            this.trackline.setAttribute("y1", `${485}`);
+        }
+        else if (mapRange > 20) {
+            this.turnArc.setAttribute("stroke-dasharray", `${segDist * 0.95} ${segDist * 0.05} ${segDist * 0.95} ${segDist * 0.05} ${segDist * 0.95} ${segDist * 0.05} 0 30000`);
+            this.trackline.setAttribute("y1", `${485 - (segDist * 3)}`);
+        }
+        else if (mapRange == 20) {
+            this.turnArc.setAttribute("stroke-dasharray", `${segDist * 0.95} ${segDist * 0.05} ${segDist * 0.95} ${segDist * 0.05} 0 30000`);
+            this.trackline.setAttribute("y1", `${485 - (segDist * 2)}`);
+        }
+        else if (mapRange == 10 || mapRange == 5 || mapRange == 2) {
+            this.turnArc.setAttribute("stroke-dasharray", `${segDist * 0.975} ${segDist * 0.025} 0 30000`);
+            this.trackline.setAttribute("y1", `${485 - (segDist)}`);
+        }
+        else {
+            this.turnArc.setAttribute("stroke-dasharray", `0 30000`);
+            this.trackline.setAttribute("y1", `${485}`);
+        }
+        
+        const bankAngle = SimVar.GetSimVarValue("ATTITUDE INDICATOR BANK DEGREES:1", "radians");
+        const turnRadius = (speed * speed) / (11.26 * Math.tan(Math.abs(bankAngle))) / 4076;
+        const pixelRadius = turnRadius / mapRange * 460;
+        const arcDir = bankAngle < 0 ? pixelRadius * 2 : pixelRadius * -2;
+        const sweepFlag = bankAngle < 0 ? 1 : 0;
+        if (Math.abs(bankAngle) < 0.012) {
+            this.turnArc.setAttribute("d", `M500 485, v${-600}`);
+        }
+        else {
+            this.turnArc.setAttribute("d", `M 500, 485 a ${pixelRadius.toString()},${pixelRadius.toString()} 0 1,${sweepFlag} ${arcDir},0 a ${pixelRadius.toString()},${pixelRadius.toString()} 0 1,${sweepFlag} ${-arcDir},0 `);
         }
     }
 }
