@@ -1,9 +1,13 @@
-import { FSComponent, DisplayComponent, VNode, ComponentProps, EventBus } from "msfssdk";
+import { FSComponent, DisplayComponent, VNode, ComponentProps, EventBus, Subject } from "msfssdk";
 import { PFDSimvars } from "../SimVarPublisher";
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";
+import { SlipIndicator } from "./SlipIndicator";
+import { BankIndicator } from "./BankIndicator";
 
 export class Horizon extends DisplayComponent<{ bus: EventBus }> {
-    private horizonGroup = FSComponent.createRef<SVGGElement>();
+    private horizonPitchGroup = FSComponent.createRef<SVGGElement>();
+    private horizonRollGroup = FSComponent.createRef<SVGGElement>();
+    private clipRef = FSComponent.createRef<SVGClipPathElement>();
 
     public onAfterRender(node: VNode): void {
         super.onAfterRender(node);
@@ -13,33 +17,79 @@ export class Horizon extends DisplayComponent<{ bus: EventBus }> {
         sub.on("pitch")
             .whenChanged()
             .handle((pitch) => {
-                this.horizonGroup.instance.style.transform = `translate(0px, -18px) translate(0px, ${(-Math.round(pitch * 10) / 10) * 8}px)`;
+                this.horizonPitchGroup.instance.style.transform = `translate(0px, -18px) translate(0px, ${(-Math.round(pitch * 10) / 10) * 8}px)`;
+                this.clipRef.instance.style.transform = `translate(0px, 18px) translate(0px, ${(Math.round(pitch * 10) / 10) * 8}px)`;
             });
 
         sub.on("roll")
             .whenChanged()
-            .handle((roll) => (this.horizonGroup.instance.style.transform += ` rotate(${Math.round(roll * 10) / 10}deg)`));
+            .handle((roll) => {
+                this.horizonRollGroup.instance.style.transform = `rotate(${Math.round(roll * 10) / 10}deg)`;
+            });
     }
 
     public render(): VNode {
         return (
             <g>
                 <g>
-                    <clipPath id="ah-clip">
+                    <clipPath ref={this.clipRef} id="ah-clip">
                         <path d="M156 350, h30, v-40 c 83 -115 243 -115 323 0, v40, h30, v280, h-383 Z" />
                     </clipPath>
-
-                    <g ref={this.horizonGroup} class="horizon-group">
-                        <rect x={0} y={-800} width={800} height={1200} fill="#1469BC" />
-                        <rect x={0} y={400} width={800} height={1200} fill="#764D17" />
-                        <rect x={0} y={397.5} width={800} height={4} fill="#fff" stroke="black" stroke-width="1" />
-                        <g clipPath="url(#ah-clip)" transform="translate(349, 400)">
-                            <GraduationLines />
+                    <g ref={this.horizonRollGroup} class="horizon-group">
+                        <g ref={this.horizonPitchGroup} class="horizon-group">
+                            <rect x={0} y={-800} width={800} height={1200} fill="#1469BC" />
+                            <rect x={0} y={400} width={800} height={1200} fill="#764D17" />
+                            <rect x={0} y={397.5} width={800} height={4} fill="#fff" stroke="black" stroke-width="1" />
+                            <g clip-path="url(#ah-clip)">
+                                <GraduationLines />
+                            </g>
                         </g>
                     </g>
+                    <BankSlipIndicator bus={this.props.bus} />
                 </g>
                 <path d="M0 0, h799, v410 h-260 v-190 a-44,44 -44 0, 0 -44,-44 l-295,0 a-44,44 -44 0, 0 -44,44 v190, H0 Z" />
                 <path d="M156 410 v123 a-44,44 -44 0, 0 44,44 h295, a-44,44 -44 0, 0 44,-44 v-123 H800 L800, 800, H0, V410 Z" />
+            </g>
+        );
+    }
+}
+
+class BankSlipIndicator extends DisplayComponent<{ bus: EventBus }> {
+    private bankGroup = FSComponent.createRef<SVGGElement>();
+    private colour = Subject.create("white");
+
+    public onAfterRender(node: VNode): void {
+        super.onAfterRender(node);
+
+        const sub = this.props.bus.getSubscriber<PFDSimvars>();
+
+        sub.on("roll")
+            .whenChanged()
+            .handle((roll) => {
+                this.bankGroup.instance.style.transform = `rotate(${Math.round(roll * 10) / 10}deg)`;
+                this.colour.set(Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white");
+            });
+    }
+
+    public render(): VNode {
+        return (
+            <g>
+                <g ref={this.bankGroup} class="horizon-group">
+                    <SlipIndicator bus={this.props.bus} colour={this.colour} />
+                    <BankIndicator bus={this.props.bus} colour={this.colour} />
+                </g>
+
+                <BlackOutlineLine d="M163 275, l17 10" />
+                <BlackOutlineLine d="M534 275, l-17 10" />
+                <BlackOutlineLine d="M201 236, l10 10" />
+                <BlackOutlineLine d="M497 236, l-10 10" />
+                <BlackOutlineLine d="M236 189, l15 25" />
+                <BlackOutlineLine d="M462 189, l-15 25" />
+                <BlackOutlineLine d="M278 189, l4 11" />
+                <BlackOutlineLine d="M420 189, l-4 11" />
+                <BlackOutlineLine d="M313 179, l3 13" />
+                <BlackOutlineLine d="M385 179, l-3 13" />
+                <path fill="white" stroke="black" strokeWidth="0.5" d="M349 191 l-11 -15 l22 0 Z" />
             </g>
         );
     }
@@ -55,7 +105,7 @@ class GraduationLines extends DisplayComponent<any> {
 
     public render(): VNode {
         return (
-            <>
+            <g transform="translate(349, 400)">
                 {Array.from({ length: 37 }, (_, i) => {
                     const number = ((i + 1) / 4) * 10 - 2.5;
                     return (
@@ -65,7 +115,7 @@ class GraduationLines extends DisplayComponent<any> {
                         </>
                     );
                 })}
-            </>
+            </g>
         );
     }
 }
