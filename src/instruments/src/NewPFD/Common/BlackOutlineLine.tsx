@@ -19,6 +19,7 @@ export class BlackOutlineLine extends DisplayComponent<BlackOutlineLineProps> {
                     stroke-linecap="round"
                     d={this.props.d}
                     style={this.props.styleBlack ?? ""}
+                    stroke-linejoin="round"
                 />
                 <path
                     stroke={this.props.color ?? "white"}
@@ -26,6 +27,7 @@ export class BlackOutlineLine extends DisplayComponent<BlackOutlineLineProps> {
                     stroke-linecap="round"
                     d={this.props.d}
                     style={this.props.styleColor ?? ""}
+                    stroke-linejoin="round"
                 />
             </>
         );

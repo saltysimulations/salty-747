@@ -3,6 +3,8 @@ import { PFDSimvars } from "../SimVarPublisher";
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";
 import { SlipIndicator } from "./SlipIndicator";
 import { BankIndicator } from "./BankIndicator";
+import { PitchLimitIndicator } from "./PitchLimitIndicator";
+import { FlightDirector } from "./FlightDirector";
 
 export class Horizon extends DisplayComponent<{ bus: EventBus }> {
     private horizonPitchGroup = FSComponent.createRef<SVGGElement>();
@@ -47,8 +49,16 @@ export class Horizon extends DisplayComponent<{ bus: EventBus }> {
                     </g>
                     <BankSlipIndicator bus={this.props.bus} />
                 </g>
+
+                <PitchLimitIndicator bus={this.props.bus} />
+                <FlightDirector bus={this.props.bus} />
+
                 <path d="M0 0, h799, v410 h-260 v-190 a-44,44 -44 0, 0 -44,-44 l-295,0 a-44,44 -44 0, 0 -44,44 v190, H0 Z" />
                 <path d="M156 410 v123 a-44,44 -44 0, 0 44,44 h295, a-44,44 -44 0, 0 44,-44 v-123 H800 L800, 800, H0, V410 Z" />
+
+                <BlackOutlineLine d="M190 377, h84, v30 h-11 v-20 h-73 Z" blackStroke={5} styleColor="fill: black;" />
+                <BlackOutlineLine d="M422 377, h84, v11, h-73, v20, h-11 Z" blackStroke={5} styleColor="fill: black;" />
+                <BlackOutlineLine d="M343 377, h11, v11, h-11, Z" styleBlack="fill: transparent;" styleColor="fill: transparent;" blackStroke={5} />
             </g>
         );
     }
