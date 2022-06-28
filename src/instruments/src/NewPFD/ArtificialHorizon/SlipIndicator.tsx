@@ -20,9 +20,9 @@ export class SlipIndicator extends DisplayComponent<SlipIndicatorProps> {
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
         sub.on("sideslip")
-            .whenChanged()
+            .whenChangedBy(0.05)
             .handle((sideslip) => {
-                const angle = this.angleToDisplacement(Math.round(sideslip * 10) / 10);
+                const angle = this.angleToDisplacement(sideslip);
                 this.slipGroup.instance.style.transform = `translate(${angle}px, 0px)`;
                 this.fillOpacity.set(Math.abs(angle) >= 33 ? 1 : 0);
             });

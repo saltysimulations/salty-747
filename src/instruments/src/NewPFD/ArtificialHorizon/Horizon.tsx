@@ -17,17 +17,15 @@ export class Horizon extends DisplayComponent<{ bus: EventBus }> {
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
         sub.on("pitch")
-            .whenChanged()
+            .withPrecision(2)
             .handle((pitch) => {
-                this.horizonPitchGroup.instance.style.transform = `translate(0px, -18px) translate(0px, ${(-Math.round(pitch * 10) / 10) * 8}px)`;
-                this.clipRef.instance.style.transform = `translate(0px, 18px) translate(0px, ${(Math.round(pitch * 10) / 10) * 8}px)`;
+                this.horizonPitchGroup.instance.style.transform = `translate(0px, -18px) translate(0px, ${-pitch * 8}px)`;
+                this.clipRef.instance.style.transform = `translate(0px, 18px) translate(0px, ${pitch * 8}px)`;
             });
 
         sub.on("roll")
-            .whenChanged()
-            .handle((roll) => {
-                this.horizonRollGroup.instance.style.transform = `rotate(${Math.round(roll * 10) / 10}deg)`;
-            });
+            .withPrecision(2)
+            .handle((roll) => (this.horizonRollGroup.instance.style.transform = `rotate(${roll}deg)`));
     }
 
     public render(): VNode {
@@ -74,10 +72,10 @@ class BankSlipIndicator extends DisplayComponent<{ bus: EventBus }> {
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
         sub.on("roll")
-            .whenChanged()
+            .withPrecision(2)
             .handle((roll) => {
-                this.bankGroup.instance.style.transform = `rotate(${Math.round(roll * 10) / 10}deg)`;
-                this.colour.set(Math.abs(Math.round(roll * 10) / 10) > 35 ? "#ffc400" : "white");
+                this.bankGroup.instance.style.transform = `rotate(${roll}deg)`;
+                this.colour.set(Math.abs(roll) > 35 ? "#ffc400" : "white");
             });
     }
 

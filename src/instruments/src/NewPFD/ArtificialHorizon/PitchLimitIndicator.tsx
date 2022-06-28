@@ -13,6 +13,7 @@ export class PitchLimitIndicator extends DisplayComponent<{ bus: EventBus }> {
     private pliTransformRef = FSComponent.createRef<SVGGElement>();
     private visibility = Subject.create("hidden");
 
+    // TODO: airspeed logic for flaps up pli
     private pliPitch(alpha: number, stallAlpha: number): number {
         return stallAlpha - alpha;
     }
@@ -37,17 +38,19 @@ export class PitchLimitIndicator extends DisplayComponent<{ bus: EventBus }> {
         );
     }
 
+    // wondering how i'm gonna find a way
+    // it's over
     public onAfterRender(node: VNode): void {
         super.onAfterRender(node);
 
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
-        sub.on("airspeed").whenChanged().handle((airspeed) => {
+        sub.on("airspeed").whenChangedBy(0.0625).handle((airspeed) => {
             this.airspeed = airspeed;
             this.handleVisibility();
         });
 
-        sub.on("maneuveringSpeed").whenChanged().handle((manSpeed) => {
+        sub.on("maneuveringSpeed").whenChangedBy(0.25).handle((manSpeed) => {
             this.maneuveringSpeed = manSpeed;
             this.handleVisibility();
         });
@@ -57,17 +60,17 @@ export class PitchLimitIndicator extends DisplayComponent<{ bus: EventBus }> {
             this.handleVisibility();
         });
 
-        sub.on("altAboveGround").whenChanged().handle((altitude) => {
+        sub.on("altAboveGround").withPrecision(1).handle((altitude) => {
             this.altAboveGround = altitude;
             this.handleVisibility();
         });
 
-        sub.on("incidenceAlpha").whenChanged().handle((alpha) => {
+        sub.on("incidenceAlpha").whenChangedBy(0.05).handle((alpha) => {
             this.incidenceAlpha = alpha;
             this.handlePitchLimitTransform();
         });
 
-        sub.on("stallAlpha").whenChanged().handle((stallAlpha) => {
+        sub.on("stallAlpha").whenChangedBy(0.05).handle((stallAlpha) => {
             this.stallAlpha = stallAlpha;
             this.handlePitchLimitTransform();
         });

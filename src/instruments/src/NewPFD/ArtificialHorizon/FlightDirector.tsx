@@ -21,11 +21,11 @@ export class FlightDirector extends DisplayComponent<{bus: EventBus}> {
 
     private handleTransform() {
         this.pitchGroup.instance.style.transform = `translate(0px, ${
-            this.degreesToPixels(Math.round((this.height < 5 ? -8 : this.fdPitch) * 10) / 10 - Math.round(this.pitch * 10) / 10)
+            this.degreesToPixels((this.height < 5 ? -8 : this.fdPitch) - this.pitch)
         }px)`;
 
         this.rollGroup.instance.style.transform = `translate(${
-            this.degreesToPixels((-Math.round(this.fdRoll * 10) / 10 + Math.round(this.roll * 10) / 10) / 4)
+            this.degreesToPixels((-this.fdRoll + this.roll) / 4)
         }px, 0px)`;
     }
 
@@ -34,27 +34,27 @@ export class FlightDirector extends DisplayComponent<{bus: EventBus}> {
 
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
-        sub.on("pitch").whenChanged().handle((pitch) => {
+        sub.on("pitch").withPrecision(2).handle((pitch) => {
             this.pitch = pitch;
             this.handleTransform();
         });
 
-        sub.on("roll").whenChanged().handle((roll) => {
+        sub.on("roll").withPrecision(2).handle((roll) => {
             this.roll = roll;
             this.handleTransform();
         });
 
-        sub.on("altAboveGround").whenChanged().handle((height) => {
+        sub.on("altAboveGround").withPrecision(1).handle((height) => {
             this.height = height;
             this.handleTransform();
         });
 
-        sub.on("fdPitch").whenChanged().handle((fdPitch) => {
+        sub.on("fdPitch").whenChangedBy(0.05).handle((fdPitch) => {
             this.fdPitch = fdPitch;
             this.handleTransform();
         });
 
-        sub.on("fdRoll").whenChanged().handle((fdRoll) => {
+        sub.on("fdRoll").whenChangedBy(0.05).handle((fdRoll) => {
             this.fdRoll = fdRoll;
             this.handleTransform();
         });

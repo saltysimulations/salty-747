@@ -32,7 +32,6 @@ export enum PFDVars {
     fdOn = "AUTOPILOT FLIGHT DIRECTOR ACTIVE:1",
 }
 
-/** A publisher to poll and publish nav/com simvars. */
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
     private static simvars = new Map<keyof PFDSimvars, SimVarDefinition>([
         ["pitch", { name: PFDVars.pitch, type: SimVarValueType.Degree }],
