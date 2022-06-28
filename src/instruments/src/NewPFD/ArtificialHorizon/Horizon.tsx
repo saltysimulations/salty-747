@@ -5,6 +5,7 @@ import { SlipIndicator } from "./SlipIndicator";
 import { BankIndicator } from "./BankIndicator";
 import { PitchLimitIndicator } from "./PitchLimitIndicator";
 import { FlightDirector } from "./FlightDirector";
+import { FlightPathVector } from "./FlightPathVector";
 
 export class Horizon extends DisplayComponent<{ bus: EventBus }> {
     private horizonPitchGroup = FSComponent.createRef<SVGGElement>();
@@ -46,6 +47,7 @@ export class Horizon extends DisplayComponent<{ bus: EventBus }> {
                         </g>
                     </g>
                     <BankSlipIndicator bus={this.props.bus} />
+                    <FlightPathVector bus={this.props.bus} />
                 </g>
 
                 <PitchLimitIndicator bus={this.props.bus} />

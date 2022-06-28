@@ -5,6 +5,7 @@ export interface PFDSimvars {
     roll: number;
     sideslip: number;
     airspeed: number;
+    groundSpeed: number;
     maneuveringSpeed: number;
     flapsHandle: number;
     altAboveGround: number;
@@ -14,6 +15,11 @@ export interface PFDSimvars {
     fdRoll: number;
     fdOn: boolean;
     irsState: number;
+    verticalVelocity: number;
+    horizontalVelocity: number;
+    trueHeading: number;
+    trueTrack: number;
+    fpvOn: boolean;
 }
 
 export enum PFDVars {
@@ -21,6 +27,7 @@ export enum PFDVars {
     roll = "PLANE BANK DEGREES",
     sideslip = "INCIDENCE BETA",
     airspeed = "AIRSPEED INDICATED",
+    groundSpeed = "GROUND VELOCITY",
     maneuveringSpeed = "L:SALTY_MANEUVERING_SPEED",
     flapsHandle = "FLAPS HANDLE INDEX",
     altAboveGround = "PLANE ALT ABOVE GROUND MINUS CG",
@@ -30,6 +37,11 @@ export enum PFDVars {
     fdRoll = "AUTOPILOT FLIGHT DIRECTOR BANK",
     irsState = "L:SALTY_IRS_STATE",
     fdOn = "AUTOPILOT FLIGHT DIRECTOR ACTIVE:1",
+    verticalVelocity = "VELOCITY WORLD Y",
+    horizontalVelocity = "VELOCITY BODY Z",
+    trueHeading = "PLANE HEADING DEGREES TRUE",
+    trueTrack = "GPS GROUND TRUE TRACK",
+    fpvOn = "L:SALTY_FPV_ON",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -38,6 +50,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["roll", { name: PFDVars.roll, type: SimVarValueType.Degree }],
         ["sideslip", { name: PFDVars.sideslip, type: SimVarValueType.Degree }],
         ["airspeed", { name: PFDVars.airspeed, type: SimVarValueType.Knots }],
+        ["groundSpeed", { name: PFDVars.groundSpeed, type: SimVarValueType.Knots }],
         ["maneuveringSpeed", { name: PFDVars.maneuveringSpeed, type: SimVarValueType.Knots }],
         ["flapsHandle", { name: PFDVars.flapsHandle, type: SimVarValueType.Number }],
         ["altAboveGround", { name: PFDVars.altAboveGround, type: SimVarValueType.Feet }],
@@ -47,6 +60,11 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["fdRoll", { name: PFDVars.fdRoll, type: SimVarValueType.Degree }],
         ["fdOn", { name: PFDVars.fdOn, type: SimVarValueType.Bool }],
         ["irsState", { name: PFDVars.irsState, type: SimVarValueType.Enum }],
+        ["verticalVelocity", { name: PFDVars.verticalVelocity, type: SimVarValueType.FPM }],
+        ["horizontalVelocity", { name: PFDVars.horizontalVelocity, type: SimVarValueType.FPM }],
+        ["trueHeading", { name: PFDVars.trueHeading, type: SimVarValueType.Degree }],
+        ["trueTrack", { name: PFDVars.trueTrack, type: SimVarValueType.Degree }],
+        ["fpvOn", { name: PFDVars.fpvOn, type: SimVarValueType.Bool }],
     ]);
 
     public constructor(bus: EventBus) {

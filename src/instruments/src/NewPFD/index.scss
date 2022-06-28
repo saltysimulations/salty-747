@@ -48,3 +48,20 @@ text {
     font-size: 40px;
     letter-spacing: 0px;
 }
+
+.line {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.fpv-outline {
+    @extend .line;
+    stroke: black;
+    stroke-width: 6px;
+}
+
+.fpv-line {
+    @extend .line;
+    stroke: white;
+    stroke-width: 4px;
+}

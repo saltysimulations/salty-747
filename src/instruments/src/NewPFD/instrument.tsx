@@ -1,4 +1,4 @@
-import { FSComponent, EventBus } from "msfssdk";
+import { FSComponent, EventBus, HEventPublisher } from "msfssdk";
 import { PFD } from "./PFD";
 import { PFDSimvarPublisher } from "./SimVarPublisher";
 
@@ -7,11 +7,13 @@ import "./index.scss";
 class MyInstrument extends BaseInstrument {
     private bus: EventBus;
     private simVarPublisher: PFDSimvarPublisher;
+    private hEventPublisher: HEventPublisher;
 
     constructor() {
         super();
         this.bus = new EventBus();
         this.simVarPublisher = new PFDSimvarPublisher(this.bus);
+        this.hEventPublisher = new HEventPublisher(this.bus);
     }
 
     get templateID(): string {
@@ -22,8 +24,13 @@ class MyInstrument extends BaseInstrument {
         super.connectedCallback();
 
         this.simVarPublisher.startPublish();
+        this.hEventPublisher.startPublish();
 
         FSComponent.render(<PFD bus={this.bus} />, document.getElementById("InstrumentContent"));
+    }
+
+    public onInteractionEvent(args: string[]): void {
+        this.hEventPublisher.dispatchHEvent(args[0]);
     }
 
     public Update(): void {
