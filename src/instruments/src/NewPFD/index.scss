@@ -17,6 +17,10 @@ text {
     transform-origin: 349px 382px;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .text {
     fill: white;
     stroke: black;
@@ -64,4 +68,45 @@ text {
     @extend .line;
     stroke: white;
     stroke-width: 4px;
+}
+
+@keyframes blinking {
+    0% { opacity: 0; }
+    50% { opacity: 0; }
+    51% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes outer-marker-anim {
+    0% { opacity: 0; }
+    33% { opacity: 0; }
+    34% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes middle-marker-anim {
+    0% { opacity: 0 }
+    10% { opacity: 0 }
+    11% { opacity: 1 }
+    27% { opacity: 1 }
+    28% { opacity: 0 }
+    44% { opacity: 0 }
+    45% { opacity: 1 }
+    100% { opacity: 1 }
+}
+
+.blink {
+    animation: blinking 1s infinite;
+}
+
+.outer-marker-blink {
+    animation: outer-marker-anim 460ms infinite;
+}
+
+.middle-marker-blink {
+    animation: middle-marker-anim 730ms infinite;
+}
+
+.inner-marker-blink {
+    animation: blinking 200ms infinite;
 }

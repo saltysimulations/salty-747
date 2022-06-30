@@ -20,6 +20,7 @@ export interface PFDSimvars {
     trueHeading: number;
     trueTrack: number;
     fpvOn: boolean;
+    markerBeaconState: number;
 }
 
 export enum PFDVars {
@@ -42,6 +43,7 @@ export enum PFDVars {
     trueHeading = "PLANE HEADING DEGREES TRUE",
     trueTrack = "GPS GROUND TRUE TRACK",
     fpvOn = "L:SALTY_FPV_ON",
+    markerBeaconState = "MARKER BEACON STATE",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -65,6 +67,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["trueHeading", { name: PFDVars.trueHeading, type: SimVarValueType.Degree }],
         ["trueTrack", { name: PFDVars.trueTrack, type: SimVarValueType.Degree }],
         ["fpvOn", { name: PFDVars.fpvOn, type: SimVarValueType.Bool }],
+        ["markerBeaconState", { name: PFDVars.markerBeaconState, type: SimVarValueType.Enum }],
     ]);
 
     public constructor(bus: EventBus) {

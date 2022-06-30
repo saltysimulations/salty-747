@@ -6,6 +6,7 @@ import { BankIndicator } from "./BankIndicator";
 import { PitchLimitIndicator } from "./PitchLimitIndicator";
 import { FlightDirector } from "./FlightDirector";
 import { FlightPathVector } from "./FlightPathVector";
+import { MarkerBeacon } from "./MarkerBeacon";
 
 export class Horizon extends DisplayComponent<{ bus: EventBus }> {
     private horizonPitchGroup = FSComponent.createRef<SVGGElement>();
@@ -52,6 +53,7 @@ export class Horizon extends DisplayComponent<{ bus: EventBus }> {
 
                 <PitchLimitIndicator bus={this.props.bus} />
                 <FlightDirector bus={this.props.bus} />
+                <MarkerBeacon bus={this.props.bus} />
 
                 <path d="M0 0, h799, v410 h-260 v-190 a-44,44 -44 0, 0 -44,-44 l-295,0 a-44,44 -44 0, 0 -44,44 v190, H0 Z" />
                 <path d="M156 410 v123 a-44,44 -44 0, 0 44,44 h295, a-44,44 -44 0, 0 44,-44 v-123 H800 L800, 800, H0, V410 Z" />
