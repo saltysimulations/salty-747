@@ -6,6 +6,7 @@ export interface PFDSimvars {
     sideslip: number;
     airspeed: number;
     groundSpeed: number;
+    verticalSpeed: number;
     maneuveringSpeed: number;
     flapsHandle: number;
     altAboveGround: number;
@@ -21,6 +22,8 @@ export interface PFDSimvars {
     trueTrack: number;
     fpvOn: boolean;
     markerBeaconState: number;
+    vsActive: boolean;
+    selectedVs: number;
 }
 
 export enum PFDVars {
@@ -44,6 +47,9 @@ export enum PFDVars {
     trueTrack = "GPS GROUND TRUE TRACK",
     fpvOn = "L:SALTY_FPV_ON",
     markerBeaconState = "MARKER BEACON STATE",
+    verticalSpeed = "VERTICAL SPEED",
+    vsActive = "L:AP_VS_ACTIVE",
+    selectedVs = "AUTOPILOT VERTICAL HOLD VAR",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -53,6 +59,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["sideslip", { name: PFDVars.sideslip, type: SimVarValueType.Degree }],
         ["airspeed", { name: PFDVars.airspeed, type: SimVarValueType.Knots }],
         ["groundSpeed", { name: PFDVars.groundSpeed, type: SimVarValueType.Knots }],
+        ["verticalSpeed", { name: PFDVars.verticalSpeed, type: SimVarValueType.FPM }],
         ["maneuveringSpeed", { name: PFDVars.maneuveringSpeed, type: SimVarValueType.Knots }],
         ["flapsHandle", { name: PFDVars.flapsHandle, type: SimVarValueType.Number }],
         ["altAboveGround", { name: PFDVars.altAboveGround, type: SimVarValueType.Feet }],
@@ -68,6 +75,8 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["trueTrack", { name: PFDVars.trueTrack, type: SimVarValueType.Degree }],
         ["fpvOn", { name: PFDVars.fpvOn, type: SimVarValueType.Bool }],
         ["markerBeaconState", { name: PFDVars.markerBeaconState, type: SimVarValueType.Enum }],
+        ["vsActive", { name: PFDVars.vsActive, type: SimVarValueType.Bool }],
+        ["selectedVs", { name: PFDVars.selectedVs, type: SimVarValueType.FPM }],
     ]);
 
     public constructor(bus: EventBus) {

@@ -1,7 +1,7 @@
-import { FSComponent, DisplayComponent, VNode } from "msfssdk";
+import { FSComponent, DisplayComponent, VNode, Subscribable } from "msfssdk";
 
 interface BlackOutlineLineProps {
-    d: string;
+    d: string | Subscribable<string>;
     blackStroke?: number;
     whiteStroke?: number;
     color?: string;
