@@ -35,7 +35,7 @@ export enum PFDVars {
     sideslip = "INCIDENCE BETA",
     airspeed = "AIRSPEED INDICATED",
     groundSpeed = "GROUND VELOCITY",
-    maneuveringSpeed = "L:SALTY_MANEUVERING_SPEED",
+    maneuveringSpeed = "L:74S_ADC_MANEUVERING_SPEED",
     flapsHandle = "FLAPS HANDLE INDEX",
     altAboveGround = "PLANE ALT ABOVE GROUND MINUS CG",
     incidenceAlpha = "INCIDENCE ALPHA",

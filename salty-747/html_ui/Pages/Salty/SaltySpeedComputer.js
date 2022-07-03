@@ -20,7 +20,7 @@ class SaltySpeedComputer {
         if (gearPos != 0) {
             gearLim = Math.min(320, SimVar.GetGameVarValue("FROM MACH TO KIAS", "number", 0.82));
         }
-      
+
         const flaps1to10 = Utils.Clamp(teFlapPos, 0, 10);
         const flaps10to20 = Utils.Clamp(teFlapPos -10, 0, 10);
         const flaps20to30 = Utils.Clamp(teFlapPos -20, 0, 10);
@@ -38,12 +38,12 @@ class SaltySpeedComputer {
         const c = 0.0326 * grossWeight + 25.248;
         if (flapSetting === 0) {
             const stallSpeed1G = a * flapSetting + b + c;
-            SimVar.SetSimVarValue("L:74S_ADC_MANUEVERING_SPEED", "knots", stallSpeed1G * Math.sqrt(1.3));
+            SimVar.SetSimVarValue("L:74S_ADC_MANEUVERING_SPEED", "knots", stallSpeed1G * Math.sqrt(1.3));
             SimVar.SetSimVarValue("L:74S_ADC_MINIMUM_SPEED", "knots", stallSpeed1G * Math.sqrt(gLoad));
         }
         else {
             const stallSpeed1G = a * flapSetting + b;
-            SimVar.SetSimVarValue("L:74S_ADC_MANUEVERING_SPEED", "knots", stallSpeed1G * Math.sqrt(1.3));
+            SimVar.SetSimVarValue("L:74S_ADC_MANEUVERING_SPEED", "knots", stallSpeed1G * Math.sqrt(1.3));
             SimVar.SetSimVarValue("L:74S_ADC_MINIMUM_SPEED", "knots", stallSpeed1G * Math.sqrt(gLoad));
         }
     }
