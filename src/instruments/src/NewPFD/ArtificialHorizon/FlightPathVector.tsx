@@ -44,7 +44,6 @@ export class FlightPathVector extends DisplayComponent<{ bus: EventBus }> {
 
     private handleTransform() {
         this.fpvTransformRef.instance.style.transform = `translate(${this.trackToPixels()}px, ${-this.vertVecToPixels()}px)`;
-        console.log(`translate(${this.trackToPixels()}px, ${-this.vertVecToPixels()}px)`);
     }
 
     public onAfterRender(node: VNode): void {

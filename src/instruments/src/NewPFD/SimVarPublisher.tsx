@@ -19,11 +19,14 @@ export interface PFDSimvars {
     verticalVelocity: number;
     horizontalVelocity: number;
     trueHeading: number;
+    magneticHeading: number;
     trueTrack: number;
+    magneticTrack: number;
     fpvOn: boolean;
     markerBeaconState: number;
     vsActive: boolean;
     selectedVs: number;
+    selectedHeading: number;
 }
 
 export enum PFDVars {
@@ -44,12 +47,15 @@ export enum PFDVars {
     verticalVelocity = "VELOCITY WORLD Y",
     horizontalVelocity = "VELOCITY BODY Z",
     trueHeading = "PLANE HEADING DEGREES TRUE",
+    magneticHeading = "PLANE HEADING DEGREES MAGNETIC",
     trueTrack = "GPS GROUND TRUE TRACK",
+    magneticTrack = "GPS GROUND MAGNETIC TRACK",
     fpvOn = "L:SALTY_FPV_ON",
     markerBeaconState = "MARKER BEACON STATE",
     verticalSpeed = "VERTICAL SPEED",
     vsActive = "L:AP_VS_ACTIVE",
     selectedVs = "AUTOPILOT VERTICAL HOLD VAR",
+    selectedHeading = "AUTOPILOT HEADING LOCK DIR:1",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -72,11 +78,14 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["verticalVelocity", { name: PFDVars.verticalVelocity, type: SimVarValueType.FPM }],
         ["horizontalVelocity", { name: PFDVars.horizontalVelocity, type: SimVarValueType.FPM }],
         ["trueHeading", { name: PFDVars.trueHeading, type: SimVarValueType.Degree }],
+        ["magneticHeading", { name: PFDVars.magneticHeading, type: SimVarValueType.Degree }],
         ["trueTrack", { name: PFDVars.trueTrack, type: SimVarValueType.Degree }],
+        ["magneticTrack", { name: PFDVars.magneticTrack, type: SimVarValueType.Degree }],
         ["fpvOn", { name: PFDVars.fpvOn, type: SimVarValueType.Bool }],
         ["markerBeaconState", { name: PFDVars.markerBeaconState, type: SimVarValueType.Enum }],
         ["vsActive", { name: PFDVars.vsActive, type: SimVarValueType.Bool }],
         ["selectedVs", { name: PFDVars.selectedVs, type: SimVarValueType.FPM }],
+        ["selectedHeading", { name: PFDVars.selectedHeading, type: SimVarValueType.Degree }],
     ]);
 
     public constructor(bus: EventBus) {

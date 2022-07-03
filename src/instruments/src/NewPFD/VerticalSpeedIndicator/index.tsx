@@ -94,22 +94,22 @@ class VSIScale extends DisplayComponent<any> {
         return (
             <g>
                 <g transform="translate(740.5 209.33)">
-                    <text x={0} y={0} class="text-2" fillOpacity={0.9} letterSpacing={1.2}>
+                    <text x={0} y={0} class="text-2" fill-opacity={0.9} letter-spacing={1.2}>
                         6
                     </text>
-                    <text x={0} y={40} class="text-2" fillOpacity={0.9} letterSpacing={1.2}>
+                    <text x={0} y={40} class="text-2" fill-opacity={0.9} letter-spacing={1.2}>
                         2
                     </text>
-                    <text x={0} y={100} class="text-2" fillOpacity={0.9} letterSpacing={1.2}>
+                    <text x={0} y={100} class="text-2" fill-opacity={0.9} letter-spacing={1.2}>
                         1
                     </text>
-                    <text x={0} y={260} class="text-2" fillOpacity={0.9} letterSpacing={1.2}>
+                    <text x={0} y={260} class="text-2" fill-opacity={0.9} letter-spacing={1.2}>
                         1
                     </text>
-                    <text x={0} y={320} class="text-2" fillOpacity={0.9} letterSpacing={1.2}>
+                    <text x={0} y={320} class="text-2" fill-opacity={0.9} letter-spacing={1.2}>
                         2
                     </text>
-                    <text x={0} y={360} class="text-2" fillOpacity={0.9} letterSpacing={1.2}>
+                    <text x={0} y={360} class="text-2" fill-opacity={0.9} letter-spacing={1.2}>
                         6
                     </text>
                 </g>
