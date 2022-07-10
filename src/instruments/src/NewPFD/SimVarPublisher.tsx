@@ -106,7 +106,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["groundSpeed", { name: PFDVars.groundSpeed, type: SimVarValueType.Knots }],
         ["verticalSpeed", { name: PFDVars.verticalSpeed, type: SimVarValueType.FPM }],
         ["maneuveringSpeed", { name: PFDVars.maneuveringSpeed, type: SimVarValueType.Knots }],
-        ["machSpeed", { name: PFDVars.machSpeed, type: SimVarValueType.Knots }],
+        ["machSpeed", { name: PFDVars.machSpeed, type: SimVarValueType.Number }],
         ["maxSpeed", { name: PFDVars.maxSpeed, type: SimVarValueType.Knots }],
         ["minSpeed", { name: PFDVars.minSpeed, type: SimVarValueType.Knots }],
         ["flapsHandle", { name: PFDVars.flapsHandle, type: SimVarValueType.Number }],
