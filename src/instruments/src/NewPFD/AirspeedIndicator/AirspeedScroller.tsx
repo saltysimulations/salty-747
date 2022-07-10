@@ -4,8 +4,8 @@ import { PFDSimvars } from "../SimVarPublisher";
 
 export class AirspeedScroller extends DisplayComponent<{ bus: EventBus }> {
     private hundredsTransform = Subject.create("");
-    private tensTransform = Subject.create("");
-    private digitTransform = Subject.create("");
+    private tensTransform = Subject.create(`translate(0 ${this.getTensScrollerY(30)})`);
+    private digitTransform = Subject.create(`translate(0 ${this.getDigitScrollerY(30)})`);
 
     private getHundredsScrollerY(airspeed: number): number {
         let scroll = Math.floor(airspeed / 100) * 49;

@@ -61,8 +61,16 @@ text {
     fill: lime;
 }
 
+.amber {
+    fill: #ffc400;
+}
+
 .middle {
     text-anchor: middle;
+}
+
+.start {
+    text-anchor: start;
 }
 
 .line {
@@ -121,4 +129,11 @@ text {
 
 .inner-marker-blink {
     animation: blinking 200ms infinite;
+}
+
+.red-band {
+    stroke: red;
+    stroke-width: 9px;
+    stroke-linecap: butt;
+    stroke-dasharray: 9,13;
 }

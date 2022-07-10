@@ -128,7 +128,7 @@ const getRefBugText = (landingFlaps: number, refSpeed: number): string => {
     if (!refSpeed) {
         return "";
     }
-
+    console.log(landingFlaps)
     switch (landingFlaps) {
         case 0:
         case 1:
@@ -207,7 +207,7 @@ export const SpeedTape: FC = () => {
                             </>
                         );
                     })}
-                        
+
                     {/* V1 Bug */}
                     <g visibility={`${(radioHeight < 25 && flightPhase <= 2 && v1 != 0) ? "visible" : "hidden"}`}>
                         <path className="fpv-outline" d={`M 45 ${520 + (v1 * -4.6)}, h20`} />
@@ -247,7 +247,7 @@ export const SpeedTape: FC = () => {
                     <g visibility= {`${(selectedAppSpd != 0 && getBoundedAirspeed(airspeed) - selectedAppSpd < 52.5)? "visible" : "hidden"}`}>
                         <text x="71" y={`${Math.min(529 + (selectedAppSpd * -4.6), (529 + (getBoundedAirspeed(airspeed) - 52.5) * -4.6))}`} className="text-2 green start">REF</text>
                     </g>
-                        
+
                     {/* Ref Speed Bug Line*/}
                     <g visibility= {`${selectedAppSpd != 0 ? "visible" : "hidden"}`}>
                         <path className="fpv-outline" d={`M 45 ${520 + (selectedAppSpd * -4.6)}, h20`} />
@@ -286,7 +286,7 @@ export const SpeedTape: FC = () => {
                 <g visibility={`${(radioHeight > 25) ? "visible" : "hidden"}`} transform={`translate(50 ${getMaxSpeedBandY(getBoundedAirspeed(airspeed), Math.round(maxSpeed))})`}>
                     <path className="red-band" d="M 67 -1826, v 2209" fill="none" />
                 </g>
-                
+
                 {/*Minimum Speed Band*/}
                 <g visibility={`${(radioHeight > 25) ? "visible" : "hidden"}`} transform={`translate(50 ${getManeuveringBandY(getBoundedAirspeed(airspeed), Math.round(minSpeed))})`}>
                     <path d="M 63 382, h9, v 1800, h-9, Z" fill="black" />
@@ -304,7 +304,7 @@ export const SpeedTape: FC = () => {
             <path className="indication" style={{ strokeWidth: "5px",  stroke: "black "}} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
             <path className="indication" style={{ strokeWidth: getBoundedAirspeed(airspeed) < manSpeed && radioHeight > 25 ? "9px" : "3px", stroke: getBoundedAirspeed(airspeed) < manSpeed && radioHeight > 25 ? "#ffc400" : "white" }} d="M 10 342 h 72 v 28 l 14 11 l -14 11 v 28 h -72 Z" />
         </g>
-        
+
     );
 };
 
@@ -328,8 +328,8 @@ export const MachGS: FC = () => {
 
     return (
         <g>
-            <text 
-                x="100" y="730" 
+            <text
+                x="100" y="730"
                 className="text-4"
                 style = {{visibility: machSpeed >= 0.4 ? "visible" : "hidden"}}>
                 {removeLeadingZeros(machSpeed.toFixed(3) ?? 0)}
@@ -338,8 +338,8 @@ export const MachGS: FC = () => {
                 <text x="46" y="730" className="text-3">
                     GS
                 </text>
-                <text 
-                    x="110" y="730" 
+                <text
+                    x="110" y="730"
                     className="text-4">
                     {Math.round(groundSpeed).toFixed(0) ?? 0}
                 </text>
