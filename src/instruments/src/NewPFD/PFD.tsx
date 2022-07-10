@@ -4,6 +4,7 @@ import { VerticalSpeedIndicator } from "./VerticalSpeedIndicator";
 import { HeadingDisplay } from "./HeadingDisplay";
 import { AirspeedScroller } from "./AirspeedIndicator/AirspeedScroller";
 import { SpeedTape } from "./AirspeedIndicator/SpeedTape";
+import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 
 export class PFD extends DisplayComponent<{ bus: EventBus }> {
     public render(): VNode {
@@ -18,6 +19,7 @@ export class PFD extends DisplayComponent<{ bus: EventBus }> {
                 <path class="gray-bg" d="M130 10, h450, v50, h-450 Z" />
                 <SpeedTape bus={this.props.bus} />
                 <AirspeedScroller bus={this.props.bus} />
+                <AltitudeScroller bus={this.props.bus} />
             </svg>
         );
     }

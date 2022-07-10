@@ -4,6 +4,7 @@ export interface PFDSimvars {
     pitch: number;
     roll: number;
     sideslip: number;
+    altitude: number;
     airspeed: number;
     groundSpeed: number;
     verticalSpeed: number;
@@ -44,12 +45,14 @@ export interface PFDSimvars {
     flightPhase: number;
     onGround: boolean;
     isInMach: boolean;
+    altAlertStatus: number;
 }
 
 export enum PFDVars {
     pitch = "PLANE PITCH DEGREES",
     roll = "PLANE BANK DEGREES",
     sideslip = "INCIDENCE BETA",
+    altitude = "INDICATED ALTITUDE",
     airspeed = "AIRSPEED INDICATED",
     groundSpeed = "GROUND VELOCITY",
     maneuveringSpeed = "L:74S_ADC_MANEUVERING_SPEED",
@@ -90,6 +93,7 @@ export enum PFDVars {
     flightPhase = "L:AIRLINER_FLIGHT_PHASE",
     onGround = "SIM ON GROUND",
     isInMach = "L:XMLVAR_AirSpeedIsInMach",
+    altAlertStatus = "L:74S_ALT_ALERT",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -97,6 +101,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["pitch", { name: PFDVars.pitch, type: SimVarValueType.Degree }],
         ["roll", { name: PFDVars.roll, type: SimVarValueType.Degree }],
         ["sideslip", { name: PFDVars.sideslip, type: SimVarValueType.Degree }],
+        ["altitude", { name: PFDVars.altitude, type: SimVarValueType.Feet }],
         ["airspeed", { name: PFDVars.airspeed, type: SimVarValueType.Knots }],
         ["groundSpeed", { name: PFDVars.groundSpeed, type: SimVarValueType.Knots }],
         ["verticalSpeed", { name: PFDVars.verticalSpeed, type: SimVarValueType.FPM }],
@@ -137,6 +142,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["flightPhase", { name: PFDVars.flightPhase, type: SimVarValueType.Number }],
         ["onGround", { name: PFDVars.onGround, type: SimVarValueType.Bool }],
         ["isInMach", { name: PFDVars.isInMach, type: SimVarValueType.Bool }],
+        ["altAlertStatus", { name: PFDVars.altAlertStatus, type: SimVarValueType.Number }],
     ]);
 
     public constructor(bus: EventBus) {
