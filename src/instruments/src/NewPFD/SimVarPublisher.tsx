@@ -46,6 +46,8 @@ export interface PFDSimvars {
     onGround: boolean;
     isInMach: boolean;
     altAlertStatus: number;
+    originElevation: number;
+    destinationElevation: number;
 }
 
 export enum PFDVars {
@@ -94,6 +96,8 @@ export enum PFDVars {
     onGround = "SIM ON GROUND",
     isInMach = "L:XMLVAR_AirSpeedIsInMach",
     altAlertStatus = "L:74S_ALT_ALERT",
+    originElevation = "L:74S_FMC_ORIGIN_ELEVATION",
+    destinationElevation = "L:74S_FMC_DEST_ELEVATION",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -132,7 +136,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["selectedVs", { name: PFDVars.selectedVs, type: SimVarValueType.FPM }],
         ["selectedHeading", { name: PFDVars.selectedHeading, type: SimVarValueType.Degree }],
         ["selectedSpeed", { name: PFDVars.selectedSpeed, type: SimVarValueType.Knots }],
-        ["selectedMachSpeed", { name: PFDVars.selectedMachSpeed, type: SimVarValueType.Knots }],
+        ["selectedMachSpeed", { name: PFDVars.selectedMachSpeed, type: SimVarValueType.Number }],
         ["v1", { name: PFDVars.v1, type: SimVarValueType.Knots }],
         ["vR", { name: PFDVars.vR, type: SimVarValueType.Knots }],
         ["v2", { name: PFDVars.v2, type: SimVarValueType.Knots }],
@@ -143,6 +147,8 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["onGround", { name: PFDVars.onGround, type: SimVarValueType.Bool }],
         ["isInMach", { name: PFDVars.isInMach, type: SimVarValueType.Bool }],
         ["altAlertStatus", { name: PFDVars.altAlertStatus, type: SimVarValueType.Number }],
+        ["originElevation", { name: PFDVars.originElevation, type: SimVarValueType.Number }],
+        ["destinationElevation", { name: PFDVars.destinationElevation, type: SimVarValueType.Number }],
     ]);
 
     public constructor(bus: EventBus) {

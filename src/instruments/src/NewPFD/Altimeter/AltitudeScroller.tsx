@@ -90,7 +90,7 @@ export class AltitudeScroller extends DisplayComponent<{ bus: EventBus }> {
                 <g clip-path="url(#alt-clip)">
                     <g transform={this.tenThousandsTransform}>
                         {Array.from({ length: 6 }, (_, i) => (
-                            <text class={i === 5 ? "tenkMarker" : "text-4"} x={i === 5 ? 658 : 659} y={i === 5 ? 396 : 151 + 49 * i}>
+                            <text class={i === 5 ? "tenk-marker" : "text-4"} x={i === 5 ? 658 : 659} y={i === 5 ? 396 : 151 + 49 * i}>
                                 {i == 5 ? "@" : (5 - i).toString()}
                             </text>
                         ))}
