@@ -5,14 +5,27 @@ import { PFDSimvars } from "../SimVarPublisher";
 export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
     private originElevation = 0;
     private destinationElevation = 0;
+    private isHalfway = false;
 
     private transform = Subject.create("");
     private bgD = Subject.create("");
 
-    private noTdzVizibility = Subject.create("hidden");
+    private noTdzVisibility = Subject.create("hidden");
+    private tdzVisibility = Subject.create("hidden");
+    private tdzD = Subject.create("");
 
-    private handleNoTdz() {
-        this.noTdzVizibility.set(this.originElevation === -1 && this.destinationElevation === -1 ? "visible" : "hidden");
+    private handleTdz() {
+        const tdzUnavailable = this.originElevation === -1 && this.destinationElevation === -1;
+
+        this.noTdzVisibility.set(tdzUnavailable ? "visible" : "hidden");
+        this.tdzVisibility.set(tdzUnavailable ? "hidden" : "visible");
+        this.tdzD.set(`M 550 ${
+            382 + (this.isHalfway ? this.destinationElevation : this.originElevation) * -0.68
+        }, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18,
+            m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38,
+            m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0,
+            l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38,
+            m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`);
     }
 
     public onAfterRender(node: VNode): void {
@@ -31,20 +44,27 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
             .whenChanged()
             .handle((elevation) => {
                 this.originElevation = elevation;
-                this.handleNoTdz();
+                this.handleTdz();
             });
 
         sub.on("destinationElevation")
             .whenChanged()
             .handle((elevation) => {
                 this.destinationElevation = elevation;
-                this.handleNoTdz();
+                this.handleTdz();
+            });
+
+        sub.on("passedHalfway")
+            .whenChanged()
+            .handle((halfway) => {
+                this.isHalfway = halfway;
+                this.handleTdz();
             });
     }
 
     // TODO: make 500 feet lines shorter
     public render(): VNode {
-        const lineStyle = "stroke-linejoin: miter; stroke-linecap: butt; paint-order: stroke;"
+        const lineStyle = "stroke-linejoin: miter; stroke-linecap: butt; paint-order: stroke;";
 
         return (
             <g>
@@ -109,10 +129,14 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                         })}
 
                         <path class="gray-bg" d={this.bgD} />
+
+                        <g visibility={this.tdzVisibility}>
+                            <BlackOutlineLine d={this.tdzD} color="#ffc400" blackStroke={5} />
+                        </g>
                     </g>
                 </g>
 
-                <g visibility={this.noTdzVizibility}>
+                <g visibility={this.noTdzVisibility}>
                     <text x="722" y="645" class="text-2 amber start">
                         NO
                     </text>

@@ -48,6 +48,7 @@ export interface PFDSimvars {
     altAlertStatus: number;
     originElevation: number;
     destinationElevation: number;
+    passedHalfway: boolean;
 }
 
 export enum PFDVars {
@@ -98,6 +99,7 @@ export enum PFDVars {
     altAlertStatus = "L:74S_ALT_ALERT",
     originElevation = "L:74S_FMC_ORIGIN_ELEVATION",
     destinationElevation = "L:74S_FMC_DEST_ELEVATION",
+    passedHalfway = "L:74S_FMC_PASSED_HALFWAY",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -149,6 +151,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["altAlertStatus", { name: PFDVars.altAlertStatus, type: SimVarValueType.Number }],
         ["originElevation", { name: PFDVars.originElevation, type: SimVarValueType.Number }],
         ["destinationElevation", { name: PFDVars.destinationElevation, type: SimVarValueType.Number }],
+        ["passedHalfway", { name: PFDVars.passedHalfway, type: SimVarValueType.Bool }],
     ]);
 
     public constructor(bus: EventBus) {
