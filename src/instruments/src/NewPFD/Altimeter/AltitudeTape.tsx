@@ -65,7 +65,6 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
     // TODO: make 500 feet lines shorter
     public render(): VNode {
         const lineStyle = "stroke-linejoin: miter; stroke-linecap: butt; paint-order: stroke;";
-
         return (
             <g>
                 <clipPath id="altitudetape-clip">
@@ -98,6 +97,7 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                                 <BlackOutlineLine d={`M570 ${i * -680 + 365 + 34}, h79`} whiteStroke={4} blackStroke={5} />
                             </>
                         ))}
+
                         {Array.from({ length: 251 }, (_, i) => {
                             const y = i * -136 + 382 + 11;
                             const text = (i * 200).toFixed(0);
@@ -133,6 +133,8 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                         <g visibility={this.tdzVisibility}>
                             <BlackOutlineLine d={this.tdzD} color="#ffc400" blackStroke={5} />
                         </g>
+
+                        <AltitudeBugs bus={this.props.bus} />
                     </g>
                 </g>
 
@@ -145,6 +147,55 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                     </text>
                 </g>
             </g>
+        );
+    }
+}
+
+class AltitudeBugs extends DisplayComponent<{bus: EventBus}> {
+    private altitude = 0;
+    private selectedAltitude = 0;
+
+    private altitudeBugD = Subject.create("");
+    private minimumsBugD = Subject.create("");
+
+    private handleAltitudeBug() {
+        this.altitudeBugD.set(
+            `M 550 ${Math.max(
+                382 + (this.altitude + 420) * -0.68,
+                Math.min(382 + this.selectedAltitude * -0.68, 382 + (this.altitude - 410) * -0.68)
+            )}, l -10 15, v23, h50, v-76, h-50, v23, Z`
+        );
+    }
+
+    public onAfterRender(node: VNode): void {
+        super.onAfterRender(node);
+
+        const sub = this.props.bus.getSubscriber<PFDSimvars>();
+
+        sub.on("altitude")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.altitude = altitude;
+                this.handleAltitudeBug();
+            });
+
+        sub.on("selectedAltitude")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.selectedAltitude = altitude;
+                this.handleAltitudeBug();
+            });
+
+        sub.on("baroMinimums")
+            .whenChanged()
+            .handle((minimums) => this.minimumsBugD.set(`M 650 ${382 + minimums * -0.68}, h -100, l-20 20, v -40, l20, 20`));
+    }
+    public render(): VNode {
+        return (
+            <>
+                <BlackOutlineLine d={this.minimumsBugD} color="lime" whiteStroke={5} blackStroke={6} />
+                <BlackOutlineLine d={this.altitudeBugD} color="#d570ff" blackStroke={5} styleBlack="fill: none;" styleColor="fill: none;" />
+            </>
         );
     }
 }

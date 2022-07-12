@@ -36,6 +36,7 @@ export interface PFDSimvars {
     selectedHeading: number;
     selectedSpeed: number;
     selectedMachSpeed: number;
+    selectedAltitude: number;
     v1: number;
     vR: number;
     v2: number;
@@ -49,6 +50,7 @@ export interface PFDSimvars {
     originElevation: number;
     destinationElevation: number;
     passedHalfway: boolean;
+    baroMinimums: number;
 }
 
 export enum PFDVars {
@@ -87,6 +89,7 @@ export enum PFDVars {
     selectedHeading = "AUTOPILOT HEADING LOCK DIR:1",
     selectedSpeed = "AUTOPILOT AIRSPEED HOLD VAR",
     selectedMachSpeed = "AUTOPILOT MACH HOLD VAR",
+    selectedAltitude = "AUTOPILOT ALTITUDE LOCK VAR:3",
     v1 = "L:AIRLINER_V1_SPEED",
     vR = "L:AIRLINER_VR_SPEED",
     v2 = "L:AIRLINER_V2_SPEED",
@@ -100,6 +103,7 @@ export enum PFDVars {
     originElevation = "L:74S_FMC_ORIGIN_ELEVATION",
     destinationElevation = "L:74S_FMC_DEST_ELEVATION",
     passedHalfway = "L:74S_FMC_PASSED_HALFWAY",
+    baroMinimums = "L:74S_MINS_BARO",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -139,6 +143,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["selectedHeading", { name: PFDVars.selectedHeading, type: SimVarValueType.Degree }],
         ["selectedSpeed", { name: PFDVars.selectedSpeed, type: SimVarValueType.Knots }],
         ["selectedMachSpeed", { name: PFDVars.selectedMachSpeed, type: SimVarValueType.Number }],
+        ["selectedAltitude", { name: PFDVars.selectedAltitude, type: SimVarValueType.Feet }],
         ["v1", { name: PFDVars.v1, type: SimVarValueType.Knots }],
         ["vR", { name: PFDVars.vR, type: SimVarValueType.Knots }],
         ["v2", { name: PFDVars.v2, type: SimVarValueType.Knots }],
@@ -152,6 +157,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["originElevation", { name: PFDVars.originElevation, type: SimVarValueType.Number }],
         ["destinationElevation", { name: PFDVars.destinationElevation, type: SimVarValueType.Number }],
         ["passedHalfway", { name: PFDVars.passedHalfway, type: SimVarValueType.Bool }],
+        ["baroMinimums", { name: PFDVars.baroMinimums, type: SimVarValueType.Feet }],
     ]);
 
     public constructor(bus: EventBus) {
