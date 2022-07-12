@@ -150,12 +150,13 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                 </g>
 
                 <MetresDisplay bus={this.props.bus} />
+                <CommandAlt bus={this.props.bus} />
             </g>
         );
     }
 }
 
-class AltitudeBugs extends DisplayComponent<{bus: EventBus}> {
+class AltitudeBugs extends DisplayComponent<{ bus: EventBus }> {
     private altitude = 0;
     private selectedAltitude = 0;
 
@@ -200,6 +201,60 @@ class AltitudeBugs extends DisplayComponent<{bus: EventBus}> {
                 <BlackOutlineLine d={this.minimumsBugD} color="lime" whiteStroke={5} blackStroke={6} />
                 <BlackOutlineLine d={this.altitudeBugD} color="#d570ff" blackStroke={5} styleBlack="fill: none;" styleColor="fill: none;" />
             </>
+        );
+    }
+}
+
+class CommandAlt extends DisplayComponent<{ bus: EventBus }> {
+    private smallSelAltText = Subject.create("");
+    private largeSelAltText = Subject.create("");
+
+    private altAlertVisibility = Subject.create("hidden");
+
+    private getSmallSelAltText(altitude: number): string {
+        const string = altitude.toString();
+        return string.substring(string.length - 3);
+    }
+
+    private getLargeSelAltText(altitude: number): string {
+        return altitude < 1000 ? "" : altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
+    }
+
+    public onAfterRender(node: VNode): void {
+        super.onAfterRender(node);
+
+        const sub = this.props.bus.getSubscriber<PFDSimvars>();
+
+        sub.on("selectedAltitude")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.smallSelAltText.set(this.getSmallSelAltText(altitude));
+                this.largeSelAltText.set(this.getLargeSelAltText(altitude));
+            });
+
+        sub.on("altAlertStatus")
+            .whenChanged()
+            .handle((status) => this.altAlertVisibility.set(status === 1 ? "visible" : "hidden"));
+    }
+
+    public render(): VNode {
+        return (
+            <g>
+                <text x="649" y="80" class="text-4 magenta">
+                    {this.largeSelAltText}
+                </text>
+                <text x="695" y="80" class="text-3 magenta">
+                    {this.smallSelAltText}
+                </text>
+                <path
+                    stroke="white"
+                    stroke-width="3"
+                    stroke-linejoin="round"
+                    d="M 602 48, h 96, v35, h-96, Z"
+                    fill="none"
+                    visibility={this.altAlertVisibility}
+                />
+            </g>
         );
     }
 }
