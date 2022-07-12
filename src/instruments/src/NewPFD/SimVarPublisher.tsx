@@ -51,7 +51,13 @@ export interface PFDSimvars {
     destinationElevation: number;
     passedHalfway: boolean;
     baroMinimums: number;
+    radioMinimums: number;
     isMetresOn: boolean;
+    isStd: boolean;
+    baroUnits: boolean;
+    baroHg: number;
+    preselBaroVisible: boolean;
+    preselBaro: number;
 }
 
 export enum PFDVars {
@@ -105,7 +111,13 @@ export enum PFDVars {
     destinationElevation = "L:74S_FMC_DEST_ELEVATION",
     passedHalfway = "L:74S_FMC_PASSED_HALFWAY",
     baroMinimums = "L:74S_MINS_BARO",
+    radioMinimums = "L:74S_MINS_RADIO",
     isMetresOn = "L:74S_EFIS_METRES_ON",
+    isStd = "L:XMLVAR_Baro1_ForcedToSTD",
+    baroUnits = "L:XMLVAR_Baro_Selector_HPA_1",
+    baroHg = "KOHLSMAN SETTING HG",
+    preselBaroVisible = "L:74S_BARO_PRESEL_VISIBLE",
+    preselBaro = "L:XMLVAR_Baro1_SavedPressure",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -160,7 +172,13 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["destinationElevation", { name: PFDVars.destinationElevation, type: SimVarValueType.Number }],
         ["passedHalfway", { name: PFDVars.passedHalfway, type: SimVarValueType.Bool }],
         ["baroMinimums", { name: PFDVars.baroMinimums, type: SimVarValueType.Feet }],
+        ["radioMinimums", { name: PFDVars.radioMinimums, type: SimVarValueType.Feet }],
         ["isMetresOn", { name: PFDVars.isMetresOn, type: SimVarValueType.Bool }],
+        ["isStd", { name: PFDVars.isStd, type: SimVarValueType.Bool }],
+        ["baroUnits", { name: PFDVars.baroUnits, type: SimVarValueType.Bool }],
+        ["baroHg", { name: PFDVars.baroHg, type: SimVarValueType.InHG }],
+        ["preselBaroVisible", { name: PFDVars.preselBaroVisible, type: SimVarValueType.Bool }],
+        ["preselBaro", { name: PFDVars.preselBaro, type: SimVarValueType.Number }],
     ]);
 
     public constructor(bus: EventBus) {

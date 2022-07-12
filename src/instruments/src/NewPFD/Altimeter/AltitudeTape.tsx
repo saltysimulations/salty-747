@@ -3,6 +3,8 @@ import { BlackOutlineLine } from "../Common/BlackOutlineLine";
 import { PFDSimvars } from "../SimVarPublisher";
 
 import { MetresDisplay } from "./MetresDisplay";
+import { BaroSetting } from "./BaroSetting";
+import { Minimums } from "./Minimums";
 
 export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
     private originElevation = 0;
@@ -151,6 +153,8 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
 
                 <MetresDisplay bus={this.props.bus} />
                 <CommandAlt bus={this.props.bus} />
+                <BaroSetting bus={this.props.bus} />
+                <Minimums bus={this.props.bus} />
             </g>
         );
     }

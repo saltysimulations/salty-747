@@ -135,6 +135,10 @@ text {
     animation: blinking 200ms infinite;
 }
 
+.radio-mins-blink {
+    animation: blinking 300ms 12;
+}
+
 .red-band {
     stroke: red;
     stroke-width: 9px;
