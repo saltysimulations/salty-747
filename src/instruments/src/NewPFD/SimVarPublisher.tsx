@@ -51,6 +51,7 @@ export interface PFDSimvars {
     destinationElevation: number;
     passedHalfway: boolean;
     baroMinimums: number;
+    isMetresOn: boolean;
 }
 
 export enum PFDVars {
@@ -104,6 +105,7 @@ export enum PFDVars {
     destinationElevation = "L:74S_FMC_DEST_ELEVATION",
     passedHalfway = "L:74S_FMC_PASSED_HALFWAY",
     baroMinimums = "L:74S_MINS_BARO",
+    isMetresOn = "L:74S_EFIS_METRES_ON",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -158,6 +160,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["destinationElevation", { name: PFDVars.destinationElevation, type: SimVarValueType.Number }],
         ["passedHalfway", { name: PFDVars.passedHalfway, type: SimVarValueType.Bool }],
         ["baroMinimums", { name: PFDVars.baroMinimums, type: SimVarValueType.Feet }],
+        ["isMetresOn", { name: PFDVars.isMetresOn, type: SimVarValueType.Bool }],
     ]);
 
     public constructor(bus: EventBus) {

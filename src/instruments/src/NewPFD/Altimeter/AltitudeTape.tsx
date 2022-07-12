@@ -2,6 +2,8 @@ import { FSComponent, DisplayComponent, VNode, EventBus, Subject } from "msfssdk
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";
 import { PFDSimvars } from "../SimVarPublisher";
 
+import { MetresDisplay } from "./MetresDisplay";
+
 export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
     private originElevation = 0;
     private destinationElevation = 0;
@@ -146,6 +148,8 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                         TDZ
                     </text>
                 </g>
+
+                <MetresDisplay bus={this.props.bus} />
             </g>
         );
     }
