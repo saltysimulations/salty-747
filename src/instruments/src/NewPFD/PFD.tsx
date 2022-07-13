@@ -8,6 +8,7 @@ import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 import { AltitudeTape } from "./Altimeter/AltitudeTape";
 import { LateralDeviationScale } from "./DeviationScales/Lateral";
 import { VerticalDeviationScale } from "./DeviationScales/Vertical";
+import { ApproachInfo } from "./ApproachInfo";
 
 export class PFD extends DisplayComponent<{ bus: EventBus }> {
     public render(): VNode {
@@ -29,6 +30,8 @@ export class PFD extends DisplayComponent<{ bus: EventBus }> {
 
                 <AltitudeTape bus={this.props.bus} />
                 <AltitudeScroller bus={this.props.bus} />
+
+                <ApproachInfo bus={this.props.bus} />
             </svg>
         );
     }

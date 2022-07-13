@@ -6,6 +6,7 @@ export class LateralDeviationScale extends DisplayComponent<{ bus: EventBus }> {
     private inboundLocCourse = 0;
     private locRadial = 0;
     private locSignal = false;
+    private locFrequency = 0;
     private radioHeight = 0;
     private flightPhase = 0;
 
@@ -51,7 +52,7 @@ export class LateralDeviationScale extends DisplayComponent<{ bus: EventBus }> {
         this.risingRunwayTransform.set(
             `translate(${this.getLocDisplacement(this.inboundLocCourse, this.locRadial)}, ${this.getRisingRunwayY(this.radioHeight)})`
         );
-        this.circlesVisibility.set(this.showExpandedLoc(this.inboundLocCourse, this.locRadial) ? "hidden" : "visible");
+        this.circlesVisibility.set(!this.showExpandedLoc(this.inboundLocCourse, this.locRadial) && this.locFrequency !== 0 ? "visible" : "hidden");
         this.expandedLocVisibility.set(this.showExpandedLoc(this.inboundLocCourse, this.locRadial) ? "visible" : "hidden");
     }
 
@@ -98,7 +99,8 @@ export class LateralDeviationScale extends DisplayComponent<{ bus: EventBus }> {
         })
 
         sub.on("locFrequency").whenChanged().handle((frequency) => {
-            this.circlesGroupVisibility.set(frequency ? "visible" : "hidden");
+            this.locFrequency = frequency;
+            this.circlesGroupVisibility.set(frequency !== 0 ? "visible" : "hidden");
         })
     }
 

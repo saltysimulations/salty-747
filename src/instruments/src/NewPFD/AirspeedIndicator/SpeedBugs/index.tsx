@@ -55,6 +55,6 @@ class SelectedSpeedBug extends DisplayComponent<{ bus: EventBus }> {
     }
 
     public render(): VNode {
-        return <BlackOutlineLine d={this.d} color="#d570ff" blackStroke={5} />;
+        return <BlackOutlineLine d={this.d} color="#d570ff" blackStroke={5} styleBlack="fill: none;" styleColor="fill: none;" />;
     }
 }

@@ -64,6 +64,10 @@ export interface PFDSimvars {
     locFrequency: number;
     gsSignal: boolean;
     gsError: number;
+    ilsIdent: string;
+    locCourse: number;
+    dmeSignal: boolean;
+    dmeDistance: number;
 }
 
 export enum PFDVars {
@@ -130,6 +134,10 @@ export enum PFDVars {
     locFrequency = "NAV ACTIVE FREQUENCY:3",
     gsSignal = "NAV GS FLAG:3",
     gsError = "NAV GLIDE SLOPE ERROR:3",
+    ilsIdent = "NAV IDENT:3",
+    locCourse = "L:FLIGHTPLAN_APPROACH_COURSE",
+    dmeSignal = "NAV HAS DME:3",
+    dmeDistance = "NAV DME:3",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -197,6 +205,10 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["locFrequency", { name: PFDVars.locFrequency, type: SimVarValueType.MHz }],
         ["gsSignal", { name: PFDVars.gsSignal, type: SimVarValueType.Bool }],
         ["gsError", { name: PFDVars.gsError, type: SimVarValueType.Degree }],
+        ["ilsIdent", { name: PFDVars.ilsIdent, type: SimVarValueType.String }],
+        ["locCourse", { name: PFDVars.locCourse, type: SimVarValueType.Number }],
+        ["dmeSignal", { name: PFDVars.dmeSignal, type: SimVarValueType.Bool }],
+        ["dmeDistance", { name: PFDVars.dmeDistance, type: SimVarValueType.NM }],
     ]);
 
     public constructor(bus: EventBus) {
