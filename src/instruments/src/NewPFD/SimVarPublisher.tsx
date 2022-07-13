@@ -62,6 +62,8 @@ export interface PFDSimvars {
     locRadial: number;
     locSignal: boolean;
     locFrequency: number;
+    gsSignal: boolean;
+    gsError: number;
 }
 
 export enum PFDVars {
@@ -126,6 +128,8 @@ export enum PFDVars {
     locRadial = "NAV RADIAL:3",
     locSignal = "NAV HAS NAV:3",
     locFrequency = "NAV ACTIVE FREQUENCY:3",
+    gsSignal = "NAV GS FLAG:3",
+    gsError = "NAV GLIDE SLOPE ERROR:3",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -191,6 +195,8 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["locRadial", { name: PFDVars.locRadial, type: SimVarValueType.Degree }],
         ["locSignal", { name: PFDVars.locSignal, type: SimVarValueType.Bool }],
         ["locFrequency", { name: PFDVars.locFrequency, type: SimVarValueType.MHz }],
+        ["gsSignal", { name: PFDVars.gsSignal, type: SimVarValueType.Bool }],
+        ["gsError", { name: PFDVars.gsError, type: SimVarValueType.Degree }],
     ]);
 
     public constructor(bus: EventBus) {

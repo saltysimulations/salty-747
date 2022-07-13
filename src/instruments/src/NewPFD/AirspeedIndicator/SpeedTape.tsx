@@ -34,6 +34,24 @@ export class SpeedTape extends DisplayComponent<{ bus: EventBus }> {
     public render(): VNode {
         return (
             <g>
+                <g visibility={this.noVSpeed}>
+                    <text x="135" y="238" class="text-3 amber middle">
+                        NO
+                    </text>
+                    <text x="135" y="270" class="text-3 amber middle">
+                        V
+                    </text>
+                    <text x="135" y="302" class="text-3 amber middle">
+                        S
+                    </text>
+                    <text x="135" y="327" class="text-3 amber middle">
+                        P
+                    </text>
+                    <text x="135" y="352" class="text-3 amber middle">
+                        D
+                    </text>
+                </g>
+
                 <clipPath id="speedtape-clip">
                     <path d="M13 100, h200 v560 h -200 Z" />
                 </clipPath>
@@ -56,24 +74,6 @@ export class SpeedTape extends DisplayComponent<{ bus: EventBus }> {
                 <ValuePreviews bus={this.props.bus} />
 
                 <path class="gray-bg" d="M 14 332, h 71, v 100, h -71, Z" />
-
-                <g visibility={this.noVSpeed}>
-                    <text x="135" y="238" class="text-3 amber middle">
-                        NO
-                    </text>
-                    <text x="135" y="270" class="text-3 amber middle">
-                        V
-                    </text>
-                    <text x="135" y="302" class="text-3 amber middle">
-                        S
-                    </text>
-                    <text x="135" y="327" class="text-3 amber middle">
-                        P
-                    </text>
-                    <text x="135" y="352" class="text-3 amber middle">
-                        D
-                    </text>
-                </g>
 
                 <CommandSpeed bus={this.props.bus} />
                 <MachGS bus={this.props.bus} />

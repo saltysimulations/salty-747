@@ -7,6 +7,7 @@ import { SpeedTape } from "./AirspeedIndicator/SpeedTape";
 import { AltitudeScroller } from "./Altimeter/AltitudeScroller";
 import { AltitudeTape } from "./Altimeter/AltitudeTape";
 import { LateralDeviationScale } from "./DeviationScales/Lateral";
+import { VerticalDeviationScale } from "./DeviationScales/Vertical";
 
 export class PFD extends DisplayComponent<{ bus: EventBus }> {
     public render(): VNode {
@@ -15,6 +16,7 @@ export class PFD extends DisplayComponent<{ bus: EventBus }> {
                 <Horizon bus={this.props.bus} />
 
                 <LateralDeviationScale bus={this.props.bus} />
+                <VerticalDeviationScale bus={this.props.bus} />
 
                 <VerticalSpeedIndicator bus={this.props.bus} />
                 <HeadingDisplay bus={this.props.bus} />
