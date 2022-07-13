@@ -5,6 +5,7 @@ import { PFDSimvars } from "../SimVarPublisher";
 import { MetresDisplay } from "./MetresDisplay";
 import { BaroSetting } from "./BaroSetting";
 import { Minimums } from "./Minimums";
+import { RadioAltimeter } from "./RadioAltimeter";
 
 export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
     private originElevation = 0;
@@ -155,6 +156,7 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                 <CommandAlt bus={this.props.bus} />
                 <BaroSetting bus={this.props.bus} />
                 <Minimums bus={this.props.bus} />
+                <RadioAltimeter bus={this.props.bus} />
             </g>
         );
     }
