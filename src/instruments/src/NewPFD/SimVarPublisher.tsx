@@ -58,6 +58,10 @@ export interface PFDSimvars {
     baroHg: number;
     preselBaroVisible: boolean;
     preselBaro: number;
+    inboundLocCourse: number;
+    locRadial: number;
+    locSignal: boolean;
+    locFrequency: number;
 }
 
 export enum PFDVars {
@@ -118,6 +122,10 @@ export enum PFDVars {
     baroHg = "KOHLSMAN SETTING HG",
     preselBaroVisible = "L:74S_BARO_PRESEL_VISIBLE",
     preselBaro = "L:XMLVAR_Baro1_SavedPressure",
+    inboundLocCourse = "NAV LOCALIZER:3",
+    locRadial = "NAV RADIAL:3",
+    locSignal = "NAV HAS NAV:3",
+    locFrequency = "NAV ACTIVE FREQUENCY:3",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -179,6 +187,10 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["baroHg", { name: PFDVars.baroHg, type: SimVarValueType.InHG }],
         ["preselBaroVisible", { name: PFDVars.preselBaroVisible, type: SimVarValueType.Bool }],
         ["preselBaro", { name: PFDVars.preselBaro, type: SimVarValueType.Number }],
+        ["inboundLocCourse", { name: PFDVars.inboundLocCourse, type: SimVarValueType.Degree }],
+        ["locRadial", { name: PFDVars.locRadial, type: SimVarValueType.Degree }],
+        ["locSignal", { name: PFDVars.locSignal, type: SimVarValueType.Bool }],
+        ["locFrequency", { name: PFDVars.locFrequency, type: SimVarValueType.MHz }],
     ]);
 
     public constructor(bus: EventBus) {
