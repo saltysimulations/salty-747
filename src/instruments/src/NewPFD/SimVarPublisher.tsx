@@ -68,6 +68,7 @@ export interface PFDSimvars {
     locCourse: number;
     dmeSignal: boolean;
     dmeDistance: number;
+    afdsStatus: number;
 }
 
 export enum PFDVars {
@@ -138,6 +139,7 @@ export enum PFDVars {
     locCourse = "L:FLIGHTPLAN_APPROACH_COURSE",
     dmeSignal = "NAV HAS DME:3",
     dmeDistance = "NAV DME:3",
+    afdsStatus = "L:74S_AFDS_STATUS",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -209,6 +211,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["locCourse", { name: PFDVars.locCourse, type: SimVarValueType.Number }],
         ["dmeSignal", { name: PFDVars.dmeSignal, type: SimVarValueType.Bool }],
         ["dmeDistance", { name: PFDVars.dmeDistance, type: SimVarValueType.NM }],
+        ["afdsStatus", { name: PFDVars.afdsStatus, type: SimVarValueType.Enum }],
     ]);
 
     public constructor(bus: EventBus) {
