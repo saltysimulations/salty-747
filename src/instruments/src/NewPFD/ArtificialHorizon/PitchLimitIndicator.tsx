@@ -28,13 +28,13 @@ export class PitchLimitIndicator extends DisplayComponent<{ bus: EventBus }> {
 
     private handlePitchLimitTransform() {
         this.pliTransformRef.instance.style.transform = `translate(0px, ${this.degreesToPixels(
-            Math.max(-1 * this.pliPitch(Math.round(this.incidenceAlpha * 10) / 10, Math.round(this.stallAlpha * 10) / 10), -30)
+            Math.max(-1 * this.pliPitch(this.incidenceAlpha, this.stallAlpha), -30)
         )}px)`;
     }
 
     private handleVisibility() {
         this.visibility.set(
-            this.isPliOn(Math.round(this.airspeed * 10) / 10, this.maneuveringSpeed, this.flapsHandle, this.altAboveGround) ? "visible" : "hidden"
+            this.isPliOn(this.airspeed, this.maneuveringSpeed, this.flapsHandle, this.altAboveGround) ? "visible" : "hidden"
         );
     }
 
@@ -83,11 +83,15 @@ export class PitchLimitIndicator extends DisplayComponent<{ bus: EventBus }> {
                     d="M416 382, h33, m 0 0, h-8, l9 -14, m-9 14, m-9 0, l9 -14, m-18 14, l9 -14, m-17 14, v10"
                     blackStroke={5}
                     color="#ffc400"
+                    styleBlack="fill: none;"
+                    styleColor="fill: none;"
                 />
                 <BlackOutlineLine
                     d="M282 382, h-33, m 0 0, h8, l-9 -14, m9 14, m9 0, l-9 -14, m18 14, l-9 -14, m17 14, v10"
                     blackStroke={5}
                     color="#ffc400"
+                    styleBlack="fill: none;"
+                    styleColor="fill: none;"
                 />
             </g>
         );

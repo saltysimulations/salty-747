@@ -5,6 +5,7 @@ import { PFDSimvars } from "../SimVarPublisher";
 import { SpeedBugs } from "./SpeedBugs";
 import { ValuePreviews } from "./SpeedBugs/ValuePreviews";
 import { SpeedBands } from "./SpeedBands";
+import { SpeedTrendVector } from "./SpeedTrendVector";
 
 export class SpeedTape extends DisplayComponent<{ bus: EventBus }> {
     private transform = Subject.create("translate(50 0)");
@@ -77,6 +78,7 @@ export class SpeedTape extends DisplayComponent<{ bus: EventBus }> {
 
                 <CommandSpeed bus={this.props.bus} />
                 <MachGS bus={this.props.bus} />
+                <SpeedTrendVector bus={this.props.bus} />
             </g>
         );
     }

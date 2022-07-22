@@ -76,6 +76,7 @@ export interface PFDSimvars {
     apOn: boolean;
     activePitchMode: number;
     armedPitchMode: number;
+    acceleration: number;
 }
 
 export enum PFDVars {
@@ -154,6 +155,7 @@ export enum PFDVars {
     apOn = "AUTOPILOT MASTER",
     activePitchMode = "L:74S_PITCH_MODE_ACTIVE",
     armedPitchMode = "L:74S_PITCH_MODE_ARMED",
+    acceleration = "ACCELERATION BODY Z",
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
@@ -233,6 +235,7 @@ export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
         ["apOn", { name: PFDVars.apOn, type: SimVarValueType.Bool }],
         ["activePitchMode", { name: PFDVars.activePitchMode, type: SimVarValueType.Enum }],
         ["armedPitchMode", { name: PFDVars.armedPitchMode, type: SimVarValueType.Enum }],
+        ["acceleration", { name: PFDVars.acceleration, type: SimVarValueType.FPM }],
     ]);
 
     public constructor(bus: EventBus) {

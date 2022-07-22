@@ -1,4 +1,4 @@
-import { FSComponent, DisplayComponent, VNode, EventBus, Subject, Subscribable } from "msfssdk";
+import { FSComponent, DisplayComponent, VNode, EventBus, Subject } from "msfssdk";
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";
 import { PFDSimvars } from "../SimVarPublisher";
 
