@@ -5,14 +5,14 @@
     "scripts": {
         "build:layout": "node scripts/build.js",
         "build:instruments": "rollup -c src/instruments/rollup.config.js",
-        "build:pfd": "rollup -c src/instruments/src/NewPFD/rollup.config.js",
+        "build:pfd": "rollup -c src/instruments/src/PFD/rollup.config.js",
         "build:fpm": "cd src/modules && tsc --module commonjs && rollup -c rollup.config.ts",
         "build:models": "node src/models/build.js",
         "build:msfs-sdk": "cd msfs-avionics-mirror/src/sdk && npm run build",
         "build": "npm run build:msfs-sdk && npm run build:pfd && npm run build:instruments && npm run build:fpm && npm run build:models && npm run build:layout",
         "fragment": "node scripts/fragment.js",
         "dev": "rollup -wc src/instruments/rollup.config.js",
-        "dev-pfd": "rollup -wc src/instruments/src/NewPFD/rollup.config.js"
+        "dev-pfd": "rollup -wc src/instruments/src/PFD/rollup.config.js"
     },
     "author": "Salty Simulations",
     "license": "GPL-3.0-or-later",

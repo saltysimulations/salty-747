@@ -1,9 +1,0 @@
-{
-    "index": "./index.tsx",
-    "isInteractive": false,
-    "name": "UpperEICAS",
-    "dimensions": {
-        "width": 1280,
-        "height": 1280
-    }
-}

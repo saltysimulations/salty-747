@@ -5,55 +5,6 @@
     font-style: normal;
 }
 
-@keyframes Blinking {
-    0% {opacity: 0;}
-    50% {opacity: 0;}
-    51% {opacity: 1;}
-    100% {opacity: 1;}
-}
-
-@keyframes OuterMarkerAnim {
-    0%    {opacity: 0;}
-    33%   {opacity: 0;}
-    34%   {opacity: 1;}
-    100%  {opacity: 1;}
-}
-  
-@keyframes MiddleMarkerAnim {
-    0%    {opacity: 0}
-    10%   {opacity: 0}
-    11%   {opacity: 1}
-    27%   {opacity: 1}
-    28%   {opacity: 0}
-    44%   {opacity: 0}
-    45%   {opacity: 1}
-    100%  {opacity: 1}
-}
-
-.blink {
-    animation: Blinking 1s infinite;
-}
-
-.OuterMarkerBlink {
-    animation: OuterMarkerAnim 460ms infinite;
-}
-
-.MiddleMarkerBlink {
-    animation: MiddleMarkerAnim 730ms infinite;
-}
-
-.InnerMarkerBlink {
-    animation: Blinking 200ms infinite;
-}
-
-.RadioMinsBlink {
-    animation: Blinking 300ms 12;
-}
-
-.pfd-svg {
-    background-color: black;
-}
-
 text {
     font-family: "BoeingEFIS";
 }
@@ -62,74 +13,12 @@ text {
     fill: rgb(95, 95, 115);
 }
 
-.black-outline {
-    stroke: black;
-    stroke-width: 5px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+.horizon-group {
+    transform-origin: 349px 382px;
 }
 
-.white-line {
-    stroke: white;
-    stroke-width: 3px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.low-white-line {
-    stroke: white;
-    stroke-width: 3px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    opacity: 0.9;
-}
-
-.magenta-line {
-    stroke: #d570ff;
-    stroke-width: 3px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.green-line {
-    stroke: lime;
-    stroke-width: 5px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.fma-line {
-    stroke: lime;
-    stroke-width: 3px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.amber-line {
-    stroke: #ffc400;
-    stroke-width: 3px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.red-band {
-    stroke: red;
-    stroke-width: 9px;
-    stroke-linecap: butt;
-    stroke-dasharray: 9,13;
-}
-
-.cursor {
-    fill: black;
-    stroke: white;
-    stroke-width: 3px;
-    stroke-linejoin: round;
-}
-
-.indication {
-    stroke: white;
-    stroke-width: 3px;
-    stroke-linejoin: round;
+.hidden {
+    visibility: hidden;
 }
 
 .text {
@@ -140,16 +29,10 @@ text {
     paint-order: stroke;
 }
 
-.text-4 {
+.text-1 {
     @extend .text;
-    font-size: 40px;
-    letter-spacing: 0px;
-}
-
-.text-3 {
-    @extend .text;
-    font-size: 30px;
-    letter-spacing: -0.25px;
+    font-size: 17.55px;
+    letter-spacing: -0.75px;
 }
 
 .text-2 {
@@ -158,10 +41,16 @@ text {
     letter-spacing: -0.5px;
 }
 
-.text-1 {
+.text-3 {
     @extend .text;
-    font-size: 17.55px;
-    letter-spacing: -0.75px;
+    font-size: 30px;
+    letter-spacing: -0.25px;
+}
+
+.text-4 {
+    @extend .text;
+    font-size: 40px;
+    letter-spacing: 0px;
 }
 
 .magenta {
@@ -179,9 +68,6 @@ text {
 .cyan {
     fill: cyan;
 }
-.end {
-    text-anchor: end;
-}
 
 .middle {
     text-anchor: middle;
@@ -190,60 +76,81 @@ text {
 .start {
     text-anchor: start;
 }
-.graduation-text {
-    font-size: 22px;
-    fill: white;
-    text-anchor: middle;
-    stroke: black;
-    stroke-width: 1px;
-    paint-order: stroke;
-}
 
-.fd-bar {
-    stroke: #d570ff;
-    stroke-width: 5px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.fd-bar-outline {
-    stroke: black;
-    stroke-width: 7px;
+.line {
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .fpv-outline {
+    @extend .line;
     stroke: black;
     stroke-width: 6px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
 }
 
 .fpv-line {
+    @extend .line;
     stroke: white;
     stroke-width: 4px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
 }
 
-.tenkMarker {
+@keyframes blinking {
+    0% { opacity: 0; }
+    50% { opacity: 0; }
+    51% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes outer-marker-anim {
+    0% { opacity: 0; }
+    33% { opacity: 0; }
+    34% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes middle-marker-anim {
+    0% { opacity: 0 }
+    10% { opacity: 0 }
+    11% { opacity: 1 }
+    27% { opacity: 1 }
+    28% { opacity: 0 }
+    44% { opacity: 0 }
+    45% { opacity: 1 }
+    100% { opacity: 1 }
+}
+
+.blink {
+    animation: blinking 1s infinite;
+}
+
+.outer-marker-blink {
+    animation: outer-marker-anim 460ms infinite;
+}
+
+.middle-marker-blink {
+    animation: middle-marker-anim 730ms infinite;
+}
+
+.inner-marker-blink {
+    animation: blinking 200ms infinite;
+}
+
+.radio-mins-blink {
+    animation: blinking 300ms 12;
+}
+
+.red-band {
+    stroke: red;
+    stroke-width: 9px;
+    stroke-linecap: butt;
+    stroke-dasharray: 9,13;
+}
+
+.tenk-marker {
     font-size: 38px;
     fill: lime;
     stroke: black;
     text-anchor: end;
     stroke-width: 1.5px;
-    paint-order: stroke;
-}
-
-.halfThousandLine {
-    stroke: white;
-    stroke-width: 8px;
-    paint-order: stroke;
-}
-
-.halfThousandOutline {
-    stroke: black;
-    stroke-width: 10px;
     paint-order: stroke;
 }

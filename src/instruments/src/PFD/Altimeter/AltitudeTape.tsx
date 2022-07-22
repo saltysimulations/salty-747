@@ -1,361 +1,266 @@
-/**
- * Salty 74S
- * Copyright (C) 2021 Salty Simulations and its contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+import { FSComponent, DisplayComponent, VNode, EventBus, Subject } from "msfssdk";
+import { BlackOutlineLine } from "../Common/BlackOutlineLine";
+import { PFDSimvars } from "../SimVarPublisher";
 
-import React, { FC } from "react";
-import { useSimVar, useInteractionEvent } from "react-msfs";
+import { MetresDisplay } from "./MetresDisplay";
+import { BaroSetting } from "./BaroSetting";
+import { Minimums } from "./Minimums";
+import { RadioAltimeter } from "./RadioAltimeter";
 
-const getRadAltClass = (radAlt: number, radioMins: number, oldClass: string): string => {
-    let radAltClass = oldClass;
-    if (radAlt <= radioMins && radAlt > 1){
-        return radAltClass += " amber"
+export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
+    private originElevation = 0;
+    private destinationElevation = 0;
+    private isHalfway = false;
+
+    private transform = Subject.create("");
+    private bgD = Subject.create("");
+
+    private noTdzVisibility = Subject.create("hidden");
+    private tdzVisibility = Subject.create("hidden");
+    private tdzD = Subject.create("");
+
+    private handleTdz() {
+        const tdzUnavailable = this.originElevation === -1 && this.destinationElevation === -1;
+
+        this.noTdzVisibility.set(tdzUnavailable ? "visible" : "hidden");
+        this.tdzVisibility.set(tdzUnavailable ? "hidden" : "visible");
+        this.tdzD.set(`M 550 ${
+            382 + (this.isHalfway ? this.destinationElevation : this.originElevation) * -0.68
+        }, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18,
+            m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38,
+            m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0,
+            l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38,
+            m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`);
     }
-    else {
-        return radAltClass += "";
+
+    public onAfterRender(node: VNode): void {
+        super.onAfterRender(node);
+
+        const sub = this.props.bus.getSubscriber<PFDSimvars>();
+
+        sub.on("altitude")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.transform.set(`translate(50 ${altitude * 0.68})`);
+                this.bgD.set(`M 567 ${332 - altitude * 0.68}, h 73, v 100, h -73, Z`);
+            });
+
+        sub.on("originElevation")
+            .whenChanged()
+            .handle((elevation) => {
+                this.originElevation = elevation;
+                this.handleTdz();
+            });
+
+        sub.on("destinationElevation")
+            .whenChanged()
+            .handle((elevation) => {
+                this.destinationElevation = elevation;
+                this.handleTdz();
+            });
+
+        sub.on("passedHalfway")
+            .whenChanged()
+            .handle((halfway) => {
+                this.isHalfway = halfway;
+                this.handleTdz();
+            });
     }
-};
 
-const feetToMetric = (feet: number): number => {
-    const metres = Math.round(feet * 0.3048);
-    return metres;
-};
+    // TODO: make 500 feet lines shorter
+    public render(): VNode {
+        const lineStyle = "stroke-linejoin: miter; stroke-linecap: butt; paint-order: stroke;";
+        return (
+            <g>
+                <clipPath id="altitudetape-clip">
+                    <path d="M575 100, h125, v560, h-125 Z" />
+                </clipPath>
 
-const determineTDZE = (origin: number, dest: number, isHalfway: boolean): number => {
-    const tdze = isHalfway ? dest : origin;
-    return tdze;
-};
-
-export const AltitudeTape: FC = () => {
-    const [altitude] = useSimVar("INDICATED ALTITUDE", "feet");
-    const [altAlertStatus] = useSimVar("L:74S_ALT_ALERT", "number");
-    const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
-    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
-    const [isHalfway] = useSimVar("L:74S_FMC_PASSED_HALFWAY", "bool");
-    const [isMtrsOn] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
-    const [mtrsOn, setMtrs] = useSimVar("L:74S_EFIS_METRES_ON", "bool");
-    const [originElev] = useSimVar("L:74S_FMC_ORIGIN_ELEVATION", "number");
-    const [destElev] = useSimVar("L:74S_FMC_DEST_ELEVATION", "number");
-    
-    useInteractionEvent("B747_8_PFD_MTRS", () => {
-        setMtrs(!mtrsOn);
-    });
-
-    const getAltitudeY = (altitude: number): number => {
-        const y = altitude * 0.68;
-        return y;
-    };
-
-    return (
-        <g>
-            <clipPath id="altitudetape-clip">
-                <path d="M575 100, h125, v560, h-125 Z" />
-            </clipPath>
-
-            <g clipPath="url(#altitudetape-clip)">
-                <g transform={`translate(50 ${getAltitudeY(Math.round(altitude))})`}>
-                    {Array.from({ length: 501 }, (_, i) => {
-                        const y = i * -68 + 382;
-                        const x = (i * 200) % 500 == 0 ? "M540" : "M550";
-                        const length = (i * 200) % 500 == 0 ? "h25" : "h15";
-                        const lineclassName = (i * 200) % 500 == 0 ? "halfThousandLine" : "white-line";
-                        const outlineclassName = (i * 200) % 500 == 0 ? "halfThousandOutline" : "black-outline";
-                        return (
+                <g clip-path="url(#altitudetape-clip)">
+                    <g transform={this.transform}>
+                        {Array.from({ length: 501 }, (_, i) => (
+                            <BlackOutlineLine
+                                d={`${(i * 200) % 500 === 0 ? "M540" : "M550"} ${i * -68 + 382}, ${(i * 200) % 500 === 0 ? "h25" : "h15"}`}
+                                whiteStroke={(i * 200) % 500 === 0 ? 8 : 3}
+                                blackStroke={(i * 200) % 500 === 0 ? 10 : 5}
+                                styleColor={lineStyle}
+                                styleBlack={lineStyle}
+                            />
+                        ))}
+                        {Array.from({ length: 9 }, (_, i) => (
+                            <BlackOutlineLine
+                                d={`${(i * 200) % 500 === 0 ? "M540" : "M550"} ${i * 68 + 382}, ${(i * 200) % 500 === 0 ? "h25" : "h15"}`}
+                                whiteStroke={(i * 200) % 500 === 0 ? 8 : 3}
+                                blackStroke={(i * 200) % 500 === 0 ? 10 : 5}
+                                styleColor={lineStyle}
+                                styleBlack={lineStyle}
+                            />
+                        ))}
+                        {Array.from({ length: 51 }, (_, i) => (
                             <>
-                                <path className={outlineclassName} d={`${x || 0} ${y || 0}, ${length || 0}`} />
-                                <path className={lineclassName} d={`${x || 0} ${y || 0}, ${length || 0}`} />
+                                <BlackOutlineLine d={`M570 ${i * -680 + 365}, h79`} whiteStroke={4} blackStroke={5} />
+                                <BlackOutlineLine d={`M570 ${i * -680 + 365 + 34}, h79`} whiteStroke={4} blackStroke={5} />
                             </>
-                        );
-                    })}
-                    {Array.from({ length: 9 }, (_, i) => {
-                        const y = i * 68 + 382;
-                        const x = (i * 200) % 500 == 0 ? "M540" : "M550";
-                        const length = (i * 200) % 500 == 0 ? "h25" : "h15";
-                        const lineclassName = (i * 200) % 500 == 0 ? "halfThousandLine" : "white-line";
-                        const outlineclassName = (i * 200) % 500 == 0 ? "halfThousandOutline" : "black-outline";
-                        return (
-                            <>
-                                <path className={outlineclassName} d={`${x || 0} ${y || 0}, ${length || 0}`} />
-                                <path className={lineclassName} d={`${x || 0} ${y || 0}, ${length || 0}`} />
-                            </>
-                        );
-                    })}
-                    {Array.from({ length: 51 }, (_, i) => {
-                        const y = i * -680 + 365;
-                        return (
-                            <>
-                                <path className="fpv-outline" d={`M570 ${y || 0}, h79`} />
-                                <path className="fpv-line" d={`M570 ${y || 0}, h79`} />
-                                <path className="fpv-outline" d={`M570 ${y + 34 || 0}, h79`} />
-                                <path className="fpv-line" d={`M570 ${y + 34 || 0}, h79`} />
-                            </>
-                        );
-                    })}
-                    {Array.from({ length: 251 }, (_, i) => {
-                        const y = i * -136 + 382;
-                        const offset = 11;
-                        let text = ((i  * 200)).toFixed(0);
-                        let hundredsText = text.substring(text.length - 3);
-                        let thousandsText = text.substring(0, 2);
-                        if (i < 5) {
-                            thousandsText = "";
-                        }
-                        else if (i < 50) {
-                            thousandsText = text.substring(0, 1);
-                        }
-                        return (
-                            <>
-                                <text x="640" y={`${y + offset}`} className="text-2" fillOpacity={0.9}>
-                                    {hundredsText}
+                        ))}
+
+                        {Array.from({ length: 251 }, (_, i) => {
+                            const y = i * -136 + 382 + 11;
+                            const text = (i * 200).toFixed(0);
+                            const hundredsText = text.substring(text.length - 3);
+                            let thousandsText = text.substring(0, 2);
+                            if (i < 5) {
+                                thousandsText = "";
+                            } else if (i < 50) {
+                                thousandsText = text.substring(0, 1);
+                            }
+                            return (
+                                <>
+                                    <text x="640" y={y} class="text-2" fill-opacity={0.9}>
+                                        {hundredsText}
+                                    </text>
+                                    <text x="603" y={y} class="text-3" fill-opacity={0.9}>
+                                        {thousandsText}
+                                    </text>
+                                </>
+                            );
+                        })}
+                        {Array.from({ length: 5 }, (_, i) => {
+                            const text = (i * 200).toFixed(0);
+                            return (
+                                <text x="638" y={i * 136 + 382 + 11} class="text-2" fill-opacity={0.85}>
+                                    {i === 0 ? "" : `-${text.substring(text.length - 3)}`}
                                 </text>
-                                <text x="603" y={`${y + offset}`} className="text-3" fillOpacity={0.9}>
-                                    {thousandsText}
-                                </text>
-                            </>
-                        );
-                    })}
-                    {Array.from({ length: 5 }, (_, i) => {
-                        const y = i * 136 + 382;
-                        const offset = 11;
-                        let text = ((i  * 200)).toFixed(0);
-                        let hundredsText = "-" + text.substring(text.length - 3);
-                        if (i == 0) {
-                            hundredsText = ""
-                        }
-                        return (
-                            <>
-                                <text x="638" y={`${y + offset}`} className="text-2" fillOpacity={0.85}>
-                                    {hundredsText}
-                                </text>
-                            </>
-                        );
-                    })}
+                            );
+                        })}
 
-                    <path className= "gray-bg" d={`M 567 ${332 - getAltitudeY(Math.round(altitude))}, h 73, v 100, h -73, Z`} />
+                        <path class="gray-bg" d={this.bgD} />
 
-                    {/* TDZ Indicator */}
-                    <g visibility={originElev == -1 && destElev == -1 ? "visible" : "visible"}>
-                        <path className="black-outline" fill="none" d={`M 550 ${382 + determineTDZE(originElev, destElev, isHalfway) * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
-                        <path className="amber-line" fill="none" d={`M 550 ${382 + determineTDZE(originElev, destElev, isHalfway) * -0.68}, h 100, m -5 0, l 5 5, m -5 -5, m -10.6 0, l 18 18, m-18 -18, m-10.6 0, l 28 28, m-28 -28, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-38 -38, m-10.6 0, l38 38, m-10.6 0, l-27.5 -27.5, m0 10.6, l16.75 16.75`} />
+                        <g visibility={this.tdzVisibility}>
+                            <BlackOutlineLine d={this.tdzD} color="#ffc400" blackStroke={5} />
+                        </g>
+
+                        <AltitudeBugs bus={this.props.bus} />
                     </g>
-
-                    {/* Minimums Bug */}
-                    <path className="fpv-outline" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`} />
-                    <path className="green-line" fill="none" d={`M 650 ${382 + baroMins * -0.68}, h -100, l-20 20, v -40, l20, 20`}/>
-
-                    {/* Altitude Bug */}
-                    <path className="black-outline" fill="none" d={`M 550 ${Math.max(382 + (Math.round(altitude) + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (Math.round(altitude) - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
-                    <path className="magenta-line" fill="none" d={`M 550 ${Math.max(382 + (Math.round(altitude) + 420) * -0.68, Math.min(382 + selAlt * -0.68, 382 + (Math.round(altitude) - 410) * -0.68))}, l -10 15, v23, h50, v-76, h-50, v23, Z`} />
-                </g>
-            </g>
-
-            <g visibility={originElev == -1 && destElev == -1? "visible" : "hidden"}>
-                <NoTDZ />    
-            </g>
-
-            {/* Metres Display */}
-            <g visibility={isMtrsOn? "visible" : "hidden"}>
-
-                {/* Metres Box */}
-                <g>
-                    <path
-                        className="indication"
-                        style={{ strokeWidth: "5px", stroke: "black" }}
-                        d="M 632 314, h 104, v 30, h-104, Z"
-                    />
-                    <path
-                        style={{ strokeWidth: "3px" }}
-                        className="indication"
-                        d="M 632 314, h 104, v 30, h-104, Z"
-                    />
-                    <text x="715" y="339" className="text-3 end">{feetToMetric(Math.round(altitude))}</text>
-                    <text x="728" y="339" className="text-2 cyan end">M</text>
                 </g>
 
-                {/* Metres Selected Alt */}
-                <g>
-                    <text x="681" y="41" className="text-3 magenta end">
-                        {Math.round(feetToMetric(selAlt / 10) * 10)}
+                <g visibility={this.noTdzVisibility}>
+                    <text x="722" y="645" class="text-2 amber start">
+                        NO
                     </text>
-                    <text x="682" y="41" className="text-2 cyan start">
-                        M
+                    <text x="722" y="666" class="text-2 amber start">
+                        TDZ
                     </text>
                 </g>
+
+                <MetresDisplay bus={this.props.bus} />
+                <CommandAlt bus={this.props.bus} />
+                <BaroSetting bus={this.props.bus} />
+                <Minimums bus={this.props.bus} />
+                <RadioAltimeter bus={this.props.bus} />
             </g>
-
-            {/* Altimeter Scroller Box */}
-            <path
-                className="indication"
-                style={{ strokeWidth: "5px", stroke: "black" }}
-                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z"
-            />
-            <path 
-                style={{ strokeWidth: (altAlertStatus != 0 ? "9px" : "3px"), stroke: (altAlertStatus != 2 ? "white" : "#ffc400") }}
-                className="indication" 
-                d="M 632 342 h 104 v 78 h -104 v -28 l -14 -11 l 14 -11 Z" 
-            />
-        </g>     
-    );
-};
-
-export const CommandAlt: FC = () => {
-    const [selAlt] = useSimVar("AUTOPILOT ALTITUDE LOCK VAR:3", "feet");
-    const [altAlertStatus] = useSimVar("L:74S_ALT_ALERT", "enum");
-
-    const getLargeSelAltText = (altitude: number): string => {
-        let text = altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
-        if (altitude < 1000) {
-            text = "";
-        }
-        return text;
-    };
-    
-    const getSmallSelAltText = (altitude: number): string => {
-        const string = altitude.toString();
-        const text = string.substring(string.length - 3)
-        return text;
-    };
-
-    return (
-        <g>
-            <text x="649" y="80" className="text-4 magenta">
-                {getLargeSelAltText(selAlt)}
-            </text>
-            <text x="695" y="80" className="text-3 magenta">
-                {getSmallSelAltText(selAlt)}
-            </text>
-            <path className="indication"
-                d="M 602 48, h 96, v35, h-96, Z"
-                fill="none"
-                visibility={(altAlertStatus == 1 ? "visible" : "hidden")} />
-        </g>
-    );
+        );
+    }
 }
 
-export const BaroSetting: FC = () => {
-    const [preselBaro] = useSimVar("L:XMLVAR_Baro1_SavedPressure", "number");
-    const [preselBaroVisible] = useSimVar("L:74S_BARO_PRESEL_VISIBLE", "bool");
-    const [isSTD] = useSimVar("L:XMLVAR_Baro1_ForcedToSTD", "bool");
-    const [baroHg] = useSimVar("KOHLSMAN SETTING HG", "inHg");
-    const [units] = useSimVar("L:XMLVAR_Baro_Selector_HPA_1", "bool");
+class AltitudeBugs extends DisplayComponent<{ bus: EventBus }> {
+    private altitude = 0;
+    private selectedAltitude = 0;
 
-    return (
-        <g>
-            <text x="682" y="710" className="text-4 green" visibility= {isSTD == true ? "visible" : "hidden"}>
-                STD
-            </text>
-            <text 
-                x={units === 0 ? "685": "680"} 
-                y="710" 
-                className="text-3 green" 
-                visibility= {isSTD == false ? "visible" : "hidden"}>
-                {units === 0 ? baroHg.toFixed(2): (baroHg * 33.86).toFixed(0)}
-            </text>
-            <text 
-                x={units === 0 ? "715": "725"} 
-                y="710" 
-                className="text-2 green" 
-                visibility= {isSTD == false ? "visible" : "hidden"}>
-                {units === 0 ? " IN": " HPA"}
-            </text>
-            <text 
-                x="720" 
-                y="745" 
-                visibility={preselBaroVisible ? "visible" : "hidden"}
-                className="text-2">
-                {units === 0 ? (preselBaro / 54182.4).toFixed(2) + " IN": (preselBaro / 1600).toFixed(0) + " HPA"}
-            </text>
-        </g>
-    );
-};
+    private altitudeBugD = Subject.create("");
+    private minimumsBugD = Subject.create("");
 
-export const Minimums: FC = () => {
-    const [baroMins] = useSimVar("L:74S_MINS_BARO", "feet");
-    const [radioMins] = useSimVar("L:74S_MINS_RADIO", "feet");
-    const [radAlt] = useSimVar("PLANE ALT ABOVE GROUND MINUS CG", "feet");
+    private handleAltitudeBug() {
+        this.altitudeBugD.set(
+            `M 550 ${Math.max(
+                382 + (this.altitude + 420) * -0.68,
+                Math.min(382 + this.selectedAltitude * -0.68, 382 + (this.altitude - 410) * -0.68)
+            )}, l -10 15, v23, h50, v-76, h-50, v23, Z`
+        );
+    }
 
-    const getRadioTextClass = (radAlt: number, radioMins: number, size: number): string => {
-        if (radAlt <= radioMins && radAlt > 1){
-            return `text-${size} amber RadioMinsBlink`;
-        }
-        return `text-${size} green`;
-    };
+    public onAfterRender(node: VNode): void {
+        super.onAfterRender(node);
 
-    return (
-        < g>
-            < g visibility={baroMins >= -100 ? "visible" : "hidden"}>
-                <text x="530" y="638" className="text-2 green" >
-                    BARO
+        const sub = this.props.bus.getSubscriber<PFDSimvars>();
+
+        sub.on("altitude")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.altitude = altitude;
+                this.handleAltitudeBug();
+            });
+
+        sub.on("selectedAltitude")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.selectedAltitude = altitude;
+                this.handleAltitudeBug();
+            });
+
+        sub.on("baroMinimums")
+            .whenChanged()
+            .handle((minimums) => this.minimumsBugD.set(`M 650 ${382 + minimums * -0.68}, h -100, l-20 20, v -40, l20, 20`));
+    }
+    public render(): VNode {
+        return (
+            <>
+                <BlackOutlineLine d={this.minimumsBugD} color="lime" whiteStroke={5} blackStroke={6} />
+                <BlackOutlineLine d={this.altitudeBugD} color="#d570ff" blackStroke={5} styleBlack="fill: none;" styleColor="fill: none;" />
+            </>
+        );
+    }
+}
+
+class CommandAlt extends DisplayComponent<{ bus: EventBus }> {
+    private smallSelAltText = Subject.create("");
+    private largeSelAltText = Subject.create("");
+
+    private altAlertVisibility = Subject.create("hidden");
+
+    private getSmallSelAltText(altitude: number): string {
+        const string = altitude.toString();
+        return string.substring(string.length - 3);
+    }
+
+    private getLargeSelAltText(altitude: number): string {
+        return altitude < 1000 ? "" : altitude.toString().substring(0, altitude >= 10000 ? 2 : 1);
+    }
+
+    public onAfterRender(node: VNode): void {
+        super.onAfterRender(node);
+
+        const sub = this.props.bus.getSubscriber<PFDSimvars>();
+
+        sub.on("selectedAltitude")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.smallSelAltText.set(this.getSmallSelAltText(altitude));
+                this.largeSelAltText.set(this.getLargeSelAltText(altitude));
+            });
+
+        sub.on("altAlertStatus")
+            .whenChanged()
+            .handle((status) => this.altAlertVisibility.set(status === 1 ? "visible" : "hidden"));
+    }
+
+    public render(): VNode {
+        return (
+            <g>
+                <text x="649" y="80" class="text-4 magenta">
+                    {this.largeSelAltText}
                 </text>
-                <text x="530" y="668" className="text-3 green">
-                    {baroMins}
+                <text x="695" y="80" class="text-3 magenta">
+                    {this.smallSelAltText}
                 </text>
+                <path
+                    stroke="white"
+                    stroke-width="3"
+                    stroke-linejoin="round"
+                    d="M 602 48, h 96, v35, h-96, Z"
+                    fill="none"
+                    visibility={this.altAlertVisibility}
+                />
             </g>
-
-            < g visibility={radioMins > 0 ? "visible" : "hidden"}>
-                <text x="550" y="85" className={getRadioTextClass(Math.round(radAlt), radioMins, 2)}>
-                    RADIO
-                </text>
-                <text x="550" y="113" className={getRadioTextClass(Math.round(radAlt), radioMins, 3)}>
-                    {radioMins}
-                </text>
-            </g>
-
-        </g>
-
-    );
-};
-
-export const RadioAltimeter: FC = () => {
-    const [radAlt] = useSimVar("PLANE ALT ABOVE GROUND MINUS CG", "feet");
-    const [radioMins] = useSimVar("L:74S_MINS_RADIO", "feet");
-
-    const getRadAltRounded = (): number => {
-        let alt = 0;
-        if (radAlt > 500) {
-            alt = Math.round(radAlt / 20) * 20;
-        } 
-        else if (radAlt > 100) {
-            alt = Math.round(radAlt / 10) * 10;
-        }
-        else {
-            alt = Math.round(radAlt / 2) * 2;  
-        }
-        return alt;
-    };
-
-    return (
-        < g>
-            < g visibility={radAlt <= 2500 ? "visible" : "hidden"}>
-                <text x="550" y="150" className={getRadAltClass(Math.round(radAlt), radioMins, "text-4")}>
-                    {getRadAltRounded()}
-                </text>
-            </g>
-
-        </g>
-
-    );
-};
-
-export const NoTDZ: FC = () => {
-
-    return (
-        <g>
-            <text x="722" y="645" className="text-2 amber start">NO</text>
-            <text x="722" y="666" className="text-2 amber start">TDZ</text>
-        </g>
-    );
-};
+        );
+    }
+}
