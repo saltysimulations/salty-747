@@ -8,6 +8,8 @@ export class VerticalSpeedIndicator extends DisplayComponent<{ bus: EventBus }> 
     private indicatorLineD = Subject.create("");
     private textRef = FSComponent.createRef<SVGTextElement>();
 
+    private vsFailVisibility = Subject.create("hidden");
+
     public static fpmToPixels(fpm: number) {
         const seg1 = 0.08 * Math.min(Math.abs(fpm), 1000);
         const seg2 = 0.06 * Math.min(Math.max(Math.abs(fpm) - 1000, 0), 1000);
@@ -26,6 +28,7 @@ export class VerticalSpeedIndicator extends DisplayComponent<{ bus: EventBus }> 
             .handle((state) => {
                 this.bgVisibility.set(state >= 1 ? "visible" : "hidden");
                 this.indicatorVisibility.set(state >= 2 ? "visible" : "hidden");
+                this.vsFailVisibility.set(state === 0 ? "visible" : "hidden");
             });
 
         sub.on("verticalSpeed")
@@ -55,6 +58,22 @@ export class VerticalSpeedIndicator extends DisplayComponent<{ bus: EventBus }> 
                 </g>
 
                 <rect x={792} y={290} width={9} height={190} fill="black" />
+
+                <g visibility={this.vsFailVisibility}>
+                    <rect x="751" y="328" width="24" height="103" class="line" fill="none" stroke-width="3" stroke="#ffc400" />
+                    <text x="763" y="353" class="text-3 amber middle">
+                        V
+                    </text>
+                    <text x="763" y="378" class="text-3 amber middle">
+                        E
+                    </text>
+                    <text x="763" y="403" class="text-3 amber middle">
+                        R
+                    </text>
+                    <text x="763" y="428" class="text-3 amber middle">
+                        T
+                    </text>
+                </g>
             </g>
         );
     }

@@ -13,7 +13,7 @@ export const arcCorrection = (heading: number, indicatorHeading: number): number
 export class HeadingDisplay extends DisplayComponent<{ bus: EventBus }> {
     private visibilityAligning = Subject.create("visible");
     private visibilityAligned = Subject.create("visible");
-
+    private hdgFailVisibility = Subject.create("hidden");
 
     public onAfterRender(node: VNode): void {
         super.onAfterRender(node);
@@ -24,7 +24,8 @@ export class HeadingDisplay extends DisplayComponent<{ bus: EventBus }> {
             .whenChanged()
             .handle((state) => {
                 this.visibilityAligning.set(state >= 1 ? "visible" : "hidden");
-                this.visibilityAligned.set(state == 2 ? "visible" : "hidden");
+                this.visibilityAligned.set(state === 2 ? "visible" : "hidden");
+                this.hdgFailVisibility.set(state === 0 ? "visible" : "hidden");
             });
     }
 
@@ -49,6 +50,13 @@ export class HeadingDisplay extends DisplayComponent<{ bus: EventBus }> {
 
                 <rect x="200" y="785" width="300" height="5" fill="black" />
                 <rect x="110" y="789" width="480" height="15" fill="black" />
+
+                <g visibility={this.hdgFailVisibility}>
+                    <rect x="322" y="749.5" width="52" height="27" class="line" fill="none" stroke-width="3" stroke="#ffc400" />
+                    <text x="348" y="774" class="text-3 amber middle">
+                        HDG
+                    </text>
+                </g>
             </g>
         );
     }
@@ -73,7 +81,7 @@ class HeadingLineElement extends DisplayComponent<{ bus: EventBus; rotation: num
 
         sub.on("irsState")
             .whenChanged()
-            .handle((state) => this.visibility.set(state == 2 ? "visible" : "hidden"));
+            .handle((state) => this.visibility.set(state === 2 ? "visible" : "hidden"));
     }
 
     public render(): VNode {

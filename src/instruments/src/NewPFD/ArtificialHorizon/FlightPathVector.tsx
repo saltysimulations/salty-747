@@ -15,6 +15,8 @@ export class FlightPathVector extends DisplayComponent<{ bus: EventBus }> {
     private fpvRotateSub = Subject.create("rotate(0deg)");
     private visibility = Subject.create("hidden");
 
+    private fpvFailVisibility = Subject.create("hidden");
+
     private degreesToPixels(angle: number): number {
         let newAngle = angle;
         if (this.groundSpeed < 1) {
@@ -85,12 +87,14 @@ export class FlightPathVector extends DisplayComponent<{ bus: EventBus }> {
 
         sub.on("irsState").whenChanged().handle((state) => {
             this.irsState = state;
-            this.visibility.set(this.irsState == 2 && this.isFpvOn ? "visible" : "hidden");
+            this.visibility.set(this.irsState === 2 && this.isFpvOn ? "visible" : "hidden");
+            this.fpvFailVisibility.set(this.irsState === 0 && this.isFpvOn ? "visible" : "hidden");
         });
 
         sub.on("fpvOn").whenChanged().handle((fpvOn) => {
             this.isFpvOn = fpvOn;
-            this.visibility.set(this.irsState == 2 && this.isFpvOn ? "visible" : "hidden");
+            this.visibility.set(this.irsState === 2 && this.isFpvOn ? "visible" : "hidden");
+            this.fpvFailVisibility.set(this.irsState === 0 && this.isFpvOn ? "visible" : "hidden");
         });
 
         const hEventSub = this.props.bus.getSubscriber<HEvent>();
@@ -116,6 +120,12 @@ export class FlightPathVector extends DisplayComponent<{ bus: EventBus }> {
                         <path class="fpv-line" d="M349 372, v-14" />
                         <circle class="fpv-line" cx="349" cy="382" r="10" fill="none" />
                     </g>
+                </g>
+                <g visibility={this.fpvFailVisibility}>
+                    <rect x="196" y="270" width="52" height="27" class="line" fill="none" stroke-width="3" stroke="#ffc400" />
+                    <text x="222" y="294" class="text-3 amber middle">
+                        FPV
+                    </text>
                 </g>
             </g>
         );
