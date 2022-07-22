@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, DisplayComponent, VNode, EventBus, Subject } from "msfssdk";
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";
 import { PFDSimvars } from "../SimVarPublisher";
@@ -83,25 +88,31 @@ export class LateralDeviationScale extends DisplayComponent<{ bus: EventBus }> {
                 this.risingRunwayVisibility.set(this.flightPhase >= 3 && this.radioHeight < 2500 && this.locSignal ? "visible" : "hidden");
             });
 
-        sub.on("altAboveGround").withPrecision(0).handle((altitude) => {
-            this.radioHeight = altitude;
-            this.risingRunwayTransform.set(
-                `translate(${this.getLocDisplacement(this.inboundLocCourse, this.locRadial)}, ${this.getRisingRunwayY(this.radioHeight)})`
-            );
-            this.risingRunwayVisibility.set(this.flightPhase >= 3 && this.radioHeight < 2500 && this.locSignal ? "visible" : "hidden");
-            this.risingRunwayD.set(`M -3 550, V${575 - this.getRisingRunwayY(this.radioHeight)}`);
-            this.risingRunwayD2.set(`M 3 550, V${575 - this.getRisingRunwayY(this.radioHeight)}`);
-        })
+        sub.on("altAboveGround")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.radioHeight = altitude;
+                this.risingRunwayTransform.set(
+                    `translate(${this.getLocDisplacement(this.inboundLocCourse, this.locRadial)}, ${this.getRisingRunwayY(this.radioHeight)})`
+                );
+                this.risingRunwayVisibility.set(this.flightPhase >= 3 && this.radioHeight < 2500 && this.locSignal ? "visible" : "hidden");
+                this.risingRunwayD.set(`M -3 550, V${575 - this.getRisingRunwayY(this.radioHeight)}`);
+                this.risingRunwayD2.set(`M 3 550, V${575 - this.getRisingRunwayY(this.radioHeight)}`);
+            });
 
-        sub.on("flightPhase").whenChanged().handle((phase) =>{
-            this.flightPhase = phase;
-            this.risingRunwayVisibility.set(this.flightPhase >= 3 && this.radioHeight < 2500 && this.locSignal ? "visible" : "hidden");
-        })
+        sub.on("flightPhase")
+            .whenChanged()
+            .handle((phase) => {
+                this.flightPhase = phase;
+                this.risingRunwayVisibility.set(this.flightPhase >= 3 && this.radioHeight < 2500 && this.locSignal ? "visible" : "hidden");
+            });
 
-        sub.on("locFrequency").whenChanged().handle((frequency) => {
-            this.locFrequency = frequency;
-            this.circlesGroupVisibility.set(frequency !== 0 ? "visible" : "hidden");
-        })
+        sub.on("locFrequency")
+            .whenChanged()
+            .handle((frequency) => {
+                this.locFrequency = frequency;
+                this.circlesGroupVisibility.set(frequency !== 0 ? "visible" : "hidden");
+            });
     }
 
     public render(): VNode {

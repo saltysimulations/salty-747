@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, DisplayComponent, VNode, EventBus, Subject, Subscribable } from "msfssdk";
 import { PFDSimvars } from "../SimVarPublisher";
 
@@ -26,7 +31,6 @@ export class SlipIndicator extends DisplayComponent<SlipIndicatorProps> {
                 this.slipGroup.instance.style.transform = `translate(${angle}px, 0px)`;
                 this.fillOpacity.set(Math.abs(angle) >= 33 ? 1 : 0);
             });
-
     }
     public render(): VNode {
         return (

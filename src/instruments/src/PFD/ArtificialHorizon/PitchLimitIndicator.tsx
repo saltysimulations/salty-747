@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, DisplayComponent, VNode, EventBus, Subject } from "msfssdk";
 import { PFDSimvars } from "../SimVarPublisher";
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";
@@ -33,9 +38,7 @@ export class PitchLimitIndicator extends DisplayComponent<{ bus: EventBus }> {
     }
 
     private handleVisibility() {
-        this.visibility.set(
-            this.isPliOn(this.airspeed, this.maneuveringSpeed, this.flapsHandle, this.altAboveGround) ? "visible" : "hidden"
-        );
+        this.visibility.set(this.isPliOn(this.airspeed, this.maneuveringSpeed, this.flapsHandle, this.altAboveGround) ? "visible" : "hidden");
     }
 
     // wondering how i'm gonna find a way
@@ -45,35 +48,47 @@ export class PitchLimitIndicator extends DisplayComponent<{ bus: EventBus }> {
 
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
-        sub.on("airspeed").whenChangedBy(0.0625).handle((airspeed) => {
-            this.airspeed = airspeed;
-            this.handleVisibility();
-        });
+        sub.on("airspeed")
+            .whenChangedBy(0.0625)
+            .handle((airspeed) => {
+                this.airspeed = airspeed;
+                this.handleVisibility();
+            });
 
-        sub.on("maneuveringSpeed").whenChangedBy(0.25).handle((manSpeed) => {
-            this.maneuveringSpeed = manSpeed;
-            this.handleVisibility();
-        });
+        sub.on("maneuveringSpeed")
+            .whenChangedBy(0.25)
+            .handle((manSpeed) => {
+                this.maneuveringSpeed = manSpeed;
+                this.handleVisibility();
+            });
 
-        sub.on("flapsHandle").whenChanged().handle((flaps) => {
-            this.flapsHandle = flaps;
-            this.handleVisibility();
-        });
+        sub.on("flapsHandle")
+            .whenChanged()
+            .handle((flaps) => {
+                this.flapsHandle = flaps;
+                this.handleVisibility();
+            });
 
-        sub.on("altAboveGround").withPrecision(1).handle((altitude) => {
-            this.altAboveGround = altitude;
-            this.handleVisibility();
-        });
+        sub.on("altAboveGround")
+            .withPrecision(1)
+            .handle((altitude) => {
+                this.altAboveGround = altitude;
+                this.handleVisibility();
+            });
 
-        sub.on("incidenceAlpha").whenChangedBy(0.05).handle((alpha) => {
-            this.incidenceAlpha = alpha;
-            this.handlePitchLimitTransform();
-        });
+        sub.on("incidenceAlpha")
+            .whenChangedBy(0.05)
+            .handle((alpha) => {
+                this.incidenceAlpha = alpha;
+                this.handlePitchLimitTransform();
+            });
 
-        sub.on("stallAlpha").whenChangedBy(0.05).handle((stallAlpha) => {
-            this.stallAlpha = stallAlpha;
-            this.handlePitchLimitTransform();
-        });
+        sub.on("stallAlpha")
+            .whenChangedBy(0.05)
+            .handle((stallAlpha) => {
+                this.stallAlpha = stallAlpha;
+                this.handlePitchLimitTransform();
+            });
     }
 
     public render(): VNode {

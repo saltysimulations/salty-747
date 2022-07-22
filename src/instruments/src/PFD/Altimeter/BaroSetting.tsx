@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, DisplayComponent, VNode, EventBus, Subject } from "msfssdk";
 import { PFDSimvars } from "../SimVarPublisher";
 
@@ -51,10 +56,12 @@ export class BaroSetting extends DisplayComponent<{ bus: EventBus }> {
             .whenChanged()
             .handle((presel) => this.preselVisibility.set(presel ? "visible" : "hidden"));
 
-        sub.on("preselBaro").whenChanged().handle((baro) => {
-            this.preselBaro = baro;
-            this.preselContent.set(this.units ? (this.preselBaro / 1600).toFixed(0) + " HPA" : (this.preselBaro / 54182.4).toFixed(2) + " IN");
-        })
+        sub.on("preselBaro")
+            .whenChanged()
+            .handle((baro) => {
+                this.preselBaro = baro;
+                this.preselContent.set(this.units ? (this.preselBaro / 1600).toFixed(0) + " HPA" : (this.preselBaro / 54182.4).toFixed(2) + " IN");
+            });
     }
 
     public render(): VNode {

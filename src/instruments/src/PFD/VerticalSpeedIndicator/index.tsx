@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, DisplayComponent, VNode, EventBus, Subject } from "msfssdk";
 import { PFDSimvars } from "../SimVarPublisher";
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";

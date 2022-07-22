@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, DisplayComponent, VNode, EventBus } from "msfssdk";
 import { PFDSimvars } from "../SimVarPublisher";
 
@@ -20,28 +25,32 @@ export class RadioAltimeter extends DisplayComponent<{ bus: EventBus }> {
 
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
-        sub.on("altAboveGround").withPrecision(0).handle((altitude) => {
-            this.radioAltitude = altitude;
+        sub.on("altAboveGround")
+            .withPrecision(0)
+            .handle((altitude) => {
+                this.radioAltitude = altitude;
 
-            let displayAltitude = 0;
-            if (altitude > 500) {
-                displayAltitude = Math.round(altitude / 20) * 20;
-            } else if (altitude > 100) {
-                displayAltitude = Math.round(altitude / 10) * 10;
-            } else {
-                displayAltitude = Math.round(altitude / 2) * 2;
-            }
+                let displayAltitude = 0;
+                if (altitude > 500) {
+                    displayAltitude = Math.round(altitude / 20) * 20;
+                } else if (altitude > 100) {
+                    displayAltitude = Math.round(altitude / 10) * 10;
+                } else {
+                    displayAltitude = Math.round(altitude / 2) * 2;
+                }
 
-            this.radioAltimeterRef.instance.innerHTML = displayAltitude.toString();
-            this.radioAltimeterRef.instance.style.visibility = altitude <= 2500 ? "visible" : "hidden";
+                this.radioAltimeterRef.instance.innerHTML = displayAltitude.toString();
+                this.radioAltimeterRef.instance.style.visibility = altitude <= 2500 ? "visible" : "hidden";
 
-            this.handleClass();
-        })
+                this.handleClass();
+            });
 
-        sub.on("radioMinimums").whenChanged().handle((minimums) => {
-            this.radioMinimums = minimums;
-            this.handleClass();
-        })
+        sub.on("radioMinimums")
+            .whenChanged()
+            .handle((minimums) => {
+                this.radioMinimums = minimums;
+                this.handleClass();
+            });
     }
 
     public render(): VNode {

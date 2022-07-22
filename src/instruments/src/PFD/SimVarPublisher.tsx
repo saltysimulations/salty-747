@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { EventBus, SimVarDefinition, SimVarValueType, SimVarPublisher } from "msfssdk";
 
 export interface PFDSimvars {

@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, DisplayComponent, VNode, EventBus, Subject, HEvent } from "msfssdk";
 import { PFDSimvars } from "../SimVarPublisher";
 
@@ -27,7 +32,7 @@ export class FlightPathVector extends DisplayComponent<{ bus: EventBus }> {
     }
 
     private vertVecToPixels(): number {
-        const fpa = (180 / Math.PI) * Math.asin((this.verticalVelocity / 60) / (this.horizontalVelocity / 60));
+        const fpa = (180 / Math.PI) * Math.asin(this.verticalVelocity / 60 / (this.horizontalVelocity / 60));
         return this.degreesToPixels(this.groundSpeed < 1 ? 0 : fpa + this.pitch);
     }
 
@@ -53,49 +58,67 @@ export class FlightPathVector extends DisplayComponent<{ bus: EventBus }> {
 
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
-        sub.on("groundSpeed").whenChangedBy(0.125).handle((gs) => {
-            this.groundSpeed = gs;
-            this.handleTransform();
-        });
+        sub.on("groundSpeed")
+            .whenChangedBy(0.125)
+            .handle((gs) => {
+                this.groundSpeed = gs;
+                this.handleTransform();
+            });
 
-        sub.on("verticalVelocity").withPrecision(1).handle((verticalVelocity) => {
-            this.verticalVelocity = verticalVelocity;
-            this.handleTransform();
-        });
+        sub.on("verticalVelocity")
+            .withPrecision(1)
+            .handle((verticalVelocity) => {
+                this.verticalVelocity = verticalVelocity;
+                this.handleTransform();
+            });
 
-        sub.on("horizontalVelocity").withPrecision(1).handle((horizontalVelocity) => {
-            this.horizontalVelocity = horizontalVelocity;
-            this.handleTransform();
-        });
+        sub.on("horizontalVelocity")
+            .withPrecision(1)
+            .handle((horizontalVelocity) => {
+                this.horizontalVelocity = horizontalVelocity;
+                this.handleTransform();
+            });
 
-        sub.on("pitch").withPrecision(2).handle((pitch) => {
-            this.pitch = pitch;
-            this.handleTransform();
-        });
+        sub.on("pitch")
+            .withPrecision(2)
+            .handle((pitch) => {
+                this.pitch = pitch;
+                this.handleTransform();
+            });
 
-        sub.on("trueHeading").whenChangedBy(0.05).handle((heading) => {
-            this.heading = heading;
-            this.handleTransform();
-        });
+        sub.on("trueHeading")
+            .whenChangedBy(0.05)
+            .handle((heading) => {
+                this.heading = heading;
+                this.handleTransform();
+            });
 
-        sub.on("trueTrack").whenChangedBy(0.05).handle((track) => {
-            this.track = track;
-            this.handleTransform();
-        });
+        sub.on("trueTrack")
+            .whenChangedBy(0.05)
+            .handle((track) => {
+                this.track = track;
+                this.handleTransform();
+            });
 
-        sub.on("roll").withPrecision(2).handle((roll) => this.fpvRotateSub.set(`rotate(${-roll}deg)`));
+        sub.on("roll")
+            .withPrecision(2)
+            .handle((roll) => this.fpvRotateSub.set(`rotate(${-roll}deg)`));
 
-        sub.on("irsState").whenChanged().handle((state) => {
-            this.irsState = state;
-            this.visibility.set(this.irsState === 2 && this.isFpvOn ? "visible" : "hidden");
-            this.fpvFailVisibility.set(this.irsState === 0 && this.isFpvOn ? "visible" : "hidden");
-        });
+        sub.on("irsState")
+            .whenChanged()
+            .handle((state) => {
+                this.irsState = state;
+                this.visibility.set(this.irsState === 2 && this.isFpvOn ? "visible" : "hidden");
+                this.fpvFailVisibility.set(this.irsState === 0 && this.isFpvOn ? "visible" : "hidden");
+            });
 
-        sub.on("fpvOn").whenChanged().handle((fpvOn) => {
-            this.isFpvOn = fpvOn;
-            this.visibility.set(this.irsState === 2 && this.isFpvOn ? "visible" : "hidden");
-            this.fpvFailVisibility.set(this.irsState === 0 && this.isFpvOn ? "visible" : "hidden");
-        });
+        sub.on("fpvOn")
+            .whenChanged()
+            .handle((fpvOn) => {
+                this.isFpvOn = fpvOn;
+                this.visibility.set(this.irsState === 2 && this.isFpvOn ? "visible" : "hidden");
+                this.fpvFailVisibility.set(this.irsState === 0 && this.isFpvOn ? "visible" : "hidden");
+            });
 
         const hEventSub = this.props.bus.getSubscriber<HEvent>();
 

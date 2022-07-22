@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2022 Salty Simulations and its contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import { FSComponent, EventBus, HEventPublisher } from "msfssdk";
 import { PFD } from "./PFD";
 import { PFDSimvarPublisher } from "./SimVarPublisher";
