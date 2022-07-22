@@ -2,43 +2,40 @@ import { FSComponent, DisplayComponent, VNode, EventBus, Subject, Subscribable }
 import { BlackOutlineLine } from "../Common/BlackOutlineLine";
 import { PFDSimvars } from "../SimVarPublisher";
 
+import { FMAColumn } from "./FMAColumn";
+import { AFDSStatus } from "./AFDSStatus";
+
 export class FMA extends DisplayComponent<{ bus: EventBus }> {
-    public render(): VNode {
-        return (
-            <g>
-                <AFDSStatus bus={this.props.bus} />
-            </g>
+    private apOn = false;
+    private fdOn = Subject.create(false);
+
+    private autothrottleModes = ["", "THR REF", "THR", "IDLE", "SPD", "HOLD"];
+    private autothrottleArmed = Subject.create(false);
+    private autothrottleMode = Subject.create(0);
+    private activeAutothrottleText = Subject.create("");
+
+    private activeRollModes = ["", "TO/GA", "HDG HOLD", "HDG SEL", "LNAV", "LOC", "FAC", "ROLLOUT", "ATT"];
+    private armedRollModes = ["", "LOC", "FAC", "LNAV", "ROLLOUT"];
+    private activeRollMode = 0;
+    private armedRollText = Subject.create("");
+    private activeRollText = Subject.create("");
+
+    private activePitchModes = ["", "TO/GA", "ALT", "VNAV ALT", "VNAV PTH", "VNAV SPD", "VNAV", "FLCH SPD", "V/S", "G/S", "G/P", "FLARE"];
+    private armedPitchModes = ["", "G/S", "G/P", "VNAV", "FLARE"];
+    private activePitchText = Subject.create("");
+    private armedPitchText = Subject.create("");
+
+    private handleAutothrottleMode() {
+        this.activeAutothrottleText.set(
+            this.autothrottleMode.get() < this.autothrottleModes.length && this.autothrottleArmed.get()
+                ? this.autothrottleModes[this.autothrottleMode.get()]
+                : ""
         );
     }
-}
-
-class AFDSStatus extends DisplayComponent<{ bus: EventBus }> {
-    private afdsStatus = Subject.create(0);
-    private afdsStatusText = Subject.create("");
-
-    private autolandClass = Subject.create("");
-    private noAutolandVisibility = Subject.create("hidden");
-
-    private greenBoxVisibility = Subject.create("hidden");
-    private amberBoxVisibility = Subject.create("hidden");
-
-    private afdsStatuses = ["", "FD", "CMD", "LAND 2", "LAND 3", "AUTOLAND"];
-
-    private handleAFDSBoxes(text: string) {
-        // sunday morning is every day for all i care
-        if (text) {
-            if (text === "AUTOLAND") {
-                this.greenBoxVisibility.set("hidden");
-                this.amberBoxVisibility.set("visible");
-                setTimeout(() => this.amberBoxVisibility.set("hidden"), 10000);
-            }
-            this.amberBoxVisibility.set("hidden");
-            this.greenBoxVisibility.set("visible");
-            setTimeout(() => this.greenBoxVisibility.set("hidden"), 10000);
-        } else {
-            this.greenBoxVisibility.set("hidden");
-            this.amberBoxVisibility.set("hidden");
-        }
+    private handleActiveRollMode() {
+        this.activeRollText.set(
+            this.activeRollMode < this.activeRollModes.length && (this.fdOn.get() || this.apOn) ? this.activeRollModes[this.activeRollMode] : ""
+        );
     }
 
     public onAfterRender(node: VNode): void {
@@ -46,49 +43,64 @@ class AFDSStatus extends DisplayComponent<{ bus: EventBus }> {
 
         const sub = this.props.bus.getSubscriber<PFDSimvars>();
 
-        sub.on("afdsStatus")
+        sub.on("autothrottleArmed")
             .whenChanged()
-            .handle((status) => {
-                const text = status < this.afdsStatuses.length ? this.afdsStatuses[status] : "";
-
-                this.afdsStatus.set(status);
-                this.afdsStatusText.set(text);
-
-                this.autolandClass.set(text === "AUTOLAND" ? "text-4 amber middle" : "text-4 green middle");
-                this.noAutolandVisibility.set(text === "AUTOLAND" ? "visible" : "hidden");
-
-                this.handleAFDSBoxes(text);
+            .handle((armed) => {
+                this.autothrottleArmed.set(armed);
+                this.handleAutothrottleMode();
             });
+
+        sub.on("autothrottleMode")
+            .whenChanged()
+            .handle((mode) => {
+                this.autothrottleMode.set(mode);
+                this.handleAutothrottleMode();
+            });
+
+        sub.on("armedRollMode")
+            .whenChanged()
+            .handle((mode) => this.armedRollText.set(mode < this.armedRollModes.length ? this.armedRollModes[mode] : ""));
+
+        sub.on("activeRollMode")
+            .whenChanged()
+            .handle((mode) => {
+                this.activeRollMode = mode;
+                this.handleActiveRollMode();
+            });
+
+        sub.on("fdOn")
+            .whenChanged()
+            .handle((fdOn) => {
+                this.fdOn.set(fdOn);
+                this.handleActiveRollMode();
+            });
+
+        sub.on("apOn")
+            .whenChanged()
+            .handle((apOn) => {
+                this.apOn = apOn;
+                this.handleActiveRollMode();
+            });
+
+        sub.on("activePitchMode")
+            .whenChanged()
+            .handle((mode) => this.activePitchText.set(mode < this.activePitchModes.length ? this.activePitchModes[mode] : ""));
+
+        sub.on("armedPitchMode")
+            .whenChanged()
+            .handle((mode) => this.armedPitchText.set(mode < this.armedPitchModes.length ? this.armedPitchModes[mode] : ""));
     }
 
     public render(): VNode {
         return (
             <g>
-                <text x="349" y="165" class={this.autolandClass}>
-                    {this.afdsStatusText}
-                </text>
-                <text x="349" y="133" visibility={this.noAutolandVisibility} class={this.autolandClass}>
-                    NO
-                </text>
-                <rect
-                    x="267"
-                    y="133"
-                    visibility={this.greenBoxVisibility}
-                    width="164"
-                    height="34"
-                    fill="none"
-                    class="line"
-                    stroke="lime"
-                    stroke-width="3"
-                />
-                <path
-                    d="M 267 133, h59, v-34, h46, v34, h59, v34, h-164, Z"
-                    visibility={this.amberBoxVisibility}
-                    class="line"
-                    stroke="#ffc400"
-                    stroke-width="3"
-                    fill="none"
-                />
+                <FMAColumn x={208} y={10} topText={this.activeAutothrottleText} />
+                <FMAColumn x={356} y={10} topText={this.activeRollText} bottomText={this.armedRollText} extraHighlightVar={this.fdOn} />
+                <FMAColumn x={505} y={10} topText={this.activePitchText} bottomText={this.armedPitchText} extraHighlightVar={this.fdOn} />
+                <AFDSStatus bus={this.props.bus} />
+
+                <BlackOutlineLine d="M286 10, v50" />
+                <BlackOutlineLine d="M428 10, v50" />
             </g>
         );
     }

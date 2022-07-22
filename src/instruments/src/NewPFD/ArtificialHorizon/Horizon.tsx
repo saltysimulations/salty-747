@@ -56,11 +56,12 @@ export class Horizon extends DisplayComponent<{ bus: EventBus }> {
 
                 <BlackOutlineLine d="M190 377, h84, v30 h-11 v-20 h-73 Z" blackStroke={5} styleColor="fill: black;" />
                 <BlackOutlineLine d="M422 377, h84, v11, h-73, v20, h-11 Z" blackStroke={5} styleColor="fill: black;" />
-                <BlackOutlineLine d="M343 377, h11, v11, h-11, Z" styleBlack="fill: transparent;" styleColor="fill: transparent;" blackStroke={5} />
 
                 <PitchLimitIndicator bus={this.props.bus} />
                 <FlightDirector bus={this.props.bus} />
                 <MarkerBeacon bus={this.props.bus} />
+
+                <BlackOutlineLine d="M343 377, h11, v11, h-11, Z" styleBlack="fill: transparent;" styleColor="fill: transparent;" blackStroke={5} />
             </g>
         );
     }
