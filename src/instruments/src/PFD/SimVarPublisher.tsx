@@ -164,7 +164,7 @@ export enum PFDVars {
 }
 
 export class PFDSimvarPublisher extends SimVarPublisher<PFDSimvars> {
-    private static simvars = new Map<keyof PFDSimvars, SimVarDefinition>([
+    public static simvars = new Map<keyof PFDSimvars, SimVarDefinition>([
         ["pitch", { name: PFDVars.pitch, type: SimVarValueType.Degree }],
         ["roll", { name: PFDVars.roll, type: SimVarValueType.Degree }],
         ["sideslip", { name: PFDVars.sideslip, type: SimVarValueType.Degree }],

@@ -31,6 +31,10 @@ class MyInstrument extends BaseInstrument {
         this.simVarPublisher.startPublish();
         this.hEventPublisher.startPublish();
 
+        for (const simvar of PFDSimvarPublisher.simvars.keys()) {
+            this.simVarPublisher.subscribe(simvar);
+        }
+
         FSComponent.render(<PFD bus={this.bus} />, document.getElementById("InstrumentContent"));
     }
 

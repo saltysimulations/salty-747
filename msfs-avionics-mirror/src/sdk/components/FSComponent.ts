@@ -1,9 +1,7 @@
 /* eslint-disable no-inner-declarations */
-import { ObjectSubject } from '../sub/ObjectSubject';
-import { Subject } from '../sub/Subject';
-import { Subscribable } from '../sub/Subscribable';
-import { MutableSubscribableSet, SubscribableSet, SubscribableSetEventType } from '../sub/SubscribableSet';
-import { Subscription } from '../sub/Subscription';
+import { ComputedSubject } from '../utils/ComputedSubject';
+import { MappedSubject, Subject } from '../utils/Subject';
+import { Subscribable } from '../utils/Subscribable';
 import { JSXDefinitions } from './JSXDefinitions';
 
 /**
@@ -31,7 +29,7 @@ export interface VNode {
 export type NodeInstance = HTMLElement | SVGElement | DisplayComponent<any> | string | number | null;
 
 /** A union of possible child element types. */
-type DisplayChildren = VNode | string | number | Subscribable<any> | (VNode | string | number | Subscribable<any>)[] | null;
+type DisplayChildren = VNode | string | number | (VNode | string | number)[] | null;
 
 /** A releative render position. */
 export enum RenderPosition {
@@ -174,7 +172,7 @@ export class NodeReference<T extends (DisplayComponent<any> | HTMLElement | SVGE
 /**
  * Provides a context of data that can be passed down to child components via a provider.
  */
-export class Context<T> {
+class Context<T> {
   /**
    * The provider component that can be set to a specific context value.
    * @param props The props of the provider component.
@@ -300,27 +298,11 @@ export namespace FSComponent {
             props.ref.instance = element;
           } else {
             const prop = (props as any)[key];
-            if (key === 'class' && typeof prop === 'object' && 'isSubscribableSet' in prop) {
-              // Bind CSS classes to a subscribable set
-              prop.sub((set: any, eventType: SubscribableSetEventType, modifiedKey: any) => {
-                if (eventType === SubscribableSetEventType.Added) {
-                  element.classList.add(modifiedKey);
-                } else {
-                  element.classList.remove(modifiedKey);
-                }
-              }, true);
-            } else if (typeof prop === 'object' && 'isSubscribable' in prop) {
-              if (key === 'style' && prop instanceof ObjectSubject) {
-                // Bind CSS styles to an object subject.
-                prop.sub((v: any, style: string | number | symbol, newValue: any) => {
-                  element.style.setProperty(style.toString(), newValue);
-                }, true);
-              } else {
-                // Bind an attribute to a subscribable.
-                prop.sub((v: any) => {
-                  element.setAttribute(key, v);
-                }, true);
-              }
+            if (prop instanceof Subject || prop instanceof MappedSubject || prop instanceof ComputedSubject) {
+              element.setAttribute(key, prop.get());
+              prop.sub((v) => {
+                element.setAttribute(key, v);
+              });
             } else {
               element.setAttribute(key, prop);
             }
@@ -348,7 +330,7 @@ export namespace FSComponent {
         let childNodes = (type as FragmentFactory)(props as any) as VNode[] | null;
 
         //Handle the case where the single fragment children is an array of nodes passsed down from above
-        while (childNodes !== null && childNodes.length > 0 && Array.isArray(childNodes[0])) {
+        if (childNodes !== null && childNodes.length > 0 && Array.isArray(childNodes[0])) {
           childNodes = childNodes[0];
         }
 
@@ -397,38 +379,34 @@ export namespace FSComponent {
 
       for (const child of children) {
         if (child !== null) {
-          if (child instanceof Array) {
+          if (child instanceof Subject || child instanceof MappedSubject || child instanceof ComputedSubject) {
+            const subjectValue = child.get().toString();
+            const node: VNode = {
+              instance: subjectValue === '' ? ' ' : subjectValue,
+              children: null,
+              props: null,
+              root: undefined,
+            };
+            child.sub((v) => {
+              if (node.root !== undefined) {
+                // TODO workaround. gotta find a solution for the text node vanishing when text is empty
+                node.root.nodeValue = v === '' ? ' ' : v.toString();
+              } else {
+                // for debugging
+                // console.warn('Subject has no node!');
+              }
+            });
+            vnodes.push(node);
+          } else if (child instanceof Array) {
             const arrayNodes = createChildNodes(parent, child);
 
             if (arrayNodes !== null) {
               vnodes.push(...arrayNodes);
             }
-          } else if (typeof child === 'object') {
-            if ('isSubscribable' in child) {
-              const subjectValue = child.get().toString();
-              const node: VNode = {
-                instance: subjectValue === '' ? ' ' : subjectValue,
-                children: null,
-                props: null,
-                root: undefined,
-              };
-              child.sub((v) => {
-                if (node.root !== undefined) {
-                  // TODO workaround. gotta find a solution for the text node vanishing when text is empty
-                  node.root.nodeValue = (v === '' || v === null || v === undefined)
-                    ? ' '
-                    : v.toString();
-                } else {
-                  // for debugging
-                  // console.warn('Subject has no node!');
-                }
-              });
-              vnodes.push(node);
-            } else {
-              vnodes.push(child);
-            }
           } else if (typeof child === 'string' || typeof child === 'number') {
             vnodes.push(createStaticContentNode(child));
+          } else if (typeof child === 'object') {
+            vnodes.push(child);
           }
         }
       }
@@ -467,29 +445,14 @@ export namespace FSComponent {
       if (node.instance instanceof HTMLElement || node.instance instanceof SVGElement) {
         insertNode(node, position, element);
       } else {
-        if (position === RenderPosition.After) {
-          for (let i = node.children.length - 1; i >= 0; i--) {
-            if (node.children[i] === undefined || node.children[i] === null) {
-              continue;
-            }
-            insertNode(node.children[i], position, element);
-          }
-        } else {
-          for (let i = 0; i < node.children.length; i++) {
-            if (node.children[i] === undefined || node.children[i] === null) {
-              continue;
-            }
-            insertNode(node.children[i], position, element);
-          }
+        for (const child of node.children) {
+          insertNode(child, position, element);
         }
       }
 
       const instance = node.instance;
       if (instance instanceof ContextProvider) {
         visitNodes(node, (n: VNode): boolean => {
-          if (n === undefined || n === null) {
-            return false;
-          }
           const nodeInstance = n.instance as DisplayComponent<any> | null;
 
           if (nodeInstance !== null && nodeInstance.contextType !== undefined) {
@@ -561,17 +524,11 @@ export namespace FSComponent {
           break;
       }
     } else if (Array.isArray(node)) {
-      if (position === RenderPosition.After) {
-        for (let i = node.length - 1; i >= 0; i--) {
-          render(node[i], element, position);
-        }
-      } else {
-        for (let i = 0; i < node.length; i++) {
-          render(node[i], element, position);
-        }
+      for (let i = 0; i < node.length; i++) {
+        render(node[i], element);
       }
     } else {
-      render(node, element, position);
+      render(node, element);
     }
   }
 
@@ -610,7 +567,7 @@ export namespace FSComponent {
    * Creates a component or element node reference.
    * @returns A new component or element node reference.
    */
-  export function createRef<T extends (DisplayComponent<any, any> | HTMLElement | SVGElement)>(): NodeReference<T> {
+  export function createRef<T extends (DisplayComponent<any> | HTMLElement | SVGElement)>(): NodeReference<T> {
     return new NodeReference<T>();
   }
 
@@ -632,62 +589,13 @@ export namespace FSComponent {
    */
   export function visitNodes(node: VNode, visitor: (node: VNode) => boolean): boolean {
     const stopVisitation = visitor(node);
-    if (node !== undefined && node !== null && !stopVisitation && node.children !== undefined && node.children !== null) {
+    if (!stopVisitation && node.children !== null) {
       for (let i = 0; i < node.children.length; i++) {
         visitNodes(node.children[i], visitor);
       }
     }
 
     return true;
-  }
-
-  /**
-   * Parses a space-delimited CSS class string into an array of CSS classes.
-   * @param classString A space-delimited CSS class string.
-   * @returns An array of CSS classes derived from the specified CSS class string.
-   */
-  export function parseCssClassesFromString(classString: string): string[] {
-    return classString.split(' ').filter(str => str !== '');
-  }
-
-  /**
-   * Binds a {@link MutableSubscribableSet} to a subscribable set of CSS classes. CSS classes added to and removed from
-   * the subscribed set will also be added to and removed from the bound set, with the exception of a set of reserved
-   * classes. The presence or absence of any of the reserved classes in the bound set is not affected by the subscribed
-   * set; these reserved classes may be freely added to and removed from the bound set.
-   * @param setToBind The set to bind.
-   * @param classesToSubscribe A set of CSS classes to which to subscribe.
-   * @param reservedClasses An iterable of reserved classes.
-   * @returns The newly created subscription to the subscribed CSS class set.
-   */
-  export function bindCssClassSet(
-    setToBind: MutableSubscribableSet<string>,
-    classesToSubscribe: SubscribableSet<string>,
-    reservedClasses: Iterable<string>
-  ): Subscription {
-    const reservedClassSet = new Set(reservedClasses);
-
-    if (reservedClassSet.size === 0) {
-      return classesToSubscribe.sub((set, type, key) => {
-        if (type === SubscribableSetEventType.Added) {
-          setToBind.add(key);
-        } else {
-          setToBind.delete(key);
-        }
-      }, true);
-    } else {
-      return classesToSubscribe.sub((set, type, key) => {
-        if (reservedClassSet.has(key)) {
-          return;
-        }
-
-        if (type === SubscribableSetEventType.Added) {
-          setToBind.add(key);
-        } else {
-          setToBind.delete(key);
-        }
-      }, true);
-    }
   }
 
   /**

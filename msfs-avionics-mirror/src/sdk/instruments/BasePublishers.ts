@@ -1,5 +1,4 @@
-import { EventBus, EventBusMetaEvents, MockEventTypes, Publisher } from '../data/EventBus';
-import { PublishPacer } from '../data/EventBusPacer';
+import { EventBus, MockEventTypes, Publisher, PublishPacer } from '../data/EventBus';
 import { SimVarDefinition, SimVarEventTypes } from '../data/SimVars';
 
 /**
@@ -111,40 +110,23 @@ export class SimVarPublisher<E extends SimVarEventTypes> extends BasePublisher<E
         super(bus, pacer);
         this.simvars = simVarMap;
         this.subscribed = new Set<keyof E>();
-
-        // Start polling all simvars for which there are existing subscriptions.
-        for (const simvar of this.simvars.keys()) {
-            if (bus.getTopicSubsciberCount(simvar as string)) {
-                this.subscribed.add(simvar);
-            }
-        }
-
-        bus.getSubscriber<EventBusMetaEvents>().on('event_bus_topic_first_sub').handle(
-            (event: string) => {
-                if (this.simvars.get(event as keyof E)) {
-                    this.subscribed.add(event as keyof E);
-                }
-            });
     }
 
     /**
-     * NOOP - For backwards compatibility.
-     * @deprecated
+     * Subscribe to an event type to begin publishing.
      * @param data Key of the event type in the simVarMap
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public subscribe(data: keyof E): void {
-        return;
+        this.subscribed.add(data);
     }
 
     /**
-     * NOOP - For backwards compatibility.
-     * @deprecated
+     * Unsubscribe to an event to stop publishing.
      * @param data Key of the event type in the simVarMap
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public unsubscribe(data: keyof E): void {
-        return;
+        // TODO If we have multiple subscribers we may want to add reference counting here.
+        this.subscribed.delete(data);
     }
 
     /**

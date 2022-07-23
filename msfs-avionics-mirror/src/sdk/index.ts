@@ -1,9 +1,14 @@
 export * from './components/FSComponent';
 export * from './components/JSXDefinitions';
 export * from './components/CollectionComponent';
-export * from './sub';
-export * from './math';
-export * from './geo';
-export * from './FsInstrument';
+
+export * from './utils/Wait';
+export * from './utils/Subscribable';
+export * from './utils/Subject';
+export * from './utils/ArraySubject';
+export * from './utils/ComputedSubject';
+
+export * from './utils/SubEvent';
+
 export * from './data';
-export * from "./instruments";
+export * from './instruments';
