@@ -1,0 +1,39 @@
+name: PR
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    env:
+      SALTY_PRODUCTION_BUILD: 1
+      ZIP_NAME: salty-747.zip
+      BUILD_DIR_NAME: zip-build
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.50.0
+          target: wasm32-wasi
+          override: true
+      - name: Build salty-747
+        run: |
+          npm i
+          npm run build
+      - name: Generate ZIP file
+        run: |
+          mkdir ./${{ env.BUILD_DIR_NAME }}
+          zip -r ./${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }} ./salty-747/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: salty-747
+          path: ${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }}

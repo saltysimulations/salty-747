@@ -1,0 +1,107 @@
+:root {
+  --bodyHeightScale: 1;
+}
+
+@keyframes TemporaryShow {
+  0%, 100% {
+    visibility: visible;
+  }
+}
+@keyframes TemporaryHide {
+  0%, 100% {
+    visibility: hidden;
+  }
+}
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+html body {
+  -webkit-user-select: none;
+  font-family: var(--font);
+  font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100 );
+  color: white;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#highlight {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+}
+
+#Electricity {
+  width: 100%;
+  height: 100%;
+}
+#Electricity[state=off] {
+  display: none;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("/Fonts/RobotoMono-Medium.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Roboto-Light";
+  src: url("/Fonts/RobotoMono-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Roboto-Bold";
+  src: url("/Fonts/RobotoMono-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Digital";
+  src: url("/Pages/VCockpit/Instruments/Shared/Fonts/Quartz.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+b747-8-com-element {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+}
+b747-8-com-element #Content {
+  width: 92%;
+  height: 100%;
+  left: 5%;
+  top: 0%;
+  position: absolute;
+}
+b747-8-com-element #Content svg {
+  width: 100%;
+  height: 100%;
+}
+b747-8-com-element #Content text {
+  font-family: Digital;
+  font-size: 34px;
+  fill: #985d1c;
+  letter-spacing: -2px;
+  alignment-baseline: central;
+}
+b747-8-com-element #Content #Frequency {
+  text-anchor: start;
+}
+b747-8-com-element #Content #Status {
+  text-anchor: start;
+}
+b747-8-com-element #Content #Active {
+  text-anchor: middle;
+}
+b747-8-com-element #Content #Standby {
+  text-anchor: middle;
+}
+
+/*# sourceMappingURL=B747_8_Com.css.map */

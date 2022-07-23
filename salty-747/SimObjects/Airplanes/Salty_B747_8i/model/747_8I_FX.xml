@@ -1,0 +1,165 @@
+<ModelBehaviors>
+	<Include ModelBehaviorFile="Asobo\Generic\FX.xml"/>
+	<Template Name="ASOBO_747_8I_FX">
+		<Component ID="FX_CONTRAIL_QUAD">
+			<OverrideTemplateParameters>
+				<FX_CODE>(A:CONTRAILS CONDITIONS MET:1, Keyframe) 0 &gt;</FX_CODE>
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+				<FX_GUID>{F42CE638-11EB-4FC8-B9B0-111A220D681F}</FX_GUID>
+				<FX_NAME>FX_CONTRAILS</FX_NAME>
+			</OverrideTemplateParameters>
+			<Component ID="FX_CONTRAIL_QUAD_LEFT_IN" Node="L1_EngineFX">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+			<Component ID="FX_CONTRAIL_QUAD_LEFT_OUT" Node="L2_EngineFX">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+			<Component ID="FX_CONTRAIL_QUAD_RIGHT_IN" Node="R1_EngineFX">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+			<Component ID="FX_CONTRAIL_QUAD_RIGHT_OUT" Node="R2_EngineFX">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+		</Component>
+		<Component ID="FX_CONTRAIL_RIBBON">
+			<OverrideTemplateParameters>
+				<FX_CODE>(A:CONTRAILS CONDITIONS MET:1, Keyframe) 0 &gt;</FX_CODE>
+				<FX_OFFSET_X>0</FX_OFFSET_X>
+				<FX_OFFSET_Y>0</FX_OFFSET_Y>
+				<FX_OFFSET_Z>0</FX_OFFSET_Z>
+				<FX_GUID>{904EC2CE-F8DD-4480-99E7-B33F7CF6E114}</FX_GUID>
+				<FX_NAME>FX_CONTRAILS_RIBBON</FX_NAME>
+			</OverrideTemplateParameters>
+			<Component ID="FX_CONTRAIL_RIBBON_LEFT_OUT" Node="L2_EngineFX">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+			<Component ID="FX_CONTRAIL_RIBBON_RIGHT_OUT" Node="R2_EngineFX">
+				<UseTemplate Name="ASOBO_GT_FX"/>
+			</Component>
+		</Component>
+		<Component ID="LANDING_FX">
+			<UseTemplate Name="ASOBO_WET_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>0</FX_CONTACT_POINT_ID>
+				<FX_NODE>CenterWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WET_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>1</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WET_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>2</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WET_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WET_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SMOKE_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>0</FX_CONTACT_POINT_ID>
+				<FX_NODE>CenterWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SMOKE_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>1</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SMOKE_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>2</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SMOKE_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SMOKE_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_DUST_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>0</FX_CONTACT_POINT_ID>
+				<FX_NODE>CenterWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_DUST_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>1</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_DUST_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>2</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_DUST_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_DUST_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GRASS_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>0</FX_CONTACT_POINT_ID>
+				<FX_NODE>CenterWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GRASS_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>1</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GRASS_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>2</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GRASS_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_GRASS_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SNOW_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>0</FX_CONTACT_POINT_ID>
+				<FX_NODE>CenterWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SNOW_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>1</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SNOW_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>2</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SNOW_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_SNOW_LG_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WATER_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>0</FX_CONTACT_POINT_ID>
+				<FX_NODE>CenterWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WATER_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>1</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WATER_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>2</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightFrontBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WATER_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>LeftBackBaseWheel</FX_NODE>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_WATER_GR_LANDING_FX">
+				<FX_CONTACT_POINT_ID>3</FX_CONTACT_POINT_ID>
+				<FX_NODE>RightBackBaseWheel</FX_NODE>
+			</UseTemplate>
+		</Component>
+	</Template>
+</ModelBehaviors>

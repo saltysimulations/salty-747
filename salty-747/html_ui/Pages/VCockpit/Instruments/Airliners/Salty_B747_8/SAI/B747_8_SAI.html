@@ -1,0 +1,75 @@
+﻿<script type="text/html" id="B747_8_SAI">
+    <div id="Mainframe">
+        <div id="Electricity" state="off">
+            <glasscockpit-highlight id="Highlight" style="position:absolute; width: 100%; height:100%;"></glasscockpit-highlight>
+            <b747-8-sai-altimeter-indicator id="Altimeter"></b747-8-sai-altimeter-indicator>
+            <b747-8-sai-airspeed-indicator id="Airspeed"></b747-8-sai-airspeed-indicator>
+            <b747-8-sai-attitude-indicator id="Horizon" background="true"></b747-8-sai-attitude-indicator>
+            <b747-8-sai-compass-background id="CompassBackground"></b747-8-sai-compass-background>
+            <b747-8-sai-hsindicator id="Compass"></b747-8-sai-hsindicator>
+            <b747-8-sai-baro-indicator id="Baro"></b747-8-sai-baro-indicator>
+
+            <div id="hdg-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none; z-index: 10;">
+                <svg viewBox="0 0 250 250">
+                    <rect fill="transpartent" x="95" y="220" width="37px" height="20px" stroke="#db8e00" stroke-width="2" id="hdg-rect"></rect>
+                    <text x="114" y="237" style="text-anchor:middle;fill:#db8e00;font-size:17px;">HDG</text>
+                </svg>
+            </div>
+            <div id="spd-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none; z-index: 10;">
+                <svg viewBox="0 0 250 250">
+                    <rect fill="black" x="0" y="113" width="42px" height="34px" id="spd-cover-rect"></rect>
+                    <rect x="10" y="38" width="20px" height="46px" stroke="#db8e00" stroke-width="2" id="spd-rect"></rect>
+                    <text x="20" y="52" style="text-anchor:middle;fill:#db8e00;font-size:17px;">S</text>
+                    <text x="20" y="67" style="text-anchor:middle;fill:#db8e00;font-size:17px;">P</text>
+                    <text x="20" y="82" style="text-anchor:middle;fill:#db8e00;font-size:17px;">D</text>
+                </svg>
+            </div>
+            <div id="alt-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none; z-index: 10;">
+                <svg viewBox="0 0 250 250">
+                    <rect fill="black" x="177" y="113" width="69px" height="34px" id="alt-cover-rect"></rect>
+                    <rect x="208" y="38" width="20px" height="46px" stroke="#db8e00" stroke-width="2" id="alt-rect"></rect>
+                    <text x="218" y="52" style="text-anchor:middle;fill:#db8e00;font-size:17px;">A</text>
+                    <text x="218" y="67" style="text-anchor:middle;fill:#db8e00;font-size:17px;">L</text>
+                    <text x="218" y="82" style="text-anchor:middle;fill:#db8e00;font-size:17px;">T</text>
+                </svg>
+            </div>
+            <div id="att-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none; z-index: 10;">
+                <svg viewBox="0 0 250 250">
+                    <rect fill="transpartent" x="93" y="38" width="42px" height="22px" stroke="#db8e00" stroke-width="2" id="hdg-rect"></rect>
+                    <text x="114" y="57" style="text-anchor:middle;fill:#db8e00;font-size:22px;">ATT</text>
+                </svg>
+            </div>
+            <div id="init-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none; z-index: 10; display: none;">
+                <svg viewBox="0 0 250 250">
+                    <rect fill="transpartent" x="69" y="148" width="80px" height="22px" stroke="#db8e00" stroke-width="2" id="init-rect"></rect>
+                    <text x="91" y="166" style="text-anchor:middle;fill:#db8e00;font-size:22px;">INIT</text>
+                    <text x="131" y="168" style="text-anchor:middle;fill:#db8e00;font-size:17px;" id="init-seconds">90 S</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+</script>
+
+<link rel="stylesheet" href="B747_8_SAI.css" />
+
+<script type="text/html" import-script="/JS/SimPlane.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Templates/Highlight/highlight.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlanManager.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Waypoint.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/NearestWaypoint.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Approach.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/Runway.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/FlightElements/GeoCalc.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SelectableElement.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/NavSystem.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/BaseAirliners.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/PFD/HSIndicator.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/SAI/B747_8_SAI.js"></script>

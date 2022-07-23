@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "sv-SE",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "Idén om 747:an föddes på 1960-talet med Boeings förslag i en studie av amerikanska flygvapnet om extra stora strategiska transportflygplan. Det kommersiella bredkroppade trafikflygplanet hamnade så småningom i allmän tjänst hos Pan Am World Airways 1970, där det kallades branschens första ”jumbojet\" och skulle fortsätta hålla rekordet för passagerarkapacitet i 37 år.<\/br><\/br>Efter årtionden av försök att utveckla versioner med högre kapacitet presenterade Boeing 2004 747 Advanced – en förlängd modell som de ett år senare officiellt betecknade 747-8, med en Freighter-variant (747-8F) för transport som lanserades i oktober 2011, och en Intercontinental-variant (747-8I) för Lufthansas passagerare i juni 2012.<\/br><\/br>Som en utveckling av 747-400 förfinar och uppgraderar 747-8 sin föregångares motorer, samtidigt som den använder sig av omfattande cockpit-teknik från 787 Dreamliner. Resultatet är ett högteknologiskt, lättviktigt kraftpaket som utformats för ökad prestanda, minskat buller och extremt låga utsläpp – en design som ytterligare förbättras genom en grundligt omarbetat vingsystem som minskar ändvirveln och motståndet, förbättrar bränsleekonomin, räckvidden och den övergripande aerodynamiken.<\/br><\/br>Med sin superjumbojet-storlek och 60 år av teknisk mognad kan det verka som om 747-8 är ett långt steg från sitt ursprung. Men efter en snabb titt på dess silhuett lyser släktskapet igenom i de eleganta kurvorna på dubbeldäckarformen som gör det till ett av de mest kända flygplanen i världen, och fortfarande värdigt det graciösa smeknamnet som gavs till den första medlemmen i släktledet: \"Queen of the Skies\".",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Justera den valda kursen åt vänster",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Justera den valda kursen åt höger  "
+    }
+  }
+}
