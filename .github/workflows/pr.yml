@@ -25,7 +25,10 @@ jobs:
           toolchain: 1.50.0
           target: wasm32-wasi
           override: true
-      - run: npm run build:msfs-sdk
+      - run: |
+          cd msfs-avionics-mirror/src/sdk
+          npm ci
+          npm run build
       - name: Build salty-747
         run: |
           npm i
