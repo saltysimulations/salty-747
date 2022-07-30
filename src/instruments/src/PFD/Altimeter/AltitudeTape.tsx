@@ -81,6 +81,8 @@ export class AltitudeTape extends DisplayComponent<{ bus: EventBus }> {
                     <path d="M575 100, h125, v560, h-125 Z" />
                 </clipPath>
 
+                <path class="gray-bg" d="M600 100, h100 v560 h-100 Z" />
+
                 <g clip-path="url(#altitudetape-clip)">
                     <g transform={this.transform}>
                         {Array.from({ length: 501 }, (_, i) => (

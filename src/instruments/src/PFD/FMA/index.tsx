@@ -99,6 +99,8 @@ export class FMA extends DisplayComponent<{ bus: EventBus }> {
     public render(): VNode {
         return (
             <g>
+                <path class="gray-bg" d="M130 10, h450, v50, h-450 Z" />
+
                 <FMAColumn x={208} y={10} topText={this.activeAutothrottleText} />
                 <FMAColumn x={356} y={10} topText={this.activeRollText} bottomText={this.armedRollText} extraHighlightVar={this.fdOn} />
                 <FMAColumn x={505} y={10} topText={this.activePitchText} bottomText={this.armedPitchText} extraHighlightVar={this.fdOn} />

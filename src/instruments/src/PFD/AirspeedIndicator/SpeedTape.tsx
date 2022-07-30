@@ -58,6 +58,8 @@ export class SpeedTape extends DisplayComponent<{ bus: EventBus }> {
                     </text>
                 </g>
 
+                <path class="gray-bg" d="M13 100, h100 v560 h -100 Z" />
+
                 <clipPath id="speedtape-clip">
                     <path d="M13 100, h200 v560 h -200 Z" />
                 </clipPath>
