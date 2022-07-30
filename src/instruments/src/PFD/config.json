@@ -1,9 +1,0 @@
-{
-    "index": "./index.tsx",
-    "isInteractive": true,
-    "name": "PFD",
-    "dimensions": {
-        "width": 1280,
-        "height": 1280
-    }
-}
