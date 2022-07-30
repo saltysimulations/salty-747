@@ -25,7 +25,6 @@ jobs:
           toolchain: 1.50.0
           target: wasm32-wasi
           override: true
-      - run: npm run build:msfs-sdk
       - name: Build salty-747
         run: |
           npm i
