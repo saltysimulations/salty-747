@@ -92,6 +92,7 @@ export class LateralDeviationScale extends DisplayComponent<{ bus: EventBus }> {
             .withPrecision(0)
             .handle((altitude) => {
                 this.radioHeight = altitude;
+                this.handleDeviationScale();
                 this.risingRunwayTransform.set(
                     `translate(${this.getLocDisplacement(this.inboundLocCourse, this.locRadial)}, ${this.getRisingRunwayY(this.radioHeight)})`
                 );
@@ -111,6 +112,7 @@ export class LateralDeviationScale extends DisplayComponent<{ bus: EventBus }> {
             .whenChanged()
             .handle((frequency) => {
                 this.locFrequency = frequency;
+                this.handleDeviationScale();
                 this.circlesGroupVisibility.set(frequency !== 0 ? "visible" : "hidden");
             });
     }
