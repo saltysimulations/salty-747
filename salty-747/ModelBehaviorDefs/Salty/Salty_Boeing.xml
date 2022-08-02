@@ -993,7 +993,7 @@
 			<BUTTON_NODE_ID>BOEING_Knob_Mins_#ID#_Push</BUTTON_NODE_ID>
 			<BUTTON_ANIM_NAME>BOEING_Knob_Mins_#ID#_Push</BUTTON_ANIM_NAME>
 			<PART_ID>BOEING_Knob_Mins</PART_ID>
-			<SYSTEM_NAME>PFD</SYSTEM_NAME>
+			<SYSTEM_NAME>MFD</SYSTEM_NAME>
 			<WWISE_EVENT>autopilot_mins_knob</WWISE_EVENT>
 			<WWISE_PREFIX>autopilot_mins_knob</WWISE_PREFIX>
 			<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_KNOB_BARO_KNOB_MINS_ACTION</TT_DESCRIPTION_ID>
@@ -1270,10 +1270,10 @@
 				<Default>
 					<UseTemplate Name="ASOBO_GT_Knob_Infinite_Push">
 						<ANTICLOCKWISE_CODE>
-							#BARO_ID# (&gt;H:B747_8_PFD_BARO_DEC)
+							#BARO_ID# (&gt;H:B747_8_MFD_BARO_DEC)
 						</ANTICLOCKWISE_CODE>
 						<CLOCKWISE_CODE>
-							#BARO_ID# (&gt;H:B747_8_PFD_BARO_INC)
+							#BARO_ID# (&gt;H:B747_8_MFD_BARO_INC)
 						</CLOCKWISE_CODE>
 						<LEFT_SINGLE_CODE>
 							(L:XMLVAR_Baro#BARO_ID#_ForcedToSTD) ! (&gt;L:XMLVAR_Baro#BARO_ID#_ForcedToSTD)
@@ -1281,7 +1281,7 @@
 								(A:KOHLSMAN SETTING MB:1, mbars) 16 * (&gt;L:XMLVAR_Baro#BARO_ID#_SavedPressure)
 								#BARO_ID# (&gt;K:BAROMETRIC_STD_PRESSURE)
 							} els{
-								#BARO_ID# (L:XMLVAR_Baro#BARO_ID#_SavedPressure) (&gt;K:2:KOHLSMAN_SET) (&gt;H:B747_8_PFD_STD_PUSH)
+								#BARO_ID# (L:XMLVAR_Baro#BARO_ID#_SavedPressure) (&gt;K:2:KOHLSMAN_SET) (&gt;H:B747_8_MFD_STD_PUSH)
 							}
 						</LEFT_SINGLE_CODE>
 						<WWISE_EVENT>autopilot_selector_knob</WWISE_EVENT>

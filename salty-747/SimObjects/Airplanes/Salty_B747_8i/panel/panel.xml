@@ -233,6 +233,23 @@
 
 		<Annunciation>
 		  <Type>Caution</Type>
+		  <Text>AIRSPEED LOW</Text>
+		  <Condition>
+		  	<And>
+				<LowerEqual>
+			  		<Simvar name="AIRSPEED INDICATED" unit="knots"/>
+			  		<Simvar name="L:74S_FMC_MIN_MANUEVER_SPEED" unit="knots"/>		  
+				</LowerEqual>
+				<GreaterEqual>
+					<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
+					<Constant>55</Constant>
+			  	</GreaterEqual>
+			</And>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Caution</Type>
 		  <Text>ENG 1 SHUTDOWN</Text>
 		  <Condition>
 			<Equal>
@@ -901,7 +918,7 @@
 					<State id="Armed" value="0">
 						<Transition to="Alerting">
 			  				<Equal>
-								<Simvar name="L:SALTY_ALT_ALERT" unit="Boolean"/>
+								<Simvar name="L:74S_ALT_ALERT" unit="Boolean"/>
 			 					<Constant>1</Constant>
 			  				</Equal>
 						</Transition>
@@ -909,7 +926,7 @@
 					<State id="Alerting" value="1">
 						<Transition to="Disarmed">
 			  				<Equal>
-								<Simvar name="L:SALTY_ALT_ALERT" unit="Boolean"/>
+								<Simvar name="L:74S_ALT_ALERT" unit="Boolean"/>
 			 					<Constant>1</Constant>
 			  				</Equal>
 						</Transition>
@@ -917,7 +934,7 @@
 					<State id="Disarmed" value="0">
 						<Transition to="Armed">
 			  				<Equal>
-								<Simvar name="L:SALTY_ALT_ALERT" unit="Boolean"/>
+								<Simvar name="L:74S_ALT_ALERT" unit="Boolean"/>
 			 					<Constant>0</Constant>
 			  				</Equal>
 						</Transition>
@@ -936,7 +953,7 @@
 							<GreaterEqual>
 								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
 								<Add>
-									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
+									<Simvar name="L:74S_MINS_BARO" unit="feet"/>
 									<Constant>55</Constant>
 								</Add>
 							</GreaterEqual>
@@ -946,7 +963,7 @@
 						<Transition to="Alerting">
 							<LowerEqual>
 								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
-								<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
+								<Simvar name="L:74S_MINS_BARO" unit="feet"/>
 							</LowerEqual>
 						</Transition>
 					</State>
@@ -955,7 +972,7 @@
 							<Lower>
 								<Simvar name="INDICATED ALTITUDE" unit="feet"/>
 								<Subtract>
-									<Simvar name="L:SALTY_MINIMUMS_ALT" unit="feet"/>
+									<Simvar name="L:74S_MINS_BARO" unit="feet"/>
 									<Constant>1</Constant>
 								</Subtract>
 							</Lower>
