@@ -1,0 +1,150 @@
+﻿:root {
+  --eicasWhite: white;
+  --eicasBlack: black;
+  --eicasGrey: #c8c8c8;
+  --eicasBlue: #009696;
+  --eicasGreen: green;
+  --eicasOrange: #db7200;
+  --eicasRed: red;
+  --eicasMagenta: #D570FF; }
+  :root div {
+    font-family: BoeingEFIS; }
+  :root text {
+    font-family: BoeingEFIS; }
+  :root div.gauges {
+    position: absolute;
+    left: 6%;
+    width: 100%;
+    height: 100%; }
+  :root line.gaugeMarkerCurrent {
+    stroke: var(--eicasWhite);
+    stroke-width: 3px;
+    fill: none; }
+  :root line.gaugeMarkerManaged {
+    stroke: var(--eicasMagenta);
+    stroke-width: 3px;
+    fill: none; }
+  :root line.gaugeMarkerNormal {
+    stroke: lime;
+    stroke-width: 3px;
+    fill: none; }
+  :root line.gaugeMarkerWarning {
+    stroke: var(--eicasOrange);
+    stroke-width: 3px;
+    fill: none; }
+  :root line.gaugeMarkerDanger {
+    stroke: var(--eicasRed);
+    stroke-width: 3px;
+    fill: none; }
+
+@font-face {
+  font-family: "BoeingEFIS";
+  src: url("/Fonts/BoeingEFIS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+b747-8-lower-eicas-fuel {
+  position: relative;
+  left: 3.5%;
+  width: 95.5%;
+  top: 4.25%;
+  height: 88%;
+  display: block; }
+  b747-8-lower-eicas-fuel svg {
+    width: 100%;
+    height: 100%; }
+  b747-8-lower-eicas-fuel text {
+    fill: var(--eicasWhite);
+    font-size: 18px;
+    text-anchor: middle; }
+  b747-8-lower-eicas-fuel #Frame {
+    stroke: var(--eicasWhite);
+    stroke-width: 1px;
+    fill: var(--eicasBlack); }
+  b747-8-lower-eicas-fuel #Valves {
+    fill: var(--eicasBlack);
+    stroke-width: 2px; }
+    b747-8-lower-eicas-fuel #Valves .fuelvalve-open {
+      stroke: var(--eicasWhite); }
+    b747-8-lower-eicas-fuel #Valves .fuelvalve-closing {
+      stroke: var(--eicasOrange); }
+    b747-8-lower-eicas-fuel #Valves .fuelvalve-closed {
+      stroke: var(--eicasWhite); }
+  b747-8-lower-eicas-fuel #Pumps {
+    fill: var(--eicasBlack);
+    stroke-width: 2px; }
+    b747-8-lower-eicas-fuel #Pumps .fuelpump-notswitched-active {
+      stroke: var(--eicasOrange); }
+    b747-8-lower-eicas-fuel #Pumps .fuelpump-switched-inactive {
+      stroke: var(--eicasOrange); }
+    b747-8-lower-eicas-fuel #Pumps .fuelpump-notswitched-inactive {
+      stroke: var(--eicasWhite); }
+      b747-8-lower-eicas-fuel #Pumps .fuelpump-notswitched-inactive line {
+        stroke: none; }
+    b747-8-lower-eicas-fuel #Pumps #MainPumps .fuelpump-switched-active {
+      stroke: lime; }
+
+    b747-8-lower-eicas-fuel #Pumps #MainPumps .fuelpump-switched-active-jett {
+      stroke: var(--eicasMagenta);
+    }
+
+    b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active, b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active {
+      stroke: cyan; }
+
+    b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active-jett, b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active-withflow-jett,
+    b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active-jett, b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active-withflow-jett {
+      stroke: var(--eicasMagenta);
+    }
+
+    b747-8-lower-eicas-fuel #Pumps #OvrdPumps .fuelpump-switched-active-withflow, b747-8-lower-eicas-fuel #Pumps #StabPumps .fuelpump-switched-active-withflow {
+      stroke: lime; }
+
+
+  b747-8-lower-eicas-fuel #FlowLines {
+    stroke-width: 4px;
+    fill: none; }
+    b747-8-lower-eicas-fuel #FlowLines .fuelline-active {
+      stroke: lime; }
+    b747-8-lower-eicas-fuel #FlowLines .fuelline-warning {
+      stroke: var(--eicasOrange); }
+    b747-8-lower-eicas-fuel #FlowLines .fuelline-inactive {
+      stroke: none; }
+    b747-8-lower-eicas-fuel #FlowLines .fuelline-jett {
+      stroke: var(--eicasMagenta); }
+      
+    b747-8-lower-eicas-fuel #JettNozzles .jett-noz path, b747-8-lower-eicas-fuel #JettNozzles .jett-noz text {
+      fill: var(--eicasMagenta); 
+      stroke: none; }
+
+  b747-8-lower-eicas-fuel #Engines {
+    stroke-width: 2px;
+    fill: var(--eicasBlack); }
+    b747-8-lower-eicas-fuel #Engines .fuelengine-active {
+      stroke: var(--eicasWhite); }
+    b747-8-lower-eicas-fuel #Engines .fuelengine-inactive {
+      stroke: var(--eicasOrange); }
+  b747-8-lower-eicas-fuel #Labels text {
+    fill: cyan; }
+  b747-8-lower-eicas-fuel #Labels #TotalFuel, b747-8-lower-eicas-fuel #Labels #FuelPreselect {
+    text-anchor: start;
+    font-size: 16px; }
+  b747-8-lower-eicas-fuel #Values path, b747-8-lower-eicas-fuel #Values rect {
+    stroke: var(--eicasWhite);
+    stroke-width: 2px;
+    fill: var(--eicasBlack); }
+  b747-8-lower-eicas-fuel #Values text {
+    text-anchor: end;
+    letter-spacing: 0px; }
+  b747-8-lower-eicas-fuel #Values #TotalFuelUnits {
+    text-anchor: start;
+    letter-spacing: 0px;
+    font-size: 16px; }
+  b747-8-lower-eicas-fuel #Values #TotalFuelValue, b747-8-lower-eicas-fuel #Values #FuelPreselectValue {
+    font-size: 24px; }
+  b747-8-lower-eicas-fuel #TransferOutlines {
+    stroke-width: 6px !important;
+    stroke: var(--eicasWhite); }
+  b747-8-lower-eicas-fuel #TransferFlow {
+    stroke-width: 0px;
+    fill: var(--eicasGreen);
+    stroke: var(--eicasGreen); }

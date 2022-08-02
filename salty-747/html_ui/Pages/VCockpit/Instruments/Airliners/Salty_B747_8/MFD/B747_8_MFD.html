@@ -1,0 +1,170 @@
+﻿<link rel="stylesheet" href="B747_8_MFD.css" />
+
+<script type="text/html" id="B747_8_MFD">
+    <glasscockpit-highlight id="highlight"></glasscockpit-highlight>
+    <div id="Mainframe">
+        <div id="Electricity" state="off">
+            <div id="Map">
+                <map-instrument style="display:none" id="MapInstrument" map-mode="plan" bing-id="MFD" show-overlay="false" show-roads="false" config-path="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/"></map-instrument>
+            </div>
+            <div id="map-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <rect fill="transparent" x="283" y="317" width="35px" height="20px" stroke="#db8e00" stroke-width="3" id="map-rect"></rect>
+                    <text x="300" y="334" style="text-anchor:middle;fill:#db8e00;font-size:17px;">MAP</text>
+                </svg>
+            </div>
+            <jet-mfd-nd-compass id="Compass"></jet-mfd-nd-compass>
+            <div id="trk-box" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <rect fill="transparent" x="283" y="37" width="35px" height="20px" stroke="#db8e00" stroke-width="2" id="trk-rect"></rect>
+                    <text x="300" y="54" style="text-anchor:middle;fill:#db8e00;font-size:17px;">TRK</text>
+                </svg>
+            </div>
+            <div id="efisMasks" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <rect x="-5" y="390" width="60" height="150" id="efismodemask"/>
+                    <rect x="0" y="515" width="100" height="60" id="vorleftmask"/>
+                    <rect x="500" y="515" width="100" height="60" id="vorrightmask"/>
+                </svg>
+            </div>
+            <div id="ModeChangeMask"></div>
+            <jet-mfd-nd-info id="NDInfo">
+                <div id="TopBox">
+                    <div id="Speed">
+                        <svg>
+                            <text id="GS_Text" class="Small" x="0%" y="20%" alignment-baseline="baseline">GS</text>
+                            <text id="GS_Value" class="Value" x="22%" y="20%" alignment-baseline="baseline" text-anchor="end">---</text>
+                            <text id="TAS_Text" class="Small" x="25%" y="20%" alignment-baseline="baseline">TAS</text>
+                            <text id="TAS_Value" class="Value" x="36%" y="20%" alignment-baseline="baseline">---</text>
+                            <text id="Wind_Direction" class="Value" x="0%" y="38%" alignment-baseline="baseline">--</text>
+                            <text id="Wind_Separator" class="Large" x="14%" y="38%" alignment-baseline="baseline">°/</text>
+                            <text id="Wind_Strength" class="Value" x="24%" y="38%" alignment-baseline="baseline">--</text>
+                            <polygon id="Wind_Arrow" points="-3 60, 3 60, 3 -30, 14 -21, 17 -25, 0 -40, -17 -25, -14 -21, -3 -30," transform="translate(65 163) rotate(0)" fill="white" display="none"/>
+                        </svg>
+                    </div>
+                    <div id="Approach">
+                        <svg>
+                            <text id="APP_Type" class="Large" x="68%" y="20%" alignment-baseline="baseline"></text>
+                            <text id="APP_Freq" class="ValueVor" x="100%" y="20%" alignment-baseline="baseline">---</text>
+                            <text id="APP_Course" class="Large" x="78%" y="45%" alignment-baseline="baseline">CRS</text>
+                            <text id="APP_Course_Value" class="ValueVor" x="101%" y="45%" alignment-baseline="baseline"></text>
+                            <text id="APP_Info" class="ValueVor" x="100%" y="70%" alignment-baseline="baseline">---</text>
+                        </svg>
+                    </div>
+
+                    <div id="Waypoint">
+                        <svg>
+                            <g id="WP_Data">
+                            <text id="WP_Track_Value" class="Units" x="0%" y="0%" alignment-baseline="baseline" style="fill:#000000"></text>
+                            <text id="WP_Name" class="Large" x="66.5%" y="20%" alignment-baseline="baseline" style="fill:#D570FF;text-anchor:start"></text>
+                            <text id="WP_ZuluTime" class="Value" x="66.5%" y="45%" alignment-baseline="baseline" style="text-anchor:start">------</text>
+                            <text id="WP_ZuluTimeLabel" class="Units" x="96%" y="45%" alignment-baseline="baseline" style="fill:#ffffff;text-anchor:start">Z</text>
+                            <text id="WP_Distance_Value" class="Value" x="86%" y="70%" alignment-baseline="baseline" style="text-anchor:end">-.-</text>
+                            <text id="WP_Distance_Units" class="Units" x="86%" y="70%" alignment-baseline="baseline" style="fill:#ffffff;text-anchor:start">NM</text>
+                            <text id="ZuluClock_Time" class="Units" x="84%" y="92%" alignment-baseline="baseline" style="fill:#ffffff"></text>
+                            <text id="ZuluClock_Label" class="Units" x="100%" y="92%" alignment-baseline="baseline" style="fill:#00ffff">UTC</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <div id="VORDMENavaids">
+                    <div id="VORDMENavaid_Left" style="display:none">
+                        <svg>
+                            <text id="State" x="0%" y="16%" alignment-baseline="middle"></text>
+                            <text id="ID" x="0%" y="42%" alignment-baseline="middle"></text>
+                            <text id="Mode" x="0%" y="42%" alignment-baseline="middle"></text>
+                            <text id="Distance" x="48%" y="68%" alignment-baseline="middle">--</text>
+                            <text id="Unit" x="0%" y="71%" alignment-baseline="middle">DME</text>
+                        </svg>
+                    </div>
+
+                    <div id="VORDMENavaid_Right" style="display:none">
+                        <svg>
+                            <text id="State" x="46%" y="16%" alignment-baseline="middle"></text>
+                            <text id="ID" x="46%" y="42%" alignment-baseline="middle"></text>
+                            <text id="Mode" x="46%" y="42%" alignment-baseline="middle"></text>
+                            <text id="Distance" x="95%" y="68%" alignment-baseline="middle">--</text>
+                            <text id="Unit" x="46%" y="71%" alignment-baseline="middle">DME</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div id="Symbols">
+                    <svg>
+                        <text id="ARPT" class="Small" x="0%" y="3%" alignment-baseline="baseline">ARPT</text>
+                        <text id="WPT" class="Small" x="0%" y="8%" alignment-baseline="baseline">WPT</text>
+                        <text id="STA" class="Small" x="0%" y="13%" alignment-baseline="baseline">STA</text>
+                        <text id="TERR" class="Large" x="0%" y="20%" alignment-baseline="baseline">TERR</text>
+                        <text id="WXR" class="Large" x="0%" y="20%" alignment-baseline="baseline">WXR</text>
+                        <text id="WXRInfo" class="Large" x="0%" y="27%" alignment-baseline="baseline">0A</text>
+                        <text id="TFC" class="Small" x="0%" y="35%" alignment-baseline="baseline">TFC</text>
+                    </svg>
+                </div>
+            </jet-mfd-nd-info>
+
+            <div id="PathDeviationScale" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <path id="pathDevMask" d= "M 545 350 l 40 -8 l 0 170 l -40 0 Z" fill="black"></path>
+                    <path id="pathDevScale" d="M 553 370 l 5 0 l 0 60 l -8 0 l 8 0 l 0 60 l -5 0 l 5 0 l 0 -120 Z" alignment-baseline="middle" stroke="white" stroke-width="2"></path>
+                    <path id="pathDevPointer" d= "M 560 430 l 8 -5 l 8 5 l -8 5 Z" stroke="#D570FF" fill="black" stroke-width="2"></path>
+                    <text id="pathTopText" x="574" y="355" text-anchor="end" alignment-baseline="baseline" font-size= "15px" stroke="white" fill="white">9999</text>
+                    <text id="pathBottomText" x="574" y="497" text-anchor="end" alignment-baseline="baseline" font-size= "15px" stroke="white" fill="white">9999</text>
+                </svg>
+            </div>
+
+            <div id="irs-times" style="position: absolute; left: 0%; top: 0%; width: 100%; height: 100%; border: none;">
+                <svg viewBox="0 0 600 600">
+                    <text x="77" y="73" style="text-anchor:middle;fill:#ffffff;font-size:17px;">TIME TO ALIGN</text>
+                    <text x="23" y="89" style="fill:#ffffff;font-size:17px;">L</text>
+                    <text x="23" y="106" style="fill:#ffffff;font-size:17px;">C</text>
+                    <text x="23" y="123" style="fill:#ffffff;font-size:17px;">R</text>
+                    <text x="47" y="89" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="l-irs-value">0</text>
+                    <text x="47" y="106" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="c-irs-value">0</text>
+                    <text x="47" y="123" style="text-anchor:middle;fill:#ffffff;font-size:17px;" id="r-irs-value">0</text>
+                    <text x="60" y="89" style="fill:#ffffff;font-size:17px;">MIN</text>
+                    <text x="60" y="106" style="fill:#ffffff;font-size:17px;">MIN</text>
+                    <text x="60" y="123" style="fill:#ffffff;font-size:17px;">MIN</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div id="DUborder">
+        <svg viewBox="0 0 600 600" style="position:absolute; top:0%; left: 0%; width: 100%; height:100%;">
+            <path d= "M 0 570 L 565 570 L 565 40 L 600 40 L 600 570 L 600 600 L 0 600 Z" fill="black"></path>
+            <path d= "M 0 0 L 600 0 L 600 40 L 30 40 L 30 600 L 0 600 Z" fill="black"></path>
+        </svg>
+    </div>
+</script>
+
+<script type="text/html" import-script="/JS/SimPlane.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/WT_SimPlaneMod.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/DataStore.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WT_ConvertUnit.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/WT_GCMath.js"></script> <!-- WT -->
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js"></script>
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/AutopilotMath.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/WT/Autopilot/HoldsDirector.js"></script> <!-- WT -->
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Templates/Highlight/Highlight.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SelectableElement.js"></script>
+
+
+<script type="text/html" import-template="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/MapInstrument.html"></script> <!-- WT -->
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/NavSystems/Shared/Salty_NavSystem.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Shared/BaseAirliners.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Salty_BaseNDCompass.js"></script>
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/Salty_NDCompass.js"></script>
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/NDInfo.js"></script> <!-- Modified -->
+
+<script type="text/html" import-script="/Pages/Salty/WT/DataStore.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/LzUtf8.js"></script> <!-- WT -->
+<script type="text/html" import-script="/Pages/Salty/FPM/wtsdk.js"></script> <!-- WT -->
+
+<script type="text/html" import-script="/Pages/VCockpit/Instruments/Airliners/Salty_B747_8/MFD/B747_8_MFD.js"></script>

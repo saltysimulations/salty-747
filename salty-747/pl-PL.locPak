@@ -1,0 +1,12 @@
+{
+  "LocalisationPackage": {
+    "Language": "pl-PL",
+    "Strings": {
+      "AIRCRAFT.DESCRIPTION": "Model 747 powstał w latach 60. XX wieku jako propozycja firmy Boeing przedstawiona na potrzeby prowadzonego przez siły powietrzne Stanów Zjednoczonych badania mającego na celu opracowanie dużego transportowego statku powietrznego o znaczeniu strategicznym. Ten szerokokadłubowy samolot pasażerski wszedł do ogólnego użytku w roku 1970 w liniach Pan Am World Airways, gdzie zyskał przydomek „Jumbo Jet”. Przez kolejne 37 lat dzierżył rekord w zakresie maksymalnej liczby pasażerów mieszczących się na pokładzie.<\/br><\/br>W 2004 roku, po wielu latach prac nad wersjami umożliwiającymi zwiększenie tej liczby, firma Boeing opracowała powiększony model 747 Advanced, który rok później oficjalnie przemianowano na 747-8. W październiku 2011 roku powstała wersja przeznaczona do transportu ładunków (model 747-8F), a w czerwcu 2012 roku oddano do użytku model międzykontynentalny do przewozu pasażerów linii Lufthansa (model 747-8i).<\/br><\/br>Powstały na bazie modelu 747-400, 747-8 posiada ulepszone w stosunku do swojego poprzednika silniki i złożony technologicznie kokpit zaczerpnięty z modelu 787 Dreamliner. W rezultacie powstał nowoczesny, lekki i cichy statek powietrzny o zwiększonych osiągach i ultraniskiej emisji spalin. Jego projekt został następnie ulepszony poprzez dodanie opracowanego na nowo układu skrzydeł, który zmniejsza oddziaływanie wirów brzegowych i oporu, poprawiając przy tym zużycie paliwa, zasięg i ogólne właściwości aerodynamiczne.<\/br><\/br>Rozmiar „Super Jumbo Jet” oraz 60 lat doświadczeń inżynieryjnych sprawiają, że model 747-8 na pierwszy rzut oka nie przypomina swoich poprzedników. Jego rodowód potwierdza jednak linia sylwetki oraz eleganckie krzywe piętrowego kadłuba, które sprawiają, że jest to jeden z najbardziej rozpoznawalnych samolotów na świecie, w pełni godzien nadanemu mu miana „Królowej Przestworzy”.",
+      "AIRCRAFT.UI_MANUFACTURER": "Boeing",
+      "AIRCRAFT.UI_MODEL": "747-8 Intercontinental",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_LEFT": "Zmień wybrany kurs w lewo",
+      "COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_HDG_TUNING_RIGHT": "Zmień wybrany kurs w prawo"
+    }
+  }
+}

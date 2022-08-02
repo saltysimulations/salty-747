@@ -20,29 +20,71 @@
         ],
         "output": {
             "gltf": [
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD00.gltf",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD01.gltf",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD02.gltf",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD03.gltf",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD04.gltf",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD05.gltf",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD06.gltf"
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD00.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD01.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD02.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD03.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD04.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD05.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD06.gltf"
             ],
             "bin": [
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD00.bin",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD01.bin",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD02.bin",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD03.bin",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD04.bin",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD05.bin",
-                "../../salty-747/SimObjects/Airplanes/Asobo_B747_8i/model/747_8I_INTERIOR_LOD06.bin"
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD00.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD01.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD02.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD03.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD04.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD05.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_INTERIOR_LOD06.bin"
             ]
         },
         "additions": [
             {
                 "gltf": "./efb/efb.gltf",
-                "bin": "./efb/efb.bin"
+                "bin": "./efb/efb.bin",
+                "lods": [0, 1, 2, 3]
+            },
+            {
+                "gltf": "./pilots/pilots.gltf",
+                "lods": [0]
             }
         ]
+    },
+    {
+        "gltf": [
+            "./exterior/747_8I_LOD00.gltf",
+            "./exterior/747_8I_LOD01.gltf",
+            "./exterior/747_8I_LOD02.gltf",
+            "./exterior/747_8I_LOD03.gltf",
+            "./exterior/747_8I_LOD04.gltf",
+            "./exterior/747_8I_LOD06.gltf"
+        ],
+        "bin": [
+            "./exterior/747_8I_LOD00.bin",
+            "./exterior/747_8I_LOD01.bin",
+            "./exterior/747_8I_LOD02.bin",
+            "./exterior/747_8I_LOD03.bin",
+            "./exterior/747_8I_LOD04.bin",
+            "./exterior/747_8I_LOD06.bin"
+        ],
+        "output": {
+            "gltf": [
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD00.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD01.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD02.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD03.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD04.gltf",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD06.gltf"
+            ],
+            "bin": [
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD00.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD01.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD02.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD03.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD04.bin",
+                "../../salty-747/SimObjects/Airplanes/Salty_B747_8i/model/747_8I_LOD06.bin"
+            ]
+        },
+        "additions": []
     }
 ]
