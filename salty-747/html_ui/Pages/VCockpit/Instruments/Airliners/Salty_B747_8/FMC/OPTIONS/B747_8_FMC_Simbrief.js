@@ -19,7 +19,7 @@ class FMCSaltyOptions_Simbrief {
             ["\xa0RETURN TO", ""],
             ["<OPTIONS", ""]
         ]);
-        
+
         /* LSK1 */
         fmc.onLeftInput[0] = () => {
               let value = fmc.inOut;
@@ -28,7 +28,8 @@ class FMCSaltyOptions_Simbrief {
               SaltyDataStore.set("OPTIONS_SIMBRIEF_USER", "");
               FMCSaltyOptions_Simbrief.ShowPage(fmc);
         }
-        
+
+
         /* RSK1 */
         /*fmc.onRightInput[0] = () => {
               let value = fmc.inOut;

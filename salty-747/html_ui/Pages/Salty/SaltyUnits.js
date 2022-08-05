@@ -1,14 +1,6 @@
-/**
- * Unit conversion utilities
- */
-
  class SaltyUnits {
-    constructor() {
-        this._metricWeight = Boolean(SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool"));
-    }
-
     static get metricWeight() {
-        return Boolean(SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool"));
+        return SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "bool");
     }
 
     static userToKg(value) {
@@ -20,6 +12,6 @@
     }
 
     static userWeightUnit() {
-        return SaltyUnits.metricWeight ? 'KG' : 'LBS'; // EIS uses S suffix on LB
+        return SaltyUnits.metricWeight ? 'KG' : 'LBS';
     }
 }

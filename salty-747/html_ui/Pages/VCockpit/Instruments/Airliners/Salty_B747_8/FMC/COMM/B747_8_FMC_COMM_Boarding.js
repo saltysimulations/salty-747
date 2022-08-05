@@ -123,7 +123,7 @@ class FMC_COMM_Boarding {
                 default:
             };
         }
-        
+
         /* Fetch fuel from flight plan */
         /*fmc.onRightInput[4] = () => {
             getFplnFromSimBrief(fmc, "", updateView, () => {
@@ -133,7 +133,7 @@ class FMC_COMM_Boarding {
             });
         };*/
 
-        /* Starts refueling */ 
+        /* Starts refueling */
         fmc.onRightInput[5] = async () => {
             switch (refuelingRate) {
                 case "REAL":
@@ -160,7 +160,7 @@ class FMC_COMM_Boarding {
                     break;
             }
         };
-        
+
         fmc.onLeftInput[5] = () => {
             FMC_COMM_Index.ShowPage(fmc);
         };
@@ -177,9 +177,9 @@ class FMC_COMM_Boarding {
             const gallonToMegagrams = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilogram") * 0.001;
             const currentFuel = (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons")  * gallonToMegagrams).toFixed(1);
             const targetFuel = (SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "number") * 0.001).toFixed(1);
-        
+
             const suffix = targetFuel === currentFuel ? "[color]green" : "[color]yellow";
-        
+
             return new FMC_SingleValueField(fmc,
                 "number",
                 `${currentFuel} (${targetFuel})`,
@@ -228,7 +228,7 @@ class FMC_COMM_Boarding {
             const cgColor = currentZfwcg >= 16 && currentZfwcg <= 40 ? 'green' : 'red';
             zfwcg = `${currentZfwcg.toFixed(1)}[color]${cgColor}`;
         }
-        
+
         const boardingRate = SaltyDataStore.get("747_CONFIG_BOARDING_RATE", 'REAL');
         let boardingRateText = "";
         switch (boardingRate) {
@@ -243,7 +243,7 @@ class FMC_COMM_Boarding {
             case "INSTANT":
                 // Loads fuel instant
                 boardingRateText = "INSTANT>";
-                
+
                 break;
             default:
         }
@@ -252,7 +252,7 @@ class FMC_COMM_Boarding {
         let desiredCargoText = (desiredCargo / 1000).toFixed(1);
         const paxTarget = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
 
-        /* 
+        /*
             Payload display
         */
         const display = [
@@ -311,7 +311,7 @@ class FMC_COMM_Boarding {
                 default:
             };
         }
-        
+
 
         fmc.onRightInput[5] = async () => {
             await SimVar.SetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool", !boardingStartedByUser);
@@ -368,7 +368,7 @@ class FMC_COMM_Boarding {
 
         const paxTarget = Object.values(paxStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);
 
-        /* 
+        /*
             All pax stations display
         */
         const display = [
@@ -422,48 +422,7 @@ class FMC_COMM_Boarding {
     }
 }
 
-async function loadFuel(fmc, updateView) {
-    const currentBlockFuel = fmc.companyComm.blockFuel || fmc.simbrief.blockFuel;
 
-    fmc.companyComm.loading = true;
-    updateView();
-
-    const mainTankCapacity = 14430; // Main 2 and 3 = flight_model.cfg Left and Right Main
-    const mainTipTankCapacity = 5320; // Main 1 and 4 = flight_model.cfg Left and Right Aux
-    const totalMainTanksCapacity = 39500; // All main tanks capacity
-    const resTankCapacity = 1534; // Res 1 and 2 = flight_model.cfg Left and Right Tip
-    const centerTankCapacity = 17000; // Center tank = flight_model.cfg Center 1
-    const stabTankCapacity = 3300; // Stab tank = flight_model.cfg Center 2
-    const fuelWeightPerGallon = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms");
-    let currentBlockFuelInGallons = +currentBlockFuel / +fuelWeightPerGallon;
-
-    const mainTankFill = Math.min(totalMainTanksCapacity, currentBlockFuelInGallons);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_AUX_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.1346835443037975);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_RIGHT_AUX_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.1346835443037975);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_MAIN_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.3653164556962025);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_RIGHT_MAIN_QUANTITY_DESIRED`, "Gallons", mainTankFill * 0.3653164556962025);
-    console.log("mainCenter" + mainTankFill * 0.3653164556962025)
-    console.log("mainOut" + mainTankFill * 0.1346835443037975)
-    currentBlockFuelInGallons -= mainTankFill;
-
-    const tipTankFill = Math.min(resTankCapacity, currentBlockFuelInGallons / 2);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_LEFT_TIP_QUANTITY_DESIRED`, "Gallons", tipTankFill);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_RIGHT_TIP_QUANTITY_DESIRED`, "Gallons", tipTankFill);
-    currentBlockFuelInGallons -= tipTankFill * 2;
-
-    const centerTankFill = Math.min(centerTankCapacity, currentBlockFuelInGallons);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_CENTER_QUANTITY_DESIRED`, "Gallons", centerTankFill);
-    currentBlockFuelInGallons -= centerTankFill;
-
-    const stabTankFill = Math.min(stabTankCapacity, currentBlockFuelInGallons);
-    await SimVar.SetSimVarValue(`L:747_FUEL_TANK_CENTER2_QUANTITY_DESIRED`, "Gallons", stabTankFill);
-    currentBlockFuelInGallons -= stabTankFill;
-
-    fmc.updateFuelVars();
-
-    fmc.companyComm.loading = false;
-    updateView();
-}
 
 const payloadConstruct = new SaltyPayloadConstructor();
 const paxStations = payloadConstruct.paxStations;
@@ -472,7 +431,6 @@ const cargoStations = payloadConstruct.cargoStations;
 const MAX_SEAT_AVAILABLE = 364;
 const PAX_WEIGHT = 84;
 const BAG_WEIGHT = 20;
-const MAX_ALLOWABLE_FUEL = 193280; // in kilograms
 
 /**
      * Calculate %MAC ZWFCG of all stations
@@ -609,7 +567,7 @@ function buildTotalPaxValue(fmc) {
     );
 }
 
-/* Calculates the number of cargo in units */      
+/* Calculates the number of cargo in units */
 function buildTotalCargoValue(fmc) {
     const currentLoad = Object.values(cargoStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}`, "Number")).reduce((acc, cur) => acc + cur);
     const loadTarget = Object.values(cargoStations).map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number")).reduce((acc, cur) => acc + cur);

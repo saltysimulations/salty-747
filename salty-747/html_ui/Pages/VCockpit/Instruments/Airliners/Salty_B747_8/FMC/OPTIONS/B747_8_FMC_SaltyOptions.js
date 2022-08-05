@@ -13,17 +13,17 @@ class FMCSaltyOptions {
         fmc.setTemplate([
             ["SALTY OPTIONS"],
             ["", ""],
-            ["<IRS", "UNITS>"],
+            ["<IRS", "SIMBRIEF>"],
             ["", ""],
-            ["<METAR SRC", "ATIS SRC>"],
+            ["<METAR SRC", "DEBUG PAGE>"],
             ["", ""],
-            ["<TAF SRC", "DEBUG PAGE>"],
+            ["<TAF SRC", "FUEL>"],
             ["", ""],
-            [`<SIMBRIEF`, ""],
+            [`<ATIS SRC`, "PAYLOAD>"],
             ["", ""],
-            ["<CPDLC[color]inop", "MISC>"],
+            ["<UNITS", "MISC>"],
             ["\xa0RETURN TO", ""],
-            ["<INDEX", ""]
+            ["<INDEX", ""],
         ]);
 
         /* LSK1 */
@@ -32,7 +32,7 @@ class FMCSaltyOptions {
         }
         /* RSK1 */
         fmc.onRightInput[0] = () => {
-            FMCSaltyOptions_Units.ShowPage(fmc);
+            FMCSaltyOptions_Simbrief.ShowPage(fmc);
         }
         /* LSK2 */
         fmc.onLeftInput[1] = () => {
@@ -41,32 +41,36 @@ class FMCSaltyOptions {
 
         /* RSK2 */
         fmc.onRightInput[1] = () => {
-              FMCSaltyOptions_Atis.ShowPage(fmc);
+            SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_info", "bool", 1);
         };
 
         /* LSK3 */
         fmc.onLeftInput[2] = () => {
-              FMCSaltyOptions_Taf.ShowPage(fmc);
+            FMCSaltyOptions_Taf.ShowPage(fmc);
         };
 
         /* LSK3 */
         fmc.onRightInput[2] = () => {
-            SimVar.SetSimVarValue("H:B747_8_EICAS_2_EICAS_CHANGE_PAGE_info", "bool", 1);
+            FMC_Fuel.ShowPage(fmc);
         };
-        
+
         /* LSK4 */
         fmc.onLeftInput[3] = () => {
-              FMCSaltyOptions_Simbrief.ShowPage(fmc);
+            FMCSaltyOptions_Atis.ShowPage(fmc);
         }
-        
+
+        fmc.onLeftInput[4] = () => {
+            FMCSaltyOptions_Units.ShowPage(fmc);
+        }
+
         /* RSK5 */
         fmc.onRightInput[4] = () => {
-              FMCSaltyOptions_Misc.ShowPage(fmc);
+            FMCSaltyOptions_Misc.ShowPage(fmc);
         }
 
         /* LSK6 */
         fmc.onLeftInput[5] = () => {
-              FMC_Menu.ShowPage(fmc);
+            FMC_Menu.ShowPage(fmc);
         }
     }
 }
