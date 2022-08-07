@@ -17,12 +17,16 @@ class FMC_Fuel {
 
         const grossWeight = (SimVar.GetSimVarValue("TOTAL WEIGHT", SaltyUnits.userWeightUnit().toLowerCase()) * 0.001).toFixed(1);
 
+        const gallonToMegagrams = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", SaltyUnits.userWeightUnit().toLowerCase()) * 0.001;
+        const currentFuel = (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * gallonToMegagrams).toFixed(1);
+        const targetFuel = (SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "number") * 0.001).toFixed(1);
+
         fmc.setTemplate([
             ["FUEL"],
-            ["BLOCK FUEL", "REFUEL"],
-            [buildTotalFuelValue(), refuelStartedByUser ? "STOP>" : "START>"],
-            ["GROSS WT"],
-            [`${grossWeight}{small}${SaltyUnits.userWeightUnit()}`],
+            ["ACT FUEL", "SEL FUEL"],
+            [`${currentFuel}{small}${SaltyUnits.userWeightUnit()}`, `${targetFuel}{small}${SaltyUnits.userWeightUnit()}>`],
+            ["GROSS WT", "REFUEL"],
+            [`${grossWeight}{small}${SaltyUnits.userWeightUnit()}`, refuelStartedByUser ? "STOP>" : "START>"],
             ["CG"],
             [`${(SimVar.GetSimVarValue("CG PERCENT", "percent over 100") * 100).toFixed(1).toString()}%`],
             [""],
@@ -34,7 +38,7 @@ class FMC_Fuel {
         ]);
 
         /* Sets total fuel target */
-        fmc.onLeftInput[0] = () => {
+        fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
             if (value !== FMCMainDisplay.clrValue) {
                 if (SaltyUnits.userToKg(value) < 191.2) {
@@ -48,7 +52,7 @@ class FMC_Fuel {
             }
         };
 
-        fmc.onRightInput[0] = () => {
+        fmc.onRightInput[1] = () => {
             if (refuelingRate !== "INSTANT" && !airplaneCanFuel()) {
                 fmc.showErrorMessage("FUELING NOT AVAILABLE");
             } else {
@@ -72,28 +76,6 @@ class FMC_Fuel {
             else if (refuelingRate === "REAL") SaltyDataStore.set("747_REFUEL_RATE_SETTING", "FAST");
             else SaltyDataStore.set("747_REFUEL_RATE_SETTING", "INSTANT");
         };
-
-        function buildTotalFuelValue() {
-            const gallonToMegagrams = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", SaltyUnits.userWeightUnit().toLowerCase()) * 0.001;
-            const currentFuel = (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * gallonToMegagrams).toFixed(1);
-            const targetFuel = (SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "number") * 0.001).toFixed(1);
-
-            return new FMC_SingleValueField(
-                fmc,
-                "number",
-                `${currentFuel} (${targetFuel})`,
-                {
-                    emptyValue: "__[color]yellow",
-                    suffix: ` {small}${SaltyUnits.userWeightUnit()}`,
-                    maxLength: 3,
-                    minValue: 0,
-                    maxValue: SaltyUnits.userToKg(191060),
-                },
-                async (_) => {
-                    updateView();
-                }
-            );
-        }
     }
 }
 
