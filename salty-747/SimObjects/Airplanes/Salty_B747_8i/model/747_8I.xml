@@ -59,6 +59,7 @@
 	<Behaviors>
 		<Include ModelBehaviorFile="Asobo\Common.xml"/>
 		<Include ModelBehaviorFile="Asobo\Exterior.xml"/>
+		<Include ModelBehaviorFile="Salty\Index.xml"/>
 		<Include RelativeFile="747_8I_FX.xml"/>
 		<Component ID="GEARS">
 			<UseTemplate Name="ASOBO_GEAR_Center_Template">
@@ -198,7 +199,7 @@
 			<DefaultTemplateParameters>
 				<STILL_NODE_ID_COUNT>2</STILL_NODE_ID_COUNT>
 			</DefaultTemplateParameters>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
 				<ID>2</ID>
 				<ANIM_NODE_ID>N1_1_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_1_anim</ANIM_NAME>
@@ -207,7 +208,7 @@
 				<SLOW_NODE_ID>PROP_1_SLOW_LEFT</SLOW_NODE_ID>
 				<BLURRED_NODE_ID>PROP_1_BLURRED_LEFT</BLURRED_NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
 				<ID>1</ID>
 				<ANIM_NODE_ID>N1_2_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_2_anim</ANIM_NAME>
@@ -216,7 +217,7 @@
 				<SLOW_NODE_ID>PROP_2_SLOW_LEFT</SLOW_NODE_ID>
 				<BLURRED_NODE_ID>PROP_2_BLURRED_LEFT</BLURRED_NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
 				<ID>3</ID>
 				<ANIM_NODE_ID>N1_3_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_3_anim</ANIM_NAME>
@@ -225,7 +226,7 @@
 				<SLOW_NODE_ID>PROP_3_SLOW_RIGHT</SLOW_NODE_ID>
 				<BLURRED_NODE_ID>PROP_3_BLURRED_RIGHT</BLURRED_NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
+			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
 				<ID>4</ID>
 				<ANIM_NODE_ID>N1_4_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_4_anim</ANIM_NAME>
