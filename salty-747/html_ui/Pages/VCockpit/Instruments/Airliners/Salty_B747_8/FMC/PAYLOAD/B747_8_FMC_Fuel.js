@@ -21,10 +21,12 @@ class FMC_Fuel {
         const currentFuel = (SimVar.GetSimVarValue("FUEL TOTAL QUANTITY", "gallons") * gallonToMegagrams).toFixed(1);
         const targetFuel = (SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "number") * 0.001).toFixed(1);
 
+        const targetFuelText = targetFuel <= 0.01 ? "□□□.□" : `${targetFuel}{small}${SaltyUnits.userWeightUnit()}`;
+
         fmc.setTemplate([
             ["FUEL"],
             ["\xa0ACT FUEL", "SEL FUEL"],
-            [`${currentFuel}{small}${SaltyUnits.userWeightUnit()}`, `${targetFuel}{small}${SaltyUnits.userWeightUnit()}>`],
+            [`${currentFuel}{small}${SaltyUnits.userWeightUnit()}`, targetFuelText],
             ["\xa0GROSS WT", "REFUEL"],
             [`${grossWeight}{small}${SaltyUnits.userWeightUnit()}`, refuelStartedByUser ? "STOP>" : "START>"],
             ["\xa0CG"],
