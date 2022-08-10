@@ -52,7 +52,7 @@ class FMC_Fuel {
         };
 
         fmc.onRightInput[1] = () => {
-            if (refuelingRate !== "INSTANT" && !airplaneCanFuel()) {
+            if (refuelingRate !== "INSTANT" && !SaltyFueling.airplaneCanFuel()) {
                 fmc.showErrorMessage("FUELING NOT AVAILABLE");
             } else {
                 SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", !refuelStartedByUser);

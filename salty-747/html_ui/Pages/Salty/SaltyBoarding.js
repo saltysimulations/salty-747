@@ -1,14 +1,3 @@
-function airplaneCanBoard() {
-    const gs = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
-    const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
-    const eng1Running = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
-    const eng2Running = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
-    const eng3Running = SimVar.GetSimVarValue("ENG COMBUSTION:3", "Bool");
-    const eng4Running = SimVar.GetSimVarValue("ENG COMBUSTION:4", "Bool");
-
-    return !(gs > 0.1 || eng1Running || eng2Running || eng3Running || eng4Running || !isOnGround);
-}
-
 class SaltyBoarding {
     constructor() {
         this.boardingState = "finished";
@@ -108,8 +97,8 @@ class SaltyBoarding {
         }
 
         if (
-            (!airplaneCanBoard() && boardingRate == "REAL") ||
-            (!airplaneCanBoard() && boardingRate == "FAST") ||
+            (!SaltyBoarding.airplaneCanBoard() && boardingRate == "REAL") ||
+            (!SaltyBoarding.airplaneCanBoard() && boardingRate == "FAST") ||
             (boardingRate == "INSTANT" && !isOnGround)
         ) {
             return;
@@ -229,5 +218,15 @@ class SaltyBoarding {
             await this.loadPaxPayload();
             await this.loadCargoPayload();
         }
+    }
+    static airplaneCanBoard() {
+        const gs = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
+        const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
+        const eng1Running = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
+        const eng2Running = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
+        const eng3Running = SimVar.GetSimVarValue("ENG COMBUSTION:3", "Bool");
+        const eng4Running = SimVar.GetSimVarValue("ENG COMBUSTION:4", "Bool");
+
+        return !(gs > 0.1 || eng1Running || eng2Running || eng3Running || eng4Running || !isOnGround);
     }
 }

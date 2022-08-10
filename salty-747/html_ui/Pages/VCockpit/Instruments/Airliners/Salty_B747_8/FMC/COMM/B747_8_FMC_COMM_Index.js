@@ -2,14 +2,14 @@ class FMC_COMM_Index {
     static ShowPage(fmc) {
         fmc.activeSystem = "DLNK";
         fmc.clearDisplay();
-        
+
         const updateView = () => {
             fmc.setTemplate([
                 ["ACARS INDEX"],
                 ["", ""],
                 ["<PREFLIGHT", "REQUESTS>"],
                 ["", ""],
-                ["<INFLIGHT", "BOARDING>"],
+                ["<INFLIGHT", ""],
                 ["", ""],
                 ["<POSTFLIGHT", ""],
                 ["\xa0RECEIVED", ""],
@@ -37,11 +37,6 @@ class FMC_COMM_Index {
             FMC_COMM_Inflight.ShowPage(fmc);
         }
 
-        /* RSK2 */
-        fmc.onRightInput[1] = () => {
-            FMC_COMM_Boarding.ShowPage1(fmc);
-        }
-        
         /* LSK3 */
         fmc.onLeftInput[2] = () => {
             FMC_COMM_Postflight.ShowPage(fmc);
@@ -51,7 +46,7 @@ class FMC_COMM_Index {
         fmc.onLeftInput[3] = () => {
             FMC_COMM_Log.ShowPage(fmc);
         }
-        
+
         /* RSK1 */
         fmc.onRightInput[5] = () => {
             FMC_COMM_LinkStatus.ShowPage(fmc);

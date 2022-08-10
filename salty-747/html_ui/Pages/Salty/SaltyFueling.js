@@ -1,19 +1,8 @@
-function airplaneCanFuel() {
-    const gs = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
-    const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
-    const eng1Running = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
-    const eng2Running = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
-    const eng3Running = SimVar.GetSimVarValue("ENG COMBUSTION:3", "Bool");
-    const eng4Running = SimVar.GetSimVarValue("ENG COMBUSTION:4", "Bool");
-
-    return !(gs > 0.1 || eng1Running || eng2Running || eng3Running || eng4Running || !isOnGround);
-}
 const REFUEL_FACTOR = 2;
 const CENTER_MODIFIER = 3;
 
 class SaltyFueling {
-    constructor() {
-    }
+    constructor() {}
 
     defuelTank(multiplier) {
         return -REFUEL_FACTOR * multiplier;
@@ -40,7 +29,11 @@ class SaltyFueling {
         if (!refuelStartedByUser) {
             return;
         }
-        if ((!airplaneCanFuel() && refuelingRate == 'REAL') || (!airplaneCanFuel() && refuelingRate == 'FAST') || (refuelingRate == 'INSTANT' && !isOnGround)) {
+        if (
+            (!SaltyFueling.airplaneCanFuel() && refuelingRate == "REAL") ||
+            (!SaltyFueling.airplaneCanFuel() && refuelingRate == "FAST") ||
+            (refuelingRate == "INSTANT" && !isOnGround)
+        ) {
             return;
         }
 
@@ -232,5 +225,16 @@ class SaltyFueling {
 
         // Done fueling
         SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", false);
+    }
+
+    static airplaneCanFuel() {
+        const gs = SimVar.GetSimVarValue("GPS GROUND SPEED", "knots");
+        const isOnGround = SimVar.GetSimVarValue("SIM ON GROUND", "Bool");
+        const eng1Running = SimVar.GetSimVarValue("ENG COMBUSTION:1", "Bool");
+        const eng2Running = SimVar.GetSimVarValue("ENG COMBUSTION:2", "Bool");
+        const eng3Running = SimVar.GetSimVarValue("ENG COMBUSTION:3", "Bool");
+        const eng4Running = SimVar.GetSimVarValue("ENG COMBUSTION:4", "Bool");
+
+        return !(gs > 0.1 || eng1Running || eng2Running || eng3Running || eng4Running || !isOnGround);
     }
 }

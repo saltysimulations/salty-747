@@ -90,14 +90,6 @@ class FMC_Payload {
         fmc.onLeftInput[5] = () => {
             FMCSaltyOptions.ShowPage1(fmc);
         };
-
-        fmc.onPrevPage = () => {
-            FMC_COMM_Boarding.ShowPage1(fmc);
-        };
-
-        fmc.onNextPage = () => {
-            FMC_COMM_Boarding.ShowPage3(fmc);
-        };
     }
 
     static ShowPaxDetails(fmc) {
