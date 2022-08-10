@@ -162,14 +162,12 @@ const getSimBriefPlan = (fmc, store) => {
             fmc.simbrief["finResFuel"] = data.fuel.reserve;
             fmc.simbrief["contFuel"] = data.fuel.contingency;
             fmc.simbrief["blockFuel"] = data.fuel.plan_ramp;
-            fmc.companyComm["taxiFuel"] = data.fuel.taxi;
-            fmc.companyComm["tripFuel"] = data.fuel.enroute_burn;
-            fmc.companyComm["altnFuel"] = data.fuel.alternate_burn;
-            fmc.companyComm["finResFuel"] = data.fuel.reserve;
-            fmc.companyComm["contFuel"] = data.fuel.contingency;
-            fmc.companyComm["blockFuel"] = data.fuel.plan_ramp;
             /* DISTANCE */
             fmc.simbrief["route_distance"] = data.general.route_distance;
+            /* PAYLOAD */
+            fmc.simbrief["paxCount"] = data.weights.pax_count;
+            fmc.simbrief["cargo"] = data.weights.cargo;
+
             fmc.simbrief.rteUplinkReady = true;
             fmc.simbrief.perfUplinkReady = true;
             return fmc.simbrief;

@@ -54,6 +54,10 @@ class FMCSaltyOptions {
             FMC_Fuel.ShowPage(fmc);
         };
 
+        fmc.onRightInput[3] = () => {
+            FMC_Payload.ShowPage(fmc);
+        };
+
         /* LSK4 */
         fmc.onLeftInput[3] = () => {
             FMCSaltyOptions_Atis.ShowPage(fmc);

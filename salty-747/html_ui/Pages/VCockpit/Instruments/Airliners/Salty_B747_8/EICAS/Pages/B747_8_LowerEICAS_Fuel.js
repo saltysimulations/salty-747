@@ -217,17 +217,13 @@ var B747_8_LowerEICAS_Fuel;
             }
             return (SimVar.GetSimVarValue("FUELSYSTEM TANK QUANTITY:" + _index, "gallons") * factor);
         }
-        fuelPreselected(){
-            let isRefueling = SimVar.GetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool");
-            let preselectedFuelQty = SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "Number");
+        fuelPreselected() {
+            const isRefueling = SimVar.GetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool");
+            const preselectedFuelQty = SimVar.GetSimVarValue("L:747_FUEL_DESIRED", "Number");
+
             this.querySelector("#FuelPreselectValue").textContent = (preselectedFuelQty / 1000).toFixed(1);
-            if (isRefueling == 1) {
-                this.querySelector("#FuelPreselect").setAttribute("style", "opacity: 100;");
-                this.querySelector("#FuelPreselectValue").setAttribute("style", "opacity: 100;");
-            } else {
-                this.querySelector("#FuelPreselect").setAttribute("style", "opacity: 0;");
-                this.querySelector("#FuelPreselectValue").setAttribute("style", "opacity: 0;");
-            }
+            this.querySelector("#FuelPreselect").style.visibility = isRefueling ? "visible" : "hidden";
+            this.querySelector("#FuelPreselectValue").style.visibility = isRefueling ? "visible" : "hidden";
         }
     }
     B747_8_LowerEICAS_Fuel.Display = Display;
@@ -244,14 +240,14 @@ var B747_8_LowerEICAS_Fuel;
             this.flowStab = document.querySelector("#FlowStab");
             this.flowRes1Outline = document.querySelector("#TransferReserve1");
             this.flowRes1 = document.querySelector("#FlowReserve1");
-            this.flowRes4Outline = document.querySelector("#TransferReserve4"); 
+            this.flowRes4Outline = document.querySelector("#TransferReserve4");
             this.flowRes4 = document.querySelector("#FlowReserve4");
         }
         init() {
             this.refresh(false, false, false, true);
         }
         update(_deltaTime) {
-                        
+
             this.refresh(SimVar.GetSimVarValue("FUELSYSTEM PUMP SWITCH:" + this.index, "Bool"), SimVar.GetSimVarValue("FUELSYSTEM PUMP ACTIVE:" + this.index, "Bool"), (SimVar.GetSimVarValue("FUELSYSTEM LINE FUEL FLOW:" + this.lineIndex, "number") > 0), (SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_L", "Enum") > 0 || SimVar.GetSimVarValue("L:SALTY_FUEL_JETTISON_ACTIVE_R", "Enum") > 0) );
             this.updateTransferArrows();
         }
@@ -265,11 +261,11 @@ var B747_8_LowerEICAS_Fuel;
                     var className = this.isPumpSwitched ? "switched" : "notswitched";
                     if (this.isPumpActive) {
                         className += this.isLineActive ? "-active-withflow" : "-active";
-                        
+
                         if(this.jettisonActive) {
                             className+= "-jett";
                         }
-                            
+
                     }
                     else {
                         className += "-inactive";
@@ -286,7 +282,7 @@ var B747_8_LowerEICAS_Fuel;
                 this.flowStabOutline.style.visibility = "hidden";
                 this.flowStab.style.visibility = "hidden";
             }
-            
+
             if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:10", "bool")) {
                 this.flowRes1Outline.style.visibility = "visible";
                 this.flowRes1.style.visibility = "visible";
@@ -294,7 +290,7 @@ var B747_8_LowerEICAS_Fuel;
                 this.flowRes1Outline.style.visibility = "hidden";
                 this.flowRes1.style.visibility = "hidden";
             }
-            
+
             if (SimVar.GetSimVarValue("FUELSYSTEM VALVE OPEN:12", "bool")) {
                 this.flowRes4Outline.style.visibility = "visible";
                 this.flowRes4.style.visibility = "visible";

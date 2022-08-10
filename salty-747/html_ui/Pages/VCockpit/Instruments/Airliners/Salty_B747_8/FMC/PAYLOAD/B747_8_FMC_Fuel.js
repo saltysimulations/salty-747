@@ -23,24 +23,23 @@ class FMC_Fuel {
 
         fmc.setTemplate([
             ["FUEL"],
-            ["ACT FUEL", "SEL FUEL"],
+            ["\xa0ACT FUEL", "SEL FUEL"],
             [`${currentFuel}{small}${SaltyUnits.userWeightUnit()}`, `${targetFuel}{small}${SaltyUnits.userWeightUnit()}>`],
-            ["GROSS WT", "REFUEL"],
+            ["\xa0GROSS WT", "REFUEL"],
             [`${grossWeight}{small}${SaltyUnits.userWeightUnit()}`, refuelStartedByUser ? "STOP>" : "START>"],
-            ["CG"],
+            ["\xa0CG"],
             [`${(SimVar.GetSimVarValue("CG PERCENT", "percent over 100") * 100).toFixed(1).toString()}%`],
             [""],
             ["", ""],
             ["", "OFP REQUEST"],
             [, "SEND>"],
-            ["RETURN TO", "REFUEL RATE"],
+            ["\xa0RETURN TO", "REFUEL RATE"],
             ["<OPTIONS", `${SaltyDataStore.get("747_REFUEL_RATE_SETTING", "REAL")}>`],
         ]);
 
-        /* Sets total fuel target */
         fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
-            if (value !== FMCMainDisplay.clrValue) {
+            if (value) {
                 if (SaltyUnits.userToKg(value) < 191.2) {
                     value = Math.round(value * 1000);
                 }

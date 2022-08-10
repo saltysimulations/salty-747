@@ -267,7 +267,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
     }
     onFlightStart() {
         super.onFlightStart();
-        this.saltyStates.onFlightStart();
+        this.saltyBase.onFlightStart();
     }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
@@ -284,9 +284,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.updateHalfwayToDest();
             this.timer = 0;
         }
-        this.saltyBase.update(this.isElectricityAvailable());
-        this.saltyBoarding.update(_deltaTime);
-        this.saltyFueling.update(_deltaTime);
+        this.saltyBase.update(_deltaTime, this.isElectricityAvailable());
         this.saltyModules.update(_deltaTime);
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
@@ -1384,14 +1382,6 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return this._lines[row][col];
     }
     setLine(content, row, col = -1) {
-
-        if (content instanceof FMC_Field) {
-            const field = content;
-            ((col === 0 || col === -1) ? this.onLeftInput : this.onRightInput)[row] = (value) => {
-                field.onSelect(value);
-            };
-            content = content.getValue();
-        }
         if (col >= this._lineElements[row].length) {
             return;
         }

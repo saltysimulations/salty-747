@@ -45,7 +45,7 @@ class SaltyPayloadConstructor {
                 seatsRange: [89, 120],
                 simVar: "PAYLOAD STATION WEIGHT:4"
             },
-            fowardEconomy: {
+            forwardEconomy: {
                 name: 'FORWARD ECO',
                 seats: 36,
                 weight: 3744,
@@ -99,4 +99,77 @@ class SaltyPayloadConstructor {
             }
         };
     }
+}
+
+const payloadConstruct = new SaltyPayloadConstructor();
+const paxStations = payloadConstruct.paxStations;
+const cargoStations = payloadConstruct.cargoStations;
+
+const MAX_SEAT_AVAILABLE = 364;
+const PAX_WEIGHT = 84;
+const BAG_WEIGHT = 20;
+
+/**
+ * Calculate %MAC ZWFCG of all stations
+ */
+function getZfwcg() {
+    const currentPaxWeight = PAX_WEIGHT + BAG_WEIGHT;
+
+    const leMacZ = -1.47; // Value from Debug Weight
+    const macSize = 36.68; // Value from Debug Aircraft Sim Tunning
+
+    const emptyWeight = 489656 * 0.453592; // Value from flight_model.cfg to kgs
+    const emptyPosition = -98; // Value from flight_model.cfg
+    const emptyMoment = emptyPosition * emptyWeight;
+
+    const paxTotalMass = Object.values(paxStations)
+        .map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number") * currentPaxWeight)
+        .reduce((acc, cur) => acc + cur, 0);
+    const paxTotalMoment = Object.values(paxStations)
+        .map((station) => SimVar.GetSimVarValue(`L:${station.simVar}_DESIRED`, "Number") * currentPaxWeight * station.position)
+        .reduce((acc, cur) => acc + cur, 0);
+
+    const cargoTotalMass = Object.values(cargoStations)
+        .map((station) => SimVar.GetSimVarValue(`PAYLOAD STATION WEIGHT:${station.stationIndex}`, "Number"))
+        .reduce((acc, cur) => acc + cur, 0);
+    const cargoTotalMoment = Object.values(cargoStations)
+        .map((station) => SimVar.GetSimVarValue(`PAYLOAD STATION WEIGHT:${station.stationIndex}`, "Number") * station.position)
+        .reduce((acc, cur) => acc + cur, 0);
+
+    const totalMass = emptyWeight + paxTotalMass + cargoTotalMass;
+    const totalMoment = emptyMoment + paxTotalMoment + cargoTotalMoment;
+
+    const cgPosition = totalMoment / totalMass;
+    const cgPositionToLemac = cgPosition - leMacZ;
+    const cgPercentMac = -10 * (cgPositionToLemac / macSize);
+
+    return cgPercentMac;
+}
+
+/* Get total cargo weight */
+function getTotalCargo() {
+    return Object.values(cargoStations)
+        .filter((station) => station.visible)
+        .map((station) => SimVar.GetSimVarValue(`PAYLOAD STATION WEIGHT:${station.stationIndex}`, "Number"))
+        .reduce((acc, cur) => acc + cur, 0);
+
+    return cargoTotalMass;
+}
+
+/* Get total payload weight (pax + cargo) */
+function getTotalPayload() {
+    const currentPaxWeight = PAX_WEIGHT;
+
+    const paxTotalMass = Object.values(paxStations)
+        .map((station) => SimVar.GetSimVarValue(`L:${station.simVar}`, "Number") * currentPaxWeight)
+        .reduce((acc, cur) => acc + cur, 0);
+    const cargoTotalMass = getTotalCargo();
+
+    return paxTotalMass + cargoTotalMass;
+}
+
+/* Get ZFW */
+function getZfw() {
+    const emptyWeight = 489656 * 0.453592; // Value from flight_model.cfg to kgs
+    return emptyWeight + getTotalPayload();
 }

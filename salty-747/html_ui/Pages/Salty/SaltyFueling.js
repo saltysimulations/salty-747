@@ -14,30 +14,6 @@ const CENTER_MODIFIER = 3;
 class SaltyFueling {
     constructor() {
     }
-    
-    init() {
-        const totalFuelGallons = 59700;
-        const fuelWeight = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "kilograms");
-        const usingMetrics = SimVar.GetSimVarValue("L:SALTY_UNIT_IS_METRIC", "Number");
-
-
-        const main1CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "Gallons");
-        const main2CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "Gallons");
-        const main3CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "Gallons");
-        const main4CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT AUX QUANTITY", "Gallons");
-        const res1CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT TIP QUANTITY", "Gallons");
-        const res2CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK RIGHT TIP QUANTITY", "Gallons");
-        const centerCurrentSimVar = SimVar.GetSimVarValue("FUEL TANK CENTER QUANTITY", "Gallons");
-        const stabCurrentSimVar = SimVar.GetSimVarValue("FUEL TANK CENTER2 QUANTITY", "Gallons");
-        const total = Math.round(
-                (main1CurrentSimVar + (main2CurrentSimVar) + (main3CurrentSimVar) + (main4CurrentSimVar) + (res1CurrentSimVar) + (res2CurrentSimVar) + (centerCurrentSimVar) + (stabCurrentSimVar)
-            )
-        );
-        const totalConverted = Math.round(total * fuelWeight * usingMetrics);
-        SimVar.SetSimVarValue("L:747_FUEL_TOTAL_DESIRED", "Number", total);
-        SimVar.SetSimVarValue("L:747_FUEL_DESIRED", "Number", totalConverted);
-        SimVar.SetSimVarValue("L:747_FUEL_DESIRED_PERCENT", "Number", Math.round((total / totalFuelGallons) * 100));
-    }
 
     defuelTank(multiplier) {
         return -REFUEL_FACTOR * multiplier;
@@ -46,7 +22,7 @@ class SaltyFueling {
     refuelTank(multiplier) {
         return REFUEL_FACTOR * multiplier;
     }
-    
+
     update(_deltaTime) {
         /* Fuel current sim vars */
         const main1CurrentSimVar = SimVar.GetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "Gallons");
@@ -67,7 +43,7 @@ class SaltyFueling {
         if ((!airplaneCanFuel() && refuelingRate == 'REAL') || (!airplaneCanFuel() && refuelingRate == 'FAST') || (refuelingRate == 'INSTANT' && !isOnGround)) {
             return;
         }
-        
+
         /* Fuel target sim vars */
         const main1TargetSimVar = SimVar.GetSimVarValue(`L:747_FUEL_TANK_LEFT_AUX_QUANTITY_DESIRED`, "Gallons");
         const main2TargetSimVar = SimVar.GetSimVarValue(`L:747_FUEL_TANK_LEFT_MAIN_QUANTITY_DESIRED`, "Gallons");
@@ -103,6 +79,7 @@ class SaltyFueling {
             SimVar.SetSimVarValue("FUEL TANK RIGHT TIP QUANTITY", "Gallons", res2Target);
             SimVar.SetSimVarValue("FUEL TANK CENTER QUANTITY", "Gallons", centerTarget);
             SimVar.SetSimVarValue("FUEL TANK CENTER2 QUANTITY", "Gallons", stabTarget);
+            SimVar.SetSimVarValue("L:747_FUELING_STARTED_BY_USR", "Bool", false);
             return;
         }
         let multiplier = 1;
