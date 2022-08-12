@@ -38,7 +38,7 @@ class FMC_Payload {
             ["\xa0ZFW", "PAX DETAILS"],
             [`${(SaltyUnits.kgToUser(getZfw()) / 1000).toFixed(1)}{small}${unit}`, "SHOW>"],
             ["\xa0ZFW CG", "OFP REQUEST"],
-            [`${getZfwcg().toFixed(1)}%`, "SEND>"],
+            [`${getZfwcg().toFixed(1)}%`, FMC_Payload.ofpRequestText],
             ["\xa0RETURN TO", "BOARDING RATE"],
             ["<OPTIONS", `${boardingRate}>`],
         ]);
@@ -67,7 +67,9 @@ class FMC_Payload {
         };
 
         fmc.onRightInput[2] = () => {
-            SimVar.SetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool", !boardingStartedByUser);
+            if (boardingRate !== "INSTANT" && !SaltyFueling.airplaneCanFuel()) {
+                fmc.showErrorMessage("BOARDING NOT AVAILABLE");
+            } else SimVar.SetSimVarValue("L:747_BOARDING_STARTED_BY_USR", "Bool", !boardingStartedByUser);
         };
 
         fmc.onRightInput[3] = () => {
@@ -75,10 +77,19 @@ class FMC_Payload {
         };
 
         fmc.onRightInput[4] = async () => {
-            if (!fmc.simbrief.cargo || !fmc.simbrief.paxCount) await getSimBriefPlan(fmc);
+            FMC_Payload.ofpRequestText = "SENDING";
 
-            SaltyBoarding.setTargetCargo(SaltyUnits.userToKg(parseInt(fmc.simbrief.cargo)));
-            SaltyBoarding.setTargetPax(fmc.simbrief.paxCount);
+            setTimeout(async () => {
+                if (!fmc.simbrief.cargo || !fmc.simbrief.paxCount) await getSimBriefPlan(fmc);
+
+                if (fmc.simbrief.cargo || fmc.simbrief.paxCount) {
+                    Coherent.call("PLAY_INSTRUMENT_SOUND", "uplink_chime");
+                    SaltyBoarding.setTargetCargo(SaltyUnits.userToKg(parseInt(fmc.simbrief.cargo)));
+                    SaltyBoarding.setTargetPax(fmc.simbrief.paxCount);
+                } else fmc.showErrorMessage("WRONG PILOT ID");
+
+                FMC_Payload.ofpRequestText = "SEND>";
+            }, fmc.getInsertDelay());
         };
 
         fmc.onRightInput[5] = () => {
@@ -111,7 +122,7 @@ class FMC_Payload {
         fmc.setTemplate([
             ["PAX DETAILS"],
             [`\xa0${paxStations.businessUpper.name}`, paxStations.rearEconomy.name],
-            [this.buildStationValue(paxStations.businessUpper), this.buildStationValue(paxStations.rearEconomy, true)],
+            [this.buildStationValue(paxStations.businessUpper), this.buildStationValue(paxStations.rearEconomy)],
             [`\xa0${paxStations.firstClass.name}`, ""],
             [this.buildStationValue(paxStations.firstClass), ""],
             [`\xa0${paxStations.businessMain.name}`, ""],
@@ -148,3 +159,5 @@ class FMC_Payload {
             .reduce((acc, cur) => acc + cur);
     }
 }
+
+FMC_Payload.ofpRequestText = "SEND>";

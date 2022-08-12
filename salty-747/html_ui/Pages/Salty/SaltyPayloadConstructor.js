@@ -2,7 +2,7 @@ class SaltyPayloadConstructor {
     constructor() {
         this.paxStations = {
             businessUpper: {
-                name: 'BUS UPPER',
+                name: 'ZONE UD',
                 seats: 32,
                 weight: 3328,
                 pax: 0,
@@ -13,7 +13,7 @@ class SaltyPayloadConstructor {
                 simVar: "PAYLOAD STATION WEIGHT:1"
             },
             firstClass: {
-                name: 'FIRST CLASS',
+                name: 'ZONE A',
                 seats: 8,
                 weight: 832,
                 pax: 0,
@@ -24,7 +24,7 @@ class SaltyPayloadConstructor {
                 simVar: "PAYLOAD STATION WEIGHT:2"
             },
             businessMain: {
-                name: 'BUS MAIN',
+                name: 'ZONE B',
                 seats: 48,
                 weight: 5400,
                 pax: 0,
@@ -35,7 +35,7 @@ class SaltyPayloadConstructor {
                 simVar: "PAYLOAD STATION WEIGHT:3"
             },
             premiumEconomy: {
-                name: 'PREMIUM ECO',
+                name: 'ZONE C',
                 seats: 32,
                 weight: 3328,
                 pax: 0,
@@ -46,7 +46,7 @@ class SaltyPayloadConstructor {
                 simVar: "PAYLOAD STATION WEIGHT:4"
             },
             forwardEconomy: {
-                name: 'FORWARD ECO',
+                name: 'ZONE D',
                 seats: 36,
                 weight: 3744,
                 pax: 0,
@@ -57,7 +57,7 @@ class SaltyPayloadConstructor {
                 simVar: "PAYLOAD STATION WEIGHT:5"
             },
             rearEconomy: {
-                name: 'REAR ECO',
+                name: 'ZONE E',
                 seats: 208,
                 weight: 21632,
                 pax: 0,

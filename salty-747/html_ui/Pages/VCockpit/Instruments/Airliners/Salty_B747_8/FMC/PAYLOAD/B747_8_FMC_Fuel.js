@@ -34,7 +34,7 @@ class FMC_Fuel {
             [""],
             ["", ""],
             ["", "OFP REQUEST"],
-            [, "SEND>"],
+            [, FMC_Fuel.ofpRequestText],
             ["\xa0RETURN TO", "REFUEL RATE"],
             ["<OPTIONS", `${SaltyDataStore.get("747_REFUEL_RATE_SETTING", "REAL")}>`],
         ]);
@@ -62,7 +62,20 @@ class FMC_Fuel {
         };
 
         fmc.onRightInput[4] = async () => {
-            if (!fmc.simbrief.blockFuel) await getSimBriefPlan(fmc);
+            FMC_Fuel.ofpRequestText = "SENDING";
+
+            setTimeout(async () => {
+                if (!fmc.simbrief.blockFuel) await getSimBriefPlan(fmc);
+
+                if (fmc.simbrief.blockFuel) {
+                    Coherent.call("PLAY_INSTRUMENT_SOUND", "uplink_chime");
+                    const desiredFuel = parseFloat(fmc.simbrief.blockFuel.toString());
+                    setDesiredFuel(fmc, updateView, SaltyUnits.userToKg(desiredFuel));
+                } else fmc.showErrorMessage("WRONG PILOT ID");
+
+                FMC_Fuel.ofpRequestText = "SEND>";
+            }, fmc.getInsertDelay())
+
 
             const desiredFuel = parseFloat(fmc.simbrief.blockFuel.toString());
             setDesiredFuel(fmc, updateView, SaltyUnits.userToKg(desiredFuel));
@@ -113,3 +126,5 @@ async function setDesiredFuel(fmc, updateView, blockFuel) {
     fmc.updateFuelVars();
     updateView();
 }
+
+FMC_Fuel.ofpRequestText = "SEND>";
