@@ -86,8 +86,14 @@ class FMC_Payload {
 
                 if (fmc.simbrief.cargo || fmc.simbrief.paxCount) {
                     Coherent.call("PLAY_INSTRUMENT_SOUND", "uplink_chime");
+
                     SaltyBoarding.setTargetCargo(SaltyUnits.userToKg(parseInt(fmc.simbrief.cargo)));
-                    SaltyBoarding.setTargetPax(fmc.simbrief.paxCount);
+                    if (fmc.simbrief.paxCount > 364) {
+                        SaltyBoarding.setTargetPax(364);
+                        fmc.showErrorMessage("USE CUSTOM SB AIRFRAME");
+                    } else {
+                        SaltyBoarding.setTargetPax(fmc.simbrief.paxCount);
+                    }
                 } else fmc.showErrorMessage("WRONG PILOT ID");
 
                 FMC_Payload.ofpRequestText = "SEND>";
