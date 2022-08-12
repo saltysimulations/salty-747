@@ -274,6 +274,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         if (this.timer == 1000) {
             this.updateVREF25();
             this.updateVREF30();
+            this.updateHalfwayToDest();
             this.timer = 0;
         }
         this.saltyBase.update(this.isElectricityAvailable());
@@ -535,6 +536,24 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         return 204 + 40 * dWeight;
     }
 
+    /* Logic to determine if half way to destination (or less than 400NM if applicable) */
+    updateHalfwayToDest() {
+        let destinationDistance = NaN;
+        const destination = this.flightPlanManager.getDestination();
+        const waypointActive = this.flightPlanManager.getActiveWaypoint();
+        if (destination && waypointActive) {
+            destinationDistance = destination.cumulativeDistanceInFP - waypointActive.cumulativeDistanceInFP + this.flightPlanManager.getDistanceToActiveWaypoint();
+            if (destinationDistance < destination.cumulativeDistanceInFP / 2 || destinationDistance < 400) {
+                SimVar.SetSimVarValue("L:74S_FMC_PASSED_HALFWAY", "bool", true);
+            }
+            else {
+                SimVar.SetSimVarValue("L:74S_FMC_PASSED_HALFWAY", "bool", false);
+            }
+        }
+        else {
+            SimVar.SetSimVarValue("L:74S_FMC_PASSED_HALFWAY", "bool", false);
+        }
+    }
 
     /* Sets VNAV CLB or DES speed restriction and altitude */
     setSpeedRestriction(_speed, _altitude, _isDescent) {
@@ -1093,23 +1112,38 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
     }
     updateAltitudeAlerting() {
-        let alertState = SimVar.GetSimVarValue("L:SALTY_ALT_ALERT", "bool");
-        let mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
-        let alt = Simplane.getAltitude();
-        let vSpeed = Simplane.getVerticalSpeed();
-        if (vSpeed > 400) {
-            if (mcpAlt - alt <= 900 && mcpAlt - alt >= 200) {
-                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+        const flapsPos = SimVar.GetSimVarValue("TRAILING EDGE FLAPS LEFT ANGLE", "degrees");
+        const gearPos = SimVar.GetSimVarValue("GEAR POSITION:2", "percent");
+        const parkBrake = SimVar.GetSimVarValue("BRAKE PARKING POSITION", "percent");
+        const afdsPitchMode = SimVar.GetSimVarValue("L:74S_PITCH_MODE_ACTIVE", "number");
+        const mcpAlt = Simplane.getAutoPilotDisplayedAltitudeLockValue();
+        const alt = Simplane.getAltitude();
+        const vSpeed = Simplane.getVerticalSpeed();
+
+        //Inhibit Alert Conditions - Park Brake Set or In Landing Config or GS Captured
+        if (parkBrake == 100 || afdsPitchMode == 9 || (flapsPos >= 25 && gearPos == 100)) {
+            this.altAlertingMode = "none";
+            SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 0);
+            return;
+        }
+
+        //Main Logic - Determine Mode - Acquisition or Deviation
+        if ((mcpAlt > alt && vSpeed > 150) || (mcpAlt < alt && vSpeed < -150)) {
+            if (Math.abs(mcpAlt - alt) <= 900 && Math.abs(mcpAlt - alt) >= 200) {
+                SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 1);
             }
         }
-        else if (vSpeed < -400) {
-            if (alt - mcpAlt <= 900 && alt - mcpAlt >= 200) {
-                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 1);
+        else if (Math.abs(vSpeed) > 150){
+            if (Math.abs(mcpAlt - alt) <= 900 && Math.abs(mcpAlt - alt) >= 200) {
+                SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 2);
             }
         }
+
+        //Reset Condition
+        const alertState = SimVar.GetSimVarValue("L:74S_ALT_ALERT", "enum");
         if (alertState !== 0) {
             if (Math.abs(mcpAlt - alt) < 200 || Math.abs(mcpAlt - alt) > 900) {
-                SimVar.SetSimVarValue("L:SALTY_ALT_ALERT", "bool", 0);
+                SimVar.SetSimVarValue("L:74S_ALT_ALERT", "enum", 0);
             }
         }
     }

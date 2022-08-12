@@ -101,6 +101,8 @@ class Boeing_FMC extends FMCMainDisplay {
         if (flapIndex >= 1) {
             this._takeOffFlap = flapAngles[flapIndex];
         }
+        SimVar.SetSimVarValue("L:74S_FMC_ORIGIN_ELEVATION", "Number", -1);
+        SimVar.SetSimVarValue("L:74S_FMC_DEST_ELEVATION", "Number", -1);
     }
     onEvent(_event) {
         super.onEvent(_event);
