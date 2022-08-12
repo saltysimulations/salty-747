@@ -42,7 +42,9 @@ class FMC_Fuel {
         fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
             if (value) {
-                if (SaltyUnits.userToKg(value) < 191.2) {
+                value = parseFloat(value);
+
+                if (SaltyUnits.userToKg(value) <= 191.06) {
                     value = Math.round(value * 1000);
                 }
 

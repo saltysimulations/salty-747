@@ -46,6 +46,8 @@ class FMC_Payload {
         fmc.onRightInput[0] = () => {
             let value = fmc.inOut;
             if (value) {
+                value = parseFloat(value);
+
                 if (SaltyUnits.userToKg(value) < 44) {
                     value = Math.round(value * 1000);
                 }
