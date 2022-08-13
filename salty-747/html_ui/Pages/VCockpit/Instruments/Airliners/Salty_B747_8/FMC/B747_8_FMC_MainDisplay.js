@@ -194,7 +194,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         this.aircraftType = Aircraft.B747_8;
         this.maxCruiseFL = 430;
         this.saltyBase = new SaltyBase();
+        this.saltyBoarding = new SaltyBoarding();
+        this.saltyFueling = new SaltyFueling();
         this.saltyModules = new SaltyModules();
+        this.saltyStates = new SaltyStates();
         this.saltyBase.init();
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;
@@ -262,6 +265,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         super.onPowerOn();
         Coherent.call("GENERAL_ENG_THROTTLE_MANAGED_MODE_SET", ThrottleMode.HOLD);
     }
+    onFlightStart() {
+        super.onFlightStart();
+        this.saltyBase.onFlightStart();
+    }
     onUpdate(_deltaTime) {
         super.onUpdate(_deltaTime);
         if (this.refreshPageCallback && this._lastActiveWP != this.currFlightPlanManager.getActiveWaypointIndex() || this._wasApproachActive != this.currFlightPlanManager.isActiveApproach()) {
@@ -277,7 +284,7 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
             this.updateHalfwayToDest();
             this.timer = 0;
         }
-        this.saltyBase.update(this.isElectricityAvailable());
+        this.saltyBase.update(_deltaTime, this.isElectricityAvailable());
         this.saltyModules.update(_deltaTime);
         if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
             this.units = true;

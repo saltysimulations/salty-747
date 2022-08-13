@@ -1472,12 +1472,8 @@ class FMCMainDisplay extends BaseAirliners {
     }
     getCurrentWeight(useLbs = false) {
         return new Promise(resolve => {
-            Coherent.call("TOTAL_WEIGHT_GET").then(v => {
-                if (!useLbs) {
-                    v /= 2.204623;
-                }
-                resolve(v);
-            });
+            const weight = SimVar.GetSimVarValue("TOTAL WEIGHT", useLbs ? "lbs" : "kg");
+            resolve(weight);
         });
     }
     setWeight(a, callback = EmptyCallback.Boolean, useLbs = false) {

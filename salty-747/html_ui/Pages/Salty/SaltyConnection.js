@@ -140,7 +140,6 @@ const getSimBriefPlan = (fmc, store) => {
             fmc.simbrief["cruiseAltitude"] = data.general.initial_altitude;
             fmc.simbrief["originIcao"] = data.origin.icao_code;
             fmc.simbrief["destinationIcao"] = data.destination.icao_code;
-            fmc.simbrief["blockFuel"] = data.fuel.plan_ramp;
             fmc.simbrief["payload"] = data.weights.payload;
             fmc.simbrief["estZfw"] = data.weights.est_zfw;
             fmc.simbrief["costIndex"] = data.general.costindex;
@@ -162,8 +161,13 @@ const getSimBriefPlan = (fmc, store) => {
             fmc.simbrief["altnFuel"] = data.fuel.alternate_burn;
             fmc.simbrief["finResFuel"] = data.fuel.reserve;
             fmc.simbrief["contFuel"] = data.fuel.contingency;
+            fmc.simbrief["blockFuel"] = data.fuel.plan_ramp;
             /* DISTANCE */
             fmc.simbrief["route_distance"] = data.general.route_distance;
+            /* PAYLOAD */
+            fmc.simbrief["paxCount"] = data.weights.pax_count;
+            fmc.simbrief["cargo"] = data.weights.cargo;
+
             fmc.simbrief.rteUplinkReady = true;
             fmc.simbrief.perfUplinkReady = true;
             return fmc.simbrief;

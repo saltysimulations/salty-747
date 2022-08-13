@@ -42,13 +42,6 @@ class FMCPerfInitPage {
             if (isFinite(fmc.getZeroFuelWeight(units))) {
                 zeroFuelWeightCell = fmc.getZeroFuelWeight(units).toFixed(1);
             }
-            fmc.onLeftInput[2] = () => {
-                let value = fmc.inOut;
-                fmc.clearUserInput();
-                if (fmc.trySetZeroFuelWeightZFWCG(value, units)) {
-                    FMCPerfInitPage.ShowPage1(fmc);
-                }
-            };
             let costIndex = "□□□□";
             if (isFinite(fmc.costIndex)) {
                 costIndex = fmc.costIndex.toFixed(0);
