@@ -1,0 +1,3 @@
+<ModelBehaviors>
+    <Include RelativeFile="YawDamper.xml" />
+</ModelBehaviors>
