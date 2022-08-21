@@ -9,7 +9,10 @@
             <WWISE_EVENT_2>battery_switch_off</WWISE_EVENT_2>
             <SEQ1_EMISSIVE_CODE>(L:74S_YAW_DAMPER_#ID#)</SEQ1_EMISSIVE_CODE>
             <SEQ2_EMISSIVE_CODE>(L:SALTY_IRS_STATE) 2 != (L:74S_YAW_DAMPER_#ID#) ! or</SEQ2_EMISSIVE_CODE>
-            <LEFT_SINGLE_CODE>(L:74S_YAW_DAMPER_#ID#, Bool) ! (&gt;L:74S_YAW_DAMPER_#ID#)</LEFT_SINGLE_CODE>
+            <LEFT_SINGLE_CODE>
+                (L:74S_YAW_DAMPER_#ID#, Bool) ! (&gt;L:74S_YAW_DAMPER_#ID#)
+                (L:74S_YAW_DAMPER_UPPER, Bool) (L:74S_YAW_DAMPER_LOWER, Bool) or if{ (&gt;K:YAW_DAMPER_ON) } els{ (&gt;K:YAW_DAMPER_OFF) }
+            </LEFT_SINGLE_CODE>
         </UseTemplate>
     </Template>
 </ModelBehaviors>
