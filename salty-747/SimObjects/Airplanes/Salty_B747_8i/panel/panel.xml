@@ -238,7 +238,7 @@
 		  	<And>
 				<LowerEqual>
 			  		<Simvar name="AIRSPEED INDICATED" unit="knots"/>
-			  		<Simvar name="L:74S_FMC_MIN_MANUEVER_SPEED" unit="knots"/>		  
+			  		<Simvar name="L:74S_FMC_MIN_MANUEVER_SPEED" unit="knots"/>
 				</LowerEqual>
 				<GreaterEqual>
 					<Simvar name="PLANE ALT ABOVE GROUND MINUS CG" unit="feet"/>
@@ -634,6 +634,28 @@
 			  	<Simvar name="L:SALTY_FUEL_JETTISON_ACTIVE_R" unit="Enum"/>
 			  	<Constant>1</Constant>
 			</Equal>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\YAW DAMPER LWR</Text>
+		  <Condition>
+			<LowerEqual>
+				<Simvar name="L:SALTY_IRS_STATE" unit="enum"/>
+				<Constant>1</Constant>
+			</LowerEqual>
+		  </Condition>
+		</Annunciation>
+
+		<Annunciation>
+		  <Type>Advisory</Type>
+		  <Text>\YAW DAMPER UPR</Text>
+		  <Condition>
+			<LowerEqual>
+				<Simvar name="L:SALTY_IRS_STATE" unit="enum"/>
+				<Constant>1</Constant>
+			</LowerEqual>
 		  </Condition>
 		</Annunciation>
 
