@@ -1,0 +1,39 @@
+<ModelBehaviors>
+    <Template Name="Salty_External_Power">
+        <Parameters Type="Default">
+            <PART_ID>ELECTRICAL_Switch_ExternalPower</PART_ID>
+            <ANIM_NAME>ELECTRICAL_Switch_ExternalPower_#ID#</ANIM_NAME>
+            <NODE_ID>ELECTRICAL_Switch_ExternalPower_#ID#</NODE_ID>
+            <SWAP_SEQ_CONDITION>False</SWAP_SEQ_CONDITION>
+            <POST_CLICK_CODE></POST_CLICK_CODE>
+            <EXTPWR_ID>#ID#</EXTPWR_ID>
+            <TOOLTIP_EXTPWR_TITLE>@TT_Package.ELECTRICAL_SWITCH_EXTERNAL_POWER_TITLE</TOOLTIP_EXTPWR_TITLE>
+        </Parameters>
+
+        <Parameters Type="Override">
+            <TOOLTIP_TITLE>#TOOLTIP_EXTPWR_TITLE#</TOOLTIP_TITLE>
+            <LEFT_SINGLE_CODE>(&gt;B:ELECTRICAL_ExternalPower_#EXTPWR_ID#_Toggle)</LEFT_SINGLE_CODE>
+            <WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            <WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
+            <NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+            <NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+            <ON_STATE_CHANGED>
+			    #POST_CLICK_CODE#
+			        (A:EXTERNAL POWER AVAILABLE:#ID#, Bool) (A:EXTERNAL POWER ON:#ID#, Bool) and if{
+			        (A:EXTERNAL POWER ON:#ID#, Bool) if{ #ID# 0 (&gt;K:2:APU_GENERATOR_SWITCH_SET) }
+			    }
+            </ON_STATE_CHANGED>
+            <DOWN_STATE_CODE>(B:ELECTRICAL_ExternalPower_#EXTPWR_ID#)</DOWN_STATE_CODE>
+            <SEQ1_EMISSIVE_CODE>(A:EXTERNAL POWER AVAILABLE:#ID#, Bool) (B:ELECTRICAL_ExternalPower_#EXTPWR_ID#) ! and</SEQ1_EMISSIVE_CODE>
+            <SEQ2_EMISSIVE_CODE>(A:EXTERNAL POWER AVAILABLE:#ID#, Bool) (B:ELECTRICAL_ExternalPower_#EXTPWR_ID#) and</SEQ2_EMISSIVE_CODE>
+        </Parameters>
+
+        <UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
+            <INPUT_EVENT_ID>ELECTRICAL</INPUT_EVENT_ID>
+            <Condition Valid="SWAP_SEQ_CONDITION">
+                <SEQ1_EMISSIVE_CODE>#SEQ2_EMISSIVE_CODE#</SEQ1_EMISSIVE_CODE>
+                <SEQ2_EMISSIVE_CODE>#SEQ1_EMISSIVE_CODE#</SEQ2_EMISSIVE_CODE>
+            </Condition>
+        </UseTemplate>
+    </Template>
+</ModelBehaviors>

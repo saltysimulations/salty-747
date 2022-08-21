@@ -185,6 +185,66 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="cdu in 1.wav">
+          <WObject ID="{CD00EB5B-103A-42A4-AAAD-13F342CB3562}">
+            <MediaID ID="123782834" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu in 2.wav">
+          <WObject ID="{A952B009-F16B-497D-9055-860470D6DF82}">
+            <MediaID ID="711678195" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu in 3.wav">
+          <WObject ID="{33926849-19A0-4FAD-933B-E86FBDC8DCC3}">
+            <MediaID ID="150736690" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu in 4.wav">
+          <WObject ID="{B184D01B-414A-4087-A410-1D15A3CE66E4}">
+            <MediaID ID="125302556" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu in 5.wav">
+          <WObject ID="{24B5F1D2-0B3E-4B5F-94E2-428B16D0501B}">
+            <MediaID ID="931326071" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu out 1.wav">
+          <WObject ID="{BCA7B486-5EDB-46A3-B0DD-944C71615E70}">
+            <MediaID ID="358997943" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu out 2.wav">
+          <WObject ID="{3C06C502-9B9A-45D9-ABA2-62BA35E80C14}">
+            <MediaID ID="935045958" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu out 3.wav">
+          <WObject ID="{2D285C8F-AF63-433E-9013-DBA839C79D4F}">
+            <MediaID ID="715778455" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu out 4.wav">
+          <WObject ID="{59D96EEE-DE26-4FE0-BB0A-B3A790343BB4}">
+            <MediaID ID="9710527" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="cdu out 5.wav">
+          <WObject ID="{DE14CDA0-A97A-44E5-A166-1EC6E2941765}">
+            <MediaID ID="687114158" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="Chime2(1).wav">
           <WObject ID="{31689EFE-17D1-47E1-A063-910877ED5DEB}">
             <MediaID ID="809326456" />
@@ -198,6 +258,54 @@
         <File Name="dont_sink.wav">
           <WObject ID="{AD3EB7E4-5C65-47F2-B6D4-3857B29519EF}">
             <MediaID ID="336234418" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever extend 1.wav">
+          <WObject ID="{189D628A-5FBF-4FC3-9F38-4D87FE928ED0}">
+            <MediaID ID="868398302" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever extend 2.wav">
+          <WObject ID="{0D89B917-BECE-450F-BC66-CE1D5CD9EE4D}">
+            <MediaID ID="748525282" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever retract 1.wav">
+          <WObject ID="{10DAB027-3EA4-43B4-AFEE-699400E0F476}">
+            <MediaID ID="130445081" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="flap lever retract 2.wav">
+          <WObject ID="{DC6F10AD-C37F-49B6-943F-A5EAD810CD65}">
+            <MediaID ID="853105855" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="mcp button in 1.wav">
+          <WObject ID="{A923490B-56C8-4AFA-AA5F-1ACD0A09F930}">
+            <MediaID ID="600585337" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="mcp button in 2.wav">
+          <WObject ID="{CFF2733D-F750-429E-99C4-9FB37C21D711}">
+            <MediaID ID="771914943" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="mcp button out 1.wav">
+          <WObject ID="{F11B74C9-98E9-4444-9302-8E7BA13F8824}">
+            <MediaID ID="1064689574" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="mcp button out 2.wav">
+          <WObject ID="{65C4DE9F-4917-431D-BF4B-F10C91AEDC9D}">
+            <MediaID ID="158148115" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -222,6 +330,30 @@
         <File Name="pull_up.wav">
           <WObject ID="{D0C7C2FA-D283-4377-B7C2-665D913E2322}">
             <MediaID ID="1037597979" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="pushbutton in 1.wav">
+          <WObject ID="{C24287D2-EB19-458D-BDA2-DD2B88E57D9A}">
+            <MediaID ID="884718285" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="pushbutton in 2.wav">
+          <WObject ID="{BF361BCB-4D6A-49BE-9F9E-3DD529779138}">
+            <MediaID ID="890210957" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="pushbutton out 1.wav">
+          <WObject ID="{BD352981-27F9-4AEA-83C4-84535A46558D}">
+            <MediaID ID="890792767" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="pushbutton out 2.wav">
+          <WObject ID="{3A11C624-74AA-451C-92DA-4650129ECC27}">
+            <MediaID ID="535890430" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>

@@ -269,6 +269,104 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_cdu_in" ID="{84B6F8C0-5809-41EF-8BF3-8D13D3FE851E}">
+					<ChildrenList>
+						<Action Name="" ID="{D733891A-5CAF-4E2D-8E49-1E59BC77A91E}" ShortID="922688441">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="cdu in" ID="{77D682F2-F035-414D-862E-044F5257353C}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_cdu_out" ID="{5FE549E3-263C-483C-9A9A-6B5DDE951FD2}">
+					<ChildrenList>
+						<Action Name="" ID="{9C9DBF61-C4CD-4B38-B8AB-7A5133F1B714}" ShortID="264581676">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="cdu out" ID="{A5DD9992-4E16-4EA1-9A39-1979661EAD1C}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_mcp_button_in" ID="{65731EF2-6F49-4334-8D75-648ABA4734F8}">
+					<ChildrenList>
+						<Action Name="" ID="{58AB61AC-98CC-4E57-9EDC-C91993DD2CE5}" ShortID="648017090">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="mcp button in" ID="{D373B76F-8E83-4352-8E2A-BB39809B80E4}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_mcp_button_out" ID="{1F722761-2E5F-4CA3-B550-6F7BF982E76A}">
+					<ChildrenList>
+						<Action Name="" ID="{4DFDC3EE-E219-477C-92AE-760584081822}" ShortID="258260095">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="mcp button out" ID="{35A8E69A-60F6-4A63-8C7E-D13417629773}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_flap_lever" ID="{F9E05599-186C-4648-98FC-64B6E0B2B577}">
+					<ChildrenList>
+						<Action Name="" ID="{C3027483-96DD-4AC8-A382-2C1785198C7B}" ShortID="58382081">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="flap lever" ID="{B1D9766C-121B-4ED6-A6FC-912DD8DA10C0}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_pushbutton_in" ID="{3C583812-E1D7-42E4-9F5F-E266181BDAB4}">
+					<ChildrenList>
+						<Action Name="" ID="{92A7054A-9F33-4782-AF04-9A57A9FC4F63}" ShortID="871044439">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="pushbutton in" ID="{BF892323-C16B-429F-821B-14BCBBF4035A}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_pushbutton_out" ID="{93EEBC06-C4F5-465A-9565-6505D768E5DA}">
+					<ChildrenList>
+						<Action Name="" ID="{BAB7591B-A592-459E-8E4D-0FC300E767DE}" ShortID="624912156">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="pushbutton out" ID="{F30D3AB6-EFA5-4ABC-B3D8-CEE96FD0554B}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
