@@ -2254,7 +2254,6 @@ class Cabin_Annunciations extends Annunciations {
             if (value != message.Visible) {
                 this.needReload = true;
                 message.Visible = value;
-                message.Acknowledged = !this.offStart;
                 if (value) {
                     switch (message.Type) {
                         case Annunciation_MessageType.WARNING:
@@ -2285,7 +2284,6 @@ class Cabin_Annunciations extends Annunciations {
             if (value != message.Visible) {
                 this.needReload = true;
                 message.Visible = value;
-                message.Acknowledged = (this.gps.getTimeSinceStart() < 10000 && !this.offStart);
                 if (value) {
                     switch (message.Type) {
                         case Annunciation_MessageType.WARNING:

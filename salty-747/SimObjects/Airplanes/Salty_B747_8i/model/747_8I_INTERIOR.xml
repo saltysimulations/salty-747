@@ -1884,15 +1884,15 @@
 					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
 					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
+				<UseTemplate Name="Salty_Yaw_Damper">
 					<NODE_ID>push_ovhd_pass_o2_yaw_damper_lower</NODE_ID>
-					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
-					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
+					<ANIM_NAME>ovhd_push_pass_o2_yaw_damper_lower</ANIM_NAME>
+					<ID>LOWER</ID>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
+				<UseTemplate Name="Salty_Yaw_Damper">
 					<NODE_ID>push_ovhd_pass_o2_yaw_damper_upper</NODE_ID>
-					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
-					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
+					<ANIM_NAME>ovhd_push_pass_o2_yaw_damper_upper</ANIM_NAME>
+					<ID>UPPER</ID>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 					<NODE_ID>push_ovhd_air_data_ram_turbine</NODE_ID>
@@ -4340,12 +4340,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_pass_oxygen</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>push_ovhd_pass_o2_yaw_damper_upper</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>push_ovhd_pass_o2_yaw_damper_lower</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>ovhd_switch_pass_voice_recorder</NODE_ID>
