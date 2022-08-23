@@ -151,6 +151,120 @@
         </File>
       </Language>
       <Language ID="393239870" Name="SFX">
+        <File Name="airspeed knob 1.wav">
+          <WObject ID="{DA4DCC4C-C8B0-4464-9BE7-B0D64FD4831C}">
+            <MediaID ID="439158840" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="airspeed knob 2.wav">
+          <WObject ID="{7DDCAFC5-B2D6-4BBF-A8BF-7F370EFE9F87}">
+            <MediaID ID="708863167" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="airspeed knob 3.wav">
+          <WObject ID="{BE747F9E-60B7-49F8-B7E8-FEB831952A32}">
+            <MediaID ID="638262216" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="airspeed knob 4.wav">
+          <WObject ID="{3D7F7A95-74A9-4111-90FC-B62569F7F89C}">
+            <MediaID ID="590004121" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="altitude knob 1.wav">
+          <WObject ID="{A2146DEB-9F91-4555-A4EB-76558E84EB9B}">
+            <MediaID ID="851067757" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="altitude knob 2.wav">
+          <WObject ID="{D250FEDB-56AD-4C89-9308-DB061A218D96}">
+            <MediaID ID="572966531" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="altitude knob 3.wav">
+          <WObject ID="{25C80902-441F-48BA-9366-018D6AC7D933}">
+            <MediaID ID="676201084" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="altitude knob 4.wav">
+          <WObject ID="{1D2EF8F8-9BBD-4F7E-862A-8311D26A356C}">
+            <MediaID ID="971858139" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="altitude knob 5.wav">
+          <WObject ID="{117AC1F3-FB85-48D3-A67D-9B67BD6ACD4D}">
+            <MediaID ID="581572559" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ap disengage down 1.wav">
+          <WObject ID="{6863645D-1E91-411A-AAC6-BDE5D3475F39}">
+            <MediaID ID="508077786" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ap disengage down 2.wav">
+          <WObject ID="{9270CFA8-843B-4822-A15E-4F30159CF0B8}">
+            <MediaID ID="283765354" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ap disengage up 1.wav">
+          <WObject ID="{CCF4265B-E21E-459F-A5E6-EFB9C656BFEE}">
+            <MediaID ID="656587132" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ap disengage up 2.wav">
+          <WObject ID="{192AAFF0-9E96-4601-89B9-9FD2F088F2D8}">
+            <MediaID ID="98054364" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="at off.wav">
+          <WObject ID="{2798C14B-3EE9-49E2-9B77-28D2A985B696}">
+            <MediaID ID="595419061" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="at on.wav">
+          <WObject ID="{5B2C356E-0953-44B2-95A2-C18383087D30}">
+            <MediaID ID="770533900" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="bank angle 1.wav">
+          <WObject ID="{AD6FF8B7-265E-4EEF-92AE-3F5D6AC1FD4E}">
+            <MediaID ID="466331487" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="bank angle 2.wav">
+          <WObject ID="{3A8CD6BC-38B6-4859-90C5-1262B5ACA2CB}">
+            <MediaID ID="103149378" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="bank angle 3.wav">
+          <WObject ID="{DDAB76A4-62FC-4659-8454-DB01FF066277}">
+            <MediaID ID="295756854" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="bank angle 4.wav">
+          <WObject ID="{D6784487-87E3-47EA-833C-9CC1CC016A90}">
+            <MediaID ID="739389569" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="bank_angle.wav">
           <WObject ID="{4EE6D210-4D1C-4088-A9E5-4DD7106FFBED}">
             <MediaID ID="438977682" />
@@ -261,6 +375,18 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="fd off.wav">
+          <WObject ID="{D4E00915-2D5C-4FF5-BE00-B8F98EED277D}">
+            <MediaID ID="341198370" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="fd on.wav">
+          <WObject ID="{218C0298-D21B-4982-B845-6CADB4910AFC}">
+            <MediaID ID="373592730" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="flap lever extend 1.wav">
           <WObject ID="{189D628A-5FBF-4FC3-9F38-4D87FE928ED0}">
             <MediaID ID="868398302" />
@@ -282,6 +408,84 @@
         <File Name="flap lever retract 2.wav">
           <WObject ID="{DC6F10AD-C37F-49B6-943F-A5EAD810CD65}">
             <MediaID ID="853105855" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg knob 1.wav">
+          <WObject ID="{CB59CCB2-3D79-4D10-A7C1-904559F7F075}">
+            <MediaID ID="917158956" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg knob 2.wav">
+          <WObject ID="{3ED1B892-A4A7-42CD-B55C-4B8AF11F061D}">
+            <MediaID ID="318557585" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg knob 3.wav">
+          <WObject ID="{1B92E71D-8C2F-4817-9C02-7EF415BBC60B}">
+            <MediaID ID="239567627" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg knob 4.wav">
+          <WObject ID="{933EC553-498B-497F-AAFA-7B3F96AB0230}">
+            <MediaID ID="557311033" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg knob 5.wav">
+          <WObject ID="{3E2BB738-D303-4A33-99E2-D84CE8AD8B6E}">
+            <MediaID ID="871612200" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg select push in 1.wav">
+          <WObject ID="{5F536F4D-35C6-4525-BEA4-C73B39BEB3F8}">
+            <MediaID ID="680530506" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg select push in 2.wav">
+          <WObject ID="{C9801F6E-CC24-4D47-B03F-A92529008EAF}">
+            <MediaID ID="823184545" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg select push out 1.wav">
+          <WObject ID="{0B967125-F769-41D2-A8A6-3D049581073A}">
+            <MediaID ID="535279103" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="hdg select push out 2.wav">
+          <WObject ID="{1A410FB5-9F4C-4EB0-92FF-BAE6C548109C}">
+            <MediaID ID="790999548" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ias mach in 1.wav">
+          <WObject ID="{69FBE4CB-A11B-4DB2-8CF1-1BD3C92DCEF6}">
+            <MediaID ID="902520488" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ias mach in 2.wav">
+          <WObject ID="{CEED67E6-E767-437B-84BA-608C06B21442}">
+            <MediaID ID="435729440" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ias mach out 1.wav">
+          <WObject ID="{5CA6DDB5-B3CF-47D3-B379-FAF8B07D88DF}">
+            <MediaID ID="831639486" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="ias mach out 2.wav">
+          <WObject ID="{B1FD192A-5782-4926-8BC6-43530E3BB721}">
+            <MediaID ID="683798454" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -396,6 +600,36 @@
         <File Name="uplink_chime.wav">
           <WObject ID="{136B2E3B-1EA0-4ACA-AAE0-999978A82DE5}">
             <MediaID ID="665657662" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vs knob 1.wav">
+          <WObject ID="{8D878DFD-BE57-4720-A9EF-140A306D7CAA}">
+            <MediaID ID="1050955132" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vs knob 2.wav">
+          <WObject ID="{D5179F04-E90E-44BC-B7E0-47AB48471605}">
+            <MediaID ID="623094446" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vs knob 3.wav">
+          <WObject ID="{936CC476-B95C-4577-A686-250B7C36392C}">
+            <MediaID ID="565823880" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vs knob 4.wav">
+          <WObject ID="{7E272995-ABB2-4265-B094-4C060ECCFE1D}">
+            <MediaID ID="304698848" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vs knob 5.wav">
+          <WObject ID="{D4D8EB25-5068-44B3-85DC-93D67C7A37D4}">
+            <MediaID ID="1022563166" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>

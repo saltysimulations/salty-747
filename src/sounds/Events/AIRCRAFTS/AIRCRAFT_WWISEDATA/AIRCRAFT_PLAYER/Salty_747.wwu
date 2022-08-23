@@ -367,6 +367,216 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_airspeed_knob" ID="{F62F0E17-BA0D-4835-A3B7-A0860978D1D5}">
+					<ChildrenList>
+						<Action Name="" ID="{A7A27644-8B91-4470-9BC8-BB0B9F8639D0}" ShortID="894690684">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="airspeed knob" ID="{4CFE588E-F7A0-4450-B20C-00D95EF0F453}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_bank_limit_selector" ID="{AB08F745-2F67-4E7D-BF3F-DB5F2E32B7A8}">
+					<ChildrenList>
+						<Action Name="" ID="{1F473DE6-E70C-4FA6-9313-33DD539B634F}" ShortID="719601323">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="bank limit selector" ID="{C10AE6F6-5675-4B63-8BC5-D5CD039629D5}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_hdg_select_in" ID="{0A355CAA-39D2-4CC9-B7E2-8ADB8722D52F}">
+					<ChildrenList>
+						<Action Name="" ID="{502D6693-3375-4D6A-B68E-99C01A4DB7D9}" ShortID="297778385">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="hdg select in" ID="{668660D5-527E-4644-8A64-1C49242A4392}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_hdg_select_out" ID="{092769E5-7D1D-4050-8514-D3787FCB27DA}">
+					<ChildrenList>
+						<Action Name="" ID="{E98E89BD-0503-4339-A8B1-A46EC538204E}" ShortID="643849397">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="hdg select out" ID="{58FDFC29-288C-4CDD-9BFA-2BBF01C536F9}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_heading_knob" ID="{F4076295-DDD4-4E09-8E5F-9EB15CD066C2}">
+					<ChildrenList>
+						<Action Name="" ID="{DBB8124F-A512-4D13-97F6-7832624394C8}" ShortID="126947119">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="heading knob" ID="{943C4B46-4359-410E-A35B-6B29EEFEB06E}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_ias_mach_in" ID="{62ECB79E-056D-404C-B975-C030BEA70C90}">
+					<ChildrenList>
+						<Action Name="" ID="{E10D1E64-D566-4D29-87DC-13EA52D85BEE}" ShortID="169776448">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ias mach in" ID="{AD56BF0E-139C-4681-A577-96599BA449A1}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_ias_mach_out" ID="{A8D98BD5-D8B2-494F-B641-3433865E6260}">
+					<ChildrenList>
+						<Action Name="" ID="{708D3D9E-C65E-4DBE-A27C-8227EA804F38}" ShortID="588082932">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ias mach out" ID="{6DA1097A-1DB3-4F4E-AC93-CDB61A363D96}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_at_on" ID="{8D94EB81-7B8B-4873-B408-43D8D0AC9DAD}">
+					<ChildrenList>
+						<Action Name="" ID="{3C8F905F-6222-49AB-BF24-E83AB7C7C3EE}" ShortID="209284067">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="at on" ID="{186CFB8B-2849-4FDA-9036-DEAE0B969797}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_at_off" ID="{760F2565-2D87-4A4B-B99E-CA797EDF5D9A}">
+					<ChildrenList>
+						<Action Name="" ID="{6C454BEC-993E-4C94-B519-4B867095DB9D}" ShortID="323154832">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="at off" ID="{2DC090D4-A27B-4450-8444-C06B01D1C3F9}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_fd_on" ID="{78C02E34-B654-41AA-B135-076E5FBD0B7B}">
+					<ChildrenList>
+						<Action Name="" ID="{F1FBCC37-89DD-401C-8ADD-02F9CCA59E29}" ShortID="684476969">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fd on" ID="{7C4411AE-F7A3-4B39-97C8-3666EF5B1DA6}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_fd_off" ID="{748958A0-EF69-4417-B1B6-5E0ED2D11796}">
+					<ChildrenList>
+						<Action Name="" ID="{33A23A4E-9138-49DF-B558-8D560AA5D7ED}" ShortID="687054004">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="fd off" ID="{6FF5E0D9-1285-4EE2-8B1D-AB29ABE11A1D}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_ap_disengage_down" ID="{6BB0C576-4B65-46EB-BBC0-77AF3FC18B7C}">
+					<ChildrenList>
+						<Action Name="" ID="{DD5142AF-18F6-439F-9709-BC742E25726F}" ShortID="359362142">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ap disengage down" ID="{83CED4FF-0F83-4FE0-8167-FE7413ADAD1E}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_ap_disengage_up" ID="{6A9D5459-E9FF-4825-8C0D-0FBAB4334F67}">
+					<ChildrenList>
+						<Action Name="" ID="{70CBCADD-2064-4FE4-917C-5A581D9D7107}" ShortID="984813050">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ap disengage up" ID="{CB6A959D-F18C-486C-836F-3063928B5ADC}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_altitude_knob" ID="{A5D0E6F5-01B6-47BD-A9CE-AFE1DCB2565A}">
+					<ChildrenList>
+						<Action Name="" ID="{E12873FA-2C19-46FA-8C90-2A5237A3A604}" ShortID="482322713">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="altitude knob" ID="{70F57A44-5A13-43FC-B9C4-AF8044B1CF9E}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_vs_knob" ID="{0C0E1DC4-CCD9-42ED-9745-101743AC91CA}">
+					<ChildrenList>
+						<Action Name="" ID="{9A667F57-620C-4617-8DEA-F3E612961D96}" ShortID="81024300">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="vs knob" ID="{C20F16BB-BBA2-4151-9E44-E6F4BA0A6FB9}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

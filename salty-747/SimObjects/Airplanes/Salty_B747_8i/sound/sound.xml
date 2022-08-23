@@ -401,6 +401,21 @@
 
 	<Sound WwiseData="true" WwiseEvent="mcp_button_in" ViewPoint="Inside" />
 	<Sound WwiseData="true" WwiseEvent="mcp_button_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="airspeed_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="bank_limit_selector" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="hdg_select_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="hdg_select_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="heading_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="ias_mach_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="ias_mach_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="at_on" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="at_off" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="fd_on" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="fd_off" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="ap_disengage_down" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="ap_disengage_up" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="altitude_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="vs_knob" ViewPoint="Inside" />
 
 	<!-- Lighting ============================================================================================ -->
     <Sound WwiseData="true" WwiseEvent="landing_light_switch_on" ViewPoint="Inside"/>

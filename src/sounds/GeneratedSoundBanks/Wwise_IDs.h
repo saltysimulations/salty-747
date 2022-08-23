@@ -13,7 +13,14 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_ASOBO_B747_8I_AIRSPEED_KNOB = 4237587060U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_ALTITUDE_KNOB = 3357195565U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_AP_DISENGAGE_DOWN = 1249227566U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_AP_DISENGAGE_UP = 1954721909U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_AT_OFF = 695502137U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_AT_ON = 4259183757U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_BANK_ANGLE = 2809333158U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_BANK_LIMIT_SELECTOR = 1284250630U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_AURAL = 1166893861U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_OBSTACLE = 3939631457U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CAUTION_TERRAIN = 1604764289U;
@@ -21,7 +28,14 @@ namespace AK
         static const AkUniqueID PLAY_ASOBO_B747_8I_CDU_IN = 3317949592U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_CDU_OUT = 3798392127U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_DONT_SINK = 1781746709U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_FD_OFF = 3612075212U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_FD_ON = 222862054U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_FLAP_LEVER = 1880339872U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_HDG_SELECT_IN = 2128376060U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_HDG_SELECT_OUT = 2549525179U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_HEADING_KNOB = 4172710197U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_IAS_MACH_IN = 857296991U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_IAS_MACH_OUT = 3101548274U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_MCP_BUTTON_IN = 3967005835U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_MCP_BUTTON_OUT = 3457563142U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_MINIMUMS = 1077883375U;
@@ -37,6 +51,7 @@ namespace AK
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_GEAR = 3826800809U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_TOO_LOW_TERRAIN = 3260237411U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_UPLINK_CHIME = 603812818U;
+        static const AkUniqueID PLAY_ASOBO_B747_8I_VS_KNOB = 1905707408U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_WAILER = 3154175190U;
         static const AkUniqueID PLAY_ASOBO_B747_8I_WINDSHEAR = 2967775321U;
     } // namespace EVENTS

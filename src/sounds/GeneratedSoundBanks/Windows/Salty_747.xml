@@ -8,16 +8,120 @@
 		<ExternalSourcesOutputRoot>X:\Documents\GitHub\salty-747\src\sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<SoundBanks>
-		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="601102564">
+		<SoundBank Id="2247706355" GUID="{732766E7-FA86-452E-A427-C85CB4EF4A39}" Language="SFX" Hash="326326748">
 			<ObjectPath>\SoundBanks\Salty_747\Salty_747</ObjectPath>
 			<ShortName>Salty_747</ShortName>
 			<Path>Salty_747.bnk</Path>
 			<IncludedEvents>
+				<Event Id="4237587060" Name="Play_Asobo_B747_8i_airspeed_knob" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_airspeed_knob" GUID="{F62F0E17-BA0D-4835-A3B7-A0860978D1D5}" DurationType="OneShot" DurationMin="0.028776" DurationMax="0.039138">
+					<IncludedMemoryFiles>
+						<File Id="439158840" Language="SFX">
+							<ShortName>airspeed knob 1.wav</ShortName>
+							<Path>SFX\airspeed knob 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="590004121" Language="SFX">
+							<ShortName>airspeed knob 4.wav</ShortName>
+							<Path>SFX\airspeed knob 4_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="638262216" Language="SFX">
+							<ShortName>airspeed knob 3.wav</ShortName>
+							<Path>SFX\airspeed knob 3_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="708863167" Language="SFX">
+							<ShortName>airspeed knob 2.wav</ShortName>
+							<Path>SFX\airspeed knob 2_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3357195565" Name="Play_Asobo_B747_8i_altitude_knob" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_altitude_knob" GUID="{A5D0E6F5-01B6-47BD-A9CE-AFE1DCB2565A}" DurationType="OneShot" DurationMin="0.032562" DurationMax="0.043084">
+					<IncludedMemoryFiles>
+						<File Id="572966531" Language="SFX">
+							<ShortName>altitude knob 2.wav</ShortName>
+							<Path>SFX\altitude knob 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="581572559" Language="SFX">
+							<ShortName>altitude knob 5.wav</ShortName>
+							<Path>SFX\altitude knob 5_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="676201084" Language="SFX">
+							<ShortName>altitude knob 3.wav</ShortName>
+							<Path>SFX\altitude knob 3_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="851067757" Language="SFX">
+							<ShortName>altitude knob 1.wav</ShortName>
+							<Path>SFX\altitude knob 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="971858139" Language="SFX">
+							<ShortName>altitude knob 4.wav</ShortName>
+							<Path>SFX\altitude knob 4_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1249227566" Name="Play_Asobo_B747_8i_ap_disengage_down" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_ap_disengage_down" GUID="{6BB0C576-4B65-46EB-BBC0-77AF3FC18B7C}" DurationType="OneShot" DurationMin="0.128889" DurationMax="0.134331">
+					<IncludedMemoryFiles>
+						<File Id="283765354" Language="SFX">
+							<ShortName>ap disengage down 2.wav</ShortName>
+							<Path>SFX\ap disengage down 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="508077786" Language="SFX">
+							<ShortName>ap disengage down 1.wav</ShortName>
+							<Path>SFX\ap disengage down 1_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1954721909" Name="Play_Asobo_B747_8i_ap_disengage_up" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_ap_disengage_up" GUID="{6A9D5459-E9FF-4825-8C0D-0FBAB4334F67}" DurationType="OneShot" DurationMin="0.132268" DurationMax="0.137029">
+					<IncludedMemoryFiles>
+						<File Id="98054364" Language="SFX">
+							<ShortName>ap disengage up 2.wav</ShortName>
+							<Path>SFX\ap disengage up 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="656587132" Language="SFX">
+							<ShortName>ap disengage up 1.wav</ShortName>
+							<Path>SFX\ap disengage up 1_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="695502137" Name="Play_Asobo_B747_8i_at_off" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_at_off" GUID="{760F2565-2D87-4A4B-B99E-CA797EDF5D9A}" DurationType="OneShot" DurationMin="0.067664" DurationMax="0.067664">
+					<IncludedMemoryFiles>
+						<File Id="595419061" Language="SFX">
+							<ShortName>at off.wav</ShortName>
+							<Path>SFX\at off_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4259183757" Name="Play_Asobo_B747_8i_at_on" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_at_on" GUID="{8D94EB81-7B8B-4873-B408-43D8D0AC9DAD}" DurationType="OneShot" DurationMin="0.052358" DurationMax="0.052358">
+					<IncludedMemoryFiles>
+						<File Id="770533900" Language="SFX">
+							<ShortName>at on.wav</ShortName>
+							<Path>SFX\at on_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="2809333158" Name="Play_Asobo_B747_8i_bank_angle" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_bank_angle" GUID="{DB32A7C5-4B89-469E-A387-9E63F3473097}" DurationType="OneShot" DurationMin="1.490612" DurationMax="1.490612">
 					<IncludedMemoryFiles>
 						<File Id="438977682" Language="SFX">
 							<ShortName>bank_angle.wav</ShortName>
 							<Path>SFX\bank_angle_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1284250630" Name="Play_Asobo_B747_8i_bank_limit_selector" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_bank_limit_selector" GUID="{AB08F745-2F67-4E7D-BF3F-DB5F2E32B7A8}" DurationType="OneShot" DurationMin="0.044671" DurationMax="0.066417">
+					<IncludedMemoryFiles>
+						<File Id="103149378" Language="SFX">
+							<ShortName>bank angle 2.wav</ShortName>
+							<Path>SFX\bank angle 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="295756854" Language="SFX">
+							<ShortName>bank angle 3.wav</ShortName>
+							<Path>SFX\bank angle 3_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="466331487" Language="SFX">
+							<ShortName>bank angle 1.wav</ShortName>
+							<Path>SFX\bank angle 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="739389569" Language="SFX">
+							<ShortName>bank angle 4.wav</ShortName>
+							<Path>SFX\bank angle 4_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -109,6 +213,22 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="3612075212" Name="Play_Asobo_B747_8i_fd_off" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fd_off" GUID="{748958A0-EF69-4417-B1B6-5E0ED2D11796}" DurationType="OneShot" DurationMin="0.047800" DurationMax="0.047800">
+					<IncludedMemoryFiles>
+						<File Id="341198370" Language="SFX">
+							<ShortName>fd off.wav</ShortName>
+							<Path>SFX\fd off_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="222862054" Name="Play_Asobo_B747_8i_fd_on" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_fd_on" GUID="{78C02E34-B654-41AA-B135-076E5FBD0B7B}" DurationType="OneShot" DurationMin="0.038662" DurationMax="0.038662">
+					<IncludedMemoryFiles>
+						<File Id="373592730" Language="SFX">
+							<ShortName>fd on.wav</ShortName>
+							<Path>SFX\fd on_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="1880339872" Name="Play_Asobo_B747_8i_flap_lever" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_flap_lever" GUID="{F9E05599-186C-4648-98FC-64B6E0B2B577}" DurationType="OneShot" DurationMin="0.332245" DurationMax="0.796122">
 					<IncludedMemoryFiles>
 						<File Id="130445081" Language="SFX">
@@ -126,6 +246,78 @@
 						<File Id="868398302" Language="SFX">
 							<ShortName>flap lever extend 1.wav</ShortName>
 							<Path>SFX\flap lever extend 1_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2128376060" Name="Play_Asobo_B747_8i_hdg_select_in" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_select_in" GUID="{0A355CAA-39D2-4CC9-B7E2-8ADB8722D52F}" DurationType="OneShot" DurationMin="0.057596" DurationMax="0.071973">
+					<IncludedMemoryFiles>
+						<File Id="680530506" Language="SFX">
+							<ShortName>hdg select push in 1.wav</ShortName>
+							<Path>SFX\hdg select push in 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="823184545" Language="SFX">
+							<ShortName>hdg select push in 2.wav</ShortName>
+							<Path>SFX\hdg select push in 2_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2549525179" Name="Play_Asobo_B747_8i_hdg_select_out" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_hdg_select_out" GUID="{092769E5-7D1D-4050-8514-D3787FCB27DA}" DurationType="OneShot" DurationMin="0.042449" DurationMax="0.047256">
+					<IncludedMemoryFiles>
+						<File Id="535279103" Language="SFX">
+							<ShortName>hdg select push out 1.wav</ShortName>
+							<Path>SFX\hdg select push out 1_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="790999548" Language="SFX">
+							<ShortName>hdg select push out 2.wav</ShortName>
+							<Path>SFX\hdg select push out 2_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="4172710197" Name="Play_Asobo_B747_8i_heading_knob" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_heading_knob" GUID="{F4076295-DDD4-4E09-8E5F-9EB15CD066C2}" DurationType="OneShot" DurationMin="0.021769" DurationMax="0.030272">
+					<IncludedMemoryFiles>
+						<File Id="239567627" Language="SFX">
+							<ShortName>hdg knob 3.wav</ShortName>
+							<Path>SFX\hdg knob 3_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="318557585" Language="SFX">
+							<ShortName>hdg knob 2.wav</ShortName>
+							<Path>SFX\hdg knob 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="557311033" Language="SFX">
+							<ShortName>hdg knob 4.wav</ShortName>
+							<Path>SFX\hdg knob 4_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="871612200" Language="SFX">
+							<ShortName>hdg knob 5.wav</ShortName>
+							<Path>SFX\hdg knob 5_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="917158956" Language="SFX">
+							<ShortName>hdg knob 1.wav</ShortName>
+							<Path>SFX\hdg knob 1_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="857296991" Name="Play_Asobo_B747_8i_ias_mach_in" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_ias_mach_in" GUID="{62ECB79E-056D-404C-B975-C030BEA70C90}" DurationType="OneShot" DurationMin="0.038526" DurationMax="0.049932">
+					<IncludedMemoryFiles>
+						<File Id="435729440" Language="SFX">
+							<ShortName>ias mach in 2.wav</ShortName>
+							<Path>SFX\ias mach in 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="902520488" Language="SFX">
+							<ShortName>ias mach in 1.wav</ShortName>
+							<Path>SFX\ias mach in 1_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3101548274" Name="Play_Asobo_B747_8i_ias_mach_out" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_ias_mach_out" GUID="{A8D98BD5-D8B2-494F-B641-3433865E6260}" DurationType="OneShot" DurationMin="0.040658" DurationMax="0.042902">
+					<IncludedMemoryFiles>
+						<File Id="683798454" Language="SFX">
+							<ShortName>ias mach out 2.wav</ShortName>
+							<Path>SFX\ias mach out 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="831639486" Language="SFX">
+							<ShortName>ias mach out 1.wav</ShortName>
+							<Path>SFX\ias mach out 1_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
@@ -262,6 +454,30 @@
 						<File Id="665657662" Language="SFX">
 							<ShortName>uplink_chime.wav</ShortName>
 							<Path>SFX\uplink_chime_1E8ECBBC.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1905707408" Name="Play_Asobo_B747_8i_vs_knob" ObjectPath="\Events\AIRCRAFTS\AIRCRAFT_WWISEDATA\AIRCRAFT_PLAYER\Salty_747\Play_Asobo_B747_8i_vs_knob" GUID="{0C0E1DC4-CCD9-42ED-9745-101743AC91CA}" DurationType="OneShot" DurationMin="0.034603" DurationMax="0.047166">
+					<IncludedMemoryFiles>
+						<File Id="304698848" Language="SFX">
+							<ShortName>vs knob 4.wav</ShortName>
+							<Path>SFX\vs knob 4_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="565823880" Language="SFX">
+							<ShortName>vs knob 3.wav</ShortName>
+							<Path>SFX\vs knob 3_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="623094446" Language="SFX">
+							<ShortName>vs knob 2.wav</ShortName>
+							<Path>SFX\vs knob 2_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="1022563166" Language="SFX">
+							<ShortName>vs knob 5.wav</ShortName>
+							<Path>SFX\vs knob 5_1E8ECBBC.wem</Path>
+						</File>
+						<File Id="1050955132" Language="SFX">
+							<ShortName>vs knob 1.wav</ShortName>
+							<Path>SFX\vs knob 1_1E8ECBBC.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
