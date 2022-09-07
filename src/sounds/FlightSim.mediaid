@@ -205,6 +205,30 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="anti ice switch 1.wav">
+          <WObject ID="{FE62822C-1BD3-4A77-995C-F3394D2D158D}">
+            <MediaID ID="1000032984" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="anti ice switch 2.wav">
+          <WObject ID="{266FFCF0-2A14-4EEA-A803-D2A33FEB93FA}">
+            <MediaID ID="503852132" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="anti ice switch 3.wav">
+          <WObject ID="{0C849359-186A-417A-BD3D-6BA4E1295BE6}">
+            <MediaID ID="899597877" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="anti ice switch 4.wav">
+          <WObject ID="{144CCE85-614A-496D-AD24-5206031F62D9}">
+            <MediaID ID="670558990" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="ap disengage down 1.wav">
           <WObject ID="{6863645D-1E91-411A-AAC6-BDE5D3475F39}">
             <MediaID ID="508077786" />
@@ -268,6 +292,72 @@
         <File Name="bank_angle.wav">
           <WObject ID="{4EE6D210-4D1C-4088-A9E5-4DD7106FFBED}">
             <MediaID ID="438977682" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro knob 1.wav">
+          <WObject ID="{76100A86-5C29-4EC7-A837-A13C3AFAB43C}">
+            <MediaID ID="903450393" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro knob 2.wav">
+          <WObject ID="{D4E1543E-3BCE-4E8D-8A5D-4E34A90A8407}">
+            <MediaID ID="149097936" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro knob 3.wav">
+          <WObject ID="{325FFC06-8722-458F-A445-363A576F1F62}">
+            <MediaID ID="785848428" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro knob 4.wav">
+          <WObject ID="{5CA34C03-04F9-4A74-97A5-4E8A5B7B4F03}">
+            <MediaID ID="621388915" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro knob 5.wav">
+          <WObject ID="{04E348B0-2623-4C9C-9EC1-DFEE21BEBF09}">
+            <MediaID ID="470132470" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro unit knob left 1.wav">
+          <WObject ID="{186D934E-336F-4CFC-BE09-7473207F85E4}">
+            <MediaID ID="1013291092" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro unit knob left 2.wav">
+          <WObject ID="{C22B76DE-888A-4B04-8DF8-8268E8EFDECC}">
+            <MediaID ID="662046137" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro unit knob right 1.wav">
+          <WObject ID="{4A22F2F3-05A1-44CF-985F-4FE1BFC1D100}">
+            <MediaID ID="592413475" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="baro unit knob right 2.wav">
+          <WObject ID="{15E388A8-842F-4D85-B46D-546C4CC60851}">
+            <MediaID ID="763929441" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="beacon light lwr.wav">
+          <WObject ID="{A442751B-C719-44C7-A282-B8A57325E21F}">
+            <MediaID ID="179879104" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="beacon light off.wav">
+          <WObject ID="{46585E79-D3F2-424E-968C-558D7F694F99}">
+            <MediaID ID="500733381" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -369,9 +459,81 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="datalink button in 1.wav">
+          <WObject ID="{D83D61DA-3378-4B11-A9D4-7951FF0DD84D}">
+            <MediaID ID="645629334" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="datalink button in 2.wav">
+          <WObject ID="{E37B00EA-0CF5-4B7C-A374-76B9EFEFC23B}">
+            <MediaID ID="294130595" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="datalink button in 3.wav">
+          <WObject ID="{4C2BD3C1-116B-4740-9A11-321A147E9FC9}">
+            <MediaID ID="138775941" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="datalink button out 1.wav">
+          <WObject ID="{2E01D14C-666B-43EE-BA5D-14343D914A4D}">
+            <MediaID ID="859675488" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="datalink button out 2.wav">
+          <WObject ID="{BD4158AA-A1BD-47C9-84C9-648A435B12D9}">
+            <MediaID ID="324698771" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="datalink button out 3.wav">
+          <WObject ID="{61B1BEB0-9FAA-46EE-B8F1-AA09158586BC}">
+            <MediaID ID="636147834" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="dont_sink.wav">
           <WObject ID="{AD3EB7E4-5C65-47F2-B6D4-3857B29519EF}">
             <MediaID ID="336234418" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="efis button press in 1.wav">
+          <WObject ID="{5096F0D0-17E9-4677-AA62-EB76CCA51FD9}">
+            <MediaID ID="923708611" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="efis button press in 2.wav">
+          <WObject ID="{DBF5A295-9BA0-4F46-8E96-AFD8901D6FF5}">
+            <MediaID ID="299677598" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="efis button press in 3.wav">
+          <WObject ID="{2507848A-8CAE-4F33-A220-FE55F9923331}">
+            <MediaID ID="748239704" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="efis button press out 1.wav">
+          <WObject ID="{422946EB-A5CB-4B5A-861F-7B4B7A690CC7}">
+            <MediaID ID="240676270" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="efis button press out 2.wav">
+          <WObject ID="{CFE360FB-C266-4BC4-9D90-45E584387A64}">
+            <MediaID ID="699698518" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="efis button press out 3.wav">
+          <WObject ID="{1DBB820F-B9EA-4CFF-9825-B299707ED8F7}">
+            <MediaID ID="28772649" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -489,6 +651,138 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="irs knob 1.wav">
+          <WObject ID="{DF6A502E-7272-4608-9947-EF5DC863B6E4}">
+            <MediaID ID="637079073" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="irs knob 2.wav">
+          <WObject ID="{7D286380-89A4-4628-B6DC-925F74247D7A}">
+            <MediaID ID="353515530" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="irs knob 3.wav">
+          <WObject ID="{B2D2B63E-5278-49E5-90BA-70AB8C285FD6}">
+            <MediaID ID="928751997" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 1.wav">
+          <WObject ID="{F4A73B22-1049-4402-8EB9-EC8F2B0AB3F6}">
+            <MediaID ID="148803952" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 2.wav">
+          <WObject ID="{BF82319F-CEEF-4E43-A550-CF68E713E6C5}">
+            <MediaID ID="542177335" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 3.wav">
+          <WObject ID="{4E8A1AE8-6750-4A5A-B86A-D93AF92F7F6B}">
+            <MediaID ID="237409546" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 4.wav">
+          <WObject ID="{A38BAF9F-BBA4-4307-A9D7-024EF3C3D07C}">
+            <MediaID ID="874032839" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 5.wav">
+          <WObject ID="{B700BAE9-516B-43E8-A098-69669AF3547B}">
+            <MediaID ID="875323627" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 6.wav">
+          <WObject ID="{E13E7EB0-F0BF-46BB-9B8D-006FDE183E09}">
+            <MediaID ID="936091529" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 7.wav">
+          <WObject ID="{F2944FE1-EE2F-48E2-B887-EB3E57802ABD}">
+            <MediaID ID="1072620166" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="knob 8.wav">
+          <WObject ID="{537D6167-5510-4A22-A317-1CC4FCC66825}">
+            <MediaID ID="912439514" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="landing light off.wav">
+          <WObject ID="{A96B8A00-A6F9-43C6-85AB-60865C8BF164}">
+            <MediaID ID="669141162" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="landing light on.wav">
+          <WObject ID="{2E8B0058-0FF3-45DD-BCF1-8732EA73C152}">
+            <MediaID ID="221506991" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="map mode knob 1.wav">
+          <WObject ID="{2737E5D3-C755-4657-9DCC-6A1921D06817}">
+            <MediaID ID="973739304" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="map mode knob 2.wav">
+          <WObject ID="{9F1FAF61-6C2C-4FC2-8050-AC2BC4E368C5}">
+            <MediaID ID="216430079" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="map mode knob 3.wav">
+          <WObject ID="{6EE53D4B-B9E3-4EB8-B500-F6A08B4ACFEC}">
+            <MediaID ID="20917112" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="map mode knob 4.wav">
+          <WObject ID="{6E53750A-7F4D-4095-A103-320D04FB5BB6}">
+            <MediaID ID="718679900" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="map mode knob 5.wav">
+          <WObject ID="{4C1100F4-9F30-4452-9BA1-B925DA5BF3A2}">
+            <MediaID ID="696455704" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="master caution press in 1.wav">
+          <WObject ID="{74E1FA9F-BC51-43A1-A7B6-5A7F4125B194}">
+            <MediaID ID="862955561" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="master caution press in 2.wav">
+          <WObject ID="{9E421E39-E64B-43DD-8C86-88279E3FE765}">
+            <MediaID ID="444899371" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="master caution press out 1.wav">
+          <WObject ID="{B16BC572-37F9-4F77-9B4B-8CDC6857D4E9}">
+            <MediaID ID="1049206122" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="master caution press out 2.wav">
+          <WObject ID="{66A62DFC-5A96-42F8-B188-FDDA9A7C9A3B}">
+            <MediaID ID="963974544" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="mcp button in 1.wav">
           <WObject ID="{A923490B-56C8-4AFA-AA5F-1ACD0A09F930}">
             <MediaID ID="600585337" />
@@ -513,9 +807,45 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="minimums knob 1.wav">
+          <WObject ID="{5141F5C8-F314-4AE7-8FE0-5C30110B6F8C}">
+            <MediaID ID="1001543491" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="minimums knob 2.wav">
+          <WObject ID="{36076C3A-1B74-47B5-AB0A-D89717BBBBFF}">
+            <MediaID ID="662948446" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="minimums knob 3.wav">
+          <WObject ID="{4C20EA6E-8C7F-4D41-B2B7-7A24E459C8E4}">
+            <MediaID ID="526893276" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="minimums knob 4.wav">
+          <WObject ID="{61660ABE-CCCA-47E2-A219-124855CECE73}">
+            <MediaID ID="668771631" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="minimums.wav">
           <WObject ID="{4F406A6D-91D1-4453-8824-686FE9D49F97}">
             <MediaID ID="176262890" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="nav light off.wav">
+          <WObject ID="{9572144B-293C-4072-973E-E84004C74456}">
+            <MediaID ID="956724715" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="nav light on.wav">
+          <WObject ID="{3F86B67B-5AC1-42DE-993F-0892FCCAB110}">
+            <MediaID ID="928842206" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -561,9 +891,303 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="radio baro left 1.wav">
+          <WObject ID="{342D09B2-EA25-4B6B-BB1D-5F39435EF609}">
+            <MediaID ID="729683567" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio baro left 2.wav">
+          <WObject ID="{53958286-2CF3-4812-B9AB-7B7BC3534191}">
+            <MediaID ID="61186220" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio baro right 1.wav">
+          <WObject ID="{495128AA-0748-4503-A738-63139562440E}">
+            <MediaID ID="974806167" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio baro right 2.wav">
+          <WObject ID="{BAC6E508-9B2B-4D31-B820-791E75B827AC}">
+            <MediaID ID="330036435" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio button in 1.wav">
+          <WObject ID="{553E5B67-B694-45BB-B70D-A597465BD403}">
+            <MediaID ID="423608959" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio button in 2.wav">
+          <WObject ID="{D3BEE78C-3398-4C32-B0CF-EB960CF6994F}">
+            <MediaID ID="628635505" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio button out 1.wav">
+          <WObject ID="{FED5D8A5-94F2-4AC1-BF78-13390B552686}">
+            <MediaID ID="168684243" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio button out 2.wav">
+          <WObject ID="{E7338AB4-740E-48F9-A25E-368C82D5A99F}">
+            <MediaID ID="484035508" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio numpad in 1.wav">
+          <WObject ID="{545F73B7-587D-4442-AEED-64EABE655E80}">
+            <MediaID ID="370089639" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio numpad in 2.wav">
+          <WObject ID="{0F097798-D166-40ED-B8F9-5A7F31CD0104}">
+            <MediaID ID="756580091" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio numpad in 3.wav">
+          <WObject ID="{649C4F68-8DA0-4281-9152-006099796FB8}">
+            <MediaID ID="1003224437" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio numpad out 1.wav">
+          <WObject ID="{AB89F96C-31F4-46CF-9166-0E1922B31B5A}">
+            <MediaID ID="635081791" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio numpad out 2.wav">
+          <WObject ID="{7F39561B-A432-4E20-B9E3-60EFBD103EF6}">
+            <MediaID ID="585557107" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio numpad out 3.wav">
+          <WObject ID="{4F2D3B84-8886-4429-9655-FAF20E0A80A2}">
+            <MediaID ID="92802278" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio swap button in 1.wav">
+          <WObject ID="{4A2A9486-F405-42FC-9706-70428A87B986}">
+            <MediaID ID="75713170" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio swap button in 2.wav">
+          <WObject ID="{DF6F40B4-5B54-4605-BFF1-1AB63763DE28}">
+            <MediaID ID="153118310" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio swap button out 1.wav">
+          <WObject ID="{365E2A47-3812-4011-92E9-71B19552F781}">
+            <MediaID ID="180638793" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="radio swap button out 2.wav">
+          <WObject ID="{6DA83E9E-B91C-4B39-9FCC-FD5DD3FF5EE6}">
+            <MediaID ID="820219439" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="range knob 1.wav">
+          <WObject ID="{DE7C0975-598F-4ADF-B1BB-E26334A94916}">
+            <MediaID ID="776967432" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="range knob 2.wav">
+          <WObject ID="{379519AD-42A3-4ED2-A2AE-6AB6DCF23ADA}">
+            <MediaID ID="1046601120" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="range knob 3.wav">
+          <WObject ID="{06496225-3985-433E-9C7A-B3D60E7159B9}">
+            <MediaID ID="469285761" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="range knob 4.wav">
+          <WObject ID="{CEA20BC3-857F-4FAF-9F03-FC81674AD1D3}">
+            <MediaID ID="678141924" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="range knob 5.wav">
+          <WObject ID="{1FF529E0-D91C-459E-9ABF-56C2C9346A93}">
+            <MediaID ID="820805668" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rst push in.wav">
+          <WObject ID="{4B0CABFE-CEB4-490D-A11A-1968625A97BB}">
+            <MediaID ID="950689446" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rst push out.wav">
+          <WObject ID="{1FC498FA-99AA-4C33-B5A3-55119882060B}">
+            <MediaID ID="1049329345" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rudder trim in 1.wav">
+          <WObject ID="{E55AA913-ED52-4C23-911C-3C704913B23D}">
+            <MediaID ID="509463104" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rudder trim in 2.wav">
+          <WObject ID="{DBAFF12B-A5FA-463B-904E-05D30A3285E2}">
+            <MediaID ID="1004699349" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rudder trim out 1.wav">
+          <WObject ID="{8BCCE8BA-AA5B-4661-B2F4-4628858539F8}">
+            <MediaID ID="824853010" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rudder trim out 2.wav">
+          <WObject ID="{D0450FE0-EBD6-4D4B-8855-D487746FDEBC}">
+            <MediaID ID="981567583" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rwy turnoff switch off.wav">
+          <WObject ID="{C6042EA1-BA22-4C6E-B46C-B9F5A490F383}">
+            <MediaID ID="50656267" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="rwy turnoff switch on.wav">
+          <WObject ID="{DED1A373-56EA-447B-AC11-ACA1D8D763BE}">
+            <MediaID ID="141947409" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="sink_rate.wav">
           <WObject ID="{01BABB2B-C45F-40B1-9A10-31BEAB7A4997}">
             <MediaID ID="1037536185" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="squawk in 1.wav">
+          <WObject ID="{47196054-470E-4F8C-BCA2-75F76BD3C24A}">
+            <MediaID ID="918301104" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="squawk in 2.wav">
+          <WObject ID="{6909AAE6-0CD1-4E02-B842-82222155A6B6}">
+            <MediaID ID="790259817" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="squawk in 3.wav">
+          <WObject ID="{D566B4C0-7595-4BEC-9203-BDE9F001A5AA}">
+            <MediaID ID="957579441" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="squawk out 1.wav">
+          <WObject ID="{E7759F7D-1B8E-4722-9910-0CE06BE6783F}">
+            <MediaID ID="42369007" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="squawk out 2.wav">
+          <WObject ID="{D5D3372B-5A2E-46A4-9F74-EEB1F28ED7BF}">
+            <MediaID ID="318796805" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="squawk out 3.wav">
+          <WObject ID="{7598CA1D-5EA2-4B43-B85C-BF064D7BC583}">
+            <MediaID ID="636443036" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="stby pwr knob 1.wav">
+          <WObject ID="{9521D64C-B819-48A5-8900-987FC7BD6605}">
+            <MediaID ID="786800341" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="stby pwr knob 2.wav">
+          <WObject ID="{5CE2A1BD-6DD5-4A52-8793-B16BEE6F7C7E}">
+            <MediaID ID="255546920" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="stby pwr knob 3.wav">
+          <WObject ID="{2F8502F6-7285-43C3-99A5-69F5E6807F42}">
+            <MediaID ID="851134724" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="stby pwr knob 4.wav">
+          <WObject ID="{983ED01F-B534-4C31-955B-7302726A85DA}">
+            <MediaID ID="61582302" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="std press in 1.wav">
+          <WObject ID="{7D96E553-9A59-4320-9485-3EAE443D7448}">
+            <MediaID ID="1023527473" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="std press in 2.wav">
+          <WObject ID="{7126B5EB-225E-4DA6-BA7E-B42FAC938310}">
+            <MediaID ID="103500432" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="std press out 1.wav">
+          <WObject ID="{BBA5B0FE-3A6C-45C6-B174-B71FF8749FF5}">
+            <MediaID ID="557189163" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="std press out 2.wav">
+          <WObject ID="{B9D90392-37E0-4E8E-A8ED-6F70BBA927E6}">
+            <MediaID ID="499245601" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="strobe light off.wav">
+          <WObject ID="{62CCB755-31D6-4CBE-8000-F0AEDB2CF692}">
+            <MediaID ID="1021169971" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="strobe light on.wav">
+          <WObject ID="{A65080C1-4DEE-453B-9B63-BE9170B4B571}">
+            <MediaID ID="591160356" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="taxi light off.wav">
+          <WObject ID="{83F9B4C5-8D01-4459-90F7-66FED0B1C907}">
+            <MediaID ID="374354200" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="taxi light on.wav">
+          <WObject ID="{19BD6209-132A-41F4-98D7-5B7A9FFA6986}">
+            <MediaID ID="175090576" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -576,6 +1200,30 @@
         <File Name="terrain_terrain.wav">
           <WObject ID="{90653A2C-A9F5-4F8E-8D0F-A609400DBB4B}">
             <MediaID ID="409881053" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="tfc press in 1.wav">
+          <WObject ID="{52423B3F-7EF5-4F31-8940-C72CA6842E8F}">
+            <MediaID ID="802315645" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="tfc press in 2.wav">
+          <WObject ID="{0EFD7CFF-48F6-4C34-BFE0-E135C323932F}">
+            <MediaID ID="364319043" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="tfc press out 1.wav">
+          <WObject ID="{423DC38E-7591-4E2D-A908-B79D45AFF336}">
+            <MediaID ID="725576121" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="tfc press out 2.wav">
+          <WObject ID="{E2A2A0AD-5670-469F-9C04-72C6BC749771}">
+            <MediaID ID="365006576" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -597,9 +1245,45 @@
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
+        <File Name="transponder 1.wav">
+          <WObject ID="{61387B0D-EF28-4E37-865B-D3CF2D6A22FB}">
+            <MediaID ID="889044777" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="transponder 2.wav">
+          <WObject ID="{6ED53B94-83B1-4B96-9036-45DF9061198E}">
+            <MediaID ID="717561471" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
         <File Name="uplink_chime.wav">
           <WObject ID="{136B2E3B-1EA0-4ACA-AAE0-999978A82DE5}">
             <MediaID ID="665657662" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vor adf 1.wav">
+          <WObject ID="{5D7448B9-05CC-4EE8-951A-9071C2A8E03F}">
+            <MediaID ID="175072563" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vor adf 2.wav">
+          <WObject ID="{3730F9F4-E981-490C-BCD3-B14E2383FD0F}">
+            <MediaID ID="663060429" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vor adf 3.wav">
+          <WObject ID="{3D27360C-B8F2-4DB4-BA07-45CD1E8E4C3F}">
+            <MediaID ID="412070236" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="vor adf 4.wav">
+          <WObject ID="{71093053-7856-49F8-977A-8EE9E251DC65}">
+            <MediaID ID="292184786" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>
@@ -642,6 +1326,18 @@
         <File Name="windshear.wav">
           <WObject ID="{8B380224-33F7-4AC4-95D8-C805D6B36D42}">
             <MediaID ID="378105868" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="xpndr 1.wav">
+          <WObject ID="{A8D8A648-C006-40B1-8D0D-055159BEB563}">
+            <MediaID ID="1035763325" />
+            <Hash Platform="Windows" Value="512674748" />
+          </WObject>
+        </File>
+        <File Name="xpndr 2.wav">
+          <WObject ID="{6955EB2E-331F-4721-A3DB-CAAB559C48E3}">
+            <MediaID ID="988943060" />
             <Hash Platform="Windows" Value="512674748" />
           </WObject>
         </File>

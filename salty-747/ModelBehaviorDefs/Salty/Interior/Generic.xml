@@ -1,0 +1,17 @@
+<ModelBehaviors>
+    <Template Name="Salty_Generic_Button">
+        <DefaultTemplateParameters>
+            <WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            <WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
+            <ANIM_DURATION>0.5</ANIM_DURATION>
+            <ANIM_LAG>3000</ANIM_LAG>
+        </DefaultTemplateParameters>
+        <UseTemplate Name="ASOBO_GT_Push_Button_Airliner">
+            <NODE_ID>#NODE_ID#</NODE_ID>
+            <ANIM_NAME>#ANIM_NAME#</ANIM_NAME>
+            <NORMALIZED_TIME_1>0.1</NORMALIZED_TIME_1>
+            <NORMALIZED_TIME_2>0.5</NORMALIZED_TIME_2>
+            <LEFT_SINGLE_CODE>#LEFT_SINGLE_CODE#</LEFT_SINGLE_CODE>
+        </UseTemplate>
+    </Template>
+</ModelBehaviors>

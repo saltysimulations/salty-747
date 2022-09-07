@@ -311,6 +311,60 @@
 
   <AnimationSounds>
 
+	<Sound WwiseData="true" WwiseEvent="knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="stby_pwr_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="irs_knob" ViewPoint="Inside" />
+
+	<Sound WwiseData="true" WwiseEvent="beacon_light" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="landing_light_on" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="landing_light_off" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="nav_light_on" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="nav_light_off" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="strobe_light_on" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="strobe_light_off" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="taxi_light_on" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="taxi_light_off" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="rwy_turnoff_light_on" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="rwy_turnoff_light_off" ViewPoint="Inside" />
+
+	<Sound WwiseData="true" WwiseEvent="anti_ice_switch" ViewPoint="Inside" />
+
+	<Sound WwiseData="true" WwiseEvent="master_caution_press_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="master_caution_press_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="datalink_button_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="datalink_button_out" ViewPoint="Inside" />
+
+	<Sound WwiseData="true" WwiseEvent="rudder_trim" ViewPoint="Inside" />
+
+	<Sound WwiseData="true" WwiseEvent="baro_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="baro_unit_knob_left" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="baro_unit_knob_right" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="efis_button_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="efis_button_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="map_mode_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="minimums_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_baro_left" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_baro_right" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="range_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="std_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="std_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="tfc_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="tfc_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="vor_adf_switch" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="rst_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="rst_out" ViewPoint="Inside" />
+
+	<Sound WwiseData="true" WwiseEvent="squawk_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="squawk_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="transponder_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="xpndr_knob" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_numpad_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_numpad_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_button_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_button_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_swap_button_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="radio_swap_button_out" ViewPoint="Inside" />
+
 	<!-- COMMON ################################################################################################### -->
 	<!-- Electrical ========================================================================================== -->
     <Sound WwiseData="true" WwiseEvent="alternator_switch_on" ViewPoint="Inside"/>

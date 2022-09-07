@@ -577,6 +577,664 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Asobo_B747_8i_knob" ID="{6F838863-E928-4B3A-80D7-080734A83124}">
+					<ChildrenList>
+						<Action Name="" ID="{BD8826BD-5C47-4FFB-8265-2EB464383DDF}" ShortID="589774190">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="knob" ID="{BA154C93-E71D-439A-ABA7-69C352974E0F}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_stby_pwr_knob" ID="{715FC174-B36F-4ACD-810F-C79B98D3ABFB}">
+					<ChildrenList>
+						<Action Name="" ID="{587F6608-E677-450A-A9ED-2E24361434D1}" ShortID="655395628">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="stby pwr knob" ID="{72F2D55D-7F34-484E-81A0-8848F5516FA6}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_irs_knob" ID="{7E4D4085-C6CC-4505-BB04-18D65EB02882}">
+					<ChildrenList>
+						<Action Name="" ID="{711FD3D7-7298-483E-9C8C-BBA10446CBA6}" ShortID="379788006">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="irs knob" ID="{E6323C87-F1CF-44D4-97D2-462B0B57F492}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_beacon_light" ID="{4704D422-784F-4D0C-901F-735A20E27702}">
+					<ChildrenList>
+						<Action Name="" ID="{BF285E73-2371-4007-9A4A-1BF0CD0A5D2B}" ShortID="856713694">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="beacon light" ID="{F381494D-35E7-4865-9459-E47799BAAADD}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_landing_light_on" ID="{D7C041E9-F21A-41C2-A06C-1EFA0296F2D8}">
+					<ChildrenList>
+						<Action Name="" ID="{A929D7FB-6C73-4CA2-B379-803329019A3B}" ShortID="627583903">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="landing light on" ID="{03F4879A-35AC-48A0-8C8E-3D93ADDC207D}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_landing_light_off" ID="{EFA263EB-9C46-4D9B-999C-CA90CBC3D7C9}">
+					<ChildrenList>
+						<Action Name="" ID="{47F62029-20F6-4811-8275-3D73B4576775}" ShortID="104388922">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="landing light off" ID="{4CA29898-3857-4E31-8B8D-4368B868FCAB}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_nav_light_on" ID="{A6A1B156-2830-4D91-B54B-2C67F5FE3C24}">
+					<ChildrenList>
+						<Action Name="" ID="{9F5CDB23-9EC5-4A4F-A39B-E9C1F0DFB9BC}" ShortID="637581312">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="nav light on" ID="{2DB970F5-33F8-4F14-AA01-E89D6663EE58}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_nav_light_off" ID="{4AF192CE-D52C-4E1A-A0CD-20AC283ED51F}">
+					<ChildrenList>
+						<Action Name="" ID="{D98B5FE6-AEC0-46DE-91E2-2D0E55622A5E}" ShortID="571073918">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="nav light off" ID="{FD0256DC-106A-47FD-9E50-C7DB82E466F6}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_strobe_light_on" ID="{E4C120B8-0BE4-4F73-B60A-8A0587503A9D}">
+					<ChildrenList>
+						<Action Name="" ID="{A45E42D2-5A79-4AB0-B1D9-AE4A054511AD}" ShortID="979297613">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="strobe light on" ID="{4E1A2AE4-15C6-4C1A-AD5A-2A6A7FB24526}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_strobe_light_off" ID="{EAE9ECC5-A255-46CF-AD7A-C24C8668F04D}">
+					<ChildrenList>
+						<Action Name="" ID="{B97CCC76-43AD-405A-9B6B-BFF5387EFCB3}" ShortID="576615352">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="strobe light off" ID="{76414B22-AFD9-42F1-9C26-C09E7059CA6D}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_taxi_light_on" ID="{612E0603-ACDD-45EA-B33B-1707C5D4EF1E}">
+					<ChildrenList>
+						<Action Name="" ID="{7551F919-3ADB-4B88-BC07-CA3A653BDDF9}" ShortID="1031562194">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="taxi light on" ID="{68606FDA-4EFF-4F82-B30A-E6C95238FCB0}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_taxi_light_off" ID="{6D22DCB9-B409-4708-A46F-FA2B115EBAE6}">
+					<ChildrenList>
+						<Action Name="" ID="{99380D49-A9EE-4F6A-9889-C7DA9BEE456E}" ShortID="527411547">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="taxi light off" ID="{D1497580-4821-4200-8DF4-383FE261A820}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_rwy_turnoff_light_on" ID="{16EEBB4E-1BF8-4C2B-8AA7-0FF9CCB85E24}">
+					<ChildrenList>
+						<Action Name="" ID="{C346C87D-F0CF-479D-A8A8-DB079E8FA4A1}" ShortID="640310945">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="rwy turnoff switch on" ID="{94B1676A-2DC1-402D-820B-ED5DC30D63BE}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_rwy_turnoff_light_off" ID="{1DE375C4-9C50-4460-8AC6-39EB0081E127}">
+					<ChildrenList>
+						<Action Name="" ID="{0133C779-1A63-4443-BA39-8CA07562DB10}" ShortID="226593502">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="rwy turnoff switch off" ID="{0A0DE9EC-CEE7-41EF-A00F-CD9DE7A4B308}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_anti_ice_switch" ID="{846411E6-56BC-4F0B-924E-A2594E701FA3}">
+					<ChildrenList>
+						<Action Name="" ID="{BDD1B76C-5E34-4B8B-9B86-C6223482AD98}" ShortID="622953151">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="anti ice switch" ID="{EBFDBE68-1919-431A-96FB-7616F1D201CD}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_master_caution_press_in" ID="{ADB21C41-7306-45AD-B82C-10B61E3A6CBF}">
+					<ChildrenList>
+						<Action Name="" ID="{52A94E54-567A-4A11-9C0D-3C64FD98E16B}" ShortID="952349167">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="master caution press in" ID="{B8DF19FA-98A0-4654-A924-9A6685900F30}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_master_caution_press_out" ID="{1A439111-8E76-43FF-802B-7695390CBA39}">
+					<ChildrenList>
+						<Action Name="" ID="{05F41EF9-35F2-4260-B023-98FACF32537E}" ShortID="652640966">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="master caution press out" ID="{5C2BFC6E-175F-4723-A602-30933B5610D6}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_rudder_trim" ID="{8C966EFD-8750-47D6-9B35-F9CC4BE34A6C}">
+					<ChildrenList>
+						<Action Name="" ID="{D327045D-6E0B-43C2-A6B5-4FA19E0F27C0}" ShortID="532842170">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="rudder trim" ID="{CFA48848-7130-43CE-A718-C94A848EAC24}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_rst_in" ID="{DC3A75E4-8BC4-4A57-8031-C13B45E047FB}">
+					<ChildrenList>
+						<Action Name="" ID="{9C7CB46C-8C65-47E9-9838-999F82602841}" ShortID="524215399">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="rst in" ID="{F9F36772-87BC-426D-9A26-681F40C8C740}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_rst_out" ID="{A63914AA-EA57-4F44-BB0C-81C30B375320}">
+					<ChildrenList>
+						<Action Name="" ID="{01DE61E7-E996-4E13-BD1D-6CEB0605D593}" ShortID="1070658007">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="rst out" ID="{A7A5F05C-D922-44B7-A6CA-4A21A37B6448}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_baro_knob" ID="{405E79AE-3331-47D9-80E2-59F1D7C86F0E}">
+					<ChildrenList>
+						<Action Name="" ID="{28A7C972-B0DB-4160-9A83-79CD4AF391FF}" ShortID="811759796">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="baro knob" ID="{8B5EABB1-CB05-4D7F-BCB6-33B9641AF112}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_baro_unit_knob_left" ID="{D51300EA-7D37-4056-A1B6-96A68711CD91}">
+					<ChildrenList>
+						<Action Name="" ID="{C5AA8EC0-1E89-42C3-961C-7A63C0C366E5}" ShortID="313102654">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="baro unit knob left" ID="{FC0A4889-3E7D-4495-BD06-EA94A8F33562}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_baro_unit_knob_right" ID="{C3A9EA46-4779-41F4-8369-6B75CD46BF82}">
+					<ChildrenList>
+						<Action Name="" ID="{5B6DEF23-E9F4-4DCA-9DF8-E73075B22975}" ShortID="435971005">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="baro unit knob right" ID="{CE315BF0-EF3B-4C1F-8157-8632D9328858}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_efis_button_in" ID="{70EE08F4-7339-4A19-965E-F10D44E0DF37}">
+					<ChildrenList>
+						<Action Name="" ID="{7C041C61-2811-49AB-A7C6-8A5248CBE188}" ShortID="194859793">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="efis button in" ID="{DCCD007D-2CC1-4EFA-8589-D7B7C502E59E}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_efis_button_out" ID="{D8F580A0-4EEF-4E89-AF9F-0DB0A6709FF3}">
+					<ChildrenList>
+						<Action Name="" ID="{50461CBD-1945-48F5-84BB-CDCD94F79157}" ShortID="708475840">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="efis button out" ID="{4C934AE5-6924-40B6-A9A6-2C35E62AA771}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_map_mode_knob" ID="{673FFC7E-B43B-4A97-ACB0-BA668263F1C1}">
+					<ChildrenList>
+						<Action Name="" ID="{90901E7F-A87E-47D6-B11B-65661B1D1EC1}" ShortID="850963541">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="map mode knob" ID="{04919672-FD54-4AA9-8815-26D8205FBD47}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_minimums_knob" ID="{602866C0-1126-4FEF-8A97-CC544499DB90}">
+					<ChildrenList>
+						<Action Name="" ID="{075698EA-767F-465E-8DE0-EE6AFC92AFD5}" ShortID="76090839">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="minimums knob" ID="{CBDD7A38-607B-433D-B96D-0115B3D77591}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_vor_adf_switch" ID="{C4DDDA05-A245-4E36-8738-2D2168DC746F}">
+					<ChildrenList>
+						<Action Name="" ID="{517D44CA-B829-44FD-8B31-E1D4FEC7CDF9}" ShortID="314588782">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="vor adf switch" ID="{C79932AA-5007-469E-A67F-6DBFD0D4D85B}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_baro_left" ID="{24BC1C03-A445-4B5E-985A-571CF009F1AC}">
+					<ChildrenList>
+						<Action Name="" ID="{FA0B35F3-F6D0-44A0-9677-F01871BBB50F}" ShortID="480148076">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio baro left" ID="{42C21779-F47D-4828-A5BB-EA6678D1F3D3}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_baro_right" ID="{6D2177A8-83C9-4669-8D66-FD50AAD7CFD0}">
+					<ChildrenList>
+						<Action Name="" ID="{4DFC7052-A71A-478A-8F47-B3816F1EDB6C}" ShortID="725074486">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio baro right" ID="{41562C9E-27C7-4B5F-88FC-1B05CC7EE824}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_range_knob" ID="{74DFD058-7AEF-4A68-B70A-02A162C9ACFA}">
+					<ChildrenList>
+						<Action Name="" ID="{2B9277C7-2FA1-44F7-8402-EDA47AE3072B}" ShortID="540460052">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="range knob" ID="{EBC4D944-2E14-44F7-A179-170024C1FCBF}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_std_in" ID="{ED5540DC-6EF4-404E-B0C0-BF56EE0CF88E}">
+					<ChildrenList>
+						<Action Name="" ID="{9071C22A-7788-447D-9C22-06BEE6CE7E11}" ShortID="93414733">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="std in" ID="{DAA1A610-5AC1-41C8-B0BF-866EF0581D76}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_std_out" ID="{DA00F07F-4471-4627-936F-404BE2216C1D}">
+					<ChildrenList>
+						<Action Name="" ID="{03040C92-75CE-4D38-BD7D-868BCF8B0AB2}" ShortID="663310188">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="std out" ID="{0E1FE3AC-7FC2-44D9-A643-C0F392CD1508}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_tfc_in" ID="{74F9DC90-CDFD-43F2-9B50-42545C3AC7AE}">
+					<ChildrenList>
+						<Action Name="" ID="{D8586ADB-5C0E-40CF-8284-367E7BD36EA6}" ShortID="681151269">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="tfc in" ID="{CF76FEE7-F379-42E0-BE76-B09C8A4DD2F9}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_tfc_out" ID="{80CF8DCD-1FBF-43E7-BE3B-354BD346CA4C}">
+					<ChildrenList>
+						<Action Name="" ID="{C7A0B4A5-F244-48C0-991F-A18A997D88B6}" ShortID="156169666">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="tfc out" ID="{C290A1B8-36A9-40D6-82B7-530323910289}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_datalink_button_in" ID="{2B10FD0B-03E7-4DEF-ABA2-309D1158905B}">
+					<ChildrenList>
+						<Action Name="" ID="{FE56F8FA-588F-4C0A-A6B9-FB792A995A6E}" ShortID="689607266">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="datalink button in" ID="{7D70A67F-5C90-4A46-A711-665A652A4CF2}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_datalink_button_out" ID="{1AA7E72C-48EB-4B9A-9F57-09A8DE97A3BC}">
+					<ChildrenList>
+						<Action Name="" ID="{63A76A59-049A-4050-98C3-256F954D9E03}" ShortID="949153947">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="datalink button out" ID="{464B5054-21FC-4EDA-AAAF-1625DC046E01}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_squawk_in" ID="{0B5C6627-5E90-413D-8F1E-7DFF984729C3}">
+					<ChildrenList>
+						<Action Name="" ID="{33AABA6C-6FB5-487D-976E-16657D4AFD4E}" ShortID="975734744">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="squawk in" ID="{0B521D3B-955C-4786-BF08-92358D559205}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_squawk_out" ID="{AAF599CF-4AA4-4E93-9380-E40BE214A7AD}">
+					<ChildrenList>
+						<Action Name="" ID="{0E5DCFB5-C0A9-49C3-AF68-97A71F6FA4DA}" ShortID="659631874">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="squawk out" ID="{4B7ED277-B476-473C-9B10-D18903C6B1AE}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_transponder_knob" ID="{C4BBF919-639C-47E6-B8C6-694542A542F7}">
+					<ChildrenList>
+						<Action Name="" ID="{98D1E684-7DC0-4360-9F66-5BECF8EE929B}" ShortID="699373795">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="transponder knob" ID="{E0CDBAFA-56A7-49B8-8183-E37DBB59540F}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_xpndr_knob" ID="{C85BC429-9584-45AF-A42E-0C28A24AE51C}">
+					<ChildrenList>
+						<Action Name="" ID="{0887CEA1-4551-4354-A861-115A237E7643}" ShortID="394890473">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="xpndr knob" ID="{D32B7F8F-145C-4546-AEED-0A6391BF179C}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_numpad_in" ID="{FB4DEF8D-D8E7-4620-B3D8-238C0F192865}">
+					<ChildrenList>
+						<Action Name="" ID="{9FC234FA-0972-4A1F-8CE5-48A413A8F997}" ShortID="693200463">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio numpad in" ID="{41457AB2-C278-4598-BF52-2A093D7AD319}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_numpad_out" ID="{0A4823C7-29E5-4C4D-A03D-588E15910788}">
+					<ChildrenList>
+						<Action Name="" ID="{9F67B0C1-5F0E-490F-926A-42CAFCDE1751}" ShortID="562476070">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio numpad out" ID="{CF83C650-D142-4666-9452-6E4D101FE9A9}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_button_in" ID="{A2A7DCFA-D43C-43C3-AA8E-74F2FC03AEF3}">
+					<ChildrenList>
+						<Action Name="" ID="{37A93760-FA0B-49E9-9998-548710AB764E}" ShortID="430095421">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio button in" ID="{E7A07348-FBAD-4E01-BF7A-A1F9B0DE5438}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_button_out" ID="{1E1445DE-37AC-4820-8F69-87E5F3CF8405}">
+					<ChildrenList>
+						<Action Name="" ID="{35100534-AD0E-4EB0-993D-9C411AACCF24}" ShortID="2903754">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio button out" ID="{FFE67298-419B-400C-89D7-053ACF5533EB}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_swap_button_in" ID="{0118B9D8-CA09-4CA2-80B3-D32507B4F01F}">
+					<ChildrenList>
+						<Action Name="" ID="{6DFF9F83-9F4A-4C15-B605-D804A65A0A07}" ShortID="410547032">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio swap button in" ID="{DD35F97A-957E-4D55-9624-DE6320772B9B}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Asobo_B747_8i_radio_swap_button_out" ID="{B90CF2DB-B927-4279-937A-6E360B377A71}">
+					<ChildrenList>
+						<Action Name="" ID="{29A16CF5-8F4B-43AD-B4AD-2BD11BFE63CC}" ShortID="741099257">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="radio swap button out" ID="{DB55CF94-A237-4AE0-95E1-180533C4F402}" WorkUnitID="{C3862C24-AEFC-46B2-81EF-CB48877CFDB5}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
