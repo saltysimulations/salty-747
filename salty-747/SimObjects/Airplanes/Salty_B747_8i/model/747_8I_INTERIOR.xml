@@ -2566,6 +2566,8 @@
 				-->
 				<UseTemplate Name="ASOBO_EICAS_PAGE_SELECTION_Template_Boeing">
 					<PANEL_NAME>B747_8_EICAS_2</PANEL_NAME>
+					<WWISE_EVENT_1>synoptic_in</WWISE_EVENT_1>
+					<WWISE_EVENT_2>synoptic_out</WWISE_EVENT_2>
 				</UseTemplate>
 			</Component>
 		</Component>

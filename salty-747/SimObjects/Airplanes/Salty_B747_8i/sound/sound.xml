@@ -353,6 +353,8 @@
 	<Sound WwiseData="true" WwiseEvent="vor_adf_switch" ViewPoint="Inside" />
 	<Sound WwiseData="true" WwiseEvent="rst_in" ViewPoint="Inside" />
 	<Sound WwiseData="true" WwiseEvent="rst_out" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="synoptic_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="synoptic_out" ViewPoint="Inside" />
 
 	<Sound WwiseData="true" WwiseEvent="squawk_in" ViewPoint="Inside" />
 	<Sound WwiseData="true" WwiseEvent="squawk_out" ViewPoint="Inside" />
