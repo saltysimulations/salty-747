@@ -187,22 +187,23 @@ const convertWaypointIdentCoords = (ident) => {
     // SimBrief formats coordinate waypoints differently to MSFS:
     //  - 60N045W = 60* 00'N 045* 00'W
     //  - 3050N12022W = 30* 50'N 120* 22'W
-    // We can't represent the second format precisely enough, so leave this
-    // case alone so we don't insert inaccurate waypoints, and rearrange the
-    // first one into the format MSFS needs (6045N).
+
     let latDeg;
     let latDir;
     let lonDeg;
     let lonDir;
 
-    if (ident.length == 7) {
+    if (ident.length === 7) {
         latDeg = ident.substring(0, 2);
         latDir = ident.substring(2, 3);
         lonDeg = ident.substring(3, 6);
         lonDir = ident.substring(6, 7);
-    } else {
-        return ident;
-    }
+    } else if (ident.length === 11) {
+        latDeg = ident.substring(0, 4);
+        latDir = ident.substring(4, 5);
+        lonDeg = ident.substring(5, 10);
+        lonDir = ident.substring(10, 11);
+    } else return ident;
 
     if (isNaN(parseInt(latDeg)) || isNaN(parseInt(lonDeg))) {
         return ident;
@@ -212,20 +213,32 @@ const convertWaypointIdentCoords = (ident) => {
     // is last 2 digits of lon, and Z is N/E/S/W respectively for NW/NE/SE/SW,
     // and is at the end if lat was less than 100 or in the middle if 100 or
     // greater.
-    const largeLon = lonDeg.substring(0, 1) == "1";
-    const lonSub = lonDeg.substring(1, 3);
-    switch (latDir + lonDir) {
-        case "NW":
-            return latDeg + (largeLon ? "N" + lonSub : lonSub + "N");
-        case "NE":
-            return latDeg + (largeLon ? "E" + lonSub : lonSub + "E");
-        case "SE":
-            return latDeg + (largeLon ? "S" + lonSub : lonSub + "S");
-        case "SW":
-            return latDeg + (largeLon ? "W" + lonSub : lonSub + "W");
-        default:
-            return ident;
+    if (ident.length === 7) {
+        const largeLon = lonDeg.substring(0, 1) == "1";
+        const lonSub = lonDeg.substring(1, 3);
+        switch (latDir + lonDir) {
+            case "NW":
+                return latDeg + (largeLon ? "N" + lonSub : lonSub + "N");
+            case "NE":
+                return latDeg + (largeLon ? "E" + lonSub : lonSub + "E");
+            case "SE":
+                return latDeg + (largeLon ? "S" + lonSub : lonSub + "S");
+            case "SW":
+                return latDeg + (largeLon ? "W" + lonSub : lonSub + "W");
+        }
+    } else {
+        const charArray = ident.split("");
+
+        // Move N/E/S/W to before digits
+        charArray.splice(10, 1);
+        charArray.splice(4, 1);
+        charArray.splice(0, 0, latDir);
+        charArray.splice(5, 0, lonDir);
+
+        return charArray.join("");
     }
+
+    return ident;
 };
 
 const getFplnFromSimBrief = async (fmc) => {
@@ -335,16 +348,16 @@ const getFplnFromSimBrief = async (fmc) => {
             if (icao === "DCT") {
                 icao = convertWaypointIdentCoords(routeArr[idx]);
 
-                const userWaypoint = await CJ4_FMC_PilotWaypointParser.parseInput(icao, idx, fmc);
+                const userWaypoint = await CJ4_FMC_PilotWaypointParser.parseInput(icao, wptIndex, fmc);
                 if (userWaypoint) {
                     console.log("adding as user waypoint " + icao);
                     fmc.ensureCurrentFlightPlanIsTemporary(() => {
-                        fmc.flightPlanManager.addUserWaypoint(userWaypoint.wpt, idx, () => {
-                            this._fmc.activateRoute(true);
+                        fmc.flightPlanManager.addUserWaypoint(userWaypoint.wpt, wptIndex, () => {
                             idx++;
+                            addWaypoint();
                         });
                     });
-                    addWaypoint();
+
                 } else {
                     // should be a normal waypoint then
                     console.log("adding as waypoint " + icao);
@@ -389,6 +402,7 @@ const getFplnFromSimBrief = async (fmc) => {
                         } else {
                             // TODO hmm, so if no airway found, just continue and add exit as wpt?
                             partial = true;
+                            routeArr.splice(idx, 0, "DCT");
                             addWaypoint();
                         }
                     });

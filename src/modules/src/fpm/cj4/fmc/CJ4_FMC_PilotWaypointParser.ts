@@ -132,7 +132,7 @@ export class CJ4_FMC_PilotWaypointParser {
     const longitude = matchFullLatLong[4] == "W" ? 0 - parseInt(matchFullLatLong[5]) - (parseFloat(matchFullLatLong[6]) / 60)
       : parseInt(matchFullLatLong[5]) + (parseFloat(matchFullLatLong[6]) / 60);
     const coordinates = new LatLongAlt(latitude, longitude, 0);
-    const ident = CJ4_FMC_PilotWaypointParser.procMatch(matchFullLatLong[7], matchFullLatLong[1] + matchFullLatLong[2].slice(0, 2) + matchFullLatLong[4] + matchFullLatLong[5] + matchFullLatLong[6].slice(0, 2));
+    const ident = CJ4_FMC_PilotWaypointParser.procMatch(matchFullLatLong[7], matchFullLatLong[1] + matchFullLatLong[2].slice(0, 2) + matchFullLatLong[4] + matchFullLatLong[5]);
 
     return WaypointBuilder.fromCoordinates(ident, coordinates, fmc);
   }
