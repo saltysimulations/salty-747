@@ -21,7 +21,7 @@ const execute = async () => {
                 },
                 {
                     name: "Livery",
-                    sourceDir: "./SimObjects/Airplanes/Salty_B747_8i-livery",
+                    sourceDir: "./SimObjects/Airplanes/_Salty_B747_8i-livery",
                 },
                 {
                     name: "Sound",
