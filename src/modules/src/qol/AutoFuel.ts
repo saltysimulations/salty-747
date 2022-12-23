@@ -8,9 +8,6 @@ export class AutoFuel implements Module {
         const enabled = WTDataStore.get("AUTO_FUEL", 0) >= 1;
         if (!enabled) return;
 
-        this.closePumpsAfterEmpty([15, 16], "FUEL TANK CENTER2 QUANTITY");
-        this.closePumpsAfterEmpty([1, 2], "FUEL TANK CENTER QUANTITY");
-
         const leftOutboardQuantity =
             SimVar.GetSimVarValue("FUEL TANK LEFT AUX QUANTITY", "gallon") + SimVar.GetSimVarValue("FUEL TANK LEFT TIP QUANTITY", "gallon");
         const leftInboardQuantity = SimVar.GetSimVarValue("FUEL TANK LEFT MAIN QUANTITY", "gallon");
@@ -20,6 +17,9 @@ export class AutoFuel implements Module {
         const rightInboardQuantity = SimVar.GetSimVarValue("FUEL TANK RIGHT MAIN QUANTITY", "gallon");
 
         const tanksBalanced = leftInboardQuantity <= leftOutboardQuantity || rightInboardQuantity <= rightOutboardQuantity;
+
+        this.closePumpsAfterEmpty([15, 16], "FUEL TANK CENTER2 QUANTITY");
+        this.closePumpsAfterEmpty([1, 2], "FUEL TANK CENTER QUANTITY");
 
         // Switch off OVRD/JETTISON pumps 2 & 3 and close crossfeed valves 1 & 4 when outboard + reserve tanks and inboard tanks balanced
         this.ovrdPumps.forEach((pump) => SimVar.SetSimVarValue(`K:FUELSYSTEM_PUMP_${tanksBalanced ? "OFF" : "ON"}`, "number", pump));
