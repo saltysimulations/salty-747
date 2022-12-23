@@ -5,6 +5,9 @@ export class AutoFuel implements Module {
     private xfeedValves = [1, 4];
 
     public update(_dt: number) {
+        const enabled = WTDataStore.get("AUTO_FUEL", 0) >= 1;
+        if (!enabled) return;
+
         this.closePumpsAfterEmpty([15, 16], "FUEL TANK CENTER2 QUANTITY");
         this.closePumpsAfterEmpty([1, 2], "FUEL TANK CENTER QUANTITY");
 
