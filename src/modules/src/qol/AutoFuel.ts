@@ -27,7 +27,7 @@ export class AutoFuel implements Module {
     }
 
     private closePumpsAfterEmpty(pumps: number[], quantityVar: string) {
-        const quantity = this.gallonsToPounds(SimVar.GetSimVarValue(quantityVar, "Gallons"));
+        const quantity = SimVar.GetSimVarValue(quantityVar, "Gallons");
 
         for (const pump of pumps) {
             const pumpActive = SimVar.GetSimVarValue(`FUELSYSTEM PUMP SWITCH:${pump}`, "bool");
@@ -37,10 +37,5 @@ export class AutoFuel implements Module {
                 SimVar.SetSimVarValue("K:FUELSYSTEM_PUMP_OFF", "number", pump);
             }
         }
-    }
-
-    private gallonsToPounds(gallons: number): number {
-        const fuelWeightPerGallon = SimVar.GetSimVarValue("FUEL WEIGHT PER GALLON", "lbs");
-        return gallons / fuelWeightPerGallon;
     }
 }
