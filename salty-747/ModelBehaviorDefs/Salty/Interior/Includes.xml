@@ -1,0 +1,5 @@
+<ModelBehaviors>
+    <Include RelativeFile="Generic.xml" />
+    <Include RelativeFile="Electrical.xml" />
+    <Include RelativeFile="YawDamper.xml" />
+</ModelBehaviors>

@@ -16,6 +16,7 @@
 		<Include ModelBehaviorFile="Asobo\Common.xml"/> <!-- ##################################### -->
 		<Include ModelBehaviorFile="Asobo\Airliner\AirlinerCommon.xml"/>
 		<Include ModelBehaviorFile="Salty\Salty_Boeing.xml"/>
+		<Include ModelBehaviorFile="Salty\Interior\Includes.xml"/>
 		<Include ModelBehaviorFile="Asobo\Airliner\FMC.xml"/>
 		<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
 
@@ -322,6 +323,8 @@
 				</DefaultTemplateParameters>
 				<Component ID="CDU_1">
 					<UseTemplate Name="ASOBO_FMC_B747">
+						<WWISE_EVENT_1>cdu_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>cdu_out</WWISE_EVENT_2>
 						<NODE_ID_SCREEN>SCREEN_FMC1</NODE_ID_SCREEN>
 						<CIRCUIT_ID>27</CIRCUIT_ID>
 						<ID>1</ID>
@@ -482,6 +485,8 @@
 				</Component>
 				<Component ID="CDU_2">
 					<UseTemplate Name="ASOBO_FMC_B747">
+						<WWISE_EVENT_1>cdu_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>cdu_out</WWISE_EVENT_2>
 						<ID>2</ID>
 						<NODE_ID_SCREEN>SCREEN_FMC2</NODE_ID_SCREEN>
 						<CIRCUIT_ID>27</CIRCUIT_ID>
@@ -660,6 +665,7 @@
 					<TRIM_LIMIT>35</TRIM_LIMIT>
 					<NO_RESET_PUSH/>
 					<TT_ICON>ROTATE</TT_ICON>
+					<WWISE_EVENT>rudder_trim</WWISE_EVENT>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_HANDLING_Switch_AileronTrim_Template">
 					<NODE_ID>switch_ailerons_01</NODE_ID>
@@ -680,6 +686,8 @@
 					<SCREEN_ID>FMC</SCREEN_ID>
 				</DefaultTemplateParameters>
 				<UseTemplate Name="ASOBO_FMC_B747">
+					<WWISE_EVENT_1>cdu_in</WWISE_EVENT_1>
+					<WWISE_EVENT_2>cdu_out</WWISE_EVENT_2>
 					<ID>3</ID>
 					<TT_FMS_INDEX>(R:1:@TT_Package.GT_STATE_CDU) (R:1:@TT_Package.GT_STATE_PEDESTAL_FMS) @sprintf</TT_FMS_INDEX>
 					<NODE_ID_SCREEN>SCREEN_FMC3</NODE_ID_SCREEN>
@@ -923,6 +931,8 @@
 					<NODE_ID>PASSENGERS_SWITCH_SEATBELTSIGN</NODE_ID>
 					<ANIM_NAME>PASSENGERS_SWITCH_SEATBELTSIGN</ANIM_NAME>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
+					<WWISE_EVENT_1>knob</WWISE_EVENT_1>
+					<WWISE_EVENT_2>knob</WWISE_EVENT_2>
 				</UseTemplate>
 			</Component>
 			<CameraTitle>Instruments07</CameraTitle>
@@ -934,6 +944,9 @@
 				<SEQ1_SUFFIX>_decal</SEQ1_SUFFIX>
 				<PUSH_BTN_PREFIX>atc_transponder_push_</PUSH_BTN_PREFIX>
 				<TYPE>BOEING</TYPE>
+				<WWISE_EVENT>transponder_knob</WWISE_EVENT>
+				<WWISE_EVENT_1>squawk_in</WWISE_EVENT_1>
+				<WWISE_EVENT_2>squawk_out</WWISE_EVENT_2>
 			</UseTemplate>
 		</Component>
 
@@ -949,9 +962,10 @@
 
 			<UseTemplate Name="ASOBO_HANDLING_Knob_Wipers_Template">
 				<NODE_ID>SAFETY_Knob_Wipers</NODE_ID>
-				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>      
+				<ANIM_NAME>SAFETY_Knob_Wipers</ANIM_NAME>
 				<CIRCUIT_ID_WIPERS>111</CIRCUIT_ID_WIPERS>
 				<OFF_INT_LOW_HIGH>True</OFF_INT_LOW_HIGH>
+				<WWISE_EVENT>knob</WWISE_EVENT>
 			</UseTemplate>
 
 			<Component ID="Instruments">
@@ -966,6 +980,8 @@
 					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
 					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
 					<AIRLINER_TYPE>BOEING</AIRLINER_TYPE>
+					<WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            		<WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
 				</DefaultTemplateParameters>
 
 				<UseTemplate Name="ASOBO_ELECTRICAL_Push_Engine_Bleed_Template">
@@ -1027,6 +1043,8 @@
 						<PRESS_WARNING_THRESHOLD_PSI>2600</PRESS_WARNING_THRESHOLD_PSI>
 						<SEQ1_FAILURE>(A:CIRCUIT ON:110, Bool)</SEQ1_FAILURE>
 						<SEQ2_FAILURE>(A:CIRCUIT ON:110, Bool)</SEQ2_FAILURE>
+						<WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            			<WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
 					</DefaultTemplateParameters>
 					<UseTemplate Name="ASOBO_ENGINE_Switch_Hydraulic_Template">
 						<NODE_ID>push_ovhd_hyd_pump_switch_01</NODE_ID>
@@ -1219,6 +1237,8 @@
 				<DefaultTemplateParameters>
 					<TYPE>BOEING</TYPE>
 					<VARIANT>747</VARIANT>
+					<WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            		<WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
 				</DefaultTemplateParameters>
 				<OverrideTemplateParameters>
 					<SEQ1_CODE_DRIVES_DOWN_STATE>True</SEQ1_CODE_DRIVES_DOWN_STATE>
@@ -1494,6 +1514,8 @@
 				<DefaultTemplateParameters>
 					<TYPE>BOEING</TYPE>
 					<VARIANT>747</VARIANT>
+					<WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            		<WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
 				</DefaultTemplateParameters>
 				<UseTemplate Name="ASOBO_ELECTRICAL_Switch_Battery_Master_Template">
 					<NODE_ID>push_ovhd_electrics_battery</NODE_ID>
@@ -1608,8 +1630,9 @@
 					<BATTERY_BUS_ID>6</BATTERY_BUS_ID>
 					<MAIN_BUS_ID>4</MAIN_BUS_ID>
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
+					<WWISE_EVENT>stby_pwr_knob</WWISE_EVENT>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_ELECTRICAL_Push_ExternalPower_Template">
+				<UseTemplate Name="Salty_External_Power">
 					<NODE_ID>push_ovhd_electrics_ext_pwr_01</NODE_ID>
 					<ANIM_NAME>ovhd_push_electrics_ext_pwr_01</ANIM_NAME>
 					<SEQ1_NODE_ID>push_ovhd_electrics_ext_pwr_01_SEQ1</SEQ1_NODE_ID>
@@ -1617,8 +1640,9 @@
 					<ID>1</ID>
 					<SIMVAR_POWER_SETTING_SEQ1>EXTERNAL POWER AVAILABLE:1</SIMVAR_POWER_SETTING_SEQ1>
 					<SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
+					<INTERACTION_TYPE>PUSH</INTERACTION_TYPE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_ELECTRICAL_Push_ExternalPower_Template">
+				<UseTemplate Name="Salty_External_Power">
 					<NODE_ID>push_ovhd_electrics_ext_pwr_02</NODE_ID>
 					<ANIM_NAME>ovhd_push_electrics_ext_pwr_02</ANIM_NAME>
 					<SEQ1_NODE_ID>push_ovhd_electrics_ext_pwr_02_SEQ1</SEQ1_NODE_ID>
@@ -1626,6 +1650,7 @@
 					<SIMVAR_POWER_SETTING_SEQ1>EXTERNAL POWER AVAILABLE:2</SIMVAR_POWER_SETTING_SEQ1>
 					<SEQ1_CODE_DRIVES_DOWN_STATE>False</SEQ1_CODE_DRIVES_DOWN_STATE>
 					<ID>2</ID>
+					<INTERACTION_TYPE>PUSH</INTERACTION_TYPE>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_ELECTRICAL_Switch_APU_Starter_Template">
 					<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
@@ -1635,6 +1660,7 @@
 					<SWITCH_POSITION_TYPE>L</SWITCH_POSITION_TYPE>
 					<SWITCH_POSITION_VAR>XMLVAR_APU_StarterKnob_Pos</SWITCH_POSITION_VAR>
 					<ACTIVE_FUEL_PUMP_ON_RPM>17</ACTIVE_FUEL_PUMP_ON_RPM>
+					<WWISE_EVENT>knob</WWISE_EVENT>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 					<NODE_ID>push_ovhd_electrics_drive_disc_01</NODE_ID>
@@ -1733,11 +1759,16 @@
 					<NODE_ID>push_ovhd_anti_ice_window_heat_l</NODE_ID>
 					<ANIM_NAME>ovhd_push_anti_ice_window_heat_l</ANIM_NAME>
 					<TYPE>BOEING</TYPE>
+					<WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            		<WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_DEICE_Push_Windshield_Template">
 					<NODE_ID>push_ovhd_anti_ice_window_heat_r</NODE_ID>
 					<ANIM_NAME>ovhd_push_anti_ice_window_heat_r</ANIM_NAME>
 					<TYPE>BOEING</TYPE>
+					<WWISE_EVENT_1>pushbutton_in</WWISE_EVENT_1>
+            		<WWISE_EVENT_2>pushbutton_out</WWISE_EVENT_2>
+					<SET_STATE_EXTERNAL>(A:WINDSHIELD DEICE SWITCH, Bool) p0 != if{ (&gt;K:WINDSHIELD_DEICE_TOGGLE) } (L:WINDOW_HEAT_TEST, Bool) ! (&gt;L:WINDOW_HEAT_TEST, Bool) </SET_STATE_EXTERNAL>
 				</UseTemplate>
 				<Component ID="AntiIce_Pitot">
 					<UseTemplate Name="ASOBO_DEICE_Update_Pitot_On">
@@ -1769,21 +1800,25 @@
 						<NODE_ID>switch_ovhd_anti_ice_nacelle_01</NODE_ID>
 						<ANIM_NAME>overhead_anti_ice_switch_eng0</ANIM_NAME>
 						<ID>1</ID>
+						<WWISE_EVENT>anti_ice_switch</WWISE_EVENT>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_DEICE_Switch_Engine_Template">
 						<NODE_ID>switch_ovhd_anti_ice_nacelle_02</NODE_ID>
 						<ANIM_NAME>overhead_anti_ice_switch_eng1</ANIM_NAME>
 						<ID>2</ID>
+						<WWISE_EVENT>anti_ice_switch</WWISE_EVENT>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_DEICE_Switch_Engine_Template">
 						<NODE_ID>switch_ovhd_anti_ice_nacelle_03</NODE_ID>
 						<ANIM_NAME>overhead_anti_ice_switch_eng2</ANIM_NAME>
 						<ID>3</ID>
+						<WWISE_EVENT>anti_ice_switch</WWISE_EVENT>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_DEICE_Switch_Engine_Template">
 						<NODE_ID>switch_ovhd_anti_ice_nacelle_04</NODE_ID>
 						<ANIM_NAME>overhead_anti_ice_switch_eng3</ANIM_NAME>
 						<ID>4</ID>
+						<WWISE_EVENT>anti_ice_switch</WWISE_EVENT>
 					</UseTemplate>
 				</Component>
 				<UseTemplate Name="ASOBO_DEICE_Switch_Airframe_Template">
@@ -1793,6 +1828,7 @@
 					<SWITCH_TYPE>OFF_AUTO_ON</SWITCH_TYPE>
 					<SWITCH_DIRECTION>Horizontal</SWITCH_DIRECTION>
 					<TT_ICON>MOVE_X</TT_ICON>
+					<WWISE_EVENT>anti_ice_switch</WWISE_EVENT>
 				</UseTemplate>
 			</Component>
 
@@ -1866,15 +1902,15 @@
 					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
 					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
+				<UseTemplate Name="Salty_Yaw_Damper">
 					<NODE_ID>push_ovhd_pass_o2_yaw_damper_lower</NODE_ID>
-					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
-					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
+					<ANIM_NAME>ovhd_push_pass_o2_yaw_damper_lower</ANIM_NAME>
+					<ID>LOWER</ID>
 				</UseTemplate>
-				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
+				<UseTemplate Name="Salty_Yaw_Damper">
 					<NODE_ID>push_ovhd_pass_o2_yaw_damper_upper</NODE_ID>
-					<SEQ1_EMISSIVE_CODE>1</SEQ1_EMISSIVE_CODE>
-					<SEQ2_EMISSIVE_CODE>0</SEQ2_EMISSIVE_CODE>
+					<ANIM_NAME>ovhd_push_pass_o2_yaw_damper_upper</ANIM_NAME>
+					<ID>UPPER</ID>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
 					<NODE_ID>push_ovhd_air_data_ram_turbine</NODE_ID>
@@ -1955,6 +1991,8 @@
 					<NODE_ID_SEQ2>btn_master_pilot_seq1</NODE_ID_SEQ2>
 					<NO_EMISSIVE_ON_HELD>True</NO_EMISSIVE_ON_HELD>
 					<ID>1</ID>
+					<WWISE_EVENT_1>master_caution_press_in</WWISE_EVENT_1>
+					<WWISE_EVENT_2>master_caution_press_out</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_SAFETY_Push_WarningCaution_Template">
 					<ANIM_NAME>btn_master_copilot</ANIM_NAME>
@@ -1963,6 +2001,8 @@
 					<NODE_ID_SEQ2>btn_master_copilot_seq1</NODE_ID_SEQ2>
 					<NO_EMISSIVE_ON_HELD>True</NO_EMISSIVE_ON_HELD>
 					<ID>2</ID>
+					<WWISE_EVENT_1>master_caution_press_in</WWISE_EVENT_1>
+					<WWISE_EVENT_2>master_caution_press_out</WWISE_EVENT_2>
 				</UseTemplate>
 			</Component>
 			<Component ID="GlassCockpit_Panel">
@@ -1973,12 +2013,33 @@
 				</DefaultTemplateParameters>
 
 				<Component ID="GlassCockpit_Panel_Pilot">
+					<UseTemplate Name="Salty_Generic_Button">
+    					<NODE_ID>btn_autopilot_acpt_l</NODE_ID>
+						<ANIM_NAME>autopilot_push_acpt_l</ANIM_NAME>
+						<WWISE_EVENT_1>datalink_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>datalink_button_out</WWISE_EVENT_2>
+					</UseTemplate>
+					<UseTemplate Name="Salty_Generic_Button">
+    					<NODE_ID>btn_autopilot_canc_l</NODE_ID>
+						<ANIM_NAME>autopilot_push_canc_l</ANIM_NAME>
+						<WWISE_EVENT_1>datalink_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>datalink_button_out</WWISE_EVENT_2>
+					</UseTemplate>
+					<UseTemplate Name="Salty_Generic_Button">
+    					<NODE_ID>btn_autopilot_rjct_l</NODE_ID>
+						<ANIM_NAME>autopilot_push_rjct_l</ANIM_NAME>
+						<WWISE_EVENT_1>datalink_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>datalink_button_out</WWISE_EVENT_2>
+					</UseTemplate>
 					<UseTemplate Name="ASOBO_AIRLINER_Knob_ND_Template">
 						<TYPE>BOEING_747</TYPE>
 						<NODE_ID>knob_afds_ctr_l1</NODE_ID>
 						<ANIM_NAME>afds_knob_ctr_l</ANIM_NAME>
 						<BUTTON_NODE_ID>btn_afds_ctr_l</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_ctr_l</BUTTON_ANIM_NAME>
+						<WWISE_EVENT>map_mode_knob</WWISE_EVENT>
+						<WWISE_EVENT_1>std_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>std_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_AIRLINER_Knob_ND_Range_Template">
 						<TYPE>BOEING_747</TYPE>
@@ -1986,46 +2047,68 @@
 						<ANIM_NAME>afds_knob_tfc_l</ANIM_NAME>
 						<BUTTON_NODE_ID>btn_afds_tfc_l</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_tfc_l</BUTTON_ANIM_NAME>
+						<WWISE_EVENT>range_knob</WWISE_EVENT>
+						<WWISE_EVENT_1>tfc_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>tfc_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_AIRLINER_Switch_Baro_Selector_Template">
 						<NODE_ID>knob_afds_std_l1</NODE_ID>
 						<ANIM_NAME>afds_knob_std_l</ANIM_NAME>
 						<BUTTON_NODE_ID>btn_afds_tfc_l</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_tfc_l</BUTTON_ANIM_NAME>
+						<WWISE_EVENT_1>baro_unit_knob_right</WWISE_EVENT_1>
+						<WWISE_EVENT_2>baro_unit_knob_left</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="SALTY_AUTOPILOT_Knob_Baro_Template">
 						<NODE_ID>knob_afds_std_l2</NODE_ID>
 						<ANIM_NAME_KNOB>afds_knob_std_l2</ANIM_NAME_KNOB>
 						<ANIM_NAME_PUSH>afds_push_std_l</ANIM_NAME_PUSH>
 						<AIRLINER_TYPE>PUSH</AIRLINER_TYPE>
+						<WWISE_EVENT>baro_knob</WWISE_EVENT>
+						<WWISE_EVENT_1>std_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>std_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_WXR_Template">
 						<NODE_ID>btn_afds_wxr_l1</NODE_ID>
 						<ANIM_NAME>afds_push_wxr_l</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_STA_Template">
 						<NODE_ID>btn_afds_sta_l1</NODE_ID>
 						<ANIM_NAME>afds_push_sta_l</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_WPT_Template">
 						<NODE_ID>btn_afds_wpt_l1</NODE_ID>
 						<ANIM_NAME>afds_push_wpt_l</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_ARPT_Template">
 						<NODE_ID>btn_afds_arpt_l1</NODE_ID>
 						<ANIM_NAME>afds_push_arpt_l</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_DATA_Template">
 						<NODE_ID>btn_afds_data_l1</NODE_ID>
 						<ANIM_NAME>afds_push_data_l</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_POS_Template">
 						<NODE_ID>btn_afds_pos_l1</NODE_ID>
 						<ANIM_NAME>afds_push_pos_l</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_TERR_Template">
 						<NODE_ID>btn_afds_terr_l1</NODE_ID>
 						<ANIM_NAME>afds_push_terr_l</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Switch_VOR_ADF_Template">
 						<NODE_ID>switch_afds_vor_adf_L_L</NODE_ID>
@@ -2033,6 +2116,7 @@
 						<ID>1</ID>
 						<SIDE>L</SIDE>
 						<TT_SIDE>L</TT_SIDE>
+						<WWISE_EVENT>vor_adf_switch</WWISE_EVENT>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Switch_VOR_ADF_Template">
 						<NODE_ID>switch_afds_vor_adf_L_R</NODE_ID>
@@ -2040,6 +2124,7 @@
 						<ID>2</ID>
 						<SIDE>L</SIDE>
 						<TT_SIDE>R</TT_SIDE>
+						<WWISE_EVENT>vor_adf_switch</WWISE_EVENT>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_FPV_Template">
 						<NODE_ID>btn_afds_fpv_l1</NODE_ID>
@@ -2055,6 +2140,8 @@
 						<NODE_ID>knob_afds_rst_l</NODE_ID>
 						<ANIM_NAME>afds_knob_rst_l</ANIM_NAME>
 						<ID>1</ID>
+						<WWISE_EVENT_1>radio_baro_right</WWISE_EVENT_1>
+						<WWISE_EVENT_2>radio_baro_left</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Knob_Mins_Template">
 						<NODE_ID>knob_afds_rst_l2</NODE_ID>
@@ -2062,10 +2149,31 @@
 						<BUTTON_NODE_ID>btn_afds_rst_l</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_rst_l</BUTTON_ANIM_NAME>
 						<ID>1</ID>
+						<WWISE_EVENT>minimums_knob</WWISE_EVENT>
+						<WWISE_EVENT_1>rst_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>rst_out</WWISE_EVENT_2>
 					</UseTemplate>
 				</Component>
 
 				<Component ID="GlassCockpit_Panel_CoPilot">
+					<UseTemplate Name="Salty_Generic_Button">
+    					<NODE_ID>btn_autopilot_acpt_r</NODE_ID>
+						<ANIM_NAME>autopilot_push_acpt_r</ANIM_NAME>
+						<WWISE_EVENT_1>datalink_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>datalink_button_out</WWISE_EVENT_2>
+					</UseTemplate>
+					<UseTemplate Name="Salty_Generic_Button">
+    					<NODE_ID>btn_autopilot_canc_r</NODE_ID>
+						<ANIM_NAME>autopilot_push_canc_r</ANIM_NAME>
+						<WWISE_EVENT_1>datalink_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>datalink_button_out</WWISE_EVENT_2>
+					</UseTemplate>
+					<UseTemplate Name="Salty_Generic_Button">
+    					<NODE_ID>btn_autopilot_rjct_r</NODE_ID>
+						<ANIM_NAME>autopilot_push_rjct_r</ANIM_NAME>
+						<WWISE_EVENT_1>datalink_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>datalink_button_out</WWISE_EVENT_2>
+					</UseTemplate>
 					<UseTemplate Name="ASOBO_AIRLINER_Knob_ND_Template">
 						<TYPE>BOEING_747</TYPE>
 						<ID>2</ID>
@@ -2073,6 +2181,9 @@
 						<ANIM_NAME>afds_knob_ctr_r</ANIM_NAME>
 						<BUTTON_NODE_ID>btn_afds_ctr_r</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_ctr_r</BUTTON_ANIM_NAME>
+						<WWISE_EVENT></WWISE_EVENT>
+						<WWISE_EVENT_1>std_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>std_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_AIRLINER_Knob_ND_Range_Template">
 						<TYPE>BOEING_747</TYPE>
@@ -2081,12 +2192,17 @@
 						<ANIM_NAME>afds_knob_tfc_r</ANIM_NAME>
 						<BUTTON_NODE_ID>btn_afds_tfc_r</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_tfc_r</BUTTON_ANIM_NAME>
+						<WWISE_EVENT></WWISE_EVENT>
+						<WWISE_EVENT_1>tfc_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>tfc_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_AIRLINER_Switch_Baro_Selector_Template">
 						<NODE_ID>knob_afds_std_r</NODE_ID>
 						<ANIM_NAME>afds_knob_std_r</ANIM_NAME>
 						<BUTTON_NODE_ID>btn_afds_tfc_r</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_tfc_r</BUTTON_ANIM_NAME>
+						<WWISE_EVENT_1>baro_unit_knob_right</WWISE_EVENT_1>
+						<WWISE_EVENT_2>baro_unit_knob_left</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="SALTY_AUTOPILOT_Knob_Baro_Template">
 						<NODE_ID>knob_afds_std_r2</NODE_ID>
@@ -2094,34 +2210,51 @@
 						<ANIM_NAME_PUSH>afds_push_std_r</ANIM_NAME_PUSH>
 						<AIRLINER_TYPE>PUSH</AIRLINER_TYPE>
 						<ID>2</ID>
+						<WWISE_EVENT>baro_knob</WWISE_EVENT>
+						<WWISE_EVENT_1>std_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>std_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_WXR_Template">
 						<NODE_ID>btn_afds_wxr_r</NODE_ID>
 						<ANIM_NAME>afds_push_wxr_r</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_STA_Template">
 						<NODE_ID>btn_afds_sta_r</NODE_ID>
 						<ANIM_NAME>afds_push_sta_r</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_WPT_Template">
 						<NODE_ID>btn_afds_wpt_r</NODE_ID>
 						<ANIM_NAME>afds_push_wpt_r</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_ARPT_Template">
 						<NODE_ID>btn_afds_arpt_r</NODE_ID>
 						<ANIM_NAME>afds_push_arpt_r</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_DATA_Template">
 						<NODE_ID>btn_afds_data_r</NODE_ID>
 						<ANIM_NAME>afds_push_data_r</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_POS_Template">
 						<NODE_ID>btn_afds_pos_r</NODE_ID>
 						<ANIM_NAME>afds_push_pos_r</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_TERR_Template">
 						<NODE_ID>btn_afds_terr_r</NODE_ID>
 						<ANIM_NAME>afds_push_terr_r</ANIM_NAME>
+						<WWISE_EVENT_1>efis_button_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>efis_button_out</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Switch_VOR_ADF_Template">
 						<NODE_ID>switch_afds_vor_adf_R_L</NODE_ID>
@@ -2129,6 +2262,7 @@
 						<ID>1</ID>
 						<SIDE>R</SIDE>
 						<TT_SIDE>L</TT_SIDE>
+						<WWISE_EVENT>vor_adf_switch</WWISE_EVENT>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Switch_VOR_ADF_Template">
 						<NODE_ID>switch_afds_vor_adf_R_R_NCL1</NODE_ID>
@@ -2136,6 +2270,7 @@
 						<ID>2</ID>
 						<SIDE>R</SIDE>
 						<TT_SIDE>R</TT_SIDE>
+						<WWISE_EVENT>vor_adf_switch</WWISE_EVENT>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Push_FPV_Template">
 						<NODE_ID>btn_afds_fpv_r</NODE_ID>
@@ -2151,6 +2286,8 @@
 						<NODE_ID>knob_afds_rst_r</NODE_ID>
 						<ANIM_NAME>afds_knob_rst_r</ANIM_NAME>
 						<ID>2</ID>
+						<WWISE_EVENT_1>radio_baro_right</WWISE_EVENT_1>
+						<WWISE_EVENT_2>radio_baro_left</WWISE_EVENT_2>
 					</UseTemplate>
 					<UseTemplate Name="ASOBO_BOEING_Knob_Mins_Template">
 						<NODE_ID>knob_afds_rst_r2</NODE_ID>
@@ -2158,6 +2295,9 @@
 						<BUTTON_NODE_ID>btn_afds_rst_r</BUTTON_NODE_ID>
 						<BUTTON_ANIM_NAME>afds_push_rst_r</BUTTON_ANIM_NAME>
 						<ID>2</ID>
+						<WWISE_EVENT>minimums_knob</WWISE_EVENT>
+						<WWISE_EVENT_1>rst_in</WWISE_EVENT_1>
+						<WWISE_EVENT_2>rst_out</WWISE_EVENT_2>
 					</UseTemplate>
 				</Component>
 			</Component>
@@ -2176,6 +2316,8 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>ONLY_IF_DISCONNECTED</TYPE>
 					<ALL_AP_ON_APPR>True</ALL_AP_ON_APPR>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Autopilot_Template">
 					<AP_COUNT>3</AP_COUNT>
@@ -2188,6 +2330,8 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>ONLY_IF_DISCONNECTED</TYPE>
 					<ALL_AP_ON_APPR>True</ALL_AP_ON_APPR>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Autopilot_Template">
 					<AP_COUNT>3</AP_COUNT>
@@ -2200,6 +2344,8 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>ONLY_IF_DISCONNECTED</TYPE>
 					<ALL_AP_ON_APPR>True</ALL_AP_ON_APPR>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_Approach_Template">
 					<NODE_ID>btn_autopilot_app</NODE_ID>
@@ -2209,6 +2355,8 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<DISABLE_GPS_MODE>False</DISABLE_GPS_MODE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Disconnect_Template">
 					<NODE_ID>btn_autopilot_disengage</NODE_ID>
@@ -2219,6 +2367,8 @@
 					<RESET_XMLVARS>True</RESET_XMLVARS>
 					<AP_COUNT>3</AP_COUNT>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_ON>ap_disengage_down</WWISE_EVENT_AUTOPILOT_SWITCH_ON>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_OFF>ap_disengage_up</WWISE_EVENT_AUTOPILOT_SWITCH_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightLevelChange_Template">
 					<NODE_ID>btn_autopilot_flch</NODE_ID>
@@ -2228,6 +2378,8 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_Altitude_Template">
 					<NODE_ID>btn_autopilot_hold</NODE_ID>
@@ -2237,6 +2389,8 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_Heading_Template">
 					<NODE_ID>btn_autopilot_hdg</NODE_ID>
@@ -2246,6 +2400,8 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Navigation_Template">
 					<NODE_ID>btn_autopilot_lnav</NODE_ID>
@@ -2256,6 +2412,8 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TOOLTIPID>%((A:AUTOPILOT NAV1 LOCK, bool))%{if}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_LNAV_ON%{else}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_LNAV_OFF%{end}</TOOLTIPID>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_Vertical_Navigation_Template">
 					<NODE_ID>btn_autopilot_vnav</NODE_ID>
@@ -2265,6 +2423,8 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_Localizer_Template">
 					<NODE_ID>btn_autopilot_loc</NODE_ID>
@@ -2273,6 +2433,8 @@
 					<ACTIVE_NODE_ID>btn_autopilot_loc_seq2</ACTIVE_NODE_ID>
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_Speed_Template">
 					<NODE_ID>btn_autopilot_spd</NODE_ID>
@@ -2283,6 +2445,8 @@
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TOOLTIPID>%((L:AP_SPD_ACTIVE))%{if}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_SPD_ON%{else}TT:COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_SPD_OFF%{end}</TOOLTIPID>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_Thrust_Template">
 					<NODE_ID>btn_autopilot_thr</NODE_ID>
@@ -2291,6 +2455,8 @@
 					<ACTIVE_NODE_ID>btn_autopilot_thr_seq2</ACTIVE_NODE_ID>
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_VerticalSpeed_Template">
 					<NODE_ID>btn_autopilot_vs</NODE_ID>
@@ -2300,24 +2466,31 @@
 					<AUTOPILOT_PUSH_BUTTON_ON>autopilot_largepush_button_on</AUTOPILOT_PUSH_BUTTON_ON>
 					<AUTOPILOT_PUSH_BUTTON_OFF>autopilot_largepush_button_off</AUTOPILOT_PUSH_BUTTON_OFF>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>mcp_button_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>mcp_button_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Altitude_Template">
 					<NODE_ID>knob_autopilot_alt</NODE_ID>
 					<ANIM_NAME_KNOB>autopilot_knob_alt</ANIM_NAME_KNOB>
 					<ANIM_NAME_PUSH>knob_autopilot_alt_push</ANIM_NAME_PUSH>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT>altitude_knob</WWISE_EVENT>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Heading_Template">
 					<NODE_ID>knob_autopilot_heading</NODE_ID>
 					<ANIM_NAME_KNOB>autopilot_knob_heading</ANIM_NAME_KNOB>
 					<ANIM_NAME_PUSH>autopilot_push_hdg_sel</ANIM_NAME_PUSH>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT>heading_knob</WWISE_EVENT>
+					<WWISE_EVENT_1>hdg_select_in</WWISE_EVENT_1>
+					<WWISE_EVENT_2>hdg_select_out</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_Bank_Limit_Template">
 					<NODE_ID>knob_autopilot_hdg_bank_limit</NODE_ID>
 					<ANIM_NAME>autopilot_knob_hdg_bank_limit</ANIM_NAME>
 					<SETTINGS_COUNT>5</SETTINGS_COUNT>
 					<COUNT>5</COUNT>
+					<WWISE_EVENT>bank_limit_selector</WWISE_EVENT>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_SpeedToggle_Template">
 					<NODE_ID>btn_autopilot_sel</NODE_ID>
@@ -2325,17 +2498,22 @@
 					<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
 					<NO_INDICATOR>True</NO_INDICATOR>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>ias_mach_in</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_ON>
+					<WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>ias_mach_out</WWISE_EVENT_AUTOPILOT_PUSH_BUTTON_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_SpeedMach_Template">
 					<NODE_ID>knob_autopilot_speed</NODE_ID>
 					<ANIM_NAME>autopilot_knob_speed</ANIM_NAME>
 					<ANIM_NAME_PUSH>knob_autopilot_speed_push</ANIM_NAME_PUSH>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT>airspeed_knob</WWISE_EVENT>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Push_AutoThrottle_Template">
 					<NODE_ID>switch_autopilot_at_arm</NODE_ID>
 					<ANIM_NAME>autopilot_switch_at_arm</ANIM_NAME>
 					<TYPE>B747</TYPE>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_ON>at_on</WWISE_EVENT_AUTOPILOT_SWITCH_ON>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_OFF>at_off</WWISE_EVENT_AUTOPILOT_SWITCH_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightDirector_Template">
 					<NODE_ID>switch_autopilot_fd_l</NODE_ID>
@@ -2344,6 +2522,8 @@
 					<NO_INDICATOR>True</NO_INDICATOR>
 					<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
 					<ID>1</ID>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_ON>fd_on</WWISE_EVENT_AUTOPILOT_SWITCH_ON>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_OFF>fd_off</WWISE_EVENT_AUTOPILOT_SWITCH_OFF>
 				</UseTemplate>
 				<UseTemplate Name="SALTY_AUTOPILOT_Push_FlightDirector_Template">
 					<NODE_ID>switch_autopilot_fd_r</NODE_ID>
@@ -2352,11 +2532,14 @@
 					<NO_INDICATOR>True</NO_INDICATOR>
 					<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
 					<ID>1</ID>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_ON>fd_on</WWISE_EVENT_AUTOPILOT_SWITCH_ON>
+					<WWISE_EVENT_AUTOPILOT_SWITCH_OFF>fd_off</WWISE_EVENT_AUTOPILOT_SWITCH_OFF>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_AUTOPILOT_Knob_VerticalSpeed_Template">
 					<NODE_ID>wheel_autopilot_vert_speed</NODE_ID>
 					<ANIM_NAME>autopilot_wheel_vert_speed</ANIM_NAME>
 					<UP_DEC_DN_INC>True</UP_DEC_DN_INC>
+					<WWISE_EVENT>vs_knob</WWISE_EVENT>
 				</UseTemplate>
 
 				<UseTemplate Name="ASOBO_AIRLINER_Fuel_To_Remain_Knob_Template">
@@ -2370,40 +2553,6 @@
 						<SIMVAR_POWER_SETTING>LIGHT PANEL POWER SETTING:2</SIMVAR_POWER_SETTING>
 						<NO_SEQ2/>
 					</DefaultTemplateParameters>
-					<Component ID="Left">
-						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
-							<NODE_ID>btn_autopilot_acpt_l</NODE_ID>
-							<ANIM_NAME>autopilot_push_acpt_l</ANIM_NAME>
-							<SEQ1_NODE_ID>btn_autopilot_acpt_l_text</SEQ1_NODE_ID>
-						</UseTemplate>
-						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
-							<NODE_ID>btn_autopilot_rjct_l</NODE_ID>
-							<ANIM_NAME>autopilot_push_rjct_l</ANIM_NAME>
-							<SEQ1_NODE_ID>btn_autopilot_rjct_l_text</SEQ1_NODE_ID>
-						</UseTemplate>
-						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
-							<NODE_ID>btn_autopilot_canc_l</NODE_ID>
-							<ANIM_NAME>autopilot_push_canc_l</ANIM_NAME>
-							<SEQ1_NODE_ID>btn_autopilot_canc_l_text</SEQ1_NODE_ID>
-						</UseTemplate>
-					</Component>
-					<Component ID="Right">
-						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
-							<NODE_ID>btn_autopilot_acpt_r</NODE_ID>
-							<ANIM_NAME>autopilot_push_acpt_r</ANIM_NAME>
-							<SEQ1_NODE_ID>btn_autopilot_acpt_r_text</SEQ1_NODE_ID>
-						</UseTemplate>
-						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
-							<NODE_ID>btn_autopilot_canc_r</NODE_ID>
-							<ANIM_NAME>autopilot_push_canc_r</ANIM_NAME>
-							<SEQ1_NODE_ID>btn_autopilot_canc_r_text</SEQ1_NODE_ID>
-						</UseTemplate>
-						<UseTemplate Name="ASOBO_GT_Push_Button_Airliner_Dummy">
-							<NODE_ID>btn_autopilot_rjct_r</NODE_ID>
-							<ANIM_NAME>autopilot_push_rjct_r</ANIM_NAME>
-							<SEQ1_NODE_ID>btn_autopilot_rjct_r_text</SEQ1_NODE_ID>
-						</UseTemplate>
-					</Component>
 				</Component>
 			</Component>
 			<Component ID="EICAS">
@@ -2417,6 +2566,8 @@
 				-->
 				<UseTemplate Name="ASOBO_EICAS_PAGE_SELECTION_Template_Boeing">
 					<PANEL_NAME>B747_8_EICAS_2</PANEL_NAME>
+					<WWISE_EVENT_1>synoptic_in</WWISE_EVENT_1>
+					<WWISE_EVENT_2>synoptic_out</WWISE_EVENT_2>
 				</UseTemplate>
 			</Component>
 		</Component>
@@ -2571,6 +2722,7 @@
 						<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 						<THRESHOLD_INPUT>0.0005</THRESHOLD_INPUT>
 						<THRESHOLD_MOUSE>0.05</THRESHOLD_MOUSE>
+						<WWISE_EVENT>knob</WWISE_EVENT>
 					</UseTemplate>
 
 					<UseTemplate Name="ASOBO_GT_Knob_Dummy_Boeing">
@@ -3575,6 +3727,8 @@
 					<TT_DESCRIPTION_INDEX>(R:1:@TT_Package.GT_STATE_OUTBOARD) (R:1:@TT_Package.GT_STATE_LEFT)</TT_DESCRIPTION_INDEX>
 					<SIMVAR_INDEX>1</SIMVAR_INDEX>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
+					<WWISE_EVENT_1>landing_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>landing_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Landing_Template">
 					<ANIM_NAME>ovhd_landing_switch_inbd_L</ANIM_NAME>
@@ -3584,6 +3738,8 @@
 					<TT_DESCRIPTION_INDEX>(R:1:@TT_Package.GT_STATE_INBOARD) (R:1:@TT_Package.GT_STATE_LEFT)</TT_DESCRIPTION_INDEX>
 					<SIMVAR_INDEX>2</SIMVAR_INDEX>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
+					<WWISE_EVENT_1>landing_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>landing_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Landing_Template">
 					<ANIM_NAME>ovhd_landing_switch_inbd_R</ANIM_NAME>
@@ -3593,6 +3749,8 @@
 					<TT_DESCRIPTION_INDEX>(R:1:@TT_Package.GT_STATE_INBOARD) (R:1:@TT_Package.GT_STATE_RIGHT)</TT_DESCRIPTION_INDEX>
 					<SIMVAR_INDEX>3</SIMVAR_INDEX>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
+					<WWISE_EVENT_1>landing_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>landing_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Landing_Template">
 					<ANIM_NAME>ovhd_landing_switch_outbd_R</ANIM_NAME>
@@ -3602,6 +3760,8 @@
 					<TT_DESCRIPTION_INDEX>(R:1:@TT_Package.GT_STATE_OUTBOARD) (R:1:@TT_Package.GT_STATE_RIGHT)</TT_DESCRIPTION_INDEX>
 					<SIMVAR_INDEX>4</SIMVAR_INDEX>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
+					<WWISE_EVENT_1>landing_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>landing_light_off</WWISE_EVENT_2>
 				</UseTemplate>
                 <Component ID="Gear_Lights_IE">
 					<UseInputEvent ID="PROCEDURE">
@@ -3621,6 +3781,8 @@
 					<TOOLTIP_TITLE>@TT_Package.LIGHTING_SWITCH_LIGHT_RUNWAY_TITLE</TOOLTIP_TITLE>
 					<SIMVAR_INDEX>1</SIMVAR_INDEX>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
+					<WWISE_EVENT_1>rwy_turnoff_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>rwy_turnoff_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Taxi_Template">
 					<ANIM_NAME>ovhd_switch_turnoff_R</ANIM_NAME>
@@ -3631,6 +3793,8 @@
 					<TOOLTIP_TITLE>@TT_Package.LIGHTING_SWITCH_LIGHT_RUNWAY_TITLE</TOOLTIP_TITLE>
 					<SIMVAR_INDEX>2</SIMVAR_INDEX>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
+					<WWISE_EVENT_1>rwy_turnoff_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>rwy_turnoff_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Taxi_Template">
 					<ANIM_NAME>overhead_lights_switch_taxi_light</ANIM_NAME>
@@ -3638,6 +3802,8 @@
 					<ID>3</ID>
 					<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_SWITCH_LIGHT_TAXI_ACTION_SET</TT_DESCRIPTION_ID>
 					<SIMVAR_INDEX>3</SIMVAR_INDEX>
+					<WWISE_EVENT_1>taxi_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>taxi_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Beacon_Template">
 					<ANIM_NAME>ovhd_push_lights_beacon</ANIM_NAME>
@@ -3646,6 +3812,7 @@
 					<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_SWITCH_LIGHT_BEACON_ACTION_SET</TT_DESCRIPTION_ID>
 					<SIMVAR_INDEX>1</SIMVAR_INDEX>
 					<SIMVAR_INDEX_2>2</SIMVAR_INDEX_2>
+					<WWISE_EVENT>beacon_light</WWISE_EVENT>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Logo_Template">
 					<ANIM_NAME>ovhd_push_lights_logo</ANIM_NAME>
@@ -3653,6 +3820,8 @@
 					<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_SWITCH_LIGHT_LOGO_ACTION_SET</TT_DESCRIPTION_ID>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 					<SIMVAR_INDEX>0</SIMVAR_INDEX>
+					<WWISE_EVENT_1>strobe_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>strobe_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Navigation_Template">
 					<ANIM_NAME>ovhd_push_lights_nav</ANIM_NAME>
@@ -3660,6 +3829,8 @@
 					<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_SWITCH_LIGHT_NAV_ACTION_SET</TT_DESCRIPTION_ID>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 					<SIMVAR_INDEX>0</SIMVAR_INDEX>
+					<WWISE_EVENT_1>nav_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>nav_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Strobe_Template">
 					<ANIM_NAME>ovhd_push_lights_strobe</ANIM_NAME>
@@ -3668,6 +3839,8 @@
 					<TOOLTIP_TITLE>@TT_Package.LIGHTING_SWITCH_LIGHT_STROBE_TITLE</TOOLTIP_TITLE>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 					<SIMVAR_INDEX>0</SIMVAR_INDEX>
+					<WWISE_EVENT_1>strobe_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>strobe_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<UseTemplate Name="ASOBO_LIGHTING_Switch_Light_Wing_Template">
 					<ANIM_NAME>ovhd_push_lights_wing</ANIM_NAME>
@@ -3675,6 +3848,8 @@
 					<TT_DESCRIPTION_ID>@TT_Package.LIGHTING_SWITCH_LIGHT_WING_ACTION</TT_DESCRIPTION_ID>
 					<INVERT_SWITCH_ON_CONDITION>True</INVERT_SWITCH_ON_CONDITION>
 					<SIMVAR_INDEX>0</SIMVAR_INDEX>
+					<WWISE_EVENT_1>nav_light_on</WWISE_EVENT_1>
+					<WWISE_EVENT_2>nav_light_off</WWISE_EVENT_2>
 				</UseTemplate>
 				<CameraTitle>Instruments08</CameraTitle>
 			</Component>
@@ -3707,24 +3882,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_side_clock_l</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_autopilot_acpt_l</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_autopilot_acpt_r</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_autopilot_canc_l</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_autopilot_canc_r</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_autopilot_rjct_l</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_autopilot_rjct_r</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_source_select_flt_dir_l</NODE_ID>
@@ -4296,12 +4453,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>switch_ovhd_pass_oxygen</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>push_ovhd_pass_o2_yaw_damper_upper</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>push_ovhd_pass_o2_yaw_damper_lower</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>ovhd_switch_pass_voice_recorder</NODE_ID>

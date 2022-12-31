@@ -125,8 +125,9 @@ b747-8-lower-eicas-fuel {
       stroke: var(--eicasOrange); }
   b747-8-lower-eicas-fuel #Labels text {
     fill: cyan; }
-  b747-8-lower-eicas-fuel #Labels #TotalFuel {
-    text-anchor: end; }
+  b747-8-lower-eicas-fuel #Labels #TotalFuel, b747-8-lower-eicas-fuel #Labels #FuelPreselect {
+    text-anchor: start;
+    font-size: 16px; }
   b747-8-lower-eicas-fuel #Values path, b747-8-lower-eicas-fuel #Values rect {
     stroke: var(--eicasWhite);
     stroke-width: 2px;
@@ -135,9 +136,10 @@ b747-8-lower-eicas-fuel {
     text-anchor: end;
     letter-spacing: 0px; }
   b747-8-lower-eicas-fuel #Values #TotalFuelUnits {
-    text-anchor: end;
-    letter-spacing: 0px; }
-  b747-8-lower-eicas-fuel #Values #TotalFuelValue {
+    text-anchor: start;
+    letter-spacing: 0px;
+    font-size: 16px; }
+  b747-8-lower-eicas-fuel #Values #TotalFuelValue, b747-8-lower-eicas-fuel #Values #FuelPreselectValue {
     font-size: 24px; }
   b747-8-lower-eicas-fuel #TransferOutlines {
     stroke-width: 6px !important;

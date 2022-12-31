@@ -1472,12 +1472,8 @@ class FMCMainDisplay extends BaseAirliners {
     }
     getCurrentWeight(useLbs = false) {
         return new Promise(resolve => {
-            Coherent.call("TOTAL_WEIGHT_GET").then(v => {
-                if (!useLbs) {
-                    v /= 2.204623;
-                }
-                resolve(v);
-            });
+            const weight = SimVar.GetSimVarValue("TOTAL WEIGHT", useLbs ? "lbs" : "kg");
+            resolve(weight);
         });
     }
     setWeight(a, callback = EmptyCallback.Boolean, useLbs = false) {
@@ -2218,8 +2214,8 @@ class FMCMainDisplay extends BaseAirliners {
     recalculateTHRRedAccTransAlt() {
         let origin = this.flightPlanManager.getOrigin();
         if (origin) {
-            if (isFinite(origin.altitudeinFP)) {
-                let altitude = Math.round(origin.altitudeinFP / 10) * 10;
+            if (isFinite(origin.infos.oneWayRunways[0].elevation)) {
+                let altitude = Math.round(origin.infos.oneWayRunways[0].elevation * 3.28 / 10) * 10;
                 this.thrustReductionAltitude = altitude + 1500;
                 this.accelerationAltitude = altitude + 3000;
                 if (origin.infos instanceof AirportInfo) {
@@ -2227,18 +2223,26 @@ class FMCMainDisplay extends BaseAirliners {
                 }
                 SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", this.thrustReductionAltitude);
                 SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", this.accelerationAltitude);
+                SimVar.SetSimVarValue("L:74S_FMC_ORIGIN_ELEVATION", "Number", altitude);
             }
         }
         else {
             let altitude = Simplane.getAltitude();
             SimVar.SetSimVarValue("L:AIRLINER_THR_RED_ALT", "Number", altitude + 1500);
             SimVar.SetSimVarValue("L:AIRLINER_ACC_ALT", "Number", altitude + 3000);
+            SimVar.SetSimVarValue("L:74S_FMC_ORIGIN_ELEVATION", "Number", -1);
         }
         let destination = this.flightPlanManager.getDestination();
         if (destination) {
             if (destination.infos instanceof AirportInfo) {
                 this.perfApprTransAlt = destination.infos.transitionAltitude;
+                if (isFinite(origin.infos.oneWayRunways[0].elevation)) {
+                    SimVar.SetSimVarValue("L:74S_FMC_DEST_ELEVATION", "Number", Math.round(destination.infos.oneWayRunways[0].elevation * 3.28 / 10) * 10);
+                }
             }
+        }
+        else {
+            SimVar.SetSimVarValue("L:74S_FMC_DEST_ELEVATION", "Number", -1);
         }
     }
     onPowerOn() {

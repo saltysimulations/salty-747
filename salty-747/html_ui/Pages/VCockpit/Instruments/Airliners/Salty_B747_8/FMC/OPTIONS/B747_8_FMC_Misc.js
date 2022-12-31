@@ -26,6 +26,9 @@ class FMCSaltyOptions_Misc {
         const pauseAtTd = WTDataStore.get("PAUSE_AT_TD", 0);
         const pauseAtTdDisplayOption = pauseAtTd >= 1 ? onGreen : offGreen;
 
+        const autoFuel = WTDataStore.get("AUTO_FUEL", 0);
+        const autoFuelDisplayOption = autoFuel >= 1 ? onGreen : offGreen;
+
         fmc.setTemplate([
             ["MISC OPTIONS"],
             ["", "", "PILOTS VISIBILITY"],
@@ -34,12 +37,12 @@ class FMCSaltyOptions_Misc {
             [`< ${fpSyncDisplayOption}`, "", ""],
             ["", "", "PAUSE AT T/D"],
             [`< ${pauseAtTdDisplayOption}`, `${pauseAtTd >= 1 ? "UNPAUSE>" : ""}`],
-            ["", ""],
-            ["", ""],
+            ["", "", "AUTOMATIC FUEL MANAGEMENT"],
+            [`< ${autoFuelDisplayOption}`, ""],
             ["", ""],
             ["", ""],
             ["\xa0RETURN TO", ""],
-            ["<OPTIONS", ""]
+            ["<OPTIONS", ""],
         ]);
 
         /* LSK1 */
@@ -80,6 +83,11 @@ class FMCSaltyOptions_Misc {
 
         fmc.onLeftInput[2] = () => {
             WTDataStore.set("PAUSE_AT_TD", pauseAtTd >= 1 ? 0 : 1);
+            FMCSaltyOptions_Misc.ShowPage(fmc);
+        };
+
+        fmc.onLeftInput[3] = () => {
+            WTDataStore.set("AUTO_FUEL", autoFuel >= 1 ? 0 : 1);
             FMCSaltyOptions_Misc.ShowPage(fmc);
         };
 
