@@ -367,6 +367,9 @@
 	<Sound WwiseData="true" WwiseEvent="radio_swap_button_in" ViewPoint="Inside" />
 	<Sound WwiseData="true" WwiseEvent="radio_swap_button_out" ViewPoint="Inside" />
 
+	<Sound WwiseData="true" WwiseEvent="ptt_in" ViewPoint="Inside" />
+	<Sound WwiseData="true" WwiseEvent="ptt_out" ViewPoint="Inside" />
+
 	<!-- COMMON ################################################################################################### -->
 	<!-- Electrical ========================================================================================== -->
     <Sound WwiseData="true" WwiseEvent="alternator_switch_on" ViewPoint="Inside"/>
