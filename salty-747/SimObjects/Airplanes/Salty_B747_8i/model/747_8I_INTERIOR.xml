@@ -20,6 +20,23 @@
 		<Include ModelBehaviorFile="Asobo\Airliner\FMC.xml"/>
 		<Include ModelBehaviorFile="ASOBO\Inputs\Helpers.xml"/>
 
+		<Component ID="747_EFB_Screen">
+            <DefaultTemplateParameters>
+                <!-- disable lock mode blue highlight -->
+                <NO_HIGHLIGHT_NODE_ID>@StopLockHighlight</NO_HIGHLIGHT_NODE_ID>
+            </DefaultTemplateParameters>
+
+            <Component ID="747_EFB_Screen" Node="747_EFB_Screen">
+                <DefaultTemplateParameters>
+                    <NODE_ID>747_EFB_Screen</NODE_ID>
+                </DefaultTemplateParameters>
+
+                <UseTemplate Name="ASOBO_GT_Material_Emissive_Code">
+                    <EMISSIVE_CODE>0.7</EMISSIVE_CODE>
+                </UseTemplate>
+            </Component>
+        </Component>
+
 		<Component ID="Yoke_Controls">
 			<UseTemplate Name="ASOBO_HANDLING_RudderPedals_Template">
 				<RUDDERPEDALS_TYPE>MIXED</RUDDERPEDALS_TYPE>
