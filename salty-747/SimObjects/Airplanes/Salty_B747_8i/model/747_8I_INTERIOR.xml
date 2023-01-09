@@ -284,6 +284,22 @@
 				<ON_PUSH_TO_GA>(&gt;H:B747_8_FMC_1_THROTTLE_TO_GA)</ON_PUSH_TO_GA>
 				<ID>2</ID>
 			</UseTemplate>
+			<UseTemplate Name="ASOBO_ENGINE_Push_TOGA_Template">
+				<NODE_ID>btn_side_ptt_l</NODE_ID>
+				<ANIM_NAME>Side_btn_ptt_l</ANIM_NAME>
+				<ON_PUSH_TO_GA>(&gt;H:B747_8_FMC_1_THROTTLE_TO_GA)</ON_PUSH_TO_GA>
+				<WWISE_EVENT_1>ptt_in</WWISE_EVENT_1>
+				<WWISE_EVENT_2>ptt_out</WWISE_EVENT_2>
+				<ID>3</ID>
+			</UseTemplate>
+			<UseTemplate Name="ASOBO_ENGINE_Push_TOGA_Template">
+				<NODE_ID>btn_side_ptt_r</NODE_ID>
+				<ANIM_NAME>Side_btn_ptt_r</ANIM_NAME>
+				<ON_PUSH_TO_GA>(&gt;H:B747_8_FMC_1_THROTTLE_TO_GA)</ON_PUSH_TO_GA>
+				<WWISE_EVENT_1>ptt_in</WWISE_EVENT_1>
+				<WWISE_EVENT_2>ptt_out</WWISE_EVENT_2>
+				<ID>4</ID>
+			</UseTemplate>
 			<UseTemplate Name="ASOBO_FUEL_Switch_Valve_Template">
 				<NODE_ID>btn_fuel_flow_ctrl_1</NODE_ID>
 				<ANIM_NAME>btn_fuel_flow_ctrl_1</ANIM_NAME>
@@ -3887,12 +3903,6 @@
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>knob_side_panel_02</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_side_ptt_l</NODE_ID>
-			</UseTemplate>
-			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
-				<NODE_ID>btn_side_ptt_r</NODE_ID>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_GT_Interaction_Tooltip">
 				<NODE_ID>btn_side_clock_r</NODE_ID>
