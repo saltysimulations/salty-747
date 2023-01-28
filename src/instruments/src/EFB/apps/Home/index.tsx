@@ -19,7 +19,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { SiWikipedia } from "react-icons/si";
-import { BsYoutube, BsCameraFill } from "react-icons/bs";
+import { BsYoutube, BsCameraFill, BsGearWideConnected } from "react-icons/bs";
 import { FaMapMarkerAlt, FaSafari } from "react-icons/fa";
 import { BsFillCameraVideoFill } from "react-icons/bs";
 import { AiFillClockCircle, AiFillHome } from "react-icons/ai";
@@ -48,6 +48,7 @@ export const HomeScreen: FC = () => (
             <App bg={`url(${opt})`} />
             <App bg="white" icon={<SiWikipedia style={{ fill: "black", transform: "scale(3.5)" }} />} />
             <App bg="white" icon={<BsYoutube style={{ fill: "red", transform: "scale(3.5)" }} />} />
+            <App bg="gray" icon={<BsGearWideConnected style={{ fill: "white", transform: "scale(3.5)" }} />} route="/settings" />
         </FavoriteAppsContainer>
     </Home>
 );

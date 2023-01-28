@@ -5,6 +5,7 @@
         "typeRoots": ["../typings", "../node_modules/@types"],
         "moduleResolution": "node",
         "paths": {
+            "@shared/*": ["./shared/src/*"],
             "@instruments/common/*": ["./instruments/src/Common/*"]
         }
     }

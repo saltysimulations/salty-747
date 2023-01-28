@@ -87,7 +87,7 @@ module.exports = getInstrumentsToCompile().map(({ path, name, isInstrument }) =>
                 name,
                 elementName: `salty-${name}`,
                 path,
-                imports: [],
+                imports: ["/JS/dataStorage.js"],
                 config,
                 isInstrument,
             }),

@@ -1,4 +1,32 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url("/Fonts/SaltyRoboto/Roboto-Light.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url("/Fonts/SaltyRoboto/Roboto-Regular.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url("/Fonts/SaltyRoboto/Roboto-Medium.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url("/Fonts/SaltyRoboto/Roboto-Bold.ttf") format('truetype');
+}
 
 * {
     font-family: "Roboto", sans-serif;

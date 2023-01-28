@@ -27,13 +27,13 @@ export const TopBar: FC<BarProps> = ({ bg = "transparent", textColor = "white", 
     <div>
         <StyledBar bg={bg} textColor={textColor} backdropFilter={backdropFilter}>
             <BarSection>
-                <div>19:46</div>
-                <div>Thu Dec 30</div>
+                <div>17:42</div>
+                <div>Wed Jan 25</div>
             </BarSection>
             <BarSection symbols>
-                <HiWifi style={{ transform: "scale(1.3)" }} />
+                <HiWifi size={25} />
                 <div>100%</div>
-                <IoIosBatteryFull style={{ transform: "scale(1.7)" }} />
+                <IoIosBatteryFull size={35} />
             </BarSection>
         </StyledBar>
     </div>
@@ -41,7 +41,7 @@ export const TopBar: FC<BarProps> = ({ bg = "transparent", textColor = "white", 
 
 const StyledBar = styled.div`
     width: 100%;
-    height: 28px;
+    height: 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -55,14 +55,10 @@ const StyledBar = styled.div`
 
 const BarSection = styled.div`
     display: flex;
-    gap: 16px;
-    margin: 0 10px;
+    margin: 0 12px;
     align-items: center;
 
-    ${(props: { symbols?: boolean }) =>
-        props.symbols &&
-        css`
-            gap: 12px;
-            margin: 0 16px;
-        `}
+    * {
+        ${(props: { symbols?: boolean }) => (props.symbols ? "margin-left: 4px" : "margin-right: 15px")};
+    }
 `;

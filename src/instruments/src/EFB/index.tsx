@@ -25,6 +25,10 @@ import { TopBar, BarProps } from "./components/TopBar";
 import { HomeButton } from "./components/HomeButton";
 import { HomeScreen } from "./apps/Home";
 import { Maps } from "./apps/Maps";
+import { Settings } from "./apps/Settings";
+import { General } from "./apps/Settings/General";
+import { Aircraft, Units } from "./apps/Settings/Aircraft";
+import { Simulation } from "./apps/Settings/Simulation";
 
 import "./index.scss";
 
@@ -38,6 +42,12 @@ const EFB: FC = () => {
                         path="/maps"
                         element={<RouteElement component={<Maps />} barProps={{ textColor: "black", backdropFilter: "blur(8px)" }} />}
                     />
+                    <Route path="/settings" element={<RouteElement component={<Settings />} barProps={{ textColor: "black" }} />}>
+                        <Route path="general" element={<General />} />
+                        <Route path="aircraft" element={<Aircraft />} />
+                        <Route path="simulation" element={<Simulation />} />
+                        <Route path="units" element={<Units />} />
+                    </Route>
                 </Routes>
             </MemoryRouter>
         </Root>
