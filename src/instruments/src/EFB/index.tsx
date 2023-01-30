@@ -28,7 +28,7 @@ import { Maps } from "./apps/Maps";
 import { Settings } from "./apps/Settings";
 import { General } from "./apps/Settings/General";
 import { Aircraft, Units } from "./apps/Settings/Aircraft";
-import { Simulation } from "./apps/Settings/Simulation";
+import { PilotVisibility, Simulation } from "./apps/Settings/Simulation";
 
 import "./index.scss";
 
@@ -47,6 +47,7 @@ const EFB: FC = () => {
                         <Route path="aircraft" element={<Aircraft />} />
                         <Route path="simulation" element={<Simulation />} />
                         <Route path="units" element={<Units />} />
+                        <Route path="pilot-visibility" element={<PilotVisibility />} />
                     </Route>
                 </Routes>
             </MemoryRouter>
