@@ -25,7 +25,21 @@ export const Simulation: FC = () => {
             </ItemGroup>
             <ItemGroup>
                 <NavigationItem name="Pilot Visibility" path="/settings/pilot-visibility" />
-                <NavigationItem name="IRS Alignment" path="/settings/units" />
+                <NavigationItem name="IRS Alignment Time" path="/settings/irs-alignment" />
+            </ItemGroup>
+        </ContentPageContainer>
+    );
+};
+
+export const IRSAlignment: FC = () => {
+    const [irsAlignmentTime, setirsAlignmentTime] = usePersistentProperty("IRS_ALIGNMENT_TIME", "real");
+
+    return (
+        <ContentPageContainer title="IRS Alignment Time" backProps={{ label: "Simulation", path: "/settings/simulation" }}>
+            <ItemGroup>
+                <SelectableItem label="Real" selected={irsAlignmentTime === "real"} onClick={() => setirsAlignmentTime("real")} />
+                <SelectableItem label="Fast" selected={irsAlignmentTime === "fast"} onClick={() => setirsAlignmentTime("fast")} />
+                <SelectableItem label="Instant" selected={irsAlignmentTime === "instant"} onClick={() => setirsAlignmentTime("instant")} />
             </ItemGroup>
         </ContentPageContainer>
     );
