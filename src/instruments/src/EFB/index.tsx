@@ -32,28 +32,35 @@ import { IRSAlignment, PilotVisibility, Simulation } from "./apps/Settings/Simul
 
 import "./index.scss";
 import { Acars } from "./apps/Settings/Acars";
+import { FZPro } from "./apps/FZPro";
+import { NavigraphAuthProvider } from "./hooks/useNavigraphAuth";
 
 const EFB: FC = () => {
     return (
         <Root>
-            <MemoryRouter>
-                <Routes>
-                    <Route path="/" element={<RouteElement component={<HomeScreen />} />} />
-                    <Route
-                        path="/maps"
-                        element={<RouteElement component={<Maps />} barProps={{ textColor: "black", backdropFilter: "blur(8px)" }} />}
-                    />
-                    <Route path="/settings" element={<RouteElement component={<Settings />} barProps={{ textColor: "black" }} />}>
-                        <Route path="general" element={<General />} />
-                        <Route path="aircraft" element={<Aircraft />} />
-                        <Route path="simulation" element={<Simulation />} />
-                        <Route path="acars" element={<Acars />} />
-                        <Route path="units" element={<Units />} />
-                        <Route path="pilot-visibility" element={<PilotVisibility />} />
-                        <Route path="irs-alignment" element={<IRSAlignment />} />
-                    </Route>
-                </Routes>
-            </MemoryRouter>
+            <NavigraphAuthProvider>
+                <MemoryRouter>
+                    <Routes>
+                        <Route path="/" element={<RouteElement component={<HomeScreen />} />} />
+                        <Route
+                            path="/maps"
+                            element={<RouteElement component={<Maps />}
+                                                   barProps={{textColor: "black", backdropFilter: "blur(8px)"}} />}
+                        />
+                        <Route path="/settings"
+                               element={<RouteElement component={<Settings />} barProps={{textColor: "black"}} />}>
+                            <Route path="general" element={<General />} />
+                            <Route path="aircraft" element={<Aircraft />} />
+                            <Route path="simulation" element={<Simulation />} />
+                            <Route path="acars" element={<Acars />} />
+                            <Route path="units" element={<Units />} />
+                            <Route path="pilot-visibility" element={<PilotVisibility />} />
+                            <Route path="irs-alignment" element={<IRSAlignment />} />
+                        </Route>
+                        <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
+                    </Routes>
+                </MemoryRouter>
+            </NavigraphAuthProvider>
         </Root>
     );
 };

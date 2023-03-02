@@ -36,7 +36,7 @@ export const HomeScreen: FC = () => (
             <App name="Camera" bg="lightgray" icon={<BsCameraFill style={{ fill: "black", transform: "scale(3.5)" }} />} />
             <App name="Home" bg="white" icon={<AiFillHome style={{ fill: "#f2ba3f", transform: "scale(4.5)" }} />} />
             <App name="Clock" bg="black" icon={<AiFillClockCircle style={{ fill: "white", transform: "scale(4.5)" }} />} />
-            <App name="HeadTime" bg="#30d140" icon={<BsFillCameraVideoFill style={{ fill: "white", transform: "scale(3.5)" }} />} />
+            <App name="HeadTime" bg="#30d140" icon={<BsFillCameraVideoFill style={{ fill: "white", transform: "scale(3.5)" }} />} route="/fzpro"/>
         </AppSection>
         <PageIndicators>
             <PageIndicator highlighted />

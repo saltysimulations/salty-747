@@ -11,6 +11,7 @@ const replace = require("@rollup/plugin-replace");
 const postcss = require("rollup-plugin-postcss");
 const tailwindcss = require("tailwindcss");
 import tsPathsResolve from "rollup-plugin-ts-paths-resolve";
+import dotenv from 'dotenv';
 
 const template = require("@flybywiresim/rollup-plugin-msfs");
 
@@ -19,6 +20,8 @@ const TMPDIR = `${__dirname}../../../bundles/`;
 const extensions = [".ts", ".tsx", ".js", ".jsx", ".mjs"];
 
 const extraInstruments = [];
+
+dotenv.config();
 
 function makePostcssPluginList(instrumentPath) {
     const usesTailwind = fs.existsSync(`${__dirname}/src/${instrumentPath}/tailwind.config.js`);
@@ -40,7 +43,6 @@ function getInstrumentsToCompile() {
 function getTemplatePlugin({ name, config, imports = [], isInstrument }) {
     return template({
         name,
-        elementName: `salty-74s-${name.toLowerCase()}`,
         config,
         imports,
         elementName: `salty-${name}`.toLowerCase(),
@@ -77,7 +79,11 @@ module.exports = getInstrumentsToCompile().map(({ path, name, isInstrument }) =>
                 compact: false,
                 extensions,
             }),
-            replace({ "process.env.NODE_ENV": '"production"' }),
+            replace({
+                "process.env.NODE_ENV": '"production"',
+                "process.env.CLIENT_ID": JSON.stringify(process.env.CLIENT_ID),
+                "process.env.CLIENT_SECRET": JSON.stringify(process.env.CLIENT_SECRET),
+            }),
             postcss({
                 use: { sass: {} },
                 plugins: makePostcssPluginList(path),
