@@ -1,4 +1,5 @@
 import pkce from "@navigraph/pkce";
+import { SaltyDataStore } from "@shared/persistence";
 
 export type DeviceAuthorizationParams = {
     deviceCode: string;
@@ -10,6 +11,10 @@ type Tokens = {
     refreshToken: string;
 }
 
+export type User = {
+    displayName: string;
+}
+
 export class NavigraphAPI {
     private readonly host = "https://identity.api.navigraph.com";
 
@@ -17,15 +22,30 @@ export class NavigraphAPI {
     private readonly clientSecret = process.env.CLIENT_SECRET;
 
     private deviceAuthorizationParams: DeviceAuthorizationParams | null = null;
+    private tokens: Tokens | null = null;
 
     private readonly codeVerifier: string;
     private readonly codeChallenge: string;
+
+    private initialized = false;
 
     constructor() {
         const pkceObject = pkce();
 
         this.codeVerifier = pkceObject.code_verifier;
         this.codeChallenge = pkceObject.code_challenge;
+
+        const savedRefreshToken = SaltyDataStore.get("NAVIGRAPH_REFRESH_TOKEN", "");
+
+        if (savedRefreshToken) {
+            this.updateTokens(savedRefreshToken)
+                .then(() => {
+                    this.initialized = true;
+                    this.dispatchAuthStateEvent();
+                });
+        } else {
+            this.initialized = true;
+        }
     }
 
     private async verificationCodes(): Promise<DeviceAuthorizationParams> {
@@ -50,7 +70,7 @@ export class NavigraphAPI {
         }
     }
 
-    private async accessTokens(): Promise<Tokens> {
+    private async fetchTokens(): Promise<Tokens> {
         return new Promise(async (resolve, reject) => {
             if (!this.deviceAuthorizationParams) {
                 reject("no authorization params");
@@ -81,7 +101,8 @@ export class NavigraphAPI {
                     if (json.error === "authorization_pending") {
                         setTimeout(request, timeout);
                     } else if (json.error === "slow_down") {
-                        setTimeout(request, timeout + 5000)
+                        timeout += 5000;
+                        setTimeout(request, timeout)
                     } else if (json.error === "access_denied") {
                         reject("access denied by user");
                     } else {
@@ -99,25 +120,81 @@ export class NavigraphAPI {
         })
     }
 
+    private async updateTokens(refreshToken: string) {
+        const res = await fetch(`${this.host}/connect/token`, {
+            method: "POST",
+            body: new URLSearchParams({
+                grant_type: "refresh_token",
+                client_id: this.clientId!,
+                client_secret: this.clientSecret!,
+                refresh_token: refreshToken
+            })
+        });
 
-    public async authorize() {
+        const json = await res.json();
+
+        this.saveTokens({
+            accessToken: json.access_token,
+            refreshToken: json.refresh_token,
+        });
+
+    }
+
+    private saveTokens(tokens: Tokens) {
+        this.tokens = tokens;
+
+        SaltyDataStore.set("NAVIGRAPH_REFRESH_TOKEN", tokens.refreshToken);
+    }
+
+
+    public async signIn() {
         this.deviceAuthorizationParams = await this.verificationCodes();
         this.dispatchAuthStateEvent();
 
-        const accessTokens = await this.accessTokens();
-        console.log(accessTokens);
+        this.saveTokens(await this.fetchTokens());
+        this.dispatchAuthStateEvent();
+    }
+
+    public async getUser(): Promise<User | null> {
+        if (this.tokens?.accessToken) {
+            try {
+                const res = await fetch(`${this.host}/connect/userinfo`, {
+                    headers: {
+                        "Authorization": `Bearer ${this.tokens.accessToken}`
+                    }
+                });
+
+                if (!res.ok) {
+                    await this.updateTokens(this.tokens.refreshToken);
+
+                    return this.getUser();
+                }
+
+                const json = await res.json();
+
+                return { displayName: json.preferred_username };
+            } catch (e) {
+                console.log("unable to get navigraph userinfo");
+            }
+        }
+
+        return null;
     }
 
     public getDeviceAuthorizationParams(): DeviceAuthorizationParams | null {
         return this.deviceAuthorizationParams;
     }
 
-    public onAuthStateChanged(callback: (user: null) => void): () => void {
-        const listener = () => callback(null);
+    public onAuthStateChanged(callback: () => void): () => void {
+        const listener = () => callback();
 
         window.addEventListener("auth-state-changed", listener);
 
         return () => window.removeEventListener("auth-state-changed", listener);
+    }
+
+    public isInitialized(): boolean {
+        return this.initialized;
     }
 
     private dispatchAuthStateEvent() {
