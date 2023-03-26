@@ -13,6 +13,27 @@ type Tokens = {
 
 export type User = {
     displayName: string;
+    hasChartsSubscription: boolean;
+}
+
+type ChartCategory = "arr" | "dep" | "ref" | "apt" | "app";
+
+type Chart = {
+    imageDayUrl: string;
+    imageNightUrl: string;
+    width: number;
+    height: number;
+    name: string;
+    id: string;
+    category: ChartCategory;
+}
+
+type ChartIndex = {
+    arr: Chart[];
+    dep: Chart[];
+    ref: Chart[];
+    apt: Chart[];
+    app: Chart[];
 }
 
 export class NavigraphAPI {
@@ -155,6 +176,60 @@ export class NavigraphAPI {
         this.dispatchAuthStateEvent();
     }
 
+    public async getChartIndex(icao: string): Promise<ChartIndex> {
+        const charts = await this.getCharts(icao);
+
+        const chartIndex: ChartIndex = {
+            arr: [],
+            dep: [],
+            ref: [],
+            apt: [],
+            app: []
+        }
+
+        for (const chart of charts) {
+            chartIndex[chart.category].push(chart);
+        }
+
+        return chartIndex;
+    }
+
+    private async getCharts(icao: string): Promise<Chart[]> {
+        if (this.tokens?.accessToken && this.hasChartsSubscription(this.tokens?.accessToken)) {
+            const res = await fetch(`https://api.navigraph.com/v2/charts/${icao}?version=STD`, {
+                headers: {
+                    "Authorization": `Bearer ${this.tokens.accessToken}`
+                }
+            });
+
+            if (!res.ok) {
+                await this.updateTokens(this.tokens.refreshToken);
+
+                return this.getCharts(icao);
+            }
+
+            const json = await res.json();
+
+            let charts: Chart[] = [];
+
+            for (const chart of json.charts) {
+                charts.push({
+                    imageDayUrl: chart.image_day_url,
+                    imageNightUrl: chart.image_night_url,
+                    width: chart.width,
+                    height: chart.height,
+                    name: chart.name,
+                    id: chart.id,
+                    category: chart.category.toLowerCase()
+                });
+            }
+
+            return charts;
+        } else {
+            throw new Error("navigraph account does not have a charts subscription");
+        }
+    }
+
     public async getUser(): Promise<User | null> {
         if (this.tokens?.accessToken) {
             try {
@@ -172,7 +247,10 @@ export class NavigraphAPI {
 
                 const json = await res.json();
 
-                return { displayName: json.preferred_username };
+                return {
+                    displayName: json.preferred_username,
+                    hasChartsSubscription: this.hasChartsSubscription(this.tokens.accessToken)
+                };
             } catch (e) {
                 console.log("unable to get navigraph userinfo");
             }
@@ -181,11 +259,19 @@ export class NavigraphAPI {
         return null;
     }
 
+    private hasChartsSubscription(token: string): boolean {
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+
+        return decodedToken.subscriptions.includes("charts");
+    }
+
     public getDeviceAuthorizationParams(): DeviceAuthorizationParams | null {
         return this.deviceAuthorizationParams;
     }
 
     public onAuthStateChanged(callback: () => void): () => void {
+        callback();
+
         const listener = () => callback();
 
         window.addEventListener("auth-state-changed", listener);
