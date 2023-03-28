@@ -8,6 +8,7 @@ interface NavigraphAuthContext {
     authParams: DeviceAuthorizationParams | null;
     user: User | null;
     signIn: typeof navigraph.signIn;
+    signOut: typeof navigraph.signOut;
     getChartIndex: typeof navigraph.getChartIndex;
     initialized: boolean;
 }
@@ -16,6 +17,7 @@ const authContext = createContext<NavigraphAuthContext>({
     authParams: null,
     user: null,
     signIn: () => Promise.reject("Not initialized"),
+    signOut: () => Promise.reject("Not initialized"),
     getChartIndex: () => Promise.reject("Not initialized"),
     initialized: false,
 });
@@ -44,6 +46,7 @@ function useProvideAuth() {
         user,
         authParams,
         signIn: () => navigraph.signIn(),
+        signOut: () => navigraph.signOut(),
         getChartIndex: (icao: string) => navigraph.getChartIndex(icao),
         initialized,
     };

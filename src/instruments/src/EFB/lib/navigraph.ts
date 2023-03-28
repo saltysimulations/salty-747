@@ -176,6 +176,14 @@ export class NavigraphAPI {
         this.dispatchAuthStateEvent();
     }
 
+    public signOut() {
+        this.deviceAuthorizationParams = null;
+        this.tokens = null;
+        SaltyDataStore.set("NAVIGRAPH_REFRESH_TOKEN", "");
+
+        this.dispatchAuthStateEvent();
+    }
+
     public async getChartIndex(icao: string): Promise<ChartIndex> {
         const charts = await this.getCharts(icao);
 
