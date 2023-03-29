@@ -161,6 +161,112 @@
 				<Simvar name="STALL WARNING" unit="Boolean"/>
 			</Condition>
 		</Annunciation>
+		
+<!-- ELEC EICAS MESSAGE -->
+
+
+		<Annunciation>
+			<Type>Caution</Type>
+			<Text>GEN 1 OFF</Text>
+			<Condition>
+				<Equal>
+				<Simvar name="GENERAL ENG MASTER ALTERNATOR:1" unit="Boolean"/>
+				<Constant>0</Constant>			
+				</Equal>
+			</Condition>
+			<NODE_ID_SEQ1>btn_master_pilot_seq2</NODE_ID_SEQ1>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Caution</Type>
+			<Text>GEN 2 OFF</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="GENERAL ENG MASTER ALTERNATOR:2" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+			<NODE_ID_SEQ2>btn_master_pilot_seq1</NODE_ID_SEQ2>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Caution</Type>
+			<Text>GEN 3 OFF</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="GENERAL ENG MASTER ALTERNATOR:3" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Caution</Type>
+			<Text>GEN 4 OFF</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="GENERAL ENG MASTER ALTERNATOR:4" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+		
+		<Annunciation>
+			<Type>Caution</Type>
+			<Text>STBY POWER OFF</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="L:XMLVAR_StandbyPower_Selector" unit="enum"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+
+		<Annunciation>
+			<Type>Advisory</Type>
+			<Text>>BUS 4 ISLN</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="BUS CONNECTION ON:5" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Advisory</Type>
+			<Text>>BUS 3 ISLN</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="BUS CONNECTION ON:4" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Advisory</Type>
+			<Text>>BUS 2 ISLN</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="BUS CONNECTION ON:3" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
+		<Annunciation>
+			<Type>Advisory</Type>
+			<Text>>BUS 1 ISLN</Text>
+			<Condition>
+				<Equal>
+					<Simvar name="BUS CONNECTION ON:2" unit="Boolean"/>
+					<Constant>0</Constant>
+				</Equal>
+			</Condition>
+		</Annunciation>
+
 
 		<Annunciation>
 		  <Type>Caution</Type>
