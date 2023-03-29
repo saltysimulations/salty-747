@@ -460,6 +460,32 @@
 			</And>
 		  </Condition>
 		</Annunciation>
+		
+		<!--Adding Advisory if fuel imbalance occurs-->
+		
+		<Annunciation>
+			<Type>Advisory</Type>
+			<Text>FUEL IMBAL 1-4</Text>
+			<Condition>
+				<Or> 
+				<GreaterEqual>
+					<Subtract>
+						<Simvar name="FUEL TANK LEFT AUX QUANTITY" unit="gallon"/>
+						<Simvar name="FUEL TANK RIGHT AUX QUANTITY" unit="gallon"/>
+					</Subtract>
+					<Constant>450</Constant>
+				</GreaterEqual>
+					
+				<GreaterEqual>
+					<Subtract>
+						<Simvar name="FUEL TANK RIGHT AUX QUANTITY" unit="gallon"/>
+						<Simvar name="FUEL TANK LEFT AUX QUANTITY" unit="gallon"/>
+						</Subtract>
+					<Constant>450</Constant>
+				</GreaterEqual>
+				</Or>	
+			</Condition>
+		</Annunciation>
 
 		<Annunciation>
 		  <Type>Advisory</Type>
