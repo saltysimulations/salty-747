@@ -10,6 +10,7 @@ interface NavigraphAuthContext {
     signIn: typeof navigraph.signIn;
     signOut: typeof navigraph.signOut;
     getChartIndex: typeof navigraph.getChartIndex;
+    getChartImage: typeof navigraph.getChartImage;
     initialized: boolean;
 }
 
@@ -19,6 +20,7 @@ const authContext = createContext<NavigraphAuthContext>({
     signIn: () => Promise.reject("Not initialized"),
     signOut: () => Promise.reject("Not initialized"),
     getChartIndex: () => Promise.reject("Not initialized"),
+    getChartImage: () => Promise.reject("Not initialized"),
     initialized: false,
 });
 
@@ -48,6 +50,7 @@ function useProvideAuth() {
         signIn: () => navigraph.signIn(),
         signOut: () => navigraph.signOut(),
         getChartIndex: (icao: string) => navigraph.getChartIndex(icao),
+        getChartImage: (url: string) => navigraph.getChartImage(url),
         initialized,
     };
 }

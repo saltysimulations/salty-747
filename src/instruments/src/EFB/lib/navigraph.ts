@@ -184,6 +184,28 @@ export class NavigraphAPI {
         this.dispatchAuthStateEvent();
     }
 
+    public async getChartImage(url: string): Promise<string> {
+        if (this.tokens?.accessToken && this.hasChartsSubscription(this.tokens?.accessToken)) {
+            const res = await fetch(url, {
+                headers: {
+                    "Authorization": `Bearer ${this.tokens.accessToken}`
+                }
+            });
+
+            if (!res.ok) {
+                await this.updateTokens(this.tokens.refreshToken);
+
+                return this.getChartImage(url);
+            }
+
+            const blob = await res.blob();
+
+            return URL.createObjectURL(blob);
+        } else {
+            throw new Error("navigraph account does not have a charts subscription");
+        }
+    }
+
     public async getChartIndex(icao: string): Promise<ChartIndex> {
         const charts = await this.getCharts(icao);
 

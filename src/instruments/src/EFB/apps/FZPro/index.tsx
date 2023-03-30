@@ -1,82 +1,85 @@
-import React, { FC, useEffect } from "react";
-import QRCode from "qrcode.react";
+import React, { FC, useEffect, useRef, useState } from "react";
 
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
-import { User } from "../../lib/navigraph";
 import styled from "styled-components";
 
-import shaker from "../../img/black-salty-shaker.png"
+import { AirportChartViewer } from "./AirportChartViewer";
+import { SignInPrompt } from "./SignInPrompt";
+import { TopBar } from "./TopBar";
 
 export const FZPro: FC = () => {
     const { user, initialized } = useNavigraphAuth();
 
     return (
-        <AppRoot>
+        <RootContainer>
             {!initialized && <div>Loading</div>}
 
-            {(initialized && !user) ? <SignInPrompt /> : (user && <App user={user} />)}
-        </AppRoot>
+            {(initialized && !user) ? <SignInPrompt /> : (user && <App />)}
+        </RootContainer>
     );
 };
 
-const App: FC<{ user: User }> = ({ user }) => {
-    const { signOut } = useNavigraphAuth();
+const App: FC = () => {
+    const { getChartImage, getChartIndex } = useNavigraphAuth();
+
+    const [chartImage, setChartImage] = useState<string | null>(null);
+
+    const mainSectionRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const fetchChartUrl = async () => {
+            const index = await getChartIndex("ENZV");
+            const chart = index.apt[3];
+
+            setChartImage(await getChartImage(chart.imageDayUrl));
+        }
+
+        void fetchChartUrl();
+    }, [])
 
     return (
         <>
-            <div>hi {user.displayName}</div>
-            <div onClick={signOut}>sign out</div>
+            <TopBar />
+            <SideAndMainContainer>
+                <SideBar />
+                <MainSection ref={mainSectionRef}>
+                    {chartImage && mainSectionRef.current && <AirportChartViewer
+                        chartImage={chartImage}
+                        canvasWidth={mainSectionRef.current.clientWidth}
+                        canvasHeight={mainSectionRef.current.clientHeight}
+                    />}
+                </MainSection>
+            </SideAndMainContainer>
         </>
 
-    )
-}
-
-const AppRoot = styled.div`
-    width: 100%;
-    height: 100%;
-`
-
-const SignInPrompt: FC = () => {
-    const { signIn, authParams, user, initialized } = useNavigraphAuth();
-
-    useEffect(() => {
-        if (initialized && !user) {
-            signIn().catch(e => console.log(e));
-        }
-    }, [initialized]);
-
-    return (
-        <StyledSignIn>
-            {authParams?.verificationUriComplete && (
-                <QRCode value={authParams.verificationUriComplete} size={350} imageSettings={{
-                    src: shaker,
-                    height: 60,
-                    width: 60,
-                    excavate: true,
-                }} />
-            )}
-
-            <SignInTitle>Scan the QR code and log into your Navigraph account to get started</SignInTitle>
-        </StyledSignIn>
-    )
+    );
 };
 
-const SignInTitle = styled.div`
-    font-size: 52px;
-    font-weight: 300;
-`
-
-const StyledSignIn = styled.div`
-    background: #22242D;
+const RootContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
+`;
 
-    * {
-        margin: 50px;
-    }
-`
+const MainSection = styled.div`
+    background: #F0F4F8;
+    flex-grow: 1;
+    display: flex;
+`;
+
+const SideAndMainContainer = styled.div`
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+`;
+
+const SideBar: FC = () => {
+    return <StyledSideBar />;
+};
+
+const StyledSideBar = styled.div`
+    background: #22242D;
+    width: 120px;
+    border-top: 1px solid #40444D;
+`;
