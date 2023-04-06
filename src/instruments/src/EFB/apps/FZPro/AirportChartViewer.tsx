@@ -1,49 +1,50 @@
 import React, { FC, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { TransformComponent, TransformWrapper, ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
 
-type AirportChartViewerProps = { chartImage: string, canvasWidth: number; canvasHeight: number; }
-export const AirportChartViewer: FC<AirportChartViewerProps> = ({ chartImage, canvasWidth, canvasHeight }) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+type AirportChartViewerProps = { chartImage: string, canvasWidth: number; canvasHeight: number; rotation: number; }
+
+export const AirportChartViewer: FC<AirportChartViewerProps> = ({
+                                                                    chartImage,
+                                                                    canvasWidth,
+                                                                    canvasHeight,
+                                                                    rotation
+                                                                }) => {
+    const chartImageRef = useRef<HTMLImageElement>(null);
+    const transformComponentRef = useRef<ReactZoomPanPinchRef>(null);
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        const context = canvas && canvas.getContext("2d");
+        if (!chartImageRef.current) return;
 
-        if (!context) return;
-
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-
-        draw(context);
-    }, []);
-
-    const draw = (ctx: CanvasRenderingContext2D) => {
-        drawImage(ctx, 0);
-    };
-
-    const drawImage = (ctx: CanvasRenderingContext2D, rotation: number) => {
-        const image = new Image();
-        image.src = chartImage;
-
-        image.onload = () => {
-            ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
-            ctx.rotate(rotation * Math.PI / 180);
-            ctx.translate(-ctx.canvas.width / 2, -ctx.canvas.height / 2);
-
-            const adjustedWidth = ctx.canvas.height * (image.width / image.height);
-            const dx = ctx.canvas.width / 2 - adjustedWidth / 2;
-
-            ctx.drawImage(image, 0, 0, image.width, image.height, dx, 0, adjustedWidth, ctx.canvas.height);
-
-            ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
-            ctx.rotate(-rotation * Math.PI / 180);
-            ctx.translate(-ctx.canvas.width / 2, -ctx.canvas.height / 2);
+        chartImageRef.current.onload = () => {
+            if (chartImageRef.current && transformComponentRef.current) {
+                if (isHorizontal(rotation)) {
+                    const x = (canvasWidth - canvasHeight) / 2;
+                    const y = -chartImageRef.current.clientHeight / 2 + canvasHeight / 2;
+                    transformComponentRef.current.setTransform(x, y, 1)
+                } else {
+                    const x = -chartImageRef.current.clientWidth / 2 + canvasWidth / 2
+                    transformComponentRef.current.setTransform(x, 0, 1);
+                }
+            }
         }
-    };
+    }, [])
 
-    return <Canvas ref={canvasRef} />;
+    const isHorizontal = (degrees: number) => degrees === 90 || degrees === 270;
+
+    return (
+        <TransformWrapper limitToBounds={false} ref={transformComponentRef}>
+            <TransformComponent wrapperStyle={{ width: canvasWidth, height: canvasHeight }}>
+                <ChartContainer rotation={rotation}>
+                    <img src={chartImage} height={isHorizontal(rotation) ? canvasWidth : canvasHeight}
+                         ref={chartImageRef} />
+                </ChartContainer>
+            </TransformComponent>
+        </TransformWrapper>
+    );
 };
 
-const Canvas = styled.canvas`
-    flex-grow: 1;
+const ChartContainer = styled.div`
+    transform: rotate(${(props: { rotation: number }) => props.rotation}deg);
+    width: auto;
 `;
