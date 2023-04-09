@@ -47,7 +47,6 @@ const App: FC = () => {
                         chartImage={chartImage}
                         canvasWidth={mainSectionRef.current.clientWidth}
                         canvasHeight={mainSectionRef.current.clientHeight}
-                        rotation={0}
                     />}
                 </MainSection>
             </SideAndMainContainer>
