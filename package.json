@@ -65,6 +65,7 @@
         "react-leaflet": "^3.2.2",
         "react-msfs": "^0.2.0",
         "react-router-dom": "^6.2.1",
+        "react-spinners": "^0.13.8",
         "react-zoom-pan-pinch": "^3.0.6",
         "sass": "^1.42.1",
         "styled-components": "^5.3.3"

@@ -16,19 +16,20 @@ export type User = {
     hasChartsSubscription: boolean;
 }
 
-type ChartCategory = "arr" | "dep" | "ref" | "apt" | "app";
+export type ChartCategory = "arr" | "dep" | "ref" | "apt" | "app";
 
-type Chart = {
+export type Chart = {
     imageDayUrl: string;
     imageNightUrl: string;
     width: number;
     height: number;
     name: string;
     id: string;
+    indexNumber: string;
     category: ChartCategory;
 }
 
-type ChartIndex = {
+export type ChartIndex = {
     arr: Chart[];
     dep: Chart[];
     ref: Chart[];
@@ -250,6 +251,7 @@ export class NavigraphAPI {
                     height: chart.height,
                     name: chart.name,
                     id: chart.id,
+                    indexNumber: chart.index_number,
                     category: chart.category.toLowerCase()
                 });
             }
