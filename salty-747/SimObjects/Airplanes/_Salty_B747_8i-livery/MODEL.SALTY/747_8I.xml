@@ -217,7 +217,6 @@
 				<TYPE>SPEEDBRAKES_AND_GROUND</TYPE>
 				<ANIM_NAME_LEFT>l_spoiler_key</ANIM_NAME_LEFT>
 				<ANIM_NAME_RIGHT>r_spoiler_key</ANIM_NAME_RIGHT>
-				<MAX_VALUE>45</MAX_VALUE>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_HANDLING_Flaps_Template">
 				<ANIM_NAME_LEFT>l_flap_percent_key</ANIM_NAME_LEFT>
