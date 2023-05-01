@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { FC } from "react";
 import { AiFillCloseCircle } from "react-icons/all";
 import { Chart } from "../../lib/navigraph";
+import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
 
 type ChartSelectorProps = {
     charts: Chart[],
@@ -23,23 +24,14 @@ export const ChartSelector: FC<ChartSelectorProps> = ({ charts, label, onClose, 
                 selected={selectedChart ? selectedChart.id === chart.id : false}
                 onClick={() => onSelect(chart)}
             >
-                <ChartDescriptionContainer>
-                    <ChartName>{chart.name}</ChartName>
-                    <ChartIndexNumber>{chart.indexNumber}</ChartIndexNumber>
-                </ChartDescriptionContainer>
+                <ListItemDescription>
+                    <ListItemTitle>{chart.name}</ListItemTitle>
+                    <ListItemLabel>{chart.indexNumber}</ListItemLabel>
+                </ListItemDescription>
             </ChartSelectorItem>
         ))}
     </ChartSelectorContainer>
 );
-
-const ChartName = styled.div`
-    font-weight: 500;
-`;
-
-const ChartIndexNumber = styled.div`
-    font-weight: 300;
-    color: #4f4f4f;
-`;
 
 const ChartSelectorItem = styled.div`
     width: 100%;
@@ -47,18 +39,6 @@ const ChartSelectorItem = styled.div`
     border-bottom: 1px solid #b9b9bb;
     align-items: center;
     background: ${(props: { selected: boolean }) => props.selected ? "#CDE5F4" : "white"};;
-`;
-
-const ChartDescriptionContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 24px;
-    width: 70%;
-    font-size: 24px;
-
-    * {
-        margin: 3px 0;
-    }
 `;
 
 const ChartSelectorContainer = styled.div`

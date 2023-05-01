@@ -7,16 +7,27 @@ type SidebarProps = {
     category: ChartCategory | null,
     setCategory: (category: ChartCategory | null) => void,
     selectedAirport: string,
+    setAirportSelectorDisplayed: (toggled: boolean) => void;
+    airportSelectorDisplayed: boolean;
 }
-export const Sidebar: FC<SidebarProps> = ({ category, setCategory, selectedAirport }) => {
-    const onButtonClick = (newCategory: ChartCategory | null) => (
-        setCategory(category === newCategory ? null : newCategory)
-    );
+
+export const Sidebar: FC<SidebarProps> = ({
+                                              category,
+                                              setCategory,
+                                              selectedAirport,
+                                              setAirportSelectorDisplayed,
+                                              airportSelectorDisplayed
+                                          }) => {
+    const onButtonClick = (newCategory: ChartCategory | null) => {
+        if (airportSelectorDisplayed) setAirportSelectorDisplayed(false);
+
+        setCategory(category === newCategory ? null : newCategory);
+    };
 
     return (
         <StyledSidebar>
             <UpperSection>
-                <AirportSelectLabel>
+                <AirportSelectLabel onClick={() => setAirportSelectorDisplayed(!airportSelectorDisplayed)}>
                     <div>{selectedAirport}</div>
                     <IoIosArrowDown size={22} />
                 </AirportSelectLabel>

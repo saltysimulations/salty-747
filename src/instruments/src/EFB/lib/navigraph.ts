@@ -4,17 +4,17 @@ import { SaltyDataStore } from "@shared/persistence";
 export type DeviceAuthorizationParams = {
     deviceCode: string;
     verificationUriComplete: string;
-}
+};
 
 type Tokens = {
     accessToken: string;
     refreshToken: string;
-}
+};
 
 export type User = {
     displayName: string;
     hasChartsSubscription: boolean;
-}
+};
 
 export type ChartCategory = "arr" | "dep" | "ref" | "apt" | "app";
 
@@ -27,7 +27,7 @@ export type Chart = {
     id: string;
     indexNumber: string;
     category: ChartCategory;
-}
+};
 
 export type ChartIndex = {
     arr: Chart[];
@@ -35,7 +35,13 @@ export type ChartIndex = {
     ref: Chart[];
     apt: Chart[];
     app: Chart[];
-}
+};
+
+export type AirportInfo = {
+    icao: string;
+    iata: string;
+    name: string;
+};
 
 export class NavigraphAPI {
     private readonly host = "https://identity.api.navigraph.com";
@@ -202,6 +208,36 @@ export class NavigraphAPI {
             const blob = await res.blob();
 
             return URL.createObjectURL(blob);
+        } else {
+            throw new Error("navigraph account does not have a charts subscription");
+        }
+    }
+
+    public async getAirportInfo(icao: string): Promise<AirportInfo | null> {
+        if (this.tokens?.accessToken && this.hasChartsSubscription(this.tokens?.accessToken)) {
+            const res = await fetch(`https://api.navigraph.com/v2/airport/${icao}`, {
+                headers: {
+                    "Authorization": `Bearer ${this.tokens.accessToken}`
+                }
+            });
+
+            const json = await res.json();
+
+            if (!res.ok) {
+                if (res.status === 401) {
+                    await this.updateTokens(this.tokens.refreshToken);
+
+                    return this.getAirportInfo(icao);
+                }
+
+                return null;
+            }
+
+            return {
+                icao: json.icao_airport_identifier,
+                iata: json.iata_airport_designator,
+                name: json.name
+            };
         } else {
             throw new Error("navigraph account does not have a charts subscription");
         }

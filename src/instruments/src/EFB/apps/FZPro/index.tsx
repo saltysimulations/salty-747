@@ -10,6 +10,7 @@ import { Chart, ChartCategory, ChartIndex } from "../../lib/navigraph";
 import { DocumentLoading } from "./DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
+import { AirportSelector } from "./AirportSelector";
 
 export const FZPro: FC = () => {
     const { user, initialized } = useNavigraphAuth();
@@ -31,6 +32,7 @@ const App: FC = () => {
     const [chartIndex, setChartIndex] = useState<ChartIndex | null>(null);
     const [chartImage, setChartImage] = useState<string | null>(null);
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);
+    const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     const mainSectionRef = useRef<HTMLDivElement>(null);
@@ -52,7 +54,7 @@ const App: FC = () => {
         }
 
         fetchChartImageUrl().then(() => setLoading(false));
-    }, [currentChart])
+    }, [currentChart]);
 
     useEffect(() => {
         const fetchChartIndex = async () => {
@@ -62,16 +64,20 @@ const App: FC = () => {
         }
 
         void fetchChartIndex();
-    }, [selectedAirport])
+    }, [selectedAirport]);
 
     return (
         <>
             <TopBar />
-            <SideAndMainContainer>
+            <SideAndMainContainer onClick={() => {
+                if (airportSelectorDisplayed) setAirportSelectorDisplayed(false);
+            }}>
                 <Sidebar
                     category={chartSelectorCategory}
                     setCategory={(category: ChartCategory | null) => setChartSelectorCategory(category)}
                     selectedAirport={selectedAirport ?? "APTS"}
+                    setAirportSelectorDisplayed={(displayed) => setAirportSelectorDisplayed(displayed)}
+                    airportSelectorDisplayed={airportSelectorDisplayed}
                 />
                 <MainSection ref={mainSectionRef}>
                     {loading ? <DocumentLoading /> : chartImage && mainSectionRef.current && <AirportChartViewer
@@ -89,6 +95,10 @@ const App: FC = () => {
                         />}
                 </MainSection>
             </SideAndMainContainer>
+            {airportSelectorDisplayed && <AirportSelector
+                selectedAirport={selectedAirport}
+                setSelectedAirport={(icao) => setSelectedAirport(icao)}
+            />}
         </>
     );
 };
@@ -98,6 +108,7 @@ const RootContainer = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
 `;
 
 const MainSection = styled.div`
