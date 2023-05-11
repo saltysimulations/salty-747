@@ -3783,7 +3783,7 @@
 					<WWISE_EVENT_1>landing_light_on</WWISE_EVENT_1>
 					<WWISE_EVENT_2>landing_light_off</WWISE_EVENT_2>
 				</UseTemplate>
-              		<Component ID="Gear_Lights_IE">
+				<Component ID="Gear_Lights_IE">
 					<UseInputEvent ID="PROCEDURE">
 						<PROCEDURE_ID>GEAR_CONTROLLED_CIRCUIT</PROCEDURE_ID>
 						<BUS_INDEX>1</BUS_INDEX>
