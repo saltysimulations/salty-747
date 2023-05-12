@@ -1,6 +1,3 @@
-[Options]
-Sound=True
-
 [SimVarForSpawningInTheAir.0]
 IAS=300
 FlapsDegree=0000.00
@@ -183,32 +180,7 @@ TailhookState=0
 FoldingWingsHandle=False
 FoldingWingsState=0, 0
 AuxPowerUnitSwitch=False
-
-[LocalVars.0]
-XMLVAR_SeatBelts=1
-B747_8_MFD_NAV_MODE=2
-SALTY_IRS_STATE=2
-747_IRS_KNOB_1=2
-747_IRS_KNOB_2=2
-747_IRS_KNOB_3=2
-SALTY_FUEL_JETTISON_ACTIVE_L=0
-SALTY_FUEL_JETTISON_ACTIVE_R=0
-747_JETTISON_KNOB_POS=2
-747_FUEL_TO_REMAIN=0
-SALTY_ISFD_INIT_DONE=1
-SALTY_VIS_PILOT_0=1
-SALTY_VIS_PILOT_1=1
-SALTY_UNIT_IS_METRIC=1
-AIRLINER_FLIGHT_PHASE=3
-SALTY_SPEED_RESTRICTION=0
-SALTY_SPEED_RESTRICTION_ALT=0
-747_Aircond_Knob_1=3
-747_Aircond_Knob_2=3
-747_Aircond_Knob_3=3
-SALTY_TAKEOFF_FLAP_VALUE=0
-SALTY_LANDING_FLAP_VALUE=0
-74S_YAW_DAMPER_UPPER=1
-74S_YAW_DAMPER_LOWER=1
+SeatBeltsSwitch=True
 
 [Electrical.0]
 alternator.5=False
@@ -219,6 +191,37 @@ circuit.106 = True,0.5
 circuit.107 = True,0.5
 circuit.108 = True,0.5
 circuit.111 = False,1.0
+
+[LocalVars.0]
+XMLVAR_Mins_Selector_Baro=1
+XMLVAR_SeatBelts=1
+B747_8_MFD_1_NAV_MODE=2
+B747_8_MFD_2_NAV_MODE=2
+B747_8_MFD_1_Range=6; 20NM
+B747_8_MFD_2_Range=6; 20NM
+XMLVAR_Transponder_Mode=3
+AS01B_AUTO_THROTTLE_ARM_STATE=1
+XMLVAR_HYDRAULICS_DEMAND_1=1
+XMLVAR_HYDRAULICS_DEMAND_2=1
+XMLVAR_HYDRAULICS_DEMAND_3=1
+XMLVAR_HYDRAULICS_DEMAND_4=1
+B748_IRS_Knob_State:1=2
+B748_IRS_Knob_State:2=2
+B748_IRS_Knob_State:3=2
+B748_IRS_Source_Knob_State:1=3
+B748_IRS_Source_Knob_State:2=3
+SALTY_FUEL_JETTISON_ACTIVE_L=0
+SALTY_FUEL_JETTISON_ACTIVE_R=0
+747_JETTISON_KNOB_POS=2
+747_FUEL_TO_REMAIN=0
+SALTY_ISFD_INIT_DONE=1
+SALTY_VIS_PILOT_0=1
+SALTY_VIS_PILOT_1=1
+747_Aircond_Knob_1=3
+747_Aircond_Knob_2=3
+747_Aircond_Knob_3=3
+74S_YAW_DAMPER_UPPER=1
+74S_YAW_DAMPER_LOWER=1
 
 [Gauges.0]
 KollsmanSetting=30.080865859985351563
@@ -237,9 +240,26 @@ RecognitionLights=True
 StrobeLights=True
 TaxiLights=False
 WingLights=True
-CabinLights=True
+
+; INTERIOR LIGHTS
+CabinLights=False
+CabinLightsNight=True
+; Cabin lights are on pots 66,67,68
+Potentiometer.66=0.1
+Potentiometer.67=0.1
+Potentiometer.68=0.1
 GlareshieldLights=False
+GlareshieldLightsNight=True
+; Glareshield lights are on pots 60,62,63
+Potentiometer.60=0.1
+Potentiometer.62=0.1
+Potentiometer.63=0.1
 PedestalLights=False
+PedestalLightsNight=True
+; Glareshield lights are on pots 69
+Potentiometer.69=0.1
+
+; SCREEN BACKLIGHTS
 Potentiometer.25=0.5
 Potentiometer.26=0.5
 Potentiometer.27=0.5
@@ -268,13 +288,12 @@ RPMValue=0
 GlideslopeHold=False
 ApproachHold=False
 BackCourseHold=False
-YawDamper=True
+YawDamper=False
 ToGa=False
-AutoThrottleArm=False
+AutoThrottleArm=True
 GPSdrivesNAV1=True
 IsUsedForLesson=False
 ForceDisplayUI=False
-MaxBankIndex=6
 
 [Controls.0]
 SpoilersHandle=000.00
