@@ -1,0 +1,268 @@
+.b748-square {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.b748-square.PFD,
+.b748-square.MFD {
+  width: var(--boeing-pane-size);
+  height: var(--boeing-pane-size);
+}
+
+.b748-square.PFD-1 {
+  margin-top: 46px;
+  margin-left: 32px;
+}
+
+.b748-square.PFD-2 {
+  margin-top: 40px;
+  margin-left: 34px;
+}
+
+.b748-square.MFD-1 {
+  margin-top: 46px;
+  margin-left: 30px;
+}
+
+.b748-square.MFD-2 {
+  margin-top: 51px;
+  margin-left: 35px;
+}
+
+.b748-square.MFD-3 {
+  margin-top: 54px;
+  margin-left: 17px;
+}
+
+.b748-square.MFD-4 {
+  margin-top: 102px;
+  margin-left: 36px;
+}
+
+.b748-square.CDU {
+  width: 940px;
+  height: 800px;
+  font-size: 80px;
+}
+
+.b748-square.CDU-1 {
+  margin-top: 50px;
+  margin-left: 30px;
+}
+
+.b748-square.CDU-2 {
+  margin-top: 40px;
+  margin-left: 16px;
+}
+html {
+  /*
+  This is a repository for common style parameters. Use these whenever you can, so that we can make global adjustments at just this point.
+  Use as var(--b748-x-y-z) to replace any value in conventional notation.
+  */
+  /* Color Styling */
+  /* Keep boeing colors in sync with BoeingColors.ts */
+  --boeing-colors-black: black;
+  --boeing-colors-black-translucent: rgba(0, 0, 0, 0.2);
+  --boeing-colors-black-translucent-border: rgba(0, 0, 0, 0.5);
+  --boeing-colors-white: white;
+  --boeing-colors-gray: hsl(0, 0%, 70%);
+  --boeing-colors-dark-gray: hsl(0, 0%, 60%);
+  --boeing-colors-darker-gray: hsl(0, 0%, 40%);
+  --boeing-colors-blue: hsl(230, 100%, 51%);
+  --boeing-colors-cyan: hsl(192, 100%, 50%);
+  --boeing-colors-red: red;
+  --boeing-colors-amber: hsl(45, 100%, 50%);
+  --boeing-colors-green: #49e700;
+  --boeing-colors-dark-green: #007500;
+  --boeing-colors-magenta: #ff00ff;
+
+  --boeing-pane-size: 784px;
+}
+
+@font-face {
+  font-family: "B787";
+  src: url("/Pages/VCockpit/Instruments/Airliners/WTB747_8i/Assets/fonts/b78x.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+wtb748-pfd,
+wtb748-mfd {
+  /* font-size: 60px; */
+  font-size: 80px;
+  font-family: "B787";
+  paint-order: stroke;
+  -webkit-text-stroke: .04em black;
+}
+
+#Mainframe,
+#Electricity {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/** HINT: Don't show the white highlight since the instruments is in general not interactive */
+#vignettage {
+  display: none;
+  visibility: hidden;
+}
+
+#highlight {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visibility-hidden {
+  visibility: hidden !important;
+}
+
+.fullsize {
+  width: 100%;
+  height: 100%;
+}
+#fmc-container {
+  font-family: "B748Cdu";
+  margin: 0;
+  font-size: 0;
+  /* quick fix for better visibility */
+  /* margin-top: -5px; */
+  z-index: 1000;
+  background-color: transparent;
+  overflow: hidden;
+  transform: rotateX(0);
+}
+
+#fmc-container::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  /*background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));*/
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fmc-row {
+  /* border: solid 0px red; */
+  vertical-align: middle;
+  height: 30px;
+  line-height: 30px;
+  width: 880px;
+  padding: 0;
+  overflow: hidden;
+  transform: rotateX(0);
+}
+
+.fmc-letter {
+  /*border: solid 1px yellow;*/
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  text-align: center;
+  white-space: pre;
+}
+
+/* Text */
+.d-text>div.fmc-letter,
+.s-text>div.fmc-letter.d-text,
+div.fmc-letter.d-text {
+  font-size: 5.8vw;
+  padding-top: 1px;
+  paint-order: fill stroke;
+  -webkit-text-stroke: 0.04em black;
+}
+
+.s-text>div.fmc-letter,
+.d-text>div.fmc-letter.s-text,
+div.fmc-letter.s-text {
+  font-size: 4.3vw;
+  padding-top: 3px;
+  paint-order: fill stroke;
+  -webkit-text-stroke: 0.01em black;
+}
+
+/* Colors */
+
+.white {
+  color: white;
+}
+
+.r-white {
+  background-color: var(--boeing-colors-white);
+  color: var(--boeing-colors-black);
+
+  -webkit-text-stroke: 0 transparent !important;
+}
+
+.blue {
+  color: var(--boeing-colors-blue);
+}
+
+.cyan {
+  color: var(--boeing-colors-cyan)
+}
+
+.amber {
+  color: var(--boeing-colors-amber);
+}
+
+.green {
+  color: var(--boeing-colors-green);
+}
+
+.red {
+  color: var(--boeing-colors-red);
+}
+
+.magenta {
+  color: var(--boeing-colors-magenta);
+}
+
+.dummy {
+  color: darkorange;
+}
+
+/* General */
+
+.disabled {
+  color: #757575;
+}
+
+.hidden {
+  display: none;
+}
+
+.blackwhite {
+  background-color: white;
+  color: #0e0d08;
+}
+
+.bluebg {
+  background-color: #0099ff;
+  color: #0e0d08;
+}
+@font-face {
+  font-family: "B748Cdu";
+  src: url("/Pages/VCockpit/Instruments/Airliners/WTB747_8i/Assets/fonts/b78x.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+wtb748-cdu {}

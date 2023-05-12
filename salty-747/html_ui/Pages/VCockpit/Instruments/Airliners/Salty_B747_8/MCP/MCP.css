@@ -1,0 +1,122 @@
+:root {
+  --bodyHeightScale: 1;
+}
+
+@keyframes TemporaryShow {
+
+  0%,
+  100% {
+    visibility: visible;
+  }
+}
+
+@keyframes TemporaryHide {
+
+  0%,
+  100% {
+    visibility: hidden;
+  }
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+html body {
+  -webkit-user-select: none;
+  user-select: none;
+  font-family: var(--font);
+  font-size: calc(var(--viewportHeightRatio) * (36px / 21.6) * var(--currentPageHeight) / 100);
+  color: white;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#highlight {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#Electricity {
+  width: 100%;
+  height: 100%;
+}
+
+#Electricity[state=off] {
+  display: none;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/Fonts/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto-Light";
+  src: url("/Fonts/Roboto-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto-Bold";
+  src: url("/Fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto-Medium";
+  src: url("/Fonts/Roboto-Medium.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Digital";
+  src: url("/Pages/VCockpit/Instruments/Shared/Fonts/Quartz.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+div {
+  position: absolute;
+  left: 0%;
+  /* top: -2%;
+  width: 101%; */
+  top: -5%;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  letter-spacing: 8px;
+}
+
+#value {
+  font-family: Digital;
+  font-size: 120px;
+  text-align: right;
+  letter-spacing: 8px;
+}
+
+#mode {
+  font-family: Roboto-Medium;
+  font-size: 60px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0px;
+  margin-left: 2px;
+  margin-top: 5px;
+}
+
+.b748-vspeed-element #mode {
+  letter-spacing: 3px;
+}

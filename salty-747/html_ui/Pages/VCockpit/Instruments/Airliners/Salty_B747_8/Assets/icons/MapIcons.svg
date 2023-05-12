@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+
+  <!-- NDB -->
+<!--   <circle cx="25" cy="25" r="16" fill="none" stroke="black" stroke-width="5px" />
+  <circle cx="25" cy="25" r="8" fill="none" stroke="black" stroke-width="5px" />
+  <circle cx="25" cy="25" r="16" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" />
+  <circle cx="25" cy="25" r="8" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" /> -->
+
+  <!-- Airport -->
+<!--   <circle cx="25" cy="25" r="8" fill="none" stroke="black" stroke-width="5px" />
+  <circle cx="25" cy="25" r="8" fill="none"
+    stroke="#49e700"
+    stroke="#ff00ff"
+    stroke="hsl(192, 100%, 50%)"
+    stroke-width="3px" /> -->
+
+  <!-- TOD -->
+<!--   <circle cx="25" cy="25" r="8" fill="none" stroke="black" stroke-width="5px" />
+  <circle cx="25" cy="25" r="8" fill="none"
+    stroke="#49e700"
+    stroke="#ff00ff"
+    stroke="hsl(192, 100%, 50%)"
+    stroke-width="3px" /> -->
+
+  <!-- 4-point star -->
+<!--   <path d="M 25 5 l -4 16 l -16 4 l 16 4 l 4 16 l 4 -16 l 16 -4 l -16 -4 l -4 -16" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 5 l -4 16 l -16 4 l 16 4 l 4 16 l 4 -16 l 16 -4 l -16 -4 l -4 -16" fill="none"
+    stroke="#ff00ff"
+    stroke="white"
+    stroke="hsl(192, 100%, 50%)"
+    stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+  <!-- Intersection -->
+<!--   <path d="M 25 14 l -9 22 l 17 0 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 14 l -9 22 l 17 0 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+  <!-- VOR -->
+<!--   <path d="M 25 14 L 31 14 L 37 25 L 31 36 L 19 36 L 13 25 L 19 14 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 14 L 31 14 L 37 25 L 31 36 L 19 36 L 13 25 L 19 14 z" fill="none" stroke="#49e700" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+  <!-- DME -->
+<!--   <path d="M 25 13 l 13 0 l 0 24 l -26 0 l 0 -24 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 13 l 13 0 l 0 24 l -26 0 l 0 -24 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+
+  <!-- VOR DME -->
+<!--   <path d="M 25 14 L 31 14 L 37 25 L 31 36 L 19 36 L 13 25 L 19 14 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 13 l 13 0 l 0 24 l -26 0 l 0 -24 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 14 L 31 14 L 37 25 L 31 36 L 19 36 L 13 25 L 19 14 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 13 l 13 0 l 0 24 l -26 0 l 0 -24 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+
+  <!-- VORTAC -->
+<!--   <path
+    d="M 25 14 L 31 14 L 37 25 L 32 35 L 18 35 L 13 25 L 19 14 z M 31 14 L 40 9 L 46 20 L 37 25 M 31 14 M 32 35 L 32 45 L 18 45 L 18 35 M 19 14 L 10 9 L 4 20 L 13 25"
+    fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path
+    d="M 25 14 L 31 14 L 37 25 L 32 35 L 18 35 L 13 25 L 19 14 z M 31 14 L 40 9 L 46 20 L 37 25 M 31 14 M 32 35 L 32 45 L 18 45 L 18 35 M 19 14 L 10 9 L 4 20 L 13 25"
+    fill="none" stroke="#49e700" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+  <!-- TACAN -->
+<!--   <path
+    d="M 25 14 L 31 14 L 40 9 L 46 20 L 37 25 L 32 35 L 32 45 L 18 45 L 18 35 L 13 25 L 4 20 L 10 9 L 19 14 Z"
+    fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path
+    d="M 25 14 L 31 14 L 40 9 L 46 20 L 37 25 L 32 35 L 32 45 L 18 45 L 18 35 L 13 25 L 4 20 L 10 9 L 19 14 Z"
+    fill="none" stroke="#49e700" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+  <!-- STA VORTAC -->
+  <path
+    d="M 25 19.5 L 28 19.5 L 31 25 L 28.5 30 L 21.5 30 L 19 25 L 22 19.5 z M 28 19.5 L 32.5 17 L 35.5 22.5 L 31 25 M 28 19.5 M 28.5 30 L 28.5 35 L 21.5 35 L 21.5 30 M 22 19.5 L 17.5 17 L 14.5 22.5 L 19 25"
+    fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path
+    d="M 25 19.5 L 28 19.5 L 31 25 L 28.5 30 L 21.5 30 L 19 25 L 22 19.5 z M 28 19.5 L 32.5 17 L 35.5 22.5 L 31 25 M 28 19.5 M 28.5 30 L 28.5 35 L 21.5 35 L 21.5 30 M 22 19.5 L 17.5 17 L 14.5 22.5 L 19 25"
+    fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- STA NDB -->
+<!--   <circle cx="25" cy="25" r="8" fill="none" stroke="black" stroke-width="5px" />
+  <circle cx="25" cy="25" r="4" fill="none" stroke="black" stroke-width="5px" />
+  <circle cx="25" cy="25" r="8" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" />
+  <circle cx="25" cy="25" r="4" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" /> -->
+
+  <!-- STA TACAN -->
+<!--   <path
+    d="M 25 19.5 L 28 19.5 L 32.5 17 L 35.5 22.5 L 31 25 L 28.5 30 L 28.5 35 L 21.5 35 L 21.5 30 L 19 25 L 14.5 22.5 L 17.5 17 L 22 19.5 Z"
+    fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path
+    d="M 25 19.5 L 28 19.5 L 32.5 17 L 35.5 22.5 L 31 25 L 28.5 30 L 28.5 35 L 21.5 35 L 21.5 30 L 19 25 L 14.5 22.5 L 17.5 17 L 22 19.5 Z"
+    fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+  <!-- STA VOR -->
+<!--   <path d="M 25 19.5 L 28 19.5 L 31 25 L 28 30.5 L 22 30.5 L 19 25 L 22 19.5 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 19.5 L 28 19.5 L 31 25 L 28 30.5 L 22 30.5 L 19 25 L 22 19.5 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+  <!-- STA DME -->
+<!--   <path d="M 25 19 l 6.5 0 l 0 12 l -13 0 l 0 -12 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 19 l 6.5 0 l 0 12 l -13 0 l 0 -12 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+
+  <!-- STA VOR DME -->
+<!--   <path d="M 25 19.5 L 28 19.5 L 31 25 L 28 30.5 L 22 30.5 L 19 25 L 22 19.5 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 19 l 6.5 0 l 0 12 l -13 0 l 0 -12 z" fill="none" stroke="black" stroke-width="5px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 19.5 L 28 19.5 L 31 25 L 28 30.5 L 22 30.5 L 19 25 L 22 19.5 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" />
+  <path d="M 25 19 l 6.5 0 l 0 12 l -13 0 l 0 -12 z" fill="none" stroke="hsl(192, 100%, 50%)" stroke-width="3px" stroke-linejoin="round" stroke-linecap="round" /> -->
+
+
+</svg>
