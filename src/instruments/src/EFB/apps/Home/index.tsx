@@ -48,7 +48,7 @@ export const HomeScreen: FC = () => (
             <App bg={`url(${opt})`} />
             <App bg="white" icon={<SiWikipedia style={{ fill: "black", transform: "scale(3.5)" }} />} />
             <App bg="white" icon={<BsYoutube style={{ fill: "red", transform: "scale(3.5)" }} />} />
-            <App bg="gray" icon={<BsGearWideConnected style={{ fill: "white", transform: "scale(3.5)" }} />} route="/settings" />
+            <App bg="gray" icon={<BsGearWideConnected style={{ fill: "white", transform: "scale(3.5)" }} />} route="/settings/general" />
         </FavoriteAppsContainer>
     </Home>
 );
@@ -79,4 +79,5 @@ const FavoriteAppsContainer = styled.div`
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 35px;
     display: flex;
+    padding: 0 4px;
 `;

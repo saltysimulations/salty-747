@@ -33,7 +33,7 @@ type StyledItemProps = { gray?: boolean; clicked: boolean };
 
 const StyledItem = styled.div`
     width: 100%;
-    height: 75px;
+    height: 70px;
     display: flex;
     background: ${(props: StyledItemProps) => (props.clicked ? "#b9b9bb" : "white")};
     justify-content: space-between;
@@ -43,7 +43,7 @@ const StyledItem = styled.div`
     transition: background 0.1s linear;
 
     .side {
-        margin: 0 30px;
+        margin: 0 25px;
     }
 
     &:last-child {

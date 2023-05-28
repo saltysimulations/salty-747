@@ -37,8 +37,8 @@ export const App: FC<AppProps> = ({ name, bg, icon, route }) => (
 );
 
 const StyledApp = styled.div`
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     background: ${(props: { bg: string }) => props.bg};
     background-position: center;
     background-size: cover;
@@ -49,17 +49,19 @@ const StyledApp = styled.div`
 `;
 
 const StyledAppContainer = styled.div`
-    width: 100px;
+    width: 90px;
     display: flex;
     flex-direction: column;
     text-align: center;
     color: white;
     font-size: 18px;
-    margin: 20px;
+    margin: 15px;
 
-    ${(props: { name?: string }) =>
-        props.name &&
-        css`
-            gap: 7px;
-        `}
+    * {
+        ${(props: { name?: string }) =>
+                props.name &&
+                css`
+                    margin: 2px 0;
+                `}
+    }
 `;

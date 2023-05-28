@@ -5,7 +5,7 @@ import { BsPersonCircle } from "react-icons/bs";
 
 export const SignIn: FC = () => (
     <StyledSignIn>
-        <BsPersonCircle size={100} color="#B9B9BB" style={{ margin: "10px 28px" }} />
+        <BsPersonCircle size={90} color="#B9B9BB" style={{ margin: "10px 24px" }} />
         <SignInText>
             <div>Sign in to your saltPad</div>
             <div>Set up SimBrief and Navigraph</div>
@@ -33,12 +33,12 @@ const SignInText = styled.div`
     }
 
     div:nth-child(1) {
-        font-size: 28px;
+        font-size: 26px;
         color: #1476fb;
     }
 
     div:nth-child(2) {
-        font-size: 22px;
+        font-size: 20px;
         color: #b9b9bb;
     }
 `;

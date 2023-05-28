@@ -20,9 +20,12 @@ import styled from "styled-components";
 
 export const PageIndicators = styled.div`
     display: flex;
-    gap: 13px;
     position: relative;
     bottom: 25px;
+    
+    * {
+        margin: 0 5px;
+    }
 `;
 
 export const PageIndicator = styled.div`

@@ -67,7 +67,7 @@ export const Categories: FC = () => {
 };
 
 const SettingsHeader = styled.div`
-    font-size: 60px;
+    font-size: 55px;
     font-weight: 700;
     color: black;
     margin-bottom: 20px;
@@ -85,7 +85,7 @@ const CategoryGroup = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 20%;
-    margin: 35px 0;
+    margin: 30px 0;
 
     .category:nth-child(1) {
         border-radius: 15px 15px 0 0;
@@ -98,13 +98,13 @@ const CategoryGroup = styled.div`
 
 const StyledCategory = styled.div`
     width: 100%;
-    height: 75px;
+    height: 70px;
     background: ${(props: { selected?: boolean }) => (props.selected ? "#4FA0FC" : "white")};
     color: ${(props: { selected?: boolean }) => (props.selected ? "white" : "black")};
     display: flex;
     align-items: center;
     border-bottom: 1px solid #b9b9bb;
-    font-size: 28px;
+    font-size: 26px;
 
     div:nth-child(2) {
         flex-grow: 1;
@@ -116,11 +116,11 @@ const StyledCategory = styled.div`
 `;
 
 const CategoryIcon = styled.div`
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     background: url(${(props: { icon: string }) => props.icon});
     background-position: center;
     background-size: cover;
     border-radius: 20%;
-    margin: 0 30px;
+    margin: 0 25px;
 `;

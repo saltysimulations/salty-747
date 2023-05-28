@@ -10,7 +10,7 @@ export const StyledItemGroup = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 20%;
-    margin: 60px 0;
+    margin: 55px 0;
 
     .item:nth-child(1) {
         border-radius: 15px 15px 0 0;

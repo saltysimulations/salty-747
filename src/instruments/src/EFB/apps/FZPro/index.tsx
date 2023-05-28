@@ -28,7 +28,7 @@ const App: FC = () => {
     const { getChartImage, getChartIndex } = useNavigraphAuth();
 
     const [currentChart, setCurrentChart] = useState<Chart | null>(null);
-    const [selectedAirport, setSelectedAirport] = useState<string | null>("ENZV");
+    const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
     const [chartIndex, setChartIndex] = useState<ChartIndex | null>(null);
     const [chartImage, setChartImage] = useState<string | null>(null);
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);

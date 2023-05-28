@@ -28,7 +28,7 @@ export const TopBar: FC<BarProps> = ({ bg = "transparent", textColor = "white", 
         <StyledBar bg={bg} textColor={textColor} backdropFilter={backdropFilter}>
             <BarSection>
                 <div>17:42</div>
-                <div>Wed Jan 25</div>
+                <div>Sun May 28</div>
             </BarSection>
             <BarSection symbols>
                 <HiWifi size={25} />

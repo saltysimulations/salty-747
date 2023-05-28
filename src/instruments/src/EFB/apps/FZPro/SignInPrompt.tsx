@@ -29,7 +29,7 @@ export const SignInPrompt: FC = () => {
 };
 
 const SignInTitle = styled.div`
-    font-size: 52px;
+    font-size: 44px;
     font-weight: 300;
 `;
 

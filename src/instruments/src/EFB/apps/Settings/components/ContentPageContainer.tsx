@@ -30,7 +30,7 @@ const StyledContentPageContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 28px;
+    font-size: 26px;
     margin-top: 60px;
 `;
 
