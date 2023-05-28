@@ -47,6 +47,66 @@
             {
                 "gltf": "./pilots/pilots.gltf",
                 "lods": [0]
+            },
+            {
+                "gltf": "./cockpit-shell/cockpit_shell.gltf",
+                "bin": "./cockpit-shell/cockpit_shell.bin",
+                "lods": [0]
+            },
+            {
+                "gltf": "./cockpit-shell/cockpit_shell1.gltf",
+                "bin": "./cockpit-shell/cockpit_shell1.bin",
+                "lods": [1]
+            },
+            {
+                "gltf": "./cockpit-shell/cockpit_shell2.gltf",
+                "bin": "./cockpit-shell/cockpit_shell2.bin",
+                "lods": [2]
+            },
+            {
+                "gltf": "./efb-mount/efb_mount.gltf",
+                "bin": "./efb-mount/efb_mount.bin",
+                "lods": [0, 1, 2]
+            },
+            {
+                "gltf": "./props/props.gltf",
+                "bin": "./props/props.bin",
+                "lods": [0]
+            },
+            {
+                "gltf": "./props/props1.gltf",
+                "bin": "./props/props1.bin",
+                "lods": [1]
+            },
+            {
+                "gltf": "./props/props2.gltf",
+                "bin": "./props/props2.bin",
+                "lods": [2]
+            },
+            {
+                "gltf": "./screws/screws.gltf",
+                "bin": "./screws/screws.bin",
+                "lods": [0]
+            },
+            {
+                "gltf": "./screws/screws1.gltf",
+                "bin": "./screws/screws1.bin",
+                "lods": [1]
+            },
+            {
+                "gltf": "./trim/trim.gltf",
+                "bin": "./trim/trim.bin",
+                "lods": [0]
+            },
+            {
+                "gltf": "./trim/trim1.gltf",
+                "bin": "./trim/trim1.bin",
+                "lods": [1]
+            },
+            {
+                "gltf": "./trim/trim2.gltf",
+                "bin": "./trim/trim2.bin",
+                "lods": [2]
             }
         ]
     },

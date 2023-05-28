@@ -4,57 +4,197 @@
             "bufferView": 1,
             "byteOffset": 28,
             "componentType": 5123,
-            "count": 12,
+            "count": 20,
             "type": "VEC4",
-            "name": "x0_747_EFB_Screen_vertices#0_COLOR_0"
+            "name": "x0_EFB_vertices#0_COLOR_0"
         },
         {
             "bufferView": 1,
             "byteOffset": 16,
             "componentType": 5120,
-            "count": 12,
+            "count": 20,
             "type": "VEC4",
-            "name": "x0_747_EFB_Screen_vertices#0_NORMAL"
+            "name": "x0_EFB_vertices#0_NORMAL"
         },
         {
             "bufferView": 1,
             "componentType": 5126,
-            "count": 12,
+            "count": 20,
             "min": [
-                0.8515572547912598,
-                4.006478786468506,
-                24.58415412902832
+                0.8097614645957947,
+                4.099838733673096,
+                24.576757431030273
             ],
             "max": [
-                0.9458020925521851,
-                4.160438537597656,
-                24.813573837280273
+                0.9268401861190796,
+                4.2138752937316895,
+                24.77374267578125
             ],
             "type": "VEC3",
-            "name": "x0_747_EFB_Screen_vertices#0_POSITION"
+            "name": "x0_EFB_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 12,
+            "componentType": 5120,
+            "count": 20,
+            "type": "VEC4",
+            "name": "x0_EFB_vertices#0_TANGENT"
         },
         {
             "bufferView": 1,
             "byteOffset": 20,
             "componentType": 5122,
-            "count": 12,
+            "count": 20,
             "type": "VEC2",
-            "name": "x0_747_EFB_Screen_vertices#0_TEXCOORD_0"
+            "name": "x0_EFB_vertices#0_TEXCOORD_0"
         },
         {
             "bufferView": 1,
             "byteOffset": 24,
             "componentType": 5122,
-            "count": 12,
+            "count": 20,
             "type": "VEC2",
-            "name": "x0_747_EFB_Screen_vertices#0_TEXCOORD_1"
+            "name": "x0_EFB_vertices#0_TEXCOORD_1"
         },
         {
             "bufferView": 0,
             "componentType": 5123,
-            "count": 30,
+            "count": 54,
             "type": "SCALAR",
-            "name": "x0_747_EFB_Screen_indices#0"
+            "name": "x0_EFB_indices#0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 748,
+            "componentType": 5123,
+            "count": 200,
+            "type": "VEC4",
+            "name": "x0_EFB_1_vertices#0_COLOR_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 736,
+            "componentType": 5120,
+            "count": 200,
+            "type": "VEC4",
+            "name": "x0_EFB_1_vertices#0_NORMAL"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 720,
+            "componentType": 5126,
+            "count": 200,
+            "min": [
+                0.8046366572380066,
+                4.0907979011535645,
+                24.568965911865234
+            ],
+            "max": [
+                0.9358958601951599,
+                4.220336437225342,
+                24.782676696777344
+            ],
+            "type": "VEC3",
+            "name": "x0_EFB_1_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 732,
+            "componentType": 5120,
+            "count": 200,
+            "type": "VEC4",
+            "name": "x0_EFB_1_vertices#0_TANGENT"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 740,
+            "componentType": 5122,
+            "count": 200,
+            "type": "VEC2",
+            "name": "x0_EFB_1_vertices#0_TEXCOORD_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 744,
+            "componentType": 5122,
+            "count": 200,
+            "type": "VEC2",
+            "name": "x0_EFB_1_vertices#0_TEXCOORD_1"
+        },
+        {
+            "bufferView": 0,
+            "byteOffset": 108,
+            "componentType": 5123,
+            "count": 510,
+            "type": "SCALAR",
+            "name": "x0_EFB_1_indices#0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 7948,
+            "componentType": 5123,
+            "count": 20,
+            "type": "VEC4",
+            "name": "x0_SCREEN_EFB_vertices#0_COLOR_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 7936,
+            "componentType": 5120,
+            "count": 20,
+            "type": "VEC4",
+            "name": "x0_SCREEN_EFB_vertices#0_NORMAL"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 7920,
+            "componentType": 5126,
+            "count": 20,
+            "min": [
+                0.8100476264953613,
+                4.099650859832764,
+                24.576841354370117
+            ],
+            "max": [
+                0.9271263480186462,
+                4.213687419891357,
+                24.773826599121094
+            ],
+            "type": "VEC3",
+            "name": "x0_SCREEN_EFB_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 7932,
+            "componentType": 5120,
+            "count": 20,
+            "type": "VEC4",
+            "name": "x0_SCREEN_EFB_vertices#0_TANGENT"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 7940,
+            "componentType": 5122,
+            "count": 20,
+            "type": "VEC2",
+            "name": "x0_SCREEN_EFB_vertices#0_TEXCOORD_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 7944,
+            "componentType": 5122,
+            "count": 20,
+            "type": "VEC2",
+            "name": "x0_SCREEN_EFB_vertices#0_TEXCOORD_1"
+        },
+        {
+            "bufferView": 0,
+            "byteOffset": 1128,
+            "componentType": 5123,
+            "count": 54,
+            "type": "SCALAR",
+            "name": "x0_SCREEN_EFB_indices#0"
         }
     ],
     "asset": {
@@ -63,9 +203,9 @@
         "extensions": {
             "ASOBO_asset_optimized": {
                 "BoundingBoxMax": [
-                    0.9458020925521851,
-                    4.160438537597656,
-                    24.813573837280273
+                    0.9358958601951599,
+                    4.220336437225342,
+                    24.782676696777344
                 ],
                 "BoundingBoxMin": [
                     0,
@@ -83,38 +223,60 @@
     "bufferViews": [
         {
             "buffer": 0,
-            "byteLength": 60,
+            "byteLength": 1236,
             "byteOffset": 0,
             "target": 34963,
             "name": "BufferViewIndex"
         },
         {
             "buffer": 0,
-            "byteLength": 432,
+            "byteLength": 8640,
             "byteStride": 36,
-            "byteOffset": 60,
+            "byteOffset": 1236,
             "target": 34962,
             "name": "BufferViewVertexND"
         }
     ],
     "extensionsUsed": [
+        "MSFT_texture_dds",
         "ASOBO_asset_optimized",
         "ASOBO_normal_map_convention"
     ],
+    "extensionsRequired": [
+        "MSFT_texture_dds"
+    ],
     "materials": [
         {
-            "name": "$EFB",
-            "doubleSided": true,
+            "name": "flypad",
+            "alphaMode": "BLEND",
+            "normalTexture": {
+                "index": 0
+            },
+            "occlusionTexture": {
+                "index": 1
+            },
             "pbrMetallicRoughness": {
-                "baseColorFactor": [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
-                    1
-                ],
-                "metallicFactor": 0,
-                "roughnessFactor": 0.5
+                "baseColorTexture": {
+                    "index": 2
+                },
+                "metallicRoughnessTexture": {
+                    "index": 1
+                }
             }
+        },
+        {
+            "name": "flypad-opaque",
+            "normalTexture": {
+                "index": 0
+            },
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 2
+                }
+            }
+        },
+        {
+            "name": "$EFB"
         }
     ],
     "meshes": [
@@ -125,28 +287,87 @@
                         "COLOR_0": 0,
                         "NORMAL": 1,
                         "POSITION": 2,
-                        "TEXCOORD_0": 3,
-                        "TEXCOORD_1": 4
+                        "TANGENT": 3,
+                        "TEXCOORD_0": 4,
+                        "TEXCOORD_1": 5
                     },
-                    "indices": 5,
+                    "indices": 6,
                     "material": 0,
                     "mode": 4,
                     "extras": {
                         "ASOBO_primitive": {
-                            "PrimitiveCount": 10,
+                            "PrimitiveCount": 18,
                             "VertexType": "VTX",
                             "VertexVersion": 2
                         }
                     }
                 }
             ],
-            "name": "x0_747_EFB_Screen"
+            "name": "x0_EFB"
+        },
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "COLOR_0": 7,
+                        "NORMAL": 8,
+                        "POSITION": 9,
+                        "TANGENT": 10,
+                        "TEXCOORD_0": 11,
+                        "TEXCOORD_1": 12
+                    },
+                    "indices": 13,
+                    "material": 1,
+                    "mode": 4,
+                    "extras": {
+                        "ASOBO_primitive": {
+                            "PrimitiveCount": 170,
+                            "VertexType": "VTX",
+                            "VertexVersion": 2
+                        }
+                    }
+                }
+            ],
+            "name": "x0_EFB_1"
+        },
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "COLOR_0": 14,
+                        "NORMAL": 15,
+                        "POSITION": 16,
+                        "TANGENT": 17,
+                        "TEXCOORD_0": 18,
+                        "TEXCOORD_1": 19
+                    },
+                    "indices": 20,
+                    "material": 2,
+                    "mode": 4,
+                    "extras": {
+                        "ASOBO_primitive": {
+                            "PrimitiveCount": 18,
+                            "VertexType": "VTX",
+                            "VertexVersion": 2
+                        }
+                    }
+                }
+            ],
+            "name": "x0_SCREEN_EFB"
         }
     ],
     "nodes": [
         {
             "mesh": 0,
-            "name": "747_EFB_Screen"
+            "name": "EFB_GLASS_L"
+        },
+        {
+            "mesh": 1,
+            "name": "EFB_L"
+        },
+        {
+            "mesh": 2,
+            "name": "SCREEN_EFB_L"
         }
     ],
     "scene": 0,
@@ -154,14 +375,74 @@
         {
             "name": "Scene",
             "nodes": [
-                0
+                0,
+                1,
+                2
             ]
+        }
+    ],
+    "textures": [
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 0
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 1
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 2
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 1
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 0
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 2
+                }
+            }
         }
     ],
     "buffers": [
         {
-            "byteLength": 492,
-            "uri": "efb.bin"
+            "byteLength": 9876,
+            "uri": "flypad.bin"
+        }
+    ],
+    "images": [
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "FLYPAD_NORM.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "FLYPAD_COMP.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "FLYPAD_ALBEDO.TIF.DDS"
         }
     ]
 }

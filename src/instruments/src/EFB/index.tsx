@@ -74,8 +74,8 @@ const RouteElement: FC<{ component: React.ReactNode; barProps?: BarProps }> = ({
 );
 
 const Root = styled.div`
-    width: 1920px;
-    height: 1160px;
+    width: 1430px;
+    height: 1000px;
 `;
 
 render(<EFB />);
