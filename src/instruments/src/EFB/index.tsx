@@ -34,6 +34,7 @@ import "./index.scss";
 import { Acars } from "./apps/Settings/Acars";
 import { FZPro } from "./apps/FZPro";
 import { NavigraphAuthProvider } from "./hooks/useNavigraphAuth";
+import { Display } from "./apps/Settings/Display";
 
 const EFB: FC = () => {
     return (
@@ -50,6 +51,7 @@ const EFB: FC = () => {
                         <Route path="/settings"
                                element={<RouteElement component={<Settings />} barProps={{textColor: "black"}} />}>
                             <Route path="general" element={<General />} />
+                            <Route path="display" element={<Display />} />
                             <Route path="aircraft" element={<Aircraft />} />
                             <Route path="simulation" element={<Simulation />} />
                             <Route path="acars" element={<Acars />} />

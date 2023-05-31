@@ -33,12 +33,17 @@ export const Categories: FC = () => {
             <SettingsHeader>Settings</SettingsHeader>
             <SignIn />
             <CategoryGroup>
-                <Category name="General" icon={general} selected={selectedCategory === "general"} selectCategory={() => selectCategory("general")} />
+                <Category 
+                    name="General" 
+                    icon={general} 
+                    selected={selectedCategory === "general"} 
+                    selectCategory={() => selectCategory("general")} // Handle the category change when the label is clicked
+                />
                 <Category
                     name="Display & Brightness"
                     icon={displayAndBrightness}
                     selected={selectedCategory === "display"}
-                    selectCategory={() => selectCategory("display")}
+                    selectCategory={() => selectCategory("display")} 
                 />
                 <Category
                     name="Wallpaper"
