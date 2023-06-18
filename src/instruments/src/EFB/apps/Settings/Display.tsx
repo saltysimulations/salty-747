@@ -1,15 +1,19 @@
 import React, { FC } from "react";
 
+import { useSimVar } from "react-msfs";
 import { ContentPageContainer } from "./components/ContentPageContainer";
 import { usePersistentNumberProperty, usePersistentProperty } from "@instruments/common/persistence";
 import { ItemGroup } from "./components/ItemGroup";
 import { Toggle } from "./components/Toggle";
-import { RangeSlider } from "./components/RangeSlider";
 import { SettingsItem } from "./components/SettingsItem";
 import styled from "styled-components";
 
+import { StyledRangeSlider } from "./components/RangeSlider";
+
+
 import brightnessLow from "../../img/brightness-low.png";
 import brightnessFull from "../../img/brightness-full.png";
+
 
 interface IconContainerProps {
     icon: string;
@@ -19,13 +23,8 @@ interface IconContainerProps {
   //<SliderContainer />
 export const Display: FC = () => {
     const [trueTone, setTrueTone] = usePersistentNumberProperty("TRUE_TONE", 0);
-    //const [brightnessSetting, setBrightnessSetting] = usePersistentNumberProperty('EFB_BRIGHTNESS', 0);
-    const [defaultBrightness] = usePersistentNumberProperty('L:S747_EFB_BRIGHTNESS', 80); // Default Brightness Value here
-    //<Slider enabled={true} onClick={handleSlider} value={defaultBrightness}  />
-    const handleSlider = () => {
-        return;
-      };
-
+    const [brightness, setBrightness] = useSimVar("L:74S_EFB_BRIGHTNESS", "number")
+  
       return (
         <ContentPageContainer title="Display">
             <ItemGroup>
@@ -34,7 +33,7 @@ export const Display: FC = () => {
 
             <IconContainer icon={brightnessLow} marginLeft = "2%" marginRight="auto" /> 
 
-            <RangeSlider />
+            <StyledRangeSlider simVarName="L:74S_EFB_BRIGHTNESS" simVarType="Number" defaultValue={50} />
 
             <IconContainer icon={brightnessFull} marginLeft = "auto" marginRight="2%" /> 
 
@@ -50,17 +49,11 @@ export const Display: FC = () => {
 
 const Container = styled.div`
 width: 95%;
-height: 90%;
+height: 100%;
 margin: 0 auto;
 display: flex;
 align-items: center;
 justify-content: center;
-`;
-
-const SliderContainer = styled.input`
-width: 85%;
-height: 50%;
-background: black;
 `;
 
 const IconContainer = styled.div<IconContainerProps>`

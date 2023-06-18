@@ -32,7 +32,7 @@
 				</DefaultTemplateParameters>
 
 				<UseTemplate Name="ASOBO_GT_Material_Emissive_Code">
-					<EMISSIVE_CODE>5</EMISSIVE_CODE>
+					<EMISSIVE_CODE>(L:74S_EFB_BRIGHTNESS, number) 10 max 100 min 100 /</EMISSIVE_CODE>
 				</UseTemplate>
 			</Component>
 			<Component ID="PUSH_EFB_SIDE_L" Node="PUSH_EFB_SIDE_L">
