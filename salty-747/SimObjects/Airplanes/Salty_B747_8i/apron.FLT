@@ -112,8 +112,6 @@ Afterburner=0
 
 [FuelSystem.0]
 Valve.1=True
-Valve.2=True
-Valve.3=True
 Valve.4=True
 Valve.5=False
 Valve.6=False
@@ -124,10 +122,10 @@ Valve.10=False
 Valve.11=False
 Valve.12=False
 Valve.13=False
-Valve.14=False
-Valve.15=False
-Valve.16=False
-Valve.17=False
+Valve.14=True
+Valve.15=True
+Valve.16=True
+Valve.17=True
 Valve.18=False
 Valve.19=False
 Valve.20=False
@@ -155,13 +153,9 @@ Pump.14=False
 Pump.15=False
 Pump.16=False
 Pump.17=False
-Pump.18=True
-Pump.19=True
-Pump.20=True
-Pump.21=True
 
 [Systems.0]
-BatterySwitch=False
+BatterySwitch=True
 StructuralDeiceSwitch=False
 PropDeiceSwitch=False
 Autobrakes=1
@@ -180,7 +174,8 @@ AuxPowerUnitSwitch=False
 SeatBeltsSwitch=False
 
 [Electrical.0]
-bus.6=bus.4:0
+bus.6=bus.4:0 ; Main Battery Bus disconnected from AC bus 3
+bus.12=bus.4:0 ; APU Battery Bus disconnected from AC bus 3
 alternator.5=False
 alternator.6=False
 circuit.104 = True,0.5
@@ -191,25 +186,45 @@ circuit.108 = True,0.5
 circuit.111 = False,1.0
 circuit.118 = True,1.0
 
-
 [LocalVars.0]
+WT_AVIONICS_CHECKLIST_AUTOCOMPLETE_PHASE=0 ; NONE
+XMLVAR_ELECTRICAL_EmerLights_Cover_Opened=1
+XMLVAR_EMER_LIGHTS_ARMED=0
 XMLVAR_Mins_Selector_Baro=1
 B747_8_MFD_1_NAV_MODE=2
 B747_8_MFD_2_NAV_MODE=2
 B747_8_MFD_1_Range=1; 0.5NM
 B747_8_MFD_2_Range=1; 0.5NM
 AS01B_AUTO_THROTTLE_ARM_STATE=0
-XMLVAR_StandbyPower_Selector=0
-XMLVAR_STANDBY_POWER_IS_ON_BAT=0
 XMLVAR_HYDRAULICS_DEMAND_1=0
 XMLVAR_HYDRAULICS_DEMAND_2=0
 XMLVAR_HYDRAULICS_DEMAND_3=0
 XMLVAR_HYDRAULICS_DEMAND_4=0
+B748_Engine_AntiIce_Switch_State:1=0
+B748_Engine_AntiIce_Switch_State:2=0
+B748_Engine_AntiIce_Switch_State:3=0
+B748_Engine_AntiIce_Switch_State:4=0
+B748_Wing_AntiIce_Switch_State=0
+XMLVAR_DeiceWindshield:1=0
+XMLVAR_DeiceWindshield:2=0
 B748_IRS_Knob_State:1=0
 B748_IRS_Knob_State:2=0
 B748_IRS_Knob_State:3=0
 B748_IRS_Source_Knob_State:1=3
 B748_IRS_Source_Knob_State:2=3
+B748_Air_Data_Source_Knob_State:1=1
+B748_Air_Data_Source_Knob_State:2=1
+WT_Boeing_Fms_Operating_Phase=0 ; Pre-flight
+WT_748_RECIRC_UPR=1
+WT_748_RECIRC_LWR=1
+WT_748_TRIM_AIR_L=1
+WT_748_TRIM_AIR_R=1
+WT_748_Yaw_Damper:1=1
+WT_748_Yaw_Damper:2=1
+WT_748_FUEL_XFEED:2=1
+WT_748_FUEL_XFEED:3=1
+WT_748_FUEL_MAIN_OUTER_TO_INNER_XFER_ON=0
+WT_748_FUEL_MAIN_RESERVE_XFER_ON=0
 SALTY_FUEL_JETTISON_ACTIVE_L=0
 SALTY_FUEL_JETTISON_ACTIVE_R=0
 747_JETTISON_KNOB_POS=2
@@ -217,11 +232,6 @@ SALTY_FUEL_JETTISON_ACTIVE_R=0
 SALTY_ISFD_INIT_DONE=0
 SALTY_VIS_PILOT_0=1
 SALTY_VIS_PILOT_1=1
-747_Aircond_Knob_1=3
-747_Aircond_Knob_2=3
-747_Aircond_Knob_3=3
-74S_YAW_DAMPER_UPPER=1
-74S_YAW_DAMPER_LOWER=1
 
 [Gauges.0]
 KollsmanSetting=29.921342849731445313
@@ -268,6 +278,8 @@ Potentiometer.29=0.5
 Potentiometer.30=0.5
 Potentiometer.50=0.5
 
+Potentiometer.49=0.0
+
 [AutoPilot.0]
 MasterSwitch=False
 WingLeveler=False
@@ -288,7 +300,7 @@ RPMValue=0
 GlideslopeHold=False
 ApproachHold=False
 BackCourseHold=False
-YawDamper=False
+YawDamper=True
 ToGa=False
 AutoThrottleArm=False
 GPSdrivesNAV1=False

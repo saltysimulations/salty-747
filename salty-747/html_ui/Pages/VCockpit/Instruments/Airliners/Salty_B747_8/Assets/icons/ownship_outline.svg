@@ -7,7 +7,6 @@
     stroke-width="4"
     stroke-linejoin="round"
     fill="none"
-    vector-effect="non-scaling-stroke"
   ></path>
   <path
     d="M 0 2 L -6.5 12.5 L -6.5 28.5 L -32.5 51.5 L -32.5 58 L -10 46.5 L -6.5 46.5 L -7 67.5 L -11 73 L -11 79.5 L 0 75 L 11 79.5 L 11 73 L 7 67.5 L 6.5 46.5 L 10 46.5 L 32.5 58 L 32.5 51.5 L 6.5 28.5 L 6.5 12.5 z"
@@ -16,6 +15,5 @@
     stroke-width="3"
     stroke-linejoin="round"
     fill="none"
-    vector-effect="non-scaling-stroke"
   ></path>
 </svg>

@@ -6,7 +6,6 @@
     stroke-width="4"
     stroke-linejoin="round"
     fill="none"
-    vector-effect="non-scaling-stroke"
     />
   <path
     d="M -26 70 l 26 -70 l 26 70 z"
@@ -15,6 +14,5 @@
     stroke-width="3"
     stroke-linejoin="round"
     fill="none"
-    vector-effect="non-scaling-stroke"
   />
 </svg>

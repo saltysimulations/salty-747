@@ -107,6 +107,10 @@ wtb748-mfd {
   left: 0;
 }
 
+#Electricity[state="off"] {
+  display: none;
+}
+
 /** HINT: Don't show the white highlight since the instruments is in general not interactive */
 #vignettage {
   display: none;
@@ -118,7 +122,7 @@ wtb748-mfd {
   height: 100%;
   width: 100%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999999;
 }
 
 .hidden {

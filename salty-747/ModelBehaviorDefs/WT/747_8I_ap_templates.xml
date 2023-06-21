@@ -1,4 +1,52 @@
 <ModelBehaviors>
+
+	<!-- Autopilot engage button -->
+	<Template Name="WT_AUTOPILOT_Autopilot_Engage_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<DEFAULT_NAME>Autopilot_Engage</DEFAULT_NAME>
+		</Parameters>
+
+		<Parameters Type="Default">
+			<Switch Param="ID">
+				<Case Value="2">
+					<SIDE>c</SIDE>
+				</Case>
+				<Case Value="3">
+					<SIDE>r</SIDE>
+				</Case>
+				<Default>
+					<SIDE>l</SIDE>
+				</Default>
+			</Switch>
+		</Parameters>
+
+		<Parameters Type="Default">
+			<BTN_ID>Autopilot_Engage_#ID#</BTN_ID>
+			<NODE_ID>btn_autopilot_ap_engage_#SIDE#</NODE_ID>
+			<ANIM_NAME>autopilot_push_ap_engage_#SIDE#</ANIM_NAME>
+			<EMISSIVE_NODE_ID>btn_autopilot_ap_engage_#SIDE#_seq1</EMISSIVE_NODE_ID>
+			<ACTIVE_NODE_ID>btn_autopilot_ap_engage_#SIDE#_seq2</ACTIVE_NODE_ID>
+		</Parameters>
+
+		<Parameters Type="Override">
+			<STATUS_VAR_NAME>B748_Autopilot_Status:#ID#</STATUS_VAR_NAME>
+			<H_EVENT_NAME>B748_Autopilot_Engage_#ID#</H_EVENT_NAME>
+		</Parameters>
+
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<NO_TEXT_EMISSIVE>False</NO_TEXT_EMISSIVE>
+			<EMISSIVE_CODE_ACTIVE>(L:#STATUS_VAR_NAME#) 0 !=</EMISSIVE_CODE_ACTIVE>
+			<GET_STATE_EXTERNAL>(L:#STATUS_VAR_NAME#) 0 != sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>(A:AUTOPILOT DISENGAGED, Bool) ! if{ (&gt;H:#H_EVENT_NAME#) }</SET_STATE_EXTERNAL>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_AUTOPILOT_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_AUTOPILOT_ACTION_SET</TT_DESCRIPTION_ID>
+			<TT_VALUE_IS_DYNAMIC>True</TT_VALUE_IS_DYNAMIC>
+			<TT_VALUE>(R:1:@TT_Package.GT_STATE_ON) (R:1:@TT_Package.GT_STATE_ARMED) (R:1:@TT_Package.GT_STATE_OFF) 3 (L:#STATUS_VAR_NAME#) case</TT_VALUE>
+			<LOCAL_VAR_TO_WATCH_0>#STATUS_VAR_NAME#</LOCAL_VAR_TO_WATCH_0>
+		</UseTemplate>
+	</Template>
+
   <!-- A/T ARM Switch -->
   <Template Name="WT_AUTOPILOT_Push_AutoThrottle_Template">
     <Parameters Type="Default">
@@ -80,6 +128,29 @@
       <TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_AUTOTHROTTLE_TITLE</TOOLTIP_TITLE>
     </UseTemplate>
   </Template>
+
+	<!-- Autothrottle arm switch -->
+	<Template Name="WT_AUTOPILOT_AutoThrottle_Arm_Template">
+		<Parameters Type="Default">
+			<BTN_ID>AutoThrottle_Arm</BTN_ID>
+			<PART_ID>AUTOPILOT_Push_AutoThrottle</PART_ID>
+			<NODE_ID>switch_autopilot_at_arm</NODE_ID>
+			<ANIM_NAME>autopilot_switch_at_arm</ANIM_NAME>
+		</Parameters>
+
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<GET_STATE_EXTERNAL>(L:AS01B_AUTO_THROTTLE_ARM_STATE, Bool) sp0</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>(&gt;K:AUTO_THROTTLE_ARM)</SET_STATE_EXTERNAL>
+			<ANIM_CODE>(L:AS01B_AUTO_THROTTLE_ARM_STATE, Bool) 100 *</ANIM_CODE>
+			<TT_DESCRIPTION_ID>COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_AUTOTHROTTLE_OFF</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_AUTOTHROTTLE_TITLE</TOOLTIP_TITLE>
+			<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_OFF)</TT_VALUE_OFF>
+			<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_ARMED)</TT_VALUE_ON>
+			<LOCAL_VAR_TO_WATCH_0>AS01B_AUTO_THROTTLE_ARM_STATE</LOCAL_VAR_TO_WATCH_0>
+			<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
+			<NO_INDICATOR>True</NO_INDICATOR>
+		</UseTemplate>
+	</Template>
 
   <Template Name="WT_AUTOPILOT_Push_HdgHold_Template">
     <Parameters Type="Default">
@@ -198,26 +269,28 @@
     </UseTemplate>
   </Template>
 
-  <Template Name="WT_AUTOPILOT_Push_SpeedToggle_Template">
+	<Template Name="WT_AUTOPILOT_Push_SpeedToggle_Template">
 		<Parameters Type="Default">
 			<DEFAULT_NAME>SpeedToggle</DEFAULT_NAME>
 			<ON_SPEEDUNITS_MODE_SWITCH/>
+			<UPDATE_MANAGED_STATE>(L:XMLVAR_AirSpeedIsInMach) if{ (&gt;K:AP_MANAGED_SPEED_IN_MACH_ON) } els{ (&gt;K:AP_MANAGED_SPEED_IN_MACH_OFF) }</UPDATE_MANAGED_STATE>
 		</Parameters>
-    <Parameters Type="Override">
-      <Switch Param="TYPE">
-        <Case Value="B747">
-          <KEY_PREFIX>B747_8</KEY_PREFIX>
-        </Case>
-        <Case Value="AS01B">
-          <KEY_PREFIX>AS01B</KEY_PREFIX>
-        </Case>
-      </Switch>
-      <ON_AP_MODE_STATE_CHANGED>#ON_SPEED_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
-    </Parameters>
+		<Parameters Type="Override">
+			<Switch Param="TYPE">
+				<Case Value="B747">
+					<KEY_PREFIX>B747_8</KEY_PREFIX>
+				</Case>
+				<Case Value="AS01B">
+					<KEY_PREFIX>AS01B</KEY_PREFIX>
+				</Case>
+			</Switch>
+			<ON_AP_MODE_STATE_CHANGED>#ON_SPEED_MODE_SWITCH#</ON_AP_MODE_STATE_CHANGED>
+		</Parameters>
 		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
 			<SIM_STATE_IS_ON_EXTERNAL>l0</SIM_STATE_IS_ON_EXTERNAL>
 			<GET_STATE_EXTERNAL>(L:XMLVAR_AirSpeedIsInMach) sp0</GET_STATE_EXTERNAL>
 			<SET_STATE_EXTERNAL>(&gt;H:#KEY_PREFIX#_FMC_1_AP_SPEED_MACH_TOGGLE)</SET_STATE_EXTERNAL>
+			<ON_AFTER_INIT_CODE>#UPDATE_MANAGED_STATE#</ON_AFTER_INIT_CODE>
 			<TOOLTIP_TITLE>@TT_Package.AUTOPILOT_PUSH_SPEEDTOGGLE_TITLE</TOOLTIP_TITLE>
 			<TT_DESCRIPTION_ID>@TT_Package.AUTOPILOT_PUSH_SPEEDTOGGLE_ACTION</TT_DESCRIPTION_ID>
 			<BTN_ID>SpeedToggle_Mode</BTN_ID>
@@ -225,6 +298,63 @@
 			<STR_STATE_ON>Mach</STR_STATE_ON>
 			<TT_VALUE_OFF>(R:1:@TT_Package.GT_STATE_KNTOS)</TT_VALUE_OFF>
 			<TT_VALUE_ON>(R:1:@TT_Package.GT_STATE_MACH)</TT_VALUE_ON>
+		</UseTemplate>
+	</Template>
+
+	<!-- Autopilot disconnect button -->
+	<Template Name="WT_AUTOPILOT_Yoke_Autopilot_Disc_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<DEFAULT_NAME>Yoke_Autopilot_Disconnect</DEFAULT_NAME>
+		</Parameters>
+
+		<Parameters Type="Default">
+			<BTN_ID>Yoke_Autopilot_Disconnect_#ID#</BTN_ID>
+			<NODE_ID>HANDLING_PUSH_AP_Trim_Disc_#ID#</NODE_ID>
+			<ANIM_NAME>HANDLING_PUSH_AP_Trim_Disc_#ID#</ANIM_NAME>
+		</Parameters>
+
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<NO_INDICATOR>True</NO_INDICATOR>
+			<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
+			<GET_STATE_EXTERNAL>
+				2 1 0 (L:WT_Boeing_Autopilot_Disconnected, Bool) ? (A:AUTOPILOT MASTER, Bool) ? sp0
+			</GET_STATE_EXTERNAL>
+			<SET_STATE_EXTERNAL>(&gt;K:AUTOPILOT_OFF)</SET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0 1 ==</SIM_STATE_IS_ON_EXTERNAL>
+			<WWISE_EVENT_1>yoke_push_button_on</WWISE_EVENT_1>
+			<WWISE_EVENT_2>yoke_push_button_off</WWISE_EVENT_2>
+			<TOOLTIP_TITLE>@TT_Package.YOKE_PUSH_AP_TRIM_DISC_TITLE</TOOLTIP_TITLE>
+			<TT_DESCRIPTION_ID>@TT_Package.YOKE_PUSH_AP_TRIM_DISC_ACTION</TT_DESCRIPTION_ID>
+			<TT_VALUE>(R:1:@TT_Package.GT_STATE_ON) (R:1:@TT_Package.GT_STATE_DISCONNECTED) (R:1:@TT_Package.GT_STATE_OFF) (L:WT_Boeing_Autopilot_Disconnected, Bool) ? (A:AUTOPILOT MASTER, Bool) ?</TT_VALUE>
+			<SIMVAR_TO_WATCH_0>AUTOPILOT MASTER</SIMVAR_TO_WATCH_0>
+			<LOCAL_VAR_TO_WATCH_0>WT_Boeing_Autopilot_Disconnected</LOCAL_VAR_TO_WATCH_0>
+		</UseTemplate>
+	</Template>
+
+	<!-- Autothrottle disconnect button -->
+	<Template Name="WT_AUTOPILOT_Autothrottle_Disc_Template">
+		<Parameters Type="Default">
+			<ID>1</ID>
+			<DEFAULT_NAME>AutoThrottle_Disconnect</DEFAULT_NAME>
+		</Parameters>
+
+		<Parameters Type="Default">
+			<BTN_ID>AutoThrottle_Disengage_#ID#</BTN_ID>
+			<NODE_ID>ENGINE_Switch_ATDisc_#ID#</NODE_ID>
+			<ANIM_NAME>ENGINE_Switch_ATDisc_#ID#</ANIM_NAME>
+		</Parameters>
+
+		<UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
+			<TT_DESCRIPTION_ID>COCKPIT.TOOLTIPS.AUTOPILOT_PANEL_AUTOTHROTTLE_ARMED</TT_DESCRIPTION_ID>
+			<TOOLTIP_TITLE>@TT_Package.ENGINE_SWITCH_ATDISC_TITLE</TOOLTIP_TITLE>
+			<NO_INDICATOR>True</NO_INDICATOR>
+			<NO_TEXT_EMISSIVE>True</NO_TEXT_EMISSIVE>
+			<GET_STATE_EXTERNAL>(L:WT_Boeing_Autothrottle_Status) sp0</GET_STATE_EXTERNAL>
+			<SIM_STATE_IS_ON_EXTERNAL>l0 1 &gt;</SIM_STATE_IS_ON_EXTERNAL>
+			<SET_STATE_EXTERNAL>(&gt;K:AUTO_THROTTLE_DISCONNECT)</SET_STATE_EXTERNAL>
+			<TT_VALUE>(R:1:@TT_Package.GT_STATE_ON) (R:1:@TT_Package.GT_STATE_ARMED) (R:1:@TT_Package.GT_STATE_DISCONNECTED) (R:1:@TT_Package.GT_STATE_OFF) 4 (L:WT_Boeing_Autothrottle_Status) case</TT_VALUE>
+			<LOCAL_VAR_TO_WATCH_0>WT_Boeing_Autothrottle_Status</LOCAL_VAR_TO_WATCH_0>
 		</UseTemplate>
 	</Template>
 </ModelBehaviors>

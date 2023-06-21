@@ -131,6 +131,10 @@ wtb748-mfd {
   left: 0;
 }
 
+#Electricity[state="off"] {
+  display: none;
+}
+
 /** HINT: Don't show the white highlight since the instruments is in general not interactive */
 #vignettage {
   display: none;
@@ -142,7 +146,7 @@ wtb748-mfd {
   height: 100%;
   width: 100%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999999;
 }
 
 .hidden {
@@ -928,6 +932,18 @@ wtb748-mfd {
   margin-bottom: -1px;
 }
 
+.ecs-recirc-status .recirc-on-text {
+  display: none;
+}
+
+.ecs-recirc-status.ecs-recirc-on .recirc-on-text {
+  display: inherit;
+}
+
+.ecs-recirc-status.ecs-recirc-on .recirc-off-text {
+  display: none;
+}
+
 .ecs-recirc-fail {
   color: var(--boeing-colors-amber);
 }
@@ -1068,6 +1084,10 @@ wtb748-mfd {
   padding-top: 5px;
 }
 
+.ecs-duct-psi-value.press-warning {
+  color: var(--boeing-colors-amber);
+}
+
 .ecs-wai-label-left {
   position: absolute;
   top: 235px;
@@ -1176,23 +1196,23 @@ wtb748-mfd {
 }
 
 .eicas-caution {
-  color: var(--boeing-colors-amber);
-  stroke: var(--boeing-colors-amber);
+  color: var(--boeing-colors-amber) !important;
+  stroke: var(--boeing-colors-amber) !important;
 }
 
 .eicas-warning {
-  color: var(--boeing-colors-red);
-  stroke: var(--boeing-colors-red);
+  color: var(--boeing-colors-red) !important;
+  stroke: var(--boeing-colors-red) !important;
 }
 
 .eicas-normal {
-  color: var(--boeing-colors-white);
-  stroke: var(--boeing-colors-white);
+  color: var(--boeing-colors-white) !important;
+  stroke: var(--boeing-colors-white) !important;
 }
 
 .eicas-green {
-  color: var(--boeing-colors-green);
-  border-color: var(--boeing-colors-green);
+  color: var(--boeing-colors-green) !important;
+  border-color: var(--boeing-colors-green) !important;
 }
 .bar-gauge {
   width: 100%;
@@ -1922,11 +1942,35 @@ wtb748-mfd {
   color: var(--boeing-colors-cyan)
 }
 
-.trim-gauge-container .stab-trim-gauge-green-box {
+.trim-gauge-container .stab-trim-gauge-green-box-extended-nose-down {
+  position: absolute;
+  top: 43px;
+  width: 12px;
+  height: 40px;
+  left: 134px;
+  background: var(--boeing-colors-green);
+}
+
+.trim-gauge-container .stab-trim-gauge-green-box-mid {
   position: absolute;
   top: 86px;
   width: 12px;
   height: 47px;
+  left: 134px;
+  background: var(--boeing-colors-green);
+}
+
+.trim-gauge-container.hide-trim-boxes .stab-trim-gauge-green-box-mid,
+.trim-gauge-container.hide-trim-boxes .stab-trim-gauge-green-box-extended-nose-down,
+.trim-gauge-container.hide-trim-boxes .stab-trim-gauge-green-box-extended-nose-up {
+  display: none !important;
+}
+
+.trim-gauge-container .stab-trim-gauge-green-box-extended-nose-up {
+  position: absolute;
+  top: 136px;
+  width: 12px;
+  height: 18px;
   left: 134px;
   background: var(--boeing-colors-green);
 }
@@ -1998,6 +2042,7 @@ wtb748-mfd {
 }
 
 .upper-bar-column {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2023,6 +2068,26 @@ wtb748-mfd {
   font-size: 30px;
   margin-top: 73px;
   margin-left: 20px;
+}
+
+.eai-indication {
+  position: absolute;
+  left: 4px;
+  top: 140px;
+}
+
+.wai-indication {
+  position: absolute;
+  top: 234px;
+  transform: translateX(-50%);
+}
+
+.wai-indication-1 {
+  left: 114px;
+}
+
+.wai-indication-2 {
+  left: 350px;
 }
 
 .gauge-titles {
@@ -2057,6 +2122,11 @@ wtb748-mfd {
   top: -425px;
   width: 300px;
   left: 435px;
+}
+.anti-ice-indication {
+  font-size: 22px;
+  color: var(--boeing-colors-green);
+  letter-spacing: -1px;
 }
 .fuel-flow-value-box {
   position: absolute;
@@ -2856,6 +2926,10 @@ wtb748-mfd {
   left: 99px;
 }
 
+.elec-diagram-container .elec-line-base-top .ssb-line {
+  transform: translateY(0);
+}
+
 .elec-diagram-container .elec-line-base-top.ssb-open .ssb-line {
   transform: translateY(-15px);
 }
@@ -3300,6 +3374,12 @@ wtb748-mfd {
 }
 
 .fuel-pump.active div {
+  border: 3px solid var(--boeing-colors-green);
+  border-top: none;
+  border-bottom: none;
+}
+
+.fuel-pump.active-fuel div {
   background-color: var(--boeing-colors-green);
 }
 
@@ -3319,6 +3399,16 @@ wtb748-mfd {
 
 .fuel-pump.jettison div {
   background-color: var(--boeing-colors-magenta);
+}
+
+.fuel-pump.armed {
+  border-color: var(--boeing-colors-cyan);
+}
+
+.fuel-pump.armed div {
+  border: 3px solid var(--boeing-colors-cyan);
+  border-top: none;
+  border-bottom: none;
 }
 
 .fuel-diagram-container .fuel-pump.fuel-pump-main-1-fwd {
@@ -4398,6 +4488,34 @@ wtb748-mfd {
   stroke: var(--boeing-colors-black) !important;
   stroke-width: var(--nav-display-path-stroke-width-outline);
 }
+
+.inertial-heading-data-invalid .map-cross-track-error-container,
+.inertial-heading-data-invalid.map-requires-alignment .flight-plan-text-layer,
+.inertial-heading-data-invalid.map-requires-alignment .bing-map,
+.inertial-heading-data-invalid.map-requires-alignment .plan-airports-runways-canvas-layer,
+.inertial-heading-data-invalid.map-requires-alignment .nearest-waypoints,
+.inertial-heading-data-invalid.map-requires-alignment .flight-plan-layer,
+.inertial-heading-data-invalid.map-requires-alignment .tod-layer,
+.inertial-heading-data-invalid .position-trend-vector,
+.inertial-heading-data-invalid .altitude-arc,
+.inertial-heading-data-invalid .traffic,
+.inertial-heading-data-invalid .airplane-symbol-outline,
+.inertial-heading-data-invalid .compass-numbers,
+.inertial-heading-data-invalid .track-line-svg,
+.inertial-heading-data-invalid .track-line-ticks-svg,
+.inertial-heading-data-invalid .range-circles-svg,
+.inertial-heading-data-invalid .tcas-ring,
+.inertial-heading-data-invalid .bearing-pointer,
+.inertial-heading-data-invalid .selected-heading-line,
+.inertial-heading-data-invalid .selected-heading-line,
+.inertial-heading-data-invalid .selected-heading-bug,
+.inertial-heading-data-invalid .selected-track-bug,
+.inertial-heading-data-invalid .current-heading-triangle,
+.inertial-heading-data-invalid .map-rotating-overlay .range-number,
+.inertial-heading-data-invalid .map-rotating-overlay .half-range-number,
+.inertial-heading-data-invalid .map-rotating-overlay .half-range-number-2 {
+  display: none !important;
+}
 .map-arc .half-range-number,
 .map-ctr .half-range-number,
 .map-ctr .half-range-number-2 {
@@ -4613,6 +4731,34 @@ wtb748-mfd {
 .track-reference-text {
   color: var(--boeing-colors-green);
   margin-top: 8px;
+  width: 42px;
+}
+.map-failure-flags-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.map-failure-flags-container .map-failure-flag {
+  position: absolute;
+  top: 300px;
+  padding: 0 2px 0 1px;
+  text-align: center;
+  font-size: 30px;
+  height: 1em;
+  background: var(--boeing-colors-black);
+  border: 3px solid var(--boeing-colors-amber);
+  color: var(--boeing-colors-amber);
+}
+
+.plan-mode .map-failure-flags-container .map-failure-flag {
+  display: none;
 }
 .speed-wind-range-info-block .ground-air-wind-container {
   position: absolute;
@@ -4711,6 +4857,17 @@ wtb748-mfd {
 .map-range-container>.text {
   position: absolute;
   top: 28px;
+}
+.time-to-align {
+  position: absolute;
+  margin-top: 34px;
+  margin-left: 13px;
+  white-space: pre;
+}
+
+.time-to-align .s-text {
+  font-size: 21px;
+  white-space: pre;
 }
 .vor-display {
   position: absolute;
@@ -4889,7 +5046,8 @@ wtb748-mfd {
   justify-content: center;
 }
 
-.nd-information-container .speed-wind-range-info-block {
+.nd-information-container .speed-wind-range-info-block,
+.nd-information-container .time-to-align {
   position: absolute;
   top: 5px;
   left: 0px;
