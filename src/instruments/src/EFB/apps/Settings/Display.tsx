@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import { useSimVar } from "react-msfs";
 import { ContentPageContainer } from "./components/ContentPageContainer";
@@ -24,52 +24,41 @@ interface IconContainerProps {
 }
 
 export const Display: FC = () => {
-  const [trueTone, setTrueTone] = usePersistentNumberProperty("TRUE_TONE", 0);
-  const [autoBrightness, setAutoBrightness] = usePersistentNumberProperty("AUTO_BRIGHTNESS", 0);
+  const [trueTone, setTrueTone] = usePersistentNumberProperty("74S_EFB_TRUE_TONE", 0);
+  const [autoBrightness, setAutoBrightness] = usePersistentNumberProperty("74S_EFB_AUTO_BRIGHTNESS", 0);
+  const [lightMode, setLightMode] = usePersistentNumberProperty("74S_EFB_LIGHT_MODE", 0); // 0 MEANS TRUE OR ENABLED!!
+  const [darkMode, setDarkMode] = usePersistentNumberProperty("74S_EFB_DARK_MODE", 1);
 
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
-  };
-
+  function setDisplayMode(mode: "light" | "dark") {
+    if (mode === "light") {
+      // Enable darkmode and disable lightmode
+      setLightMode(1);
+      setDarkMode(0);
+    } else if (mode === "dark") {
+      // Enable lightmode and disable darkmode
+      setLightMode(0);
+      setDarkMode(1);
+    }
+    //console.log(lightMode, darkMode);
+  }
   return (
     <ContentPageContainer title="Display & Brightness">
       <ItemGroup>
         <CategoryItem label="APPEARANCE" />
         <StyledBigItem>
-          <div
-            style={{
-              width: 400,
-              height: 350,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-            }}
-          >
+          <BigItemContainer>
             <img src={lightModeIcon} width="200" height="200" />
             <p style={{ color: "black", fontSize: 25 }}>Light</p>
-            <Checkbox checked={true} onChange={handleCheckboxChange} />
-          </div>
-          <div
-            style={{
-              width: 400,
-              height: 350,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-            }}
-          >
+            <Checkbox enabled={Boolean(lightMode)} onClick={() => setDisplayMode("light")} />
+          </BigItemContainer>
+          <BigItemContainer>
             <img src={darkModeIcon} width="200" height="200" />
             <p style={{ color: "black", fontSize: 25 }}>Dark</p>
-            <Checkbox checked={false} onChange={handleCheckboxChange} />
-          </div>
+            <Checkbox enabled={Boolean(darkMode)} onClick={() => setDisplayMode("dark")} />
+          </BigItemContainer>
         </StyledBigItem>
-
         <SettingsItem noMouseDownEffect>
-          <Toggle label="Automatic" enabled={autoBrightness === 1} onClick={(enabled) => setAutoBrightness(enabled ? 0 : 1)} />
+          <Toggle label="Automatic" enabled={Boolean(autoBrightness)} onClick={(enabled) => setAutoBrightness(enabled ? 0 : 1)} />
         </SettingsItem>
       </ItemGroup>
       <ItemGroup>
@@ -79,18 +68,27 @@ export const Display: FC = () => {
           <Container>
             <IconContainer icon={brightnessLow} marginLeft="2%" marginRight="auto" />
 
-            <StyledRangeSlider simVarName="L:74S_EFB_BRIGHTNESS" simVarType="Number" defaultValue={50} />
+            <StyledRangeSlider simVarName="L:74S_EFB_BRIGHTNESS" simVarType="Number" defaultValue={100} />
 
             <IconContainer icon={brightnessFull} marginLeft="auto" marginRight="2%" />
           </Container>
         </SettingsItem>
 
-        <Toggle label="True Tone" enabled={trueTone === 1} onClick={(enabled) => setTrueTone(enabled ? 0 : 1)} />
+        <Toggle label="True Tone" enabled={Boolean(trueTone)} onClick={(enabled) => setTrueTone(enabled ? 0 : 1)} />
         <CategoryItem label="Automatically adapt saltPad based on ambient lighting conditions." />
       </ItemGroup>
     </ContentPageContainer>
   );
 };
+
+const BigItemContainer = styled.div`
+  width: 400px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+`;
 
 const StyledBigItem = styled.div`
   width: 100%;

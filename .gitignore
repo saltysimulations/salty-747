@@ -22,3 +22,4 @@ msfs-avionics-mirror/src/garminsdk
 msfs-avionics-mirror/src/workingtitle-instruments-g1000
 msfs-avionics-mirror/src/sdk/build
 .env
+.ace/persistent-storage

@@ -4,59 +4,24 @@ import styled from "styled-components";
 import checkboxChecked from "../icons/checkbox-checked-icon.png";
 import checkboxUnchecked from "../icons/checkbox-unchecked-icon.png";
 
-type CheckboxProps = {
-  checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+type CheckboxProps = { enabled: boolean; onClick: (enabled: boolean) => void };
 
-export const Checkbox: FC<CheckboxProps> = ({ checked, onChange }) => {
-  return (
-    <CheckboxContainer>
-      <HiddenCheckbox checked={checked} onChange={onChange} />
-      <StyledCheckbox checked={checked} />
-    </CheckboxContainer>
-  );
-};
+export const Checkbox: FC<CheckboxProps> = ({ enabled, onClick }) => (
+  <StyledCheckboxContainer>
+    <StyledCheckbox enabled={enabled} onClick={() => onClick(enabled)} />
+  </StyledCheckboxContainer>
+);
 
-const CheckboxContainer = styled.div`
+const StyledCheckboxContainer = styled.div`
   display: inline-block;
   vertical-align: middle;
 `;
 
-const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-`;
-
-const StyledCheckbox = styled.label<{ checked: boolean }>`
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background: ${(props) =>
-    props.checked ? `url(${checkboxChecked})` : `url(${checkboxUnchecked})`};
-  background-size: 100% 100%; /* Utilizza l'intera area del background */
-  border-radius: 50%;
-  transition: all 0.2s;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
-  }
-
-  &:after {
-    content: "";
-    display: ${(props) => (props.checked ? "block" : "none")};
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #fff;
-  }
+const StyledCheckbox = styled.div`
+  width: 36px;
+  height: 36px;
+  background: ${(props: { enabled: boolean }) => (props.enabled ? `url(${checkboxChecked})` : `url(${checkboxUnchecked})`)};
+  background-size: 36px 36px;
+  backgroundRepeat: 'no-repeat',
+  align-items: center;
 `;
