@@ -1,0 +1,332 @@
+{
+    "accessors": [
+        {
+            "bufferView": 1,
+            "byteOffset": 28,
+            "componentType": 5123,
+            "count": 546,
+            "type": "VEC4",
+            "name": "x1_Salty_Trim_1.001_vertices#0_COLOR_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 16,
+            "componentType": 5120,
+            "count": 546,
+            "type": "VEC4",
+            "name": "x1_Salty_Trim_1.001_vertices#0_NORMAL"
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 546,
+            "min": [
+                -1.075278401374817,
+                4.0324811935424805,
+                24.409122467041016
+            ],
+            "max": [
+                1.075278401374817,
+                4.120665073394775,
+                25.05902671813965
+            ],
+            "type": "VEC3",
+            "name": "x1_Salty_Trim_1.001_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 12,
+            "componentType": 5120,
+            "count": 546,
+            "type": "VEC4",
+            "name": "x1_Salty_Trim_1.001_vertices#0_TANGENT"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 20,
+            "componentType": 5122,
+            "count": 546,
+            "type": "VEC2",
+            "name": "x1_Salty_Trim_1.001_vertices#0_TEXCOORD_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 24,
+            "componentType": 5122,
+            "count": 546,
+            "type": "VEC2",
+            "name": "x1_Salty_Trim_1.001_vertices#0_TEXCOORD_1"
+        },
+        {
+            "bufferView": 0,
+            "componentType": 5123,
+            "count": 1848,
+            "type": "SCALAR",
+            "name": "x1_Salty_Trim_1.001_indices#0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 19684,
+            "componentType": 5123,
+            "count": 152,
+            "type": "VEC4",
+            "name": "x1_SALTY_TRIM_2.001_vertices#0_COLOR_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 19672,
+            "componentType": 5120,
+            "count": 152,
+            "type": "VEC4",
+            "name": "x1_SALTY_TRIM_2.001_vertices#0_NORMAL"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 19656,
+            "componentType": 5126,
+            "count": 152,
+            "min": [
+                -1.0988750457763672,
+                4.0324811935424805,
+                24.414447784423828
+            ],
+            "max": [
+                1.0988750457763672,
+                4.090562343597412,
+                24.833955764770508
+            ],
+            "type": "VEC3",
+            "name": "x1_SALTY_TRIM_2.001_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 19668,
+            "componentType": 5120,
+            "count": 152,
+            "type": "VEC4",
+            "name": "x1_SALTY_TRIM_2.001_vertices#0_TANGENT"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 19676,
+            "componentType": 5122,
+            "count": 152,
+            "type": "VEC2",
+            "name": "x1_SALTY_TRIM_2.001_vertices#0_TEXCOORD_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 19680,
+            "componentType": 5122,
+            "count": 152,
+            "type": "VEC2",
+            "name": "x1_SALTY_TRIM_2.001_vertices#0_TEXCOORD_1"
+        },
+        {
+            "bufferView": 0,
+            "byteOffset": 3696,
+            "componentType": 5123,
+            "count": 264,
+            "type": "SCALAR",
+            "name": "x1_SALTY_TRIM_2.001_indices#0"
+        }
+    ],
+    "asset": {
+        "generator": "Khronos glTF Blender I/O v1.7.5",
+        "version": "2.0",
+        "extensions": {
+            "ASOBO_asset_optimized": {
+                "BoundingBoxMax": [
+                    1.0988750457763672,
+                    4.120665073394775,
+                    25.05902671813965
+                ],
+                "BoundingBoxMin": [
+                    -1.0988750457763672,
+                    0,
+                    0
+                ],
+                "MajorVersion": 4,
+                "MinorVersion": 2
+            },
+            "ASOBO_normal_map_convention": {
+                "tangent_space_convention": "DirectX"
+            }
+        }
+    },
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteLength": 4224,
+            "byteOffset": 0,
+            "target": 34963,
+            "name": "BufferViewIndex"
+        },
+        {
+            "buffer": 0,
+            "byteLength": 25128,
+            "byteStride": 36,
+            "byteOffset": 4224,
+            "target": 34962,
+            "name": "BufferViewVertexND"
+        }
+    ],
+    "extensionsUsed": [
+        "MSFT_texture_dds",
+        "ASOBO_asset_optimized",
+        "ASOBO_normal_map_convention"
+    ],
+    "extensionsRequired": [
+        "MSFT_texture_dds"
+    ],
+    "materials": [
+        {
+            "name": "SALTY_TRIM_1",
+            "normalTexture": {
+                "index": 0
+            },
+            "occlusionTexture": {
+                "index": 1
+            },
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 2
+                },
+                "metallicRoughnessTexture": {
+                    "index": 1
+                }
+            },
+            "extensions": {
+              "ASOBO_material_detail_map": {
+                "UVScale": 80,
+                "detailNormalTexture": {
+                  "index": 31,
+                  "scale": -0.25
+                }
+              }
+            }
+          }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "COLOR_0": 0,
+                        "NORMAL": 1,
+                        "POSITION": 2,
+                        "TANGENT": 3,
+                        "TEXCOORD_0": 4,
+                        "TEXCOORD_1": 5
+                    },
+                    "indices": 6,
+                    "material": 0,
+                    "mode": 4,
+                    "extras": {
+                        "ASOBO_primitive": {
+                            "PrimitiveCount": 616,
+                            "VertexType": "VTX",
+                            "VertexVersion": 2
+                        }
+                    }
+                }
+            ],
+            "name": "x1_Salty_Trim_1.001"
+        },
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "COLOR_0": 7,
+                        "NORMAL": 8,
+                        "POSITION": 9,
+                        "TANGENT": 10,
+                        "TEXCOORD_0": 11,
+                        "TEXCOORD_1": 12
+                    },
+                    "indices": 13,
+                    "material": 0,
+                    "mode": 4,
+                    "extras": {
+                        "ASOBO_primitive": {
+                            "PrimitiveCount": 88,
+                            "VertexType": "VTX",
+                            "VertexVersion": 2
+                        }
+                    }
+                }
+            ],
+            "name": "x1_SALTY_TRIM_2.001"
+        }
+    ],
+    "nodes": [
+        {
+            "mesh": 0,
+            "name": "Salty_Trim_1.001"
+        },
+        {
+            "mesh": 1,
+            "name": "Salty_TRIM_2.001"
+        }
+    ],
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Scene",
+            "nodes": [
+                0,
+                1
+            ]
+        }
+    ],
+    "textures": [
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 0
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 1
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 2
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 1
+                }
+            }
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 29352,
+            "uri": "Salty_trim1.bin"
+        }
+    ],
+    "images": [
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "SALTY_TRIM_NORM.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "SALTY_TRIM_COMP.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "SALTY_TRIM_ALBD.PNG.DDS"
+        }
+    ]
+}
