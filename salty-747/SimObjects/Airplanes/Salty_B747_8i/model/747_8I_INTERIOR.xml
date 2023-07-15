@@ -2994,7 +2994,7 @@
 						<NODE_ID>knob_side_inbd_crt_r2</NODE_ID>
 						<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					</UseTemplate>
-					<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+                    		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>knob_side_panel_l2</NODE_ID>
 						<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					</UseTemplate>
