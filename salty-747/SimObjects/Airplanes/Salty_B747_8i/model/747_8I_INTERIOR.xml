@@ -2994,7 +2994,7 @@
 						<NODE_ID>knob_side_inbd_crt_r2</NODE_ID>
 						<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					</UseTemplate>
-                    		<UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
+                    <UseTemplate Name="ASOBO_GT_Component_Emissive_Gauge">
 						<NODE_ID>knob_side_panel_l2</NODE_ID>
 						<DONT_OVERRIDE_BASE_EMISSIVE>True</DONT_OVERRIDE_BASE_EMISSIVE>
 					</UseTemplate>
@@ -3395,7 +3395,7 @@
 					<SCREEN_PREFIX>B747_8_</SCREEN_PREFIX>
 				</DefaultTemplateParameters>
 				<UseTemplate Name="ASOBO_GT_Screen_Template">
-					<SCREEN_PREFIX/>
+                	<SCREEN_PREFIX/>
 					<SCREEN_ID>Registration</SCREEN_ID>
 					<SIMVAR_POWER_SETTING>LIGHT PANEL POWER SETTING:4</SIMVAR_POWER_SETTING>
 				</UseTemplate>
@@ -3481,7 +3481,6 @@
 				<EMISSIVE_KNOB>True</EMISSIVE_KNOB>
 				<KNOB_EMISSIVE_CODE>1</KNOB_EMISSIVE_CODE>
 				<ANIM_NEVER_FAILS>True</ANIM_NEVER_FAILS>
-				<NO_AUTHORITY_OVER_SWITCH_STATE>True</NO_AUTHORITY_OVER_SWITCH_STATE>
 			</DefaultTemplateParameters>
 			<Component ID="Glareshield">
 				<DefaultTemplateParameters>
@@ -3497,7 +3496,6 @@
 					<TOOLTIP_TITLE>@TT_Package.LIGHTING_KNOB_GLARESHIELD_TITLE</TOOLTIP_TITLE>
 					<SIMVAR_INDEX>1</SIMVAR_INDEX>
 					<TT_ICON>ROTATE</TT_ICON>
-					<NO_AUTHORITY_OVER_SWITCH_STATE>False</NO_AUTHORITY_OVER_SWITCH_STATE>
 				</UseTemplate>
 				<!-- Glareshield Backlight -->
 				<UseTemplate Name="ASOBO_LIGHTING_Knob_Panel_Template">
@@ -3568,7 +3566,6 @@
 					<ANIM_NAME>ovhd_knob_lights_dome</ANIM_NAME>
 					<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_OVHD_KNOB_LIGHT_DOME_ACTION</TT_DESCRIPTION_ID>
 					<TOOLTIP_TITLE>@TT_Package.AIRLINER_OVHD_KNOB_LIGHT_DOME_TITLE</TOOLTIP_TITLE>
-					<NO_AUTHORITY_OVER_SWITCH_STATE>False</NO_AUTHORITY_OVER_SWITCH_STATE>
 				</UseTemplate>
 			</Component>
 			<Component ID="Pedestal">
@@ -3585,7 +3582,6 @@
 					<ANIM_NAME>ovhd_knob_lights_flood2</ANIM_NAME>
 					<TT_DESCRIPTION_ID>@TT_Package.AIRLINER_OVHD_KNOB_LIGHT_GLARESHIELD_PANELFLOOD2_ACTION</TT_DESCRIPTION_ID>
 					<TOOLTIP_TITLE>@TT_Package.AIRLINER_OVHD_KNOB_LIGHT_GLARESHIELD_PANELFLOOD2_TITLE</TOOLTIP_TITLE>
-					<NO_AUTHORITY_OVER_SWITCH_STATE>False</NO_AUTHORITY_OVER_SWITCH_STATE>
 				</UseTemplate>
 				<!-- Pedestal Decals -->
 				<UseTemplate Name="ASOBO_LIGHTING_Knob_Panel_Template">
@@ -3783,7 +3779,7 @@
 					<WWISE_EVENT_1>landing_light_on</WWISE_EVENT_1>
 					<WWISE_EVENT_2>landing_light_off</WWISE_EVENT_2>
 				</UseTemplate>
-              		<Component ID="Gear_Lights_IE">
+                <Component ID="Gear_Lights_IE">
 					<UseInputEvent ID="PROCEDURE">
 						<PROCEDURE_ID>GEAR_CONTROLLED_CIRCUIT</PROCEDURE_ID>
 						<BUS_INDEX>1</BUS_INDEX>
