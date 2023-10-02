@@ -1,289 +1,1580 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <SimBase.Document Type="CheckpointLibrary" version="1,0">
 	<Checklist.CheckpointLibrary>
-		<Checkpoint Id="ENGINES_1_2_3_REPEAT_START_ROCEDURE">
-			<Clue name="TT:CLUE.ENGINES_1_2_3_START_REPEAT_PROCEDURE"/>
-			<Feedback name="TT:FEEDBACK.OPPOSITE_ENGINES_1_2_3_START_REPEAT_PROCEDURE"/>
-			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINES_1_2_3" ExpectationTT="TT:GAME.CHECKLIST_REPEAT_PROCEDURE"/>
+
+		<Checkpoint Id="ENGINES_1_2_3_REPEAT_START_ROCEDURE_B748">
+			<Clue name="TT:CLUE.ENGINES_1_2_3_START_REPEAT_PROCEDURE" />
+			<Feedback name="TT:FEEDBACK.OPPOSITE_ENGINES_1_2_3_START_REPEAT_PROCEDURE" />
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINES_1_2_3" ExpectationTT="TT:GAME.CHECKLIST_REPEAT_PROCEDURE" />
 			<Sequence SeqType="Unordered">
 				<Test>
 					<TestValue>
-						<Operator OpType="AND">
-							<Operator OpType="EQUAL">
-								<Val SimVarName="TURB ENG IGNITION SWITCH EX1:1" Units="Enum"/>
-								<Val Value="1"/>
-							</Operator>
-							<Val SimVarName="GENERAL ENG STARTER:1" Units="boolean"/>
-						</Operator>
+						<Val SimVarName="GENERAL ENG STARTER:1" Units="boolean" />
 					</TestValue>
-					<Instrument Id="ENGINE_Switch_Starter1"/>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_1_Start)"/>
+					<Instrument Id="ENGINE_Switch_Starter1" />
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_1_Start)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Operator OpType="AND">
-							<Operator OpType="EQUAL">
-								<Val SimVarName="TURB ENG IGNITION SWITCH EX1:2" Units="Enum"/>
-								<Val Value="1"/>
-							</Operator>
-							<Val SimVarName="GENERAL ENG STARTER:2" Units="boolean"/>
-						</Operator>
+						<Val SimVarName="GENERAL ENG STARTER:2" Units="boolean" />
 					</TestValue>
-					<Instrument Id="ENGINE_Switch_Starter2"/>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_2_Start)"/>
+					<Instrument Id="ENGINE_Switch_Starter2" />
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_2_Start)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Operator OpType="AND">
-							<Operator OpType="EQUAL">
-								<Val SimVarName="TURB ENG IGNITION SWITCH EX1:3" Units="Enum"/>
-								<Val Value="1"/>
-							</Operator>
-							<Val SimVarName="GENERAL ENG STARTER:3" Units="boolean"/>
-						</Operator>
+						<Val SimVarName="GENERAL ENG STARTER:3" Units="boolean" />
 					</TestValue>
-					<Instrument Id="ENGINE_Switch_Starter3"/>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_3_Start)"/>
+					<Instrument Id="ENGINE_Switch_Starter3" />
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_3_Start)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM VALVE SWITCH:5" Units="boolean"/>
+						<Val SimVarName="FUELSYSTEM VALVE SWITCH:5" Units="boolean" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="5"/>
-					<Instrument Id="FUEL_Switch_Valve5"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="5" />
+					<Instrument Id="FUEL_Switch_Valve5" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM VALVE SWITCH:6" Units="boolean"/>
+						<Val SimVarName="FUELSYSTEM VALVE SWITCH:6" Units="boolean" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="6"/>
-					<Instrument Id="FUEL_Switch_Valve6"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="6" />
+					<Instrument Id="FUEL_Switch_Valve6" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM VALVE SWITCH:7" Units="boolean"/>
+						<Val SimVarName="FUELSYSTEM VALVE SWITCH:7" Units="boolean" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="7"/>
-					<Instrument Id="FUEL_Switch_Valve7"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="7" />
+					<Instrument Id="FUEL_Switch_Valve7" />
 				</Test>
 			</Sequence>
+			<ForceCamera name="Instruments05" />
 		</Checkpoint>
-		<Checkpoint Id="FUEL_PUMPS_AIRLINER_4_ENGINES">
-			<Clue name="TT:CLUE.FUEL_PUMPS_AIRLINER_2_ENGINES_ON"/>
-			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_PUMPS" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+
+		<Checkpoint Id="WAIT_ENGINES_STARTED_B748">
+			<Clue name="TT:CLUE.EICAS_MONITOR" />
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_EICAS" ExpectationTT="TT:GAME.CHECKLIST_ENGINE_RUNNING" />
+			<Sequence SeqType="Ordered">
+				<Test>
+					<TestValue>
+						<!-- STOPPED = 0, AUTOSTART = 1, RUNNING = 2 -->
+						<Val Code="(L:WT_FADEC_ENG_START_STATE_1) 2 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- STOPPED = 0, AUTOSTART = 1, RUNNING = 2 -->
+						<Val Code="(L:WT_FADEC_ENG_START_STATE_2) 2 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- STOPPED = 0, AUTOSTART = 1, RUNNING = 2 -->
+						<Val Code="(L:WT_FADEC_ENG_START_STATE_3) 2 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- STOPPED = 0, AUTOSTART = 1, RUNNING = 2 -->
+						<Val Code="(L:WT_FADEC_ENG_START_STATE_4) 2 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" SpecialAction="WaitUntilTestValueValidated"/>
+				</Test>
+			</Sequence>
+			<Instrument Id="HTML:WTB748_MFD_4:engine-start-n2"/>
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="FUEL_CROSSFEED_VALVES_ON_AIRLINER_4_ENGINES_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_CROSSFEEDS_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="FUEL_PUSH_VALVE1" />
+			<Instrument Id="PUSH_OVHD_FUEL_XFEED_02" />
+			<Instrument Id="PUSH_OVHD_FUEL_XFEED_03" />
+			<Instrument Id="FUEL_PUSH_VALVE4" />
 			<Sequence SeqType="Unordered">
 				<Test>
 					<TestValue>
-						<Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean"/>
+						<Val Code="(B:FUEL_Valve_XFeed_1, Bool)" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:FUEL_Valve_XFeed_1_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:1" Units="Boolean"/>
+						<Val Code="(L:WT_748_FUEL_XFEED:2, Bool)" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="1"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump1"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_FUEL_XFEED:2)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:2" Units="Boolean"/>
+						<Val Code="(L:WT_748_FUEL_XFEED:3, Bool)" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="2"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump2"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_FUEL_XFEED:3)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:3" Units="Boolean"/>
+						<Val Code="(B:FUEL_Valve_XFeed_4, Bool)" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="3"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump3"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:FUEL_Valve_XFeed_4_Set)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="FUEL_PUMPS_OFF_AIRLINER_4_ENGINES_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_PUMPS" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Instrument Id="FUEL_Push_Pump" />
+			<Instrument Id="push_ovhd_fuel_main_02_aft" />
+			<Instrument Id="push_ovhd_fuel_main_03_aft" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Main_Fwd_1, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Main_Fwd_1_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:4" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Main_Aft_1, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="4"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump4"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Main_Aft_1_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:5" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Main_Fwd_2, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="5"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump5"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Main_Fwd_2_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:6" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_FUEL_PUMP_2_AFT_ON, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="6"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump6"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_FUEL_PUMP_2_AFT_ON)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:7" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Fwd_2, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="7"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump7"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Fwd_2_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:8" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Aft_2, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="8"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump8"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Aft_2_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:9" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Ctr_Tank_L, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="9"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump9"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Ctr_Tank_L_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:10" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Ctr_Tank_R, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="10"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump10"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Ctr_Tank_R_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:11" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Stab_L, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="11"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump11"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Stab_L_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:12" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Stab_R, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="12"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump12"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Stab_R_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:13" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Main_Fwd_3, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="13"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump13"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Main_Fwd_3_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:14" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_FUEL_PUMP_3_AFT_ON, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="14"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump14"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_FUEL_PUMP_3_AFT_ON)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:15" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Fwd_3, Bool)" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="15"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump15"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Fwd_3_Set)" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="FUELSYSTEM PUMP SWITCH:16" Units="Boolean"/>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Aft_3, Bool)" />
+						</Operator>
 					</TestValue>
-					<Instrument Id="FUEL_Push_Pump"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Aft_3_Set)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Main_Fwd_4, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Main_Fwd_4_Set)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="NOT">
+							<Val Code="(B:FUEL_Pump_Main_Aft_4, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:FUEL_Pump_Main_Aft_4_Set)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="FUEL_PUMPS_ON_AIRLINER_4_ENGINES_B748">
+			<Clue name="TT:CLUE.FUEL_PUMPS_AIRLINER_2_ENGINES_ON" />
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_PUMPS" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:1" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="1" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump1" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:2" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="2" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump2" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:3" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="3" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump3" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:4" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="4" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump4" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:5" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="5" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump5" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_FUEL_PUMP_2_AFT_ON, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_FUEL_PUMP_2_AFT_ON)" />
+					<Instrument Id="push_ovhd_fuel_main_02_aft" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:7" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="7" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump7" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:8" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="8" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump8" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:9" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="9" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump9" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_FUEL_PUMP_3_AFT_ON, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_FUEL_PUMP_3_AFT_ON)" />
+					<Instrument Id="push_ovhd_fuel_main_03_aft" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:11" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="11" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump11" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:12" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="12" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump12" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:13" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="13" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump13" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:14" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="14" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump14" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:15" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="15" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump15" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="FUELSYSTEM PUMP SWITCH:16" Units="Boolean" />
+					</TestValue>
+					<Instrument Id="FUEL_Push_Pump" />
 					<!-- Highlights all fuel pumps -->
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="16"/>
-					<Instrument Id="AIRBUS_Push_Fuel_Pump16"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_PUMP_TOGGLE" EventParam="16" />
+					<Instrument Id="AIRBUS_Push_Fuel_Pump16" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean"/>
+						<Val SimVarName="ELECTRICAL MASTER BATTERY" Units="Boolean" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY"/>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_BATTERY" />
 				</Test>
 			</Sequence>
+			<ForceCamera name="Instruments07" />
 		</Checkpoint>
-		<Checkpoint Id="Engine_4_Start_Switch_Pull">
-			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_4_START_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_PULL"/>
-			<Clue name="TT:CLUE.ENGINE_4_START_SWITCH_PULL"/>
+
+		<Checkpoint Id="Engine_4_Start_Switch_Pull_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_4_START_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_PULL" />
+			<Clue name="TT:CLUE.ENGINE_4_START_SWITCH_PULL" />
+			<Test>
+				<TestValue>
+					<Val SimVarName="GENERAL ENG STARTER:4" Units="boolean" />
+				</TestValue>
+				<Instrument Id="ENGINE_Switch_Starter4" />
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_4_Start)" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="Engine_4_Fuel_Control_Switch_Run_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_4_FUEL_CONTROL_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_RUN" />
+			<Clue name="TT:CLUE.ENGINE_4_FUEL_CONTROL_SWITCH_RUN" />
+			<Test>
+				<TestValue>
+					<Val SimVarName="FUELSYSTEM VALVE SWITCH:8" Units="boolean" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="8" />
+				<Instrument Id="FUEL_Switch_Valve8" />
+			</Test>
+			<ForceCamera name="Instruments05" />
+		</Checkpoint>
+
+		<Checkpoint Id="ENGINE_FUEL_CONTROL_SWITCHES_CUTOFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FUEL_CONTROL_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_CUTOFF" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Operator OpType="EQUAL">
+							<Val SimVarName="FUELSYSTEM VALVE SWITCH:5" Units="boolean" />
+							<Val Value="0" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_CLOSE" EventParam="5" />
+					<Instrument Id="FUEL_SWITCH_VALVE5" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="EQUAL">
+							<Val SimVarName="FUELSYSTEM VALVE SWITCH:6" Units="boolean" />
+							<Val Value="0" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_CLOSE" EventParam="6" />
+					<Instrument Id="FUEL_SWITCH_VALVE6" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="EQUAL">
+							<Val SimVarName="FUELSYSTEM VALVE SWITCH:7" Units="boolean" />
+							<Val Value="0" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_CLOSE" EventParam="7" />
+					<Instrument Id="FUEL_SWITCH_VALVE7" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="EQUAL">
+							<Val SimVarName="FUELSYSTEM VALVE SWITCH:8" Units="boolean" />
+							<Val Value="0" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_CLOSE" EventParam="8" />
+					<Instrument Id="FUEL_SWITCH_VALVE8" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments05" />
+		</Checkpoint>
+
+		<Checkpoint Id="Standby_Power_Selector_Auto_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_STANDBY_POWER_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AUTO" />
+			<Clue name="TT:CLUE.STANDBY_POWER_SELECTOR_AUTO" />
+			<Test>
+				<TestValue>
+					<Val Code="(B:AIRLINER_Standby_Power_Selector) 1 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:AIRLINER_Standby_Power_Selector_Set)" />
+				<Instrument Id="BOEING_StandbyPower_Selector" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="Battery_Switch_On_B748">
+			<Clue name="TT:CLUE.BATTERY_SWITCH_ON" />
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BATTERY_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Test>
+				<TestValue>
+					<Val Code="(B:ELECTRICAL_Battery_Switch)" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ELECTRICAL_Battery_Switch_Set)" />
+				<Instrument Id="ELECTRICAL_Switch_Battery_Master" />
+				<Instrument Id="knob_electric_master" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="Battery_Switch_Off_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BATTERY_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Test>
+				<TestValue>
+					<Val Code="(B:ELECTRICAL_Battery_Switch) 0 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:ELECTRICAL_Battery_Switch_Set)" />
+				<Instrument Id="ELECTRICAL_Switch_Battery_Master" />
+				<Instrument Id="knob_electric_master" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="ENGINE_BLEED_AIR_SWITCHES_ON_4ENGINES_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_BLEED_AIR_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Clue name="TT:CLUE.ENGINE_BLEED_AIR_SWITCHES_ON" />
+			<Instrument Id="push_ovhd_pneumatics_bleed" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_BLEED_ON:1, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_BLEED_ON:1)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_BLEED_ON:2, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_BLEED_ON:2)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_BLEED_ON:3, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_BLEED_ON:3)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_BLEED_ON:4, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_BLEED_ON:4)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="Emergency_Lights_Armed_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_EMERGENCY_LIGHTS" ExpectationTT="TT:GAME.CHECKLIST_GUARD_CLOSED" />
+			<Instrument Id="switch_ovhd_misc_emer_light" />
+			<Test>
+				<TestValue>
+					<Val Code="(L:XMLVAR_ELECTRICAL_EmerLights_Cover_Opened) ! (L:XMLVAR_EMER_LIGHTS_ARMED) and" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:XMLVAR_EMER_LIGHTS_ARMED) 0 (&gt;L:XMLVAR_ELECTRICAL_EmerLights_Cover_Opened)" />
+			</Test>
+			<ForceCamera name="Instruments08" />
+		</Checkpoint>
+
+		<Checkpoint Id="Emergency_Lights_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_EMERGENCY_LIGHTS" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Instrument Id="switch_ovhd_misc_emer_light" />
+			<Sequence SeqType="Ordered">
+				<Test>
+					<TestValue>
+						<Val Code="(L:XMLVAR_ELECTRICAL_EmerLights_Cover_Opened)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:XMLVAR_ELECTRICAL_EmerLights_Cover_Opened)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:XMLVAR_EMER_LIGHTS_ARMED) !" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:XMLVAR_EMER_LIGHTS_ARMED)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments08" />
+		</Checkpoint>
+
+		<Checkpoint Id="FLIGHT_DIRECTOR_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLIGHT_DIRECTOR" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Test>
+				<TestValue>
+					<Operator OpType="EQUAL">
+						<Val SimVarName="AUTOPILOT FLIGHT DIRECTOR ACTIVE" Units="Boolean" />
+						<Val Value="1" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_FLIGHT_DIRECTOR" />
+				<Instrument Id="AUTOPILOT_Push_FlightDirector" />
+			</Test>
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="FLIGHT_DIRECTOR_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLIGHT_DIRECTOR" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Test>
+				<TestValue>
+					<Operator OpType="EQUAL">
+						<Val SimVarName="AUTOPILOT FLIGHT DIRECTOR ACTIVE" Units="Boolean" />
+						<Val Value="0" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_FLIGHT_DIRECTOR" />
+				<Instrument Id="AUTOPILOT_Push_FlightDirector" />
+			</Test>
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="SEATBELTS_SELECTOR_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SEATBELTS_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="PASSENGERS_KNOB_SEATBELTS" />
+			<Test>
+				<TestValue>
+					<Val Code="(B:AIRLINER_Knob_Seatbelts, Bool) 2 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;B:AIRLINER_Knob_Seatbelts_Set)" />
+			</Test>
+			<ForceCamera name="Instruments06" />
+		</Checkpoint>
+
+		<Checkpoint Id="SEATBELTS_SELECTOR_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SEATBELTS_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Instrument Id="PASSENGERS_KNOB_SEATBELTS" />
+			<Test>
+				<TestValue>
+					<Val Code="(B:AIRLINER_Knob_Seatbelts, Bool) 0 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;B:AIRLINER_Knob_Seatbelts_Set)" />
+			</Test>
+			<ForceCamera name="Instruments06" />
+		</Checkpoint>
+
+		<Checkpoint Id="SEATBELTS_SELECTOR_AS_REQUIRED_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SEATBELTS_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AS_REQUIRED" />
+			<Instrument Id="PASSENGERS_KNOB_SEATBELTS" />
+			<ForceCamera name="Instruments06" />
+		</Checkpoint>
+
+		<Checkpoint Id="APU_START_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_APU_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_START_THEN_ON" />
+			<Clue name="TT:CLUE.APU_SELECTOR_START_THEN_ON" />
+			<Test>
+				<TestValue>
+					<Operator OpType="GREATER">
+						<Val SimVarName="APU PCT STARTER" Units="Percent over 100" />
+						<Val Value="0" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="APU_STARTER" />
+				<Instrument Id="ELECTRICAL_Switch_APU_Starter" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="HYD_DEMAND_PUMPS_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_HYDRAU_DEMAND_PUMPS_SELECTORS" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Instrument Id="knob_ovhd_hyd_demand_pump_sel" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- ENG1 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_1) 0 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_1)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG2 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_2) 0 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_2)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG3 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_3) 0 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_3)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG4 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_4) 0 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_4)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="HYD_DEMAND_PUMPS_AUTO_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_HYDRAU_DEMAND_PUMPS_SELECTORS" ExpectationTT="TT:GAME.CHECKLIST_AUTO" />
+			<Instrument Id="knob_ovhd_hyd_demand_pump_sel" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- ENG1 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_1) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_1)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG2 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_2) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_2)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG3 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_3) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_3)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG4 ELEC HYD: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:XMLVAR_HYDRAULICS_DEMAND_4) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;L:XMLVAR_HYDRAULICS_DEMAND_4)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="ENGINE_PRIMARY_HYD_PUMPS_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_HYDRAU_PUMPS_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Instrument Id="ENGINE_Switch_Hydraulic" />
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="ENGINE_PRIMARY_HYD_PUMPS_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_HYDRAU_PUMPS_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="ENGINE_Switch_Hydraulic" />
+			<Sequence SeqType="Ordered">
+				<Test>
+					<TestValue>
+						<!-- ENG1 HYD PUMP -->
+						<Val SimVarName="HYDRAULIC SWITCH:1" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;K:HYDRAULIC_SWITCH_TOGGLE)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG2 HYD PUMP -->
+						<Val SimVarName="HYDRAULIC SWITCH:2" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="2 (&gt;K:HYDRAULIC_SWITCH_TOGGLE)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG3 HYD PUMP -->
+						<Val SimVarName="HYDRAULIC SWITCH:3" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="3 (&gt;K:HYDRAULIC_SWITCH_TOGGLE)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG4 HYD PUMP -->
+						<Val SimVarName="HYDRAULIC SWITCH:4" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="4 (&gt;K:HYDRAULIC_SWITCH_TOGGLE)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="WIPERS_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_WIPERS" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Instrument Id="SAFETY_Knob_Wipers" />
+			<Test>
+				<TestValue>
+					<!-- WIPER L/R: 0 OFF, 1 INT, 2 LO, 3 HI -->
+					<Val Code="(B:HANDLING_Wipers, Number) 0 =="/>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;B:HANDLING_Wipers_Set)"/>
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="BUS_TIE_AUTO_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BUS_TIE_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_AUTO" />
+			<Instrument Id="ELECTRICAL_Switch_Bus" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Val Code="1 (A:1:BUS CONNECTION ON:2, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 2 (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="1 (A:1:BUS CONNECTION ON:3, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 3 (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="1 (A:1:BUS CONNECTION ON:4, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 4 (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="1 (A:1:BUS CONNECTION ON:5, Bool)"/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 5 (&gt;K:2:ELECTRICAL_BUS_TO_BUS_CONNECTION_TOGGLE)"/>
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="IRS_SELECTORS_NAV_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_IRS_SELECTORS" ExpectationTT="TT:GAME.CHECKLIST_NAV"/>
+			<Instrument Id="knob_ovhd_irs"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- IRS L: 0 OFF, 1 ALIGN, 2 NAV, 3 ATT -->
+						<Val Code="(L:B748_IRS_Knob_State:1) 2 =="/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="2 (&gt;L:B748_IRS_Knob_State:1)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- IRS C: 0 OFF, 1 ALIGN, 2 NAV, 3 ATT -->
+						<Val Code="(L:B748_IRS_Knob_State:2) 2 =="/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="2 (&gt;L:B748_IRS_Knob_State:2)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- IRS R: 0 OFF, 1 ALIGN, 2 NAV, 3 ATT -->
+						<Val Code="(L:B748_IRS_Knob_State:3) 2 =="/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="2 (&gt;L:B748_IRS_Knob_State:3)"/>
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments08" />
+		</Checkpoint>
+
+		<Checkpoint Id="IRS_SELECTORS_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_IRS_SELECTORS" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
+			<Instrument Id="knob_ovhd_irs"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- IRS L: 0 OFF, 1 ALIGN, 2 NAV, 3 ATT -->
+						<Val Code="(L:B748_IRS_Knob_State:1) 0 =="/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:B748_IRS_Knob_State:1)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- IRS C: 0 OFF, 1 ALIGN, 2 NAV, 3 ATT -->
+						<Val Code="(L:B748_IRS_Knob_State:2) 0 =="/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:B748_IRS_Knob_State:2)"/>
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- IRS R: 0 OFF, 1 ALIGN, 2 NAV, 3 ATT -->
+						<Val Code="(L:B748_IRS_Knob_State:3) 0 =="/>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:B748_IRS_Knob_State:3)"/>
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments08" />
+		</Checkpoint>
+
+		<Checkpoint Id="SET_IRS_POS_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SET_IRS_POSITION" ExpectationTT="TT:GAME.CHECKLIST_SET" />
+			<Instrument Id="FMC_BUTTON_INIT1" />
+			<Test>
+				<TestValue>
+					<Val Code="(L:WT_IRS_POS_SET_1) (L:WT_IRS_POS_SET_2) (L:WT_IRS_POS_SET_3) and and" />
+				</TestValue>
+				<Action Copilot="True" Condition="Any" Once="True" Code="(&gt;H:WT_AUTO_SET_IRS_POS)" />
+			</Test>
+			<ForceCamera name="Instruments04" />
+		</Checkpoint>
+
+		<Checkpoint Id="ANTI_ICE_AUTO_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ANTI_ICE" ExpectationTT="TT:GAME.CHECKLIST_AUTO" />
+			<Instrument Id="DEICE_Switch_Airframe" />
+			<Instrument Id="DEICE_Engine" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- WING DEICE: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:B748_Wing_AntiIce_Switch_State) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="(&gt;B:DEICE_Switch_Wing_Auto)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG 1 DEICE: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:B748_Engine_AntiIce_Switch_State:1) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="(&gt;B:DEICE_Switch_Engine_1_Auto)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG 2 DEICE: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:B748_Engine_AntiIce_Switch_State:2) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="(&gt;B:DEICE_Switch_Engine_2_Auto)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG 3 DEICE: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:B748_Engine_AntiIce_Switch_State:3) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="(&gt;B:DEICE_Switch_Engine_3_Auto)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- ENG 4 DEICE: 0 OFF, 1 AUTO, 2 ON -->
+						<Val Code="(L:B748_Engine_AntiIce_Switch_State:4) 1 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="(&gt;B:DEICE_Switch_Engine_4_Auto)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="WINDOW_HEAT_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_WINDOW_HEAT_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="Window_Heat" />
+			<Test>
+				<TestValue>
+					<Operator OpType="OR">
+						<Val Code="(L:XMLVAR_DeiceWindshield:1)" />
+						<Val Code="(L:XMLVAR_DeiceWindshield:2)" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" EventID="WINDSHIELD_DEICE_ON" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="APU_BLEED_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_APU_BLEED_AIR_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="ELECTRICAL_SWITCH_APU_BLEED" />
+			<Test>
+				<TestValue>
+					<Val Code="(B:ELECTRICAL_APU_Bleed, Bool)" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;B:ELECTRICAL_APU_Bleed_Set)" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="AUTOTHROTTLE_ARM_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_AUTOTHROTTLE" ExpectationTT="TT:GAME.CHECKLIST_ARM" />
+			<Test>
+				<TestValue>
+					<Val Code="(L:AS01B_AUTO_THROTTLE_ARM_STATE)" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="AUTO_THROTTLE_ARM" />
+				<Instrument Id="AUTOPILOT_Push_AutoThrottle" />
+			</Test>
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="SPEEDBRAKE_DN_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SPEEDBRAKE" ExpectationTT="TT:GAME.CHECKLIST_DN" />
+			<Instrument Id="lever_speed_brake" />
+			<Sequence SeqType="Ordered">
+				<Test>
+					<TestValue>
+						<!-- Speedbrake Lever Position: 0 FULL RETRACTED, 1 FULL EXTENDED -->
+						<Val Code="(A:SPOILERS HANDLE POSITION, Number) 0 ==" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="True" EventId="SPOILERS_OFF" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments05" />
+		</Checkpoint>
+
+		<Checkpoint Id="SPEEDBRAKE_ARMED_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SPEEDBRAKE" ExpectationTT="TT:GAME.CHECKLIST_ARMED" />
+			<Instrument Id="HANDLING_Lever_Spoilers" />
+		</Checkpoint>
+
+		<Checkpoint Id="SET_TO_TRIM_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_STABILIZER_TRIM" ExpectationTT="GAME.CHECKLIST_SET_FOR_TAKEOFF" />
+			<Instrument Id="HANDLING_Switch_Elevator_Trim" />
+			<ForceCamera name="ClosePilot" />
+		</Checkpoint>
+
+		<Checkpoint Id="TCAS_ATC_SELECTOR_STBY_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TCAS_ATC_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_STBY" />
+			<Instrument Id="TRANSPONDER_KNOB" />
+			<Test>
+				<TestValue>
+					<!-- XPDR STATES:
+								STBY - A:TRANSPONDER STATE:1 = 1, L:XMLVAR_Transponder_Mode = 0
+								XPDR - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 1
+								TA - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 2
+								TA/RA - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 3
+								ALT RPTG OFF - A:TRANSPONDER STATE:1 = 3, L:XMLVAR_Transponder_Mode = 0-->
+					<Operator OpType="AND">
+						<Val Code="(A:TRANSPONDER STATE:1, Enum) 1 ==" />
+						<Val Code="(L:XMLVAR_Transponder_Mode) 0 ==" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;A:TRANSPONDER STATE:1, Enum)" />
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;L:XMLVAR_Transponder_Mode)" />
+			</Test>
+			<ForceCamera name="Instruments06" />
+		</Checkpoint>
+
+		<Checkpoint Id="TCAS_ATC_SELECTOR_XPDR_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TCAS_ATC_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_XPDR" />
+			<Instrument Id="TRANSPONDER_KNOB" />
+			<Test>
+				<TestValue>
+					<!-- XPDR STATES:
+								STBY - A:TRANSPONDER STATE:1 = 1, L:XMLVAR_Transponder_Mode = 0
+								XPDR - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 1
+								TA - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 2
+								TA/RA - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 3
+								ALT RPTG OFF - A:TRANSPONDER STATE:1 = 3, L:XMLVAR_Transponder_Mode = 0-->
+					<Operator OpType="AND">
+						<Val Code="(A:TRANSPONDER STATE:1, Enum) 4 ==" />
+						<Val Code="(L:XMLVAR_Transponder_Mode) 1 ==" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="4 (&gt;A:TRANSPONDER STATE:1, Enum)" />
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="1 (&gt;L:XMLVAR_Transponder_Mode)" />
+			</Test>
+			<ForceCamera name="Instruments06" />
+		</Checkpoint>
+
+		<Checkpoint Id="TCAS_ATC_SELECTOR_TA_RA_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TCAS_ATC_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_TA_RA" />
+			<Instrument Id="TRANSPONDER_KNOB" />
+			<Test>
+				<TestValue>
+					<!-- XPDR STATES:
+								STBY - A:TRANSPONDER STATE:1 = 1, L:XMLVAR_Transponder_Mode = 0
+								XPDR - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 1
+								TA - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 2
+								TA/RA - A:TRANSPONDER STATE:1 = 4, L:XMLVAR_Transponder_Mode = 3
+								ALT RPTG OFF - A:TRANSPONDER STATE:1 = 3, L:XMLVAR_Transponder_Mode = 0-->
+					<Operator OpType="AND">
+						<Val Code="(A:TRANSPONDER STATE:1, Enum) 4 ==" />
+						<Val Code="(L:XMLVAR_Transponder_Mode) 3 ==" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="4 (&gt;A:TRANSPONDER STATE:1, Enum)" />
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="3 (&gt;L:XMLVAR_Transponder_Mode)" />
+			</Test>
+			<ForceCamera name="Instruments06" />
+		</Checkpoint>
+
+		<Checkpoint Id="FLAPS_TAKEOFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="TT:GAME.CHECKLIST_SET_FOR_TAKEOFF" />
 			<Test>
 				<TestValue>
 					<Operator OpType="AND">
-						<Operator OpType="EQUAL">
-							<Val SimVarName="TURB ENG IGNITION SWITCH EX1:4" Units="Enum"/>
-							<Val Value="1"/>
+						<Operator OpType="GREATER_OR_EQUAL">
+							<Val SimVarName="FLAPS HANDLE INDEX" Units="Number" />
+							<Val Value="3" />
 						</Operator>
-						<Val SimVarName="GENERAL ENG STARTER:4" Units="boolean"/>
+						<Operator OpType="LESS_OR_EQUAL">
+							<Val SimVarName="FLAPS HANDLE INDEX" Units="Number" />
+							<Val Value="4" />
+						</Operator>
 					</Operator>
 				</TestValue>
-				<Instrument Id="ENGINE_Switch_Starter4"/>
-				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ENGINE_Starter_Ignition_4_Start)"/>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FLAPS_3" />
+				<Instrument Id="HANDLING_Lever_Flaps" />
 			</Test>
+			<!-- <ForceCamera name="Instruments04" /> -->
 		</Checkpoint>
-		<Checkpoint Id="Engine_4_Fuel_Control_Switch_Run">
-			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_4_FUEL_CONTROL_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_RUN"/>
-			<Clue name="TT:CLUE.ENGINE_4_FUEL_CONTROL_SWITCH_RUN"/>
+
+		<!-- TODO Autocomplete not working for FLAPS UP -->
+		<Checkpoint Id="FLAPS_UP_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="TT:GAME.CHECKLIST_UP" />
 			<Test>
 				<TestValue>
-					<Val SimVarName="FUELSYSTEM VALVE SWITCH:8" Units="boolean"/>
+					<Operator OpType="EQUAL">
+						<Val SimVarName="FLAPS HANDLE INDEX" Units="Number" />
+						<Val Value="0" />
+					</Operator>
 				</TestValue>
-				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FUELSYSTEM_VALVE_OPEN" EventParam="8"/>
-				<Instrument Id="FUEL_Switch_Valve8"/>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="-16383 (&gt;K:AXIS_FLAPS_SET)" />
+				<Instrument Id="HANDLING_Lever_Flaps" />
 			</Test>
+			<!-- <ForceCamera name="Instruments04" /> -->
 		</Checkpoint>
-		<Checkpoint Id="Standby_Power_Selector_Auto_B747">
-			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_STANDBY_POWER_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AUTO"/>
-			<Clue name="TT:CLUE.STANDBY_POWER_SELECTOR_AUTO"/>
+
+		<!-- TODO Autocomplete not working for FLAPS 20 -->
+		<Checkpoint Id="FLAPS_20_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="20" />
 			<Test>
 				<TestValue>
-					<Val Code="(B:AIRLINER_Standby_Power_Selector) 1 =="/>
+					<Operator OpType="EQUAL">
+						<Val SimVarName="FLAPS HANDLE INDEX" Units="Number" />
+						<Val Value="4" />
+					</Operator>
 				</TestValue>
-				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:AIRLINER_Standby_Power_Selector_Set)"/>
-				<Instrument Id="BOEING_StandbyPower_Selector"/>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FLAPS_4" />
+				<Instrument Id="HANDLING_Lever_Flaps" />
 			</Test>
+			<!-- <ForceCamera name="Instruments04" /> -->
 		</Checkpoint>
-		<Checkpoint Id="Battery_Switch_On_B747">
-			<Clue name="TT:CLUE.BATTERY_SWITCH_ON"/>
-			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BATTERY_SWITCH" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+
+		<!-- TODO Autocomplete not working for FLAPS LANDING -->
+		<Checkpoint Id="FLAPS_LANDING_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLAPS" ExpectationTT="TT:GAME.CHECKLIST_LANDING" />
 			<Test>
 				<TestValue>
-					<Val Code="(B:ELECTRICAL_Battery_1)"/>
+					<Operator OpType="AND">
+						<Operator OpType="GREATER_OR_EQUAL">
+							<Val SimVarName="FLAPS HANDLE INDEX" Units="Number" />
+							<Val Value="5" />
+						</Operator>
+						<Operator OpType="LESS_OR_EQUAL">
+							<Val SimVarName="FLAPS HANDLE INDEX" Units="Number" />
+							<Val Value="6" />
+						</Operator>
+					</Operator>
 				</TestValue>
-				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:ELECTRICAL_Battery_1_Set)"/>
-				<Instrument Id="ELECTRICAL_Switch_Battery_Master"/>
-				<Instrument Id="knob_electric_master"/>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="FLAPS_6" />
+				<Instrument Id="HANDLING_Lever_Flaps" />
 			</Test>
+			<!-- <ForceCamera name="Instruments04" /> -->
 		</Checkpoint>
-		<Checkpoint Id="ENGINE_BLEED_AIR_SWITCHES_ON_4ENGINES">
-			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ENGINE_BLEED_AIR_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
-			<Clue name="TT:CLUE.ENGINE_BLEED_AIR_SWITCHES_ON"/>
+
+		<Checkpoint Id="POWER_LEVER_PRESS_TOGA_BUTTON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_POWER_LEVER" ExpectationTT="TT:GAME.CHECKLIST_PRESS_TOGA_BUTTON" />
+			<Instrument Id="ENGINE_Push_TOGA" />
+		</Checkpoint>
+
+		<Checkpoint Id="TAXI_AND_LANDING_LIGHTS_ON_BELOW_10000FT_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TAXI_AND_LANDING_LIGHTS" ExpectationTT="TT:GAME.CHECKLIST_ON_BELOW_10000FT" />
 			<Sequence SeqType="Unordered">
 				<Test>
 					<TestValue>
-						<Val Code="(B:ELECTRICAL_Engine_Bleed_1, Bool)"/>
+						<Operator OpType="LESS">
+							<Val SimVarName="PLANE ALTITUDE" Units="feet" />
+							<Val Value="10000" />
+						</Operator>
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_1_On)"/>
-					<Instrument Id="ELECTRICAL_Push_Engine_Bleed1"/>
 				</Test>
 				<Test>
 					<TestValue>
-						<Val Code="(B:ELECTRICAL_Engine_Bleed_2, Bool)"/>
+						<Val SimVarName="LIGHT LANDING" Units="Boolean" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_2_On)"/>
-					<Instrument Id="ELECTRICAL_Push_Engine_Bleed2"/>
+					<Instrument Id="LIGHTING_Switch_Light_Landing" />
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="LANDING_LIGHTS_TOGGLE" />
 				</Test>
 				<Test>
 					<TestValue>
-						<Val Code="(B:ELECTRICAL_Engine_Bleed_3, Bool)"/>
+						<Val SimVarName="LIGHT TAXI" Units="Boolean" />
 					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_3_On)"/>
-					<Instrument Id="ELECTRICAL_Push_Engine_Bleed3"/>
-				</Test>
-				<Test>
-					<TestValue>
-						<Val Code="(B:ELECTRICAL_Engine_Bleed_4, Bool)"/>
-					</TestValue>
-					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="(&gt;B:ELECTRICAL_Engine_Bleed_4_On)"/>
-					<Instrument Id="ELECTRICAL_Push_Engine_Bleed4"/>
+					<Instrument Id="LIGHTING_Switch_Light_Taxi" />
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_TAXI_LIGHTS" />
 				</Test>
 			</Sequence>
+			<ForceCamera name="Instruments07" />
 		</Checkpoint>
+
+		<Checkpoint Id="AUTOBRAKES_SELECTOR_AS_NEEDED_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_AUTOBRAKES_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AS_NEEDED" />
+			<Instrument Id="HANDLING_Knob_Autobrake" />
+		</Checkpoint>
+
+		<Checkpoint Id="UTILITY_POWER_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_UTILITY_POWER_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="push_ovhd_electrics_utility_pwr" />
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="GENERATOR_CONTROL_SWITCHES_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_GENERATOR_CONTROL_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Val SimVarName="GENERAL ENG MASTER ALTERNATOR:1" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_ALTERNATOR" EventParam="1" />
+					<Instrument Id="ELECTRICAL_Switch_Alternator1" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="GENERAL ENG MASTER ALTERNATOR:2" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_ALTERNATOR" EventParam="2" />
+					<Instrument Id="ELECTRICAL_Switch_Alternator2" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="GENERAL ENG MASTER ALTERNATOR:3" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_ALTERNATOR" EventParam="3" />
+					<Instrument Id="ELECTRICAL_Switch_Alternator3" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val SimVarName="GENERAL ENG MASTER ALTERNATOR:4" Units="Boolean" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" EventID="TOGGLE_MASTER_ALTERNATOR" EventParam="4" />
+					<Instrument Id="ELECTRICAL_Switch_Alternator4" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="YAW_DAMPER_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_YAW_DAMPERS_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="push_ovhd_pass_o2_yaw_damper" />
+			<Test>
+				<TestValue>
+					<Operator OpType="AND">
+						<Val Code="(L:WT_748_Yaw_Damper:1)" />
+						<Val Code="(L:WT_748_Yaw_Damper:2)" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" EventID="YAW_DAMPER_ON" />
+			</Test>
+			<ForceCamera name="Instruments08" />
+		</Checkpoint>
+
+		<Checkpoint Id="PACKS_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_PACKS_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON" />
+			<Instrument Id="push_ovhd_pneumatics_packs" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_PACK_ON:1, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_PACK_ON:1)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_PACK_ON:2, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_PACK_ON:2)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Val Code="(L:WT_748_PACK_ON:3, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_PACK_ON:3)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="PACKS_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_PACKS_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_OFF" />
+			<Instrument Id="push_ovhd_pneumatics_packs" />
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_PACK_ON:1, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_PACK_ON:1)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_PACK_ON:2, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_PACK_ON:2)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_PACK_ON:3, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_PACK_ON:3)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="STAT_DISPLAY_SELECT_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_STAT_DISPLAY" ExpectationTT="TT:GAME.CHECKLIST_SELECTED" />
+			<Instrument Id="EICAS_PUSH_STAT" />
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="FCTL_DISPLAY_SELECT_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FCTL_DISPLAY" ExpectationTT="TT:GAME.CHECKLIST_SELECTED" />
+			<Instrument Id="EICAS_PUSH_FCTL" />
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="LOWER_MFD_BLANK_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_LOWER_MFD" ExpectationTT="TT:GAME.CHECKLIST_BLANK" />
+			<!-- Highlight the FCTL button because that should be the selected display right before this checkpoint. -->
+			<Instrument Id="EICAS_PUSH_FCTL" />
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="ENG_DISPLAY_SELECT_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_SECONDARY_ENGINE_INDICATIONS" ExpectationTT="TT:GAME.CHECKLIST_SELECTED" />
+			<Instrument Id="EICAS_PUSH_ENG" />
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="BANK_LIMIT_AUTO_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BANK_LIMIT_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AUTO" />
+			<Instrument Id="knob_autopilot_hdg_bank_limit" />
+			<Test>
+				<TestValue>
+					<!-- Bank Limit Knob: 0 AUTO, 1 10�, 2 15�, 3 20�, 4 25�, 5 30� -->
+					<Val Code="(B:AUTOPILOT_Bank_Limit) 0 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="0 (&gt;B:AUTOPILOT_Bank_Limit_Set)" />
+			</Test>
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="AP_DISENGAGE_BAR_UP_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_AP_DISENGAGE_BAR" ExpectationTT="TT:GAME.CHECKLIST_UP" />
+			<Instrument Id="AUTOPILOT_Push_Disconnect1" />
+			<Test>
+				<TestValue>
+					<!-- Autopilot Disconnect Bar: 0 UP (Engaged), 1 DOWN (Disengaged) -->
+					<Operator OpType="NOT">
+						<Val SimVarName="AUTOPILOT DISENGAGED" Units="Boolean" />
+					</Operator>
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" EventID="AUTOPILOT_DISENGAGE_SET" EventParam="0" />
+			</Test>
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="EXTERIOR_DOORS_VERIFY_CLOSED_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_EXTERIOR_DOORS" ExpectationTT="TT:GAME.CHECKLIST_VERIFY_CLOSED" />
+			<Instrument Id="EICAS_PUSH_DRS" />
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<!-- TODO Add a clue explaining what to look for and how to cancel the messages. -->
+		<Checkpoint Id="CANCEL_RECALL_PUSH_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_CANCEL_RECALL" ExpectationTT="TT:GAME.CHECKLIST_PUSH" />
+			<Instrument Id="eicas_push_canc_rcl" />
+			<Test>
+				<TestValue>
+					<!-- TODO P3 -->
+					<Val Code="(B:AIRLINER_Page_canc_rcl) 1 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="True" Code="(&gt;B:AIRLINER_Page_canc_rcl_Push)" />
+			</Test>
+			<ForceCamera name="Instruments02" />
+		</Checkpoint>
+
+		<Checkpoint Id="FLIGHT_CONTROLS_CHECK_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLIGHT_CONTROLS" ExpectationTT="TT:GAME.CHECKLIST_CHECK" />
+			<!-- TODO Better camera that shows yoke, rudder pedals, and lower MFD -->
+			<ForceCamera name="ClosePilot" />
+			<!-- TODO Highlight yoke and rudder pedals -->
+		</Checkpoint>
+
+		<Checkpoint Id="Beacon_Light_BOTH_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BEACON" ExpectationTT="TT:GAME.CHECKLIST_BOTH"/>
+			<Test>
+				<TestValue>
+					<!-- 2 is BOTH -->
+					<Val Code="(B:LIGHTING_Beacon_1) 2 ==" />
+				</TestValue>
+				<!-- 2 is BOTH, the input event handles updating the beacon light  simvars -->
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="2 (&gt;B:LIGHTING_Beacon_1_Set)" />
+				<Instrument Id="LIGHTING_Switch_Light_Beacon"/>
+				<Instrument Id="LIGHTING_Push_Light_Beacon"/>
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="Beacon_Light_Off_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_BEACON" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
+			<Test>
+				<TestValue>
+					<!-- 1 is OFF -->
+					<Val Code="(B:LIGHTING_Beacon_1) 1 ==" />
+				</TestValue>
+				<!-- 1 is OFF, the input event handles updating the beacon light  simvars -->
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;B:LIGHTING_Beacon_1_Set)" />
+				<Instrument Id="LIGHTING_Switch_Light_Beacon"/>
+				<Instrument Id="LIGHTING_Push_Light_Beacon"/>
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="PASS_TEMP_AUTO_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_PASSENGER_TEMP_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AUTO"/>
+			<Instrument Id="knob_ovhd_air_cond_pass_temp"/>
+			<Test>
+				<TestValue>
+					<!-- 50.0 is AUTO -->
+					<Val Code="(L:WT_748_CABIN_TEMP, Number) 50.0 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="50.0 (&gt;L:WT_748_CABIN_TEMP)" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="FD_TEMP_AUTO_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_FLIGHT_DECK_TEMP_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_AUTO"/>
+			<Instrument Id="knob_ovhd_air_cond_flt_deck"/>
+			<Test>
+				<TestValue>
+					<!-- 50.0 is AUTO -->
+					<Val Code="(L:WT_748_FLT_DECK_TEMP, Number) 50.0 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="50.0 (&gt;L:WT_748_FLT_DECK_TEMP)" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="CARGO_TEMP_AUTO_B748">
+			<CheckpointDesc SubjectTT="TT:COCKPIT.TOOLTIPSV2.CARGO_TEMPERATURE_TITLE" ExpectationTT="TT:GAME.CHECKLIST_AUTO"/>
+			<Instrument Id="push_ovhd_air_cond"/>
+			<Test>
+				<TestValue>
+					<!-- 50.0 is AUTO -->
+					<Val Code="(L:WT_748_CARGO_TEMP, Number) 50.0 ==" />
+				</TestValue>
+				<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="50.0 (&gt;L:WT_748_CARGO_TEMP)" />
+			</Test>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="TRIM_AIR_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TRIM_AIR_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+			<Instrument Id="push_ovhd_air_cond_trim_air"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Val Code="(L:WT_748_TRIM_AIR_L, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_TRIM_AIR_L)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Val Code="(L:WT_748_TRIM_AIR_R, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_TRIM_AIR_R)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="TRIM_AIR_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_TRIM_AIR_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
+			<Instrument Id="push_ovhd_air_cond_trim_air"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_TRIM_AIR_L, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_TRIM_AIR_L)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_TRIM_AIR_R, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_TRIM_AIR_R)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="RECIRC_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_RECIRCULATION_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+			<Instrument Id="push_ovhd_air_cond_recirc"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Val Code="(L:WT_748_RECIRC_UPR, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_RECIRC_UPR)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Val Code="(L:WT_748_RECIRC_LWR, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_RECIRC_LWR)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="RECIRC_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_RECIRCULATION_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
+			<Instrument Id="push_ovhd_air_cond_recirc"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_RECIRC_UPR, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_RECIRC_UPR)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- 0 OFF, 1 ON -->
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_RECIRC_LWR, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_RECIRC_LWR)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="ISLN_ON_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ISOLATION_VALVES_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_ON"/>
+			<Instrument Id="push_ovhd_pneumatics_isolation_valve"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- 0 ON, 1 OFF -->
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_AIR_ISLN_CLOSED:1, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_AIR_ISLN_CLOSED:1)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- 0 ON, 1 OFF -->
+						<Operator OpType="NOT">
+							<Val Code="(L:WT_748_AIR_ISLN_CLOSED:2, Bool)" />
+						</Operator>
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="0 (&gt;L:WT_748_AIR_ISLN_CLOSED:2)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
+		<Checkpoint Id="ISLN_OFF_B748">
+			<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_ISOLATION_VALVES_SWITCHES" ExpectationTT="TT:GAME.CHECKLIST_OFF"/>
+			<Instrument Id="push_ovhd_pneumatics_isolation_valve"/>
+			<Sequence SeqType="Unordered">
+				<Test>
+					<TestValue>
+						<!-- 0 ON, 1 OFF -->
+						<Val Code="(L:WT_748_AIR_ISLN_CLOSED:1, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_AIR_ISLN_CLOSED:1)" />
+				</Test>
+				<Test>
+					<TestValue>
+						<!-- 0 ON, 1 OFF -->
+						<Val Code="(L:WT_748_AIR_ISLN_CLOSED:2, Bool)" />
+					</TestValue>
+					<Action Copilot="True" Condition="TestValueFalse" Once="true" Code="1 (&gt;L:WT_748_AIR_ISLN_CLOSED:2)" />
+				</Test>
+			</Sequence>
+			<ForceCamera name="Instruments07" />
+		</Checkpoint>
+
 	</Checklist.CheckpointLibrary>
 </SimBase.Document>

@@ -1,5 +1,4 @@
-[Options]
-Sound=True
+
 
 [SimVarForSpawningInTheAir.0]
 IAS=258
@@ -118,22 +117,16 @@ ITT_DegR=1600
 
 [FuelSystem.0]
 Valve.1=True
-Valve.2=True
-Valve.3=True
 Valve.4=True
 Valve.5=True
 Valve.6=True
 Valve.7=True
 Valve.8=True
 Valve.9=True
-Valve.10=False
-Valve.11=False
-Valve.12=False
-Valve.13=False
-Valve.14=False
-Valve.15=False
-Valve.16=False
-Valve.17=False
+Valve.14=True
+Valve.15=True
+Valve.16=True
+Valve.17=True
 Valve.18=False
 Valve.19=False
 Valve.20=False
@@ -142,10 +135,8 @@ Valve.22=False
 Valve.23=False
 Valve.24=False
 Valve.25=False
-Valve.26=False
-Valve.27=False
-Pump.1=True
-Pump.2=True
+Pump.1=False
+Pump.2=False
 Pump.3=True
 Pump.4=True
 Pump.5=True
@@ -158,13 +149,9 @@ Pump.11=True
 Pump.12=True
 Pump.13=True
 Pump.14=True
-Pump.15=True
-Pump.16=True
+Pump.15=False
+Pump.16=False
 Pump.17=False
-Pump.18=True
-Pump.19=True
-Pump.20=True
-Pump.21=True
 
 [Systems.0]
 BatterySwitch=True
@@ -183,32 +170,7 @@ TailhookState=0
 FoldingWingsHandle=False
 FoldingWingsState=0, 0
 AuxPowerUnitSwitch=False
-
-[LocalVars.0]
-XMLVAR_SeatBelts=1
-B747_8_MFD_NAV_MODE=2
-SALTY_IRS_STATE=2
-747_IRS_KNOB_1=2
-747_IRS_KNOB_2=2
-747_IRS_KNOB_3=2
-SALTY_FUEL_JETTISON_ACTIVE_L=0
-SALTY_FUEL_JETTISON_ACTIVE_R=0
-747_JETTISON_KNOB_POS=2
-747_FUEL_TO_REMAIN=0
-SALTY_ISFD_INIT_DONE=1
-SALTY_VIS_PILOT_0=1
-SALTY_VIS_PILOT_1=1
-SALTY_UNIT_IS_METRIC=1
-AIRLINER_FLIGHT_PHASE=6
-SALTY_SPEED_RESTRICTION=0
-SALTY_SPEED_RESTRICTION_ALT=0
-747_Aircond_Knob_1=3
-747_Aircond_Knob_2=3
-747_Aircond_Knob_3=3
-SALTY_TAKEOFF_FLAP_VALUE=0
-SALTY_LANDING_FLAP_VALUE=30
-74S_YAW_DAMPER_UPPER=1
-74S_YAW_DAMPER_LOWER=1
+SeatBeltsSwitch=True
 
 [Electrical.0]
 alternator.5=False
@@ -219,6 +181,58 @@ circuit.106 = True,0.5
 circuit.107 = True,0.5
 circuit.108 = True,0.5
 circuit.111 = False,1.0
+
+[LocalVars.0]
+WT_AVIONICS_CHECKLIST_AUTOCOMPLETE_PHASE=8 ; LANDING
+XMLVAR_Battery_Switch_State=1
+XMLVAR_StandbyPower_Selector=1
+XMLVAR_EMER_LIGHTS_ARMED=1
+XMLVAR_Mins_Selector_Baro=1
+XMLVAR_SeatBelts=1
+B747_8_MFD_1_NAV_MODE=2
+B747_8_MFD_2_NAV_MODE=2
+B747_8_MFD_1_Range=5; 10NM
+B747_8_MFD_2_Range=5; 10NM
+XMLVAR_Transponder_Mode=3
+AS01B_AUTO_THROTTLE_ARM_STATE=1
+XMLVAR_HYDRAULICS_DEMAND_1=1
+XMLVAR_HYDRAULICS_DEMAND_2=1
+XMLVAR_HYDRAULICS_DEMAND_3=1
+XMLVAR_HYDRAULICS_DEMAND_4=1
+B748_Engine_AntiIce_Switch_State:1=1
+B748_Engine_AntiIce_Switch_State:2=1
+B748_Engine_AntiIce_Switch_State:3=1
+B748_Engine_AntiIce_Switch_State:4=1
+B748_Wing_AntiIce_Switch_State=1
+XMLVAR_DeiceWindshield:1=1
+XMLVAR_DeiceWindshield:2=1
+B748_IRS_Knob_State:1=2
+B748_IRS_Knob_State:2=2
+B748_IRS_Knob_State:3=2
+B748_IRS_Source_Knob_State:1=3
+B748_IRS_Source_Knob_State:2=3
+B748_Air_Data_Source_Knob_State:1=1
+B748_Air_Data_Source_Knob_State:2=1
+WT_Boeing_Fms_Operating_Phase=5 ; Approach
+WT_748_BLEED_ON:1=1
+WT_748_BLEED_ON:2=1
+WT_748_BLEED_ON:3=1
+WT_748_BLEED_ON:4=1
+WT_748_PACK_ON:1=1
+WT_748_PACK_ON:2=1
+WT_748_PACK_ON:3=1
+WT_748_RECIRC_UPR=1
+WT_748_RECIRC_LWR=1
+WT_748_TRIM_AIR_L=1
+WT_748_TRIM_AIR_R=1
+WT_748_Yaw_Damper:1=1
+WT_748_Yaw_Damper:2=1
+WT_748_FUEL_XFEED:2=1
+WT_748_FUEL_XFEED:3=1
+WT_748_FUEL_PUMP_2_AFT_ON=1
+WT_748_FUEL_PUMP_3_AFT_ON=1
+WT_748_FUEL_MAIN_OUTER_TO_INNER_XFER_ON=0
+WT_748_FUEL_MAIN_RESERVE_XFER_ON=0
 
 [Gauges.0]
 KollsmanSetting=30.080865859985351563
@@ -237,9 +251,26 @@ RecognitionLights=True
 StrobeLights=True
 TaxiLights=False
 WingLights=True
-CabinLights=True
+
+; INTERIOR LIGHTS
+CabinLights=False
+CabinLightsNight=True
+; Cabin lights are on pots 66,67,68
+Potentiometer.66=0.1
+Potentiometer.67=0.1
+Potentiometer.68=0.1
 GlareshieldLights=False
+GlareshieldLightsNight=True
+; Glareshield lights are on pots 60,62,63
+Potentiometer.60=0.1
+Potentiometer.62=0.1
+Potentiometer.63=0.1
 PedestalLights=False
+PedestalLightsNight=True
+; Glareshield lights are on pots 69
+Potentiometer.69=0.1
+
+; SCREEN BACKLIGHTS
 Potentiometer.25=0.5
 Potentiometer.26=0.5
 Potentiometer.27=0.5
@@ -249,7 +280,7 @@ Potentiometer.30=0.5
 Potentiometer.50=0.5
 
 [AutoPilot.0]
-MasterSwitch=False
+MasterSwitch=True
 WingLeveler=False
 Nav1Lock=False
 HeadingLock=False
@@ -271,10 +302,9 @@ BackCourseHold=False
 YawDamper=True
 ToGa=False
 AutoThrottleArm=False
-GPSdrivesNAV1=True
+GPSdrivesNAV1=False
 IsUsedForLesson=False
 ForceDisplayUI=False
-MaxBankIndex=6
 
 [Controls.0]
 SpoilersHandle=000.00

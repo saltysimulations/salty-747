@@ -59,7 +59,6 @@
 	<Behaviors>
 		<Include ModelBehaviorFile="Asobo\Common.xml"/>
 		<Include ModelBehaviorFile="Asobo\Exterior.xml"/>
-		<Include ModelBehaviorFile="Salty\Index.xml"/>
 		<Include RelativeFile="747_8I_FX.xml"/>
 		<Component ID="GEARS">
 			<UseTemplate Name="ASOBO_GEAR_Center_Template">
@@ -186,6 +185,7 @@
 			<UseTemplate Name="ASOBO_HANDLING_Flaperons_Template">
 				<ANIM_NAME_LEFT>l_flaperon_percent_key</ANIM_NAME_LEFT>
 				<ANIM_NAME_RIGHT>r_flaperon_percent_key</ANIM_NAME_RIGHT>
+				<IS_TAKING_OFF_CONDITION>0</IS_TAKING_OFF_CONDITION>
 			</UseTemplate>
 			<UseTemplate Name="ASOBO_HANDLING_Slats_Template">
 				<ANIM_NAME_LEFT>l_slats</ANIM_NAME_LEFT>
@@ -199,7 +199,7 @@
 			<DefaultTemplateParameters>
 				<STILL_NODE_ID_COUNT>2</STILL_NODE_ID_COUNT>
 			</DefaultTemplateParameters>
-			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
 				<ID>2</ID>
 				<ANIM_NODE_ID>N1_1_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_1_anim</ANIM_NAME>
@@ -208,7 +208,7 @@
 				<SLOW_NODE_ID>PROP_1_SLOW_LEFT</SLOW_NODE_ID>
 				<BLURRED_NODE_ID>PROP_1_BLURRED_LEFT</BLURRED_NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
 				<ID>1</ID>
 				<ANIM_NODE_ID>N1_2_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_2_anim</ANIM_NAME>
@@ -217,7 +217,7 @@
 				<SLOW_NODE_ID>PROP_2_SLOW_LEFT</SLOW_NODE_ID>
 				<BLURRED_NODE_ID>PROP_2_BLURRED_LEFT</BLURRED_NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
 				<ID>3</ID>
 				<ANIM_NODE_ID>N1_3_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_3_anim</ANIM_NAME>
@@ -226,7 +226,7 @@
 				<SLOW_NODE_ID>PROP_3_SLOW_RIGHT</SLOW_NODE_ID>
 				<BLURRED_NODE_ID>PROP_3_BLURRED_RIGHT</BLURRED_NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="Salty_74S_ENGINE_Turbine_Template">
+			<UseTemplate Name="ASOBO_ENGINE_Turbine_Template">
 				<ID>4</ID>
 				<ANIM_NODE_ID>N1_4_anim</ANIM_NODE_ID>
 				<ANIM_NAME>N1_4_anim</ANIM_NAME>
@@ -235,22 +235,28 @@
 				<SLOW_NODE_ID>PROP_4_SLOW_RIGHT</SLOW_NODE_ID>
 				<BLURRED_NODE_ID>PROP_4_BLURRED_RIGHT</BLURRED_NODE_ID>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_ReverseThrust_Template">
-				<ID>1</ID>
+
+			<UseTemplate Name="ASOBO_GT_Anim">
 				<ANIM_NAME>thrust_rev_1</ANIM_NAME>
+				<ANIM_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:1, Percent) 0 &lt; 100 *</ANIM_CODE>
+				<ANIM_LAG>75</ANIM_LAG>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_ReverseThrust_Template">
-				<ID>2</ID>
+			<UseTemplate Name="ASOBO_GT_Anim">
 				<ANIM_NAME>thrust_rev_2</ANIM_NAME>
+				<ANIM_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:2, Percent) 0 &lt; 100 *</ANIM_CODE>
+				<ANIM_LAG>75</ANIM_LAG>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_ReverseThrust_Template">
-				<ID>3</ID>
+			<UseTemplate Name="ASOBO_GT_Anim">
 				<ANIM_NAME>thrust_rev_3</ANIM_NAME>
+				<ANIM_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:3, Percent) 0 &lt; 100 *</ANIM_CODE>
+				<ANIM_LAG>75</ANIM_LAG>
 			</UseTemplate>
-			<UseTemplate Name="ASOBO_ENGINE_Turbine_ReverseThrust_Template">
-				<ID>4</ID>
+			<UseTemplate Name="ASOBO_GT_Anim">
 				<ANIM_NAME>thrust_rev_4</ANIM_NAME>
+				<ANIM_CODE>(A:GENERAL ENG THROTTLE LEVER POSITION:4, Percent) 0 &lt; 100 *</ANIM_CODE>
+				<ANIM_LAG>75</ANIM_LAG>
 			</UseTemplate>
+
 		</Component>
 		<Component ID="INTERACTIVE_POINTS">
 			<UseTemplate Name="ASOBO_DOOR_InteractivePoint_Template">
