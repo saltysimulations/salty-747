@@ -1,14 +1,12 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SignIn } from "./SignIn";
 
-import opt from "../../img/opt.png";
 import aircraft from "./icons/aircraft.png";
 import acars from "./icons/acars.png";
 import displayAndBrightness from "./icons/display_brightness.png";
 import general from "./icons/general.png";
-import simulation from "./icons/simulation.png";
 
 type CategoryProps = { name: string; icon: string; selected: boolean; selectCategory: () => void };
 
@@ -54,13 +52,6 @@ export const Categories: FC = () => {
                     selected={selectedCategory === "aircraft"}
                     selectCategory={() => selectCategory("aircraft")}
                 />
-                <Category
-                    name="Simulation"
-                    icon={simulation}
-                    selected={selectedCategory === "simulation"}
-                    selectCategory={() => selectCategory("simulation")}
-                />
-                <Category name="ACARS" icon={acars} selected={selectedCategory === "acars"} selectCategory={() => selectCategory("acars")} />
             </CategoryGroup>
         </StyledCategories>
     );
