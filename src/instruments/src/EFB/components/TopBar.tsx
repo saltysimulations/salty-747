@@ -45,19 +45,19 @@ export const TopBar: FC<BarProps> = ({ bg = 'transparent', textColor = 'white', 
     const monthOfYearString = months[monthOfYear - 1];
 
     return (
-      <div>
-        <StyledBar bg={bg} textColor={textColor} backdropFilter={backdropFilter}>
-          <BarSection>
-            <div>{currentTimeString}</div>
-            <div>{dayOfWeekString} {monthOfYearString} {dayOfMonth}</div>
-          </BarSection>
-          <BarSection symbols>
-            <HiWifi size={25} />
-            <div>100%</div>
-            <IoIosBatteryFull size={35} />
-          </BarSection>
-        </StyledBar>
-      </div>
+        <div>
+            <StyledBar bg={bg} textColor={textColor} backdropFilter={backdropFilter}>
+                <BarSection>
+                    <div>{currentTimeString}</div>
+                    <div>{dayOfWeekString} {monthOfYearString} {dayOfMonth}</div>
+                </BarSection>
+                <BarSection symbols>
+                    <HiWifi size={25} />
+                    <div>100%</div>
+                    <IoIosBatteryFull size={35} />
+                </BarSection>
+            </StyledBar>
+        </div>
     );
   };
 
