@@ -24,12 +24,12 @@ import { useSimVar } from "react-msfs";
 
 export type BarProps = { bg?: string; textColor?: string; backdropFilter?: string };
 
-export const TopBar: FC<BarProps> = ({ bg = 'transparent', textColor = 'white', backdropFilter = 'none' }) => {
+export const TopBar: FC<BarProps> = ({ bg = "transparent", textColor = "white", backdropFilter = "none" }) => {
 
-    const [currentTime] = useSimVar('E:ZULU TIME', 'seconds');
-    const [dayOfWeek] = useSimVar('E:ZULU DAY OF WEEK', 'number');
-    const [monthOfYear] = useSimVar('E:ZULU MONTH OF YEAR', 'number');
-    const [dayOfMonth] = useSimVar('E:ZULU DAY OF MONTH', 'number');
+    const [currentTime] = useSimVar("E:ZULU TIME", "seconds");
+    const [dayOfWeek] = useSimVar("E:ZULU DAY OF WEEK", "number");
+    const [monthOfYear] = useSimVar("E:ZULU MONTH OF YEAR", "number");
+    const [dayOfMonth] = useSimVar("E:ZULU DAY OF MONTH", "number");
 
     // Convert time to HH:MM
     const date = new Date(currentTime * 1000);
@@ -38,10 +38,10 @@ export const TopBar: FC<BarProps> = ({ bg = 'transparent', textColor = 'white', 
     const currentTimeString = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
 
     // Convert numbers to readable strings
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const dayOfWeekString = days[dayOfWeek];
 
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const monthOfYearString = months[monthOfYear - 1];
 
     return (
