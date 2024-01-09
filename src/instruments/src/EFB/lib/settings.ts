@@ -1,4 +1,5 @@
-import { DefaultUserSettingManager, EventBus } from "@microsoft/msfs-sdk";
+import { DefaultUserSettingManager } from "@microsoft/msfs-sdk";
+import { eventBus } from "./index";
 
 export enum BoeingNdHdgTrkUpMode {
     HDG,
@@ -48,6 +49,4 @@ export type BoeingSettings = {
     readonly [Item in typeof boeingUserSettingsDefaults[number]as Item['name']]: Item['defaultValue'];
 };
 
-const bus = new EventBus();
-
-export const boeingUserSettings = new DefaultUserSettingManager(bus, boeingUserSettingsDefaults);
+export const boeingUserSettings = new DefaultUserSettingManager(eventBus, boeingUserSettingsDefaults);

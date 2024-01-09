@@ -21,7 +21,9 @@ export const Sidebar: FC<SidebarProps> = ({
     const onButtonClick = (newCategory: ChartCategory | null) => {
         if (airportSelectorDisplayed) setAirportSelectorDisplayed(false);
 
-        setCategory(category === newCategory ? null : newCategory);
+        if (selectedAirport !== "APTS") {
+            setCategory(category === newCategory ? null : newCategory);
+        }
     };
 
     return (
@@ -34,16 +36,22 @@ export const Sidebar: FC<SidebarProps> = ({
                 <ChartCategories>
                     <SidebarButtonContainer>
                         <ChartCategoryButton selected={category === "ref"}
+                                             available={selectedAirport !== "APTS"}
                                              onClick={() => onButtonClick("ref")}>REF</ChartCategoryButton>
                         <ChartCategoryButton selected={false}
+                                             available={selectedAirport !== "APTS"}
                                              onClick={() => onButtonClick(null)}>CO</ChartCategoryButton>
                         <ChartCategoryButton selected={category === "arr"}
+                                             available={selectedAirport !== "APTS"}
                                              onClick={() => onButtonClick("arr")}>STAR</ChartCategoryButton>
                         <ChartCategoryButton selected={category === "app"}
+                                             available={selectedAirport !== "APTS"}
                                              onClick={() => onButtonClick("app")}>APP</ChartCategoryButton>
                         <ChartCategoryButton selected={category === "apt"}
+                                             available={selectedAirport !== "APTS"}
                                              onClick={() => onButtonClick("apt")}>TAXI</ChartCategoryButton>
                         <ChartCategoryButton selected={category === "dep"}
+                                             available={selectedAirport !== "APTS"}
                                              onClick={() => onButtonClick("dep")}>SID</ChartCategoryButton>
                     </SidebarButtonContainer>
                 </ChartCategories>
@@ -79,7 +87,14 @@ const ChartCategoryButton = styled.div`
     font-size: 28px;
     font-weight: 500;
     border-bottom: 1px solid #2B2F37;
-    background: ${(props: { selected: boolean }) => props.selected ? "#305A7E" : "transparent"};
+    background: ${(props: { selected: boolean, available: boolean }) => {
+        if (props.available) {
+            return props.selected ? "#305A7E" : "transparent"
+        } else {
+            return "#3F424D"
+        }
+    }};
+    color: ${(props: { available: boolean }) => props.available ? "white" : "#191D24"};
 
     &:last-child {
         border: none;

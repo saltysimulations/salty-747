@@ -56,6 +56,7 @@ export class NavigraphAPI {
     private readonly codeChallenge: string;
 
     private initialized = false;
+    private triedGetChartsTwice = false;
 
     constructor() {
         const pkceObject = pkce();
@@ -114,7 +115,7 @@ export class NavigraphAPI {
                         device_code: this.deviceAuthorizationParams!.deviceCode,
                         client_id: this.clientId!,
                         client_secret: this.clientSecret!,
-                        scope: "openid offline_access charts",
+                        scope: "openid offline_access charts tiles",
                         code_verifier: this.codeVerifier,
                     }),
                     headers: {
@@ -244,6 +245,7 @@ export class NavigraphAPI {
     }
 
     public async getChartIndex(icao: string): Promise<ChartIndex> {
+        this.triedGetChartsTwice = false;
         const charts = await this.getCharts(icao);
 
         const chartIndex: ChartIndex = {
@@ -269,7 +271,9 @@ export class NavigraphAPI {
                 }
             });
 
-            if (!res.ok) {
+            if (!res.ok && res.status != 404 && !this.triedGetChartsTwice) {
+                this.triedGetChartsTwice = true;
+
                 await this.updateTokens(this.tokens.refreshToken);
 
                 return this.getCharts(icao);

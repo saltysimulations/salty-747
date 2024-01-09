@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import { AiFillCloseCircle } from "react-icons/all";
 import { Chart } from "../../lib/navigraph";
 import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
+import { TitleAndClose } from "./components/TitleAndClose";
 
 type ChartSelectorProps = {
     charts: Chart[],
@@ -14,11 +15,7 @@ type ChartSelectorProps = {
 
 export const ChartSelector: FC<ChartSelectorProps> = ({ charts, label, onClose, onSelect, selectedChart }) => (
     <ChartSelectorContainer>
-        <ChartSelectorTitle>
-            <div>{label}</div>
-            <AiFillCloseCircle size={62} color="A9B3BE" onClick={onClose} />
-        </ChartSelectorTitle>
-
+        <TitleAndClose label={label} onClose={onClose} />
         {charts.map((chart) => (
             <ChartSelectorItem
                 selected={selectedChart ? selectedChart.id === chart.id : false}
@@ -59,15 +56,3 @@ const ChartSelectorContainer = styled.div`
     }
 `;
 
-const ChartSelectorTitle = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 28px;
-    font-weight: 500;
-    border-bottom: 1px solid #b9b9bb;
-
-    * {
-        margin: 12px 12px 12px 24px;
-    }
-`;

@@ -33,6 +33,7 @@ import "./index.scss";
 import { Acars } from "./apps/Settings/Acars";
 import { FZPro } from "./apps/FZPro";
 import { NavigraphAuthProvider } from "./hooks/useNavigraphAuth";
+import { Flight } from "./apps/FZPro/Flight";
 
 const EFB: FC = () => {
     return (
@@ -54,7 +55,9 @@ const EFB: FC = () => {
                             <Route path="pilot-visibility" element={<PilotVisibility />} />
                             <Route path="irs-alignment" element={<IRSAlignment />} />
                         </Route>
-                        <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
+                        <Route path="/fzpro" element={<RouteElement component={<FZPro />} />}>
+                            <Route path="flight" element={<Flight />} />
+                        </Route>
                     </Routes>
                 </MemoryRouter>
             </NavigraphAuthProvider>

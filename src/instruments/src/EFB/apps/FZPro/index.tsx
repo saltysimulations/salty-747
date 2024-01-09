@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { createContext, FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
 
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
 import styled from "styled-components";
@@ -11,18 +11,45 @@ import { DocumentLoading } from "./DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
 import { AirportSelector } from "./AirportSelector";
+import { Flight } from "./Flight";
+import { FlightContext, FlightProvider } from "./FlightPlan";
+import { Outlet } from "react-router-dom";
+import { getIdentFromIcao } from "../../lib/facility";
+
+export const ModalContext = createContext<{ modal: ReactNode | null, setModal: (modal: ReactNode | null) => void }>({
+    modal: null,
+    setModal: () => {}
+});
 
 export const FZPro: FC = () => {
     const { user, initialized } = useNavigraphAuth();
 
+    const [modal, setModal] = useState<ReactNode | null>(null);
+
     return (
         <RootContainer>
-            {!initialized && <div>Loading</div>}
+            <FlightProvider>
+                <ModalContext.Provider value={{ modal, setModal }}>
+                    {!initialized && <div>Loading</div>}
 
-            {(initialized && !user) ? <SignInPrompt /> : (user && <App />)}
+                    {(initialized && !user) ? <SignInPrompt /> : (user && <App />)}
+
+                    {modal && <ModalOverlay onClick={() => setModal(null)} />}
+
+                    {modal}
+                </ModalContext.Provider>
+            </FlightProvider>
         </RootContainer>
     );
 };
+
+const ModalOverlay = styled.div`
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    opacity: 0.6;
+`;
 
 const App: FC = () => {
     const { getChartImage, getChartIndex } = useNavigraphAuth();
@@ -34,6 +61,7 @@ const App: FC = () => {
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);
     const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const { departureAirport } = useContext(FlightContext);
 
     const mainSectionRef = useRef<HTMLDivElement>(null);
 
@@ -59,12 +87,20 @@ const App: FC = () => {
     useEffect(() => {
         const fetchChartIndex = async () => {
             if (selectedAirport) {
-                setChartIndex(await getChartIndex(selectedAirport));
+                getChartIndex(selectedAirport)
+                    .then((index) => setChartIndex(index))
+                    .catch(_ => setChartIndex(null)); // probably no charts for airport
             }
         }
 
         void fetchChartIndex();
     }, [selectedAirport]);
+
+    useEffect(() => {
+        if (!selectedAirport && departureAirport) {
+            setSelectedAirport(getIdentFromIcao(departureAirport.icao));
+        }
+    }, [departureAirport]);
 
     return (
         <>
@@ -93,6 +129,7 @@ const App: FC = () => {
                             onSelect={(chart) => setCurrentChart(chart)}
                             selectedChart={currentChart}
                         />}
+                    <Outlet />
                 </MainSection>
             </SideAndMainContainer>
             {airportSelectorDisplayed && <AirportSelector
