@@ -16,28 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { IoIosBatteryFull } from "react-icons/io";
 import { HiWifi } from "react-icons/hi";
+import { useSimVar } from "react-msfs";
 
 export type BarProps = { bg?: string; textColor?: string; backdropFilter?: string };
 
-export const TopBar: FC<BarProps> = ({ bg = "transparent", textColor = "white", backdropFilter = "none" }) => (
-    <div>
-        <StyledBar bg={bg} textColor={textColor} backdropFilter={backdropFilter}>
-            <BarSection>
-                <div>17:42</div>
-                <div>Sun May 28</div>
-            </BarSection>
-            <BarSection symbols>
-                <HiWifi size={25} />
-                <div>100%</div>
-                <IoIosBatteryFull size={35} />
-            </BarSection>
-        </StyledBar>
-    </div>
-);
+export const TopBar: FC<BarProps> = ({ bg = "transparent", textColor = "white", backdropFilter = "none" }) => {
+
+    const [currentTime] = useSimVar("E:ZULU TIME", "seconds");
+    const [dayOfWeek] = useSimVar("E:ZULU DAY OF WEEK", "number");
+    const [monthOfYear] = useSimVar("E:ZULU MONTH OF YEAR", "number");
+    const [dayOfMonth] = useSimVar("E:ZULU DAY OF MONTH", "number");
+
+    // Convert time to HH:MM
+    const date = new Date(currentTime * 1000);
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const currentTimeString = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
+
+    // Convert numbers to readable strings
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayOfWeekString = days[dayOfWeek];
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthOfYearString = months[monthOfYear - 1];
+
+    return (
+        <div>
+            <StyledBar bg={bg} textColor={textColor} backdropFilter={backdropFilter}>
+                <BarSection>
+                    <div>{currentTimeString}</div>
+                    <div>{dayOfWeekString} {monthOfYearString} {dayOfMonth}</div>
+                </BarSection>
+                <BarSection symbols>
+                    <HiWifi size={25} />
+                    <div>100%</div>
+                    <IoIosBatteryFull size={35} />
+                </BarSection>
+            </StyledBar>
+        </div>
+    );
+  };
 
 const StyledBar = styled.div`
     width: 100%;
