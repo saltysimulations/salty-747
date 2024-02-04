@@ -15,6 +15,7 @@ import { Flight } from "./Flight";
 import { FlightContext, FlightProvider } from "./FlightPlan";
 import { Outlet } from "react-router-dom";
 import { getIdentFromIcao } from "../../lib/facility";
+import { EnrouteChartView } from "./EnrouteChartView";
 
 export const ModalContext = createContext<{ modal: ReactNode | null, setModal: (modal: ReactNode | null) => void }>({
     modal: null,
@@ -116,6 +117,7 @@ const App: FC = () => {
                     airportSelectorDisplayed={airportSelectorDisplayed}
                 />
                 <MainSection ref={mainSectionRef}>
+                    <EnrouteChartView />
                     {loading ? <DocumentLoading /> : chartImage && mainSectionRef.current && <AirportChartViewer
                         chartImage={chartImage}
                         canvasWidth={mainSectionRef.current.clientWidth}
