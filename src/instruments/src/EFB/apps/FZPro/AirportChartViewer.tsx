@@ -1,12 +1,8 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { TransformComponent, TransformWrapper, ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
-import {
-    AiOutlineRotateLeft,
-    AiOutlineRotateRight,
-    AiOutlineZoomIn,
-    AiOutlineZoomOut,
-} from "react-icons/all";
+import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { AiOutlineRotateLeft, AiOutlineRotateRight, AiOutlineZoomIn, AiOutlineZoomOut, } from "react-icons/all";
+import { ChartControlContainer, ChartControlItem } from "./components/ChartControls";
 
 type AirportChartViewerProps = {
     chartImage: string;
@@ -70,29 +66,6 @@ const StyledChartViewer = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
-`;
-
-const ChartControlContainer = styled.div`
-    background: #40444D;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    border-radius: 15px;
-`;
-
-const ChartControlItem = styled.div`
-    width: 75px;
-    height: 75px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid #b9b9bb;
-
-    &:last-child {
-        border: none;
-    }
 `;
 
 const ChartContainer = styled.div`

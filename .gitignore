@@ -5,7 +5,7 @@ node_modules/
 salty-747/manifest.json
 salty-747/layout.json
 salty-747/html_ui/Pages/Salty/fpm
-salty-747/html_ui/Pages/VCockpit/Instruments/74s/*
+salty-747/html_ui/Pages/VCockpit/Instruments/b74s/*
 !salty-747/html_ui/Pages/VCockpit/Instruments/74s/PFD
 salty-747/html_ui/Pages/VCockpit/Instruments/74s/PFD/*.css
 salty-747/html_ui/Pages/VCockpit/Instruments/74s/PFD/*.js
