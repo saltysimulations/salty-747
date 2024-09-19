@@ -12,6 +12,7 @@ type InputProps = {
     style?: React.CSSProperties;
     centerPlaceholder?: boolean;
     hidePlaceholder?: boolean
+    placeholderAlign?: "left" | "right";
     textarea?: boolean;
     clearOnFocusOut?: boolean;
 };
@@ -25,6 +26,7 @@ export const Input: FC<InputProps> = ({
                                           applyFilters,
                                           centerPlaceholder = true,
                                           hidePlaceholder = false,
+                                          placeholderAlign = "left",
                                           textarea = false,
                                           clearOnFocusOut = false,
                                       }) => {
@@ -72,14 +74,17 @@ export const Input: FC<InputProps> = ({
     const onFocusInput = () => {
         setFocused(true);
 
+        displayValue && setDisplayValue("");
+
         onFocus && onFocus();
     };
 
     const onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log("setting focus")
+        const value = e.currentTarget.value;
         setFocused(false);
 
-        onFocusOut?.(e.currentTarget.value);
+        onFocusOut?.(value);
+        setDisplayValue(applyFilters?.(value) ?? value);
 
         clearOnFocusOut && setDisplayValue("");
     };
@@ -87,9 +92,9 @@ export const Input: FC<InputProps> = ({
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const value = e.currentTarget.value;
 
-        setDisplayValue(applyFilters?.(value) ?? value);
+        setDisplayValue(value);
 
-        onUpdateValue && onUpdateValue(applyFilters?.(value) ?? value);
+        onUpdateValue && onUpdateValue(value);
     };
 
     const props = {
@@ -100,6 +105,7 @@ export const Input: FC<InputProps> = ({
         placeholder,
         hidePlaceholder: focused || hidePlaceholder,
         centerPlaceholder,
+        placeholderAlign,
         style
     }
 
@@ -109,7 +115,7 @@ export const Input: FC<InputProps> = ({
 };
 
 
-type StyledInputProps = { hidePlaceholder?: boolean, centerPlaceholder?: boolean };
+type StyledInputProps = { hidePlaceholder?: boolean, centerPlaceholder?: boolean, placeholderAlign: "left" | "right" };
 
 const inputStyle = css`
     display: block;
@@ -125,7 +131,7 @@ const inputStyle = css`
 
     &::placeholder {
         color: #4f4f4f;
-        text-align: ${(props: StyledInputProps) => props.centerPlaceholder ? "center" : "left"};
+        text-align: ${(props: StyledInputProps) => props.centerPlaceholder ? "center" : props.placeholderAlign};
         visibility: ${(props: StyledInputProps) => props.hidePlaceholder ? "hidden" : "visible"};
     }
 `;

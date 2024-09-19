@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 type ItemProps = { gray?: boolean; noMouseDownEffect?: boolean; onClick?: () => void; children: React.ReactNode[] | React.ReactNode };
 
-export const SettingsItem: FC<ItemProps> = ({ gray, noMouseDownEffect, onClick = () => null, children }) => {
+export const ListItem: FC<ItemProps> = ({ gray, noMouseDownEffect, onClick = () => null, children }) => {
     const [clicked, setClicked] = useState<boolean>(false);
 
     useEffect(() => {

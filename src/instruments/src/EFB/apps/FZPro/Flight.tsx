@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { TitleAndClose } from "./components/TitleAndClose";
-import { Input } from "./components/Input";
+import { Input } from "../../components/Input";
 import { AiFillCloseCircle, AiOutlineCloudDownload, FaArrowsAltH } from "react-icons/all";
 import { facilityLoader, getAirportIcaoFromIdent, getIdentFromIcao } from "../../lib/facility";
 import { AirportFacility, FacilityType } from "@microsoft/msfs-sdk";

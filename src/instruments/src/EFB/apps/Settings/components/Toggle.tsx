@@ -1,17 +1,17 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 
-import { SettingsItem } from "./SettingsItem";
+import { ListItem } from "../../../components/ListItem";
 
 type ToggleProps = { label: string; enabled: boolean; onClick: (enabled: boolean) => void };
 
 export const Toggle: FC<ToggleProps> = ({ label, enabled, onClick }) => (
-    <SettingsItem noMouseDownEffect>
+    <ListItem noMouseDownEffect>
         <div className="side">{label}</div>
         <StyledToggle className="side" enabled={enabled} onClick={() => onClick(enabled)}>
             <StyledToggleCircle enabled={enabled} />
         </StyledToggle>
-    </SettingsItem>
+    </ListItem>
 );
 
 const StyledToggleCircle = styled.div`

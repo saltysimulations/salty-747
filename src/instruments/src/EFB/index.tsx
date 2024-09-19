@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { render } from "../Common";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
@@ -34,6 +34,10 @@ import { Acars } from "./apps/Settings/Acars";
 import { FZPro } from "./apps/FZPro";
 import { NavigraphAuthProvider } from "./hooks/useNavigraphAuth";
 import { Flight } from "./apps/FZPro/Flight";
+
+import { Aircraft as AircraftApp } from "./apps/Aircraft";
+import { GroundServices } from "./apps/Aircraft/GroundServices";
+import { FuelPayload } from "./apps/Aircraft/FuelPayload";
 
 const EFB: FC = () => {
     return (
@@ -57,6 +61,10 @@ const EFB: FC = () => {
                         </Route>
                         <Route path="/fzpro" element={<RouteElement component={<FZPro />} />}>
                             <Route path="flight" element={<Flight />} />
+                        </Route>
+                        <Route path="/aircraft" element={<RouteElement component={<AircraftApp /> } barProps={{ textColor: "black" }} />}>
+                            <Route path="ground-services" element={<GroundServices />} />
+                            <Route path="payload" element={<FuelPayload />} />
                         </Route>
                     </Routes>
                 </MemoryRouter>

@@ -46,7 +46,7 @@ export const HomeScreen: FC = () => (
             <App bg="white" icon={<FaSafari style={{ fill: "#2ca3e8", transform: "scale(4.5)" }} />} />
             <App bg="#24b3e3" icon={<FaMapMarkerAlt style={{ fill: "white", transform: "scale(3.5)" }} />} route="/maps" />
             <App bg={`url(${opt})`} />
-            <App bg="white" icon={<SiWikipedia style={{ fill: "black", transform: "scale(3.5)" }} />} />
+            <App bg="white" icon={<SiWikipedia style={{ fill: "black", transform: "scale(3.5)" }} />} route="/aircraft/ground-services" />
             <App bg="white" icon={<BsYoutube style={{ fill: "red", transform: "scale(3.5)" }} />} />
             <App bg="gray" icon={<BsGearWideConnected style={{ fill: "white", transform: "scale(3.5)" }} />} route="/settings/general" />
         </FavoriteAppsContainer>

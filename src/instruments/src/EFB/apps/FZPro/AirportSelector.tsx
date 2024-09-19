@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { FC, useEffect, useState } from "react";
-import { Input } from "./components/Input";
+import { Input } from "../../components/Input";
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
 import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
 import { IoCheckmark } from "react-icons/all";

@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import { ContentPageContainer } from "./components/ContentPageContainer";
 import { usePersistentProperty } from "@instruments/common/persistence";
-import { ItemGroup } from "./components/ItemGroup";
+import { ItemGroup } from "../../components/ItemGroup";
 import { Toggle } from "./components/Toggle";
 import { NavigationItem } from "./components/NavigationItem";
 import { SelectableItem } from "./components/SelectableItem";
