@@ -9,32 +9,73 @@ export const SignInPrompt: FC = () => {
 
     useEffect(() => {
         if (initialized && !user) {
-            signIn().catch(e => console.log(e));
+            signIn().catch((e) => console.log(e));
         }
     }, [initialized]);
 
+    const getCode = (uri: string): string => new URLSearchParams(uri.split("?")[1]).get("user_code")?.toString() ?? "";
+
     return (
-        <StyledSignIn>
+        <>
             {authParams?.verificationUriComplete && (
-                <QRCode value={authParams.verificationUriComplete} size={350} imageSettings={{
-                    src: shaker,
-                    height: 60,
-                    width: 60,
-                    excavate: true,
-                }} />
+                <StyledSignIn>
+                    <QRCodeContainer>
+                        <QRCode
+                            value={authParams.verificationUriComplete}
+                            size={375}
+                            imageSettings={{
+                                src: shaker,
+                                height: 60,
+                                width: 60,
+                                excavate: true,
+                            }}
+                        />
+                    </QRCodeContainer>
+                    <SignInTitle>Scan the QR code and log into your Navigraph account to get started</SignInTitle>
+                    <CodeContainer>
+                        <div>
+                            Or go to <NavigraphLink>https://navigraph.com/code</NavigraphLink>
+                        </div>
+                        <div>
+                            and enter the code <Code>{getCode(authParams.verificationUriComplete)}</Code>
+                        </div>
+                    </CodeContainer>
+                </StyledSignIn>
             )}
-            <SignInTitle>Scan the QR code and log into your Navigraph account to get started</SignInTitle>
-        </StyledSignIn>
-    )
+        </>
+    );
 };
 
+const QRCodeContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: white;
+`;
+
+const CodeContainer = styled.div`
+    * {
+        margin: 3px;
+    }
+`;
+
+const NavigraphLink = styled.span`
+    color: #4fa0fc;
+`;
+
+const Code = styled.span`
+    color: #ff4f4b;
+`;
+
 const SignInTitle = styled.div`
-    font-size: 44px;
+    font-size: 40px;
     font-weight: 300;
+    margin: 50px;
 `;
 
 const StyledSignIn = styled.div`
-    background: #22242D;
+    background: #22242d;
     width: 100%;
     height: 100%;
     display: flex;
@@ -42,8 +83,6 @@ const StyledSignIn = styled.div`
     justify-content: center;
     align-items: center;
     color: white;
-
-    * {
-        margin: 50px;
-    }
+    font-size: 28px;
+    text-align: center;
 `;
