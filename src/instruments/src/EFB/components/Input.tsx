@@ -15,6 +15,7 @@ type InputProps = {
     placeholderAlign?: "left" | "right";
     textarea?: boolean;
     clearOnFocusOut?: boolean;
+    autoFocus?: boolean;
 };
 
 export const Input: FC<InputProps> = ({
@@ -29,6 +30,7 @@ export const Input: FC<InputProps> = ({
                                           placeholderAlign = "left",
                                           textarea = false,
                                           clearOnFocusOut = false,
+                                          autoFocus = false,
                                       }) => {
     const [guid] = useState(uuid());
     const [focused, setFocused] = useState<boolean>(false);
@@ -58,8 +60,12 @@ export const Input: FC<InputProps> = ({
         }
         window.addEventListener("keypress", listener);
 
-        return () => window.removeEventListener("keypress", listener);
+        if (autoFocus) {
+            inputRef.current && inputRef.current.focus();
+            textareaRef.current && textareaRef.current.focus();
+        }
 
+        return () => window.removeEventListener("keypress", listener);
     }, [])
 
     const blurInputField = () => {

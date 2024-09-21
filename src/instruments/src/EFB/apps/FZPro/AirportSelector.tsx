@@ -53,18 +53,21 @@ export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, 
                 style={{ width: "90%", margin: "20px 0", border: "1px solid #b9b9bb" }}
                 onUpdateValue={(icao) => setSearch(icao)}
                 applyFilters={(value: string) => value.toUpperCase()}
+                autoFocus
             />
             <ScrollContainer style={{ width: "100%" }}>
-                {searchResults && searchResults.map((searchResult, index) => (
-                    <AirportSelectorItem>
-                        <ListItemDescription onClick={() => setSelectedAirport(getIdentFromIcao(searchResult.icao))}>
-                            <ListItemTitle>{getIdentFromIcao(searchResult.icao)}</ListItemTitle>
-                            <ListItemLabel>{Utils.Translate(searchResult.name)}</ListItemLabel>
-                        </ListItemDescription>
-                        {getIdentFromIcao(searchResult.icao) === selectedAirport &&
-                            <IoCheckmark color="#1476fb" size={40} style={{ margin: "0 25px" }} />}
-                    </AirportSelectorItem>
-                ))}
+                {searchResults &&
+                    searchResults.map((searchResult, i) => (
+                        <AirportSelectorItem onClick={() => setSelectedAirport(getIdentFromIcao(searchResult.icao))} key={i}>
+                            <ListItemDescription>
+                                <ListItemTitle>{getIdentFromIcao(searchResult.icao)}</ListItemTitle>
+                                <ListItemLabel>{Utils.Translate(searchResult.name)}</ListItemLabel>
+                            </ListItemDescription>
+                            {getIdentFromIcao(searchResult.icao) === selectedAirport && (
+                                <IoCheckmark color="#1476fb" size={40} style={{ margin: "0 25px" }} />
+                            )}
+                        </AirportSelectorItem>
+                    ))}
             </ScrollContainer>
         </StyledAirportSelector>
     );

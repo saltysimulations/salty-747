@@ -35,11 +35,7 @@ export const AirportChartViewer: FC<AirportChartViewerProps> = ({ chartImage, ca
                 <StyledChartViewer>
                     <TransformComponent wrapperStyle={{ width: canvasWidth, height: canvasHeight }}>
                         <ChartContainer rotation={rotation}>
-                            <img
-                                src={URL.createObjectURL(chartImage)}
-                                height={canvasHeight}
-                                ref={chartImageRef}
-                            />
+                            <img src={URL.createObjectURL(chartImage)} height={canvasHeight} ref={chartImageRef} />
                         </ChartContainer>
                     </TransformComponent>
                     <ChartControlContainer>

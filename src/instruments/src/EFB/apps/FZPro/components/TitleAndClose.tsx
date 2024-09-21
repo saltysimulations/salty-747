@@ -17,6 +17,7 @@ const ChartSelectorTitle = styled.div`
     font-size: 28px;
     font-weight: 500;
     border-bottom: 1px solid #b9b9bb;
+    flex-shrink: 0;
 
     * {
         margin: 12px 12px 12px 24px;

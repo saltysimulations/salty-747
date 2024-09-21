@@ -4,6 +4,7 @@ import { AiFillCloseCircle } from "react-icons/all";
 import { Chart } from "navigraph/charts"
 import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
 import { TitleAndClose } from "./components/TitleAndClose";
+import ScrollContainer from "react-indiana-drag-scroll";
 
 type ChartSelectorProps = {
     charts: Chart[],
@@ -16,17 +17,16 @@ type ChartSelectorProps = {
 export const ChartSelector: FC<ChartSelectorProps> = ({ charts, label, onClose, onSelect, selectedChart }) => (
     <ChartSelectorContainer>
         <TitleAndClose label={label} onClose={onClose} />
-        {charts.map((chart) => (
-            <ChartSelectorItem
-                selected={selectedChart ? selectedChart.id === chart.id : false}
-                onClick={() => onSelect(chart)}
-            >
-                <ListItemDescription>
-                    <ListItemTitle>{chart.name}</ListItemTitle>
-                    <ListItemLabel>{chart.index_number}</ListItemLabel>
-                </ListItemDescription>
-            </ChartSelectorItem>
-        ))}
+        <ScrollContainer style={{ width: "100%" }}>
+            {charts.map((chart, i) => (
+                <ChartSelectorItem selected={selectedChart ? selectedChart.id === chart.id : false} onClick={() => onSelect(chart)} key={i}>
+                    <ListItemDescription>
+                        <ListItemTitle>{chart.name}</ListItemTitle>
+                        <ListItemLabel>{chart.index_number}</ListItemLabel>
+                    </ListItemDescription>
+                </ChartSelectorItem>
+            ))}
+        </ScrollContainer>
     </ChartSelectorContainer>
 );
 
@@ -43,16 +43,12 @@ const ChartSelectorContainer = styled.div`
     height: 100%;
     border: 1px solid #b9b9bb;
     border-radius: 15px;
-    position: absolute;
     background: #F0F4F8;
     display: flex;
     flex-direction: column;
     color: black;
     box-shadow: 2px 2px 10px #b9b9bb;
     overflow: hidden;
-
-    * {
-        flex-shrink: 0;
-    }
+    z-index: 999;
 `;
 

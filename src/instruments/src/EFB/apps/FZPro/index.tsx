@@ -106,9 +106,7 @@ const App: FC = () => {
     return (
         <>
             <TopBar />
-            <SideAndMainContainer onClick={() => {
-                if (airportSelectorDisplayed) setAirportSelectorDisplayed(false);
-            }}>
+            <SideAndMainContainer onClick={() => airportSelectorDisplayed && setAirportSelectorDisplayed(false)}>
                 <Sidebar
                     category={chartSelectorCategory}
                     setCategory={(category: ChartCategory | null) => setChartSelectorCategory(category)}
@@ -118,26 +116,39 @@ const App: FC = () => {
                 />
                 <MainSection ref={mainSectionRef}>
                     {!loading && !chartImage && <EnrouteChartView />}
-                    {loading ? <DocumentLoading /> : chartImage && mainSectionRef.current && <AirportChartViewer
-                        chartImage={chartImage}
-                        canvasWidth={mainSectionRef.current.clientWidth}
-                        canvasHeight={mainSectionRef.current.clientHeight}
-                    />}
-                    {chartSelectorCategory && chartIndex &&
+                    {loading ? (
+                        <DocumentLoading />
+                    ) : (
+                        chartImage &&
+                        mainSectionRef.current && (
+                            <AirportChartViewer
+                                chartImage={chartImage}
+                                canvasWidth={mainSectionRef.current.clientWidth}
+                                canvasHeight={mainSectionRef.current.clientHeight}
+                            />
+                        )
+                    )}
+                    {chartSelectorCategory && chartIndex && (
                         <ChartSelector
                             charts={getChartsByCategory(chartIndex, chartSelectorCategory)}
                             label={chartCategoryToLabel[chartSelectorCategory]}
                             onClose={() => setChartSelectorCategory(null)}
                             onSelect={(chart) => setCurrentChart(chart)}
                             selectedChart={currentChart}
-                        />}
+                        />
+                    )}
                     <Outlet />
                 </MainSection>
             </SideAndMainContainer>
-            {airportSelectorDisplayed && <AirportSelector
-                selectedAirport={selectedAirport}
-                setSelectedAirport={(icao) => setSelectedAirport(icao)}
-            />}
+            {airportSelectorDisplayed && (
+                <AirportSelector
+                    selectedAirport={selectedAirport}
+                    setSelectedAirport={(icao) => {
+                        setSelectedAirport(icao);
+                        setAirportSelectorDisplayed(false);
+                    }}
+                />
+            )}
         </>
     );
 };
