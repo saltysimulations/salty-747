@@ -32,9 +32,10 @@
         "esbuild-style-plugin": "^1.6.3"
     },
     "dependencies": {
-        "@navigraph/pkce": "^1.0.3",
+        "@navigraph/leaflet": "^2.0.1",
         "byte-data": "^19.0.1",
         "leaflet": "^1.7.1",
+        "navigraph": "^1.2.36",
         "qrcode.react": "^3.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

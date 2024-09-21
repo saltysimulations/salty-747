@@ -1,15 +1,18 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
 import QRCode from "qrcode.react";
 import shaker from "../../img/black-salty-shaker.png";
 import styled from "styled-components";
+import { DeviceFlowParams } from "navigraph/auth";
 
 export const SignInPrompt: FC = () => {
-    const { signIn, authParams, user, initialized } = useNavigraphAuth();
+    const [authParams, setAuthParams] = useState<DeviceFlowParams | null>(null);
+
+    const { signIn, user, initialized } = useNavigraphAuth();
 
     useEffect(() => {
         if (initialized && !user) {
-            signIn().catch((e) => console.log(e));
+            signIn((p) => setAuthParams(p));
         }
     }, [initialized]);
 
@@ -17,11 +20,11 @@ export const SignInPrompt: FC = () => {
 
     return (
         <>
-            {authParams?.verificationUriComplete && (
+            {authParams?.verification_uri_complete && !user && (
                 <StyledSignIn>
                     <QRCodeContainer>
                         <QRCode
-                            value={authParams.verificationUriComplete}
+                            value={authParams.verification_uri_complete}
                             size={375}
                             imageSettings={{
                                 src: shaker,
@@ -37,7 +40,7 @@ export const SignInPrompt: FC = () => {
                             Or go to <NavigraphLink>https://navigraph.com/code</NavigraphLink>
                         </div>
                         <div>
-                            and enter the code <Code>{getCode(authParams.verificationUriComplete)}</Code>
+                            and enter the code <Code>{getCode(authParams.verification_uri_complete)}</Code>
                         </div>
                     </CodeContainer>
                 </StyledSignIn>

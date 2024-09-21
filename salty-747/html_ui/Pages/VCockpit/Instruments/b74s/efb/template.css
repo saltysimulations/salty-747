@@ -650,6 +650,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* temp_stylePlugin:src\EFB\apps\FZPro\EnrouteChartView.scss */
 .leaflet-container {
   height: 100%;
+  z-index: 0;
 }
 .leaflet-control-container {
   visibility: hidden;

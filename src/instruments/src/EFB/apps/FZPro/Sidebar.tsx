@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { FC } from "react";
-import { ChartCategory } from "../../lib/navigraph";
+import { ChartCategory } from "navigraph/charts"
 import { IoIosArrowDown } from "react-icons/all";
 
 type SidebarProps = {
@@ -35,24 +35,24 @@ export const Sidebar: FC<SidebarProps> = ({
                 </AirportSelectLabel>
                 <ChartCategories>
                     <SidebarButtonContainer>
-                        <ChartCategoryButton selected={category === "ref"}
+                        <ChartCategoryButton selected={category === "REF"}
                                              available={selectedAirport !== "APTS"}
-                                             onClick={() => onButtonClick("ref")}>REF</ChartCategoryButton>
+                                             onClick={() => onButtonClick("REF")}>REF</ChartCategoryButton>
                         <ChartCategoryButton selected={false}
                                              available={selectedAirport !== "APTS"}
                                              onClick={() => onButtonClick(null)}>CO</ChartCategoryButton>
-                        <ChartCategoryButton selected={category === "arr"}
+                        <ChartCategoryButton selected={category === "ARR"}
                                              available={selectedAirport !== "APTS"}
-                                             onClick={() => onButtonClick("arr")}>STAR</ChartCategoryButton>
-                        <ChartCategoryButton selected={category === "app"}
+                                             onClick={() => onButtonClick("ARR")}>STAR</ChartCategoryButton>
+                        <ChartCategoryButton selected={category === "APP"}
                                              available={selectedAirport !== "APTS"}
-                                             onClick={() => onButtonClick("app")}>APP</ChartCategoryButton>
-                        <ChartCategoryButton selected={category === "apt"}
+                                             onClick={() => onButtonClick("APP")}>APP</ChartCategoryButton>
+                        <ChartCategoryButton selected={category === "APT"}
                                              available={selectedAirport !== "APTS"}
-                                             onClick={() => onButtonClick("apt")}>TAXI</ChartCategoryButton>
-                        <ChartCategoryButton selected={category === "dep"}
+                                             onClick={() => onButtonClick("APT")}>TAXI</ChartCategoryButton>
+                        <ChartCategoryButton selected={category === "DEP"}
                                              available={selectedAirport !== "APTS"}
-                                             onClick={() => onButtonClick("dep")}>SID</ChartCategoryButton>
+                                             onClick={() => onButtonClick("DEP")}>SID</ChartCategoryButton>
                     </SidebarButtonContainer>
                 </ChartCategories>
             </UpperSection>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { FC } from "react";
 import { AiFillCloseCircle } from "react-icons/all";
-import { Chart } from "../../lib/navigraph";
+import { Chart } from "navigraph/charts"
 import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
 import { TitleAndClose } from "./components/TitleAndClose";
 
@@ -23,7 +23,7 @@ export const ChartSelector: FC<ChartSelectorProps> = ({ charts, label, onClose, 
             >
                 <ListItemDescription>
                     <ListItemTitle>{chart.name}</ListItemTitle>
-                    <ListItemLabel>{chart.indexNumber}</ListItemLabel>
+                    <ListItemLabel>{chart.index_number}</ListItemLabel>
                 </ListItemDescription>
             </ChartSelectorItem>
         ))}

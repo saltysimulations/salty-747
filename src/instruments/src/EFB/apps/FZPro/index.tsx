@@ -1,4 +1,5 @@
 import React, { createContext, FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { Chart, ChartCategory } from "navigraph/charts";
 
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
 import styled from "styled-components";
@@ -6,7 +7,6 @@ import styled from "styled-components";
 import { AirportChartViewer } from "./AirportChartViewer";
 import { SignInPrompt } from "./SignInPrompt";
 import { TopBar } from "./TopBar";
-import { Chart, ChartCategory, ChartIndex } from "../../lib/navigraph";
 import { DocumentLoading } from "./DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
@@ -16,6 +16,8 @@ import { FlightContext, FlightProvider } from "./FlightPlan";
 import { Outlet } from "react-router-dom";
 import { getIdentFromIcao } from "../../lib/facility";
 import { EnrouteChartView } from "./EnrouteChartView";
+
+import { charts, getChartsByCategory } from "../../lib/navigraph";
 
 export const ModalContext = createContext<{ modal: ReactNode | null, setModal: (modal: ReactNode | null) => void }>({
     modal: null,
@@ -53,12 +55,10 @@ const ModalOverlay = styled.div`
 `;
 
 const App: FC = () => {
-    const { getChartImage, getChartIndex } = useNavigraphAuth();
-
     const [currentChart, setCurrentChart] = useState<Chart | null>(null);
     const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
-    const [chartIndex, setChartIndex] = useState<ChartIndex | null>(null);
-    const [chartImage, setChartImage] = useState<string | null>(null);
+    const [chartIndex, setChartIndex] = useState<Chart[] | null>(null);
+    const [chartImage, setChartImage] = useState<Blob | null>(null);
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);
     const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -67,28 +67,28 @@ const App: FC = () => {
     const mainSectionRef = useRef<HTMLDivElement>(null);
 
     const chartCategoryToLabel = {
-        arr: "Arrivals",
-        dep: "Departures",
-        ref: "Reference Charts",
-        apt: "Taxi Charts",
-        app: "Approaches",
+        ARR: "Arrivals",
+        DEP: "Departures",
+        REF: "Reference Charts",
+        APT: "Taxi Charts",
+        APP: "Approaches",
     };
 
     useEffect(() => {
-        const fetchChartImageUrl = async () => {
+        const fetchChartImage = async () => {
             if (currentChart) {
                 setLoading(true);
-                setChartImage(await getChartImage(currentChart.imageDayUrl));
+                setChartImage(await charts.getChartImage({ chart: currentChart, theme: "light" }));
             }
         }
 
-        fetchChartImageUrl().then(() => setLoading(false));
+        fetchChartImage().then(() => setLoading(false));
     }, [currentChart]);
 
     useEffect(() => {
         const fetchChartIndex = async () => {
             if (selectedAirport) {
-                getChartIndex(selectedAirport)
+                charts.getChartsIndex({ icao: selectedAirport })
                     .then((index) => setChartIndex(index))
                     .catch(_ => setChartIndex(null)); // probably no charts for airport
             }
@@ -117,7 +117,7 @@ const App: FC = () => {
                     airportSelectorDisplayed={airportSelectorDisplayed}
                 />
                 <MainSection ref={mainSectionRef}>
-                    <EnrouteChartView />
+                    {!loading && !chartImage && <EnrouteChartView />}
                     {loading ? <DocumentLoading /> : chartImage && mainSectionRef.current && <AirportChartViewer
                         chartImage={chartImage}
                         canvasWidth={mainSectionRef.current.clientWidth}
@@ -125,7 +125,7 @@ const App: FC = () => {
                     />}
                     {chartSelectorCategory && chartIndex &&
                         <ChartSelector
-                            charts={chartIndex[chartSelectorCategory]}
+                            charts={getChartsByCategory(chartIndex, chartSelectorCategory)}
                             label={chartCategoryToLabel[chartSelectorCategory]}
                             onClose={() => setChartSelectorCategory(null)}
                             onSelect={(chart) => setCurrentChart(chart)}

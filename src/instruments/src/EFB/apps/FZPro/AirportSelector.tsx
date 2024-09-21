@@ -14,8 +14,6 @@ type AirportSelectorProps = {
 }
 
 export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, selectedAirport }) => {
-    const { getAirportInfo } = useNavigraphAuth();
-
     const [search, setSearch] = useState<string>("");
     const [searchResults, setSearchResults] = useState<AirportFacility[] | null>(null);
 

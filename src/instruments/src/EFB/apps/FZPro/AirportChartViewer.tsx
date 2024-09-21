@@ -5,7 +5,7 @@ import { AiOutlineRotateLeft, AiOutlineRotateRight, AiOutlineZoomIn, AiOutlineZo
 import { ChartControlContainer, ChartControlItem } from "./components/ChartControls";
 
 type AirportChartViewerProps = {
-    chartImage: string;
+    chartImage: Blob;
     canvasWidth: number;
     canvasHeight: number;
 }
@@ -36,7 +36,7 @@ export const AirportChartViewer: FC<AirportChartViewerProps> = ({ chartImage, ca
                     <TransformComponent wrapperStyle={{ width: canvasWidth, height: canvasHeight }}>
                         <ChartContainer rotation={rotation}>
                             <img
-                                src={chartImage}
+                                src={URL.createObjectURL(chartImage)}
                                 height={canvasHeight}
                                 ref={chartImageRef}
                             />
