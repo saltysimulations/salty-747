@@ -50,5 +50,6 @@ const ChartSelectorContainer = styled.div`
     box-shadow: 2px 2px 10px #b9b9bb;
     overflow: hidden;
     z-index: 999;
+    position: absolute;
 `;
 

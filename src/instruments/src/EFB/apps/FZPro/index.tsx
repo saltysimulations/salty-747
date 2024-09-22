@@ -11,10 +11,8 @@ import { DocumentLoading } from "./DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
 import { AirportSelector } from "./AirportSelector";
-import { Flight } from "./Flight";
 import { FlightContext, FlightProvider } from "./FlightPlan";
 import { Outlet } from "react-router-dom";
-import { getIdentFromIcao } from "../../lib/facility";
 import { EnrouteChartView } from "./EnrouteChartView";
 
 import { charts, getChartsByCategory } from "../../lib/navigraph";
@@ -62,7 +60,7 @@ const App: FC = () => {
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);
     const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const { departureAirport } = useContext(FlightContext);
+    const departureAirport = useContext(FlightContext).ofp?.origin;
 
     const mainSectionRef = useRef<HTMLDivElement>(null);
 
@@ -99,7 +97,7 @@ const App: FC = () => {
 
     useEffect(() => {
         if (!selectedAirport && departureAirport) {
-            setSelectedAirport(getIdentFromIcao(departureAirport.icao));
+            setSelectedAirport(departureAirport.icao_code);
         }
     }, [departureAirport]);
 
