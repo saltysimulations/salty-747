@@ -13,9 +13,9 @@ import { Sidebar } from "./Sidebar";
 import { AirportSelector } from "./AirportSelector";
 import { FlightContext, FlightProvider } from "./FlightPlan";
 import { Outlet } from "react-router-dom";
-import { EnrouteChartView } from "./EnrouteChartView";
 
 import { charts, getChartsByCategory } from "../../lib/navigraph";
+import { EnrouteChartView } from "./enroute-charts";
 
 export const ModalContext = createContext<{ modal: ReactNode | null, setModal: (modal: ReactNode | null) => void }>({
     modal: null,
