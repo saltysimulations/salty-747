@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetting } from "../../hooks/useSettings";
 import ScrollContainer from "react-indiana-drag-scroll";
 
-export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void }> = ({ onUplink }) => {
+export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void, onClose: () => void }> = ({ onUplink, onClose }) => {
     const flightContext = useContext(FlightContext);
     const { ofp, setOfp } = flightContext;
 
@@ -50,7 +50,7 @@ export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void }> = ({ onUplink 
     return (
         <>
             <FlightContainer>
-                <TitleAndClose label="Flight" onClose={() => navigate("/fzpro")} />
+                <TitleAndClose label="Flight" onClose={onClose} />
                 <FlightButtons>
                     <div onClick={() => setOfp(null)}>New Flight</div>
                     <div onClick={handleClickUplink}>

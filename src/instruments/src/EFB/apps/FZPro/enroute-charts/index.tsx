@@ -12,23 +12,21 @@ import { FiNavigation2 } from "react-icons/all";
 import { WaypointMarkers } from "./WaypointMarkers";
 import styled from "styled-components";
 import "./EnrouteChartView.scss";
+import { FZProContext } from "../AppContext";
 
 export const EnrouteChartView: FC = () => {
     const [latitude] = useSimVar("PLANE LATITUDE", "degrees");
     const [longitude] = useSimVar("PLANE LONGITUDE", "degrees");
     const [heading] = useSimVar("PLANE HEADING DEGREES TRUE", "degrees");
 
-    const [preset, setPreset] = useState<PresetConfig>({
-        source: "IFR HIGH",
-        type: "Navigraph",
-        theme: "DAY",
-        forceRetina: true,
-    });
+    const { ofp } = useContext(FlightContext);
+    const { enrouteChartPreset: preset } = useContext(FZProContext);
+
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const [tileLayer] = useState<NavigraphTileLayer>(new NavigraphTileLayer(auth, preset));
     const [polyline, setPolyline] = useState<L.LatLngExpression[]>();
 
-    const { ofp } = useContext(FlightContext);
+
 
     const buildPolyline = (ofp: SimbriefOfp): L.LatLngExpression[] =>
         ofp.navlog.fix.map((fix) => new L.LatLng(parseFloat(fix.pos_lat), parseFloat(fix.pos_long)));
@@ -52,7 +50,7 @@ export const EnrouteChartView: FC = () => {
     return (
         <Container>
             <MapContainer center={[0, 0]} zoom={10} scrollWheelZoom={true} whenCreated={whenCreated}>
-                <Controls preset={preset} setPreset={setPreset} />
+                <Controls />
                 <Marker
                     position={[latitude, longitude]}
                     icon={L.divIcon({

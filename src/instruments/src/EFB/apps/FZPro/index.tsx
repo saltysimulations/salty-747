@@ -87,7 +87,7 @@ const App: FC = () => {
 
     const handleUplink = (ofp: SimbriefOfp) => {
         if (!selectedAirport) {
-            setSelectedAirport(ofp.origin.icao_code);
+            handleSelectAirport(ofp.origin.icao_code);
         }
     };
 
@@ -104,7 +104,7 @@ const App: FC = () => {
 
     return (
         <>
-            <TopBar setFlightDisplayed={setFlightDisplayed}/>
+            <TopBar setFlightDisplayed={setFlightDisplayed} />
             <SideAndMainContainer onClick={() => airportSelectorDisplayed && setAirportSelectorDisplayed(false)}>
                 <Sidebar
                     category={chartSelectorCategory}
@@ -112,6 +112,11 @@ const App: FC = () => {
                     selectedAirport={selectedAirport ?? "APTS"}
                     setAirportSelectorDisplayed={(displayed) => setAirportSelectorDisplayed(displayed)}
                     airportSelectorDisplayed={airportSelectorDisplayed}
+                    viewingEnrouteChart={!loading && !chartImage}
+                    setViewingEnrouteChart={() => {
+                        setChartImage(null);
+                        setChartSelectorCategory(null);
+                    }}
                 />
                 <MainSection ref={mainSectionRef}>
                     {!loading && !chartImage && <EnrouteChartView />}
@@ -136,15 +141,10 @@ const App: FC = () => {
                             selectedChart={currentChart}
                         />
                     )}
-                    {flightDisplayed && <Flight onUplink={handleUplink} />}
+                    {flightDisplayed && <Flight onUplink={handleUplink} onClose={() => setFlightDisplayed(false)} />}
                 </MainSection>
             </SideAndMainContainer>
-            {airportSelectorDisplayed && (
-                <AirportSelector
-                    selectedAirport={selectedAirport}
-                    setSelectedAirport={handleSelectAirport}
-                />
-            )}
+            {airportSelectorDisplayed && <AirportSelector selectedAirport={selectedAirport} setSelectedAirport={handleSelectAirport} />}
         </>
     );
 };

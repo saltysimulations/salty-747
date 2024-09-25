@@ -38,34 +38,35 @@ import { Flight } from "./apps/FZPro/Flight";
 import { Aircraft as AircraftApp } from "./apps/Aircraft";
 import { GroundServices } from "./apps/Aircraft/GroundServices";
 import { FuelPayload } from "./apps/Aircraft/FuelPayload";
+import { FZProContextProvider } from "./apps/FZPro/AppContext";
 
 const EFB: FC = () => {
     return (
         <Root>
             <NavigraphAuthProvider>
-                <MemoryRouter>
-                    <Routes>
-                        <Route path="/" element={<RouteElement component={<HomeScreen />} />} />
-                        <Route
-                            path="/maps"
-                            element={<RouteElement component={<Maps />}
-                                                   barProps={{textColor: "black", backdropFilter: "blur(8px)"}} />}
-                        />
-                        <Route path="/settings"
-                               element={<RouteElement component={<Settings />} barProps={{textColor: "black"}} />}>
-                            <Route path="general" element={<General />} />
-                            <Route path="aircraft" element={<Aircraft />} />
-                            <Route path="acars" element={<Acars />} />
-                            <Route path="pilot-visibility" element={<PilotVisibility />} />
-                            <Route path="irs-alignment" element={<IRSAlignment />} />
-                        </Route>
-                        <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
-                        <Route path="/aircraft" element={<RouteElement component={<AircraftApp /> } barProps={{ textColor: "black" }} />}>
-                            <Route path="ground-services" element={<GroundServices />} />
-                            <Route path="payload" element={<FuelPayload />} />
-                        </Route>
-                    </Routes>
-                </MemoryRouter>
+                <FZProContextProvider>
+                    <MemoryRouter>
+                        <Routes>
+                            <Route path="/" element={<RouteElement component={<HomeScreen />} />} />
+                            <Route
+                                path="/maps"
+                                element={<RouteElement component={<Maps />} barProps={{ textColor: "black", backdropFilter: "blur(8px)" }} />}
+                            />
+                            <Route path="/settings" element={<RouteElement component={<Settings />} barProps={{ textColor: "black" }} />}>
+                                <Route path="general" element={<General />} />
+                                <Route path="aircraft" element={<Aircraft />} />
+                                <Route path="acars" element={<Acars />} />
+                                <Route path="pilot-visibility" element={<PilotVisibility />} />
+                                <Route path="irs-alignment" element={<IRSAlignment />} />
+                            </Route>
+                            <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
+                            <Route path="/aircraft" element={<RouteElement component={<AircraftApp />} barProps={{ textColor: "black" }} />}>
+                                <Route path="ground-services" element={<GroundServices />} />
+                                <Route path="payload" element={<FuelPayload />} />
+                            </Route>
+                        </Routes>
+                    </MemoryRouter>
+                </FZProContextProvider>
             </NavigraphAuthProvider>
         </Root>
     );
