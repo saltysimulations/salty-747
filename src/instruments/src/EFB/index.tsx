@@ -59,9 +59,7 @@ const EFB: FC = () => {
                             <Route path="pilot-visibility" element={<PilotVisibility />} />
                             <Route path="irs-alignment" element={<IRSAlignment />} />
                         </Route>
-                        <Route path="/fzpro" element={<RouteElement component={<FZPro />} />}>
-                            <Route path="flight" element={<Flight />} />
-                        </Route>
+                        <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
                         <Route path="/aircraft" element={<RouteElement component={<AircraftApp /> } barProps={{ textColor: "black" }} />}>
                             <Route path="ground-services" element={<GroundServices />} />
                             <Route path="payload" element={<FuelPayload />} />

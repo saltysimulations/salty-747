@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetting } from "../../hooks/useSettings";
 import ScrollContainer from "react-indiana-drag-scroll";
 
-export const Flight: FC = () => {
+export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void }> = ({ onUplink }) => {
     const flightContext = useContext(FlightContext);
     const { ofp, setOfp } = flightContext;
 
@@ -16,8 +16,10 @@ export const Flight: FC = () => {
 
     const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
 
-    const onUplink = async () => {
-        setOfp(await SimbriefClient.getOfp(await SimbriefClient.getSimbriefUserIDFromUsername(simbriefUsername as string)));
+    const handleClickUplink = async () => {
+        const newOfp = await SimbriefClient.getOfp(await SimbriefClient.getSimbriefUserIDFromUsername(simbriefUsername as string));
+        setOfp(newOfp);
+        onUplink(newOfp);
     };
 
     // TODO: make this return route instead of every fix
@@ -51,7 +53,7 @@ export const Flight: FC = () => {
                 <TitleAndClose label="Flight" onClose={() => navigate("/fzpro")} />
                 <FlightButtons>
                     <div onClick={() => setOfp(null)}>New Flight</div>
-                    <div onClick={onUplink}>
+                    <div onClick={handleClickUplink}>
                         <AiOutlineCloudDownload size={45} color="black" style={{ padding: 0, margin: 0 }} />
                     </div>
                 </FlightButtons>

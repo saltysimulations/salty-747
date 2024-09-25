@@ -12,10 +12,11 @@ import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
 import { AirportSelector } from "./AirportSelector";
 import { FlightContext, FlightProvider } from "./FlightPlan";
-import { Outlet } from "react-router-dom";
+import { Flight } from "./Flight";
 
 import { charts, getChartsByCategory } from "../../lib/navigraph";
 import { EnrouteChartView } from "./enroute-charts";
+import { SimbriefOfp } from "@microsoft/msfs-sdk";
 
 export const ModalContext = createContext<{ modal: ReactNode | null, setModal: (modal: ReactNode | null) => void }>({
     modal: null,
@@ -59,8 +60,8 @@ const App: FC = () => {
     const [chartImage, setChartImage] = useState<Blob | null>(null);
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);
     const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
+    const [flightDisplayed, setFlightDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const departureAirport = useContext(FlightContext).ofp?.origin;
 
     const mainSectionRef = useRef<HTMLDivElement>(null);
 
@@ -72,38 +73,38 @@ const App: FC = () => {
         APP: "Approaches",
     };
 
-    useEffect(() => {
-        const fetchChartImage = async () => {
-            if (currentChart) {
-                setLoading(true);
-                setChartImage(await charts.getChartImage({ chart: currentChart, theme: "light" }));
-            }
+    const fetchChartIndex = (icao: string) => {
+        charts
+            .getChartsIndex({ icao })
+            .then((index) => setChartIndex(index))
+            .catch((_) => setChartIndex(null)); // probably no charts for airport
+    };
+
+    const fetchChartImage = async (chart: Chart) => {
+        setLoading(true);
+        setChartImage(await charts.getChartImage({ chart, theme: "light" }));
+    };
+
+    const handleUplink = (ofp: SimbriefOfp) => {
+        if (!selectedAirport) {
+            setSelectedAirport(ofp.origin.icao_code);
         }
+    };
 
-        fetchChartImage().then(() => setLoading(false));
-    }, [currentChart]);
+    const handleSelectChart = (chart: Chart) => {
+        setCurrentChart(chart);
+        fetchChartImage(chart).then(() => setLoading(false));
+    };
 
-    useEffect(() => {
-        const fetchChartIndex = async () => {
-            if (selectedAirport) {
-                charts.getChartsIndex({ icao: selectedAirport })
-                    .then((index) => setChartIndex(index))
-                    .catch(_ => setChartIndex(null)); // probably no charts for airport
-            }
-        }
-
-        void fetchChartIndex();
-    }, [selectedAirport]);
-
-    useEffect(() => {
-        if (!selectedAirport && departureAirport) {
-            setSelectedAirport(departureAirport.icao_code);
-        }
-    }, [departureAirport]);
+    const handleSelectAirport = (icao: string) => {
+        setSelectedAirport(icao);
+        setAirportSelectorDisplayed(false);
+        void fetchChartIndex(icao);
+    }
 
     return (
         <>
-            <TopBar />
+            <TopBar setFlightDisplayed={setFlightDisplayed}/>
             <SideAndMainContainer onClick={() => airportSelectorDisplayed && setAirportSelectorDisplayed(false)}>
                 <Sidebar
                     category={chartSelectorCategory}
@@ -131,20 +132,17 @@ const App: FC = () => {
                             charts={getChartsByCategory(chartIndex, chartSelectorCategory)}
                             label={chartCategoryToLabel[chartSelectorCategory]}
                             onClose={() => setChartSelectorCategory(null)}
-                            onSelect={(chart) => setCurrentChart(chart)}
+                            onSelect={handleSelectChart}
                             selectedChart={currentChart}
                         />
                     )}
-                    <Outlet />
+                    {flightDisplayed && <Flight onUplink={handleUplink} />}
                 </MainSection>
             </SideAndMainContainer>
             {airportSelectorDisplayed && (
                 <AirportSelector
                     selectedAirport={selectedAirport}
-                    setSelectedAirport={(icao) => {
-                        setSelectedAirport(icao);
-                        setAirportSelectorDisplayed(false);
-                    }}
+                    setSelectedAirport={handleSelectAirport}
                 />
             )}
         </>

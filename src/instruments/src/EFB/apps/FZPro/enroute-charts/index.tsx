@@ -59,6 +59,7 @@ export const EnrouteChartView: FC = () => {
                         html: ReactDOMServer.renderToString(
                             <FiNavigation2 size={60} fill="magenta" style={{ transformOrigin: "center", transform: `rotate(${heading}deg)` }} />
                         ),
+                        iconAnchor: [30, 30],
                     })}
                 />
                 {ofp && <WaypointMarkers fixes={ofp.navlog.fix} theme={preset.theme ?? "DAY"} />}
