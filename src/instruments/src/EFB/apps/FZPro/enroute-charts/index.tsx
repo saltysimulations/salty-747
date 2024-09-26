@@ -8,7 +8,7 @@ import { SimbriefOfp } from "@microsoft/msfs-sdk";
 import { MapContainer, Marker, Polyline } from "react-leaflet";
 import { Controls } from "./Controls";
 import ReactDOMServer from "react-dom/server";
-import { FiNavigation2 } from "react-icons/all";
+import { FiNavigation2 } from "react-icons/fi";
 import { WaypointMarkers } from "./WaypointMarkers";
 import styled from "styled-components";
 import "./EnrouteChartView.scss";
@@ -25,8 +25,6 @@ export const EnrouteChartView: FC = () => {
     const [mapLoaded, setMapLoaded] = useState<boolean>(false);
     const [tileLayer] = useState<NavigraphTileLayer>(new NavigraphTileLayer(auth, preset));
     const [polyline, setPolyline] = useState<L.LatLngExpression[]>();
-
-
 
     const buildPolyline = (ofp: SimbriefOfp): L.LatLngExpression[] =>
         ofp.navlog.fix.map((fix) => new L.LatLng(parseFloat(fix.pos_lat), parseFloat(fix.pos_long)));

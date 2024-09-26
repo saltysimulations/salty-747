@@ -17,10 +17,11 @@ import { Flight } from "./Flight";
 import { charts, getChartsByCategory } from "../../lib/navigraph";
 import { EnrouteChartView } from "./enroute-charts";
 import { SimbriefOfp } from "@microsoft/msfs-sdk";
+import { FZProContext, sourceToLabel } from "./AppContext";
 
-export const ModalContext = createContext<{ modal: ReactNode | null, setModal: (modal: ReactNode | null) => void }>({
+export const ModalContext = createContext<{ modal: ReactNode | null; setModal: (modal: ReactNode | null) => void }>({
     modal: null,
-    setModal: () => {}
+    setModal: () => {},
 });
 
 export const FZPro: FC = () => {
@@ -34,7 +35,7 @@ export const FZPro: FC = () => {
                 <ModalContext.Provider value={{ modal, setModal }}>
                     {!initialized && <div>Loading</div>}
 
-                    {(initialized && !user) ? <SignInPrompt /> : (user && <App />)}
+                    {initialized && !user ? <SignInPrompt /> : user && <App />}
 
                     {modal && <ModalOverlay onClick={() => setModal(null)} />}
 
@@ -63,6 +64,9 @@ const App: FC = () => {
     const [flightDisplayed, setFlightDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const { enrouteChartPreset } = useContext(FZProContext);
+    const { ofp } = useContext(FlightContext);
+
     const mainSectionRef = useRef<HTMLDivElement>(null);
 
     const chartCategoryToLabel = {
@@ -72,6 +76,20 @@ const App: FC = () => {
         APT: "Taxi Charts",
         APP: "Approaches",
     };
+
+    const viewingEnrouteChart = !loading && !chartImage && !currentChart;
+
+    const topBarLabel = (): string => {
+        if (viewingEnrouteChart) {
+            return ofp ? `${ofp.origin.icao_code} - ${ofp.destination.icao_code}` : sourceToLabel[enrouteChartPreset.source];
+        } else return `${currentChart?.name}`;
+    };
+
+    const topBarSecondaryLabel = (): string | null => {
+        if (viewingEnrouteChart) {
+            return ofp ? sourceToLabel[enrouteChartPreset.source] : null;
+        } else return null;
+    }
 
     const fetchChartIndex = (icao: string) => {
         charts
@@ -100,11 +118,11 @@ const App: FC = () => {
         setSelectedAirport(icao);
         setAirportSelectorDisplayed(false);
         void fetchChartIndex(icao);
-    }
+    };
 
     return (
         <>
-            <TopBar setFlightDisplayed={setFlightDisplayed} />
+            <TopBar setFlightDisplayed={setFlightDisplayed} viewingTop={topBarLabel()} viewingBottom={topBarSecondaryLabel()} />
             <SideAndMainContainer onClick={() => airportSelectorDisplayed && setAirportSelectorDisplayed(false)}>
                 <Sidebar
                     category={chartSelectorCategory}
@@ -115,11 +133,12 @@ const App: FC = () => {
                     viewingEnrouteChart={!loading && !chartImage}
                     setViewingEnrouteChart={() => {
                         setChartImage(null);
+                        setCurrentChart(null);
                         setChartSelectorCategory(null);
                     }}
                 />
                 <MainSection ref={mainSectionRef}>
-                    {!loading && !chartImage && <EnrouteChartView />}
+                    {viewingEnrouteChart && <EnrouteChartView />}
                     {loading ? (
                         <DocumentLoading />
                     ) : (
@@ -158,7 +177,7 @@ const RootContainer = styled.div`
 `;
 
 const MainSection = styled.div`
-    background: #F0F4F8;
+    background: #f0f4f8;
     flex-grow: 1;
     display: flex;
     position: relative;

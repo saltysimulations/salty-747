@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { FC } from "react";
-import { AiOutlineCloudDownload } from "react-icons/all";
+import { AiOutlineCloudDownload } from "react-icons/ai";
 import { FadeLoader } from "react-spinners";
 
 export const DocumentLoading: FC = () => (

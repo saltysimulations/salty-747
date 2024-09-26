@@ -39,7 +39,7 @@
         "qrcode.react": "^3.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-icons": "^4.3.1",
+        "react-icons": "^5.3.0",
         "react-indiana-drag-scroll": "^2.2.0",
         "react-leaflet": "^3.2.2",
         "react-msfs": "^0.2.0",

@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Input } from "../../components/Input";
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
 import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
-import { IoCheckmark } from "react-icons/all";
+import { IoMdCheckmark } from "react-icons/io";
 import { facilityLoader, getIdentFromIcao } from "../../lib/facility";
 import { AirportClass, AirportFacility, FacilitySearchType, FacilityType } from "@microsoft/msfs-sdk";
 import ScrollContainer from "react-indiana-drag-scroll";
@@ -64,7 +64,7 @@ export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, 
                                 <ListItemLabel>{Utils.Translate(searchResult.name)}</ListItemLabel>
                             </ListItemDescription>
                             {getIdentFromIcao(searchResult.icao) === selectedAirport && (
-                                <IoCheckmark color="#1476fb" size={40} style={{ margin: "0 25px" }} />
+                                <IoMdCheckmark color="#1476fb" size={40} style={{ margin: "0 25px" }} />
                             )}
                         </AirportSelectorItem>
                     ))}

@@ -8,7 +8,7 @@ import { ChartWidget } from "./components/chart/ChartWidget";
 import { chartLimits, envelope } from "./components/chart/Constants";
 import { useSimVar } from "react-msfs";
 import { PrimaryButton, SecondaryButton } from "../../components/Buttons";
-import { AiOutlineCloudDownload } from "react-icons/all";
+import { AiOutlineCloudDownload } from "react-icons/ai";
 
 export const FuelPayload: FC = () => {
     const [plannedPax, setPlannedPax] = useState<number>();

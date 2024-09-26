@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
 import React, { FC, useContext } from "react";
 import { ChartCategory } from "navigraph/charts";
-import { IoIosArrowDown, IoIosGlobe } from "react-icons/all";
-import { FZProContext } from "./AppContext";
+import { IoIosArrowDown, IoIosGlobe } from "react-icons/io";
+import { FZProContext, sourceToLabel } from "./AppContext";
+import { NavigraphRasterSource } from "@navigraph/leaflet";
 
 type SidebarProps = {
     category: ChartCategory | null;
@@ -33,19 +34,12 @@ export const Sidebar: FC<SidebarProps> = ({
         }
     };
 
-    const chartCategoryToLabel = {
+    const chartCategoryToLabel: Record<ChartCategory, string> = {
         REF: "REF",
         ARR: "STAR",
         APP: "APP",
         APT: "TAXI",
         DEP: "SID",
-    } as const;
-
-    const sourceToLabel = {
-        "IFR HIGH": "High IFR",
-        "IFR LOW": "Low IFR",
-        "VFR": "VFR",
-        "WORLD": "World",
     } as const;
 
     return (
@@ -57,13 +51,13 @@ export const Sidebar: FC<SidebarProps> = ({
                 </AirportSelectLabel>
                 <ChartCategories>
                     <SidebarButtonContainer>
-                        {Object.keys(chartCategoryToLabel).map((cat) => (
+                        {(Object.keys(chartCategoryToLabel) as Array<ChartCategory>).map((cat) => (
                             <ChartCategoryButton
                                 selected={category === cat}
                                 available={selectedAirport !== "APTS"}
-                                onClick={() => onButtonClick(cat as ChartCategory)}
+                                onClick={() => onButtonClick(cat)}
                             >
-                                {chartCategoryToLabel[cat as ChartCategory]}
+                                {chartCategoryToLabel[cat]}
                             </ChartCategoryButton>
                         ))}
                     </SidebarButtonContainer>

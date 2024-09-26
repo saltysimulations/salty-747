@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import { Marker } from "react-leaflet";
 import L from "leaflet";
 import ReactDOMServer from "react-dom/server";
-import { GiStarShuriken } from "react-icons/all";
+import { GiStarShuriken } from "react-icons/gi";
 import styled from "styled-components";
 
 type WaypointMarkersProps = {

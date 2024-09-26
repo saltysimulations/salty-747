@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { AiFillCloseCircle } from "react-icons/all";
+import { AiFillCloseCircle } from "react-icons/ai";
 import styled from "styled-components";
 
 export const TitleAndClose: FC<{ label: string, onClose: () => void }> = ({ label, onClose }) => (

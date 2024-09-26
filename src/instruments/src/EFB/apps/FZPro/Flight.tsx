@@ -1,7 +1,7 @@
 import React, { FC, useContext } from "react";
 import styled from "styled-components";
 import { TitleAndClose } from "./components/TitleAndClose";
-import { AiOutlineCloudDownload } from "react-icons/all";
+import { AiOutlineCloudDownload } from "react-icons/ai";
 import { SimbriefClient, SimbriefOfp } from "@microsoft/msfs-sdk";
 import { FlightContext } from "./FlightPlan";
 import { useNavigate } from "react-router-dom";

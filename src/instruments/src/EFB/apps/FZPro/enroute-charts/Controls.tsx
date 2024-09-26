@@ -1,16 +1,17 @@
-import { PresetConfig } from "@navigraph/leaflet";
 import styled from "styled-components";
 import React, { FC, useContext } from "react";
 import { useMap } from "react-leaflet";
 import { ChartControlContainer, ChartControlItem } from "../components/ChartControls";
-import { AiOutlineZoomIn, AiOutlineZoomOut, IoIosMoon, IoIosSunny } from "react-icons/all";
+import {  IoIosMoon, IoIosSunny } from "react-icons/io";
+import { AiOutlineZoomIn, AiOutlineZoomOut } from "react-icons/ai";
 import { FZProContext } from "../AppContext";
+import { NavigraphRasterSource } from "@navigraph/leaflet";
 
 export const Controls: FC = () => {
     const map = useMap();
     const { enrouteChartPreset: preset, setEnrouteChartPreset: setPreset } = useContext(FZProContext);
 
-    const nextSource = {
+    const nextSource: Record<NavigraphRasterSource, NavigraphRasterSource> = {
         "IFR HIGH": "VFR",
         VFR: "WORLD",
         WORLD: "IFR LOW",
