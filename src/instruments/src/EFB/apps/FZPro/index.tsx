@@ -1,4 +1,5 @@
-import React, { createContext, FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, FC, ReactNode, useContext, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Chart, ChartCategory } from "navigraph/charts";
 
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
@@ -89,7 +90,7 @@ const App: FC = () => {
         if (viewingEnrouteChart) {
             return ofp ? sourceToLabel[enrouteChartPreset.source] : null;
         } else return null;
-    }
+    };
 
     const fetchChartIndex = (icao: string) => {
         charts

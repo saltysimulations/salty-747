@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { SignIn } from "./SignIn";
 
-import aircraft from "./icons/aircraft.png";
-import acars from "./icons/acars.png";
-import displayAndBrightness from "./icons/display_brightness.png";
-import general from "./icons/general.png";
+import aircraft from "./icons/aircraft.svg";
+import acars from "./icons/acars.svg";
+import displayAndBrightness from "./icons/display_brightness.svg";
+import general from "./icons/general.svg";
 
 type CategoryProps = { name: string; icon: string; selected: boolean; selectCategory: () => void };
 

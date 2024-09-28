@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { FC } from "react";
 import styled from "styled-components";
 import { BackButton, BackButtonProps } from "./BackButton";
@@ -5,14 +6,21 @@ import { BackButton, BackButtonProps } from "./BackButton";
 type ContentPageContainerProps = { title: string; children: React.ReactNode[] | React.ReactNode; backProps?: BackButtonProps };
 
 export const ContentPageContainer: FC<ContentPageContainerProps> = ({ title, children, backProps }) => (
-    <StyledContentPageContainer>
-        <TitleGrid>
-            {backProps && <BackButton {...backProps} />}
-            <ContentPageLabel>{title}</ContentPageLabel>
-        </TitleGrid>
-        {children}
-    </StyledContentPageContainer>
+    <Animate initial={{ x: "100%" }} animate={{ x: "0%" }} transition={{ type: "tween", duration: 0.2 }}>
+        <StyledContentPageContainer>
+            <TitleGrid>
+                {backProps && <BackButton {...backProps} />}
+                <ContentPageLabel>{title}</ContentPageLabel>
+            </TitleGrid>
+            {children}
+        </StyledContentPageContainer>
+    </Animate>
 );
+
+const Animate = styled(motion.div)`
+    width: 90%;
+    height: 100%;
+`;
 
 const TitleGrid = styled.div`
     width: 100%;
@@ -25,7 +33,7 @@ const TitleGrid = styled.div`
 `;
 
 const StyledContentPageContainer = styled.div`
-    width: 90%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;

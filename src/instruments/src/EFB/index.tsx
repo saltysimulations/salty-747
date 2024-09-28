@@ -16,73 +16,102 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC, useEffect } from "react";
+import "core-js/actual/queue-microtask";
+import React, { FC } from "react";
 import { render } from "../Common";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 
 import { TopBar, BarProps } from "./components/TopBar";
 import { HomeButton } from "./components/HomeButton";
+import { AnimatedLoad } from "./components/AnimatedLoad";
 import { HomeScreen } from "./apps/Home";
 import { Maps } from "./apps/Maps";
 import { Settings } from "./apps/Settings";
 import { General } from "./apps/Settings/General";
 import { IRSAlignment, PilotVisibility, Aircraft } from "./apps/Settings/Aircraft";
 
-import "./index.scss";
 import { Acars } from "./apps/Settings/Acars";
 import { FZPro } from "./apps/FZPro";
 import { NavigraphAuthProvider } from "./hooks/useNavigraphAuth";
-import { Flight } from "./apps/FZPro/Flight";
-
 import { Aircraft as AircraftApp } from "./apps/Aircraft";
 import { GroundServices } from "./apps/Aircraft/GroundServices";
 import { FuelPayload } from "./apps/Aircraft/FuelPayload";
 import { FZProContextProvider } from "./apps/FZPro/AppContext";
 
+import "./index.scss";
+import wallpaper from "./img/salty-wallpaper-darkened.jpg";
+
 const EFB: FC = () => {
+    const location = useLocation();
+
+    // prevent animations when the subroutes change
+    const locationKey = location.pathname?.split("/")[1];
+
     return (
         <Root>
             <NavigraphAuthProvider>
                 <FZProContextProvider>
-                    <MemoryRouter>
-                        <Routes>
-                            <Route path="/" element={<RouteElement component={<HomeScreen />} />} />
-                            <Route
-                                path="/maps"
-                                element={<RouteElement component={<Maps />} barProps={{ textColor: "black", backdropFilter: "blur(8px)" }} />}
-                            />
-                            <Route path="/settings" element={<RouteElement component={<Settings />} barProps={{ textColor: "black" }} />}>
-                                <Route path="general" element={<General />} />
-                                <Route path="aircraft" element={<Aircraft />} />
-                                <Route path="acars" element={<Acars />} />
-                                <Route path="pilot-visibility" element={<PilotVisibility />} />
-                                <Route path="irs-alignment" element={<IRSAlignment />} />
-                            </Route>
-                            <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
-                            <Route path="/aircraft" element={<RouteElement component={<AircraftApp />} barProps={{ textColor: "black" }} />}>
-                                <Route path="ground-services" element={<GroundServices />} />
-                                <Route path="payload" element={<FuelPayload />} />
-                            </Route>
-                        </Routes>
-                    </MemoryRouter>
+                    <AppLoading>
+                        <AnimatePresence>
+                            <Routes location={location} key={locationKey}>
+                                <Route path="/" element={<RouteElement component={<HomeScreen />} noAnimation />} />
+                                <Route
+                                    path="/maps"
+                                    element={<RouteElement component={<Maps />} barProps={{ textColor: "black", backdropFilter: "blur(8px)" }} />}
+                                />
+                                <Route path="/settings" element={<RouteElement component={<Settings />} barProps={{ textColor: "black" }} />}>
+                                    <Route path="general" element={<General />} />
+                                    <Route path="aircraft" element={<Aircraft />} />
+                                    <Route path="acars" element={<Acars />} />
+                                    <Route path="pilot-visibility" element={<PilotVisibility />} />
+                                    <Route path="irs-alignment" element={<IRSAlignment />} />
+                                </Route>
+                                <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
+                                <Route path="/aircraft" element={<RouteElement component={<AircraftApp />} barProps={{ textColor: "black" }} />}>
+                                    <Route path="ground-services" element={<GroundServices />} />
+                                    <Route path="payload" element={<FuelPayload />} />
+                                </Route>
+                            </Routes>
+                        </AnimatePresence>
+                    </AppLoading>
                 </FZProContextProvider>
             </NavigraphAuthProvider>
         </Root>
     );
 };
 
-const RouteElement: FC<{ component: React.ReactNode; barProps?: BarProps }> = ({ component, barProps = {} }) => (
+const RouteElement: FC<{ component: React.ReactNode; barProps?: BarProps; noAnimation?: boolean }> = ({
+    component,
+    barProps = {},
+    noAnimation,
+}) => (
     <>
         <TopBar {...barProps} />
         <HomeButton />
-        {component}
+        {!noAnimation ? <AnimatedLoad>{component}</AnimatedLoad> : component}
     </>
 );
+
+const RouterWrapper: FC = () => (
+    <MemoryRouter>
+        <EFB />
+    </MemoryRouter>
+);
+
+const AppLoading = styled.div`
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: url(${wallpaper});
+    background-position: center;
+    background-size: cover;
+`;
 
 const Root = styled.div`
     width: 1430px;
     height: 1000px;
 `;
 
-render(<EFB />);
+render(<RouterWrapper />);

@@ -25,16 +25,12 @@ const TabSwitcher: FC = () => {
         <StyledTabSwitcher>
             <div className="container">
                 <Tab selected={tab === "ground-services"} onClick={() => updateTab("ground-services")}>
-                    <FaTruck fill={tab === "ground-services" ? "#4FA0FC" : "#999999"} size={35}/>
-                    <div>
-                        Ground Services
-                    </div>
+                    <FaTruck fill={tab === "ground-services" ? "#4FA0FC" : "#999999"} size={35} />
+                    <div>Ground Services</div>
                 </Tab>
                 <Tab selected={tab === "payload"} onClick={() => updateTab("payload")}>
-                    <FaTruckLoading fill={tab === "payload" ? "#4FA0FC" : "#999999"} size={35}/>
-                    <div>
-                        Fuel & Payload
-                    </div>
+                    <FaTruckLoading fill={tab === "payload" ? "#4FA0FC" : "#999999"} size={35} />
+                    <div>Fuel & Payload</div>
                 </Tab>
             </div>
         </StyledTabSwitcher>
@@ -44,7 +40,7 @@ const TabSwitcher: FC = () => {
 const Tab = styled.div`
     display: flex;
     align-items: center;
-    color: ${(props: { selected: boolean }) => props.selected ? "#4FA0FC" : "#999999"};
+    color: ${(props: { selected: boolean }) => (props.selected ? "#4FA0FC" : "#999999")};
     white-space: nowrap;
 
     * {
@@ -61,7 +57,7 @@ const StyledContent = styled.div`
 const StyledTabSwitcher = styled.div`
     width: 100%;
     height: 90px;
-    background: #F9F9F9;
+    background: #f9f9f9;
     border-top: 1px solid lightgray;
     font-size: 18px;
     font-weight: 500;

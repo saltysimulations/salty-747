@@ -20,40 +20,57 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { SiWikipedia } from "react-icons/si";
 import { BsYoutube, BsCameraFill, BsGearWideConnected } from "react-icons/bs";
-import { FaMapMarkerAlt, FaSafari } from "react-icons/fa";
+import { FaMapMarkerAlt, FaSafari, FaTruckLoading } from "react-icons/fa";
 import { BsFillCameraVideoFill } from "react-icons/bs";
 import { AiFillClockCircle, AiFillHome } from "react-icons/ai";
+import { IoPaperPlane, IoCloud, IoFolder } from "react-icons/io5";
 
 import { App } from "./App";
 import { PageIndicators, PageIndicator } from "./PageIndicator";
 
 import wallpaper from "../../img/salty-wallpaper-darkened.jpg";
-import opt from "../../img/opt.png";
+import opt from "../../img/opt.svg";
+import { motion } from "framer-motion";
 
 export const HomeScreen: FC = () => (
-    <Home>
+    <Home initial={{ transform: "scale(0)" }} animate={{ transform: "scale(1)" }} exit={{ transform: "scale(1)" }}>
         <AppSection>
-            <App name="Camera" bg="lightgray" icon={<BsCameraFill style={{ fill: "black", transform: "scale(3.5)" }} />} />
-            <App name="Home" bg="white" icon={<AiFillHome style={{ fill: "#f2ba3f", transform: "scale(4.5)" }} />} />
-            <App name="Clock" bg="black" icon={<AiFillClockCircle style={{ fill: "white", transform: "scale(4.5)" }} />} />
-            <App name="HeadTime" bg="#30d140" icon={<BsFillCameraVideoFill style={{ fill: "white", transform: "scale(3.5)" }} />} route="/fzpro"/>
+            <App
+                name="Navigraph"
+                bg="linear-gradient(0deg, rgba(121,117,255,1) 0%, rgba(92,70,255,1) 100%)"
+                icon={<IoPaperPlane style={{ fill: "lightgray", transform: "scale(3.3)" }} />}
+                route="/fzpro"
+            />
+            <App name="Maps" bg="#6eff88" icon={<FaMapMarkerAlt style={{ fill: "white", transform: "scale(3.3)" }} />} route="/maps" />
+            <App
+                name="Weather"
+                bg="linear-gradient(0deg, rgba(48,160,232,1) 0%, rgba(14,85,173,1) 100%)"
+                icon={<IoCloud style={{ fill: "white", transform: "scale(3.3)" }} />}
+            />
+            <App
+                name="Ground"
+                bg="white"
+                icon={<FaTruckLoading style={{ fill: "black", transform: "scale(3.5)" }} />}
+                route="/aircraft/ground-services"
+            />
         </AppSection>
         <PageIndicators>
             <PageIndicator highlighted />
             <PageIndicator />
         </PageIndicators>
         <FavoriteAppsContainer>
-            <App bg="white" icon={<FaSafari style={{ fill: "#2ca3e8", transform: "scale(4.5)" }} />} />
-            <App bg="#24b3e3" icon={<FaMapMarkerAlt style={{ fill: "white", transform: "scale(3.5)" }} />} route="/maps" />
             <App bg={`url(${opt})`} />
-            <App bg="white" icon={<SiWikipedia style={{ fill: "black", transform: "scale(3.5)" }} />} route="/aircraft/ground-services" />
-            <App bg="white" icon={<BsYoutube style={{ fill: "red", transform: "scale(3.5)" }} />} />
-            <App bg="gray" icon={<BsGearWideConnected style={{ fill: "white", transform: "scale(3.5)" }} />} route="/settings/general" />
+            <App
+                bg="linear-gradient(0deg, rgba(148,146,143,1) 0%, rgba(211,227,233,1) 100%)"
+                icon={<BsGearWideConnected style={{ fill: "#2C3233", transform: "scale(3.5)" }} />}
+                route="/settings/general"
+            />
+            <App bg="white" icon={<IoFolder style={{ fill: "218FF3", transform: "scale(3.5)" }} />} />
         </FavoriteAppsContainer>
     </Home>
 );
 
-const Home = styled.div`
+const Home = styled(motion.div)`
     background-image: url(${wallpaper});
     width: 100%;
     height: 100%;

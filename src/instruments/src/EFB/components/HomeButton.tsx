@@ -20,7 +20,7 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import HomeButtonImage from "../img/home.png";
+import HomeButtonImage from "../img/home.svg";
 
 const StyledHomeButton = styled.img`
     height: 100px;
