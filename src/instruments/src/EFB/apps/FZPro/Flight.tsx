@@ -4,17 +4,26 @@ import { TitleAndClose } from "./components/TitleAndClose";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { SimbriefClient, SimbriefOfp } from "@microsoft/msfs-sdk";
 import { FlightContext } from "./FlightPlan";
-import { useNavigate } from "react-router-dom";
 import { useSetting } from "../../hooks/useSettings";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { ModalContext } from ".";
+import { CancelConfirmModal } from "../../components/CancelConfirmModal";
 
-export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void, onClose: () => void }> = ({ onUplink, onClose }) => {
-    const flightContext = useContext(FlightContext);
-    const { ofp, setOfp } = flightContext;
-
-    const navigate = useNavigate();
+export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void; onClose: () => void }> = ({ onUplink, onClose }) => {
+    const { ofp, setOfp } = useContext(FlightContext);
+    const { setModal } = useContext(ModalContext);
 
     const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
+
+    const newFlightModal = (
+        <CancelConfirmModal
+            title="Create New Flight?"
+            description="Creating a new flight will remove your current airports,
+                routes, and chart selections."
+            confirmText="Create"
+            onConfirm={() => setOfp(null)}
+        />
+    );
 
     const handleClickUplink = async () => {
         const newOfp = await SimbriefClient.getOfp(await SimbriefClient.getSimbriefUserIDFromUsername(simbriefUsername as string));
@@ -52,7 +61,7 @@ export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void, onClose: () => v
             <FlightContainer>
                 <TitleAndClose label="Flight" onClose={onClose} />
                 <FlightButtons>
-                    <div onClick={() => setOfp(null)}>New Flight</div>
+                    <div onClick={() => setModal(newFlightModal)}>New Flight</div>
                     <div onClick={handleClickUplink}>
                         <AiOutlineCloudDownload size={45} color="black" style={{ padding: 0, margin: 0 }} />
                     </div>

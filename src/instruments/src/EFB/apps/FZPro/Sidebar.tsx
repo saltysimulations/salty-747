@@ -51,11 +51,12 @@ export const Sidebar: FC<SidebarProps> = ({
                 </AirportSelectLabel>
                 <ChartCategories>
                     <SidebarButtonContainer>
-                        {(Object.keys(chartCategoryToLabel) as Array<ChartCategory>).map((cat) => (
+                        {(Object.keys(chartCategoryToLabel) as Array<ChartCategory>).map((cat, i) => (
                             <ChartCategoryButton
                                 selected={category === cat}
                                 available={selectedAirport !== "APTS"}
                                 onClick={() => onButtonClick(cat)}
+                                key={i}
                             >
                                 {chartCategoryToLabel[cat]}
                             </ChartCategoryButton>

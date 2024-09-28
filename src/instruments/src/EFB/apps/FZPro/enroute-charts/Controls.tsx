@@ -42,8 +42,8 @@ export const Controls: FC = () => {
             </ChartControlItem>
             <ChartControlItem onClick={() => setPreset({ ...preset, type: "Navigraph", source: nextSource[preset.source] })}>
                 <SourceIcon>
-                    {preset.source.split(" ").map((sourceLine) => (
-                        <div>{sourceLine}</div>
+                    {preset.source.split(" ").map((sourceLine, i) => (
+                        <div key={i}>{sourceLine}</div>
                     ))}
                 </SourceIcon>
             </ChartControlItem>
