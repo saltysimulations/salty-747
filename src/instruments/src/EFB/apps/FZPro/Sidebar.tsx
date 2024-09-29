@@ -1,9 +1,8 @@
 import styled, { css } from "styled-components";
 import React, { FC, useContext } from "react";
 import { ChartCategory } from "navigraph/charts";
-import { IoIosArrowDown, IoIosGlobe } from "react-icons/io";
+import { IoIosArrowDown, IoIosGlobe, IoIosInformationCircle } from "react-icons/io";
 import { FZProContext, sourceToLabel } from "./AppContext";
-import { NavigraphRasterSource } from "@navigraph/leaflet";
 
 type SidebarProps = {
     category: ChartCategory | null;
@@ -11,6 +10,8 @@ type SidebarProps = {
     selectedAirport: string;
     setAirportSelectorDisplayed: (toggled: boolean) => void;
     airportSelectorDisplayed: boolean;
+    infoWxDisplayed: boolean;
+    setInfoWxDisplayed: (toggled: boolean) => void;
     viewingEnrouteChart: boolean;
     setViewingEnrouteChart: () => void;
 };
@@ -21,6 +22,8 @@ export const Sidebar: FC<SidebarProps> = ({
     selectedAirport,
     setAirportSelectorDisplayed,
     airportSelectorDisplayed,
+    infoWxDisplayed,
+    setInfoWxDisplayed,
     viewingEnrouteChart,
     setViewingEnrouteChart,
 }) => {
@@ -31,6 +34,12 @@ export const Sidebar: FC<SidebarProps> = ({
 
         if (selectedAirport !== "APTS") {
             setCategory(category === newCategory ? null : newCategory);
+        }
+    };
+
+    const handleClickInfoWx = () => {
+        if (selectedAirport !== "APTS") {
+            setInfoWxDisplayed(!infoWxDisplayed);
         }
     };
 
@@ -50,6 +59,15 @@ export const Sidebar: FC<SidebarProps> = ({
                     <IoIosArrowDown size={22} />
                 </AirportSelectLabel>
                 <ChartCategories>
+                    <EnrouteChartButton
+                        available={selectedAirport !== "APTS"}
+                        selected={false}
+                        style={{ margin: "0 0 20px 0" }}
+                        onClick={handleClickInfoWx}
+                    >
+                        <IoIosInformationCircle size={33} fill={selectedAirport !== "APTS" ? "white" : "#191D24"} />
+                        <InfoWx>INFO/WX</InfoWx>
+                    </EnrouteChartButton>
                     <SidebarButtonContainer>
                         {(Object.keys(chartCategoryToLabel) as Array<ChartCategory>).map((cat, i) => (
                             <ChartCategoryButton
@@ -71,6 +89,10 @@ export const Sidebar: FC<SidebarProps> = ({
         </StyledSidebar>
     );
 };
+
+const InfoWx = styled.div`
+    font-weight: 400;
+`;
 
 const UpperSection = styled.div`
     display: flex;

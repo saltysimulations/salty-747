@@ -1,0 +1,67 @@
+import { AirportFacility } from "@microsoft/msfs-sdk";
+import { facilityLoader } from "./facility";
+
+type MetarSource = "msfs" | "vatsim" | "ivao" | "pilotedge" | "aviationweather";
+
+type TafSource = "aviationweather" | "faa";
+
+type AtisSource = "faa" | "vatsim" | "ivao" | "pilotedge";
+
+export class WeatherData {
+    private static URL = "https://api.flybywiresim.com";
+
+    public static async fetchMetar(airport: AirportFacility, source: MetarSource): Promise<string | null> {
+        if (source === "msfs") {
+            const metar = await facilityLoader.getMetar(airport);
+
+            if (metar) {
+                return metar.metarString;
+            }
+
+            return null;
+        }
+
+        const metar = await fetch(`${WeatherData.URL}/metar/${airport}?source=${source}`);
+
+        if (!metar.ok) {
+            if (metar.status === 404) {
+                return null;
+            }
+            throw new Error(`Failed to fetch METAR: ${metar.status} ${metar.statusText}`);
+        }
+
+        const json = await metar.json();
+
+        return json.metar;
+    }
+
+    public static async fetchTaf(airport: string, source: TafSource): Promise<string | null> {
+        const taf = await fetch(`${WeatherData.URL}/taf/${airport}?source=${source}`);
+
+        if (!taf.ok) {
+            if (taf.status === 404) {
+                return null;
+            }
+            throw new Error(`Failed to fetch TAF: ${taf.status} ${taf.statusText}`);
+        }
+
+        const json = await taf.json();
+
+        return json.taf;
+    }
+
+    public static async fetchAtis(airport: string, source: AtisSource): Promise<string | null> {
+        const atis = await fetch(`${WeatherData.URL}/atis/${airport}?source=${source}`);
+
+        if (!atis.ok) {
+            if (atis.status === 404) {
+                return null;
+            }
+            throw new Error(`Failed to fetch ATIS: ${atis.status} ${atis.statusText}`);
+        }
+
+        const json = await atis.json();
+
+        return json.combined;
+    }
+}

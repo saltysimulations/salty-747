@@ -17,8 +17,10 @@ import { Flight } from "./Flight";
 
 import { charts, getChartsByCategory } from "../../lib/navigraph";
 import { EnrouteChartView } from "./enroute-charts";
-import { SimbriefOfp } from "@microsoft/msfs-sdk";
+import { AirportFacility, FacilityType, SimbriefOfp } from "@microsoft/msfs-sdk";
 import { FZProContext, sourceToLabel } from "./AppContext";
+import { InfoWx } from "./info-wx";
+import { facilityLoader, getAirportIcaoFromIdent } from "../../lib/facility";
 
 export const ModalContext = createContext<{ modal: ReactNode | null; setModal: (modal: ReactNode | null) => void }>({
     modal: null,
@@ -58,11 +60,13 @@ const ModalOverlay = styled.div`
 const App: FC = () => {
     const [currentChart, setCurrentChart] = useState<Chart | null>(null);
     const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
+    const [airportFacility, setAirportFacility] = useState<AirportFacility | null>(null);
     const [chartIndex, setChartIndex] = useState<Chart[] | null>(null);
     const [chartImage, setChartImage] = useState<Blob | null>(null);
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);
     const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
     const [flightDisplayed, setFlightDisplayed] = useState<boolean>(false);
+    const [infoWxDisplayed, setInfoWxDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     const { enrouteChartPreset } = useContext(FZProContext);
@@ -115,9 +119,10 @@ const App: FC = () => {
         fetchChartImage(chart).then(() => setLoading(false));
     };
 
-    const handleSelectAirport = (icao: string) => {
+    const handleSelectAirport = async (icao: string) => {
         setSelectedAirport(icao);
         setAirportSelectorDisplayed(false);
+        setAirportFacility(await facilityLoader.getFacility(FacilityType.Airport, getAirportIcaoFromIdent(icao)));
         void fetchChartIndex(icao);
     };
 
@@ -131,6 +136,8 @@ const App: FC = () => {
                     selectedAirport={selectedAirport ?? "APTS"}
                     setAirportSelectorDisplayed={(displayed) => setAirportSelectorDisplayed(displayed)}
                     airportSelectorDisplayed={airportSelectorDisplayed}
+                    infoWxDisplayed={infoWxDisplayed}
+                    setInfoWxDisplayed={setInfoWxDisplayed}
                     viewingEnrouteChart={!loading && !chartImage}
                     setViewingEnrouteChart={() => {
                         setChartImage(null);
@@ -162,6 +169,7 @@ const App: FC = () => {
                         />
                     )}
                     {flightDisplayed && <Flight onUplink={handleUplink} onClose={() => setFlightDisplayed(false)} />}
+                    {infoWxDisplayed && airportFacility && <InfoWx airport={airportFacility} onClose={() => setInfoWxDisplayed(false)} />}
                 </MainSection>
             </SideAndMainContainer>
             {airportSelectorDisplayed && <AirportSelector selectedAirport={selectedAirport} setSelectedAirport={handleSelectAirport} />}
