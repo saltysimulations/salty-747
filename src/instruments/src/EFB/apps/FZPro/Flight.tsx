@@ -6,7 +6,7 @@ import { SimbriefClient, SimbriefOfp } from "@microsoft/msfs-sdk";
 import { FlightContext } from "./FlightPlan";
 import { useSetting } from "../../hooks/useSettings";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { ModalContext } from ".";
+import { ModalContext } from "../../";
 import { CancelConfirmModal } from "../../components/CancelConfirmModal";
 
 export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void; onClose: () => void }> = ({ onUplink, onClose }) => {

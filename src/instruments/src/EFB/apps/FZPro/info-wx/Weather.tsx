@@ -7,6 +7,7 @@ import { AirportFacility } from "@microsoft/msfs-sdk";
 import { getIdentFromIcao } from "instruments/src/EFB/lib/facility";
 import { FZProContext } from "../AppContext";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { SettingsContext } from "../../Settings/SettingsContext";
 
 export const Weather: FC<{ airport: AirportFacility }> = ({ airport }) => {
     const [metarLoading, setMetarLoading] = useState<boolean>(false);
@@ -14,6 +15,7 @@ export const Weather: FC<{ airport: AirportFacility }> = ({ airport }) => {
     const [atisLoading, setAtisLoading] = useState<boolean>(false);
 
     const { metar, setMetar, taf, setTaf, atis, setAtis, weatherLastUpdated, setWeatherLastUpdated } = useContext(FZProContext);
+    const { metarSource, tafSource, atisSource } = useContext(SettingsContext);
 
     const lastUpdatedString = () => {
         if (weatherLastUpdated) {
@@ -32,9 +34,9 @@ export const Weather: FC<{ airport: AirportFacility }> = ({ airport }) => {
 
     const fetchData = async () => {
         setAllLoading(true);
-        setMetar(await WeatherData.fetchMetar(airport, "msfs"));
-        setTaf(await WeatherData.fetchTaf(getIdentFromIcao(airport.icao), "aviationweather"));
-        setAtis(await WeatherData.fetchAtis(getIdentFromIcao(airport.icao), "faa"));
+        setMetar(await WeatherData.fetchMetar(airport, metarSource));
+        setTaf(await WeatherData.fetchTaf(getIdentFromIcao(airport.icao), tafSource));
+        setAtis(await WeatherData.fetchAtis(getIdentFromIcao(airport.icao), atisSource));
         setAllLoading(false)
         setWeatherLastUpdated(new Date(Date.now()));
     };

@@ -1,22 +1,14 @@
 import React, { FC, useContext } from "react";
-import styled from "styled-components";
 import { ModalContext } from "..";
 import { Button, ButtonSection, Description, InsideContainer, Modal, TextSection, Title } from "./Modal";
 
-type CancelConfirmModalProps = {
+type InfoModalProps = {
     title: string;
     description: string;
-    confirmText: string;
-    onConfirm: () => void;
-}
+};
 
-export const CancelConfirmModal: FC<CancelConfirmModalProps> = ({ title, description, confirmText, onConfirm }) => {
+export const InfoModal: FC<InfoModalProps> = ({ title, description }) => {
     const { setModal } = useContext(ModalContext);
-
-    const handleConfirm = () => {
-        setModal(null);
-        onConfirm();
-    };
 
     return (
         <Modal>
@@ -27,18 +19,10 @@ export const CancelConfirmModal: FC<CancelConfirmModalProps> = ({ title, descrip
                 </TextSection>
                 <ButtonSection>
                     <Button onClick={() => setModal(null)}>
-                        <div>Cancel</div>
-                    </Button>
-                    <Button onClick={handleConfirm}>
-                        <Confirm>{confirmText}</Confirm>
+                        <div>Close</div>
                     </Button>
                 </ButtonSection>
             </InsideContainer>
         </Modal>
     );
 };
-
-const Confirm = styled.div`
-    font-weight: 700;
-`;
-

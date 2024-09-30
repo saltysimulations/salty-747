@@ -23,6 +23,7 @@ const CategoriesSection = styled.div`
     display: flex;
     justify-content: center;
     border-right: 1px solid #b9b9bb;
+    flex-shrink: 0;
 `;
 
 const ContentSection = styled.div`

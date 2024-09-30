@@ -22,40 +22,19 @@ import { FZProContext, sourceToLabel } from "./AppContext";
 import { InfoWx } from "./info-wx";
 import { facilityLoader, getAirportIcaoFromIdent } from "../../lib/facility";
 
-export const ModalContext = createContext<{ modal: ReactNode | null; setModal: (modal: ReactNode | null) => void }>({
-    modal: null,
-    setModal: () => {},
-});
-
 export const FZPro: FC = () => {
     const { user, initialized } = useNavigraphAuth();
-
-    const [modal, setModal] = useState<ReactNode | null>(null);
 
     return (
         <RootContainer>
             <FlightProvider>
-                <ModalContext.Provider value={{ modal, setModal }}>
-                    {!initialized && <div>Loading</div>}
+                {!initialized && <div>Loading</div>}
 
-                    {initialized && !user ? <SignInPrompt /> : user && <App />}
-
-                    {modal && <ModalOverlay onClick={() => setModal(null)} />}
-
-                    {modal}
-                </ModalContext.Provider>
+                {initialized && !user ? <SignInPrompt /> : user && <App />}
             </FlightProvider>
         </RootContainer>
     );
 };
-
-const ModalOverlay = styled.div`
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background: black;
-    opacity: 0.6;
-`;
 
 const App: FC = () => {
     const [currentChart, setCurrentChart] = useState<Chart | null>(null);

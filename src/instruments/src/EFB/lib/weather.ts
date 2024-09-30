@@ -1,11 +1,11 @@
 import { AirportFacility } from "@microsoft/msfs-sdk";
-import { facilityLoader } from "./facility";
+import { facilityLoader, getIdentFromIcao } from "./facility";
 
-type MetarSource = "msfs" | "vatsim" | "ivao" | "pilotedge" | "aviationweather";
+export type MetarSource = "msfs" | "vatsim" | "ivao" | "pilotedge" | "aviationweather";
 
-type TafSource = "aviationweather" | "faa";
+export type TafSource = "aviationweather" | "faa";
 
-type AtisSource = "faa" | "vatsim" | "ivao" | "pilotedge";
+export type AtisSource = "faa" | "vatsim" | "ivao" | "pilotedge";
 
 export class WeatherData {
     private static URL = "https://api.flybywiresim.com";
@@ -21,7 +21,7 @@ export class WeatherData {
             return null;
         }
 
-        const metar = await fetch(`${WeatherData.URL}/metar/${airport}?source=${source}`);
+        const metar = await fetch(`${WeatherData.URL}/metar/${getIdentFromIcao(airport.icao)}?source=${source}`);
 
         if (!metar.ok) {
             if (metar.status === 404) {

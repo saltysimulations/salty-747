@@ -29,7 +29,7 @@ export const Categories: FC = () => {
     return (
         <StyledCategories>
             <SettingsHeader>Settings</SettingsHeader>
-            <SignIn />
+            <SignIn selected={selectedCategory === "accounts"} onClick={() => selectCategory("accounts")} />
             <CategoryGroup>
                 <Category name="General" icon={general} selected={selectedCategory === "general"} selectCategory={() => selectCategory("general")} />
                 <Category
@@ -52,6 +52,12 @@ export const Categories: FC = () => {
                     selected={selectedCategory === "aircraft"}
                     selectCategory={() => selectCategory("aircraft")}
                 />
+                <Category
+                    name="ACARS"
+                    icon={acars}
+                    selected={selectedCategory === "acars"}
+                    selectCategory={() => selectCategory("acars")}
+                />
             </CategoryGroup>
         </StyledCategories>
     );
@@ -69,6 +75,7 @@ const StyledCategories = styled.div`
     margin-top: 100px;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 `;
 
 const CategoryGroup = styled.div`
