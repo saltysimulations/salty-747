@@ -34,7 +34,7 @@ export const Weather: FC<{ airport: AirportFacility }> = ({ airport }) => {
 
     const fetchData = async () => {
         setAllLoading(true);
-        setMetar(await WeatherData.fetchMetar(airport, metarSource));
+        setMetar(await WeatherData.fetchMetar(getIdentFromIcao(airport.icao), metarSource));
         setTaf(await WeatherData.fetchTaf(getIdentFromIcao(airport.icao), tafSource));
         setAtis(await WeatherData.fetchAtis(getIdentFromIcao(airport.icao), atisSource));
         setAllLoading(false)

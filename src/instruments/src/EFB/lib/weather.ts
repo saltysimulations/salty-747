@@ -1,5 +1,5 @@
-import { AirportFacility } from "@microsoft/msfs-sdk";
-import { facilityLoader, getIdentFromIcao } from "./facility";
+import { AirportFacility, FacilityType } from "@microsoft/msfs-sdk";
+import { facilityLoader, getAirportIcaoFromIdent, getIdentFromIcao } from "./facility";
 
 export type MetarSource = "msfs" | "vatsim" | "ivao" | "pilotedge" | "aviationweather";
 
@@ -10,9 +10,10 @@ export type AtisSource = "faa" | "vatsim" | "ivao" | "pilotedge";
 export class WeatherData {
     private static URL = "https://api.flybywiresim.com";
 
-    public static async fetchMetar(airport: AirportFacility, source: MetarSource): Promise<string | null> {
+    public static async fetchMetar(airport: string, source: MetarSource): Promise<string | null> {
         if (source === "msfs") {
-            const metar = await facilityLoader.getMetar(airport);
+            const facility = await facilityLoader.getFacility(FacilityType.Airport, getAirportIcaoFromIdent(airport));
+            const metar = await facilityLoader.getMetar(facility);
 
             if (metar) {
                 return metar.metarString;
@@ -21,7 +22,7 @@ export class WeatherData {
             return null;
         }
 
-        const metar = await fetch(`${WeatherData.URL}/metar/${getIdentFromIcao(airport.icao)}?source=${source}`);
+        const metar = await fetch(`${WeatherData.URL}/metar/${airport}?source=${source}`);
 
         if (!metar.ok) {
             if (metar.status === 404) {

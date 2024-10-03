@@ -46,6 +46,7 @@ export const HomeScreen: FC = () => (
                 name="Weather"
                 bg="linear-gradient(0deg, rgba(48,160,232,1) 0%, rgba(14,85,173,1) 100%)"
                 icon={<IoCloud style={{ fill: "white", transform: "scale(3.3)" }} />}
+                route="/weather"
             />
             <App
                 name="Ground"
