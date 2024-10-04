@@ -1,4 +1,5 @@
 import { AirportFacility, FacilityType } from "@microsoft/msfs-sdk";
+import { CloudQuantity, DistanceUnit, ICloud, Visibility } from "@ninjomcs/metar-taf-parser-msfs";
 import { facilityLoader, getAirportIcaoFromIdent, getIdentFromIcao } from "./facility";
 
 export type MetarSource = "msfs" | "vatsim" | "ivao" | "pilotedge" | "aviationweather";
@@ -6,6 +7,8 @@ export type MetarSource = "msfs" | "vatsim" | "ivao" | "pilotedge" | "aviationwe
 export type TafSource = "met" | "aviationweather" | "faa";
 
 export type AtisSource = "faa" | "vatsim" | "ivao" | "pilotedge";
+
+export type FlightCategory = "VFR" | "MVFR" | "IFR" | "LIFR";
 
 export class WeatherData {
     private static URL = "https://api.flybywiresim.com";
@@ -84,5 +87,49 @@ export class WeatherData {
         const json = await atis.json();
 
         return json.combined;
+    }
+
+    public static getFlightCategory(visibility: Visibility | undefined, clouds: ICloud[], verticalVisibility?: number): FlightCategory {
+        const convertedVisibility = WeatherData.convertToMiles(visibility);
+        const distance = convertedVisibility != null ? convertedVisibility : Infinity;
+        const height = WeatherData.determineCeilingFromClouds(clouds)?.height ?? verticalVisibility ?? Infinity;
+
+        let flightCategory: FlightCategory = "VFR";
+
+        if (height <= 3000 || distance <= 5) flightCategory = "MVFR";
+        if (height < 1000 || distance < 3) flightCategory = "IFR";
+        if (height < 500 || distance < 1) flightCategory = "LIFR";
+
+        return flightCategory;
+    }
+
+    public static convertToMiles(visibility?: Visibility): number | undefined {
+        if (!visibility) return;
+
+        switch (visibility.unit) {
+            case DistanceUnit.StatuteMiles:
+                return visibility.value;
+            case DistanceUnit.Meters:
+                const distance = visibility.value * 0.000621371;
+
+                if (visibility.value % 1000 === 0 || visibility.value === 9999) return Math.round(distance);
+
+                return +distance.toFixed(2);
+        }
+    }
+
+    public static determineCeilingFromClouds(clouds: ICloud[]): ICloud | undefined {
+        let ceiling: ICloud | undefined;
+
+        clouds.forEach((cloud) => {
+            if (
+                cloud.height != null &&
+                cloud.height < (ceiling?.height || Infinity) &&
+                (cloud.quantity === CloudQuantity.OVC || cloud.quantity === CloudQuantity.BKN)
+            )
+                ceiling = cloud;
+        });
+
+        return ceiling;
     }
 }

@@ -3,49 +3,68 @@ import styled, { css } from "styled-components";
 import { parseMetar, parseTAF } from "@ninjomcs/metar-taf-parser-msfs";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { WeatherContext } from "./WeatherContext";
-import { cavokTheme } from "./themes";
+import { determineTheme, themes } from "./themes";
 import { WeatherData } from "../../lib/weather";
 import { SettingsContext } from "../Settings/SettingsContext";
 import { CloudCover, DewPoint, Metar, ObservedAt, Qnh, Remarks, Taf, Visibility, Wind } from "./widgets";
+import { TopBar } from "./components/TopBar";
+import { AirportSelector } from "../FZPro/AirportSelector";
+import { useSimVar } from "react-msfs";
 
 export const Weather: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const { metar, setMetar, taf, setTaf, theme, setTheme } = useContext(WeatherContext);
+    const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
+    const { metar, setMetar, taf, setTaf, theme, setTheme, selectedAirport, setSelectedAirport } = useContext(WeatherContext);
     const { metarSource, tafSource } = useContext(SettingsContext);
+    const [currentTime] = useSimVar("E:ZULU TIME", "seconds");
     const { message, day, hour, minute, visibility, temperature, dewPoint, wind, clouds, remarks, altimeter } = metar ?? {};
 
     const fetchData = async (icao: string) => {
+        setLoading(true);
         const metarMessage = await WeatherData.fetchMetar(icao, metarSource);
         const tafMessage = await WeatherData.fetchTaf(icao, tafSource);
 
-        metarMessage && setMetar(parseMetar(metarMessage));
+        if (metarMessage) {
+            const parsedMetar = parseMetar(metarMessage);
+            setMetar(parsedMetar);
+            setTheme(determineTheme(parsedMetar.clouds, new Date(currentTime * 1000).getUTCHours()));
+        } else {
+            setTheme(themes.few);
+        }
+
         tafMessage && setTaf(parseTAF(tafMessage));
+
+        setLoading(false);
+    };
+
+    const handleSelectAirport = async (icao: string) => {
+        setSelectedAirport(icao);
+        await fetchData(icao);
+        setAirportSelectorDisplayed(false);
     };
 
     useEffect(() => {
-        const start = async () => {
-            if (!metar) {
-                setLoading(true);
-                await fetchData("KJFK");
-                setTheme(cavokTheme);
-                setLoading(false);
-            }
-        };
-
-        start();
+        if (metar) {
+            setTheme(determineTheme(metar.clouds, new Date(currentTime * 1000).getUTCHours()));
+        }
     }, []);
 
     return (
         <WeatherContainer>
-            <LoadingBackground opacity={loading ? 1 : 0} />
-            <Background src={theme.background} opacity={loading ? 0 : 1} />
+            <LoadingBackground opacity={loading || !selectedAirport ? 1 : 0} />
+            <Background src={theme.background} opacity={!loading && selectedAirport ? 1 : 0} />
+            <TopBar
+                openAirportSelector={() => setAirportSelectorDisplayed(!airportSelectorDisplayed)}
+                onRefresh={() => selectedAirport && fetchData(selectedAirport)}
+            />
+            {airportSelectorDisplayed && <AirportSelector selectedAirport={selectedAirport} setSelectedAirport={handleSelectAirport} />}
             <ScrollContainer ignoreElements=".widget-no-scroll" style={{ width: "95%" }}>
                 {!loading && metar ? (
                     <>
                         <UpperInfo>
                             <div>{metar.station}</div>
                             <div className="temp">{metar.temperature}° C</div>
-                            <div className="rules">VFR</div>
+                            <div className="rules">{WeatherData.getFlightCategory(metar.visibility, metar.clouds)}</div>
                         </UpperInfo>
                         <WidgetGrid>
                             {message && <Metar message={message} />}

@@ -10,4 +10,5 @@ export const Metar: FC<{ message: string }> = ({ message }) => (
 
 const RawData = styled.div`
     font-size: 26px;
+    padding: 5px 10px 10px 10px;
 `;

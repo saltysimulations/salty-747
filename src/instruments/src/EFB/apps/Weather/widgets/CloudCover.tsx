@@ -4,7 +4,7 @@ import { IoMdCloud } from "react-icons/io";
 import { RiSunFoggyFill } from "react-icons/ri";
 import { BsCloudSunFill, BsCloudFill, BsCloudHaze2Fill } from "react-icons/bs";
 import styled from "styled-components";
-import { Widget } from "./Widget";
+import { None, Widget } from "./Widget";
 import { WeatherContext } from "../WeatherContext";
 
 export const CloudCover: FC<{ clouds: ICloud[] }> = ({ clouds }) => {
@@ -20,18 +20,28 @@ export const CloudCover: FC<{ clouds: ICloud[] }> = ({ clouds }) => {
     };
 
     return (
-        <Widget title="CLOUD COVER" icon={<IoMdCloud fill={theme.accentTextColor} size={18} />} scrollable gridRow="3 / 4" gridColumn="1 / span 2">
-            <List>
-                {clouds.map((cloud, i) => (
-                    <Entry key={i} border={theme.accentTextColor}>
-                        <Amount>
-                            {cloudAmountVisualization[cloud.quantity][1]}
-                            <div>{cloudAmountVisualization[cloud.quantity][0]}</div>
-                        </Amount>
-                        <Height>{cloud.height}'</Height>
-                    </Entry>
-                ))}
-            </List>
+        <Widget
+            title="CLOUD COVER"
+            icon={<IoMdCloud fill={theme.accentTextColor} size={18} />}
+            scrollable={clouds.length >= 1}
+            gridRow="3 / 4"
+            gridColumn="1 / span 2"
+        >
+            {clouds.length >= 1 ? (
+                <List>
+                    {clouds.map((cloud, i) => (
+                        <Entry key={i} border={theme.accentTextColor}>
+                            <Amount>
+                                {cloudAmountVisualization[cloud.quantity][1]}
+                                <div>{cloudAmountVisualization[cloud.quantity][0]}</div>
+                            </Amount>
+                            <Height>{cloud.height}'</Height>
+                        </Entry>
+                    ))}
+                </List>
+            ) : (
+                <None color={theme.accentTextColor}>No clouds</None>
+            )}
         </Widget>
     );
 };

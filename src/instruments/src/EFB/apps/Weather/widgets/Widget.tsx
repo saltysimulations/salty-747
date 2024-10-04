@@ -26,6 +26,16 @@ export const Widget: FC<WidgetProps> = ({ title, icon, gridRow, gridColumn, scro
     );
 };
 
+export const None = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: ${(props: { color: string }) => props.color};
+`;
+
 export const BigValue = styled.div`
     font-size: 48px;
 `;
