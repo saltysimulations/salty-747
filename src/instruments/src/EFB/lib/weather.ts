@@ -3,7 +3,7 @@ import { facilityLoader, getAirportIcaoFromIdent, getIdentFromIcao } from "./fac
 
 export type MetarSource = "msfs" | "vatsim" | "ivao" | "pilotedge" | "aviationweather";
 
-export type TafSource = "aviationweather" | "faa";
+export type TafSource = "met" | "aviationweather" | "faa";
 
 export type AtisSource = "faa" | "vatsim" | "ivao" | "pilotedge";
 
@@ -37,6 +37,26 @@ export class WeatherData {
     }
 
     public static async fetchTaf(airport: string, source: TafSource): Promise<string | null> {
+        if (source === "met") {
+            const taf = await fetch(`https://api.met.no/weatherapi/tafmetar/1.0/taf.txt?icao=${airport}`);
+            const txt = await taf.text();
+            const lines = txt.split("\n");
+            const filtered = lines.filter((val) => val != "");
+
+            if (!taf.ok) {
+                if (taf.status === 404) {
+                    return null;
+                }
+                throw new Error(`Failed to fetch TAF: ${taf.status} ${taf.statusText}`);
+            }
+
+            if (filtered.length === 0) {
+                return null;
+            }
+
+            return filtered[filtered.length - 1];
+        }
+
         const taf = await fetch(`${WeatherData.URL}/taf/${airport}?source=${source}`);
 
         if (!taf.ok) {

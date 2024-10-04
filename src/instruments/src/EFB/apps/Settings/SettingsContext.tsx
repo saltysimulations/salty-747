@@ -13,7 +13,7 @@ type SettingsContextProps = {
 
 const defaults: Pick<SettingsContextProps, "metarSource" | "tafSource" | "atisSource"> = {
     metarSource: "msfs",
-    tafSource: "aviationweather",
+    tafSource: "met",
     atisSource: "vatsim",
 };
 

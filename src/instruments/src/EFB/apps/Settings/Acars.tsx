@@ -44,6 +44,7 @@ export const TafSourceOptions: FC = () => {
     const { tafSource, setTafSource } = useContext(SettingsContext);
 
     const sources: Record<TafSource, string> = {
+        met: "MET Norway (International Data)",
         aviationweather: "AviationWeather",
         faa: "FAA",
     } as const;
