@@ -1,26 +1,39 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { parseMetar, parseTAF } from "@ninjomcs/metar-taf-parser-msfs";
-import ScrollContainer from "react-indiana-drag-scroll";
+import { SimbriefClient } from "@microsoft/msfs-sdk";
 import { WeatherContext } from "./WeatherContext";
-import { determineTheme, themes } from "./themes";
+import { determineTheme } from "./themes";
 import { WeatherData } from "../../lib/weather";
 import { SettingsContext } from "../Settings/SettingsContext";
-import { CloudCover, DewPoint, Metar, ObservedAt, Qnh, Remarks, Taf, Visibility, Wind } from "./widgets";
 import { TopBar } from "./components/TopBar";
 import { AirportSelector } from "../FZPro/AirportSelector";
 import { useSimVar } from "react-msfs";
+import { FlightContext } from "../../lib/FlightContext";
+import { useSetting } from "../../hooks/useSettings";
+import { ModalContext } from "../..";
+import { InfoModal } from "../../components/InfoModal";
+import { UpperInfo } from "./components/UpperInfo";
+import { Loaded } from "./components/Loaded";
 
 export const Weather: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
+
     const { metar, setMetar, taf, setTaf, theme, setTheme, selectedAirport, setSelectedAirport } = useContext(WeatherContext);
     const { metarSource, tafSource } = useContext(SettingsContext);
-    const [currentTime] = useSimVar("E:ZULU TIME", "seconds");
-    const { message, day, hour, minute, visibility, temperature, dewPoint, wind, clouds, remarks, altimeter } = metar ?? {};
+    const { setOfp } = useContext(FlightContext);
+    const { setModal } = useContext(ModalContext);
 
-    const fetchData = async (icao: string) => {
+    const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
+
+    const [currentTime] = useSimVar("E:ZULU TIME", "seconds");
+
+    const handleSelectAirport = async (icao: string) => {
         setLoading(true);
+        setAirportSelectorDisplayed(false);
+        setSelectedAirport(icao);
+
         const metarMessage = await WeatherData.fetchMetar(icao, metarSource);
         const tafMessage = await WeatherData.fetchTaf(icao, tafSource);
 
@@ -28,19 +41,23 @@ export const Weather: FC = () => {
             const parsedMetar = parseMetar(metarMessage);
             setMetar(parsedMetar);
             setTheme(determineTheme(parsedMetar.clouds, new Date(currentTime * 1000).getUTCHours()));
+            tafMessage && setTaf(parseTAF(tafMessage));
         } else {
-            setTheme(themes.few);
+            setSelectedAirport(null);
+            setModal(<InfoModal title="Error" description="Failed to fetch METAR" />);
         }
-
-        tafMessage && setTaf(parseTAF(tafMessage));
 
         setLoading(false);
     };
 
-    const handleSelectAirport = async (icao: string) => {
-        setSelectedAirport(icao);
-        await fetchData(icao);
-        setAirportSelectorDisplayed(false);
+    const onUplink = async () => {
+        try {
+            const newOfp = await SimbriefClient.getOfp(await SimbriefClient.getSimbriefUserIDFromUsername(simbriefUsername as string));
+            setOfp(newOfp);
+            handleSelectAirport(newOfp.destination.icao_code);
+        } catch (_) {
+            setModal(<InfoModal title="Error" description="Failed to fetch SimBrief OFP" />);
+        }
     };
 
     useEffect(() => {
@@ -55,39 +72,36 @@ export const Weather: FC = () => {
             <Background src={theme.background} opacity={!loading && selectedAirport ? 1 : 0} />
             <TopBar
                 openAirportSelector={() => setAirportSelectorDisplayed(!airportSelectorDisplayed)}
-                onRefresh={() => selectedAirport && fetchData(selectedAirport)}
+                onRefresh={() => selectedAirport && handleSelectAirport(selectedAirport)}
+                onUplink={onUplink}
             />
             {airportSelectorDisplayed && <AirportSelector selectedAirport={selectedAirport} setSelectedAirport={handleSelectAirport} />}
-            <ScrollContainer ignoreElements=".widget-no-scroll" style={{ width: "95%" }}>
-                {!loading && metar ? (
+            {!loading && metar ? (
+                <Loaded metar={metar} taf={taf} />
+            ) : (
+                !metar && (
                     <>
                         <UpperInfo>
-                            <div>{metar.station}</div>
-                            <div className="temp">{metar.temperature}° C</div>
-                            <div className="rules">{WeatherData.getFlightCategory(metar.visibility, metar.clouds)}</div>
+                            <div>----</div>
+                            <div className="temp">--° C</div>
                         </UpperInfo>
-                        <WidgetGrid>
-                            {message && <Metar message={message} />}
-                            <Taf message={taf && taf.message ? taf.message : null} />
-                            {remarks && <Remarks remarks={remarks} />}
-                            {wind && <Wind direction={wind?.degrees} speed={wind.speed} gust={wind.gust} />}
-                            {altimeter && <Qnh value={altimeter.value} unit={altimeter.unit} />}
-                            {visibility && <Visibility visibility={visibility.value} unit={visibility.unit} />}
-                            {dewPoint !== undefined && temperature !== undefined && <DewPoint dewPoint={dewPoint} temperature={temperature} />}
-                            {day !== undefined && hour !== undefined && minute !== undefined && <ObservedAt day={day} hour={hour} minute={minute} />}
-                            {clouds && <CloudCover clouds={clouds} />}
-                        </WidgetGrid>
+                        <NotLoaded>Select an airport or import from SimBrief</NotLoaded>
                     </>
-                ) : (
-                    <UpperInfo>
-                        <div>----</div>
-                        <div className="temp">--° C</div>
-                    </UpperInfo>
-                )}
-            </ScrollContainer>
+                )
+            )}
         </WeatherContainer>
     );
 };
+
+const NotLoaded = styled.div`
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+`;
 
 const Bg = css`
     width: 100vw;
@@ -109,43 +123,10 @@ const Background = styled.img`
     ${Bg}
 `;
 
-const WidgetGrid = styled.div`
-    flex: 1;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(6, 200px);
-    grid-auto-rows: 200px;
-    grid-gap: 25px;
-    justify-content: center;
-`;
-
-const UpperInfo = styled.div`
-    font-size: 52px;
-    font-weight: 500;
-    margin: 120px 0 60px 0;
-    text-align: center;
-
-    .temp {
-        font-size: 120px;
-        font-weight: 300;
-    }
-
-    .rules {
-        font-size: 32px;
-    }
-
-    * {
-        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-    }
-`;
-
 const WeatherContainer = styled.div`
     height: 100vh;
     width: 100vw;
-    background-position: center;
-    background-size: cover;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background 1s ease-out;
 `;

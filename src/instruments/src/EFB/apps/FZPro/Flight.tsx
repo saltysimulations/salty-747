@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TitleAndClose } from "./components/TitleAndClose";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { SimbriefClient, SimbriefOfp } from "@microsoft/msfs-sdk";
-import { FlightContext } from "./FlightPlan";
+import { FlightContext } from "../../lib/FlightContext";
 import { useSetting } from "../../hooks/useSettings";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { ModalContext } from "../../";

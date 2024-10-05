@@ -13,7 +13,7 @@ import {
 } from "@microsoft/msfs-sdk";
 import { IoCheckmark } from "react-icons/all";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { FlightContext } from "../FlightPlan";
+import { FlightContext } from "../../../lib/FlightContext";
 import { ModalContext } from "../index";
 
 

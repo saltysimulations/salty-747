@@ -3,7 +3,7 @@ import { useSimVar } from "react-msfs";
 import { NavigraphTileLayer, PresetConfig } from "@navigraph/leaflet";
 import { auth } from "../../../lib/navigraph";
 import L, { Map } from "leaflet";
-import { FlightContext } from "../FlightPlan";
+import { FlightContext } from "../../../lib/FlightContext";
 import { SimbriefOfp } from "@microsoft/msfs-sdk";
 import { MapContainer, Marker, Polyline } from "react-leaflet";
 import { Controls } from "./Controls";

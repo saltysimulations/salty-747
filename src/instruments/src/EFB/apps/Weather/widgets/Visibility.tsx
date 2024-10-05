@@ -7,11 +7,7 @@ export const Visibility: FC<{ visibility: number; unit: string }> = ({ visibilit
     const { theme } = useContext(WeatherContext);
 
     const getText = () => {
-        let inMeters = visibility;
-
-        if (unit === "SM") {
-            inMeters = visibility * 1609.34;
-        }
+        const inMeters = unit === "SM" ? visibility * 1609.34 : visibility;
 
         if (inMeters >= 8000) {
             return "Perfectly clear view."

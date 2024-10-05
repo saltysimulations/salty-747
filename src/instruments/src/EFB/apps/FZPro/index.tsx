@@ -12,7 +12,7 @@ import { DocumentLoading } from "./DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
 import { AirportSelector } from "./AirportSelector";
-import { FlightContext, FlightProvider } from "./FlightPlan";
+import { FlightContext, FlightProvider } from "../../lib/FlightContext";
 import { Flight } from "./Flight";
 
 import { charts, getChartsByCategory } from "../../lib/navigraph";
