@@ -28,6 +28,13 @@
   src: url("/Fonts/SaltyRoboto/Roboto-Bold.ttf") format('truetype');
 }
 
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 400;
+  src: url("/Fonts/Inconsolata/Inconsolata-Regular.ttf") format('truetype');
+}
+
 * {
     font-family: "Roboto", sans-serif;
 }

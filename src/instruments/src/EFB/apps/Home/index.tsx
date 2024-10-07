@@ -66,7 +66,7 @@ export const HomeScreen: FC = () => (
                 icon={<BsGearWideConnected style={{ fill: "#2C3233", transform: "scale(3.5)" }} />}
                 route="/settings/general"
             />
-            <App bg="white" icon={<IoFolder style={{ fill: "218FF3", transform: "scale(3.5)" }} />} />
+            <App bg="white" icon={<IoFolder style={{ fill: "218FF3", transform: "scale(3.5)" }} />} route="/files" />
         </FavoriteAppsContainer>
     </Home>
 );

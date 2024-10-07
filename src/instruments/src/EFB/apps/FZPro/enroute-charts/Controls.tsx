@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { FC, useContext } from "react";
 import { useMap } from "react-leaflet";
-import { ChartControlContainer, ChartControlItem } from "../components/ChartControls";
+import { ChartControlContainer, ChartControlItem } from "../../../components/charts/ChartControls";
 import {  IoIosMoon, IoIosSunny } from "react-icons/io";
 import { AiOutlineZoomIn, AiOutlineZoomOut } from "react-icons/ai";
 import { FZProContext } from "../AppContext";

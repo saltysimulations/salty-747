@@ -5,10 +5,10 @@ import { Chart, ChartCategory } from "navigraph/charts";
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
 import styled from "styled-components";
 
-import { AirportChartViewer } from "./AirportChartViewer";
+import { AirportChartViewer } from "../../components/charts/AirportChartViewer";
 import { SignInPrompt } from "./SignInPrompt";
 import { TopBar } from "./TopBar";
-import { DocumentLoading } from "./DocumentLoading";
+import { DocumentLoading } from "../../components/charts/DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
 import { AirportSelector } from "./AirportSelector";
