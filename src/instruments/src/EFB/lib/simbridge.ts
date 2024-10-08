@@ -2,14 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0
 
 export class SimBridge {
-    private static URL = "http://localhost:8380";
+    private readonly host = "http://localhost";
+    private readonly url;
 
-    public static async getImage(filename: string): Promise<Blob> {
-        if (!SimBridge.getHealth()) {
+    constructor(port: number) {
+        this.url = `${this.host}:${port}`;
+    }
+
+    public async getImage(filename: string): Promise<Blob> {
+        if (!this.getHealth()) {
             throw new Error("SimBridge is not connected.");
         }
         if (filename) {
-            const response = await SimBridge.fetchWithTimeout(`${SimBridge.URL}/api/v1/utility/image?filename=${filename}`);
+            const response = await this.fetchWithTimeout(`${this.url}/api/v1/utility/image?filename=${filename}`);
             if (response.ok) {
                 return response.blob();
             }
@@ -18,23 +23,23 @@ export class SimBridge {
         throw new Error("File name or page number missing");
     }
 
-    public static async getImageList(): Promise<string[]> {
-        if (!SimBridge.getHealth()) {
+    public async getImageList(): Promise<string[]> {
+        if (!this.getHealth()) {
             throw new Error("SimBridge is not connected.");
         }
-        const response = await SimBridge.fetchWithTimeout(`${SimBridge.URL}/api/v1/utility/image/list`);
+        const response = await this.fetchWithTimeout(`${this.url}/api/v1/utility/image/list`);
         if (response.ok) {
             return response.json();
         }
         throw new Error(`SimBridge Error: ${response.status}`);
     }
 
-    public static async getPDFPage(filename: string, pageNumber: number): Promise<Blob> {
-        if (!SimBridge.getHealth()) {
+    public async getPDFPage(filename: string, pageNumber: number): Promise<Blob> {
+        if (!this.getHealth()) {
             throw new Error("SimBridge is not connected.");
         }
         if (filename || pageNumber) {
-            const response = await SimBridge.fetchWithTimeout(`${SimBridge.URL}/api/v1/utility/pdf?filename=${filename}&pagenumber=${pageNumber}`);
+            const response = await this.fetchWithTimeout(`${this.url}/api/v1/utility/pdf?filename=${filename}&pagenumber=${pageNumber}`);
             if (response.ok) {
                 return response.blob();
             }
@@ -43,12 +48,12 @@ export class SimBridge {
         throw new Error("File name or page number missing");
     }
 
-    public static async getPDFPageNum(filename: string): Promise<number> {
-        if (!SimBridge.getHealth()) {
+    public async getPDFPageNum(filename: string): Promise<number> {
+        if (!this.getHealth()) {
             throw new Error("SimBridge is not connected.");
         }
         if (filename) {
-            const response = await SimBridge.fetchWithTimeout(`${SimBridge.URL}/api/v1/utility/pdf/numpages?filename=${filename}`);
+            const response = await this.fetchWithTimeout(`${this.url}/api/v1/utility/pdf/numpages?filename=${filename}`);
             if (response.ok) {
                 return response.json();
             }
@@ -57,11 +62,11 @@ export class SimBridge {
         throw new Error("File name or page number missing");
     }
 
-    public static async getPDFList(): Promise<string[]> {
-        if (!SimBridge.getHealth()) {
+    public async getPDFList(): Promise<string[]> {
+        if (!this.getHealth()) {
             throw new Error("SimBridge is not connected.");
         }
-        const response = await SimBridge.fetchWithTimeout(`${SimBridge.URL}/api/v1/utility/pdf/list`);
+        const response = await this.fetchWithTimeout(`${this.url}/api/v1/utility/pdf/list`);
 
         if (response.ok) {
             return response.json();
@@ -69,8 +74,8 @@ export class SimBridge {
         throw new Error(`SimBridge Error: ${response.status}`);
     }
 
-    public static async getHealth(): Promise<boolean> {
-        const response = await SimBridge.fetchWithTimeout(`${SimBridge.URL}/health`, undefined, 5000);
+    public async getHealth(): Promise<boolean> {
+        const response = await this.fetchWithTimeout(`${this.url}/health`, undefined, 5000);
 
         if (!response.ok) {
             throw new Error(`SimBridge Error: ${response.status}`);
@@ -85,7 +90,7 @@ export class SimBridge {
         return false;
     }
 
-    public static fetchWithTimeout = (resource: RequestInfo, options?: object, timeout: number = 2000): Promise<Response> => {
+    private fetchWithTimeout = (resource: RequestInfo, options?: object, timeout: number = 2000): Promise<Response> => {
         return new Promise((resolve, reject) => {
             const timer = setTimeout(() => {
                 reject(new Error(`Timed out after ${timeout} ms`));

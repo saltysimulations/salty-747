@@ -9,6 +9,8 @@ import { DocumentLoading } from "../../components/charts/DocumentLoading";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { useSetting } from "../../hooks/useSettings";
 import { FilesContext } from "./FilesContext";
+import { SettingsContext } from "../Settings/SettingsContext";
+import { useSimBridge } from "../../hooks/useSimBridge";
 
 export type View = {
     name: string;
@@ -21,15 +23,19 @@ export type Files = { pdfs: string[]; images: string[] };
 
 export const Files: FC = () => {
     const [documentLoading, setDocumentLoading] = useState<boolean>(false);
+    const [simbridgeConnection, setSimbridgeConnection] = useState<boolean>(false);
 
     const { setModal } = useContext(ModalContext);
     const { view, setView, files, setFiles, ofp, setOfp, ofpSelected, setOfpSelected } = useContext(FilesContext);
+    const { simbridgePort } = useContext(SettingsContext);
+
+    const simbridge = useSimBridge();
 
     const contentSectionRef = useRef<HTMLDivElement>(null);
 
     const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
 
-    const getFiles = async () => setFiles({ pdfs: await SimBridge.getPDFList(), images: await SimBridge.getImageList() });
+    const getFiles = async () => setFiles({ pdfs: await simbridge.getPDFList(), images: await simbridge.getImageList() });
 
     const handleSelect = async (name: string) => {
         setOfpSelected(false);
@@ -39,8 +45,8 @@ export const Files: FC = () => {
         try {
             setView(
                 files?.images.includes(name)
-                    ? { name, blob: await SimBridge.getImage(name) }
-                    : { name, blob: await SimBridge.getPDFPage(name, 1), pages: await SimBridge.getPDFPageNum(name), currentPage: 1 }
+                    ? { name, blob: await simbridge.getImage(name) }
+                    : { name, blob: await simbridge.getPDFPage(name, 1), pages: await simbridge.getPDFPageNum(name), currentPage: 1 }
             );
         } catch (e: unknown) {
             e instanceof Error && setModal(<InfoModal title="Error" description={e.message} />);
@@ -51,7 +57,7 @@ export const Files: FC = () => {
 
     const handlePageChange = async (page: number) => {
         try {
-            view && setView({ ...view, blob: await SimBridge.getPDFPage(view.name, page), currentPage: page });
+            view && setView({ ...view, blob: await simbridge.getPDFPage(view.name, page), currentPage: page });
         } catch (e: unknown) {
             e instanceof Error && setModal(<InfoModal title="Error" description={e.message} />);
         }
@@ -76,18 +82,27 @@ export const Files: FC = () => {
         setDocumentLoading(false);
     };
 
+    const checkHealth = async () => {
+        if (await simbridge.getHealth()) {
+            setSimbridgeConnection(true);
+            !files && getFiles();
+        }
+    };
+
     useEffect(() => {
-        !files && getFiles();
+        checkHealth();
     }, []);
 
     return (
         <Container>
             <Sidebar
+                simbridgeAvailable={simbridgeConnection}
                 files={files}
                 selected={view?.name}
                 onSelect={handleSelect}
                 ofpSelected={ofpSelected}
                 onSelectOfp={handleSelectOfp}
+                onRefresh={() => simbridgeConnection ? getFiles() : checkHealth()}
             />
             <ContentSection ref={contentSectionRef}>
                 {!view && !ofpSelected && !documentLoading && <SelectAFile>Select a file</SelectAFile>}

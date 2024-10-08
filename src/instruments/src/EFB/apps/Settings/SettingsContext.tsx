@@ -9,12 +9,15 @@ type SettingsContextProps = {
     setTafSource: (source: TafSource) => void;
     atisSource: AtisSource;
     setAtisSource: (source: AtisSource) => void;
+    simbridgePort: number;
+    setSimbridgePort: (port: number) => void;
 };
 
-const defaults: Pick<SettingsContextProps, "metarSource" | "tafSource" | "atisSource"> = {
+const defaults: Pick<SettingsContextProps, "metarSource" | "tafSource" | "atisSource" | "simbridgePort"> = {
     metarSource: "msfs",
     tafSource: "met",
     atisSource: "vatsim",
+    simbridgePort: 8380,
 };
 
 export const SettingsContext = React.createContext<SettingsContextProps>({
@@ -24,6 +27,8 @@ export const SettingsContext = React.createContext<SettingsContextProps>({
     setTafSource: () => {},
     atisSource: defaults.atisSource,
     setAtisSource: () => {},
+    simbridgePort: defaults.simbridgePort,
+    setSimbridgePort: () => {},
 });
 
 export const SettingsContextProvider: FC<{ children: ReactNode | ReactNode[] }> = ({ children }) => {
@@ -40,6 +45,7 @@ export const SettingsContextProvider: FC<{ children: ReactNode | ReactNode[] }> 
         (s: AtisSource) => void
     ];
 
+    const [simbridgePort, setSimbridgePort] = usePersistentPropertyWithDefault("SALTY_SIMBRIDGE_PORT", defaults.simbridgePort.toString());
     return (
         <SettingsContext.Provider
             value={{
@@ -49,6 +55,8 @@ export const SettingsContextProvider: FC<{ children: ReactNode | ReactNode[] }> 
                 setTafSource,
                 atisSource,
                 setAtisSource,
+                simbridgePort: parseInt(simbridgePort),
+                setSimbridgePort,
             }}
         >
             {children}
