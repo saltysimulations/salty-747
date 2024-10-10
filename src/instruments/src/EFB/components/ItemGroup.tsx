@@ -1,8 +1,17 @@
 import React, { FC, Children } from "react";
 import styled from "styled-components";
 
-export const ItemGroup: FC<{ children: React.ReactNode | React.ReactNode[], style?: React.CSSProperties}> = ({ children, style }) => (
-    <StyledItemGroup single={Children.count(children) === 1} style={style}>{children}</StyledItemGroup>
+export const ItemGroup: FC<{ children: React.ReactNode | React.ReactNode[]; style?: React.CSSProperties; label?: string }> = ({
+    children,
+    style,
+    label,
+}) => (
+    <ItemGroupContainer>
+        {label && <Label>{label}</Label>}
+        <StyledItemGroup single={Children.count(children) === 1} style={style}>
+            {children}
+        </StyledItemGroup>
+    </ItemGroupContainer>
 );
 
 export const StyledItemGroup = styled.div`
@@ -10,7 +19,6 @@ export const StyledItemGroup = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 15px;
-    margin: 55px 0;
 
     .item:nth-child(1) {
         border-radius: 15px 15px 0 0;
@@ -19,4 +27,16 @@ export const StyledItemGroup = styled.div`
     .item:last-child {
         border-radius: ${(props: { single?: boolean }) => (props.single ? "15px" : "0 0 15px 15px")};
     }
+`;
+
+const ItemGroupContainer = styled.div`
+    width: 100%;
+    margin: 55px 0;
+`;
+
+const Label = styled.div`
+    font-size: 20px;
+    color: gray;
+    font-weight: 300;
+    padding: 10px 20px;
 `;

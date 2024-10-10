@@ -50,6 +50,8 @@ export const Weather: FC = () => {
         setLoading(false);
     };
 
+    console.log("øtt")
+
     const onUplink = async () => {
         try {
             const newOfp = await SimbriefClient.getOfp(await SimbriefClient.getSimbriefUserIDFromUsername(simbriefUsername as string));

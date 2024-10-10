@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect } from "react";
 import styled from "styled-components";
 
-type ItemProps = { gray?: boolean; noMouseDownEffect?: boolean; onClick?: () => void; children: React.ReactNode[] | React.ReactNode };
+type ItemProps = { gray?: boolean; noMouseDownEffect?: boolean; grow?: boolean; onClick?: () => void; children: React.ReactNode[] | React.ReactNode };
 
-export const ListItem: FC<ItemProps> = ({ gray, noMouseDownEffect, onClick = () => null, children }) => {
+export const ListItem: FC<ItemProps> = ({ gray, noMouseDownEffect, grow, onClick = () => null, children }) => {
     const [clicked, setClicked] = useState<boolean>(false);
 
     useEffect(() => {
@@ -21,6 +21,7 @@ export const ListItem: FC<ItemProps> = ({ gray, noMouseDownEffect, onClick = () 
             className="item"
             gray={gray}
             clicked={noMouseDownEffect ? false : clicked}
+            grow={grow}
             onClick={() => onClick()}
             onMouseDown={() => setClicked(true)}
         >
@@ -29,17 +30,17 @@ export const ListItem: FC<ItemProps> = ({ gray, noMouseDownEffect, onClick = () 
     );
 };
 
-type StyledItemProps = { gray?: boolean; clicked: boolean };
+type StyledItemProps = { gray?: boolean; clicked: boolean; grow?: boolean };
 
-const StyledItem = styled.div`
+const StyledItem = styled.div<StyledItemProps>`
     width: 100%;
-    height: 70px;
+    height: ${(props) => (props.grow ? "auto" : "70px")};
     display: flex;
-    background: ${(props: StyledItemProps) => (props.clicked ? "#b9b9bb" : "white")};
+    background: ${(props) => (props.clicked ? "#b9b9bb" : "white")};
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #b9b9bb;
-    color: ${(props: StyledItemProps) => (props.gray ? "#b9b9bb" : "black")};
+    color: ${(props) => (props.gray ? "#b9b9bb" : "black")};
     transition: background 0.1s linear;
 
     .side {

@@ -1,5 +1,5 @@
-import React, { FC, ReactNode, useState } from "react";
-import { usePersistentProperty, usePersistentPropertyWithDefault } from "react-msfs";
+import React, { FC, ReactNode, useEffect } from "react";
+import {usePersistentPropertyWithDefault, useSimVarSyncedPersistentProperty } from "react-msfs";
 import { AtisSource, MetarSource, TafSource } from "../../lib/weather";
 
 type SettingsContextProps = {
@@ -46,6 +46,8 @@ export const SettingsContextProvider: FC<{ children: ReactNode | ReactNode[] }> 
     ];
 
     const [simbridgePort, setSimbridgePort] = usePersistentPropertyWithDefault("SALTY_SIMBRIDGE_PORT", defaults.simbridgePort.toString());
+
+
     return (
         <SettingsContext.Provider
             value={{

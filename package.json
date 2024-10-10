@@ -46,6 +46,7 @@
         "react-indiana-drag-scroll": "^2.2.0",
         "react-leaflet": "^3.2.2",
         "react-msfs": "^0.2.0",
+        "react-range": "^1.10.0",
         "react-router-dom": "^6.2.1",
         "react-spinners": "^0.13.8",
         "react-zoom-pan-pinch": "^3.0.6",
