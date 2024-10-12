@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 export const ListItemTitle = styled.div`
     font-weight: 500;
+    color: ${(props) => props.theme.text};
 `;
 
 export const ListItemLabel = styled.div`
     font-weight: 300;
-    color: #4f4f4f;
+    color: gray;
 `;
 
 export const ListItemDescription = styled.div`

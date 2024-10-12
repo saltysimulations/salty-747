@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { BsFileEarmark, BsFiletypeJpg, BsFiletypePdf, BsFiletypePng } from "react-icons/bs";
 import { IoIosRefresh } from "react-icons/io";
 import { AiOutlineCloudDownload } from "react-icons/ai";
@@ -17,6 +17,8 @@ type SidebarProps = {
 };
 
 export const Sidebar: FC<SidebarProps> = ({ simbridgeAvailable, files, selected, onSelect, ofpSelected, onSelectOfp, onRefresh }) => {
+    const theme = useTheme();
+
     const getFileTypeIcon = (name: string, props: { fill: string; size: number }) => {
         if (name.endsWith(".pdf")) {
             return <BsFiletypePdf {...props} />;
@@ -33,10 +35,10 @@ export const Sidebar: FC<SidebarProps> = ({ simbridgeAvailable, files, selected,
             <Title>Files</Title>
             <Category>
                 <div>SimBrief</div>
-                <AiOutlineCloudDownload size={33} fill="#4FA0FC" onClick={onSelectOfp} />
+                <AiOutlineCloudDownload size={33} fill={theme.select} onClick={onSelectOfp} />
             </Category>
             <Entry selected={ofpSelected} onClick={onSelectOfp}>
-                <BsFileEarmark fill={ofpSelected ? "white" : "#4FA0FC"} size={32} />
+                <BsFileEarmark fill={ofpSelected ? "white" : theme.select} size={32} />
                 <div>OFP</div>
             </Entry>
             {simbridgeAvailable ? (
@@ -45,11 +47,11 @@ export const Sidebar: FC<SidebarProps> = ({ simbridgeAvailable, files, selected,
                         <>
                             <Category>
                                 <div>Local Documents</div>
-                                <IoIosRefresh size={32} fill="#4FA0FC" onClick={onRefresh} />
+                                <IoIosRefresh size={32} fill={theme.select} onClick={onRefresh} />
                             </Category>
                             {files?.pdfs?.map((file, i) => (
                                 <Entry selected={selected === file} key={i} onClick={() => onSelect(file)}>
-                                    {getFileTypeIcon(file, { fill: selected === file ? "white" : "#4FA0FC", size: 32 })}
+                                    {getFileTypeIcon(file, { fill: selected === file ? "white" : theme.select, size: 32 })}
                                     <div>{file}</div>
                                 </Entry>
                             ))}
@@ -59,11 +61,11 @@ export const Sidebar: FC<SidebarProps> = ({ simbridgeAvailable, files, selected,
                         <>
                             <Category>
                                 <div>Local Images</div>
-                                <IoIosRefresh size={32} fill="#4FA0FC" onClick={onRefresh} />
+                                <IoIosRefresh size={32} fill={theme.select} onClick={onRefresh} />
                             </Category>
                             {files?.images.map((image, i) => (
                                 <Entry selected={selected === image} key={i} onClick={() => onSelect(image)}>
-                                    {getFileTypeIcon(image, { fill: selected === image ? "white" : "#4FA0FC", size: 32 })}
+                                    {getFileTypeIcon(image, { fill: selected === image ? "white" : theme.select, size: 32 })}
                                     <div>{image}</div>
                                 </Entry>
                             ))}
@@ -101,8 +103,8 @@ const Entry = styled.div<{ selected: boolean }>`
     width: 100%;
     flex-wrap: nowrap;
     overflow: hidden;
-    background: ${({ selected }) => (selected ? "#4fa0fc" : "transparent")};
-    color: ${({ selected }) => (selected ? "white" : "black")};
+    background: ${(props) => (props.selected ? props.theme.select : "transparent")};
+    color: ${(props) => (props.selected ? "white" : props.theme.text)};
     border-radius: 15px;
 
     * {
@@ -126,11 +128,11 @@ const StyledSidebar = styled.div`
     width: 400px;
     display: flex;
     flex-direction: column;
-    background: #f2f1f6;
+    background: ${(props) => props.theme.primary};
     padding: 25px 17px;
-    color: black;
+    color: ${(props) => props.theme.text};
     font-size: 24px;
-    border-right: 1px solid lightgray;
+    border-right: 1px solid ${(props) => props.theme.border};
     flex-shrink: 0;
 `;
 

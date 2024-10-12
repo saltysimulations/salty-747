@@ -66,7 +66,7 @@ export const Categories: FC = () => {
 const SettingsHeader = styled.div`
     font-size: 55px;
     font-weight: 700;
-    color: black;
+    color: ${(props) => props.theme.text};
     margin-bottom: 20px;
 `;
 
@@ -94,14 +94,14 @@ const CategoryGroup = styled.div`
     }
 `;
 
-const StyledCategory = styled.div`
+const StyledCategory = styled.div<{ selected?: boolean }>`
     width: 100%;
     height: 70px;
-    background: ${(props: { selected?: boolean }) => (props.selected ? "#4FA0FC" : "white")};
-    color: ${(props: { selected?: boolean }) => (props.selected ? "white" : "black")};
+    background: ${(props) => (props.selected ? props.theme.select : props.theme.invert.primary)};
+    color: ${(props) => (props.selected ? "white" : props.theme.text)};
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #b9b9bb;
+    border-bottom: 1px solid ${(props) => props.theme.border};
     font-size: 26px;
 
     div:nth-child(2) {

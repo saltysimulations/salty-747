@@ -21,6 +21,7 @@ import { AirportFacility, FacilityType, SimbriefOfp } from "@microsoft/msfs-sdk"
 import { FZProContext, sourceToLabel } from "./AppContext";
 import { InfoWx } from "./info-wx";
 import { facilityLoader, getAirportIcaoFromIdent } from "../../lib/facility";
+import { ThemeSwitchContext } from "../../lib/Theme";
 
 export const FZPro: FC = () => {
     const { user, initialized } = useNavigraphAuth();
@@ -50,6 +51,7 @@ const App: FC = () => {
 
     const { enrouteChartPreset } = useContext(FZProContext);
     const { ofp } = useContext(FlightContext);
+    const { theme: selectedTheme } = useContext(ThemeSwitchContext);
 
     const mainSectionRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +86,7 @@ const App: FC = () => {
 
     const fetchChartImage = async (chart: Chart) => {
         setLoading(true);
-        setChartImage(await charts.getChartImage({ chart, theme: "light" }));
+        setChartImage(await charts.getChartImage({ chart, theme: selectedTheme }));
     };
 
     const handleUplink = (ofp: SimbriefOfp) => {
@@ -165,7 +167,7 @@ const RootContainer = styled.div`
 `;
 
 const MainSection = styled.div`
-    background: #f0f4f8;
+    background: ${(props) => props.theme.bg};
     flex-grow: 1;
     display: flex;
     position: relative;

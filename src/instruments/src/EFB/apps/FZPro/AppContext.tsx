@@ -1,5 +1,6 @@
 import { NavigraphRasterSource, PresetConfig } from "@navigraph/leaflet";
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useContext, useState } from "react";
+import { ThemeSwitchContext } from "../../lib/Theme";
 
 type FZProContextProps = {
     enrouteChartPreset: PresetConfig;
@@ -32,7 +33,12 @@ export const FZProContext = React.createContext<FZProContextProps>({
 });
 
 export const FZProContextProvider: FC<{ children: ReactNode | ReactNode[] }> = ({ children }) => {
-    const [enrouteChartPreset, setEnrouteChartPreset] = useState<PresetConfig>(defaults.enrouteChartPreset);
+    const { theme } = useContext(ThemeSwitchContext);
+
+    const [enrouteChartPreset, setEnrouteChartPreset] = useState<PresetConfig>({
+        ...defaults.enrouteChartPreset,
+        theme: theme === "light" ? "DAY" : "NIGHT",
+    });
     const [metar, setMetar] = useState<string | null>(null);
     const [taf, setTaf] = useState<string | null>(null);
     const [atis, setAtis] = useState<string | null>(null);
@@ -50,7 +56,7 @@ export const FZProContextProvider: FC<{ children: ReactNode | ReactNode[] }> = (
                 atis,
                 setAtis,
                 weatherLastUpdated,
-                setWeatherLastUpdated
+                setWeatherLastUpdated,
             }}
         >
             {children}

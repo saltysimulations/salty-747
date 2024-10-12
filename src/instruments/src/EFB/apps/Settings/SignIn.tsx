@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { BsPersonCircle } from "react-icons/bs";
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
@@ -8,6 +8,7 @@ import { useSetting } from "../../hooks/useSettings";
 export const SignIn: FC<{ selected: boolean, onClick: () => void }> = ({ selected, onClick }) => {
     const { user: navigraphUser } = useNavigraphAuth();
     const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
+    const theme = useTheme() as any;
 
     const userText = () => {
         if (navigraphUser) {
@@ -19,7 +20,7 @@ export const SignIn: FC<{ selected: boolean, onClick: () => void }> = ({ selecte
 
     return (
         <StyledSignIn selected={selected} onClick={onClick}>
-            <BsPersonCircle size={90} color="#B9B9BB" style={{ margin: "10px 24px" }} />
+            <BsPersonCircle size={90} color={theme.border} style={{ margin: "10px 24px" }} />
             <SignInText>
                 <div>{userText()}</div>
                 <div>Set up SimBrief and Navigraph</div>
@@ -28,11 +29,11 @@ export const SignIn: FC<{ selected: boolean, onClick: () => void }> = ({ selecte
     );
 };
 
-const StyledSignIn = styled.div`
+const StyledSignIn = styled.div<{ selected: boolean }>`
     width: 100%;
     display: flex;
-    background: ${(props: { selected: boolean }) => (props.selected ? "#1476fb" : "white")};
-    color: ${(props: { selected: boolean }) => (props.selected ? "white" : "#1476fb")};
+    background: ${(props) => (props.selected ? props.theme.select : props.theme.invert.primary)};
+    color: ${(props) => (props.selected ? "white" : props.theme.select)};
     border-radius: 15px;
     margin-bottom: 35px;
 `;
@@ -54,6 +55,6 @@ const SignInText = styled.div`
 
     div:nth-child(2) {
         font-size: 20px;
-        color: #b9b9bb;
+        color: ${(props) => props.theme.border};
     }
 `;

@@ -47,4 +47,5 @@ export const ContentPageLabel = styled.div`
     justify-self: center;
     grid-column-start: 2;
     grid-column-end: 3;
+    color: ${(props) => props.theme.text};
 `;

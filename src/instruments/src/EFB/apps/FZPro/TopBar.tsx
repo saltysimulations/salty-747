@@ -64,6 +64,7 @@ const Viewing = styled.div`
     flex-direction: column;
     margin: auto;
     align-items: center;
+    text-align: center;
 
     * {
         margin: 1px 0;

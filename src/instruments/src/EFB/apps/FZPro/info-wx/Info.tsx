@@ -72,7 +72,7 @@ const RunwayInfo = css`
     color: gray;
 
     .black {
-        color: black;
+        color: ${(props) => props.theme.text};
         font-weight: 500;
     }
 

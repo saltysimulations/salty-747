@@ -1,9 +1,10 @@
 // Copyright (c) 2023-2024 FlyByWire Simulations
 // SPDX-License-Identifier: GPL-3.0
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { CanvasConst } from "./Constants";
 import styled, { css } from "styled-components";
+import { ThemeSwitchContext } from "instruments/src/EFB/lib/Theme";
 
 export interface AirframePerformanceEnvelope {
     mlw: number[][];
@@ -65,7 +66,7 @@ interface ChartWidgetProps {
 export const ChartWidget: React.FC<ChartWidgetProps> = ({ width, height, envelope, limits, gw, cg, mldw, mldwCg, zfw, zfwCg }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-    const theme = "light";
+    const { theme } = useContext(ThemeSwitchContext);
     const metric = SimVar.GetGameVarValue("GAME UNIT IS METRIC", "boolean");
 
     const getTheme = (theme: string): [string, string, string, string] => {
@@ -349,7 +350,7 @@ export const ChartWidget: React.FC<ChartWidgetProps> = ({ width, height, envelop
 };
 
 const p = css`
-    color: black;
+    color: ${(props) => props.theme.text};
     position: absolute;
     top: 0;
 `;

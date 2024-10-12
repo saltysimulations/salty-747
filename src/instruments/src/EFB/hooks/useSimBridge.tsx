@@ -5,7 +5,5 @@ import { SimBridge } from "../lib/simbridge";
 export const useSimBridge = () => {
     const { simbridgePort } = useContext(SettingsContext);
 
-    const simbridge = new SimBridge(simbridgePort);
-
-    return simbridge;
+    return new SimBridge(simbridgePort);
 };

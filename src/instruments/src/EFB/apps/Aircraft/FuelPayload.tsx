@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { ItemGroup } from "../../components/ItemGroup";
 import { Input } from "../../components/Input";
@@ -23,6 +23,8 @@ export const FuelPayload: FC = () => {
     const [cargo, setCargo] = useSimVar("L:SALTY_EFB_CARGO_WEIGHT", "enum");
     const [zfw, setZfw] = useSimVar("L:SALTY_EFB_ZFW", "enum");
     const [fuel, setFuel] = useSimVar("L:SALTY_EFB_FUEL_WEIGHT", "enum");
+
+    const theme = useTheme();
 
     const itemGroupStyle = { boxShadow: "2px 2px 13.5px 7px rgba(0, 0, 0, 0.1)", margin: 0 };
 
@@ -56,7 +58,7 @@ export const FuelPayload: FC = () => {
                 <WeightInputContainer>
                     <ItemGroupContainer>
                         <Label>Actual</Label>
-                        <ItemGroup style={itemGroupStyle}>
+                        <ItemGroup style={itemGroupStyle} spacing={0}>
                             <InfoColumn label="Pax" value={`${pax}/363`} />
                             <InfoColumn label="Cargo" value={`${metric ? Math.round(cargo / 2.205) : cargo} kg`} />
                             <InfoColumn label="ZFW" value={`${metric ? Math.round(zfw / 2.205) : zfw} kg`} />
@@ -65,7 +67,7 @@ export const FuelPayload: FC = () => {
                     </ItemGroupContainer>
                     <ItemGroupContainer>
                         <Label>Planned</Label>
-                        <ItemGroup style={itemGroupStyle}>
+                        <ItemGroup style={itemGroupStyle} spacing={0}>
                             <InputColumn
                                 label="Pax"
                                 placeholder="0/363"
@@ -80,19 +82,19 @@ export const FuelPayload: FC = () => {
                 </WeightInputContainer>
                 <WeightInputContainer>
                     <ItemGroupContainer>
-                        <ItemGroup style={itemGroupStyle}>
+                        <ItemGroup style={itemGroupStyle} spacing={0}>
                             <InfoColumn label="Fuel" value={`${metric ? Math.round(fuel / 2.205) : fuel} kg`} />
                         </ItemGroup>
                     </ItemGroupContainer>
                     <ItemGroupContainer>
-                        <ItemGroup style={itemGroupStyle}>
+                        <ItemGroup style={itemGroupStyle} spacing={0}>
                             <InputColumn label="Fuel" placeholder="0 kg" setter={setPlannedFuel} filterFn={weightInputFilter} />
                         </ItemGroup>
                     </ItemGroupContainer>
                 </WeightInputContainer>
                 <Buttons>
                     <SecondaryButton style={{ marginRight: "25px" }}>
-                        <AiOutlineCloudDownload size={35} color="#4fa0fc" style={{ padding: 0, margin: 0 }} />
+                        <AiOutlineCloudDownload size={35} color={theme.select} style={{ padding: 0, margin: 0 }} />
                         <div>SimBrief</div>
                     </SecondaryButton>
                     <PrimaryButton onClick={load}>Refuel & Load</PrimaryButton>
@@ -157,6 +159,7 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
+    background: ${(props) => props.theme.bg};
 `;
 
 const WeightInputContainer = styled.div`
@@ -170,7 +173,7 @@ const WeightInputContainer = styled.div`
 const Label = styled.div`
     font-size: 22px;
     font-weight: 500;
-    color: #4fa0fc;
+    color: ${(props) => props.theme.select};
     margin: 10px 0;
 `;
 

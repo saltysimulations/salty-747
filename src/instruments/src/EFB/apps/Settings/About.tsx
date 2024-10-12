@@ -52,12 +52,13 @@ const Value = styled.div`
 
 const LicenseContainer = styled.div`
     padding: 25px;
-    background: white;
+    background: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.text};
     border-radius: 25px;
     margin-bottom: 50px;
     text-align: start;
     font-size: 22px;
-    border: 1px solid lightgray;
+    border: 1px solid ${(props) => props.theme.border};
 
     .me {
         margin-top: 16px;

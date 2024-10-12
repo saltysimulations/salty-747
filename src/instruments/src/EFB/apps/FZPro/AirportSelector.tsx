@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import React, { FC, useEffect, useState } from "react";
 import { Input } from "../../components/Input";
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
@@ -16,6 +16,7 @@ type AirportSelectorProps = {
 export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, selectedAirport }) => {
     const [search, setSearch] = useState<string>("");
     const [searchResults, setSearchResults] = useState<AirportFacility[] | null>(null);
+    const theme = useTheme();
 
     useEffect(() => {
         setSearchResults(null);
@@ -50,7 +51,7 @@ export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, 
         <StyledAirportSelector>
             <Input
                 placeholder="Search All Airports"
-                style={{ width: "90%", margin: "20px 0", border: "1px solid #b9b9bb" }}
+                style={{ width: "90%", margin: "20px 0", border: `1px solid ${theme.border}`, color: theme.text }}
                 onUpdateValue={(icao) => setSearch(icao)}
                 applyFilters={(value: string) => value.toUpperCase()}
                 autoFocus
@@ -77,24 +78,24 @@ const AirportSelectorItem = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #b9b9bb;
+    border-bottom: 1px solid ${(props) => props.theme.border};
     align-items: center;
-    background: white;
+    background: ${(props) => props.theme.invert.primary};
     flex-shrink: 0;
 `;
 
 const StyledAirportSelector = styled.div`
     width: 500px;
     height: 800px;
-    border: 1px solid #b9b9bb;
+    border: 1px solid ${(props) => props.theme.border};
     border-radius: 15px;
     position: absolute;
-    background: #F0F4F8;
+    background: ${(props) => props.theme.primary};
     display: flex;
     flex-direction: column;
     align-items: center;
     color: black;
-    box-shadow: 2px 2px 10px #b9b9bb;
+    box-shadow: 2px 2px 10px ${(props) => props.theme.border};
     left: 150px;
     top: 50px;
     overflow: hidden;

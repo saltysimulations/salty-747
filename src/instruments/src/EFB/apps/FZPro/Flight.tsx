@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { TitleAndClose } from "./components/TitleAndClose";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { SimbriefClient, SimbriefOfp } from "@microsoft/msfs-sdk";
@@ -14,6 +14,8 @@ export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void; onClose: () => v
     const { setModal } = useContext(ModalContext);
 
     const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
+
+    const theme = useTheme();
 
     const newFlightModal = (
         <CancelConfirmModal
@@ -63,7 +65,7 @@ export const Flight: FC<{ onUplink: (ofp: SimbriefOfp) => void; onClose: () => v
                 <FlightButtons>
                     <div onClick={() => setModal(newFlightModal)}>New Flight</div>
                     <div onClick={handleClickUplink}>
-                        <AiOutlineCloudDownload size={45} color="black" style={{ padding: 0, margin: 0 }} />
+                        <AiOutlineCloudDownload size={45} color={theme.text} style={{ padding: 0, margin: 0 }} />
                     </div>
                 </FlightButtons>
                 <RouteContainer>
@@ -129,7 +131,8 @@ const InfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid ${(props) => props.theme.border};
+    background: ${(props) => props.theme.invert.primary};
 `;
 
 const InfoLabel = styled.div`
@@ -150,6 +153,7 @@ const FlightButtons = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
+    color: ${(props) => props.theme.text};
 
     div {
         margin: 20px;
@@ -160,7 +164,7 @@ const FlightButtons = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        background: white;
+        background: ${(props) => props.theme.invert.primary};
     }
 `;
 
@@ -168,7 +172,7 @@ const FlightContainer = styled.div`
     width: 500px;
     height: 100%;
     position: absolute;
-    background: #dfe5ef;
+    background: ${(props) => props.theme.invert.bg};
     display: flex;
     flex-direction: column;
     align-items: center;

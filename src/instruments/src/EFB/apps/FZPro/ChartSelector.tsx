@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React, { FC } from "react";
-import { AiFillCloseCircle } from "react-icons/all";
 import { Chart } from "navigraph/charts"
 import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
 import { TitleAndClose } from "./components/TitleAndClose";
@@ -30,24 +29,24 @@ export const ChartSelector: FC<ChartSelectorProps> = ({ charts, label, onClose, 
     </ChartSelectorContainer>
 );
 
-const ChartSelectorItem = styled.div`
+const ChartSelectorItem = styled.div<{ selected: boolean }>`
     width: 100%;
     display: flex;
-    border-bottom: 1px solid #b9b9bb;
+    border-bottom: 1px solid ${(props) => props.theme.border};
     align-items: center;
-    background: ${(props: { selected: boolean }) => props.selected ? "#CDE5F4" : "white"};;
+    background: ${(props) => props.selected ? props.theme.selectLighter : props.theme.invert.primary};;
 `;
 
 const ChartSelectorContainer = styled.div`
     width: 500px;
     height: 100%;
-    border: 1px solid #b9b9bb;
+    border: 1px solid ${(props) => props.theme.border};
     border-radius: 15px;
-    background: #F0F4F8;
+    background: ${(props) => props.theme.primary};
     display: flex;
     flex-direction: column;
     color: black;
-    box-shadow: 2px 2px 10px #b9b9bb;
+    box-shadow: 2px 2px 10px ${(props) => props.theme.border};
     overflow: hidden;
     z-index: 999;
     position: absolute;

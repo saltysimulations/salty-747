@@ -20,26 +20,25 @@ export const GroundServices: FC = () => {
 
     return (
         <Container>
-            <StyledAircraftContainer>
-                <AircraftSvg />
-            </StyledAircraftContainer>
             <StyledOptionsContainer>
-                <ItemGroupContainer>
-                    <Label>Pax Doors</Label>
-                    <ItemGroup style={itemGroupStyle}>
-                        <Toggle label="1 Left" enabled={left1Door >= 1} onClick={() => setLeft1Door(left1Door >= 1 ? 0 : 1)} />
-                        <Toggle label="5 Right" enabled={right5Door >= 1} onClick={() => setRight5Door(right5Door >= 1 ? 0 : 1)} />
-                    </ItemGroup>
-                </ItemGroupContainer>
-                <ItemGroupContainer>
-                    <Label>Cargo Doors</Label>
-                    <ItemGroup style={itemGroupStyle}>
-                        <Toggle label="Cargo Fwd" enabled={cargoFwd >= 1} onClick={() => setCargoFwd(cargoFwd >= 1 ? 0 : 1)} />
-                    </ItemGroup>
-                </ItemGroupContainer>
+                <div>
+                    <ItemGroupContainer>
+                        <Label>Pax Doors</Label>
+                        <ItemGroup style={itemGroupStyle} spacing={0}>
+                            <Toggle label="1 Left" enabled={left1Door >= 1} onClick={() => setLeft1Door(left1Door >= 1 ? 0 : 1)} />
+                            <Toggle label="5 Right" enabled={right5Door >= 1} onClick={() => setRight5Door(right5Door >= 1 ? 0 : 1)} />
+                        </ItemGroup>
+                    </ItemGroupContainer>
+                    <ItemGroupContainer>
+                        <Label>Cargo Doors</Label>
+                        <ItemGroup style={itemGroupStyle} spacing={0}>
+                            <Toggle label="Cargo Fwd" enabled={cargoFwd >= 1} onClick={() => setCargoFwd(cargoFwd >= 1 ? 0 : 1)} />
+                        </ItemGroup>
+                    </ItemGroupContainer>
+                </div>
                 <ItemGroupContainer>
                     <Label>Services</Label>
-                    <ItemGroup style={itemGroupStyle}>
+                    <ItemGroup style={itemGroupStyle} spacing={0}>
                         <Service name="Jetway" onRequest={() => toggleJetway(true)} />
                         <Service name="Fuel Truck" onRequest={() => toggleFuelTruck(true)} />
                         <Service name="Baggage Truck" onRequest={() => toggleBaggageTruck(true)} />
@@ -66,8 +65,7 @@ const Label = styled.div`
 `;
 
 const ItemGroupContainer = styled.div`
-    width: 70%;
-    margin: 30px 0;
+    margin: 60px 0;
 `;
 
 const StyledAircraftContainer = styled.div`
@@ -82,8 +80,7 @@ const StyledOptionsContainer = styled.div`
     height: 100%;
     flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     font-size: 26px;
 `;
@@ -92,4 +89,5 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
+    background: ${(props) => props.theme.bg};
 `;

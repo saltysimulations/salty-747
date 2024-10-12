@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { IoRefresh } from "react-icons/io5";
 import { InfoField, InfoFieldContainer, SectionLabel } from ".";
 import { WeatherData } from "../../../lib/weather";
@@ -16,6 +16,8 @@ export const Weather: FC<{ airport: AirportFacility }> = ({ airport }) => {
 
     const { metar, setMetar, taf, setTaf, atis, setAtis, weatherLastUpdated, setWeatherLastUpdated } = useContext(FZProContext);
     const { metarSource, tafSource, atisSource } = useContext(SettingsContext);
+
+    const theme = useTheme();
 
     const lastUpdatedString = () => {
         if (weatherLastUpdated) {
@@ -60,7 +62,7 @@ export const Weather: FC<{ airport: AirportFacility }> = ({ airport }) => {
                     <Time>{lastUpdatedString()}</Time>
                 </div>
                 <Refresh>
-                    <IoRefresh size={30} fill="#4fa0fc" />
+                    <IoRefresh size={30} fill={theme.select} />
                     <div onClick={() => fetchData()}>Refresh</div>
                 </Refresh>
             </LastUpdated>
@@ -99,7 +101,7 @@ const Time = styled.div`
 const Refresh = styled.div`
     display: flex;
     align-items: center;
-    color: #4fa0fc;
+    color: ${(props) => props.theme.select};
 
     * {
         margin: 0 3px;
@@ -114,7 +116,7 @@ const LastUpdated = styled.div`
     padding: 20px;
     font-size: 24px;
     font-weight: 500;
-    border-top: 1px solid lightgray;
+    border-top: 1px solid ${(props) => props.theme.border};
 `;
 
 const Taf = styled.div`

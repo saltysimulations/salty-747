@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FaTruckLoading, FaTruck } from "react-icons/fa";
 
@@ -14,6 +14,7 @@ export const Aircraft: FC = () => (
 
 const TabSwitcher: FC = () => {
     const navigate = useNavigate();
+    const theme = useTheme();
     const [tab, setTab] = useState<string>("ground-services");
 
     const updateTab = (name: string) => {
@@ -25,11 +26,11 @@ const TabSwitcher: FC = () => {
         <StyledTabSwitcher>
             <div className="container">
                 <Tab selected={tab === "ground-services"} onClick={() => updateTab("ground-services")}>
-                    <FaTruck fill={tab === "ground-services" ? "#4FA0FC" : "#999999"} size={35} />
+                    <FaTruck fill={tab === "ground-services" ? theme.select : theme.border} size={35} />
                     <div>Ground Services</div>
                 </Tab>
                 <Tab selected={tab === "payload"} onClick={() => updateTab("payload")}>
-                    <FaTruckLoading fill={tab === "payload" ? "#4FA0FC" : "#999999"} size={35} />
+                    <FaTruckLoading fill={tab === "payload" ? theme.select : theme.border} size={35} />
                     <div>Fuel & Payload</div>
                 </Tab>
             </div>
@@ -37,10 +38,10 @@ const TabSwitcher: FC = () => {
     );
 };
 
-const Tab = styled.div`
+const Tab = styled.div<{ selected: boolean }>`
     display: flex;
     align-items: center;
-    color: ${(props: { selected: boolean }) => (props.selected ? "#4FA0FC" : "#999999")};
+    color: ${(props) => (props.selected ? props.theme.select : props.theme.border)};
     white-space: nowrap;
 
     * {
@@ -57,8 +58,8 @@ const StyledContent = styled.div`
 const StyledTabSwitcher = styled.div`
     width: 100%;
     height: 90px;
-    background: #f9f9f9;
-    border-top: 1px solid lightgray;
+    background: ${(props) => props.theme.primary};
+    border-top: 1px solid ${(props) => props.theme.border};
     font-size: 18px;
     font-weight: 500;
     display: flex;

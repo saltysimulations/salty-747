@@ -1,16 +1,20 @@
 import React, { FC } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
-export const TitleAndClose: FC<{ label: string; sublabel?: string; onClose: () => void }> = ({ label, sublabel, onClose }) => (
-    <ChartSelectorTitle>
-        <div className="margin">
-            <div>{label}</div>
-            <Sublabel>{sublabel}</Sublabel>
-        </div>
-        <AiFillCloseCircle size={62} color="A9B3BE" onClick={onClose} className="margin" />
-    </ChartSelectorTitle>
-);
+export const TitleAndClose: FC<{ label: string; sublabel?: string; onClose: () => void }> = ({ label, sublabel, onClose }) => {
+    const theme = useTheme();
+
+    return (
+        <ChartSelectorTitle>
+            <div className="margin">
+                <div>{label}</div>
+                <Sublabel>{sublabel}</Sublabel>
+            </div>
+            <AiFillCloseCircle size={62} color={theme.border} onClick={onClose} className="margin" />
+        </ChartSelectorTitle>
+    );
+};
 
 const Sublabel = styled.div`
     font-weight: 400;
@@ -26,9 +30,9 @@ const ChartSelectorTitle = styled.div`
     align-items: center;
     font-size: 28px;
     font-weight: 500;
-    border-bottom: 1px solid #b9b9bb;
+    border-bottom: 1px solid ${(props) => props.theme.border};
     flex-shrink: 0;
-    color: black;
+    color: ${(props) => props.theme.text};
 
     .margin {
         margin: 12px 12px 12px 24px;

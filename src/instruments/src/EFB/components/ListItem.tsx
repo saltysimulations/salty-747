@@ -36,11 +36,11 @@ const StyledItem = styled.div<StyledItemProps>`
     width: 100%;
     height: ${(props) => (props.grow ? "auto" : "70px")};
     display: flex;
-    background: ${(props) => (props.clicked ? "#b9b9bb" : "white")};
+    background: ${(props) => (props.clicked ? "#b9b9bb" : props.theme.invert.primary)};
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #b9b9bb;
-    color: ${(props) => (props.gray ? "#b9b9bb" : "black")};
+    border-bottom: 1px solid ${(props) => props.theme.border};
+    color: ${(props) => (props.gray ? "#b9b9bb" : props.theme.text)};
     transition: background 0.1s linear;
 
     .side {

@@ -2,15 +2,14 @@ import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ModalContext } from "../..";
 import { InfoModal } from "../../components/InfoModal";
-import { SimBridge } from "../../lib/simbridge";
 import { AirportChartViewer } from "../../components/charts/AirportChartViewer";
 import { Sidebar } from "./Sidebar";
 import { DocumentLoading } from "../../components/charts/DocumentLoading";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { useSetting } from "../../hooks/useSettings";
 import { FilesContext } from "./FilesContext";
-import { SettingsContext } from "../Settings/SettingsContext";
 import { useSimBridge } from "../../hooks/useSimBridge";
+import { SettingsContext } from "../Settings/SettingsContext";
 
 export type View = {
     name: string;
@@ -29,11 +28,11 @@ export const Files: FC = () => {
     const { view, setView, files, setFiles, ofp, setOfp, ofpSelected, setOfpSelected } = useContext(FilesContext);
     const { simbridgePort } = useContext(SettingsContext);
 
-    const simbridge = useSimBridge();
-
     const contentSectionRef = useRef<HTMLDivElement>(null);
 
     const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
+
+    const simbridge = useSimBridge();
 
     const getFiles = async () => setFiles({ pdfs: await simbridge.getPDFList(), images: await simbridge.getImageList() });
 
@@ -46,7 +45,12 @@ export const Files: FC = () => {
             setView(
                 files?.images.includes(name)
                     ? { name, blob: await simbridge.getImage(name) }
-                    : { name, blob: await simbridge.getPDFPage(name, 1), pages: await simbridge.getPDFPageNum(name), currentPage: 1 }
+                    : {
+                          name,
+                          blob: await simbridge.getPDFPage(name, 1),
+                          pages: await simbridge.getPDFPageNum(name),
+                          currentPage: 1,
+                      }
             );
         } catch (e: unknown) {
             e instanceof Error && setModal(<InfoModal title="Error" description={e.message} />);
@@ -93,6 +97,8 @@ export const Files: FC = () => {
         checkHealth();
     }, []);
 
+    console.log("test");
+
     return (
         <Container>
             <Sidebar
@@ -131,7 +137,8 @@ export const Files: FC = () => {
 const Ofp = styled.div`
     width: 100%;
     height: 100%;
-    color: black;
+    background: transparent;
+    color: ${(props) => props.theme.text};
     padding: 50px 60px 10px 60px;
     font-size: 24px;
     line-height: 24px;
@@ -155,7 +162,7 @@ const Container = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
-    background: white;
+    background: ${(props) => props.theme.bg};
 `;
 
 const ContentSection = styled.div`

@@ -15,12 +15,12 @@ const button = css`
 
 export const PrimaryButton = styled.div`
     ${button}
-    background: #4fa0fc;
+    background: ${(props) => props.theme.select};
     color: white;
 `;
 
 export const SecondaryButton = styled.div`
     ${button}
-    background: #dfecff;
-    color: #4fa0fc;
+    background: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.select};
 `;

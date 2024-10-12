@@ -46,8 +46,8 @@ export const InfoField = styled.div`
     padding: 20px;
     display: flex;
     justify-content: space-between;
-    background: white;
-    border-bottom: 1px solid lightgray;
+    background: ${(props) => props.theme.invert.primary};
+    border-bottom: 1px solid ${(props) => props.theme.border};
 `;
 
 export const InfoFieldContainer = styled.div`
@@ -55,7 +55,7 @@ export const InfoFieldContainer = styled.div`
     flex-direction: column;
     width: 100%;
     font-size: 24px;
-    border-top: 1px solid lightgray;
+    border-top: 1px solid ${(props) => props.theme.border};
 `;
 
 export const SectionLabel = styled.div`
@@ -69,9 +69,9 @@ export const SectionLabel = styled.div`
     justify-content: space-between;
 `;
 
-const TabElement = styled.div`
+const TabElement = styled.div<{ selected?: boolean }>`
     flex: 1;
-    background: ${(props: { selected?: boolean }) => (props.selected ? "white" : "transparent")};
+    background: ${(props) => (props.selected ? props.theme.accent : "transparent")};
     padding: 8px 0;
     display: flex;
     justify-content: center;
@@ -83,11 +83,11 @@ const TabElement = styled.div`
 
 const TabSwitcher = styled.div`
     display: flex;
-    background: #e4e5ec;
+    background: ${(props) => props.theme.invert.primary};
     width: 90%;
     margin-top: 30px;
     border-radius: 15px;
-    border: 2px solid #e4e5ec;
+    border: 2px solid ${(props) => props.theme.invert.primary};
     flex-shrink: 0;
 `;
 
@@ -95,13 +95,13 @@ const Container = styled.div`
     width: 500px;
     height: 95%;
     position: absolute;
-    background: #f0f4f8;
+    background: ${(props) => props.theme.invert.bg};
     border-radius: 25px;
-    box-shadow: 2px 2px 10px #b9b9bb;
+    box-shadow: 2px 2px 10px ${(props) => props.theme.border};
     top: 10px;
     left: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: black;
+    color: ${(props) => props.theme.text};
 `;

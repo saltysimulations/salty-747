@@ -1,12 +1,13 @@
 import React, { FC, Children } from "react";
 import styled from "styled-components";
 
-export const ItemGroup: FC<{ children: React.ReactNode | React.ReactNode[]; style?: React.CSSProperties; label?: string }> = ({
+export const ItemGroup: FC<{ children: React.ReactNode | React.ReactNode[]; style?: React.CSSProperties; label?: string; spacing?: number }> = ({
     children,
     style,
     label,
+    spacing = 55,
 }) => (
-    <ItemGroupContainer>
+    <ItemGroupContainer spacing={spacing}>
         {label && <Label>{label}</Label>}
         <StyledItemGroup single={Children.count(children) === 1} style={style}>
             {children}
@@ -29,9 +30,9 @@ export const StyledItemGroup = styled.div`
     }
 `;
 
-const ItemGroupContainer = styled.div`
+const ItemGroupContainer = styled.div<{ spacing: number }>`
     width: 100%;
-    margin: 55px 0;
+    margin: ${({ spacing }) => spacing}px 0;
 `;
 
 const Label = styled.div`

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { AiOutlineRotateLeft, AiOutlineRotateRight, AiOutlineZoomIn, AiOutlineZoomOut, } from "react-icons/ai";
 import { ChartControlContainer, ChartControlItem, PdfPageSelector } from "./ChartControls";
@@ -20,7 +20,9 @@ export const AirportChartViewer: FC<AirportChartViewerProps> = ({ chartImage, ca
 
     const [rotation, setRotation] = useState<number>(0);
 
-    const chartControlIconProps = { color: theme === "os" ? "#4FA0FC" : "white", size: 45 };
+    const osTheme = useTheme();
+
+    const chartControlIconProps = { color: theme === "os" ? osTheme.select : "white", size: 45 };
 
     useEffect(() => {
         if (!chartImageRef.current || !transformComponentRef.current) return;
@@ -42,22 +44,22 @@ export const AirportChartViewer: FC<AirportChartViewerProps> = ({ chartImage, ca
                             <img src={URL.createObjectURL(chartImage)} height={canvasHeight} ref={chartImageRef} />
                         </ChartContainer>
                     </TransformComponent>
-                    <ChartControlContainer theme={theme}>
-                        <ChartControlItem onClick={() => zoomIn()} theme={theme}>
+                    <ChartControlContainer viewerTheme={theme}>
+                        <ChartControlItem onClick={() => zoomIn()} viewerTheme={theme}>
                             <AiOutlineZoomIn {...chartControlIconProps} />
                         </ChartControlItem>
-                        <ChartControlItem onClick={() => zoomOut()} theme={theme}>
+                        <ChartControlItem onClick={() => zoomOut()} viewerTheme={theme}>
                             <AiOutlineZoomOut {...chartControlIconProps} />
                         </ChartControlItem>
-                        <ChartControlItem onClick={() => setRotation(rotation + 90)} theme={theme}>
+                        <ChartControlItem onClick={() => setRotation(rotation + 90)} viewerTheme={theme}>
                             <AiOutlineRotateRight {...chartControlIconProps} />
                         </ChartControlItem>
-                        <ChartControlItem onClick={() => setRotation(rotation - 90)} theme={theme}>
+                        <ChartControlItem onClick={() => setRotation(rotation - 90)} viewerTheme={theme}>
                             <AiOutlineRotateLeft {...chartControlIconProps} />
                         </ChartControlItem>
                     </ChartControlContainer>
                     {pages && currentPage && setPage && (
-                        <PdfPageSelector theme={theme}>
+                        <PdfPageSelector viewerTheme={theme}>
                             <div className="button" onClick={() => setPage(currentPage === 1 ? 1 : currentPage - 1)}>
                                 —
                             </div>
