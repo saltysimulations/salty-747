@@ -14,9 +14,10 @@ type SidebarProps = {
     ofpSelected: boolean;
     onSelectOfp: () => void;
     onRefresh: () => void;
+    onRefreshOfp: () => void;
 };
 
-export const Sidebar: FC<SidebarProps> = ({ simbridgeAvailable, files, selected, onSelect, ofpSelected, onSelectOfp, onRefresh }) => {
+export const Sidebar: FC<SidebarProps> = ({ simbridgeAvailable, files, selected, onSelect, ofpSelected, onSelectOfp, onRefresh, onRefreshOfp }) => {
     const theme = useTheme();
 
     const getFileTypeIcon = (name: string, props: { fill: string; size: number }) => {
@@ -35,7 +36,7 @@ export const Sidebar: FC<SidebarProps> = ({ simbridgeAvailable, files, selected,
             <Title>Files</Title>
             <Category>
                 <div>SimBrief</div>
-                <AiOutlineCloudDownload size={33} fill={theme.select} onClick={onSelectOfp} />
+                <AiOutlineCloudDownload size={33} fill={theme.select} onClick={onRefreshOfp} />
             </Category>
             <Entry selected={ofpSelected} onClick={onSelectOfp}>
                 <BsFileEarmark fill={ofpSelected ? "white" : theme.select} size={32} />

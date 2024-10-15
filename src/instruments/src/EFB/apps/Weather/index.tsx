@@ -49,7 +49,6 @@ export const Weather: FC = () => {
 
         setLoading(false);
     };
-    console.log("hiii")
 
     const onUplink = async () => {
         try {

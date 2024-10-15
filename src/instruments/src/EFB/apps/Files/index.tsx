@@ -5,11 +5,10 @@ import { InfoModal } from "../../components/InfoModal";
 import { AirportChartViewer } from "../../components/charts/AirportChartViewer";
 import { Sidebar } from "./Sidebar";
 import { DocumentLoading } from "../../components/charts/DocumentLoading";
-import ScrollContainer from "react-indiana-drag-scroll";
 import { useSetting } from "../../hooks/useSettings";
 import { FilesContext } from "./FilesContext";
 import { useSimBridge } from "../../hooks/useSimBridge";
-import { SettingsContext } from "../Settings/SettingsContext";
+import { Ofp } from "./Ofp";
 
 export type View = {
     name: string;
@@ -25,8 +24,7 @@ export const Files: FC = () => {
     const [simbridgeConnection, setSimbridgeConnection] = useState<boolean>(false);
 
     const { setModal } = useContext(ModalContext);
-    const { view, setView, files, setFiles, ofp, setOfp, ofpSelected, setOfpSelected } = useContext(FilesContext);
-    const { simbridgePort } = useContext(SettingsContext);
+    const { view, setView, files, setFiles, ofp, setOfp, ofpSelected, setOfpSelected, setOfpScroll } = useContext(FilesContext);
 
     const contentSectionRef = useRef<HTMLDivElement>(null);
 
@@ -67,20 +65,34 @@ export const Files: FC = () => {
         }
     };
 
+    const fetchOfp = async () => {
+        try {
+            const ofp = await fetch(`https://www.simbrief.com/api/xml.fetcher.php?username=${simbriefUsername}&json=1`);
+            const json = await ofp.json();
+            const html = json.text.plan_html;
+            setOfp(html.replace(/^<div [^>]+>/, "").replace(/<\/div>$/, ""));
+        } catch (_) {
+            setModal(<InfoModal title="Error" description="Couldn't fetch OFP" />);
+        }
+    };
+
     const handleSelectOfp = async () => {
         setDocumentLoading(true);
         setView(undefined);
 
-        if (!ofp) {
-            try {
-                const ofp = await fetch(`https://www.simbrief.com/api/xml.fetcher.php?username=${simbriefUsername}&json=1`);
-                const json = await ofp.json();
-                const html = json.text.plan_html;
-                setOfp(html.replace(/^<div [^>]+>/, "").replace(/<\/div>$/, ""));
-            } catch (_) {
-                setModal(<InfoModal title="Error" description="Couldn't fetch OFP" />);
-            }
-        }
+        !ofp && await fetchOfp();
+
+        setOfpSelected(true);
+        setDocumentLoading(false);
+    };
+
+    const refreshOfp = async () => {
+        setDocumentLoading(true);
+        setView(undefined);
+        setOfpSelected(false)
+        setOfpScroll(0);
+
+        await fetchOfp();
 
         setOfpSelected(true);
         setDocumentLoading(false);
@@ -97,8 +109,6 @@ export const Files: FC = () => {
         checkHealth();
     }, []);
 
-    console.log("test");
-
     return (
         <Container>
             <Sidebar
@@ -108,9 +118,11 @@ export const Files: FC = () => {
                 onSelect={handleSelect}
                 ofpSelected={ofpSelected}
                 onSelectOfp={handleSelectOfp}
-                onRefresh={() => simbridgeConnection ? getFiles() : checkHealth()}
+                onRefresh={() => (simbridgeConnection ? getFiles() : checkHealth())}
+                onRefreshOfp={refreshOfp}
             />
             <ContentSection ref={contentSectionRef}>
+                <StatusBarFill />
                 {!view && !ofpSelected && !documentLoading && <SelectAFile>Select a file</SelectAFile>}
                 {view && contentSectionRef.current && (
                     <AirportChartViewer
@@ -124,28 +136,15 @@ export const Files: FC = () => {
                     />
                 )}
                 {documentLoading && <DocumentLoading />}
-                {ofpSelected && ofp && (
-                    <ScrollContainer style={{ width: "100%", height: "100%" }}>
-                        <Ofp dangerouslySetInnerHTML={{ __html: ofp }} />
-                    </ScrollContainer>
-                )}
+                {ofpSelected && ofp && <Ofp html={ofp} />}
             </ContentSection>
         </Container>
     );
 };
 
-const Ofp = styled.div`
+const StatusBarFill = styled.div`
     width: 100%;
-    height: 100%;
-    background: transparent;
-    color: ${(props) => props.theme.text};
-    padding: 50px 60px 10px 60px;
-    font-size: 24px;
-    line-height: 24px;
-
-    * {
-        font-family: "Inconsolata";
-    }
+    height: 40px;
 `;
 
 const SelectAFile = styled.div`
@@ -168,4 +167,6 @@ const Container = styled.div`
 const ContentSection = styled.div`
     flex: 1;
     position: relative;
+    display: flex;
+    flex-direction: column;
 `;
