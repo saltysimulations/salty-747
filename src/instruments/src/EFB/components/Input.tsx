@@ -11,11 +11,12 @@ type InputProps = {
     applyFilters?: (value: string) => void;
     style?: React.CSSProperties;
     centerPlaceholder?: boolean;
-    hidePlaceholder?: boolean
+    hidePlaceholder?: boolean;
     placeholderAlign?: "left" | "right";
     textarea?: boolean;
     clearOnFocusOut?: boolean;
     autoFocus?: boolean;
+    manualValue?: string;
 };
 
 export const Input: FC<InputProps> = ({
@@ -31,6 +32,7 @@ export const Input: FC<InputProps> = ({
                                           textarea = false,
                                           clearOnFocusOut = false,
                                           autoFocus = false,
+                                          manualValue,
                                       }) => {
     const [guid] = useState(uuid());
     const [focused, setFocused] = useState<boolean>(false);
@@ -104,7 +106,7 @@ export const Input: FC<InputProps> = ({
     };
 
     const props = {
-        value: displayValue,
+        value: manualValue ? (applyFilters?.(manualValue) ?? manualValue) : displayValue,
         onFocus: onFocusInput,
         onBlur,
         onChange,
@@ -112,8 +114,8 @@ export const Input: FC<InputProps> = ({
         hidePlaceholder: focused || hidePlaceholder,
         centerPlaceholder,
         placeholderAlign,
-        style
-    }
+        style,
+    };
 
     return (
         textarea ? <StyledTextArea {...props} ref={textareaRef} /> : <StyledInput {...props} ref={inputRef} />
@@ -134,6 +136,7 @@ const inputStyle = css`
     padding: 8px 15px;
     text-align: left;
     outline: none;
+    color: ${(props) => props.theme.text};
 
     &::placeholder {
         color: #4f4f4f;

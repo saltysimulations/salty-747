@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import styled, { useTheme } from "styled-components";
 
 import { ItemGroup } from "../../components/ItemGroup";
@@ -9,12 +9,22 @@ import { chartLimits, envelope } from "./components/chart/Constants";
 import { useSimVar } from "react-msfs";
 import { PrimaryButton, SecondaryButton } from "../../components/Buttons";
 import { AiOutlineCloudDownload } from "react-icons/ai";
+import { SimbriefClient } from "@microsoft/msfs-sdk";
+import { InfoModal } from "../../components/InfoModal";
+import { FlightContext } from "../../lib/FlightContext";
+import { ModalContext } from "../..";
+import { useSetting } from "../../hooks/useSettings";
 
 export const FuelPayload: FC = () => {
     const [plannedPax, setPlannedPax] = useState<number>();
     const [plannedCargo, setPlannedCargo] = useState<number>();
     const [plannedZfw, setPlannedZfw] = useState<number>();
     const [plannedFuel, setPlannedFuel] = useState<number>();
+
+    const { setOfp } = useContext(FlightContext);
+    const { setModal } = useContext(ModalContext);
+
+    const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
 
     const [cg] = useSimVar("CG PERCENT", "percent");
     const [gw] = useSimVar("TOTAL WEIGHT", "lbs");
@@ -28,10 +38,50 @@ export const FuelPayload: FC = () => {
 
     const itemGroupStyle = { boxShadow: "2px 2px 13.5px 7px rgba(0, 0, 0, 0.1)", margin: 0 };
 
-    const weightInputFilter = (val: string) => (val.includes("kg") || val.includes("lbs") ? val : `${val} kg`);
+    const weightInputFilter = (val: string) => {
+        if (!val || parseInt(val) < 0) return "";
+
+        if (val.includes("kg") || val.includes("lbs")) {
+            return val;
+        } else {
+            return `${val} ${metric ? "kg" : "lbs"}`
+        }
+    };
+
+    const paxInputFilter = (val: string) => {
+        if (!val || parseInt(val) < 0) return "";
+
+        if (val.includes("/")) {
+            return Math.min(parseInt(val.split("/")[0]), 363).toString();
+        } else {
+            return `${Math.min(parseInt(val), 363)}/363`;
+        }
+    };
+
+    const handleUplink = async () => {
+        try {
+            const newOfp = await SimbriefClient.getOfp(await SimbriefClient.getSimbriefUserIDFromUsername(simbriefUsername as string));
+            setOfp(newOfp);
+
+            let convert = 1;
+
+            if (newOfp.params.units === "kgs" && !metric) {
+                convert = 2.205;
+            } else if (newOfp.params.units === "lbs" && metric) {
+                convert = 0.453;
+            }
+
+            setPlannedPax(parseInt(newOfp.weights.pax_count));
+            setPlannedCargo(Math.round(parseInt(newOfp.weights.cargo) * convert));
+            setPlannedZfw(Math.round(parseInt(newOfp.weights.est_zfw) * convert));
+            setPlannedFuel(Math.round(parseInt(newOfp.fuel.plan_ramp) * convert));
+        } catch (_) {
+            setModal(<InfoModal title="Error" description="Failed to fetch SimBrief OFP" />);
+        }
+    };
 
     const load = () => {
-        plannedPax && setPax(metric ? plannedPax * 2.205 : plannedPax);
+        plannedPax && setPax(plannedPax);
         plannedCargo && setCargo(metric ? plannedCargo * 2.205 : plannedCargo);
         plannedZfw && setZfw(metric ? plannedZfw * 2.205 : plannedZfw);
         plannedFuel && setFuel(metric ? plannedFuel * 2.205 : plannedFuel);
@@ -59,7 +109,7 @@ export const FuelPayload: FC = () => {
                     <ItemGroupContainer>
                         <Label>Actual</Label>
                         <ItemGroup style={itemGroupStyle} spacing={0}>
-                            <InfoColumn label="Pax" value={`${pax}/363`} />
+                            <InfoColumn label="Pax" value={`${Math.round(pax)}/363`} />
                             <InfoColumn label="Cargo" value={`${metric ? Math.round(cargo / 2.205) : cargo} kg`} />
                             <InfoColumn label="ZFW" value={`${metric ? Math.round(zfw / 2.205) : zfw} kg`} />
                             <InfoColumn label="CG" value={`${cg.toFixed(2)}%`} />
@@ -68,14 +118,21 @@ export const FuelPayload: FC = () => {
                     <ItemGroupContainer>
                         <Label>Planned</Label>
                         <ItemGroup style={itemGroupStyle} spacing={0}>
+                            <InputColumn label="Pax" placeholder="0/363" value={plannedPax} setter={setPlannedPax} filterFn={paxInputFilter} />
                             <InputColumn
-                                label="Pax"
-                                placeholder="0/363"
-                                setter={setPlannedPax}
-                                filterFn={(val) => (val.includes("/") ? val : `${val}/363`)}
+                                label="Cargo"
+                                placeholder={`0 ${metric ? "kg" : "lbs"}`}
+                                value={plannedCargo}
+                                setter={setPlannedCargo}
+                                filterFn={weightInputFilter}
                             />
-                            <InputColumn label="Cargo" placeholder="0 kg" setter={setPlannedCargo} filterFn={weightInputFilter} />
-                            <InputColumn label="ZFW" placeholder="0 kg" setter={setPlannedZfw} filterFn={weightInputFilter} />
+                            <InputColumn
+                                label="ZFW"
+                                placeholder={`0 ${metric ? "kg" : "lbs"}`}
+                                value={plannedZfw}
+                                setter={setPlannedZfw}
+                                filterFn={weightInputFilter}
+                            />
                             <InfoColumn label="CG" value={`${cg.toFixed(2)}%`} />
                         </ItemGroup>
                     </ItemGroupContainer>
@@ -83,17 +140,23 @@ export const FuelPayload: FC = () => {
                 <WeightInputContainer>
                     <ItemGroupContainer>
                         <ItemGroup style={itemGroupStyle} spacing={0}>
-                            <InfoColumn label="Fuel" value={`${metric ? Math.round(fuel / 2.205) : fuel} kg`} />
+                            <InfoColumn label="Fuel" value={`${metric ? Math.round(fuel / 2.205) : fuel} ${metric ? "kg" : "lbs"}`} />
                         </ItemGroup>
                     </ItemGroupContainer>
                     <ItemGroupContainer>
                         <ItemGroup style={itemGroupStyle} spacing={0}>
-                            <InputColumn label="Fuel" placeholder="0 kg" setter={setPlannedFuel} filterFn={weightInputFilter} />
+                            <InputColumn
+                                label="Fuel"
+                                placeholder={`0 ${metric ? "kg" : "lbs"}`}
+                                value={plannedFuel}
+                                setter={setPlannedFuel}
+                                filterFn={weightInputFilter}
+                            />
                         </ItemGroup>
                     </ItemGroupContainer>
                 </WeightInputContainer>
                 <Buttons>
-                    <SecondaryButton style={{ marginRight: "25px" }}>
+                    <SecondaryButton style={{ marginRight: "25px" }} onClick={handleUplink}>
                         <AiOutlineCloudDownload size={35} color={theme.select} style={{ padding: 0, margin: 0 }} />
                         <div>SimBrief</div>
                     </SecondaryButton>
@@ -114,11 +177,12 @@ const InfoColumn: FC<{ label: string; value: string }> = ({ label, value }) => (
 type InputColumnProps = {
     label: string;
     placeholder: string;
-    setter: (val: number) => void;
+    value: number | undefined;
+    setter: (val: number | undefined) => void;
     filterFn: (val: string) => string;
 };
 
-const InputColumn: FC<InputColumnProps> = ({ label, placeholder, setter, filterFn }) => (
+const InputColumn: FC<InputColumnProps> = ({ label, placeholder, value, setter, filterFn }) => (
     <ListItem>
         <WeightLabel>{label}</WeightLabel>
         <Input
@@ -127,7 +191,9 @@ const InputColumn: FC<InputColumnProps> = ({ label, placeholder, setter, filterF
             placeholderAlign="right"
             style={{ borderBottom: "none", padding: "0 15px", width: "100%", textAlign: "right", fontSize: "26px" }}
             applyFilters={filterFn}
-            onFocusOut={(val) => setter(parseInt(val))}
+            onFocusOut={(val) => setter(isNaN(parseInt(val)) ? undefined : parseInt(val))}
+            onFocus={() => setter(undefined)}
+            manualValue={value?.toString()}
         />
     </ListItem>
 );
