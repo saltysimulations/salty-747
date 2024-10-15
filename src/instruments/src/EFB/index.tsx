@@ -30,7 +30,7 @@ import { HomeScreen } from "./apps/Home";
 import { Maps } from "./apps/Maps";
 import { Settings } from "./apps/Settings";
 import { General } from "./apps/Settings/General";
-import { IRSAlignment, PilotVisibility, Aircraft } from "./apps/Settings/Aircraft";
+import { IRSAlignment, Aircraft } from "./apps/Settings/Aircraft";
 
 import { Acars, AtisSourceOptions, MetarSourceOptions, TafSourceOptions } from "./apps/Settings/Acars";
 import { FZPro } from "./apps/FZPro";
@@ -101,7 +101,6 @@ const EFB: FC = () => {
                                                         <Route path="metar-source" element={<MetarSourceOptions />} />
                                                         <Route path="taf-source" element={<TafSourceOptions />} />
                                                         <Route path="atis-source" element={<AtisSourceOptions />} />
-                                                        <Route path="pilot-visibility" element={<PilotVisibility />} />
                                                         <Route path="irs-alignment" element={<IRSAlignment />} />
                                                         <Route path="accounts" element={<Accounts />} />
                                                         <Route path="display" element={<DisplayAndBrightness />} />

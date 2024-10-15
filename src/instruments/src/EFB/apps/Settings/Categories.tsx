@@ -38,12 +38,6 @@ export const Categories: FC = () => {
                     selected={selectedCategory === "display"}
                     selectCategory={() => selectCategory("display")}
                 />
-                <Category
-                    name="Wallpaper"
-                    icon={acars}
-                    selected={selectedCategory === "wallpaper"}
-                    selectCategory={() => selectCategory("wallpaper")}
-                />
             </CategoryGroup>
             <CategoryGroup>
                 <Category

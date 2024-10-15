@@ -14,6 +14,7 @@ import { ListItem } from "../../components/ListItem";
 import { Input } from "../../components/Input";
 import { ModalContext } from "../..";
 import { InfoModal } from "../../components/InfoModal";
+import { useSimVar } from "react-msfs";
 
 export const Aircraft: FC = () => {
     const { simbridgePort, setSimbridgePort } = useContext(SettingsContext);
@@ -60,7 +61,6 @@ export const Aircraft: FC = () => {
             </ItemGroup>
             <ItemGroup>
                 <NavigationItem name="IRS Alignment Time" path="/settings/irs-alignment" />
-                <NavigationItem name="Pilot Visibility" path="/settings/pilot-visibility" />
             </ItemGroup>
         </ContentPageContainer>
     );
@@ -75,21 +75,6 @@ export const IRSAlignment: FC = () => {
                 <SelectableItem label="Realistic" selected={irsAlignmentTime === BoeingIrsAlignTimeMode.Realistic} onClick={() => setirsAlignmentTime(BoeingIrsAlignTimeMode.Realistic)} />
                 <SelectableItem label="Accelerated" selected={irsAlignmentTime === BoeingIrsAlignTimeMode.Accelerated} onClick={() => setirsAlignmentTime(BoeingIrsAlignTimeMode.Accelerated)} />
                 <SelectableItem label="Instant" selected={irsAlignmentTime === BoeingIrsAlignTimeMode.Instant} onClick={() => setirsAlignmentTime(BoeingIrsAlignTimeMode.Instant)} />
-            </ItemGroup>
-        </ContentPageContainer>
-    );
-};
-
-export const PilotVisibility: FC = () => {
-    const [pilotVisibility, setPilotVisibility] = usePersistentProperty("PILOT_VISIBILITY", "off");
-
-    return (
-        <ContentPageContainer title="Pilot Visibility" backProps={{ label: "Aircraft", path: "/settings/aircraft" }}>
-            <ItemGroup>
-                <SelectableItem label="Off" selected={pilotVisibility === "off"} onClick={() => setPilotVisibility("off")} />
-                <SelectableItem label="Captain Only" selected={pilotVisibility === "captain"} onClick={() => setPilotVisibility("captain")} />
-                <SelectableItem label="First Officer Only" selected={pilotVisibility === "fo"} onClick={() => setPilotVisibility("fo")} />
-                <SelectableItem label="Captain & First Officer" selected={pilotVisibility === "both"} onClick={() => setPilotVisibility("both")} />
             </ItemGroup>
         </ContentPageContainer>
     );

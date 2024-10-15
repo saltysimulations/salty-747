@@ -9,14 +9,10 @@ export const General: FC = () => {
         <ContentPageContainer title="General">
             <ItemGroup>
                 <NavigationItem name="About" path="/settings/about" />
+                <NavigationItem name="Language & Region" gray />
             </ItemGroup>
             <ItemGroup>
-                <NavigationItem name="Game Controller" gray />
-                <NavigationItem name="Language & Region" />
-                <NavigationItem name="Fonts" gray />
-            </ItemGroup>
-            <ItemGroup>
-                <NavigationItem name="Reset" />
+                <NavigationItem name="Reset" gray />
             </ItemGroup>
         </ContentPageContainer>
     );

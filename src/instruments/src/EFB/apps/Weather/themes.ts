@@ -59,7 +59,7 @@ const cloudOrder: Record<CloudQuantity, number> = {
     NSC: -1,
 };
 
-export const determineTheme = (cloudCover: ICloud[], hour: number): WeatherTheme => {
+export const determineTheme = (cloudCover: ICloud[], timeOfDay: number): WeatherTheme => {
     let highest = CloudQuantity.SKC;
 
     for (const cloud of cloudCover) {
@@ -68,7 +68,7 @@ export const determineTheme = (cloudCover: ICloud[], hour: number): WeatherTheme
         }
     }
 
-    const night = hour >= 18 || hour <= 8;
+    const night = timeOfDay === 3;
 
     switch (highest) {
         case CloudQuantity.SKC:

@@ -45,10 +45,6 @@
                 "lods": [0, 1, 2, 3]
             },
             {
-                "gltf": "./pilots/pilots.gltf",
-                "lods": [0]
-            },
-            {
                 "gltf": "./cockpit-shell/cockpit_shell.gltf",
                 "bin": "./cockpit-shell/cockpit_shell.bin",
                 "lods": [0]

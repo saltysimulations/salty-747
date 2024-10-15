@@ -27,7 +27,7 @@ export const Weather: FC = () => {
 
     const [simbriefUsername] = useSetting("boeingMsfsSimbriefUsername");
 
-    const [currentTime] = useSimVar("E:ZULU TIME", "seconds");
+    const [timeOfDay] = useSimVar("E:TIME OF DAY", "enum");
 
     const handleSelectAirport = async (icao: string) => {
         setLoading(true);
@@ -40,7 +40,7 @@ export const Weather: FC = () => {
         if (metarMessage) {
             const parsedMetar = parseMetar(metarMessage);
             setMetar(parsedMetar);
-            setTheme(determineTheme(parsedMetar.clouds, new Date(currentTime * 1000).getUTCHours()));
+            setTheme(determineTheme(parsedMetar.clouds, timeOfDay));
             tafMessage && setTaf(parseTAF(tafMessage));
         } else {
             setSelectedAirport(null);
@@ -63,7 +63,7 @@ export const Weather: FC = () => {
 
     useEffect(() => {
         if (metar) {
-            setTheme(determineTheme(metar.clouds, new Date(currentTime * 1000).getUTCHours()));
+            setTheme(determineTheme(metar.clouds, timeOfDay));
         }
     }, []);
 
