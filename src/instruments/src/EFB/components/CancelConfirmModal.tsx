@@ -26,7 +26,7 @@ export const CancelConfirmModal: FC<CancelConfirmModalProps> = ({ title, descrip
                     <Description>{description}</Description>
                 </TextSection>
                 <ButtonSection>
-                    <Button onClick={() => setModal(null)}>
+                    <Button className=".border" onClick={() => setModal(null)}>
                         <div>Cancel</div>
                     </Button>
                     <Button onClick={handleConfirm}>

@@ -21,14 +21,13 @@ import styled from "styled-components";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L, { Map } from "leaflet";
 import { useSimVar } from "react-msfs";
-import "leaflet/dist/leaflet.css";
-
-import "./Map.scss";
 import { Controls } from "./Controls";
+import ReactDOMServer from "react-dom/server";
+import { FiNavigation2 } from "react-icons/fi";
 
-import plane from "../../img/plane.svg";
+import "leaflet/dist/leaflet.css";
+import "./Map.scss";
 
-// TODO: Make map controls functional, revise plane icon
 export const Maps: FC = () => {
     const [latitude] = useSimVar("PLANE LATITUDE", "degrees");
     const [longitude] = useSimVar("PLANE LONGITUDE", "degrees");
@@ -44,9 +43,10 @@ export const Maps: FC = () => {
                 <Marker
                     position={[latitude, longitude]}
                     icon={L.divIcon({
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        html: `<img src="${plane}" width="50" style="transform-origin: center; transform: rotate(${heading}deg);" alt="" />`,
+                        html: ReactDOMServer.renderToString(
+                            <FiNavigation2 size={60} fill="magenta" style={{ transformOrigin: "center", transform: `rotate(${heading}deg)` }} />
+                        ),
+                        iconAnchor: [30, 30],
                     })}
                 />
                 <Controls />

@@ -12,14 +12,14 @@ export const Modal: FC<{ children: React.ReactNode }> = ({ children }) => (
 const StyledModal = styled.div`
     position: absolute;
     font-size: 26px;
-    color: black;
+    color: ${(props) => props.theme.text};
     display: flex;
     justify-content: center;
     align-items: center;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: #F0F4F8;
+    background: ${(props) => props.theme.primary};
     border-radius: 20px;
 `;
 
@@ -29,17 +29,17 @@ export const Button = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #4fa0fc;
+    color: ${(props) => props.theme.select};
     font-size: 28px;
 
-    &:first-child {
-        border-right: 1px solid lightgray;
+    .border {
+        border-right: 1px solid ${(props) => props.theme.border};
     }
 `;
 
 export const ButtonSection = styled.div`
     display: flex;
-    border-top: 1px solid lightgray;
+    border-top: 1px solid ${(props) => props.theme.border};
 `;
 
 export const Title = styled.div`
