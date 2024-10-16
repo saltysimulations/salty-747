@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { FC } from "react";
 import { Chart } from "navigraph/charts"
-import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
+import { ListItemDescription, ListItemLabel, ListItemTitle } from "../../components/TitleDescriptionItems";
 import { TitleAndClose } from "./components/TitleAndClose";
 import ScrollContainer from "react-indiana-drag-scroll";
 

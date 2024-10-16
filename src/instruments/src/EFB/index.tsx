@@ -52,6 +52,7 @@ import { FilesContextProvider } from "./apps/Files/FilesContext";
 import { DisplayAndBrightness } from "./apps/Settings/DisplayAndBrightness";
 import { Theme } from "./lib/Theme";
 import { BrightnessProvider } from "./lib/BrightnessContext";
+import { FlightProvider } from "./lib/FlightContext";
 
 export const ModalContext = createContext<{ modal: ReactNode | null; setModal: (modal: ReactNode | null) => void }>({
     modal: null,
@@ -72,60 +73,64 @@ const EFB: FC = () => {
         <Root>
             <ModalContext.Provider value={{ modal, setModal }}>
                 <NavigraphAuthProvider>
-                    <WeatherContextProvider>
-                        <SettingsContextProvider>
-                            <FZProContextProvider>
-                                <FilesContextProvider>
-                                    <BrightnessProvider>
-                                        <AppLoading>
-                                            <AnimatePresence>
-                                                <Routes location={location} key={locationKey}>
-                                                    <Route path="/" element={<RouteElement component={<HomeScreen />} noAnimation />} />
-                                                    <Route
-                                                        path="/maps"
-                                                        element={
-                                                            <RouteElement
-                                                                component={<Maps />}
-                                                                barProps={{ textColor: "black", backdropFilter: "blur(8px)" }}
-                                                            />
-                                                        }
-                                                    />
-                                                    <Route
-                                                        path="/settings"
-                                                        element={<RouteElement component={<Settings />} barProps={{ textColor: theme.text }} />}
-                                                    >
-                                                        <Route path="general" element={<General />} />
-                                                        <Route path="about" element={<About />} />
-                                                        <Route path="aircraft" element={<Aircraft />} />
-                                                        <Route path="acars" element={<Acars />} />
-                                                        <Route path="metar-source" element={<MetarSourceOptions />} />
-                                                        <Route path="taf-source" element={<TafSourceOptions />} />
-                                                        <Route path="atis-source" element={<AtisSourceOptions />} />
-                                                        <Route path="irs-alignment" element={<IRSAlignment />} />
-                                                        <Route path="accounts" element={<Accounts />} />
-                                                        <Route path="display" element={<DisplayAndBrightness />} />
-                                                    </Route>
-                                                    <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
-                                                    <Route
-                                                        path="/aircraft"
-                                                        element={<RouteElement component={<AircraftApp />} barProps={{ textColor: theme.text }} />}
-                                                    >
-                                                        <Route path="ground-services" element={<GroundServices />} />
-                                                        <Route path="payload" element={<FuelPayload />} />
-                                                    </Route>
-                                                    <Route path="/weather" element={<RouteElement component={<Weather />} />} />
-                                                    <Route
-                                                        path="/files"
-                                                        element={<RouteElement component={<Files />} barProps={{ textColor: theme.text }} />}
-                                                    />
-                                                </Routes>
-                                            </AnimatePresence>
-                                        </AppLoading>
-                                    </BrightnessProvider>
-                                </FilesContextProvider>
-                            </FZProContextProvider>
-                        </SettingsContextProvider>
-                    </WeatherContextProvider>
+                    <FlightProvider>
+                        <WeatherContextProvider>
+                            <SettingsContextProvider>
+                                <FZProContextProvider>
+                                    <FilesContextProvider>
+                                        <BrightnessProvider>
+                                            <AppLoading>
+                                                <AnimatePresence>
+                                                    <Routes location={location} key={locationKey}>
+                                                        <Route path="/" element={<RouteElement component={<HomeScreen />} noAnimation />} />
+                                                        <Route
+                                                            path="/maps"
+                                                            element={
+                                                                <RouteElement
+                                                                    component={<Maps />}
+                                                                    barProps={{ textColor: "black", backdropFilter: "blur(8px)" }}
+                                                                />
+                                                            }
+                                                        />
+                                                        <Route
+                                                            path="/settings"
+                                                            element={<RouteElement component={<Settings />} barProps={{ textColor: theme.text }} />}
+                                                        >
+                                                            <Route path="general" element={<General />} />
+                                                            <Route path="about" element={<About />} />
+                                                            <Route path="aircraft" element={<Aircraft />} />
+                                                            <Route path="acars" element={<Acars />} />
+                                                            <Route path="metar-source" element={<MetarSourceOptions />} />
+                                                            <Route path="taf-source" element={<TafSourceOptions />} />
+                                                            <Route path="atis-source" element={<AtisSourceOptions />} />
+                                                            <Route path="irs-alignment" element={<IRSAlignment />} />
+                                                            <Route path="accounts" element={<Accounts />} />
+                                                            <Route path="display" element={<DisplayAndBrightness />} />
+                                                        </Route>
+                                                        <Route path="/fzpro" element={<RouteElement component={<FZPro />} />} />
+                                                        <Route
+                                                            path="/aircraft"
+                                                            element={
+                                                                <RouteElement component={<AircraftApp />} barProps={{ textColor: theme.text }} />
+                                                            }
+                                                        >
+                                                            <Route path="ground-services" element={<GroundServices />} />
+                                                            <Route path="payload" element={<FuelPayload />} />
+                                                        </Route>
+                                                        <Route path="/weather" element={<RouteElement component={<Weather />} />} />
+                                                        <Route
+                                                            path="/files"
+                                                            element={<RouteElement component={<Files />} barProps={{ textColor: theme.text }} />}
+                                                        />
+                                                    </Routes>
+                                                </AnimatePresence>
+                                            </AppLoading>
+                                        </BrightnessProvider>
+                                    </FilesContextProvider>
+                                </FZProContextProvider>
+                            </SettingsContextProvider>
+                        </WeatherContextProvider>
+                    </FlightProvider>
                 </NavigraphAuthProvider>
                 {modal && <ModalOverlay onClick={() => setModal(null)} />}
                 {modal}

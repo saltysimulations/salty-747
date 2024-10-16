@@ -1,21 +1,22 @@
 import styled, { useTheme } from "styled-components";
-import React, { FC, useEffect, useState } from "react";
-import { Input } from "../../components/Input";
-import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
-import { ListItemDescription, ListItemLabel, ListItemTitle } from "./components/ListItems";
-import { IoMdCheckmark } from "react-icons/io";
+import React, { FC, useContext, useEffect, useState } from "react";
+import { Input } from "../Input";
 import { facilityLoader, getIdentFromIcao } from "../../lib/facility";
-import { AirportClass, AirportFacility, FacilitySearchType, FacilityType } from "@microsoft/msfs-sdk";
+import { AirportClass, AirportFacility, FacilitySearchType, FacilityType, SimbriefOfp } from "@microsoft/msfs-sdk";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { FlightContext } from "../../lib/FlightContext";
+import { AirportSelectorItem } from "./AirportSelectorItem";
+import { OfpAirports } from "./OfpAirports";
 
 type AirportSelectorProps = {
     setSelectedAirport: (icao: string) => void;
     selectedAirport: string | null;
-}
+};
 
 export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, selectedAirport }) => {
     const [search, setSearch] = useState<string>("");
     const [searchResults, setSearchResults] = useState<AirportFacility[] | null>(null);
+    const { ofp } = useContext(FlightContext);
     const theme = useTheme();
 
     useEffect(() => {
@@ -33,19 +34,19 @@ export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, 
                 if (facility.airportClass === AirportClass.HardSurface) {
                     newResults.push(facility);
                 }
-
             }
 
             current && setSearchResults(newResults);
-        }
+        };
 
         void doSearch();
 
         return () => {
             current = false;
-        }
-
+        };
     }, [search]);
+
+    const displayOfpAirports = !searchResults || searchResults.length === 0;
 
     return (
         <StyledAirportSelector>
@@ -59,30 +60,20 @@ export const AirportSelector: FC<AirportSelectorProps> = ({ setSelectedAirport, 
             <ScrollContainer style={{ width: "100%" }}>
                 {searchResults &&
                     searchResults.map((searchResult, i) => (
-                        <AirportSelectorItem onClick={() => setSelectedAirport(getIdentFromIcao(searchResult.icao))} key={i}>
-                            <ListItemDescription>
-                                <ListItemTitle>{getIdentFromIcao(searchResult.icao)}</ListItemTitle>
-                                <ListItemLabel>{Utils.Translate(searchResult.name)}</ListItemLabel>
-                            </ListItemDescription>
-                            {getIdentFromIcao(searchResult.icao) === selectedAirport && (
-                                <IoMdCheckmark color="#1476fb" size={40} style={{ margin: "0 25px" }} />
-                            )}
-                        </AirportSelectorItem>
+                        <AirportSelectorItem
+                            airport={searchResult}
+                            isSelected={getIdentFromIcao(searchResult.icao) === selectedAirport}
+                            onClick={() => setSelectedAirport(getIdentFromIcao(searchResult.icao))}
+                            key={i}
+                        />
                     ))}
+                {ofp && displayOfpAirports && <OfpAirports ofp={ofp} selectedAirport={selectedAirport} setSelectedAirport={setSelectedAirport} />}
             </ScrollContainer>
         </StyledAirportSelector>
     );
 };
 
-const AirportSelectorItem = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid ${(props) => props.theme.border};
-    align-items: center;
-    background: ${(props) => props.theme.invert.primary};
-    flex-shrink: 0;
-`;
+
 
 const StyledAirportSelector = styled.div`
     width: 500px;

@@ -33,7 +33,7 @@
     },
     "dependencies": {
         "@navigraph/leaflet": "^2.0.1",
-        "@ninjomcs/metar-taf-parser-msfs": "^9.0.2",
+        "@ninjomcs/metar-taf-parser-msfs": "^9.0.4",
         "byte-data": "^19.0.1",
         "core-js": "^3.38.1",
         "framer-motion": "^11.9.0",

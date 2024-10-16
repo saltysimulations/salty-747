@@ -11,7 +11,7 @@ import { TopBar } from "./TopBar";
 import { DocumentLoading } from "../../components/charts/DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
-import { AirportSelector } from "./AirportSelector";
+import { AirportSelector } from "../../components/airport-selector";
 import { FlightContext, FlightProvider } from "../../lib/FlightContext";
 import { Flight } from "./Flight";
 
@@ -28,11 +28,9 @@ export const FZPro: FC = () => {
 
     return (
         <RootContainer>
-            <FlightProvider>
-                {!initialized && <div>Loading</div>}
+            {!initialized && <div>Loading</div>}
 
-                {initialized && !user ? <SignInPrompt /> : user && <App />}
-            </FlightProvider>
+            {initialized && !user ? <SignInPrompt /> : user && <App />}
         </RootContainer>
     );
 };

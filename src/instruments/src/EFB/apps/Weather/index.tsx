@@ -7,7 +7,7 @@ import { determineTheme } from "./themes";
 import { WeatherData } from "../../lib/weather";
 import { SettingsContext } from "../Settings/SettingsContext";
 import { TopBar } from "./components/TopBar";
-import { AirportSelector } from "../FZPro/AirportSelector";
+import { AirportSelector } from "../../components/airport-selector";
 import { useSimVar } from "react-msfs";
 import { FlightContext } from "../../lib/FlightContext";
 import { useSetting } from "../../hooks/useSettings";
@@ -36,6 +36,8 @@ export const Weather: FC = () => {
 
         const metarMessage = await WeatherData.fetchMetar(icao, metarSource);
         const tafMessage = await WeatherData.fetchTaf(icao, tafSource);
+
+        console.log(metarMessage)
 
         if (metarMessage) {
             const parsedMetar = parseMetar(metarMessage);

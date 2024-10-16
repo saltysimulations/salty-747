@@ -1,7 +1,7 @@
 import React, { FC, useContext } from "react";
 import { FaWind } from "react-icons/fa6";
 import styled from "styled-components";
-import { BigValue, Unit, Widget } from "./Widget";
+import { BigValue, None, Unit, Widget } from "./Widget";
 import { WeatherContext } from "../WeatherContext";
 import { Compass } from "../components/Compass";
 
@@ -10,7 +10,7 @@ export const Wind: FC<{ direction?: number; speed: number; gust?: number }> = ({
 
     return (
         <Widget title="WIND" icon={<FaWind fill={theme.accentTextColor} size={18} />} gridRow="1 / 2" gridColumn="3 / span 2">
-            <WindContainer>
+            {speed > 0 ? <WindContainer>
                 <TextContainer>
                     {gust ? (
                         <>
@@ -39,7 +39,7 @@ export const Wind: FC<{ direction?: number; speed: number; gust?: number }> = ({
                 <CompassContainer>
                     <Compass degrees={direction} theme={theme} />
                 </CompassContainer>
-            </WindContainer>
+            </WindContainer> : <None color={theme.accentTextColor}>No wind</None>}
         </Widget>
     );
 };
