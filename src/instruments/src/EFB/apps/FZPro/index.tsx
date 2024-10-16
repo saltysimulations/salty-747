@@ -1,5 +1,4 @@
-import React, { createContext, FC, ReactNode, useContext, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import React, { FC, useContext, useRef, useState } from "react";
 import { Chart, ChartCategory } from "navigraph/charts";
 
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
@@ -12,12 +11,12 @@ import { DocumentLoading } from "../../components/charts/DocumentLoading";
 import { ChartSelector } from "./ChartSelector";
 import { Sidebar } from "./Sidebar";
 import { AirportSelector } from "../../components/airport-selector";
-import { FlightContext, FlightProvider } from "../../lib/FlightContext";
+import { FlightContext } from "../../lib/FlightContext";
 import { Flight } from "./Flight";
 
 import { charts, getChartsByCategory } from "../../lib/navigraph";
 import { EnrouteChartView } from "./enroute-charts";
-import { AirportFacility, FacilityType, SimbriefOfp } from "@microsoft/msfs-sdk";
+import { FacilityType, SimbriefOfp } from "@microsoft/msfs-sdk";
 import { FZProContext, sourceToLabel } from "./AppContext";
 import { InfoWx } from "./info-wx";
 import { facilityLoader, getAirportIcaoFromIdent } from "../../lib/facility";
@@ -36,22 +35,29 @@ export const FZPro: FC = () => {
 };
 
 const App: FC = () => {
-    const [currentChart, setCurrentChart] = useState<Chart | null>(null);
-    const [selectedAirport, setSelectedAirport] = useState<string | null>(null);
-    const [airportFacility, setAirportFacility] = useState<AirportFacility | null>(null);
-    const [chartIndex, setChartIndex] = useState<Chart[] | null>(null);
-    const [chartImage, setChartImage] = useState<Blob | null>(null);
     const [chartSelectorCategory, setChartSelectorCategory] = useState<ChartCategory | null>(null);
     const [airportSelectorDisplayed, setAirportSelectorDisplayed] = useState<boolean>(false);
     const [flightDisplayed, setFlightDisplayed] = useState<boolean>(false);
     const [infoWxDisplayed, setInfoWxDisplayed] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [mainSectionWidth, setMainSectionWidth] = useState<number>();
+    const [mainSectionHeight, setMainSectionHeight] = useState<number>();
 
-    const { enrouteChartPreset } = useContext(FZProContext);
+    const {
+        enrouteChartPreset,
+        currentChart,
+        setCurrentChart,
+        chartImage,
+        setChartImage,
+        chartIndex,
+        setChartIndex,
+        selectedAirport,
+        setSelectedAirport,
+        airportFacility,
+        setAirportFacility,
+    } = useContext(FZProContext);
     const { ofp } = useContext(FlightContext);
     const { theme: selectedTheme } = useContext(ThemeSwitchContext);
-
-    const mainSectionRef = useRef<HTMLDivElement>(null);
 
     const chartCategoryToLabel = {
         ARR: "Arrivals",
@@ -105,6 +111,11 @@ const App: FC = () => {
         void fetchChartIndex(icao);
     };
 
+    const setDimensions = (node: HTMLDivElement | null) => {
+        node && setMainSectionWidth(node.clientWidth);
+        node && setMainSectionHeight(node.clientHeight);
+    };
+
     return (
         <>
             <TopBar setFlightDisplayed={setFlightDisplayed} viewingTop={topBarLabel()} viewingBottom={topBarSecondaryLabel()} />
@@ -124,18 +135,15 @@ const App: FC = () => {
                         setChartSelectorCategory(null);
                     }}
                 />
-                <MainSection ref={mainSectionRef}>
+                <MainSection ref={setDimensions}>
                     {viewingEnrouteChart && <EnrouteChartView />}
                     {loading ? (
                         <DocumentLoading />
                     ) : (
                         chartImage &&
-                        mainSectionRef.current && (
-                            <AirportChartViewer
-                                chartImage={chartImage}
-                                canvasWidth={mainSectionRef.current.clientWidth}
-                                canvasHeight={mainSectionRef.current.clientHeight}
-                            />
+                        mainSectionWidth &&
+                        mainSectionHeight && (
+                            <AirportChartViewer chartImage={chartImage} canvasWidth={mainSectionWidth} canvasHeight={mainSectionHeight} />
                         )
                     )}
                     {chartSelectorCategory && chartIndex && (
