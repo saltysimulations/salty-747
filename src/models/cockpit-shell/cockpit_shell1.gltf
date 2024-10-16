@@ -1,0 +1,236 @@
+{
+    "accessors": [
+        {
+            "bufferView": 1,
+            "byteOffset": 28,
+            "componentType": 5123,
+            "count": 12260,
+            "type": "VEC4",
+            "name": "x1_Salty_Cockpit_Shell_01_vertices#0_COLOR_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 16,
+            "componentType": 5120,
+            "count": 12260,
+            "type": "VEC4",
+            "name": "x1_Salty_Cockpit_Shell_01_vertices#0_NORMAL"
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 12260,
+            "min": [
+                -1.3321833610534668,
+                3.3254289627075195,
+                22.87980079650879
+            ],
+            "max": [
+                1.3324589729309082,
+                5.048587799072266,
+                25.543230056762695
+            ],
+            "type": "VEC3",
+            "name": "x1_Salty_Cockpit_Shell_01_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 12,
+            "componentType": 5120,
+            "count": 12260,
+            "type": "VEC4",
+            "name": "x1_Salty_Cockpit_Shell_01_vertices#0_TANGENT"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 20,
+            "componentType": 5122,
+            "count": 12260,
+            "type": "VEC2",
+            "name": "x1_Salty_Cockpit_Shell_01_vertices#0_TEXCOORD_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 24,
+            "componentType": 5122,
+            "count": 12260,
+            "type": "VEC2",
+            "name": "x1_Salty_Cockpit_Shell_01_vertices#0_TEXCOORD_1"
+        },
+        {
+            "bufferView": 0,
+            "componentType": 5123,
+            "count": 28929,
+            "type": "SCALAR",
+            "name": "x1_Salty_Cockpit_Shell_01_indices#0"
+        }
+    ],
+    "asset": {
+        "generator": "Khronos glTF Blender I/O v1.7.5",
+        "version": "2.0",
+        "extensions": {
+            "ASOBO_asset_optimized": {
+                "BoundingBoxMax": [
+                    1.3324589729309082,
+                    5.048587799072266,
+                    25.543230056762695
+                ],
+                "BoundingBoxMin": [
+                    -1.3321833610534668,
+                    0,
+                    0
+                ],
+                "MajorVersion": 4,
+                "MinorVersion": 2
+            },
+            "ASOBO_normal_map_convention": {
+                "tangent_space_convention": "DirectX"
+            }
+        }
+    },
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteLength": 57860,
+            "byteOffset": 0,
+            "target": 34963,
+            "name": "BufferViewIndex"
+        },
+        {
+            "buffer": 0,
+            "byteLength": 441360,
+            "byteStride": 36,
+            "byteOffset": 57860,
+            "target": 34962,
+            "name": "BufferViewVertexND"
+        }
+    ],
+    "extensionsUsed": [
+        "MSFT_texture_dds",
+        "ASOBO_asset_optimized",
+        "ASOBO_normal_map_convention"
+    ],
+    "extensionsRequired": [
+        "MSFT_texture_dds"
+    ],
+    "materials": [
+        {
+            "name": "Salty_COCKPIT_02",
+            "normalTexture": {
+                "index": 0
+            },
+            "occlusionTexture": {
+                "index": 1
+            },
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 2
+                },
+                "metallicRoughnessTexture": {
+                    "index": 1
+                }
+            },
+      "extensions": {
+        "ASOBO_material_detail_map": {
+          "UVScale": 80,
+          "detailNormalTexture": {
+            "index": 31,
+            "scale": 0.25
+          }
+        }
+      }
+    }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "COLOR_0": 0,
+                        "NORMAL": 1,
+                        "POSITION": 2,
+                        "TANGENT": 3,
+                        "TEXCOORD_0": 4,
+                        "TEXCOORD_1": 5
+                    },
+                    "indices": 6,
+                    "material": 0,
+                    "mode": 4,
+                    "extras": {
+                        "ASOBO_primitive": {
+                            "PrimitiveCount": 9643,
+                            "VertexType": "VTX",
+                            "VertexVersion": 2
+                        }
+                    }
+                }
+            ],
+            "name": "x1_Salty_Cockpit_Shell_01"
+        }
+    ],
+    "nodes": [
+        {
+            "mesh": 0,
+            "name": "Salty_Cockpit_Shell_01"
+        }
+    ],
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Scene",
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "textures": [
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 0
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 1
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 2
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 1
+                }
+            }
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 499220,
+            "uri": "Salty_Cockpit_shell1.bin"
+        }
+    ],
+    "images": [
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "B747_COCKPIT_02_NORM.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "B747_COCKPIT_02_COMP.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "B747_COCKPIT_02_ALBD.PNG.DDS"
+        }
+    ]
+}

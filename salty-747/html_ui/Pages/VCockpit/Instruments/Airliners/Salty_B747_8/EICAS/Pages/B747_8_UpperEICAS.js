@@ -61,12 +61,12 @@ var B747_8_UpperEICAS;
             this.isInitialised = true;
         }
         update(_deltaTime) {
-            const storedUnits = SaltyDataStore.get("OPTIONS_UNITS", "KG");
+            const storedUnits = SaltyDataStore.get("UNITS", "KG");
             switch (storedUnits) {
-                case "KG":
+                case "kg":
                     this.units = true;
                     break;
-                case "LBS":
+                case "lbs":
                     this.units = false;
                     break;
                 default:
@@ -133,7 +133,7 @@ var B747_8_UpperEICAS;
                 this.ftrLabel.textContent = "";
                 this.ftrValue.textContent = "";
                 // set colour to white
-                this.ftrValue.setAttribute("style", "fill: var(--eicasWhite)"); 
+                this.ftrValue.setAttribute("style", "fill: var(--eicasWhite)");
             }
         }
 

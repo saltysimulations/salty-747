@@ -286,10 +286,10 @@ class B747_8_FMC_MainDisplay extends Boeing_FMC {
         }
         this.saltyBase.update(_deltaTime, this.isElectricityAvailable());
         this.saltyModules.update(_deltaTime);
-        if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "KG") {
+        if (SaltyDataStore.get("UNITS", "kg") === "kg") {
             this.units = true;
             this.useLbs = false;
-        } else if (SaltyDataStore.get("OPTIONS_UNITS", "KG") == "LBS") {
+        } else if (SaltyDataStore.get("UNITS", "kg") === "lbs") {
             this.units = false;
             this.useLbs = true;
         }
