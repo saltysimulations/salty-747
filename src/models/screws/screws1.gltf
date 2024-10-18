@@ -1,0 +1,250 @@
+{
+    "accessors": [
+        {
+            "bufferView": 1,
+            "byteOffset": 28,
+            "componentType": 5123,
+            "count": 3476,
+            "type": "VEC4",
+            "name": "x1_Salty_DECALS_Screws_planes_vertices#0_COLOR_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 16,
+            "componentType": 5120,
+            "count": 3476,
+            "type": "VEC4",
+            "name": "x1_Salty_DECALS_Screws_planes_vertices#0_NORMAL"
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 3476,
+            "min": [
+                -1.175338625907898,
+                3.3490161895751953,
+                21.931167602539062
+            ],
+            "max": [
+                1.1753385066986084,
+                5.183670520782471,
+                25.491941452026367
+            ],
+            "type": "VEC3",
+            "name": "x1_Salty_DECALS_Screws_planes_vertices#0_POSITION"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 12,
+            "componentType": 5120,
+            "count": 3476,
+            "type": "VEC4",
+            "name": "x1_Salty_DECALS_Screws_planes_vertices#0_TANGENT"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 20,
+            "componentType": 5122,
+            "count": 3476,
+            "type": "VEC2",
+            "name": "x1_Salty_DECALS_Screws_planes_vertices#0_TEXCOORD_0"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 24,
+            "componentType": 5122,
+            "count": 3476,
+            "type": "VEC2",
+            "name": "x1_Salty_DECALS_Screws_planes_vertices#0_TEXCOORD_1"
+        },
+        {
+            "bufferView": 0,
+            "componentType": 5123,
+            "count": 5214,
+            "type": "SCALAR",
+            "name": "x1_Salty_DECALS_Screws_planes_indices#0"
+        }
+    ],
+    "asset": {
+        "generator": "Khronos glTF Blender I/O v1.7.5",
+        "version": "2.0",
+        "extensions": {
+            "ASOBO_asset_optimized": {
+                "BoundingBoxMax": [
+                    1.1753385066986084,
+                    5.183670520782471,
+                    25.491941452026367
+                ],
+                "BoundingBoxMin": [
+                    -1.175338625907898,
+                    0,
+                    0
+                ],
+                "MajorVersion": 4,
+                "MinorVersion": 2
+            },
+            "ASOBO_normal_map_convention": {
+                "tangent_space_convention": "DirectX"
+            }
+        }
+    },
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteLength": 10428,
+            "byteOffset": 0,
+            "target": 34963,
+            "name": "BufferViewIndex"
+        },
+        {
+            "buffer": 0,
+            "byteLength": 125136,
+            "byteStride": 36,
+            "byteOffset": 10428,
+            "target": 34962,
+            "name": "BufferViewVertexND"
+        }
+    ],
+    "extensionsUsed": [
+        "MSFT_texture_dds",
+        "ASOBO_asset_optimized",
+        "ASOBO_normal_map_convention"
+    ],
+    "extensionsRequired": [
+        "MSFT_texture_dds"
+    ],
+    "materials": [
+        {
+            "name": "Salty_DECALS_Screws_Holes",
+            "alphaMode": "BLEND",
+            "normalTexture": {
+                "index": 1
+            },
+            "occlusionTexture": {
+                "index": 2
+            },
+            "emissiveTexture": {
+                "index": 0
+            },
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 3
+                },
+                "metallicRoughnessTexture": {
+                    "index": 2
+                }
+            },
+            "extensions": {
+              "ASOBO_material_blend_gbuffer": {
+                "occlusionBlendFactor": 0
+              },
+              "ASOBO_material_draw_order": {
+                "drawOrderOffset": 0
+              }
+            }
+          }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "COLOR_0": 0,
+                        "NORMAL": 1,
+                        "POSITION": 2,
+                        "TANGENT": 3,
+                        "TEXCOORD_0": 4,
+                        "TEXCOORD_1": 5
+                    },
+                    "indices": 6,
+                    "material": 0,
+                    "mode": 4,
+                    "extras": {
+                        "ASOBO_primitive": {
+                            "PrimitiveCount": 1738,
+                            "VertexType": "VTX",
+                            "VertexVersion": 2
+                        }
+                    }
+                }
+            ],
+            "name": "x1_Salty_DECALS_Screws_planes"
+        }
+    ],
+    "nodes": [
+        {
+            "mesh": 0,
+            "name": "Salty_DECALS_Screws_planes"
+        }
+    ],
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Scene",
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "textures": [
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 0
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 1
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 2
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 3
+                }
+            }
+        },
+        {
+            "extensions": {
+                "MSFT_texture_dds": {
+                    "source": 2
+                }
+            }
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 135564,
+            "uri": "Salty_screws1.bin"
+        }
+    ],
+    "images": [
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "B747_COCKPIT_DECALS_EMIS.TIF.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "B747_COCKPIT_DECALS_NORM.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "B747_COCKPIT_DECALS_COMP.PNG.DDS"
+        },
+        {
+            "extras": "ASOBO_image_converted_meta",
+            "uri": "B747_COCKPIT_DECALS_ALBD.PNG.DDS"
+        }
+    ]
+}

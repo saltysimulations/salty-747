@@ -17,6 +17,8 @@ jobs:
       INSTALLER_PRE_RELEASE_ID: 64499039
       INSTALLER_PRE_RELEASE_TAG: vinstaller
       BUILD_DIR_NAME: vdev
+      CLIENT_ID: ${{ secrets.NG_CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.NG_CLIENT_SECRET }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v2

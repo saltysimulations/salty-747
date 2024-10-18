@@ -3,6 +3,7 @@ import { FlightPlanSegment, SegmentType } from './FlightPlanSegment';
 import { FlightPlanAsoboSync } from './FlightPlanAsoboSync';
 import { HoldDetails } from './HoldDetails';
 import { ManagedFlightPlan } from './ManagedFlightPlan';
+import { SaltyDataStore } from '@shared/persistence';
 
 /**
  * A system for managing flight plan data used by various instruments.
@@ -42,7 +43,7 @@ export class FlightPlanManager {
         plan.setParentInstrument(_parentInstrument);
         this._flightPlans = [];
         this._flightPlans.push(plan);
-        if (WTDataStore.get('WT_CJ4_FPSYNC', 0) !== 0) {
+        if (SaltyDataStore.get('FP_SYNC', "0") !== "0") {
           this.pauseSync();
           await FlightPlanAsoboSync.LoadFromGame(this);
         }
@@ -567,7 +568,7 @@ export class FlightPlanManager {
 
   /**
    * Sets the destination for the current flight plan.
-   * @param icao The ICAO designation for the destination airfield. 
+   * @param icao The ICAO designation for the destination airfield.
    * @param callback A callback to call once the operation completes.
    */
   public async setDestination(icao: string, callback = () => { }): Promise<void> {
@@ -673,7 +674,7 @@ export class FlightPlanManager {
 
   /**
    * Reverses the currently active flight plan.
-   * @param {() => void} callback A callback to call when the operation is complete. 
+   * @param {() => void} callback A callback to call when the operation is complete.
    */
   public invertActiveFlightPlan(callback = () => { }): void {
     this._flightPlans[this._currentFlightPlanIndex].reverse();
@@ -1037,7 +1038,7 @@ export class FlightPlanManager {
 
   /**
    * Unused
-   * @param {*} callback 
+   * @param {*} callback
    */
   public clearArrivalDiscontinuity(callback = EmptyCallback.Void) {
     callback();
@@ -1045,7 +1046,7 @@ export class FlightPlanManager {
 
   /**
    * Clears a discontinuity from the end of a waypoint.
-   * @param index 
+   * @param index
    */
   public clearDiscontinuity(index: number, fplnIndex = this._currentFlightPlanIndex): void {
     const currentFlightPlan = this._flightPlans[fplnIndex];
@@ -1128,7 +1129,7 @@ export class FlightPlanManager {
    * Sets the approach index in the currently active flight plan.
    * @param index The index of the approach in the destination airport information.
    * @param callback A callback to call when the operation has completed.
-   * @param transition The approach transition index to set in the approach information. 
+   * @param transition The approach transition index to set in the approach information.
    */
   public async setApproachIndex(index: number, callback = () => { }, transition: number = -1): Promise<void> {
     const currentFlightPlan = this._flightPlans[this._currentFlightPlanIndex];
@@ -1164,7 +1165,7 @@ export class FlightPlanManager {
 
   /**
    * Activates the approach segment in the current flight plan.
-   * @param {() => void} callback 
+   * @param {() => void} callback
    */
   public async activateApproach(callback = EmptyCallback.Void): Promise<void> {
     const currentFlightPlan = this._flightPlans[this._currentFlightPlanIndex];
@@ -1188,7 +1189,7 @@ export class FlightPlanManager {
   }
 
   /**
-   * Returns a value indicating if we are in a approach/arrival segment. 
+   * Returns a value indicating if we are in a approach/arrival segment.
    */
   public isApproachActivated(): boolean {
     const fpln = this.getCurrentFlightPlan();

@@ -1,3 +1,4 @@
+import { SaltyDataStore } from "@shared/persistence";
 import { FlightPlanManager } from "./FlightPlanManager";
 import { WaypointBuilder } from "./WaypointBuilder";
 
@@ -59,8 +60,8 @@ export class FlightPlanAsoboSync {
               await fpln.setOriginRunwayIndex(data.originRunwayIndex);
               //  proc index
               await fpln.setDepartureProcIndex(data.departureProcIndex);
- 
- 
+
+
               await fpln.setDepartureRunwayIndex(data.departureRunwayIndex);
               //  enroutetrans index
               await fpln.setDepartureEnRouteTransitionIndex(data.departureEnRouteTransitionIndex);
@@ -91,45 +92,44 @@ export class FlightPlanAsoboSync {
     return new Promise(async (resolve, reject) => {
       FlightPlanAsoboSync.init();
       const plan = fpln.getCurrentFlightPlan();
-      if (WTDataStore.get('WT_CJ4_FPSYNC', 0) !== 0 && (plan.checksum !== this.fpChecksum)) {
+      if (SaltyDataStore.get("FP_SYNC", "0") !== "0" && plan.checksum !== this.fpChecksum) {
+          // await Coherent.call("CREATE_NEW_FLIGHTPLAN");
+          await Coherent.call("SET_CURRENT_FLIGHTPLAN_INDEX", 0).catch(console.log);
+          await Coherent.call("CLEAR_CURRENT_FLIGHT_PLAN").catch(console.log);
 
-        // await Coherent.call("CREATE_NEW_FLIGHTPLAN");
-        await Coherent.call("SET_CURRENT_FLIGHTPLAN_INDEX", 0).catch(console.log);
-        await Coherent.call("CLEAR_CURRENT_FLIGHT_PLAN").catch(console.log);
+          if (plan.hasOrigin && plan.hasDestination) {
+              if (plan.hasOrigin) {
+                  await Coherent.call("SET_ORIGIN", plan.originAirfield.icao, false);
+              }
 
-        if (plan.hasOrigin && plan.hasDestination) {
-          if (plan.hasOrigin) {
-            await Coherent.call("SET_ORIGIN", plan.originAirfield.icao, false);
+              if (plan.hasDestination) {
+                  await Coherent.call("SET_DESTINATION", plan.destinationAirfield.icao, false);
+              }
+
+              let coIndex = 1;
+              for (let i = 0; i < plan.enroute.waypoints.length; i++) {
+                  const wpt = plan.enroute.waypoints[i];
+                  if (wpt.icao.trim() !== "") {
+                      await Coherent.call("ADD_WAYPOINT", wpt.icao, coIndex, false);
+                      coIndex++;
+                  }
+              }
+
+              await Coherent.call("SET_ORIGIN_RUNWAY_INDEX", plan.procedureDetails.originRunwayIndex).catch(console.log);
+              await Coherent.call("SET_DEPARTURE_RUNWAY_INDEX", plan.procedureDetails.departureRunwayIndex);
+              await Coherent.call("SET_DEPARTURE_PROC_INDEX", plan.procedureDetails.departureIndex);
+              await Coherent.call("SET_DEPARTURE_ENROUTE_TRANSITION_INDEX", plan.procedureDetails.departureTransitionIndex);
+
+              await Coherent.call("SET_ARRIVAL_RUNWAY_INDEX", plan.procedureDetails.arrivalRunwayIndex);
+              await Coherent.call("SET_ARRIVAL_PROC_INDEX", plan.procedureDetails.arrivalIndex);
+              await Coherent.call("SET_ARRIVAL_ENROUTE_TRANSITION_INDEX", plan.procedureDetails.arrivalTransitionIndex);
+
+              await Coherent.call("SET_APPROACH_INDEX", plan.procedureDetails.approachIndex).then(() => {
+                  Coherent.call("SET_APPROACH_TRANSITION_INDEX", plan.procedureDetails.approachTransitionIndex);
+              });
           }
 
-          if (plan.hasDestination) {
-            await Coherent.call("SET_DESTINATION", plan.destinationAirfield.icao, false);
-          }
-
-          let coIndex = 1;
-          for (let i = 0; i < plan.enroute.waypoints.length; i++) {
-            const wpt = plan.enroute.waypoints[i];
-            if (wpt.icao.trim() !== "") {
-              await Coherent.call("ADD_WAYPOINT", wpt.icao, coIndex, false);
-              coIndex++;
-            }
-          }
-
-          await Coherent.call("SET_ORIGIN_RUNWAY_INDEX", plan.procedureDetails.originRunwayIndex).catch(console.log);
-          await Coherent.call("SET_DEPARTURE_RUNWAY_INDEX", plan.procedureDetails.departureRunwayIndex);
-          await Coherent.call("SET_DEPARTURE_PROC_INDEX", plan.procedureDetails.departureIndex);
-          await Coherent.call("SET_DEPARTURE_ENROUTE_TRANSITION_INDEX", plan.procedureDetails.departureTransitionIndex);
-
-          await Coherent.call("SET_ARRIVAL_RUNWAY_INDEX", plan.procedureDetails.arrivalRunwayIndex);
-          await Coherent.call("SET_ARRIVAL_PROC_INDEX", plan.procedureDetails.arrivalIndex);
-          await Coherent.call("SET_ARRIVAL_ENROUTE_TRANSITION_INDEX", plan.procedureDetails.arrivalTransitionIndex);
-
-          await Coherent.call("SET_APPROACH_INDEX", plan.procedureDetails.approachIndex).then(() => {
-            Coherent.call("SET_APPROACH_TRANSITION_INDEX", plan.procedureDetails.approachTransitionIndex);
-          });
-        }
-
-        this.fpChecksum = plan.checksum;
+          this.fpChecksum = plan.checksum;
       }
       Coherent.call("RECOMPUTE_ACTIVE_WAYPOINT_INDEX");
     });
