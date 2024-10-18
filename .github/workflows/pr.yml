@@ -14,6 +14,8 @@ jobs:
       SALTY_PRODUCTION_BUILD: 1
       ZIP_NAME: salty-747.zip
       BUILD_DIR_NAME: zip-build
+      CLIENT_ID: ${{ secrets.NG_CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.NG_CLIENT_SECRET }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
