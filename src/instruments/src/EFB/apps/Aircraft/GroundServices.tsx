@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { AircraftSvg } from "./components/AircraftSvg";
 import { Toggle } from "../Settings/components/Toggle";
 import { ItemGroup } from "../../components/ItemGroup";
 import { useSimVar } from "react-msfs";
@@ -11,10 +10,10 @@ export const GroundServices: FC = () => {
     const [left1Door, setLeft1Door] = useSimVar("INTERACTIVE POINT GOAL:10", "Percent over 100");
     const [right5Door, setRight5Door] = useSimVar("INTERACTIVE POINT GOAL:1", "Percent over 100");
     const [cargoFwd, setCargoFwd] = useSimVar("INTERACTIVE POINT GOAL:12", "Percent over 100");
-    const [, toggleFuelTruck] = useSimVar("K:REQUEST_FUEL_KEY", "enum");
-    const [, toggleBaggageTruck] = useSimVar("K:REQUEST_LUGGAGE", "enum");
-    const [, toggleCateringTruck] = useSimVar("K:REQUEST_CATERING", "enum");
-    const [, toggleJetway] = useSimVar("K:TOGGLE_JETWAY", "enum");
+    const [, toggleFuelTruck] = useSimVar("K:REQUEST_FUEL_KEY", "");
+    const [, toggleBaggageTruck] = useSimVar("K:REQUEST_LUGGAGE", "");
+    const [, toggleCateringTruck] = useSimVar("K:REQUEST_CATERING", "");
+    const [, toggleJetway] = useSimVar("K:TOGGLE_JETWAY", "");
 
     const itemGroupStyle = { boxShadow: "2px 2px 13.5px 7px rgba(0, 0, 0, 0.1)", margin: 0 };
 
@@ -39,10 +38,10 @@ export const GroundServices: FC = () => {
                 <ItemGroupContainer>
                     <Label>Services</Label>
                     <ItemGroup style={itemGroupStyle} spacing={0}>
-                        <Service name="Jetway" onRequest={() => toggleJetway(true)} />
-                        <Service name="Fuel Truck" onRequest={() => toggleFuelTruck(true)} />
-                        <Service name="Baggage Truck" onRequest={() => toggleBaggageTruck(true)} />
-                        <Service name="Catering" onRequest={() => toggleCateringTruck(true)} />
+                        <Service name="Jetway" onRequest={() => toggleJetway(1)} />
+                        <Service name="Fuel Truck" onRequest={() => toggleFuelTruck(1)} />
+                        <Service name="Baggage Truck" onRequest={() => toggleBaggageTruck(1)} />
+                        <Service name="Catering" onRequest={() => toggleCateringTruck(1)} />
                     </ItemGroup>
                 </ItemGroupContainer>
             </StyledOptionsContainer>
@@ -50,10 +49,10 @@ export const GroundServices: FC = () => {
     );
 }
 
-const Service: FC<{ name: string, onRequest: () => void }> = ({ name }) => (
-    <ListItem>
+const Service: FC<{ name: string, onRequest: () => void }> = ({ name, onRequest }) => (
+    <ListItem noMouseDownEffect>
         <div style={{ padding: "0 25px" }}>{name}</div>
-        <PrimaryButton style={{ justifySelf: "end", margin: "0 15px", transform: "scale(0.85)" }}>Request</PrimaryButton>
+        <PrimaryButton style={{ justifySelf: "end", margin: "0 15px", transform: "scale(0.85)" }} onClick={onRequest} >Request</PrimaryButton>
     </ListItem>
 );
 

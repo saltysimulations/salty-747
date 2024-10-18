@@ -1,33 +1,28 @@
 import React, { FC, useState } from "react";
 import { IoMdSettings } from "react-icons/io";
 import { MdSatelliteAlt } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 type TopBarProps = {
     setFlightDisplayed: (toggled: boolean) => void;
+    flightDisplayed: boolean;
     viewingTop: string;
     viewingBottom: string | null;
 };
 
-export const TopBar: FC<TopBarProps> = ({ setFlightDisplayed, viewingTop, viewingBottom }) => {
-    const [flight, setFlight] = useState<boolean>(false);
+export const TopBar: FC<TopBarProps> = ({ setFlightDisplayed, flightDisplayed, viewingTop, viewingBottom }) => {
+
+    const navigate = useNavigate();
 
     return (
         <>
             <StatusBarFill />
             <StyledTopBar>
                 <TopBarSection>
-                    <TopBarItem
-                        selected={flight}
-                        onClick={() => {
-                            setFlight(!flight);
-                            setFlightDisplayed(!flight);
-                        }}
-                    >
+                    <TopBarItem selected={flightDisplayed} onClick={() => setFlightDisplayed(!flightDisplayed)}>
                         Flight
                     </TopBarItem>
-                    <TopBarItem>Route Info</TopBarItem>
-                    <TopBarItem>Pubs</TopBarItem>
                 </TopBarSection>
                 <TopBarSection>
                     <Viewing>
@@ -38,7 +33,7 @@ export const TopBar: FC<TopBarProps> = ({ setFlightDisplayed, viewingTop, viewin
                 <TopBarSection>
                     <Icons>
                         <MdSatelliteAlt size={35} fill="white" />
-                        <IoMdSettings size={40} />
+                        <IoMdSettings size={40} onClick={() => navigate("/settings/general")} />
                     </Icons>
                 </TopBarSection>
             </StyledTopBar>

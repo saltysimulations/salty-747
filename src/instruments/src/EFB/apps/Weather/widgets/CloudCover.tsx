@@ -1,4 +1,4 @@
-import { CloudQuantity, ICloud } from "@ninjomcs/metar-taf-parser-msfs";
+import { CloudQuantity, CloudType, ICloud } from "@ninjomcs/metar-taf-parser-msfs";
 import React, { FC, ReactNode, useContext } from "react";
 import { IoMdCloud } from "react-icons/io";
 import { RiSunFoggyFill } from "react-icons/ri";
@@ -19,15 +19,17 @@ export const CloudCover: FC<{ clouds: ICloud[] }> = ({ clouds }) => {
         NSC: ["", <></>],
     };
 
+    const displayClouds = clouds.length >= 1 && clouds[0].quantity !== CloudQuantity.NSC && clouds[0].quantity !== CloudQuantity.SKC;
+
     return (
         <Widget
             title="CLOUD COVER"
             icon={<IoMdCloud fill={theme.accentTextColor} size={18} />}
-            scrollable={clouds.length >= 1}
+            scrollable={displayClouds}
             gridRow="3 / 4"
             gridColumn="1 / span 2"
         >
-            {clouds.length >= 1 ? (
+            {displayClouds ? (
                 <List>
                     {clouds.map((cloud, i) => (
                         <Entry key={i} border={theme.accentTextColor}>

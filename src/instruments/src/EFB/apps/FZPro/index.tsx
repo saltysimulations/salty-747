@@ -1,4 +1,4 @@
-import React, { FC, useContext, useRef, useState } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import { Chart, ChartCategory } from "navigraph/charts";
 
 import { useNavigraphAuth } from "../../hooks/useNavigraphAuth";
@@ -21,15 +21,30 @@ import { FZProContext, sourceToLabel } from "./AppContext";
 import { InfoWx } from "./info-wx";
 import { facilityLoader, getAirportIcaoFromIdent } from "../../lib/facility";
 import { ThemeSwitchContext } from "../../lib/Theme";
+import { useNavigate } from "react-router-dom";
+import { ModalContext } from "../..";
+import { InfoModal } from "../../components/InfoModal";
 
 export const FZPro: FC = () => {
     const { user, initialized } = useNavigraphAuth();
+    const navigate = useNavigate();
+
+    const { setModal } = useContext(ModalContext);
+
+    const hasChartsSubscription = user?.subscriptions.includes("charts");
+
+    useEffect(() => {
+        if (initialized && user && !hasChartsSubscription) {
+            navigate("/");
+            setModal(<InfoModal title="No charts subscription" description="This app requires a Navigraph Charts subscription." />);
+        }
+    }, []);
 
     return (
         <RootContainer>
             {!initialized && <div>Loading</div>}
 
-            {initialized && !user ? <SignInPrompt /> : user && <App />}
+            {(initialized && !user) ? <SignInPrompt /> : user && hasChartsSubscription && <App />}
         </RootContainer>
     );
 };
@@ -118,7 +133,7 @@ const App: FC = () => {
 
     return (
         <>
-            <TopBar setFlightDisplayed={setFlightDisplayed} viewingTop={topBarLabel()} viewingBottom={topBarSecondaryLabel()} />
+            <TopBar setFlightDisplayed={setFlightDisplayed} flightDisplayed={flightDisplayed} viewingTop={topBarLabel()} viewingBottom={topBarSecondaryLabel()} />
             <SideAndMainContainer onClick={() => airportSelectorDisplayed && setAirportSelectorDisplayed(false)}>
                 <Sidebar
                     category={chartSelectorCategory}

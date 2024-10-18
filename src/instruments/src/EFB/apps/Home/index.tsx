@@ -43,12 +43,6 @@ export const HomeScreen: FC = () => (
             />
             <App name="Maps" bg="#6eff88" icon={<FaMapMarkerAlt style={{ fill: "white", transform: "scale(3.3)" }} />} route="/maps" />
             <App
-                name="Weather"
-                bg="linear-gradient(0deg, rgba(48,160,232,1) 0%, rgba(14,85,173,1) 100%)"
-                icon={<IoCloud style={{ fill: "white", transform: "scale(3.3)" }} />}
-                route="/weather"
-            />
-            <App
                 name="Ground"
                 bg="white"
                 icon={<FaTruckLoading style={{ fill: "black", transform: "scale(3.5)" }} />}
@@ -60,11 +54,15 @@ export const HomeScreen: FC = () => (
             <PageIndicator />
         </PageIndicators>
         <FavoriteAppsContainer>
-            <App bg={`url(${opt})`} />
             <App
                 bg="linear-gradient(0deg, rgba(148,146,143,1) 0%, rgba(211,227,233,1) 100%)"
                 icon={<BsGearWideConnected style={{ fill: "#2C3233", transform: "scale(3.5)" }} />}
                 route="/settings/general"
+            />
+            <App
+                bg="linear-gradient(0deg, rgba(48,160,232,1) 0%, rgba(14,85,173,1) 100%)"
+                icon={<IoCloud style={{ fill: "white", transform: "scale(3.3)" }} />}
+                route="/weather"
             />
             <App bg="white" icon={<IoFolder style={{ fill: "218FF3", transform: "scale(3.5)" }} />} route="/files" />
         </FavoriteAppsContainer>
