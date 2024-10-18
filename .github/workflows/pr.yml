@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir ./${{ env.BUILD_DIR_NAME }}
           zip -r ./${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }} ./salty-747/
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: salty-747
           path: ${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }}
