@@ -27,7 +27,7 @@ jobs:
       - name: Build Salty-747
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 20
       - run: |
           npm i
           npm run build
