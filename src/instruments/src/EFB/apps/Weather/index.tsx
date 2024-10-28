@@ -56,7 +56,7 @@ export const Weather: FC = () => {
         try {
             const newOfp = await SimbriefClient.getOfp(await SimbriefClient.getSimbriefUserIDFromUsername(simbriefUsername as string));
             setOfp(newOfp);
-            handleSelectAirport(newOfp.destination.icao_code);
+            handleSelectAirport(newOfp.origin.icao_code);
         } catch (_) {
             setModal(<InfoModal title="Error" description="Failed to fetch SimBrief OFP" />);
         }

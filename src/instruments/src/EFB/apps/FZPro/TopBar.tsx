@@ -32,7 +32,6 @@ export const TopBar: FC<TopBarProps> = ({ setFlightDisplayed, flightDisplayed, v
                 </TopBarSection>
                 <TopBarSection>
                     <Icons>
-                        <MdSatelliteAlt size={35} fill="white" />
                         <IoMdSettings size={40} onClick={() => navigate("/settings/general")} />
                     </Icons>
                 </TopBarSection>

@@ -81,9 +81,13 @@ export const FuelPayload: FC = () => {
     };
 
     const load = () => {
-        plannedPax && setPax(plannedPax);
-        plannedCargo && setCargo(metric ? plannedCargo * 2.205 : plannedCargo);
-        plannedZfw && setZfw(metric ? plannedZfw * 2.205 : plannedZfw);
+        if (!plannedZfw) {
+            plannedPax && setPax(plannedPax);
+            plannedCargo && setCargo(metric ? plannedCargo * 2.205 : plannedCargo);
+        } else {
+            setZfw(metric ? plannedZfw * 2.205 : plannedZfw);
+        }
+
         plannedFuel && setFuel(metric ? plannedFuel * 2.205 : plannedFuel);
     };
 

@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 import { ListItem } from "../../../components/ListItem";
 
-type ToggleProps = { label: string; enabled: boolean; onClick: (enabled: boolean) => void };
+type ToggleProps = { label: string; enabled: boolean; onClick: (enabled: boolean) => void; gray?: boolean };
 
-export const Toggle: FC<ToggleProps> = ({ label, enabled, onClick }) => (
-    <ListItem noMouseDownEffect>
+export const Toggle: FC<ToggleProps> = ({ label, enabled, onClick, gray = false }) => (
+    <ListItem noMouseDownEffect gray={gray}>
         <div className="side">{label}</div>
         <StyledToggle className="side" enabled={enabled} onClick={() => onClick(enabled)}>
             <StyledToggleCircle enabled={enabled} />
