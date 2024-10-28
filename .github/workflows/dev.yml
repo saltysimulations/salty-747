@@ -24,6 +24,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Set BUILT_DATE_TIME
         run: echo "BUILT_DATE_TIME=$(date -u -Iseconds)" >> $GITHUB_ENV
+      - name: Set up hub
+        uses: Geertvdc/setup-hub@v1.0.0
       - name: Build Salty-747
         uses: actions/setup-node@v1
         with:
