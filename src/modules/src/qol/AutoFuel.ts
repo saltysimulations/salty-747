@@ -1,11 +1,12 @@
 import { Module } from "../module";
+import { SaltyDataStore } from "@shared/persistence";
 
 export class AutoFuel implements Module {
     private ovrdPumps = [7, 8, 11, 12];
     private xfeedValves = [1, 4];
 
     public update(_dt: number) {
-        const enabled = WTDataStore.get("AUTO_FUEL", 0) >= 1;
+        const enabled = SaltyDataStore.get("AUTO_FUEL", "0") === "1";
         if (!enabled) return;
 
         const leftOutboardQuantity =

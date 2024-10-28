@@ -1,3 +1,4 @@
+import { SaltyDataStore } from "@shared/persistence";
 import { Module } from "../module";
 
 export class PauseAtTD implements Module {
@@ -21,6 +22,6 @@ export class PauseAtTD implements Module {
     }
 
     private enabled(): boolean {
-        return WTDataStore.get("PAUSE_AT_TD", 0) >= 1;
+        return SaltyDataStore.get("PAUSE_AT_TD", "0") === "1";
     }
 }

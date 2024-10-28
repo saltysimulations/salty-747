@@ -1,73 +1,400 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 
 <SimBase.Document Type="Checklist" version="1,0">
-  <Checklist.Checklist>
-    <IncludeCheckpointLibrary FileName="CheckpointsLibrary\\Asobo_DefaultCheckpointLibrary.xml"/>
-    <IncludeCheckpointLibrary FileName="SimObjects\\Airplanes\\Asobo_B747_8i\\Checklist\\Library.xml"/>
+	<Checklist.Checklist>
+		<IncludeCheckpointLibrary FileName="CheckpointsLibrary\\Asobo_DefaultCheckpointLibrary.xml" />
+		<IncludeCheckpointLibrary FileName="SimObjects\\Airplanes\\Asobo_B747_8i\\Checklist\\Library.xml" />
 
-    <Step ChecklistStepId="PREFLIGHT_GATE">
+		<Step ChecklistStepId="PREFLIGHT_GATE">
+			<!-- ELECTRICAL POWER UP -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_POWER">
+				<Checkpoint ReferenceId="Battery_Switch_On_B748" />
+				<Checkpoint ReferenceId="Standby_Power_Selector_Auto_B748" />
+				<Checkpoint ReferenceId="HYD_DEMAND_PUMPS_OFF_B748" />
+				<Checkpoint ReferenceId="WIPERS_OFF_B748" />
+				<!-- TODO? altn flaps OFF -->
+				<Checkpoint ReferenceId="Landing_Gear_Down">
+					<ForceCamera name="Instruments02" />
+				</Checkpoint>
+				<!-- TODO? flap lever and indicator agree -->
+				<Checkpoint ReferenceId="External_Power_On_If_Avail">
+					<Instrument Id="push_ovhd_electrics_ext_pwr" />
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+			</Page>
 
+			<!-- PRE FLIGHT -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_PREFLIGHT_1_4">
+				<!-- Preliminary Preflight -->
+				<Checkpoint ReferenceId="IRS_SELECTORS_NAV_B748" />
+				<Checkpoint ReferenceId="SET_IRS_POS_B748" />
+				<!-- TODO? voice recorder as needed -->
 
-      <!-- Before starting engine -->
-      <Page SubjectTT="TT:GAME.CHECKLIST_BEFORE_STARTING_ENGINE">
-        <Checkpoint ReferenceId="Battery_Switch_On_B747"/>
-        <Checkpoint ReferenceId="Standby_Power_Selector_Auto_B747">
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-        <Checkpoint ReferenceId="External_Power_On_If_Avail"/>
-        <Checkpoint ReferenceId="APU_START_ON_BOEING">
-          <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_APU_SELECTOR" ExpectationTT="TT:GAME.CHECKLIST_START_THEN_ON"/>
-          <Clue name="TT:CLUE.APU_SELECTOR_START_THEN_ON"/>
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-        <Checkpoint ReferenceId="APU_Gen_Switches_On_When_Avail_Lit"/>
-        <Checkpoint ReferenceId="FUEL_PUMPS_AIRLINER_4_ENGINES">
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-        <Checkpoint ReferenceId="Beacon_Light_On">
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-      </Page>
+				<!-- TODO? CDU Preflight -->
 
+				<!-- Preflight -->
 
-      <!-- Starting Engine -->
-      <Page SubjectTT="TT:GAME.CHECKLIST_STARTING_ENGINE">
-        <Checkpoint ReferenceId="POWER_LEVERS_IDLE_4ENGINES">
-          <CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_THRUST_LEVERS" ExpectationTT="TT:GAME.CHECKLIST_IDLE"/>
-        </Checkpoint>
-		
-		<Checkpoint ReferenceId="APU_Bleed_On">
-		  <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-		
-		<Checkpoint ReferenceId="ENGINE_BLEED_AIR_SWITCHES_ON_4ENGINES">
-		 <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-		
-        <Checkpoint ReferenceId="Engine_4_Start_Switch_Pull">
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-        <Checkpoint ReferenceId="Engine_4_Fuel_Control_Switch_Run"/>
-        <Checkpoint ReferenceId="EICAS_Monitor">
-          <ForceCamera name="Instruments03"/>
-        </Checkpoint>
-        <Checkpoint ReferenceId="ENGINES_1_2_3_REPEAT_START_ROCEDURE">
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-      </Page>
+				<!-- OVHD LEFT -->
+				<!-- TODO? BROADBAND COM switch Guard Closed -->
+				<!-- TODO? ELT switch Guard closed -->
+				<!-- TODO? EEC switches NORM -->
 
-      <!-- After starting engine 1/2 -->
-      <Page SubjectTT="TT:GAME.CHECKLIST_AFTER_STARTING_ENGINE_1">
-        <Checkpoint ReferenceId="APU_SELECTOR_OFF">
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-        <Checkpoint ReferenceId="LIGHTS_AS_REQUIRED_AIRLINER">
-          <ForceCamera name="Instruments09"/>
-        </Checkpoint>
-      </Page>
+				<!-- ELEC -->
+				<!-- TODO? if utility power switch ever gets implemented -->
+				<!-- <Checkpoint ReferenceId="UTILITY_POWER_ON_B748" /> -->
+				<Checkpoint ReferenceId="BUS_TIE_AUTO_B748" />
+				<Checkpoint ReferenceId="GENERATOR_CONTROL_SWITCHES_ON_B748" />
+				<Checkpoint ReferenceId="APU_START_ON_B748" />
+				<Checkpoint ReferenceId="APU_Gen_Switches_On_When_Avail_Lit">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
 
-    </Step>
+				<!-- HYD -->
+				<Checkpoint ReferenceId="HYD_DEMAND_PUMPS_OFF_B748" />
+				<Checkpoint ReferenceId="ENGINE_PRIMARY_HYD_PUMPS_ON_B748" />
 
-  </Checklist.Checklist>
+				<!-- OVHD CENTER -->
+				<Checkpoint ReferenceId="Emergency_Lights_Armed_B748" />
+				<!-- capt and obs audio systems NORM -->
+				<!-- service interphone OFF -->
+				<!-- FUEL TRANSFER MAIN 1 AND 4 switches OFF -->
+				<!-- Fire panel Set -->
+				<!-- Engine START switches In -->
+				<!-- FUEL JETTISON panel SET -->
 
+				<!-- FUEL -->
+				<Checkpoint ReferenceId="FUEL_CROSSFEED_VALVES_ON_AIRLINER_4_ENGINES_B748" />
+				<Checkpoint ReferenceId="FUEL_PUMPS_OFF_AIRLINER_4_ENGINES_B748" />
+
+				<!-- ICE/WIPERS -->
+				<Checkpoint ReferenceId="ANTI_ICE_AUTO_B748" />
+				<Checkpoint ReferenceId="WINDOW_HEAT_ON_B748" />
+				<Checkpoint ReferenceId="WIPERS_OFF_B748" />
+
+				<!-- OVHD RIGHT -->
+				<!-- FUEL XFER RESERVE 1&4 switch Guard closed -->
+				 <Checkpoint ReferenceId="YAW_DAMPER_ON_B748" />
+				<!-- CABIN ALTITUDE -->
+
+				<!-- ECS -->
+				<Checkpoint ReferenceId="PASS_TEMP_AUTO_B748" />
+				<Checkpoint ReferenceId="FD_TEMP_AUTO_B748" />
+				<Checkpoint ReferenceId="CARGO_TEMP_AUTO_B748" />
+				<!-- TODO? ALTN VENT -->
+				<Checkpoint ReferenceId="TRIM_AIR_ON_B748" />
+				<Checkpoint ReferenceId="RECIRC_ON_B748" />
+				<!-- TODO? EQUIP COOLING (GAME.CHECKLIST_EQUIPMENT_COOLING_SELECTOR) -->
+				<!-- TODO? HIGH FLOW (GAME.CHECKLIST_HIGH_FLOW_SWITCH) -->
+
+				<!-- PACKS/BLEED -->
+				<Checkpoint ReferenceId="PACKS_ON_B748" />
+				<Checkpoint ReferenceId="ISLN_ON_B748" />
+				<Checkpoint ReferenceId="APU_BLEED_ON_B748" />
+				<Checkpoint ReferenceId="ENGINE_BLEED_AIR_SWITCHES_ON_4ENGINES_B748" />
+
+				<!-- EXT LIGHTING -->
+				<Checkpoint ReferenceId="Navigation_Lights_On">
+					<ForceCamera name="Instruments07" />
+					<Instrument Id="LIGHTING_Push_Light_NAV" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="Logo_Light_As_Required">
+					<ForceCamera name="Instruments07" />
+					<Instrument Id="LIGHTING_switch_Light_Logo" />
+				</Checkpoint>
+
+				<!-- TODO EFIS -->
+
+				<!-- MCP -->
+				<Checkpoint ReferenceId="FLIGHT_DIRECTOR_ON_B748" />
+				<Checkpoint ReferenceId="AUTOTHROTTLE_ARM_B748" />
+				<Checkpoint ReferenceId="BANK_LIMIT_AUTO_B748" />
+				<Checkpoint ReferenceId="AP_DISENGAGE_BAR_UP_B748" />
+				<!-- TODO? <Checkpoint ReferenceId="STAT_DISPLAY_SELECT_B748" /> -->
+
+				<!-- FORWARD -->
+				<!-- OXYGEN -->
+				<!-- SOURCE SELECT -->
+				<!-- flight instruments Check -->
+				<!-- ISFD -->
+				<!-- GND PROXIMITY panel Set -->
+				<!-- Landing gear panel Set -->
+				<Checkpoint ReferenceId="Landing_Gear_Down">
+					<ForceCamera name="Instruments02" />
+				</Checkpoint>
+				<!-- ALTN FLAPS -->
+				<!-- ALTN GEAR -->
+				<Checkpoint ReferenceId="Autobrakes_Selector_RTO">
+					<ForceCamera name="Instruments02" />
+					<Instrument Id="HANDLING_Knob_Autobrake" />
+				</Checkpoint>
+				<!-- TODO DISPLAY BRIGHTNESS controls As needed -->
+				<!-- EIU AUTO -->
+				<!-- HEADING reference switch NORM -->
+				<!-- FMC selector -->
+				<!-- EICAS -->
+				<!-- MFD -->
+
+				<!-- CONTROL STAND -->
+				<Checkpoint ReferenceId="Parking_Brake_Set" />
+				<Checkpoint ReferenceId="SPEEDBRAKE_DN_B748" />
+				<!-- Reverse thrust levers Down -->
+				<Checkpoint ReferenceId="POWER_LEVERS_IDLE_4ENGINES">
+					<CheckpointDesc SubjectTT="TT:GAME.CHECKLIST_THRUST_LEVERS" ExpectationTT="TT:GAME.CHECKLIST_IDLE" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="FLAPS_UP_B748" />
+				<Checkpoint ReferenceId="ENGINE_FUEL_CONTROL_SWITCHES_CUTOFF_B748" />
+				<!-- stab trim cutout -->
+				<!-- altn stab trim -->
+
+				<!-- PEDESTAL LEFT -->
+				<!-- Radios -->
+				<!-- audio control panels -->
+				<Checkpoint ReferenceId="SEATBELTS_SELECTOR_ON_B748" />
+
+				<!-- PEDESTAL CENTER -->
+				<!-- weather radar panel -->
+
+				<!-- PEDESTAL RIGHT -->
+				<!-- transponder panel -->
+				<Checkpoint ReferenceId="TCAS_ATC_SELECTOR_STBY_B748" />
+
+				<!-- TODO In avionics preflight checklist -->
+			</Page>
+
+			<!-- Before Start -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_BEFORE_STARTING_ENGINES">
+				<!-- TODO CDU display, TAKEOFF REF on left, and LEGS on right -->
+				<!-- TODO MCP -->
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="EXTERIOR_DOORS_VERIFY_CLOSED_B748" /> -->
+				<Checkpoint ReferenceId="HYD_DEMAND_PUMPS_AUTO_B748" />
+				<!-- TODO Only turn on fuel pumps that are needed according to the procedure -->
+				<Checkpoint ReferenceId="FUEL_PUMPS_ON_AIRLINER_4_ENGINES_B748">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<!-- TODO The auto complete sets it to lower instead of BOTH, should put in BOTH -->
+				<Checkpoint ReferenceId="Beacon_Light_BOTH_B748" />
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="CANCEL_RECALL_PUSH_B748" /> -->
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="SET_TO_TRIM_B748" /> -->
+				<Checkpoint ReferenceId="TCAS_ATC_SELECTOR_XPDR_B748" />
+
+				<!-- TODO In avionics before start checklist -->
+			</Page>
+
+			<!-- Starting Engines -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_STARTING_ENGINES">
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="ENG_DISPLAY_SELECT_B748" /> -->
+				<Checkpoint ReferenceId="PACKS_OFF_B748" />
+				<Checkpoint ReferenceId="Engine_4_Start_Switch_Pull_B748">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="Engine_4_Fuel_Control_Switch_Run_B748" />
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="EICAS_Monitor" /> -->
+				<Checkpoint ReferenceId="ENGINES_1_2_3_REPEAT_START_ROCEDURE_B748">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="WAIT_ENGINES_STARTED_B748" />
+			</Page>
+
+			<!-- Before Taxi -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_BEFORE_TAXI">
+				<Checkpoint ReferenceId="APU_SELECTOR_OFF">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<!-- TODO engine anti ice as needed -->
+				<Checkpoint ReferenceId="PACKS_ON_B748" />
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="FCTL_DISPLAY_SELECT_B748" /> -->
+				<Checkpoint ReferenceId="FLAPS_TAKEOFF_B748" />
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="FLIGHT_CONTROLS_CHECK_B748" /> -->
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="LOWER_MFD_BLANK_B748" /> -->
+				<!-- TODO Autocomplete P2 -->
+				<!-- <Checkpoint ReferenceId="CANCEL_RECALL_PUSH_B748" /> -->
+				<Checkpoint ReferenceId="Taxi_Light_On">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+
+				<!-- TODO In avionics before taxi checklist -->
+			</Page>
+		</Step>
+
+		<Step ChecklistStepId="PREFLIGHT_TAXI_OUT">
+			<!-- Before Takeoff -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_BEFORE_TAKE_OFF">
+				<!-- TODO set WXR and TERR as needed -->
+				<Checkpoint ReferenceId="Strobe_Light_On">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="Landing_Light_On">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="TCAS_ATC_SELECTOR_TA_RA_B748" />
+
+				<!-- TODO In avionics before takeoff checklist -->
+			</Page>
+		</Step>
+
+		<Step ChecklistStepId="FLIGHT_RUNWAY">
+		</Step>
+
+		<Step ChecklistStepId="FLIGHT_TAKEOFF">
+			<!--TAKEOFF  -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_TAKEOFF">
+				<Checkpoint ReferenceId="Brakes_Released" />
+				<Checkpoint ReferenceId="POWER_LEVER_PRESS_TOGA_BUTTON_B748" />
+				<!-- TODO -->
+				<!-- V1 -->
+				<!-- VR -->
+				<!-- POSITIVE RATE -->
+				<!-- GEAR UP -->
+				<!-- AP -->
+				<!-- above 400 AGL - LNAV/VNAV -->
+				<!-- retract flaps according to the schedule -->
+				<!-- engine anti ice to auto -->
+			</Page>
+			<!-- After Takeoff -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_AFTER_TAKE_OFF">
+				<Checkpoint ReferenceId="LANDING_GEAR_UP" />
+				<Checkpoint ReferenceId="FLAPS_UP_B748" />
+
+				<!-- TODO In avionics after takeoff checklist -->
+			</Page>
+			<!-- CLIMB -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_CLIMB">
+				<Checkpoint ReferenceId="TAXI_AND_LANDING_LIGHTS_OFF_ABOVE_10000FT">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="SEATBELTS_SELECTOR_AS_REQUIRED_B748" />
+				<!-- TODO BARO STD at transition altitude -->
+			</Page>
+		</Step>
+
+		<Step ChecklistStepId="FLIGHT_CRUISE">
+			<!--CRUISE  -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_CRUISE">
+				<!-- TODO check fuel qty and fuel pumps -->
+			</Page>
+		</Step>
+
+		<Step ChecklistStepId="FLIGHT_DESCENT">
+			<!-- Descent -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_DESCENT">
+				<Checkpoint ReferenceId="CANCEL_RECALL_PUSH_B748" />
+				<!-- TODO Pre-set the destination actual QNH on altimeters when available. -->
+				<!-- TODO Enter VREF on the APPROACH REF page. -->
+				<!-- TODO Set the RADIO/BARO minimums as needed for the approach. -->
+				<!-- set nav rad page for approach -->
+				<Checkpoint ReferenceId="AUTOBRAKES_SELECTOR_AS_NEEDED_B748" />
+
+				<!-- TODO In avionics descent checklist -->
+			</Page>
+		</Step>
+
+		<Step ChecklistStepId="LANDING_APPROACH">
+			<!-- Approach -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_APPROACH">
+				<Checkpoint ReferenceId="SEATBELTS_SELECTOR_AS_REQUIRED_B748" />
+				<!-- TODO BARO STD OFF at transition level -->
+				<Checkpoint ReferenceId="TAXI_AND_LANDING_LIGHTS_ON_BELOW_10000FT_B748" />
+
+				<!-- TODO In avionics approach checklist -->
+			</Page>
+			<!-- Landing -->
+			<!-- TODO? Different checklists for ILS/AUTOLAND/IAN/LNAVVNAV -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_LANDING">
+				<!-- TODO extend flaps according to schedule -->
+				<!-- TODO APP mode if needed -->
+				<!-- GS/GP alive -->
+				<Checkpoint ReferenceId="Landing_Gear_Down" />
+				<Checkpoint ReferenceId="FLAPS_20_B748" />
+				<Checkpoint ReferenceId="SPEEDBRAKE_ARMED_B748" />
+				<Checkpoint ReferenceId="AUTOBRAKES_SELECTOR_AS_NEEDED_B748" />
+				<!-- GS/GP Captured -->
+				<Checkpoint ReferenceId="FLAPS_LANDING_B748" />
+
+				<!-- TODO In avionics landing checklist -->
+			</Page>
+		</Step>
+
+		<Step ChecklistStepId="LANDING_TOUCHDOWN">
+			<!-- TODO REV THR, check spoilers, check autobrake -->
+		</Step>
+
+		<Step ChecklistStepId="LANDING_GROUNDROLL">
+			<!-- TODO when to stop REV THR, when to apply manual braking, when to exit runway -->
+		</Step>
+
+		<Step ChecklistStepId="LANDING_TAXI_IN">
+			<!--RUNWAY CLEAR  -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_RUNWAY_CLEAR">
+				<Checkpoint ReferenceId="SPEEDBRAKE_DN_B748" />
+				<Checkpoint ReferenceId="APU_START_ON_B748" />
+				<!-- TODO engine anti ice ON if needed -->
+				<Checkpoint ReferenceId="Landing_Light_Off">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="Strobe_Light_Off">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="Taxi_Light_On">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<!-- wxr radar OFF -->
+				<Checkpoint ReferenceId="AUTOBRAKES_SELECTOR_OFF">
+					<ForceCamera name="Instruments02" />
+					<Instrument Id="HANDLING_Knob_Autobrake" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="FLAPS_UP_B748" />
+				<Checkpoint ReferenceId="TCAS_ATC_SELECTOR_XPDR_B748" />
+			</Page>
+		</Step>
+
+		<Step ChecklistStepId="LANDING_GATE">
+			<!-- Shutdown -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_SHUTDOWN_1_2">
+				<Checkpoint ReferenceId="Parking_Brake_Set" />
+				<Checkpoint ReferenceId="APU_Gen_Switches_On_When_Avail_Lit">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="External_Power_On_If_Avail">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="HYD_DEMAND_PUMPS_OFF_B748" />
+				<Checkpoint ReferenceId="ENGINE_FUEL_CONTROL_SWITCHES_CUTOFF_B748" />
+				<Checkpoint ReferenceId="SEATBELTS_SELECTOR_OFF_B748" />
+				<Checkpoint ReferenceId="FUEL_PUMPS_OFF_AIRLINER_4_ENGINES_B748" />
+				<Checkpoint ReferenceId="Beacon_Light_Off_B748" />
+				<Checkpoint ReferenceId="Taxi_Light_Off">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="FLIGHT_DIRECTOR_OFF_B748" />
+				<Checkpoint ReferenceId="TCAS_ATC_SELECTOR_STBY_B748" />
+
+				<!-- TODO In avionics shutdown checklist -->
+			</Page>
+			<!-- Secure -->
+			<Page SubjectTT="TT:GAME.CHECKLIST_SECURE">
+				<Checkpoint ReferenceId="EXTERNAL_POWER_OFF">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+				<Checkpoint ReferenceId="IRS_SELECTORS_OFF_B748" />
+				<Checkpoint ReferenceId="Emergency_Lights_OFF_B748" />
+				<Checkpoint ReferenceId="PACKS_OFF_B748" />
+				<Checkpoint ReferenceId="APU_SELECTOR_OFF">
+					<ForceCamera name="Instruments07" />
+				</Checkpoint>
+
+				<!-- TODO In avionics secure checklist -->
+
+				<Checkpoint ReferenceId="Battery_Switch_Off_B748" />
+			</Page>
+		</Step>
+
+	</Checklist.Checklist>
 </SimBase.Document>

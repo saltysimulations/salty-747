@@ -137,12 +137,12 @@ var B747_8_LowerEICAS_Fuel;
             }
         }
         update(_deltaTime) {
-            const storedUnits = SaltyDataStore.get("OPTIONS_UNITS", "KG");
+            const storedUnits = SaltyDataStore.get("UNITS", "kg");
             switch (storedUnits) {
-                case "KG":
+                case "kg":
                     this.units = true;
                     break;
-                case "LBS":
+                case "lbs":
                     this.units = false;
                     break;
                 default:
