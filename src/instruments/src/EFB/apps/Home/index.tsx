@@ -36,7 +36,7 @@ export const HomeScreen: FC = () => (
     <Home initial={{ transform: "scale(0)" }} animate={{ transform: "scale(1)" }} exit={{ transform: "scale(1)" }}>
         <AppSection>
             <App
-                name="Navigraph"
+                name="Charts"
                 bg="linear-gradient(0deg, rgba(121,117,255,1) 0%, rgba(92,70,255,1) 100%)"
                 icon={<IoPaperPlane style={{ fill: "lightgray", transform: "scale(3.3)" }} />}
                 route="/fzpro"
