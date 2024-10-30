@@ -91,6 +91,8 @@ export const FuelPayload: FC = () => {
         plannedFuel && setFuel(metric ? plannedFuel * 2.205 : plannedFuel);
     };
 
+    const unitString = metric ? "kg" : "lbs";
+
     return (
         <Container>
             <ChartWidgetContainer>
@@ -114,8 +116,8 @@ export const FuelPayload: FC = () => {
                         <Label>Actual</Label>
                         <ItemGroup style={itemGroupStyle} spacing={0}>
                             <InfoColumn label="Pax" value={`${Math.round(pax)}/363`} />
-                            <InfoColumn label="Cargo" value={`${metric ? Math.round(cargo / 2.205) : cargo} kg`} />
-                            <InfoColumn label="ZFW" value={`${metric ? Math.round(zfw / 2.205) : zfw} kg`} />
+                            <InfoColumn label="Cargo" value={`${metric ? Math.round(cargo / 2.205) : cargo} ${unitString}`} />
+                            <InfoColumn label="ZFW" value={`${metric ? Math.round(zfw / 2.205) : zfw} ${unitString}`} />
                             <InfoColumn label="CG" value={`${cg.toFixed(2)}%`} />
                         </ItemGroup>
                     </ItemGroupContainer>
@@ -125,14 +127,14 @@ export const FuelPayload: FC = () => {
                             <InputColumn label="Pax" placeholder="0/363" value={plannedPax} setter={setPlannedPax} filterFn={paxInputFilter} />
                             <InputColumn
                                 label="Cargo"
-                                placeholder={`0 ${metric ? "kg" : "lbs"}`}
+                                placeholder={`0 ${unitString}`}
                                 value={plannedCargo}
                                 setter={setPlannedCargo}
                                 filterFn={weightInputFilter}
                             />
                             <InputColumn
                                 label="ZFW"
-                                placeholder={`0 ${metric ? "kg" : "lbs"}`}
+                                placeholder={`0 ${unitString}`}
                                 value={plannedZfw}
                                 setter={setPlannedZfw}
                                 filterFn={weightInputFilter}
@@ -144,14 +146,14 @@ export const FuelPayload: FC = () => {
                 <WeightInputContainer>
                     <ItemGroupContainer>
                         <ItemGroup style={itemGroupStyle} spacing={0}>
-                            <InfoColumn label="Fuel" value={`${metric ? Math.round(fuel / 2.205) : fuel} ${metric ? "kg" : "lbs"}`} />
+                            <InfoColumn label="Fuel" value={`${metric ? Math.round(fuel / 2.205) : fuel} ${unitString}`} />
                         </ItemGroup>
                     </ItemGroupContainer>
                     <ItemGroupContainer>
                         <ItemGroup style={itemGroupStyle} spacing={0}>
                             <InputColumn
                                 label="Fuel"
-                                placeholder={`0 ${metric ? "kg" : "lbs"}`}
+                                placeholder={`0 ${unitString}`}
                                 value={plannedFuel}
                                 setter={setPlannedFuel}
                                 filterFn={weightInputFilter}
